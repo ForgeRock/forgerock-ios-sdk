@@ -24,7 +24,7 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 *.xcworkspacedata
-#xcshareddata/
+xcshareddata/
 
 ## Obj-C/Swift specific
 *.hmap
