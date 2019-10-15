@@ -1,0 +1,370 @@
+//
+//  OAuth2Client.swift
+//  FRAuth
+//
+//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//
+//  This software may be modified and distributed under the terms
+//  of the MIT license. See the LICENSE file for details.
+//
+
+import Foundation
+
+/// OAuth2 client object represents OAuth2 client, and provides methods related to OAuth2 protocol
+@objc(FROAuth2Client)
+public class OAuth2Client: NSObject, Codable {
+    
+    //  MARK: - Property
+    
+    /// OAuth2 client_id
+    let clientId:String
+    /// OAuth2 scope(s) separated by space
+    let scope:String
+    /// OAuth2 redirect_uri for the client
+    let redirectUri:URL
+    /// ServerConfig which OAuth2 client will communicate to
+    let serverConfig:ServerConfig
+    /// Threshold to refresh access_token in advance
+    var threshold: Int
+    
+    
+    //  MARK: - Init
+    
+    /// Designated initialization method for OAuth2 Client
+    ///
+    /// - Parameters:
+    ///   - clientId: client_id of the client
+    ///   - scope: set of scope(s) separated by space to request for the client; requesting scope set must be registered in the OAuth2 client
+    ///   - redirectUri: redirect_uri in URL object as registered in the client
+    ///   - serverConfig: ServerConfig that OAuth2 Client will communicate to
+    ///   - threshold: threshold in seconds to refresh access_token before it actually expires
+    @objc
+    public init (clientId:String, scope:String, redirectUri:URL, serverConfig:ServerConfig, threshold: Int = 60) {
+        
+        self.clientId = clientId
+        self.redirectUri = redirectUri
+        self.scope = scope
+        self.serverConfig = serverConfig
+        self.threshold = threshold
+    }
+    
+    
+    // - MARK: Token Revocation
+    
+    /// Revokes access_token and any associated token(s)
+    ///
+    /// - Parameters:
+    ///   - accessToken: AccessToken object to revoke
+    ///   - completion: Completion callback to notify the result of operation
+    @objc
+    public func revoke(accessToken: AccessToken, completion: @escaping CompletionCallback) {
+        // Construct parameter for the request
+        var parameter:[String: String] = [:]
+        let token = accessToken.refreshToken ?? accessToken.value
+        parameter[OAuth2.token] = token
+        parameter[OAuth2.clientId] = self.clientId
+        
+        let request = Request(url: self.serverConfig.tokenRevokeURL, method: .POST, headers: [:], bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        
+        RestClient.shared.invoke(request: request) { (result) in
+            switch result {
+            case .success(_ , _):
+                completion(nil)
+                break
+            case .failure(let error):
+                completion(error)
+                break
+            }
+        }
+    }
+    
+    
+    // - MARK: Toekn Refresh
+    
+    /// Refreshes OAuth2 token set asynchronously with given refresh_token
+    ///
+    /// - Parameters:
+    ///   - refreshToken: refresh_token to be consumed for requesting new OAuth2 token set
+    ///   - completion: Completion callback to notify the result of operation with AccessToken object or an error
+    @objc public func refresh(refreshToken: String, completion: @escaping TokenCompletionCallback) {
+        
+        let request = self.buildRefreshRequest(refreshToken: refreshToken)
+        
+        RestClient.shared.invoke(request: request) { (result) in
+            switch result {
+            case .success(let response, _ ):
+                if let accessToken = AccessToken(tokenResponse: response) {
+                    
+                    try? FRAuth.shared?.sessionManager.setAccessToken(token: accessToken)
+                    completion(accessToken, nil)
+                }
+                else {
+                    completion(nil, AuthError.invalidTokenResponse(response))
+                }
+            case .failure(let error):
+                completion(nil, error)
+                break
+            }
+        }
+    }
+    
+    
+    /// Refreshes OAuth2 token set synchronously with given refresh_token
+    ///
+    /// ## Important Note ##
+    /// This method is synchronous operation; please be aware consequences, and perform this method in **Main** thread if necessary.
+    ///
+    /// - Parameter refreshToken: refresh_token to be consumed for requesting new OAuth2 token set
+    /// - Returns: AccessToken object if refreshing token was successful
+    /// - Throws: AuthError or TokenError
+    @objc public func refreshSync(refreshToken: String) throws -> AccessToken {
+        
+        let request = self.buildRefreshRequest(refreshToken: refreshToken)
+        let result = RestClient.shared.invokeSync(request: request)
+        
+        switch result {
+        case .success(let response, _ ):
+            if let accessToken = AccessToken(tokenResponse: response) {
+                try? FRAuth.shared?.sessionManager.setAccessToken(token: accessToken)
+                return accessToken
+            }
+            else {
+                throw AuthError.invalidTokenResponse(response)
+            }
+        case .failure(let error):
+            throw error
+        }
+    }
+    
+    
+    // - MARK: Token Request
+    
+    
+    /// Exchanges SSOToken received from OpenAM asynchronously to OAuth2 token set using OAuth2 Authorization Code flow.
+    ///
+    /// - Parameters:
+    ///   - token: Token object (SSO Token) received from OpenAM through AuthService/Node authentication flow
+    ///   - completion: Completion callback which returns set of token(s), or error upon completion of request
+    @objc
+    public func exchangeToken(token: Token, completion: @escaping TokenCompletionCallback) {
+       
+        let ssoToken = token.value
+        let pkce = PKCE()
+        let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
+        
+        RestClient.shared.invoke(request: request) { (result) in
+            switch result {
+            case .success(_ , let httpResponse):
+                    
+                //  Capture the request redirection, and identify redirect_uri
+                if let httpResponse:HTTPURLResponse = httpResponse as? HTTPURLResponse, let redirectURLAsString:String = httpResponse.allHeaderFields["Location"] as? String {
+                    
+                    let redirectURL = URL(string: redirectURLAsString)
+                    
+                    //  If authorization_code was included in the redirecting request, extract the code, and continue with token endpoint
+                    if let authCode = redirectURL?.valueOf("code") {
+                        
+                        // Bypass PKCE state validation for FRTests
+                        #if !FRTests
+                        guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
+                            FRLog.e("Failed to validate PKCE state: PKCE: \(pkce), Redirect URL: \(redirectURLAsString)")
+                            let error = "invalid_request"
+                            let errorDescription = "Invalid request using PKCE; invalid credentials."
+                            let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
+                            completion(nil, AuthError.apiFailedWithError(0, errorDescription, errorResponse))
+                            return
+                        }
+                        #endif
+                        
+                        let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
+                        RestClient.shared.invoke(request: request, completion: { (result) in
+                            switch result {
+                            case .success(let response, _):
+                                if let accessToken = AccessToken(tokenResponse: response) {
+                                    completion(accessToken, nil)
+                                }
+                                else {
+                                    completion(nil, AuthError.invalidTokenResponse(response))
+                                }
+                            case .failure(let error):
+                                completion(nil, error)
+                                break
+                            }
+                        })
+                    }
+                    else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
+                        let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
+                        completion(nil, AuthError.apiFailedWithError(0, errorDescription, errorResponse))
+                    }
+                    else {
+                        completion(nil, AuthError.requestFailWithError)
+                    }
+                }
+                else {
+                    let error = "invalid_request"
+                    let errorDescription = "/authorize endpoint is returned without redirect location."
+                    let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
+                    completion(nil, AuthError.apiFailedWithError(0, errorDescription, errorResponse))
+                }
+                break
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+    
+    
+    /// Exchanges SSOToken received from OpenAM synchronously to OAuth2 token set using OAuth2 Authorization Code flow.
+    ///
+    /// ## Important Note ##
+    /// This method is synchronous operation; please be aware consequences, and perform this method in **Main** thread if necessary.
+    ///
+    /// - Parameter token: Token object (SSO Token) received from OpenAM through AuthService/Node authentication flow
+    /// - Returns: AccessToken object if exchanging token was successful
+    /// - Throws: AuthError or TokenError
+    public func exchangeTokenSync(token: Token) throws -> AccessToken? {
+        let ssoToken = token.value
+        let pkce = PKCE()
+        let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
+        
+        let result = RestClient.shared.invokeSync(request: request)
+        switch result {
+        case .success(_ , let httpResponse):
+            
+            //  Capture the request redirection, and identify redirect_uri
+            if let httpResponse:HTTPURLResponse = httpResponse as? HTTPURLResponse, let redirectURLAsString:String = httpResponse.allHeaderFields["Location"] as? String {
+                
+                let redirectURL = URL(string: redirectURLAsString)
+                
+                //  If authorization_code was included in the redirecting request, extract the code, and continue with token endpoint
+                if let authCode = redirectURL?.valueOf("code") {
+                    
+                    // Bypass PKCE state validation for FRTests
+                    #if !FRTests
+                    guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
+                        FRLog.e("Failed to validate PKCE state: PKCE: \(pkce), Redirect URL: \(redirectURLAsString)")
+                        let error = "invalid_request"
+                        let errorDescription = "Invalid request using PKCE; invalid credentials."
+                        let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
+                        throw AuthError.apiFailedWithError(0, errorDescription, errorResponse)
+                    }
+                    #endif
+                    
+                    let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
+                    let result = RestClient.shared.invokeSync(request: request)
+                    switch result {
+                    case .success(let response, _ ):
+                        if let accessToken = AccessToken(tokenResponse: response) {
+                            return accessToken
+                        }
+                        else {
+                            throw AuthError.invalidTokenResponse(response)
+                        }
+                    case .failure(let error):
+                        throw error
+                    }
+                }
+                else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
+                    let errorResponse: [String: String] = ["error": errorDescription, "error_description": errorDescription]
+                    throw AuthError.apiFailedWithError(0, error, errorResponse)
+                }
+                else {
+                    throw AuthError.requestFailWithError
+                }
+            }
+            else {
+                let error = "invalid_request"
+                let errorDescription = "/authorize endpoint is returned without redirect location."
+                let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
+                throw AuthError.apiFailedWithError(0, errorDescription, errorResponse)
+            }
+        case .failure(let error):
+            throw error
+        }
+    }
+    
+    
+    // - MARK: Private request build helper methods
+    
+    /// Builds a request for refreshing token with refresh_token
+    ///
+    /// - Parameter refreshToken: String value of refresh_token
+    /// - Returns: Request object
+    func buildRefreshRequest(refreshToken: String) -> Request {
+        
+        //  Construct parameter for the request
+        var parameter:[String:String] = [:]
+        parameter[OAuth2.responseType] = OAuth2.token
+        parameter[OAuth2.clientId] = self.clientId
+        parameter[OAuth2.scope] = self.scope
+        parameter[OAuth2.grantType] = OAuth2.refreshToken
+        parameter[OAuth2.refreshToken] = refreshToken
+        let header: [String: String] = [OpenAM.acceptAPIVersion: OpenAM.apiResource21 + "," + OpenAM.apiProtocol10]
+        
+        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+    }
+    
+    
+    /// Builds Authorize request with SSOToken
+    ///
+    /// - Parameters:
+    ///   - ssoToken: String value of SSOToken
+    ///   - pkce: PKCE instance for authorization code flow
+    /// - Returns: Request object
+    func buildAuthorizeRequest(ssoToken: String, pkce: PKCE) -> Request {
+        
+        //  Construct parameter for the request
+        var parameter: [String: String] = [:]
+        parameter[OAuth2.responseType] = OAuth2.code
+        parameter[OAuth2.csrf] = ssoToken
+        parameter[OAuth2.clientId] = self.clientId
+        parameter[OAuth2.scope] = self.scope
+        parameter[OAuth2.redirecUri] = self.redirectUri.absoluteString
+        parameter[OAuth2.decision] = "allow"
+        parameter[OAuth2.state] = pkce.state
+        parameter[OAuth2.codeChallenge] = pkce.codeChallenge
+        parameter[OAuth2.codeChallengeMethod] = pkce.codeChallengeMethod
+        
+        var header: [String: String] = [:]
+        header["Cookie"] = OpenAM.iPlanetDirectoryPro + "=" + ssoToken
+        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+        
+        return Request(url: self.serverConfig.authorizeURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
+    }
+    
+    
+    /// Builds Token request with Authorization Code
+    ///
+    /// - Parameters:
+    ///   - code: String value of authorization_code
+    ///   - pkce: PKCE instace for authorization code flow
+    /// - Returns: Request object
+    func buildTokenWithCodeRequest(code: String, pkce: PKCE) -> Request {
+        
+        //  Construct the request parameter
+        var parameter:[String:String] = [:]
+        parameter[OAuth2.code] = code
+        parameter[OAuth2.redirecUri] = self.redirectUri.absoluteString
+        parameter[OAuth2.clientId] = self.clientId
+        parameter[OAuth2.grantType] = OAuth2.grantTypeAuthCode
+        parameter[OAuth2.codeVerifier] = pkce.codeVerifider
+        
+        var header: [String: String] = [:]
+        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+        
+        //  Call /token service to exchange auth code to OAuth token set
+        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
+    }
+}
+
+extension URL {
+    
+    /// Extracts value in given URL's URL parameters
+    ///
+    /// - Parameter queryParamaterName: String value of parameter name in URL query parameter
+    /// - Returns: String value of given parameter name
+    func valueOf(_ queryParamaterName: String) -> String? {
+        guard let url = URLComponents(string: self.absoluteString) else { return nil }
+        return url.queryItems?.first(where: { $0.name == queryParamaterName })?.value
+    }
+}

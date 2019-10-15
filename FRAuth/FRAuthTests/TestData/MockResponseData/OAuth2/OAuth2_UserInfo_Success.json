@@ -1,0 +1,43 @@
+{
+    "responsePayload": {
+        "given_name": "James",
+        "family_name": "Go",
+        "middle_name": "Hun",
+        "name": "James Go",
+        "address": {
+            "formatted": "This should be formatted address",
+            "street_address": "201 Mission St",
+            "locality": "San Francisco",
+            "region": "CA",
+            "postal_code": "94105",
+            "country": "US"
+        },
+        "email": "james.go@forgerock.com",
+        "sub": "james",
+        "nickname": "JG",
+        "preferred_username": "james",
+        "profile": "https://www.forgerock.com/profile",
+        "picture": "https://www.forgerock.com/picture",
+        "website": "https://www.forgerock.com",
+        "email_verified": true,
+        "gender": "male",
+        "birthdate": "2019-01-01",
+        "zoneinfo": "zone",
+        "locale": "US",
+        "phone_number": "7788888888",
+        "phone_number_verified": true
+    },
+    "response": {
+        "statusCode": 200,
+        "url": "http://localhost/openam/oauth2/realms/root/userinfo",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Cache-Control": "no-store",
+            "Content-Length": "174",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "SAMEORIGIN"
+        }
+    }
+}

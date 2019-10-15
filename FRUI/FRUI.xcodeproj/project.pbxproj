@@ -1,0 +1,824 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		D5D0ADDD233AB2B300C16D5E /* FRUI-Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D5D0ADE3233AB2B300C16D5E /* Build configuration list for PBXAggregateTarget "FRUI-Universal" */;
+			buildPhases = (
+				D5D0ADE4233AB2B700C16D5E /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "FRUI-Universal";
+			productName = "FRUI-Universal";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51F44D722B1B8C900FC8F0D /* FRAuth.framework */; };
+		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
+		D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */; };
+		D53A91EB22B1815B003DF94E /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D53A91E122B1815B003DF94E /* FRUI.framework */; };
+		D53A91F022B1815B003DF94E /* FRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53A91EF22B1815B003DF94E /* FRUITests.swift */; };
+		D53A91F222B1815B003DF94E /* FRUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D53A91E422B1815B003DF94E /* FRUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D53A922622B1869C003DF94E /* PasswordCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53A921D22B1869C003DF94E /* PasswordCallbackTableViewCell.swift */; };
+		D53A922722B1869C003DF94E /* ChoiceCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53A921E22B1869C003DF94E /* ChoiceCallbackTableViewCell.swift */; };
+		D53A922822B1869C003DF94E /* NameCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53A921F22B1869C003DF94E /* NameCallbackTableViewCell.swift */; };
+		D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D53A922022B1869C003DF94E /* PasswordCallbackTableViewCell.xib */; };
+		D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D53A922122B1869C003DF94E /* ChoiceCallbackTableViewCell.xib */; };
+		D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D53A922222B1869C003DF94E /* NameCallbackTableViewCell.xib */; };
+		D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D53A922422B1869C003DF94E /* AuthStepViewController.xib */; };
+		D53A922D22B1869C003DF94E /* AuthStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53A922522B1869C003DF94E /* AuthStepViewController.swift */; };
+		D577B26A22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D577B26822DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift */; };
+		D577B26B22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D577B26922DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib */; };
+		D5855BDF233EB988003333BD /* FRUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5855BDE233EB988003333BD /* FRUser.swift */; };
+		D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */; };
+		D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */; };
+		D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */; };
+		D592480E2328446B0027031A /* ConfirmationCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */; };
+		D592481523285AAF0027031A /* TextOutputCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */; };
+		D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */; };
+		D5B27E662318B7710058EFE3 /* FRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E612318B7710058EFE3 /* FRButton.swift */; };
+		D5B27E672318B7710058EFE3 /* FRTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E632318B7710058EFE3 /* FRTextField.swift */; };
+		D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E652318B7710058EFE3 /* FRLoadingView.swift */; };
+		D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */; };
+		D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */; };
+		D5B27E6E2318BD0C0058EFE3 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B27E6D2318BD0C0058EFE3 /* arrow.png */; };
+		D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8922B1A6E800656521 /* AuthService.swift */; };
+		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
+		D5CACF9022B1AA0400656521 /* forgerock-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D5CACF8F22B1AA0400656521 /* forgerock-logo.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D51F44D622B1B8C900FC8F0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D55462F822A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+		D51F44D822B1B8C900FC8F0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D554630122A6DF720096C7A4;
+			remoteInfo = FRAuthTests;
+		};
+		D51F44DC22B1B8D400FC8F0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D55462F722A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+		D53A91EC22B1815B003DF94E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D53A91D822B1815B003DF94E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D53A91E022B1815B003DF94E;
+			remoteInfo = FRUI;
+		};
+		D5E98AB322E7A36E00F5DD3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D55118AC22E1268C009EBCD9;
+			remoteInfo = FRAuthTestHost;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
+		D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsTableViewCell.swift; sourceTree = "<group>"; };
+		D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsAndConditionsTableViewCell.xib; sourceTree = "<group>"; };
+		D53A91E122B1815B003DF94E /* FRUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D53A91E422B1815B003DF94E /* FRUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRUI.h; sourceTree = "<group>"; };
+		D53A91E522B1815B003DF94E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D53A91EA22B1815B003DF94E /* FRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D53A91EF22B1815B003DF94E /* FRUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUITests.swift; sourceTree = "<group>"; };
+		D53A91F122B1815B003DF94E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D53A921D22B1869C003DF94E /* PasswordCallbackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D53A921E22B1869C003DF94E /* ChoiceCallbackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D53A921F22B1869C003DF94E /* NameCallbackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D53A922022B1869C003DF94E /* PasswordCallbackTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PasswordCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D53A922122B1869C003DF94E /* ChoiceCallbackTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChoiceCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D53A922222B1869C003DF94E /* NameCallbackTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NameCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D53A922422B1869C003DF94E /* AuthStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthStepViewController.xib; sourceTree = "<group>"; };
+		D53A922522B1869C003DF94E /* AuthStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthStepViewController.swift; sourceTree = "<group>"; };
+		D577B26822DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KbaCreateCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D577B26922DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KbaCreateCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D5855BDE233EB988003333BD /* FRUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUser.swift; sourceTree = "<group>"; };
+		D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PollingWaitCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmationCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextOutputCallbackTableViewCell.xib; sourceTree = "<group>"; };
+		D5B27E612318B7710058EFE3 /* FRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRButton.swift; sourceTree = "<group>"; };
+		D5B27E632318B7710058EFE3 /* FRTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTextField.swift; sourceTree = "<group>"; };
+		D5B27E652318B7710058EFE3 /* FRLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLoadingView.swift; sourceTree = "<group>"; };
+		D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownButton.swift; sourceTree = "<group>"; };
+		D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownView.swift; sourceTree = "<group>"; };
+		D5B27E6D2318BD0C0058EFE3 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		D5CACF8922B1A6E800656521 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
+		D5CACF8F22B1AA0400656521 /* forgerock-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forgerock-logo.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D53A91DE22B1815B003DF94E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D53A91E722B1815B003DF94E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D53A91EB22B1815B003DF94E /* FRUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D51F44D222B1B8C900FC8F0D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D51F44D722B1B8C900FC8F0D /* FRAuth.framework */,
+				D51F44D922B1B8C900FC8F0D /* FRAuthTests.xctest */,
+				D5E98AB422E7A36E00F5DD3A /* FRAuthTestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D51F44DA22B1B8CF00FC8F0D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D53A91D722B1815B003DF94E = {
+			isa = PBXGroup;
+			children = (
+				D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */,
+				D53A91E322B1815B003DF94E /* FRUI */,
+				D53A91EE22B1815B003DF94E /* FRUITests */,
+				D53A91E222B1815B003DF94E /* Products */,
+				D51F44DA22B1B8CF00FC8F0D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D53A91E222B1815B003DF94E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D53A91E122B1815B003DF94E /* FRUI.framework */,
+				D53A91EA22B1815B003DF94E /* FRUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D53A91E322B1815B003DF94E /* FRUI */ = {
+			isa = PBXGroup;
+			children = (
+				D5CDAE5C23173A80002CD343 /* UIElements */,
+				D5CACF8D22B1AA0400656521 /* Assets */,
+				D5CACF8822B1A6D300656521 /* Extensions */,
+				D53A922322B1869C003DF94E /* ViewControllers */,
+				D53A921C22B1869C003DF94E /* Views */,
+				D53A91E422B1815B003DF94E /* FRUI.h */,
+				D53A91E522B1815B003DF94E /* Info.plist */,
+				D5CACF8B22B1A87700656521 /* FRUI.swift */,
+			);
+			path = FRUI;
+			sourceTree = "<group>";
+		};
+		D53A91EE22B1815B003DF94E /* FRUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D53A91EF22B1815B003DF94E /* FRUITests.swift */,
+				D53A91F122B1815B003DF94E /* Info.plist */,
+			);
+			path = FRUITests;
+			sourceTree = "<group>";
+		};
+		D53A921C22B1869C003DF94E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D53A921D22B1869C003DF94E /* PasswordCallbackTableViewCell.swift */,
+				D53A922022B1869C003DF94E /* PasswordCallbackTableViewCell.xib */,
+				D53A921E22B1869C003DF94E /* ChoiceCallbackTableViewCell.swift */,
+				D53A922122B1869C003DF94E /* ChoiceCallbackTableViewCell.xib */,
+				D53A921F22B1869C003DF94E /* NameCallbackTableViewCell.swift */,
+				D53A922222B1869C003DF94E /* NameCallbackTableViewCell.xib */,
+				D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */,
+				D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */,
+				D577B26822DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift */,
+				D577B26922DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib */,
+				D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */,
+				D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */,
+				D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */,
+				D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */,
+				D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */,
+				D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D53A922322B1869C003DF94E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D53A922522B1869C003DF94E /* AuthStepViewController.swift */,
+				D53A922422B1869C003DF94E /* AuthStepViewController.xib */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D5B27E5F2318B7710058EFE3 /* DropDownButton */ = {
+			isa = PBXGroup;
+			children = (
+				D5B27E6D2318BD0C0058EFE3 /* arrow.png */,
+				D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */,
+				D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */,
+			);
+			path = DropDownButton;
+			sourceTree = "<group>";
+		};
+		D5B27E602318B7710058EFE3 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				D5B27E612318B7710058EFE3 /* FRButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		D5B27E622318B7710058EFE3 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				D5B27E632318B7710058EFE3 /* FRTextField.swift */,
+			);
+			path = TextField;
+			sourceTree = "<group>";
+		};
+		D5B27E642318B7710058EFE3 /* LoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				D5B27E652318B7710058EFE3 /* FRLoadingView.swift */,
+			);
+			path = LoadingView;
+			sourceTree = "<group>";
+		};
+		D5CACF8822B1A6D300656521 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D5CACF8922B1A6E800656521 /* AuthService.swift */,
+				D5855BDE233EB988003333BD /* FRUser.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D5CACF8D22B1AA0400656521 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				D5CACF8E22B1AA0400656521 /* img */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		D5CACF8E22B1AA0400656521 /* img */ = {
+			isa = PBXGroup;
+			children = (
+				D5CACF8F22B1AA0400656521 /* forgerock-logo.png */,
+			);
+			path = img;
+			sourceTree = "<group>";
+		};
+		D5CDAE5C23173A80002CD343 /* UIElements */ = {
+			isa = PBXGroup;
+			children = (
+				D5B27E602318B7710058EFE3 /* Button */,
+				D5B27E5F2318B7710058EFE3 /* DropDownButton */,
+				D5B27E642318B7710058EFE3 /* LoadingView */,
+				D5B27E622318B7710058EFE3 /* TextField */,
+			);
+			path = UIElements;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D53A91DC22B1815B003DF94E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D53A91F222B1815B003DF94E /* FRUI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D53A91E022B1815B003DF94E /* FRUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D53A91F522B1815B003DF94E /* Build configuration list for PBXNativeTarget "FRUI" */;
+			buildPhases = (
+				D53A91DC22B1815B003DF94E /* Headers */,
+				D53A91DD22B1815B003DF94E /* Sources */,
+				D53A91DE22B1815B003DF94E /* Frameworks */,
+				D53A91DF22B1815B003DF94E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D51F44DD22B1B8D400FC8F0D /* PBXTargetDependency */,
+			);
+			name = FRUI;
+			productName = FRUI;
+			productReference = D53A91E122B1815B003DF94E /* FRUI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D53A91E922B1815B003DF94E /* FRUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D53A91F822B1815B003DF94E /* Build configuration list for PBXNativeTarget "FRUITests" */;
+			buildPhases = (
+				D53A91E622B1815B003DF94E /* Sources */,
+				D53A91E722B1815B003DF94E /* Frameworks */,
+				D53A91E822B1815B003DF94E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D53A91ED22B1815B003DF94E /* PBXTargetDependency */,
+			);
+			name = FRUITests;
+			productName = FRUITests;
+			productReference = D53A91EA22B1815B003DF94E /* FRUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D53A91D822B1815B003DF94E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "James Go";
+				TargetAttributes = {
+					D53A91E022B1815B003DF94E = {
+						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
+					};
+					D53A91E922B1815B003DF94E = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+					D5D0ADDD233AB2B300C16D5E = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = D53A91DB22B1815B003DF94E /* Build configuration list for PBXProject "FRUI" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D53A91D722B1815B003DF94E;
+			productRefGroup = D53A91E222B1815B003DF94E /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D51F44D222B1B8C900FC8F0D /* Products */;
+					ProjectRef = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				D53A91E022B1815B003DF94E /* FRUI */,
+				D53A91E922B1815B003DF94E /* FRUITests */,
+				D5D0ADDD233AB2B300C16D5E /* FRUI-Universal */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D51F44D722B1B8C900FC8F0D /* FRAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRAuth.framework;
+			remoteRef = D51F44D622B1B8C900FC8F0D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D51F44D922B1B8C900FC8F0D /* FRAuthTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRAuthTests.xctest;
+			remoteRef = D51F44D822B1B8C900FC8F0D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D5E98AB422E7A36E00F5DD3A /* FRAuthTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRAuthTestHost.app;
+			remoteRef = D5E98AB322E7A36E00F5DD3A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D53A91DF22B1815B003DF94E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D577B26B22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib in Resources */,
+				D592480E2328446B0027031A /* ConfirmationCallbackTableViewCell.xib in Resources */,
+				D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */,
+				D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */,
+				D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */,
+				D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */,
+				D5CACF9022B1AA0400656521 /* forgerock-logo.png in Resources */,
+				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
+				D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */,
+				D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */,
+				D5B27E6E2318BD0C0058EFE3 /* arrow.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D53A91E822B1815B003DF94E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D5D0ADE4233AB2B700C16D5E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n#################################################\n# 1. Define output directory for universal and final binary\n#################################################\nUNIVERSAL_DIR=${BUILD_DIR}/${CONFIGURATION}-universal\nTARGET_DIR=../SDKs\n\n#################################################\n# 2. Create output directo ries\n#################################################\necho \"Creating output directories..\"\nmkdir -p \"${UNIVERSAL_DIR}\"\nmkdir -p \"${TARGET_DIR}\"\n\n#################################################\n# 3. Build project for Device and Simulator\n#################################################\necho \"Starting to build project for Device and Simulator\"\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n\n#################################################\n# 4. Copy device binary to universal folder\n#################################################\necho \"Copying Device binary into universal folder ${PROJECT_NAME}\"\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 5. Copy Swift modules from iphonesimulator build\n#################################################\necho \"Copying simulator's swiftmodule into univeral binary\"\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n#################################################\n# 6. Merge two binaries into universal binary\n#################################################\necho \"Merging binaries\"\nlipo -create -output \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n#################################################\n# 7. Copy the final binary to target directory\n#################################################\ncp -R \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\" \"${TARGET_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 8. Open the target directory\n#################################################\nopen \"${TARGET_DIR}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D53A91DD22B1815B003DF94E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D53A922722B1869C003DF94E /* ChoiceCallbackTableViewCell.swift in Sources */,
+				D5B27E662318B7710058EFE3 /* FRButton.swift in Sources */,
+				D577B26A22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift in Sources */,
+				D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */,
+				D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */,
+				D53A922D22B1869C003DF94E /* AuthStepViewController.swift in Sources */,
+				D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */,
+				D5855BDF233EB988003333BD /* FRUser.swift in Sources */,
+				D53A922622B1869C003DF94E /* PasswordCallbackTableViewCell.swift in Sources */,
+				D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */,
+				D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */,
+				D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */,
+				D592481523285AAF0027031A /* TextOutputCallbackTableViewCell.swift in Sources */,
+				D5B27E672318B7710058EFE3 /* FRTextField.swift in Sources */,
+				D53A922822B1869C003DF94E /* NameCallbackTableViewCell.swift in Sources */,
+				D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */,
+				D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D53A91E622B1815B003DF94E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D53A91F022B1815B003DF94E /* FRUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D51F44DD22B1B8D400FC8F0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRAuth;
+			targetProxy = D51F44DC22B1B8D400FC8F0D /* PBXContainerItemProxy */;
+		};
+		D53A91ED22B1815B003DF94E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D53A91E022B1815B003DF94E /* FRUI */;
+			targetProxy = D53A91EC22B1815B003DF94E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D53A91F322B1815B003DF94E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D53A91F422B1815B003DF94E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D53A91F622B1815B003DF94E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = FRUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D53A91F722B1815B003DF94E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = FRUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D53A91F922B1815B003DF94E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				INFOPLIST_FILE = FRUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D53A91FA22B1815B003DF94E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				INFOPLIST_FILE = FRUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D5D0ADDE233AB2B300C16D5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D5D0ADDF233AB2B300C16D5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D53A91DB22B1815B003DF94E /* Build configuration list for PBXProject "FRUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D53A91F322B1815B003DF94E /* Debug */,
+				D53A91F422B1815B003DF94E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D53A91F522B1815B003DF94E /* Build configuration list for PBXNativeTarget "FRUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D53A91F622B1815B003DF94E /* Debug */,
+				D53A91F722B1815B003DF94E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D53A91F822B1815B003DF94E /* Build configuration list for PBXNativeTarget "FRUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D53A91F922B1815B003DF94E /* Debug */,
+				D53A91FA22B1815B003DF94E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5D0ADE3233AB2B300C16D5E /* Build configuration list for PBXAggregateTarget "FRUI-Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5D0ADDE233AB2B300C16D5E /* Debug */,
+				D5D0ADDF233AB2B300C16D5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D53A91D822B1815B003DF94E /* Project object */;
+}

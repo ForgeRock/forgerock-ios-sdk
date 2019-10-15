@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aAq-sj-F74">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="FRExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Zf-vGY">
+                                <rect key="frame" x="35" y="358" width="344" height="469"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsi-fR-Iuf" customClass="FRButton" customModule="FRUI">
+                                <rect key="frame" x="35" y="198" width="344" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="TWv-Z1-VGh"/>
+                                </constraints>
+                                <state key="normal" title="Perform Action"/>
+                                <connections>
+                                    <action selector="performActionWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pWQ-ek-P99"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Orl-ar-tW1" customClass="FRButton" customModule="FRUI">
+                                <rect key="frame" x="35" y="278" width="344" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="CWy-kA-es7"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="sXY-qg-JnU"/>
+                                </constraints>
+                                <state key="normal" title="Clear Log"/>
+                                <connections>
+                                    <action selector="clearLogBtnClickedWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q8E-Ph-PZb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NkK-UP-muE" customClass="FRDropDownButton" customModule="FRUI">
+                                <rect key="frame" x="35" y="128" width="344" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="LO4-0h-gfr"/>
+                                </constraints>
+                                <state key="normal" title="Select an action"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="vsi-fR-Iuf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="Dw0-Rg-xMw"/>
+                            <constraint firstItem="tA1-Zf-vGY" firstAttribute="top" secondItem="Orl-ar-tW1" secondAttribute="bottom" constant="40" id="JBI-8X-vi0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tA1-Zf-vGY" secondAttribute="trailing" constant="35" id="Mmv-wq-Elr"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="tA1-Zf-vGY" secondAttribute="bottom" constant="35" id="OMM-lF-KVF"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vsi-fR-Iuf" secondAttribute="trailing" constant="35" id="PBY-oj-NSI"/>
+                            <constraint firstItem="vsi-fR-Iuf" firstAttribute="top" secondItem="NkK-UP-muE" secondAttribute="bottom" constant="40" id="TsT-pg-bE9"/>
+                            <constraint firstItem="Orl-ar-tW1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="Whi-p3-FsG"/>
+                            <constraint firstItem="NkK-UP-muE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="afc-wH-XuU"/>
+                            <constraint firstItem="Orl-ar-tW1" firstAttribute="top" secondItem="vsi-fR-Iuf" secondAttribute="bottom" constant="40" id="d0c-fn-Rrg"/>
+                            <constraint firstItem="tA1-Zf-vGY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="hUZ-ze-HqJ"/>
+                            <constraint firstItem="NkK-UP-muE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="iTX-yb-prN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NkK-UP-muE" secondAttribute="trailing" constant="35" id="sM8-nu-G9X"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Orl-ar-tW1" secondAttribute="trailing" constant="35" id="tGH-uH-SuH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="BtW-jv-vJs"/>
+                    <connections>
+                        <outlet property="clearLogBtn" destination="Orl-ar-tW1" id="rsR-J0-aa0"/>
+                        <outlet property="dropDown" destination="NkK-UP-muE" id="2kB-NP-e5A"/>
+                        <outlet property="loggingView" destination="tA1-Zf-vGY" id="jlz-FG-rnV"/>
+                        <outlet property="performActionBtn" destination="vsi-fR-Iuf" id="0pD-by-sSb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="134.59821428571428"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="BDO-Rk-Hie">
+            <objects>
+                <navigationController id="aAq-sj-F74" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lAt-a9-y2i">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="AcT-Lk-E3A"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yte-ER-R80" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-671" y="135"/>
+        </scene>
+    </scenes>
+</document>
