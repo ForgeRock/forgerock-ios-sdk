@@ -7,11 +7,11 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'FRAuth'
+  s.name             = 'FRUI'
   s.version          = '0.2.1-beta'
-  s.summary          = 'ForgeRock Auth SDK for iOS'
+  s.summary          = 'ForgeRock Auth Proximity SDK for iOS'
   s.description      = <<-DESC
-  FRAuth is a SDK that allows you easily and quickly develop an application with ForgeRock Platform or ForgeRock Identity Cloud. FRAuth SDK provides interfaces and functionalities of user authentication, registration, and identity and access management against ForgeRock solutions.
+  FRUI is a SDK that allows you easily and quickly develop an application with ForgeRock Platform or ForgeRock Identity Cloud, and FRAuth SDK with pre-built UI components. FRUI SDK demonstrates most of functionalities available in FRAuth SDK which includes user authentication, registration, and identity and access management against ForgeRock solutions.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -19,14 +19,16 @@ Pod::Spec.new do |s|
 
   s.source           = {
       :git => 'https://github.com/ForgeRock/forgerock-ios-sdk.git',
-      :tag => 'FRAuth-' + s.version.to_s
+      :tag => 'FRUI-' + s.version.to_s
   }
 
-  s.module_name   = 'FRAuth'
+  s.module_name   = 'FRUI'
   s.swift_versions = ['5.0', '5.1']
 
   s.ios.deployment_target = '10.0'
 
-  base_dir = "FRAuth/FRAuth"
+  base_dir = "FRUI/FRUI"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resources = [base_dir + '/**/*.{xib, png}']
+  s.ios.dependency 'FRAuth', '~> 0.2.1-beta'
 end
