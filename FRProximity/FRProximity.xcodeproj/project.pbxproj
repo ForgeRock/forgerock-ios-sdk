@@ -1,0 +1,643 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		D59FAEC023441D30005D34DA /* FRProximity-Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D59FAEC123441D30005D34DA /* Build configuration list for PBXAggregateTarget "FRProximity-Universal" */;
+			buildPhases = (
+				D59FAEC423441D3A005D34DA /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "FRProximity-Universal";
+			productName = "FRProximity-Universal";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		D59FAE28234413D3005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE1E234413D3005D34DA /* FRProximity.framework */; };
+		D59FAE2D234413D3005D34DA /* FRProximityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE2C234413D3005D34DA /* FRProximityTests.swift */; };
+		D59FAE2F234413D3005D34DA /* FRProximity.h in Headers */ = {isa = PBXBuildFile; fileRef = D59FAE21234413D3005D34DA /* FRProximity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D59FAE82234414DB005D34DA /* FRProximity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE81234414DB005D34DA /* FRProximity.swift */; };
+		D59FAE89234415AF005D34DA /* LocationCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE87234415AF005D34DA /* LocationCollector.swift */; };
+		D59FAE8A234415AF005D34DA /* BluetoothCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE88234415AF005D34DA /* BluetoothCollector.swift */; };
+		D59FAE9F234418BD005D34DA /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE40234413F3005D34DA /* FRAuth.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D59FAE29234413D3005D34DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D59FAE15234413D3005D34DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D59FAE1D234413D3005D34DA;
+			remoteInfo = FRProximity;
+		};
+		D59FAE3F234413F3005D34DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D55462F822A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+		D59FAE41234413F3005D34DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D554630122A6DF720096C7A4;
+			remoteInfo = FRAuthTests;
+		};
+		D59FAE43234413F3005D34DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D55118AC22E1268C009EBCD9;
+			remoteInfo = FRAuthTestHost;
+		};
+		D59FAE45234413FB005D34DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D55462F722A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D59FAE1E234413D3005D34DA /* FRProximity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRProximity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D59FAE21234413D3005D34DA /* FRProximity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRProximity.h; sourceTree = "<group>"; };
+		D59FAE22234413D3005D34DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D59FAE27234413D3005D34DA /* FRProximityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRProximityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D59FAE2C234413D3005D34DA /* FRProximityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRProximityTests.swift; sourceTree = "<group>"; };
+		D59FAE2E234413D3005D34DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
+		D59FAE81234414DB005D34DA /* FRProximity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRProximity.swift; sourceTree = "<group>"; };
+		D59FAE87234415AF005D34DA /* LocationCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCollector.swift; sourceTree = "<group>"; };
+		D59FAE88234415AF005D34DA /* BluetoothCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothCollector.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D59FAE1B234413D3005D34DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59FAE9F234418BD005D34DA /* FRAuth.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59FAE24234413D3005D34DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59FAE28234413D3005D34DA /* FRProximity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D59FAE14234413D3005D34DA = {
+			isa = PBXGroup;
+			children = (
+				D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */,
+				D59FAE20234413D3005D34DA /* FRProximity */,
+				D59FAE2B234413D3005D34DA /* FRProximityTests */,
+				D59FAE1F234413D3005D34DA /* Products */,
+				D59FAE9E234418BD005D34DA /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D59FAE1F234413D3005D34DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D59FAE1E234413D3005D34DA /* FRProximity.framework */,
+				D59FAE27234413D3005D34DA /* FRProximityTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D59FAE20234413D3005D34DA /* FRProximity */ = {
+			isa = PBXGroup;
+			children = (
+				D59FAE862344156A005D34DA /* Device */,
+				D59FAE21234413D3005D34DA /* FRProximity.h */,
+				D59FAE22234413D3005D34DA /* Info.plist */,
+				D59FAE81234414DB005D34DA /* FRProximity.swift */,
+			);
+			path = FRProximity;
+			sourceTree = "<group>";
+		};
+		D59FAE2B234413D3005D34DA /* FRProximityTests */ = {
+			isa = PBXGroup;
+			children = (
+				D59FAE2C234413D3005D34DA /* FRProximityTests.swift */,
+				D59FAE2E234413D3005D34DA /* Info.plist */,
+			);
+			path = FRProximityTests;
+			sourceTree = "<group>";
+		};
+		D59FAE39234413F3005D34DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D59FAE40234413F3005D34DA /* FRAuth.framework */,
+				D59FAE42234413F3005D34DA /* FRAuthTests.xctest */,
+				D59FAE44234413F3005D34DA /* FRAuthTestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D59FAE862344156A005D34DA /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				D59FAE88234415AF005D34DA /* BluetoothCollector.swift */,
+				D59FAE87234415AF005D34DA /* LocationCollector.swift */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+		D59FAE9E234418BD005D34DA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D59FAE19234413D3005D34DA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59FAE2F234413D3005D34DA /* FRProximity.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D59FAE1D234413D3005D34DA /* FRProximity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D59FAE32234413D3005D34DA /* Build configuration list for PBXNativeTarget "FRProximity" */;
+			buildPhases = (
+				D59FAE19234413D3005D34DA /* Headers */,
+				D59FAE1A234413D3005D34DA /* Sources */,
+				D59FAE1B234413D3005D34DA /* Frameworks */,
+				D59FAE1C234413D3005D34DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D59FAE46234413FB005D34DA /* PBXTargetDependency */,
+			);
+			name = FRProximity;
+			productName = FRProximity;
+			productReference = D59FAE1E234413D3005D34DA /* FRProximity.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D59FAE26234413D3005D34DA /* FRProximityTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D59FAE35234413D3005D34DA /* Build configuration list for PBXNativeTarget "FRProximityTests" */;
+			buildPhases = (
+				D59FAE23234413D3005D34DA /* Sources */,
+				D59FAE24234413D3005D34DA /* Frameworks */,
+				D59FAE25234413D3005D34DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D59FAE2A234413D3005D34DA /* PBXTargetDependency */,
+			);
+			name = FRProximityTests;
+			productName = FRProximityTests;
+			productReference = D59FAE27234413D3005D34DA /* FRProximityTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D59FAE15234413D3005D34DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1030;
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = "James Go";
+				TargetAttributes = {
+					D59FAE1D234413D3005D34DA = {
+						CreatedOnToolsVersion = 10.3;
+						LastSwiftMigration = 1030;
+					};
+					D59FAE26234413D3005D34DA = {
+						CreatedOnToolsVersion = 10.3;
+					};
+					D59FAEC023441D30005D34DA = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = D59FAE18234413D3005D34DA /* Build configuration list for PBXProject "FRProximity" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D59FAE14234413D3005D34DA;
+			productRefGroup = D59FAE1F234413D3005D34DA /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D59FAE39234413F3005D34DA /* Products */;
+					ProjectRef = D59FAE38234413F3005D34DA /* FRAuth.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				D59FAE1D234413D3005D34DA /* FRProximity */,
+				D59FAE26234413D3005D34DA /* FRProximityTests */,
+				D59FAEC023441D30005D34DA /* FRProximity-Universal */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D59FAE40234413F3005D34DA /* FRAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRAuth.framework;
+			remoteRef = D59FAE3F234413F3005D34DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D59FAE42234413F3005D34DA /* FRAuthTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRAuthTests.xctest;
+			remoteRef = D59FAE41234413F3005D34DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D59FAE44234413F3005D34DA /* FRAuthTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRAuthTestHost.app;
+			remoteRef = D59FAE43234413F3005D34DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D59FAE1C234413D3005D34DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59FAE25234413D3005D34DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D59FAEC423441D3A005D34DA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n#################################################\n# 1. Define output directory for universal and final binary\n#################################################\nUNIVERSAL_DIR=${BUILD_DIR}/${CONFIGURATION}-universal\nTARGET_DIR=../SDKs\n\n#################################################\n# 2. Create output directo ries\n#################################################\nmkdir -p \"${UNIVERSAL_DIR}\"\nmkdir -p \"${TARGET_DIR}\"\n\n#################################################\n# 3. Build project for Device and Simulator\n#################################################\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n\n#################################################\n# 4. Copy device binary to universal folder\n#################################################\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_DIR}/\"\n\n#################################################\n# 5. Copy Swift modules from iphonesimulator build\n#################################################\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n#################################################\n# 6. Merge two binaries into universal binary\n#################################################\nlipo -create -output \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n#################################################\n# 7. Copy the final binary to target directory\n#################################################\ncp -R \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\" \"${TARGET_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 8. Open the target directory\n#################################################\nopen \"${TARGET_DIR}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D59FAE1A234413D3005D34DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59FAE8A234415AF005D34DA /* BluetoothCollector.swift in Sources */,
+				D59FAE89234415AF005D34DA /* LocationCollector.swift in Sources */,
+				D59FAE82234414DB005D34DA /* FRProximity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59FAE23234413D3005D34DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59FAE2D234413D3005D34DA /* FRProximityTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D59FAE2A234413D3005D34DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D59FAE1D234413D3005D34DA /* FRProximity */;
+			targetProxy = D59FAE29234413D3005D34DA /* PBXContainerItemProxy */;
+		};
+		D59FAE46234413FB005D34DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRAuth;
+			targetProxy = D59FAE45234413FB005D34DA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D59FAE30234413D3005D34DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D59FAE31234413D3005D34DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D59FAE33234413D3005D34DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FRProximity/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRProximity;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D59FAE34234413D3005D34DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FRProximity/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRProximity;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D59FAE36234413D3005D34DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				INFOPLIST_FILE = FRProximityTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRProximityTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D59FAE37234413D3005D34DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				INFOPLIST_FILE = FRProximityTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRProximityTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D59FAEC223441D30005D34DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D59FAEC323441D30005D34DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B67QY6U5YF;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D59FAE18234413D3005D34DA /* Build configuration list for PBXProject "FRProximity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59FAE30234413D3005D34DA /* Debug */,
+				D59FAE31234413D3005D34DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D59FAE32234413D3005D34DA /* Build configuration list for PBXNativeTarget "FRProximity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59FAE33234413D3005D34DA /* Debug */,
+				D59FAE34234413D3005D34DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D59FAE35234413D3005D34DA /* Build configuration list for PBXNativeTarget "FRProximityTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59FAE36234413D3005D34DA /* Debug */,
+				D59FAE37234413D3005D34DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D59FAEC123441D30005D34DA /* Build configuration list for PBXAggregateTarget "FRProximity-Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59FAEC223441D30005D34DA /* Debug */,
+				D59FAEC323441D30005D34DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D59FAE15234413D3005D34DA /* Project object */;
+}

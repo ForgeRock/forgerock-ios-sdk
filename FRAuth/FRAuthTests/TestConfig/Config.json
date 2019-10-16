@@ -1,0 +1,50 @@
+{
+    "username": "james",
+    "password": "Password123!",
+    "kba": {
+        "What's your favorite color?": "White",
+        "Who was your first employer?": "ForgeRock"
+    },
+    "user-email": "james.go@forgerock.com",
+    "user-first-name": "James",
+    "user-last-name": "Go",
+    "user-info": {
+            "given_name": "James",
+            "family_name": "Go",
+            "middle_name": "Hun",
+            "name": "James Go",
+            "address": {
+                "formatted": "This should be formatted address",
+                "street_address": "201 Mission St",
+                "locality": "San Francisco",
+                "region": "CA",
+                "postal_code": "94105",
+                "country": "US"
+            },
+            "email": "james.go@forgerock.com",
+            "sub": "james",
+            "nickname": "JG",
+            "preferred_username": "james",
+            "profile": "https://www.forgerock.com/profile",
+            "picture": "https://www.forgerock.com/picture",
+            "website": "https://www.forgerock.com",
+            "email_verified": true,
+            "gender": "male",
+            "birthdate": "2019-01-01",
+            "zoneinfo": "zone",
+            "locale": "US",
+            "phone_number": "7788888888",
+            "phone_number_verified": true
+    },
+    "forgerock_oauth_client_id": "iosclient",
+    "forgerock_oauth_redirect_uri": "http://localhost:8081",
+    "forgerock_oauth_scope": "openid profile email address",
+    "forgerock_oauth_url": "http://openam.example.com:8081/openam",
+    "forgerock_oauth_threshold": 60,
+    "forgerock_url": "http://openam.example.com:8081/openam",
+    "forgerock_realm": "root",
+    "forgerock_timeout": 60,
+    "forgerock_keychain_access_group": "com.forgerock.ios.shared",
+    "forgerock_auth_service_name": "UsernamePassword",
+    "forgerock_registration_service_name": "UserSignUp"
+}
