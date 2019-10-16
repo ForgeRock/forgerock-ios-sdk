@@ -70,9 +70,8 @@ If you need to run the SDK with multiple environments, before you initialize the
 ```
 FRAuth.configPlistFileName = <.plist Configuration File Name>
 ```
-<br>
-#### FRAuthConfig.plist Example
 
+#### FRAuthConfig.plist Example
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -104,7 +103,6 @@ FRAuth.configPlistFileName = <.plist Configuration File Name>
 </dict>
 </plist>
 ```
-<br>
 
 ## Step 3: Start the SDK
 
@@ -142,3 +140,6 @@ lets the FRAuth module collect information for the AM device profile.
 
 ## Developer Documentation
 For more detail usage of iOS SDK, and API Reference documentation, please go to ForgeRcok Developer Site.
+
+## License
+ForgeRock iOS SDK is released under the MIT license. See [LICENSE](https://github.com/ForgeRock/forgerock-ios-sdk/blob/master/LICENSE) file for details.
