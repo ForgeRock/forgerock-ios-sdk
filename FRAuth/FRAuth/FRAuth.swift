@@ -73,7 +73,7 @@ public final class FRAuth: NSObject {
             if bundle.bundleIdentifier == "com.forgerock.ios.FRProximity" {
                 if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type{
                     FRLog.i("FRProximity SDK found; starting FRProximity")
-                    c.perform(Selector("start"))
+                    c.perform(Selector(("startProximity")))
                 }
             }
         }

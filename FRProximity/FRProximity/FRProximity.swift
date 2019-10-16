@@ -27,7 +27,7 @@ import FRAuth
 @objc public final class FRProximity: NSObject {
     
     /// Starts FRProximity SDK
-    @objc static public func start() {
+    @objc static public func startProximity() {
         FRLog.i("Starting FRProximity SDK")
         FRLog.i("Injecting FRProximity DeviceCollectors")
         // Adds FRProximity's DeviceCollector to central FRDeviceCollector
