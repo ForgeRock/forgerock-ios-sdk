@@ -11,8 +11,4 @@
 import XCTest
 
 class KbaCreateCallbackTests: FRBaseTest {
-
-    func testKbaCreateCallbackInit() {
-        
-    }
 }

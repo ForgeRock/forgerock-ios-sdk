@@ -11,8 +11,4 @@
 import XCTest
 
 class MultipleValuesCallbackTests: FRBaseTest {
-
-    func testMultipleValuesCallbackInit() {
-        
-    }
 }

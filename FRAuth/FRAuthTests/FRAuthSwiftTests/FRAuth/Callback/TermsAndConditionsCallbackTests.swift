@@ -11,7 +11,4 @@
 import XCTest
 
 class TermsAndConditionsCallbackTests: FRBaseTest {
-    func testTermsAndConditionsCallbackInit() {
-        
-    }
 }

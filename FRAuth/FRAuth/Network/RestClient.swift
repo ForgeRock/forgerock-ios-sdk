@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// This class is responsible to handle REST API request, and acts as HTTP client for SDK Core
 @objc
@@ -66,6 +67,12 @@ class RestClient: NSObject {
         FRLog.logRequest(request)
         let start = DispatchTime.now()
         
+        var bgTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
+        bgTask = UIApplication.shared.beginBackgroundTask(withName: "com.forgerock.ios.frauth.restclient.backgroundTask", expirationHandler: {() -> Void in
+            bgTask = UIBackgroundTaskIdentifier.invalid
+            UIApplication.shared.endBackgroundTask(bgTask)
+        })
+        
         //  Invoke the request using URLSession, and handle the result with `Response` object
         self.session.dataTask(with: urlRequest) { (data, response, error) in
             // Log elapsed time / response
@@ -75,7 +82,8 @@ class RestClient: NSObject {
             FRLog.logResponse(timeInterval, data, response, error)
             
             // Complete the request
-            completion(Response(data: data, response: response, error: error).parseReponse())            
+            completion(Response(data: data, response: response, error: error).parseReponse())
+            UIApplication.shared.endBackgroundTask(bgTask)
         }.resume()
     }
     

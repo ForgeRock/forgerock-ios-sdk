@@ -380,6 +380,7 @@
 		D554630122A6DF720096C7A4 /* FRAuthTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRAuthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D554630822A6DF720096C7A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D554632122A6EDF90096C7A4 /* FRAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuth.swift; sourceTree = "<group>"; };
+		D5554F74235A7259009FC810 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D5582BA422E276A800C86ED8 /* FRAuthTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRAuthTestHost.entitlements; sourceTree = "<group>"; };
 		D5843B532315C56A00513932 /* ObjcFRDeviceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRDeviceTests.m; sourceTree = "<group>"; };
 		D5843B552315C64500513932 /* ObjcFRDeviceCollectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRDeviceCollectorTests.m; sourceTree = "<group>"; };
@@ -936,6 +937,7 @@
 				D554630522A6DF720096C7A4 /* FRAuthTests */,
 				D55118AD22E1268D009EBCD9 /* FRAuthTestHost */,
 				D55462F922A6DF720096C7A4 /* Products */,
+				D5554F73235A7258009FC810 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -984,6 +986,14 @@
 				D52D1626231478D10095905A /* FRObjcTestBridgingHeader.h */,
 			);
 			path = FRAuthTests;
+			sourceTree = "<group>";
+		};
+		D5554F73235A7258009FC810 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D5554F74235A7259009FC810 /* UIKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D5582BA522E2DBB500C86ED8 /* TestData */ = {
@@ -1813,7 +1823,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1845,7 +1855,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

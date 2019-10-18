@@ -51,7 +51,7 @@ import Foundation
     ///
     /// - Parameter aDecoder: NSCoder
     convenience required public init?(coder aDecoder: NSCoder) {
-        guard let token = aDecoder.decodeObject(forKey: "value") as? String else {
+        guard let token = aDecoder.decodeObject(of: NSString.self, forKey: "value") as String? else {
             return nil
         }
         self.init(token)

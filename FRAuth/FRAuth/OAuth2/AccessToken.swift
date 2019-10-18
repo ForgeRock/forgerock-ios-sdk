@@ -134,12 +134,13 @@ import Foundation
     ///
     /// - Parameter aDecoder: NSCoder
     required public convenience init?(coder aDecoder: NSCoder) {
-        let token = aDecoder.decodeObject(forKey: "value") as? String
+
+        let token = aDecoder.decodeObject(of: NSString.self, forKey: "value") as String?
         let expiresIn = aDecoder.decodeInteger(forKey: "expires_in")
-        let scope = aDecoder.decodeObject(forKey: "scope") as? String
-        let tokenType = aDecoder.decodeObject(forKey: "token_type") as? String
-        let refreshToken = aDecoder.decodeObject(forKey: "refresh_token") as? String
-        let idToken = aDecoder.decodeObject(forKey: "id_token") as? String
+        let scope = aDecoder.decodeObject(of: NSString.self, forKey: "scope") as String?
+        let tokenType = aDecoder.decodeObject(of: NSString.self, forKey: "token_type") as String?
+        let refreshToken = aDecoder.decodeObject(of: NSString.self, forKey: "refresh_token") as String?
+        let idToken = aDecoder.decodeObject(of: NSString.self, forKey: "id_token") as String?
         let authenticatedTimestamp = aDecoder.decodeDouble(forKey: "authenticatedTimestamp")
         
         self.init(token: token, expiresIn: expiresIn, scope: scope, tokenType: tokenType, refreshToken: refreshToken, idToken: idToken, authenticatedTimestamp: authenticatedTimestamp)

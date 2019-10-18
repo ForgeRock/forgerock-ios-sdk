@@ -91,6 +91,7 @@ class FRTestNetworkStubProtocol: URLProtocol {
 // Only handle URLSessionDataDelegate for redirect
 extension FRTestNetworkStubProtocol: URLSessionDataDelegate {
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        client?.urlProtocol(self, didLoad: data)
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {

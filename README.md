@@ -35,15 +35,17 @@ pod init
 ```
 3. Add following line to your Podfile:
 ```
-pod 'FRAuth', '>= 1.0.0-beta'
-pod 'FRUI', '>= 1.0.0-beta'
-pod 'FRProximity', '>= 1.0.0-beta'
+pod 'FRAuth', '>= 0.2.2-beta'
+pod 'FRUI', '>= 0.2.2-beta'
+pod 'FRProximity', '>= 0.2.2-beta'
 ```
 4. To install pods, run this command:
 ```
 pod install
 ```
 5. Make sure to use `.xcworkspace` file to open your project.
+6. If you intend to use `FRExample` project, `FRExample` already includes all SDKs as project reference. You do not need to perform `pod` instructions above.
+7. If you connect to your local environment or connect through HTTP, you need to configure [Application Transport Security](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) setting in application's `Info.plist`. 
 
 <br>
 
@@ -51,16 +53,19 @@ pod install
 
 Create a file named `FRAuthConfig.plist` that contains the following information:
 
-* `forgerock_oauth_client_id`: OAuth2 client's `client_id` registered in AM
-* `forgerock_oauth_redirect_uri`: OAuth2 client's `redirect_uri` registered in AM
-* `forgerock_oauth_scope`: OAuth2 client's `scope` registered in OpenAM
-* `forgerock_oauth_threshold`: Optional. Threshold in seconds to refresh the OAuth2 token set before `access_token` expires. See FRAuth SDK token management.
-* `forgerock_url`: AM base URL
-* `forgerock_realm`: `realm` AM realm
-* `forgerock_timeout`: Timeout in seconds of each request that FRAuth SDK communicates to OpenAM. (optional)
-* `forgerock_keychain_access_group`: Keychain Access Group Identifier in Xcode's Capabilities tab in the application's target. This is used to share some credentials across multiple applications that are developed under same Apple's Developer Program, and FRAuth SDK utilizes this for SingleSignOn feature. (optional)
-* `forgerock_auth_service_name`: Authentication Tree name registered in OpenAM for user authentication.
-* `forgerock_registration_service_name`: Authentication Tree name registered in OpenAM for user registration.
+| Attribute        | Description           | Default Value  |
+| -----------------|---------------------| -----:|
+| forgerock_oauth_client_id     | OAuth2 client's `client_id` registered in AM| None  |
+| forgerock_oauth_redirect_uri     | OAuth2 client's `redirect_uri` registered in AM      | None     |
+| forgerock_oauth_scope |   OAuth2 client's `scope` registered in AM   |  None  
+| forgerock_oauth_threshold | Optional. Threshold in seconds to refresh OAuth2 token set before `access_token` expires through FRAuth SDK token management. | 30 |
+| forgerock_url | AM base URL |  None   |
+| forgerock_realm | AM `realm` | root |
+| forgerock_timeout | Optional. Timeout in seconds of each request that FRAuth SDK communicates to AM. | 30 |
+| forgerock_keychain_access_group | Keychain Access Group Identifier in Xcode's Capabilities tab in the application's target. This is used to share some credentials across multiple applications that are developed under same Apple's Developer Program, and FRAuth SDK utilizes this for SingleSignOn feature. (optional) |  None   |
+| forgerock_auth_service | Authentication Tree name registered in AM for user authentication. |  None   |
+| forgerock_registration_service | Authentication tree name registered in OpenAM for user registration. |  None   |
+
 
 <br>
 
@@ -118,6 +123,7 @@ catch {
 ```
 
 **NOTE:** The SDK validates the configuration file.  `FRAuth.start()` throws an error if a  mandatory value is missing or misconfigured.
+ 
 
 
 ## Using the iOS SDK Modules
