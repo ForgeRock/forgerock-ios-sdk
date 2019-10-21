@@ -35,9 +35,9 @@ pod init
 ```
 3. Add following line to your Podfile:
 ```
-pod 'FRAuth', '>= 0.2.2-beta'
-pod 'FRUI', '>= 0.2.2-beta'
-pod 'FRProximity', '>= 0.2.2-beta'
+pod 'FRAuth', '>= 0.9.0'
+pod 'FRUI', '>= 0.9.0'
+pod 'FRProximity', '>= 0.9.0'
 ```
 4. To install pods, run this command:
 ```

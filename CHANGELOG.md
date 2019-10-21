@@ -6,4 +6,4 @@
 - Initial release for FRAuth SDK
 - Initial release for FRUI SDK
 - Initial release for FRProximity SDK
-- Initial Cocoapods deployment for pre-beta build 
+- Initial Cocoapods deployment for beta version 
