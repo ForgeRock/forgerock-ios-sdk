@@ -115,6 +115,7 @@ class AuthStepViewController: UIViewController {
         // Notification for Keyboard appearance
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        self.tableView?.alwaysBounceVertical = false
     }
     
     
