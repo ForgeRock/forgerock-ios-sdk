@@ -77,6 +77,10 @@ public class FRLoadingView: UIView {
         backgroundView.isHidden = true
     }
     
+    deinit {
+        isRotating = false
+    }
+    
     override public func layoutSubviews() {
         super.layoutSubviews()
     }
@@ -127,6 +131,12 @@ public class FRLoadingView: UIView {
     @objc
     public func startLoading() {
         
+        guard isRotating == false else {
+            return
+        }
+
+        isRotating = true
+        
         UIView.animate(withDuration: 1.0, animations: {
             self.backgroundView.alpha = 0.4
             self.backgroundView.isHidden = false
@@ -140,16 +150,6 @@ public class FRLoadingView: UIView {
     
     @objc
     func startAnimation() {
-        
-        if !isRotating {
-            isRotating = true
-            let rotateDelay = 0.3
-            for (index, view) in squareViews.enumerated() {
-                delay((Double(index) * rotateDelay)) {
-                    self.rotate(view: view, rotateTime: 2.0)
-                }
-            }
-        }
         
         if currentIndex >= colors.count {
             currentIndex = 0
@@ -169,6 +169,11 @@ public class FRLoadingView: UIView {
     
     @objc
     public func stopLoading() {
+        
+        guard isRotating else {
+            return
+        }
+        
         UIView.animate(withDuration: 0.3, animations: {
             self.backgroundView.alpha = 0.0
             self.backgroundView.isHidden = true
@@ -196,10 +201,6 @@ public class FRLoadingView: UIView {
                 self.rotate(view: view, rotateTime: rotateTime)
             })
         })
-    }
-    
-    func delay(_ delay:Double, closure:@escaping ()->()) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
 }
 
