@@ -46,13 +46,18 @@ alpha:1.0]
     
     [super viewDidLoad];
 
+    // Alter FRAuth configuration file from Info.plist
+    if ([[[[NSBundle mainBundle] infoDictionary] allKeys] containsObject:@"FRConfigFileName"]) {
+        FRAuth.configPlistFileName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"FRConfigFileName"];
+    }
+    
     UIColor *primaryColor = nil;
-    if ([[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.forgerock.ios.FRexampleObjC"]) {
-        primaryColor = UIColorFromRGB(0x519387);
+    // Apply different styles for SSO application
+    if ([[[[NSBundle mainBundle] infoDictionary] allKeys] containsObject:@"FRExampleSSOApp"] && [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"FRExampleSSOApp"] boolValue] == YES) {
+        primaryColor = UIColorFromRGB(0x495661);
     }
     else {
-        primaryColor = UIColorFromRGB(0x495661);
-        FRAuth.configPlistFileName = @"FRAuthConfigSSO";
+        primaryColor = UIColorFromRGB(0x519387);
     }
     
     [self.performActionBtn setBackgroundColor:primaryColor];

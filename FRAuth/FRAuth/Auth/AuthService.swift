@@ -224,7 +224,7 @@ public class AuthService: NSObject {
     func buildAuthServiceRequest() -> Request {
         
         var header: [String: String] = [:]
-        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+        header[OpenAM.xRequestedWith] = OpenAM.xmlHTTPRequest
         var parameter: [String: String] = [:]
         parameter[OpenAM.authIndexType] = OpenAM.service
         parameter[OpenAM.authIndexValue] = self.serviceName

@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FRExampleSSOApp</key>
+	<true/>
+	<key>FRConfigFileName</key>
+	<string>FRAuthConfigSSO</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FRExample app uses geo-location service to collect device information</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
