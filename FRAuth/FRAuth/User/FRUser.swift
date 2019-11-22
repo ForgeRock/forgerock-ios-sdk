@@ -136,7 +136,7 @@ public class FRUser: NSObject, NSSecureCoding {
                 parameter[OpenAM.tokenId] = ssoToken.value
                 var header: [String: String] = [:]
                 header[OpenAM.iPlanetDirectoryPro] = ssoToken.value
-                header[OpenAM.xRequestedWith] = OpenAM.xmlHTTPRequest
+                header[OpenAM.acceptAPIVersion] = OpenAM.apiResource31
                 var urlParam: [String: String] = [:]
                 urlParam[OpenAM.action] = OpenAM.logout
                 
@@ -243,7 +243,7 @@ public class FRUser: NSObject, NSSecureCoding {
     public func getUserInfo(completion: @escaping UserInfoCallback) {
         FRLog.v("Requesting UserInfo")
         var header: [String: String] = [:]
-        header[OpenAM.xRequestedWith] = OpenAM.xmlHTTPRequest
+        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         header[OAuth2.authorization] = self.buildAuthHeader()
         
         let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)

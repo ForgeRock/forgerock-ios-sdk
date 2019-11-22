@@ -299,7 +299,7 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.scope] = self.scope
         parameter[OAuth2.grantType] = OAuth2.refreshToken
         parameter[OAuth2.refreshToken] = refreshToken
-        let header: [String: String] = [OpenAM.xRequestedWith: OpenAM.xmlHTTPRequest]
+        let header: [String: String] = [OpenAM.acceptAPIVersion: OpenAM.apiResource21 + "," + OpenAM.apiProtocol10]
         
         return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
@@ -327,9 +327,9 @@ public class OAuth2Client: NSObject, Codable {
         
         var header: [String: String] = [:]
         header["Cookie"] = OpenAM.iPlanetDirectoryPro + "=" + ssoToken
-        header[OpenAM.xRequestedWith] = OpenAM.xmlHTTPRequest
+        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
-        return Request(url: self.serverConfig.authorizeURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
+        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
     }
     
     
@@ -350,7 +350,7 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.codeVerifier] = pkce.codeVerifider
         
         var header: [String: String] = [:]
-        header[OpenAM.xRequestedWith] = OpenAM.xmlHTTPRequest
+        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
         //  Call /token service to exchange auth code to OAuth token set
         return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
