@@ -52,7 +52,7 @@ class LocationManagerDelegation: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let completion = self.completionCallback, let location = locations.last {
             var result: [String: Any] = [:]
-            result["latitute"] = location.coordinate.latitude
+            result["latitude"] = location.coordinate.latitude
             result["longitude"] = location.coordinate.longitude
             completion(result)
         }
@@ -61,7 +61,7 @@ class LocationManagerDelegation: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let completion = self.completionCallback {
             var result: [String: Any] = [:]
-            result["latitute"] = 0.0
+            result["latitude"] = 0.0
             result["longitude"] = 0.0
             completion([:])
         }
