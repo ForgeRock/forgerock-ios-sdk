@@ -38,6 +38,9 @@
 		D577B26A22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D577B26822DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift */; };
 		D577B26B22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D577B26922DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib */; };
 		D5855BDF233EB988003333BD /* FRUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5855BDE233EB988003333BD /* FRUser.swift */; };
+		D5877790238DB6E200422605 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D587778F238DB6E200422605 /* Assets.xcassets */; };
+		D5877795238DBFCA00422605 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5877794238DBFCA00422605 /* UIApplication.swift */; };
+		D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5877796238DC3A500422605 /* FRActionSheetButton.swift */; };
 		D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */; };
 		D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */; };
 		D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */; };
@@ -114,6 +117,9 @@
 		D577B26822DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KbaCreateCallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D577B26922DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KbaCreateCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D5855BDE233EB988003333BD /* FRUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUser.swift; sourceTree = "<group>"; };
+		D587778F238DB6E200422605 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D5877794238DBFCA00422605 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		D5877796238DC3A500422605 /* FRActionSheetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRActionSheetButton.swift; sourceTree = "<group>"; };
 		D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PollingWaitCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTableViewCell.swift; sourceTree = "<group>"; };
@@ -250,6 +256,7 @@
 				D5B27E6D2318BD0C0058EFE3 /* arrow.png */,
 				D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */,
 				D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */,
+				D5877796238DC3A500422605 /* FRActionSheetButton.swift */,
 			);
 			path = DropDownButton;
 			sourceTree = "<group>";
@@ -283,6 +290,7 @@
 			children = (
 				D5CACF8922B1A6E800656521 /* AuthService.swift */,
 				D5855BDE233EB988003333BD /* FRUser.swift */,
+				D5877794238DBFCA00422605 /* UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -291,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				D5CACF8E22B1AA0400656521 /* img */,
+				D587778F238DB6E200422605 /* Assets.xcassets */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -451,6 +460,7 @@
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
 				D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */,
 				D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */,
+				D5877790238DB6E200422605 /* Assets.xcassets in Resources */,
 				D5B27E6E2318BD0C0058EFE3 /* arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -490,6 +500,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5877795238DBFCA00422605 /* UIApplication.swift in Sources */,
 				D53A922722B1869C003DF94E /* ChoiceCallbackTableViewCell.swift in Sources */,
 				D5B27E662318B7710058EFE3 /* FRButton.swift in Sources */,
 				D577B26A22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift in Sources */,
@@ -507,6 +518,7 @@
 				D53A922822B1869C003DF94E /* NameCallbackTableViewCell.swift in Sources */,
 				D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */,
 				D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */,
+				D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

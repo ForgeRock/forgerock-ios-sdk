@@ -26,6 +26,7 @@ public class FRLoadingView: UIView {
     var isRotating: Bool = false
     var loadingTextFont: UIFont = UIFont(name: "HelveticaNeue-Medium", size: 15)!
     var backgroundView: UIView = UIView()
+    var labelColor: UIColor = UIColor.hexStringToUIColor(hex: "#282828")
     
     @objc
     public init(size: CGSize, showDropShadow: Bool, showDimmedBackground: Bool, loadingText: String?) {
@@ -48,7 +49,15 @@ public class FRLoadingView: UIView {
     }
     
     private func initPrivate() {
-        self.backgroundColor = UIColor.white
+        
+        if #available(iOS 13.0, *) {
+            self.backgroundColor = UIColor.systemGray6
+            self.labelColor = UIColor.label
+        }
+        else {
+            self.backgroundColor = UIColor.white
+        }
+        
         self.alpha = 0.0
         
         if self.showDropShadow {
@@ -95,7 +104,7 @@ public class FRLoadingView: UIView {
             loadingLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             loadingLabel.textAlignment = .center
             loadingLabel.font = loadingTextFont
-            loadingLabel.textColor = UIColor.hexStringToUIColor(hex: "#282828")
+            loadingLabel.textColor = self.labelColor
             loadingLabel.text = loadingText
             addSubview(loadingLabel)
         }

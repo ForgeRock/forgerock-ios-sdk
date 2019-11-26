@@ -22,7 +22,6 @@ class TextOutputCallbackTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         self.textField?.tintColor = FRUI.shared.primaryColor
-        self.textField?.unselectedColor = FRUI.shared.primaryColor
         self.textField?.textColor = FRUI.shared.primaryColor
         self.textField?.isUserInteractionEnabled = false
     }
@@ -36,6 +35,10 @@ class TextOutputCallbackTableViewCell: UITableViewCell {
         
         var textColor = FRUI.shared.primaryTextColor
         
+        if #available(iOS 13.0, *) {
+            textColor = UIColor.label
+        }
+        
         switch authCallback.messageType {
         case .error:
             textColor = FRUI.shared.errorColor
@@ -48,7 +51,6 @@ class TextOutputCallbackTableViewCell: UITableViewCell {
         }
         
         self.textField?.tintColor = textColor
-        self.textField?.unselectedColor = textColor
         self.textField?.textColor = textColor
     }
 }

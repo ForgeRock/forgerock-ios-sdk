@@ -98,6 +98,13 @@ class ViewController: UIViewController {
             self.title = "FRExample"
         }
         
+        if #available(iOS 13.0, *) {
+            self.view.backgroundColor = UIColor(named: "BackgroundColor")
+        }
+        else {
+            self.view.backgroundColor = .white
+        }
+        
         // Setup loading view
         loadingView.add(inView: self.view)
         

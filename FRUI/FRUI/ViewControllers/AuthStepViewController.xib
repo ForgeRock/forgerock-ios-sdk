@@ -25,7 +25,7 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ppv-W8-4CG">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <viewLayoutGuide key="safeArea" id="gF6-E8-y7j"/>
                     <view key="tableHeaderView" contentMode="scaleToFill" id="CWa-Aw-0gj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="254"/>
@@ -48,7 +48,6 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="xZZ-lI-dJU" firstAttribute="centerX" secondItem="vxd-9w-RC7" secondAttribute="centerX" id="1AG-Jx-kQM"/>
                             <constraint firstItem="Omk-Nm-dZl" firstAttribute="top" secondItem="xZZ-lI-dJU" secondAttribute="bottom" constant="20" id="2Qn-4i-O1D"/>
@@ -83,7 +82,6 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="SoY-Qx-b8g" firstAttribute="leading" secondItem="8aw-s1-4RY" secondAttribute="leading" constant="35" id="3cz-fR-XZ1"/>
                             <constraint firstAttribute="trailing" secondItem="5Jw-g5-Wly" secondAttribute="trailing" constant="35" id="F9I-z5-ebt"/>
@@ -101,7 +99,6 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="ppv-W8-4CG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Of4-e1-PUJ"/>
                 <constraint firstItem="ppv-W8-4CG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="SPi-o1-i8S"/>

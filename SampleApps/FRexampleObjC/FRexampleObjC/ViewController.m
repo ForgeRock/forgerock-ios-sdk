@@ -60,6 +60,14 @@ alpha:1.0]
         primaryColor = UIColorFromRGB(0x519387);
     }
     
+    
+    if (@available(iOS 13, *)) {
+        [self.view setBackgroundColor:[UIColor colorNamed:@"BackgroundColor"]];
+    }
+    else {
+        [self.view setBackgroundColor:[UIColor whiteColor]];
+    }
+    
     [self.performActionBtn setBackgroundColor:primaryColor];
     [self.performActionBtn setTitleColor:[UIColor whiteColor]];
     

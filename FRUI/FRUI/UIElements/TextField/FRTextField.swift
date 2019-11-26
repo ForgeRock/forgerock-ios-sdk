@@ -16,7 +16,16 @@ public class FRTextField: UITextField {
     @objc public var titleFont: UIFont = .systemFont(ofSize: 12)
     @objc public var errorColor: UIColor = UIColor.red
     @objc public var normalColor: UIColor = UIColor.blue
-    @objc public var unselectedColor: UIColor = UIColor.lightGray
+    @objc public var unselectedColor: UIColor {
+        get {
+            if #available(iOS 13.0, *) {
+                return UIColor(named: "LightGray") ?? UIColor.lightGray
+            }
+            else {
+                return UIColor.lightGray
+            }
+        }
+    }
     
     @objc public var errorMessage: String? {
         didSet {
