@@ -35,7 +35,7 @@ class LocationCollector: DeviceCollector {
         if CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             self.locationDelegate.completionCallback = completion
             self.locationManager.delegate = self.locationDelegate
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             self.locationManager.requestLocation()
         }
         else {
@@ -55,6 +55,7 @@ class LocationManagerDelegation: NSObject, CLLocationManagerDelegate {
             result["latitude"] = location.coordinate.latitude
             result["longitude"] = location.coordinate.longitude
             completion(result)
+            self.completionCallback = nil
         }
     }
     
@@ -64,6 +65,7 @@ class LocationManagerDelegation: NSObject, CLLocationManagerDelegate {
             result["latitude"] = 0.0
             result["longitude"] = 0.0
             completion([:])
+            self.completionCallback = nil
         }
     }
 }
