@@ -59,7 +59,8 @@ public class CallbackFactory: NSObject {
             "PollingWaitCallback": PollingWaitCallback.self,
             "ConfirmationCallback": ConfirmationCallback.self,
             "TextOutputCallback": TextOutputCallback.self,
-            "ReCaptchaCallback": ReCaptchaCallback.self
+            "ReCaptchaCallback": ReCaptchaCallback.self,
+            "MetadataCallback": MetadataCallback.self
         ]
     }
     

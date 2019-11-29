@@ -340,17 +340,7 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
-            return
-        }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(initError)
     }
     
     
