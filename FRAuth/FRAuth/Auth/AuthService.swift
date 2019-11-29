@@ -221,7 +221,15 @@ public class AuthService: NSObject {
     
     // - MARK: Private request build helper methods
     
+    /// Builds Request object for current Node
+    ///
+    /// - Returns: Request object for OpenAM AuthTree submit
     func buildAuthServiceRequest() -> Request {
+        
+        //  AM 6.5.2 - 7.0.0
+        //
+        //  Endpoint: /json/realms/authenticate
+        //  API Version: resource=2.1,protocol=1.0
         
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10

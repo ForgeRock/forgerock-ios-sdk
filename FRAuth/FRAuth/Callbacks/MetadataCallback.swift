@@ -48,6 +48,12 @@ public class MetadataCallback: Callback {
         self.response = json
     }
     
+    
+    //  MARK: - Build
+    
+    /// Builds JSON request payload for the Callback
+    ///
+    /// - Returns: JSON request payload for the Callback
     public override func buildResponse() -> [String : Any] {
         return self.response
     }
