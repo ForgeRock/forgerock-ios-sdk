@@ -13,7 +13,6 @@ import Foundation
 
 public class MetadataCallback: Callback {
     
-    public var stepType: String
     public var _id: Int?
     
     //  MARK: - Init method
@@ -28,16 +27,6 @@ public class MetadataCallback: Callback {
         guard let callbackType = json["type"] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
-        
-        guard let output = json["output"] as? [Any] else {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
-
-        guard let outputDict = output[0] as? [String: Any], let prompt = outputDict["value"] as? [String: Any], let stepType = prompt["stepType"] as? String else {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
-        
-        self.stepType = stepType
         
         if let callbackId = json["_id"] as? Int {
             self._id = callbackId
