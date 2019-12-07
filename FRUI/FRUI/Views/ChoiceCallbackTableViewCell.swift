@@ -14,7 +14,7 @@ import FRAuth
 class ChoiceCallbackTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    @IBOutlet weak var dropDown: FRDropDownButton?
+    @IBOutlet weak var dropDown: FRActionSheetButton?
     public static let cellIdentifier = "ChoiceCallbackTableViewCellId"
     public static let cellHeight:CGFloat = 120.0
     
@@ -24,9 +24,7 @@ class ChoiceCallbackTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.dropDown?.maxHeight = 80
         self.dropDown?.themeColor = FRUI.shared.primaryColor
-        self.dropDown?.shouldCoverButton = true
         self.dropDown?.delegate = self
     }
     
@@ -47,7 +45,7 @@ class ChoiceCallbackTableViewCell: UITableViewCell {
     }
 }
 
-extension ChoiceCallbackTableViewCell: FRDropDownViewProtocol {
+extension ChoiceCallbackTableViewCell: FRActionSheetProtocol {
     func selectedItem(index: Int, item: String) {
         self.callback?.value = index
     }

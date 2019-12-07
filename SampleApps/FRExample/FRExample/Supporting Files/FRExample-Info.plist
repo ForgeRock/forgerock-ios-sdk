@@ -20,7 +20,7 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSBluetoothPeripheralUsageDescription</key>
+	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>FRExample app uses BLE to collect device information</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FRExample app uses geo-location service to collect device information</string>

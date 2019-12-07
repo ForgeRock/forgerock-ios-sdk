@@ -299,6 +299,12 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.scope] = self.scope
         parameter[OAuth2.grantType] = OAuth2.refreshToken
         parameter[OAuth2.refreshToken] = refreshToken
+        
+        //  AM 6.5.2 - 7.0.0
+        //
+        //  Endpoint: /oauth2/realms/access_token
+        //  API Version: resource=2.1,protocol=1.0
+        
         let header: [String: String] = [OpenAM.acceptAPIVersion: OpenAM.apiResource21 + "," + OpenAM.apiProtocol10]
         
         return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
@@ -325,11 +331,16 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.codeChallenge] = pkce.codeChallenge
         parameter[OAuth2.codeChallengeMethod] = pkce.codeChallengeMethod
         
+        //  AM 6.5.2 - 7.0.0
+        //
+        //  Endpoint: /oauth2/realms/authorize
+        //  API Version: resource=2.1,protocol=1.0
+        
         var header: [String: String] = [:]
         header["Cookie"] = OpenAM.iPlanetDirectoryPro + "=" + ssoToken
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
-        return Request(url: self.serverConfig.authorizeURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
+        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
     }
     
     
@@ -348,6 +359,11 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.clientId] = self.clientId
         parameter[OAuth2.grantType] = OAuth2.grantTypeAuthCode
         parameter[OAuth2.codeVerifier] = pkce.codeVerifider
+        
+        //  AM 6.5.2 - 7.0.0
+        //
+        //  Endpoint: /oauth2/realms/access_token
+        //  API Version: resource=2.1,protocol=1.0
         
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10

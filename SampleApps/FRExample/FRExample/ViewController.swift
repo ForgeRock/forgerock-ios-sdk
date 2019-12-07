@@ -34,14 +34,19 @@ class ViewController: UIViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         
-        if let bundleId = Bundle.main.bundleIdentifier, bundleId == "com.forgerock.frexample" {
-            self.primaryColor = UIColor.hexStringToUIColor(hex: "#519387")
+        // Alter FRAuth configuration file from Info.plist
+        if let configFileName = Bundle.main.object(forInfoDictionaryKey: "FRConfigFileName") as? String {
+            FRAuth.configPlistFileName = configFileName
+        }
+        
+        // Apply different styles for SSO application
+        if let isSSOApp = Bundle.main.object(forInfoDictionaryKey: "FRExampleSSOApp") as? Bool, isSSOApp {
+            self.primaryColor = UIColor.hexStringToUIColor(hex: "#495661")
             self.textColor = UIColor.white
         }
         else {
-            self.primaryColor = UIColor.hexStringToUIColor(hex: "#495661")
+            self.primaryColor = UIColor.hexStringToUIColor(hex: "#519387")
             self.textColor = UIColor.white
-            FRAuth.configPlistFileName = "FRAuthConfigSSO"
         }
         
         let navigationBarAppearace = UINavigationBar.appearance()
@@ -55,14 +60,19 @@ class ViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         
-        if let bundleId = Bundle.main.bundleIdentifier, bundleId == "com.forgerock.frexample" {
-            self.primaryColor = UIColor.hexStringToUIColor(hex: "#519387")
+        // Alter FRAuth configuration file from Info.plist
+        if let configFileName = Bundle.main.object(forInfoDictionaryKey: "FRConfigFileName") as? String {
+            FRAuth.configPlistFileName = configFileName
+        }
+        
+        // Apply different styles for SSO application
+        if let isSSOApp = Bundle.main.object(forInfoDictionaryKey: "FRExampleSSOApp") as? Bool, isSSOApp {
+            self.primaryColor = UIColor.hexStringToUIColor(hex: "#495661")
             self.textColor = UIColor.white
         }
         else {
-            self.primaryColor = UIColor.hexStringToUIColor(hex: "#495661")
+            self.primaryColor = UIColor.hexStringToUIColor(hex: "#519387")
             self.textColor = UIColor.white
-            FRAuth.configPlistFileName = "FRAuthConfigSSO"
         }
         
         let navigationBarAppearace = UINavigationBar.appearance()
@@ -86,6 +96,13 @@ class ViewController: UIViewController {
         }
         else {
             self.title = "FRExample"
+        }
+        
+        if #available(iOS 13.0, *) {
+            self.view.backgroundColor = UIColor(named: "BackgroundColor")
+        }
+        else {
+            self.view.backgroundColor = .white
         }
         
         // Setup loading view

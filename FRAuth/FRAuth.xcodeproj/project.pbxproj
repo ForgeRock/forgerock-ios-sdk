@@ -184,6 +184,8 @@
 		D554630222A6DF720096C7A4 /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D55462F822A6DF720096C7A4 /* FRAuth.framework */; };
 		D554630922A6DF720096C7A4 /* FRAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = D55462FB22A6DF720096C7A4 /* FRAuth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D554632222A6EDF90096C7A4 /* FRAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632122A6EDF90096C7A4 /* FRAuth.swift */; };
+		D55776B523702889005A911F /* MetadataCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55776B423702889005A911F /* MetadataCallback.swift */; };
+		D55776B623702B03005A911F /* MetadataCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55776B423702889005A911F /* MetadataCallback.swift */; };
 		D5843B542315C56A00513932 /* ObjcFRDeviceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5843B532315C56A00513932 /* ObjcFRDeviceTests.m */; };
 		D5843B562315C64500513932 /* ObjcFRDeviceCollectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5843B552315C64500513932 /* ObjcFRDeviceCollectorTests.m */; };
 		D586CF7723358EE0007A2194 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2123358EDF007A2194 /* AuthError.swift */; };
@@ -381,6 +383,7 @@
 		D554630822A6DF720096C7A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D554632122A6EDF90096C7A4 /* FRAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuth.swift; sourceTree = "<group>"; };
 		D5554F74235A7259009FC810 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D55776B423702889005A911F /* MetadataCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallback.swift; sourceTree = "<group>"; };
 		D5582BA422E276A800C86ED8 /* FRAuthTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRAuthTestHost.entitlements; sourceTree = "<group>"; };
 		D5843B532315C56A00513932 /* ObjcFRDeviceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRDeviceTests.m; sourceTree = "<group>"; };
 		D5843B552315C64500513932 /* ObjcFRDeviceCollectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRDeviceCollectorTests.m; sourceTree = "<group>"; };
@@ -1090,6 +1093,7 @@
 				D586CF5023358EDF007A2194 /* Callback.swift */,
 				D586CF5123358EDF007A2194 /* StringAttributeInputCallback.swift */,
 				D586CF5223358EDF007A2194 /* KbaCreateCallback.swift */,
+				D55776B423702889005A911F /* MetadataCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1398,6 +1402,7 @@
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
 				D586CF8923358EE0007A2194 /* FRURLProtocol.swift in Sources */,
+				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,
 				D586CFAE23358EE0007A2194 /* OpenAM.swift in Sources */,
 				D586CFA223358EE0007A2194 /* StringAttributeInputCallback.swift in Sources */,
 				D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */,
@@ -1468,6 +1473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D55776B623702B03005A911F /* MetadataCallback.swift in Sources */,
 				D54237B823358F8F009C868F /* AuthService.swift in Sources */,
 				D54237B923358F8F009C868F /* Node.swift in Sources */,
 				D54237BA23358F8F009C868F /* TermsAndConditionsCallback.swift in Sources */,
@@ -1823,7 +1829,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1855,7 +1861,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

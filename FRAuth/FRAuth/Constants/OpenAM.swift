@@ -24,4 +24,6 @@ struct OpenAM {
     static let authId = "authId"
     static let callbacks = "callbacks"
     static let stage = "stage"
+    static let xRequestedWith = "X-Requested-With"
+    static let xmlHTTPRequest = "XMLHTTPRequest"
 }

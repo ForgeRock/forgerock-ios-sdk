@@ -154,9 +154,14 @@ public class FRLog: NSObject {
     ///
     /// - Returns: String value of current date and time
     static func generateTimePrefix() -> String {
-        var timestamp = "\(Date())"
+        var timestamp = ""
         
         if let df = FRLog.dateFormatter {
+            timestamp = df.string(from: Date())
+        }
+        else {
+            let df = DateFormatter()
+            df.dateFormat = "y-MM-dd H:m:ss.SSS"
             timestamp = df.string(from: Date())
         }
         

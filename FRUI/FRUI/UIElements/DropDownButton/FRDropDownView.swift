@@ -37,7 +37,17 @@ class FRDropDownView: UIView {
     }
     
     var _rowHeight: CGFloat = 40.0
-    var viewColor: UIColor = UIColor(white: 0.89, alpha: 1)
+    var viewColor: UIColor {
+        get {
+            if #available(iOS 13.0, *) {
+                return UIColor.systemGray4
+            }
+            else {
+                return UIColor(white: 0.89, alpha: 1)
+            }
+        }
+    }
+    
     var cellFont: UIFont?
     var dataSource: [String] = []
     var delegate: FRDropDownViewProtocol?

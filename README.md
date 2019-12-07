@@ -4,7 +4,7 @@
 
 | Version       | Status        |
 |:-------------:|:-------------:|
-| 1.0.0-beta    | Beta Release  |
+| 1.0.0   | General Availability  |
 
 ## Software Requirements
 * iOS 10.0 or later
@@ -35,9 +35,9 @@ pod init
 ```
 3. Add following line to your Podfile:
 ```
-pod 'FRAuth', '>= 0.9.0'
-pod 'FRUI', '>= 0.9.0'
-pod 'FRProximity', '>= 0.9.0'
+pod 'FRAuth'
+pod 'FRUI'
+pod 'FRProximity'
 ```
 4. To install pods, run this command:
 ```
