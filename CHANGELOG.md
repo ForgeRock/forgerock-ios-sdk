@@ -10,7 +10,7 @@
 #### Fixed
 - Changed OAuth2 authorization request to POST [SDKS-125]
 - Added iOS 13 Dark Mode support to FRUI [SDKS-130]
-- Fixed CPU usaged issue [SDKS-131]
+- Fixed CPU usage issue [SDKS-131]
 - Fixed FRProximity location collector issue [SDKS-124, SDKS-151]
 - Fixed cosmetic issues on sample apps [SDKS-124, SDKS-132]
 - Changed DropDown UI component in FRUI [SDKS-134]
