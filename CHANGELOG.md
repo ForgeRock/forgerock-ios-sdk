@@ -1,5 +1,14 @@
 # Version 0.9.0
 
+## [1.0.1]
+
+#### Added
+- `SessionManager` is now publicly accessible to retrieve `SSO Token` / `AccessToken` / `FRUser` object, and to revoke `SSO Token`
+- `SessionManager` is now accessible through `SessionManager.currentManager` singleton object after SDK initialization
+
+#### Changed
+- `FRAuth.start()` stops validating OAuth2 value(s) in configuration and make `OAuth2Client` and `TokenManager` become optional properties
+
 ## [1.0.0]
 
 #### Added

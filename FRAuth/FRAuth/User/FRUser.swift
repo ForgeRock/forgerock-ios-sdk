@@ -60,8 +60,8 @@ public class FRUser: NSObject, NSSecureCoding {
         if let token = token {
             self.token = token
         }
-        else if let frAuth = FRAuth.shared {
-            self.token = try? frAuth.tokenManager.retrieveAccessTokenFromKeychain()
+        else if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            self.token = try? tokenManager.retrieveAccessTokenFromKeychain()
         }
         
         self.serverConfig = serverConfig
@@ -128,43 +128,18 @@ public class FRUser: NSObject, NSSecureCoding {
     @objc
     public func logout() {
     
-        if let frAuth = FRAuth.shared {
+        if let frAuth = FRAuth.shared, let oAuth2Client = frAuth.oAuth2Client {
             
-            if let ssoToken = frAuth.sessionManager.getSSOToken() {
-                FRLog.v("Invalidating SSO Token")
-                var parameter: [String: String] = [:]
-                parameter[OpenAM.tokenId] = ssoToken.value
-                var header: [String: String] = [:]
-                header[OpenAM.iPlanetDirectoryPro] = ssoToken.value
-                
-                //  AM 6.5.2 - 7.0.0
-                //
-                //  Endpoint: /json/realms/sessions
-                //  API Version: resource=3.1
-                
-                header[OpenAM.acceptAPIVersion] = OpenAM.apiResource31
-                var urlParam: [String: String] = [:]
-                urlParam[OpenAM.action] = OpenAM.logout
-                
-                let request = Request(url: self.serverConfig.ssoTokenLogoutURL, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
-                RestClient.shared.invoke(request: request) { (result) in
-                    switch result {
-                    case .success( _, _ ):
-                        break
-                    case .failure(_):
-                        break
-                    }
-                }
-            }
-            else {
-                FRLog.w("No SSO Token found")
-            }
+            // Revoke SSO Token
+            frAuth.sessionManager.revokeSSOToken()
             
+            // If AccessToken is not present for some reason, invalidate and remove session information
             guard let token = self.token else {
                 self.clearUserSession()
                 return
             }
             
+            // Revoke AccessToken
             let completionBlock: CompletionCallback = { (error) in
                 if let error = error {
                     FRLog.w("Error while invalidating OAuth2 token(s)")
@@ -178,7 +153,7 @@ public class FRUser: NSObject, NSSecureCoding {
             }
             
             FRLog.v("Invalidating OAuth2 token(s) with \(token.refreshToken != nil ? "refresh_token" : "access_token")")
-            frAuth.oAuth2Client.revoke(accessToken: token, completion: completionBlock)
+            oAuth2Client.revoke(accessToken: token, completion: completionBlock)
             
             self.clearUserSession()
         }
@@ -195,8 +170,8 @@ public class FRUser: NSObject, NSSecureCoding {
     /// - Parameter completion: Completion block which returns newly refreshed FRUser object
     @objc
     public func getAccessToken(completion:@escaping UserCallback) {
-        if let frAuth = FRAuth.shared {
-            frAuth.tokenManager.getAccessToken { (token, error) in
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            tokenManager.getAccessToken { (token, error) in
                 if let token = token {
                     self.token = token
                     self.save()
@@ -222,8 +197,8 @@ public class FRUser: NSObject, NSSecureCoding {
     /// - Throws: ConfigError / TokenError / AuthError
     @objc
     public func getAccessToken() throws -> FRUser {
-        if let frAuth = FRAuth.shared {
-            if let token = try frAuth.tokenManager.getAccessToken() {
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            if let token = try tokenManager.getAccessToken() {
                 self.token = token
                 self.save()
                 
@@ -292,8 +267,8 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameter completion: Completion callback that notifies the result of operation
     func refresh(completion:@escaping UserCallback) {
-        if let frAuth = FRAuth.shared {
-            frAuth.tokenManager.refresh{ (token, error) in
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            tokenManager.refresh{ (token, error) in
                 if let token = token {
                     self.token = token
                     self.save()
