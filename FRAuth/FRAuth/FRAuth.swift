@@ -46,9 +46,9 @@ public final class FRAuth: NSObject {
     /// ServerConfig instance for FRAuth; ServerConfig values are retrieved from .plist configuration file
     var serverConfig: ServerConfig
     /// OAuth2Client instance for FRAuth; OAuth2Client values are retrieved from .plist configuration file
-    var oAuth2Client: OAuth2Client
+    var oAuth2Client: OAuth2Client?
     /// TokenManager instance for FRAuth to perform any token related operation
-    var tokenManager: TokenManager
+    var tokenManager: TokenManager?
     /// SessionManager instance for FRAuth to perform manage, and persist session
     var sessionManager: SessionManager
     /// KeychainManager instance for FRAuth to perform any keychain related operation to persist and/or retrieve credentials
@@ -87,18 +87,6 @@ public final class FRAuth: NSObject {
     /// - Throws: ConfigError
     static func initPrivate(config: [String: Any]) throws {
         
-        // Validate oauth config
-        guard let clientId = config["forgerock_oauth_client_id"] as? String,
-            let redirectUriAsString = config["forgerock_oauth_redirect_uri"] as? String,
-            let redirectUri = URL(string: redirectUriAsString),
-            redirectUri.absoluteString.isValidUrl,
-            let scope = config["forgerock_oauth_scope"] as? String
-            else {
-                let errorMsg = "oauth config (forgerock_oauth_client_id, forgerock_oauth_redirect_uri, or forgerock_oauth_scope) is empty"
-                FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist. \(errorMsg)")
-                throw ConfigError.invalidConfiguration(errorMsg)
-        }
-        
         // Validate server config
         guard let server = config["forgerock_url"] as? String,
             let serverUrl = URL(string: server),
@@ -135,14 +123,30 @@ public final class FRAuth: NSObject {
         }
         
         let serverConfig = ServerConfig(url: serverUrl, realm: realm, timeout: timeout)
-        let oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
+        FRLog.v("ServerConfig created: \(serverConfig)")
+        var oAuth2Client: OAuth2Client?
         
-        FRLog.v("OAuth2Client / ServerConfig created: \(oAuth2Client)")
+        if let clientId = config["forgerock_oauth_client_id"] as? String,
+        let redirectUriAsString = config["forgerock_oauth_redirect_uri"] as? String,
+        let redirectUri = URL(string: redirectUriAsString),
+        redirectUri.absoluteString.isValidUrl,
+        let scope = config["forgerock_oauth_scope"] as? String
+        {
+            oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
+            FRLog.v("OAuth2Client created: \(String(describing: oAuth2Client))")
+        }
+        else {
+            FRLog.w("Failed to load OAuth2 configuration; continue on SDK initialization without OAuth2 module.")
+        }
+                
         if let accessGroup = config["forgerock_keychain_access_group"] as? String {
             if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup) {
                 
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
-                let tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                var tokenManager: TokenManager?
+                if let oAuth2Client = oAuth2Client {
+                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
         }
@@ -150,7 +154,10 @@ public final class FRAuth: NSObject {
             if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm) {
                 
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
-                let tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                var tokenManager: TokenManager?
+                if let oAuth2Client = oAuth2Client {
+                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
         }
@@ -167,7 +174,7 @@ public final class FRAuth: NSObject {
     ///   - tokenManager: TokenMAnager instance
     ///   - keychainManager: KeychainManager instance
     ///   - sessionManager: SessionManager instance
-    init(authServiceName: String, registerServiceName: String, serverConfig: ServerConfig, oAuth2Client: OAuth2Client, tokenManager: TokenManager, keychainManager: KeychainManager, sessionManager: SessionManager) {
+    init(authServiceName: String, registerServiceName: String, serverConfig: ServerConfig, oAuth2Client: OAuth2Client?, tokenManager: TokenManager?, keychainManager: KeychainManager, sessionManager: SessionManager) {
         
         FRLog.i("SDK initializaed", false)
         

@@ -60,11 +60,13 @@ class FRAuthTests: FRBaseTest {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")
         }
         
-        guard let frAtuh = FRAuth.shared else {
+        guard let frAuth = FRAuth.shared else {
             XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        XCTAssertTrue(frAtuh.keychainManager.isSharedKeychainAccessible)
+        XCTAssertTrue(frAuth.keychainManager.isSharedKeychainAccessible)
+        XCTAssertNotNil(frAuth.oAuth2Client)
+        XCTAssertNotNil(frAuth.tokenManager)
     }
     
     
@@ -81,11 +83,13 @@ class FRAuthTests: FRBaseTest {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")
         }
         
-        guard let frAtuh = FRAuth.shared else {
+        guard let frAuth = FRAuth.shared else {
             XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        XCTAssertFalse(frAtuh.keychainManager.isSharedKeychainAccessible)
+        XCTAssertFalse(frAuth.keychainManager.isSharedKeychainAccessible)
+        XCTAssertNotNil(frAuth.oAuth2Client)
+        XCTAssertNotNil(frAuth.tokenManager)
     }
     
     
@@ -192,17 +196,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuh = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(frAtuh.oAuth2Client)
+        XCTAssertNil(frAtuh.tokenManager)
+        XCTAssertNil(initError)
         
         // Given
         initError = nil
@@ -217,16 +217,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let missingConfigError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuhWithNoUri = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch missingConfigError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(missingConfigError)")
-        }
+        XCTAssertNil(frAtuhWithNoUri.oAuth2Client)
+        XCTAssertNil(frAtuhWithNoUri.tokenManager)
+        XCTAssertNil(initError)
     }
     
     
@@ -247,17 +244,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuhWithNoUri = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(frAtuhWithNoUri.oAuth2Client)
+        XCTAssertNil(frAtuhWithNoUri.tokenManager)
+        XCTAssertNil(initError)
     }
     
     
@@ -278,17 +271,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuhWithNoUri = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(frAtuhWithNoUri.oAuth2Client)
+        XCTAssertNil(frAtuhWithNoUri.tokenManager)
+        XCTAssertNil(initError)
     }
     
     
@@ -398,16 +387,5 @@ class FRAuthTests: FRBaseTest {
         
         // It should
         XCTAssertNotNil(FRAuth.shared)
-    }
-    
-    
-    func readConfigFile(fileName: String) -> [String: Any] {
-        
-        guard let path = Bundle.main.path(forResource: fileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
-            XCTFail("Failed to read \(fileName).plist file")
-            return [:]
-        }
-        
-        return config
     }
 }

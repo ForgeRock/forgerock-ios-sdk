@@ -65,4 +65,14 @@ class FRBaseTest: XCTestCase {
     func readDataFromJSON(_ fileName: String) -> [String: Any]? {
         return FRTestUtils.readDataFromJSON(fileName)
     }
+    
+    func readConfigFile(fileName: String) -> [String: Any] {
+        
+        guard let path = Bundle.main.path(forResource: fileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
+            XCTFail("Failed to read \(fileName).plist file")
+            return [:]
+        }
+        
+        return config
+    }
 }
