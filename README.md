@@ -15,6 +15,10 @@
 * ForgeRock Identity Manager
 * ForgeRock Directory Services
 
+## How to Contribute
+
+The SDK is open source and you can fork and submit your pull request at anytime. To open a bug please do via [https://backstage.forgerock.com/support](https://backstage.forgerock.com/support).
+
 
 ## Before You Begin
 
