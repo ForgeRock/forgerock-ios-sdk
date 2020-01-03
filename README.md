@@ -149,7 +149,7 @@ lets the FRAuth module collect information for the AM device profile.
 
 
 ## Developer Documentation
-For more detail usage of iOS SDK, and API Reference documentation, please refer to [ForgeRcok Developer Site](https://developer.forgerock.com).
+For more detail usage of iOS SDK, and API Reference documentation, please refer to [ForgeRock Developer Site](https://developer.forgerock.com).
 
 ## License
 ForgeRock iOS SDK is released under the MIT license. See [LICENSE](https://github.com/ForgeRock/forgerock-ios-sdk/blob/master/LICENSE) file for details.
