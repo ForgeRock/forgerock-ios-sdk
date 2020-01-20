@@ -136,7 +136,7 @@ alpha:1.0]
     [self.dropDown setTitle:@"Select an option" forState:UIControlStateFocused];
     [self.dropDown setTitle:@"Select an option" forState:UIControlStateHighlighted];
     [self.dropDown setTitle:@"Select an option" forState:UIControlStateSelected];
-    self.dropDown.dataSource = @[@"Login with UI (FRUser)", @"Request UserInfo", @"User Logout", @"Get FRUser.currentUser", @"Collect Device Information", @"JailbreakDetector.analyze()", @"FRUser.getAccessToken()", @"Login without UI (FRUser)", @"Invoke API (Token Mgmt)"];
+    self.dropDown.dataSource = @[@"Login with UI (FRUser)", @"Request UserInfo", @"User Logout", @"Get FRUser.currentUser", @"Collect Device Information", @"JailbreakDetector.analyze()", @"FRUser.getAccessToken()", @"Login without UI (FRUser)", @"Invoke API (Token Mgmt)", @"FRSession.authenticateWithUI (Token)", @"FRSession.authenticate (Token)"];
 }
 
 
@@ -183,6 +183,12 @@ alpha:1.0]
     else if ([self.currentAction isEqualToString:@"Invoke API (Token Mgmt)"]) {
         [self performInvokeAPI];
     }
+    else if ([self.currentAction isEqualToString:@"FRSession.authenticateWithUI (Token)"]) {
+        [self performSessionAuthenticate:YES];
+    }
+    else if ([self.currentAction isEqualToString:@"FRSession.authenticate (Token)"]) {
+        [self performSessionAuthenticate:NO];
+    }
     else {
         
     }
@@ -209,8 +215,8 @@ alpha:1.0]
 
 - (void)performUserLoginWithoutUI {
     __block ViewController* blockSelf = self;
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeAuthentication userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
-        [blockSelf handleNodeWithObj:user node:node error:error];
+    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError * error) {
+        [blockSelf handleNodeWithObj:user expectedResult:[FRUser class] node:node error:error];
     }];
 }
 
@@ -218,7 +224,7 @@ alpha:1.0]
     __block ViewController* blockSelf = self;
     FRAuthService *authService = [[FRAuthService alloc] initWithName:self.authServiceName serverConfig:self.serverConfig];
     [authService nextWithUserCompletion:^(FRUser *user, FRNode *node, NSError *error) {
-        [blockSelf handleNodeWithObj:user node:node error:error];
+        [blockSelf handleNodeWithObj:user expectedResult:[FRUser class] node:node error:error];
     }];
 }
 
@@ -245,7 +251,7 @@ alpha:1.0]
     __block ViewController* blockSelf = self;
     if ([FRUser currentUser]) {
         [[FRUser currentUser] getUserInfoWithCompletion:^(FRUserInfo *userInfo, NSError *error) {
-            [blockSelf displayLog: [[FRUser currentUser] debugDescription]];
+            [blockSelf displayLog: [userInfo debugDescription]];
         }];
     }
     else {
@@ -275,26 +281,65 @@ alpha:1.0]
         url = [NSURL URLWithString:@"https://httpbin.org/anything"];
     }
     
+    __block ViewController* blockSelf = self;
     NSURLSessionDataTask *task = [self.session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         
         if (error != nil || httpResponse == nil || data == nil) {
-            if (self.invoke401) {
-                [self displayLog:@"Invoking API failed as expected"];
+            if (blockSelf.invoke401) {
+                [blockSelf displayLog:@"Invoking API failed as expected"];
             }
             else {
-                [self displayLog:@"Invoking API failed with unexpected result"];
+                [blockSelf displayLog:@"Invoking API failed with unexpected result"];
             }
         }
         
         NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        [self displayLog:responseString];
-        [self displayLog:[NSString stringWithFormat:@"HTTP Status Code %ld", (long)httpResponse.statusCode]];
-        [self displayLog:[NSString stringWithFormat:@"%@", httpResponse.allHeaderFields]];
+        [blockSelf displayLog:responseString];
+        [blockSelf displayLog:[NSString stringWithFormat:@"HTTP Status Code %ld", (long)httpResponse.statusCode]];
+        [blockSelf displayLog:[NSString stringWithFormat:@"%@", httpResponse.allHeaderFields]];
     }];
     [task resume];
 }
 
+
+- (void)performSessionAuthenticate:(BOOL)shouldUseUI {
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"FRSession.authenticate" message:nil preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Enter authIndex (tree name) value";
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    
+    __block ViewController* blockSelf = self;
+    [alert addAction:[UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        UITextField *textField = alert.textFields.firstObject;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (shouldUseUI) {
+                [FRSessionObjc authenticateWithUI:textField.text authIndexType:@"service" rootViewController:self userCompletion:^(Token *token, NSError *error) {
+                    if (token != nil) {
+                        [blockSelf displayLog:token.debugDescription];
+                    }
+                    else {
+                        [blockSelf displayLog:error.localizedDescription];
+                    }
+                }];
+            }
+            else {
+                [FRSession authenticateWithAuthIndexValue:textField.text authIndexType:@"service" completion:^(Token *token, FRNode *node, NSError *error) {
+                    [blockSelf handleNodeWithObj:token expectedResult:[Token class] node:node error:error];
+                }];
+            }
+        });
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 # pragma mark - FRDropDownViewDelegate
 
@@ -305,73 +350,88 @@ alpha:1.0]
 
 # pragma mark - FRNode handling helper
 
-- (void)handleNodeWithObj:(id)resultObj node:(FRNode *)node error:(NSError *)error {
+- (void)handleNodeWithObj:(id)resultObj expectedResult:(Class)expectedResult node:(FRNode *)node error:(NSError *)error {
     
     if (node != nil) {
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"FRNode Hanlding" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        __block FRNode *nodeBlock = node;
-        __block ViewController *blockSelf = self;
-        for (id callback in node.callbacks) {
-            
-            if ([callback isKindOfClass:[FRNameCallback class]] ||
-                [callback isKindOfClass:[FRValidatedCreateUsernameCallback class]] ||
-                [callback isKindOfClass:[FRPasswordCallback class]] ||
-                [callback isKindOfClass:[FRValidatedCreatePasswordCallback class]]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
                 
-                FRSingleValueCallback *thisCallback = (FRSingleValueCallback *)callback;
-                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-                    textField.placeholder = thisCallback.prompt;
-                    textField.accessibilityIdentifier = thisCallback.type;
-                    textField.textColor = [UIColor blueColor];
-                    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                    textField.borderStyle = UITextBorderStyleRoundedRect;
-                }];
-            }
-            else if ([callback isKindOfClass:[FRChoiceCallback class]]) {
-                FRChoiceCallback *choiceCallback = (FRChoiceCallback *)callback;
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"FRNode Hanlding" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            __block FRNode *nodeBlock = node;
+            __block ViewController *blockSelf = self;
+            for (id callback in node.callbacks) {
                 
-                __block NSString *titleText = @"Enter the int value: ";
-                [choiceCallback.choices enumerateObjectsUsingBlock:^(NSString *item, NSUInteger idx, BOOL *stop)
-                {
-                    NSString *leadingStr = @"";
-                    if (idx > 0) {
-                        leadingStr = @" ,";
-                    }
-                    titleText = [NSString stringWithFormat:@"%@%@%@=%lu", titleText, leadingStr, item, (unsigned long)idx];
-                }];
-                alert.title = titleText;
-                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-                    textField.placeholder = choiceCallback.prompt;
-                    textField.accessibilityIdentifier = choiceCallback.type;
-                    textField.textColor = [UIColor blueColor];
-                    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                    textField.borderStyle = UITextBorderStyleRoundedRect;
-                }];
-            }
-        }
-        
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            
-            for (UITextField *textField in alert.textFields) {
-                NSString *callbackType = textField.accessibilityIdentifier;
-                NSString *value = textField.text;
-                
-                for (id callback in nodeBlock.callbacks) {
+                if ([callback isKindOfClass:[FRNameCallback class]] ||
+                    [callback isKindOfClass:[FRValidatedCreateUsernameCallback class]] ||
+                    [callback isKindOfClass:[FRPasswordCallback class]] ||
+                    [callback isKindOfClass:[FRValidatedCreatePasswordCallback class]]) {
+                    
                     FRSingleValueCallback *thisCallback = (FRSingleValueCallback *)callback;
-                    if ([thisCallback.type isEqualToString:callbackType]) {
-                        thisCallback.value = value;
-                    }
+                    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                        textField.placeholder = thisCallback.prompt;
+                        textField.accessibilityIdentifier = thisCallback.type;
+                        textField.textColor = [UIColor blueColor];
+                        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                        textField.borderStyle = UITextBorderStyleRoundedRect;
+                    }];
+                }
+                else if ([callback isKindOfClass:[FRChoiceCallback class]]) {
+                    FRChoiceCallback *choiceCallback = (FRChoiceCallback *)callback;
+                    
+                    __block NSString *titleText = @"Enter the int value: ";
+                    [choiceCallback.choices enumerateObjectsUsingBlock:^(NSString *item, NSUInteger idx, BOOL *stop)
+                    {
+                        NSString *leadingStr = @"";
+                        if (idx > 0) {
+                            leadingStr = @" ,";
+                        }
+                        titleText = [NSString stringWithFormat:@"%@%@%@=%lu", titleText, leadingStr, item, (unsigned long)idx];
+                    }];
+                    alert.title = titleText;
+                    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                        textField.placeholder = choiceCallback.prompt;
+                        textField.accessibilityIdentifier = choiceCallback.type;
+                        textField.textColor = [UIColor blueColor];
+                        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                        textField.borderStyle = UITextBorderStyleRoundedRect;
+                    }];
                 }
             }
             
-            [nodeBlock nextWithUserCompletion:^(FRUser *user, FRNode *node, NSError *error) {
-                [blockSelf handleNodeWithObj:user node:node error:error];
-            }];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                
+                for (UITextField *textField in alert.textFields) {
+                    NSString *callbackType = textField.accessibilityIdentifier;
+                    NSString *value = textField.text;
+                    
+                    for (id callback in nodeBlock.callbacks) {
+                        FRSingleValueCallback *thisCallback = (FRSingleValueCallback *)callback;
+                        if ([thisCallback.type isEqualToString:callbackType]) {
+                            thisCallback.value = value;
+                        }
+                    }
+                }
+                
+                if ([expectedResult isEqual:[FRUser class]]) {
+                    [nodeBlock nextWithUserCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+                        [blockSelf handleNodeWithObj:user expectedResult:expectedResult node:node error:error];
+                    }];
+                }
+                else if ([expectedResult isEqual:[AccessToken class]]) {
+                    [nodeBlock nextWithAccessTokenCompletion:^(AccessToken *accessToken, FRNode *node, NSError *error) {
+                        [blockSelf handleNodeWithObj:accessToken expectedResult:expectedResult node:node error:error];
+                    }];
+                }
+                else if ([expectedResult isEqual:[Token class]]) {
+                    [nodeBlock nextWithTokenCompletion:^(Token *token, FRNode *node, NSError *error) {
+                        [blockSelf handleNodeWithObj:token expectedResult:expectedResult node:node error:error];
+                    }];
+                }
+            }]];
+            [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+        });
     }
     else if (resultObj != nil) {
         [self displayLog:[resultObj debugDescription]];

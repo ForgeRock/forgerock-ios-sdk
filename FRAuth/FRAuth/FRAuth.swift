@@ -54,6 +54,9 @@ public final class FRAuth: NSObject {
     /// KeychainManager instance for FRAuth to perform any keychain related operation to persist and/or retrieve credentials
     var keychainManager: KeychainManager
     
+    func getServiceName() -> String {
+        return self.authServiceName
+    }
     
     //  MARK: - Init
     
@@ -190,13 +193,29 @@ public final class FRAuth: NSObject {
     }
     
     
-    // - MARK: Public
+    // - MARK: Private
+        
+    /// Initiates Authentication Tree with specified authIndexValue and authIndexType.
+    /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
+    /// - Parameter authIndexType: authIndexType: Authentication Tree type value in String
+    /// - Parameter completion:NodeCompletion callback which returns the result of Node submission
+    func next<T>(authIndexValue: String, authIndexType: String, completion:@escaping NodeCompletion<T>) {
+        
+        let authService: AuthService = AuthService(name: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
+        authService.next { (value: T?, node, error) in
+            completion(value, node, error)
+        }
+    }
+    
+    
+    // - MARK: Deprecated
     
     /// Initiates Authentication or Registration flow with given flowType and expected result type
     ///
     /// - Parameters:
     ///   - flowType: FlowType whether authentication, or registration
     ///   - completion: NodeCompletion callback which returns the result of Node submission.
+    @available(*, deprecated, message: "FRAuth.shared.next() has been deprecated; use FRUser.login for authentication or FRSession.authenticat() instead to invoke Authentication Tree.") // Deprecated as of FRAuth: v1.0.2
     public func next<T>(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<T>) {
         FRLog.v("Called")
         
@@ -210,41 +229,9 @@ public final class FRAuth: NSObject {
             break
         }
         
-        let authService: AuthService = AuthService(name: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager)
+        let authService: AuthService = AuthService(name: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
-        }
-    }
-    
-    
-    //  MARK: - Objective-C Compatibility
-    
-    @objc(nextWithFlowType:tokenCompletion:)
-    @available(swift, obsoleted: 1.0)
-    public func nextWithFlowType(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<Token>) {
-        FRLog.v("Called")
-        self.next(flowType: flowType) { (token: Token?, node, error) in
-            completion(token, node, error)
-        }
-    }
-    
-
-    @objc(nextWithFlowType:accessTokenCompletion:)
-    @available(swift, obsoleted: 1.0)
-    public func nextWithFlowType(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<AccessToken>) {
-        FRLog.v("Called")
-        self.next(flowType: flowType) { (token: AccessToken?, node, error) in
-            completion(token, node, error)
-        }
-    }
-    
-    
-    @objc(nextWithFlowType:userCompletion:)
-    @available(swift, obsoleted: 1.0)
-    public func nextWithFlowType(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<FRUser>) {
-        FRLog.v("Called")
-        self.next(flowType: flowType) { (user: FRUser?, node, error) in
-            completion(user, node, error)
         }
     }
 }

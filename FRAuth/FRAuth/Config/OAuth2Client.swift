@@ -180,7 +180,7 @@ public class OAuth2Client: NSObject, Codable {
                         RestClient.shared.invoke(request: request, completion: { (result) in
                             switch result {
                             case .success(let response, _):
-                                if let accessToken = AccessToken(tokenResponse: response) {
+                                if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
                                     completion(accessToken, nil)
                                 }
                                 else {
@@ -254,7 +254,7 @@ public class OAuth2Client: NSObject, Codable {
                     let result = RestClient.shared.invokeSync(request: request)
                     switch result {
                     case .success(let response, _ ):
-                        if let accessToken = AccessToken(tokenResponse: response) {
+                        if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
                             return accessToken
                         }
                         else {

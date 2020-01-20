@@ -203,15 +203,15 @@ class SessionManagerTests: FRBaseTest {
         var currentNode: Node?
         
         var ex = self.expectation(description: "First Node submit")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: Token?, node, error) in
-            
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
             // Validate result
             XCTAssertNil(token)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             currentNode = node
             ex.fulfill()
-        })
+        }
+        
         waitForExpectations(timeout: 60, handler: nil)
         
         guard let node = currentNode else {
