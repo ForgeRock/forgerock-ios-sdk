@@ -113,9 +113,16 @@ struct Request {
         let thisRequest = NSMutableURLRequest(url: thisUrl, cachePolicy: .useProtocolCachePolicy, timeoutInterval: self.timeoutInterval)
         //  Set HTTP method
         thisRequest.httpMethod = self.method.rawValue
+        
+        //  Get Cookie from Cookie Store, and set it to header
+        if let cookieHeader = self.prepareCookieHeader(url: thisUrl) {
+            thisRequest.allHTTPHeaderFields = cookieHeader
+        }
+               
         //  Set Content-Type, and Accept headers based on request/response types
         thisRequest.setValue(self.requestType.rawValue, forHTTPHeaderField: "Content-Type")
         thisRequest.setValue(self.responseType.rawValue, forHTTPHeaderField: "Accept")
+        
         //  Add additional headers
         self.headers.forEach{ thisRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
         //  Build http body content
@@ -136,6 +143,59 @@ struct Request {
         
         //  Return URLRequest
         return thisRequest as URLRequest
+    }
+    
+    
+    //  MARK: - Private
+    
+    /// Prepares persisted Cookies from Keychain Service, and returns cookie header value
+    
+    /// Prepares persisted Cookies from Keychain Service, and returns cookie header value
+    /// - Parameter url: URL of target server
+    func prepareCookieHeader(url: URL) -> [String: String]? {
+        
+        // Retrieves all cookie items from cookie store
+        if let frAuth = FRAuth.shared, let cookieItems = frAuth.keychainManager.cookieStore.allItems() {
+            
+            var cookieList: [HTTPCookie] = []
+            
+            // Iterate Cookie List and validate
+            for cookieObj in cookieItems {
+                if let cookieData = cookieObj.value as? Data, let cookie = NSKeyedUnarchiver.unarchiveObject(with: cookieData) as? HTTPCookie {
+                    // When Cookie is expired, remove it from the Cookie Store
+                    if let expDate = cookie.expiresDate, expDate.timeIntervalSince1970 < Date().timeIntervalSince1970 {
+                        frAuth.keychainManager.cookieStore.delete(cookie.name + "-" + cookie.domain)
+                        FRLog.v("[Cookies] Delete - Expired - Cookie Name: \(cookie.name)")
+                    }
+                    else {
+                        // Validate isSecure attribute
+                        var isSecureValidated = true
+                        if cookie.isSecure, let urlScheme = url.scheme, urlScheme.lowercased() != "https" {
+                            FRLog.v("[Cookies] Ignore - isSecure validation failed - Cookie Name: \(cookie.name)")
+                            isSecureValidated = false
+                        }
+                        
+                        // Validate domain, and path
+                        var domainValidated = false
+                        if let host = url.host, cookie.domain.contains(host), url.path.contains(cookie.path) {
+                            domainValidated = true
+                        }
+                        else {
+                            FRLog.v("[Cookies] Ignore - Domain validation failed - Cookie Name: \(cookie.name)")
+                        }
+                        
+                        if isSecureValidated, domainValidated {
+                            FRLog.v("[Cookies] Injected for the request - Cookie Name: \(cookie.name) | Cookie Value \(cookie.value)")
+                            cookieList.append(cookie)
+                        }
+                    }
+                }
+            }
+            // Generate and return the Cookie List as in header format
+            return HTTPCookie.requestHeaderFields(with: cookieList)
+        }
+        
+        return nil
     }
     
     

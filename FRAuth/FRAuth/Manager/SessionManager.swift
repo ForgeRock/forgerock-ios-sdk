@@ -206,6 +206,10 @@ public class SessionManager: NSObject {
             // Deletes SSO token from Keychain Service
             self.setSSOToken(ssoToken: nil)
             
+            // Deletes all Cookie from Cookie Store
+            FRLog.i("Deleting all cookies from Cookie Store as invalidating Session Token.")
+            self.keychainManager.cookieStore.deleteAll()
+            
             let request = Request(url: self.serverConfig.ssoTokenLogoutURL, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
             RestClient.shared.invoke(request: request) { (result) in
                 switch result {
