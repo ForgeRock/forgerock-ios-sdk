@@ -155,7 +155,7 @@ struct Request {
     func prepareCookieHeader(url: URL) -> [String: String]? {
         
         // Retrieves all cookie items from cookie store
-        if let frAuth = FRAuth.shared, let cookieItems = frAuth.keychainManager.cookieStore.allItems() {
+        if let frAuth = FRAuth.shared, frAuth.serverConfig.enableCookie, let cookieItems = frAuth.keychainManager.cookieStore.allItems() {
             
             var cookieList: [HTTPCookie] = []
             
@@ -177,7 +177,7 @@ struct Request {
                         
                         // Validate domain, and path
                         var domainValidated = false
-                        if let host = url.host, cookie.domain.contains(host), url.path.contains(cookie.path) {
+                        if let host = url.host, cookie.domain.contains(host), url.path.hasPrefix(cookie.path) {
                             domainValidated = true
                         }
                         else {

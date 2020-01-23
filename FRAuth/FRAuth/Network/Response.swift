@@ -30,7 +30,7 @@ struct Response {
         }
         
         //  Parse Cookies from response headers, and persist
-        if let responseHeader = httpresponse.allHeaderFields as? [String: String], let url = httpresponse.url, let frAuth = FRAuth.shared {
+        if let responseHeader = httpresponse.allHeaderFields as? [String: String], let url = httpresponse.url, let frAuth = FRAuth.shared, frAuth.serverConfig.enableCookie {
             
             let cookies = HTTPCookie.cookies(withResponseHeaderFields: responseHeader, for: url)
             for cookie in cookies {

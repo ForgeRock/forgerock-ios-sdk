@@ -69,6 +69,7 @@ Create a file named `FRAuthConfig.plist` that contains the following information
 | forgerock_keychain_access_group | Keychain Access Group Identifier in Xcode's Capabilities tab in the application's target. This is used to share some credentials across multiple applications that are developed under same Apple's Developer Program, and FRAuth SDK utilizes this for SingleSignOn feature. (optional) |  None   |
 | forgerock_auth_service | Authentication Tree name registered in AM for user authentication. |  None   |
 | forgerock_registration_service | Authentication tree name registered in OpenAM for user registration. |  None   |
+| forgerock_enable_cookie | Boolean value for SDK to manage and persist Cookies from AM. |  true   |
 
 
 <br>
@@ -109,6 +110,8 @@ FRAuth.configPlistFileName = <.plist Configuration File Name>
 	<string>UsernamePassword</string>
 	<key>forgerock_registration_service_name</key>
 	<string>UserSignUp</string>
+	<key>forgerock_enable_cookie</key>
+	<true/>
 </dict>
 </plist>
 ```
