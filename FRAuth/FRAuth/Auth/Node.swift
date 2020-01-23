@@ -37,6 +37,9 @@ public class Node: NSObject {
     private var oAuth2Config: OAuth2Client?
     /// Optional SessionManager for SDK's abstraction layer
     private var sessionManager: SessionManager?
+    /// TokenManager instance to manage, and persist authenticated session
+    var tokenManager: TokenManager?
+    
     
     
     //  MARK: - Init
@@ -50,7 +53,7 @@ public class Node: NSObject {
     ///   - serviceName: Service name for AuthService (TreeName)
     ///   - oAuth2Config: (Optional) OAuth2Client object for AuthService/Node communication for abstraction layer
     /// - Throws: AuthError error may be thrown from parsing AuthService response, and parsing Callback(s)
-    init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ oAuth2Config: OAuth2Client? = nil, _ sessionManager: SessionManager? = nil) throws {
+    init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ oAuth2Config: OAuth2Client? = nil, _ sessionManager: SessionManager? = nil, _ tokenManager: TokenManager? = nil) throws {
         
         guard let authId = authServiceResponse[OpenAM.authId] as? String else {
             FRLog.e("Invalid response: missing 'authId'")
@@ -65,6 +68,7 @@ public class Node: NSObject {
         self.authId = authId
         
         self.sessionManager = sessionManager
+        self.tokenManager = tokenManager
         
         if let callbacks = authServiceResponse[OpenAM.callbacks] as? [[String: Any]] {
             
@@ -199,42 +203,43 @@ public class Node: NSObject {
     ///
     /// - Parameter completion: NodeCompletion<Token> callback that returns Token upon completion
     fileprivate func next(completion:@escaping NodeCompletion<Token>) {
-        FRLog.v("Called")
-        if let sessionManager = self.sessionManager, let ssoToken = sessionManager.getSSOToken() {
-            FRLog.i("SSO Token retrieved from SessionManager; ignoring Node submit")
-            completion(ssoToken, nil, nil)
-        }
-        else {
-            let thisRequest = self.buildAuthServiceRequest()
-            RestClient.shared.invoke(request: thisRequest) { (result) in
-                switch result {
-                case .success(let response, _):
-                    
-                    // If token received
-                    if let tokenId = response[OpenAM.tokenId] as? String {
-                        let token = Token(tokenId)
-                        if let sessionManager = self.sessionManager {
-                            sessionManager.setSSOToken(ssoToken: token)
-                        }
+
+        let thisRequest = self.buildAuthServiceRequest()
+        RestClient.shared.invoke(request: thisRequest) { (result) in
+            switch result {
+            case .success(let response, _):
+                
+                // If token received
+                if let tokenId = response[OpenAM.tokenId] as? String {
+                    let token = Token(tokenId)
+                    if let sessionManager = self.sessionManager, let tokenManager = self.tokenManager {
                         
-                        completion(token, nil, nil)
-                    }
-                    else {
-                        // If token was not received
-                        do {
-                            let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.oAuth2Config, self.sessionManager)
-                            completion(nil, node, nil)
-                        } catch let authError as AuthError {
-                            completion(nil, nil, authError)
-                        } catch {
-                            completion(nil, nil, error)
+                        if let currentSessionToken = sessionManager.getSSOToken(), currentSessionToken.value != token.value {
+                            FRLog.w("SDK identified existing Session Token (\(currentSessionToken.value)) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
+                            tokenManager.revoke { (error) in
+                                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(String(describing: error))")
+                            }
                         }
+                        sessionManager.setSSOToken(ssoToken: token)
                     }
-                    break
-                case .failure(let error):
-                    completion(nil, nil, error)
-                    break
+                    
+                    completion(token, nil, nil)
                 }
+                else {
+                    // If token was not received
+                    do {
+                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.oAuth2Config, self.sessionManager, self.tokenManager)
+                        completion(nil, node, nil)
+                    } catch let authError as AuthError {
+                        completion(nil, nil, authError)
+                    } catch {
+                        completion(nil, nil, error)
+                    }
+                }
+                break
+            case .failure(let error):
+                completion(nil, nil, error)
+                break
             }
         }
     }

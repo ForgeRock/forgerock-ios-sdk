@@ -133,13 +133,12 @@ class ViewController: UIViewController {
             "JailbreakDetector.analyze()",
             "FRUser.getAccessToken()",
             "Login with UI (Accesstoken)",
-            "Login with UI (Token)",
+            "FRSession.authenticate with UI (Token)",
             "Register User with UI (FRUser)",
             "Register User with UI (Accesstoken)",
-            "Register User with UI (Token)",
             "Login without UI (FRUser)",
             "Login without UI (Accesstoken)",
-            "Login without UI (Token)",
+            "FRSession.authenticate without UI (Token)",
             "Display Configurations"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
@@ -309,57 +308,148 @@ class ViewController: UIViewController {
         if expectedType as AnyObject? === AccessToken.self {
             if flowType == .authentication {
                 FRUser.authenticateWithUI(self, completion: { (token: AccessToken?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else {
+                        self.displayLog(token.debugDescription)
+                    }
                 })
             }
             else {
                 FRUser.registerWithUI(self, completion: { (token: AccessToken?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else {
+                        self.displayLog(token.debugDescription)
+                    }
                 })
             }
         }
         else if expectedType as AnyObject? === Token.self {
             if flowType == .authentication {
                 FRUser.authenticateWithUI(self, completion: { (token: Token?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else {
+                        self.displayLog(token.debugDescription)
+                    }
                 })
             }
             else {
                 FRUser.registerWithUI(self, completion: { (token: Token?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else {
+                        self.displayLog(token.debugDescription)
+                    }
                 })
             }
         }
         else if expectedType as AnyObject? === FRUser.self {
             if flowType == .authentication {
                 FRUser.authenticateWithUI(self, completion: { (user: FRUser?, error) in
-                    self.displayLog(user.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else {
+                        self.displayLog(user.debugDescription)
+                    }
                 })
             }
             else {
                 FRUser.registerWithUI(self, completion: { (user: FRUser?, error) in
-                    self.displayLog(user.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else {
+                        self.displayLog(user.debugDescription)
+                    }
                 })
             }
         }
     }
     
     func performActionHelper<T>(auth: FRAuth, flowType: FRAuthFlowType, expectedType: T) {
-        if expectedType as AnyObject as AnyObject? === AccessToken.self {
-            auth.next(flowType: flowType) { (result: AccessToken?, node, error) in
-                self.handleNode(result, node, error)
+        
+        if expectedType as AnyObject? === FRUser.self {
+            let completionBlock: NodeCompletion = {(user: FRUser?, node, error) in
+               
+               DispatchQueue.main.async {
+                   self.stopLoading()
+                   self.handleNode(user, node, error)
+               }
+           }
+            
+            if flowType == .registration {
+                FRUser.register(completion: completionBlock)
+            }
+            else {
+                FRUser.login(completion: completionBlock)
             }
         }
-        else if expectedType as AnyObject as AnyObject? === Token.self {
-            auth.next(flowType: flowType) { (result: Token?, node, error) in
-                self.handleNode(result, node, error)
+        else if expectedType as AnyObject? === AccessToken.self {
+            let completionBlock: NodeCompletion = {(user: FRUser?, node, error) in
+                DispatchQueue.main.async {
+                    self.stopLoading()
+                    self.handleNode(user?.token, node, error)
+                }
+            }
+            
+            if flowType == .registration {
+                FRUser.register(completion: completionBlock)
+            }
+            else {
+                FRUser.login(completion: completionBlock)
             }
         }
-        else if expectedType as AnyObject as AnyObject? === FRUser.self {
-            auth.next(flowType: flowType) { (result: FRUser?, node, error) in
-                self.handleNode(result, node, error)
+    }
+    
+    func performSessionAuthenticate(handleWithUI: Bool) {
+
+        let alert = UIAlertController(title: "FRSession Authenticate", message: nil, preferredStyle: .alert)
+        alert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "Enter authIndex (tree name) value"
+            textField.autocorrectionType = .no
+            textField.autocapitalizationType = .none
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let submitAction = UIAlertAction(title: "Continue", style: .default, handler: { (_) in
+             
+            if let authIndexValue = alert.textFields?.first?.text {
+                
+                if handleWithUI {
+                    FRSession.authenticateWithUI(authIndexValue, "service", self) { (token: Token?, error) in
+                        
+                        if let error = error {
+                            self.displayLog(error.localizedDescription)
+                        }
+                        else {
+                            self.displayLog(token.debugDescription)
+                        }
+                    }
+                }
+                else {
+                    FRSession.authenticate(authIndexValue: authIndexValue) { (token: Token?, node, error) in
+                        DispatchQueue.main.async {
+                            self.handleNode(token, node, error)
+                        }
+                    }
+                }
             }
-        }
+            else {
+                self.displayLog("Invalid authIndexValue.")
+            }
+        });
+        
+        alert.addAction(cancelAction)
+        alert.addAction(submitAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     func getAccessTokenFromUser() {
@@ -525,7 +615,8 @@ class ViewController: UIViewController {
             break
         case 3:
             // Display FRUser.currentUser
-            self.displayLog(String(describing: FRUser.currentUser))
+//            self.displayLog(String(describing: FRUser.currentUser))
+            self.displayLog(String(describing: FRUser.currentUser?.buildAuthHeader()))
             break
         case 4:
             // Invoke API
@@ -548,8 +639,8 @@ class ViewController: UIViewController {
             self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
         case 9:
-            // Login for SSO Token
-            self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: Token.self)
+            // FRSession.authenticate with UI (Token)
+            self.performSessionAuthenticate(handleWithUI: true)
             break
         case 10:
             // Register a user for FRUser
@@ -560,22 +651,18 @@ class ViewController: UIViewController {
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
             break
         case 12:
-            // Register a user for Token
-            self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: Token.self)
-            break
-        case 13:
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 14:
+        case 13:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 15:
-            // Login for Token without UI
-            self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: Token.self)
+        case 14:
+            // FRSession.authenticate without UI (Token)
+            self.performSessionAuthenticate(handleWithUI: false)
             break
-        case 16:
+        case 15:
             // Display current Configuration
             self.displayCurrentConfig()
             break

@@ -85,9 +85,9 @@
     __block FRNode *currentNode = nil;
     XCTestExpectation *ex = [self expectationWithDescription:@"FRUser.login"];
     [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
-        XCTAssertNil(error);
+        XCTAssertNotNil(error);
         XCTAssertNil(node);
-        XCTAssertNotNil(user);
+        XCTAssertNil(user);
         currentNode = node;
         [ex fulfill];
     }];
@@ -256,7 +256,7 @@
     XCTAssertNil([FRUser currentUser]);
     
     XCTestExpectation *ex = [self expectationWithDescription:@"Validate FRAuth.next after logout"];
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeAuthentication userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
         XCTAssertNil(error);
         XCTAssertNil(user);
         XCTAssertNotNil(node);
@@ -286,7 +286,7 @@
     XCTAssertNil([FRUser currentUser]);
     
     XCTestExpectation *ex = [self expectationWithDescription:@"Validate FRAuth.next after logout"];
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeAuthentication userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
         XCTAssertNil(error);
         XCTAssertNil(user);
         XCTAssertNotNil(node);
@@ -312,7 +312,7 @@
     
     __block FRNode *currentNode = nil;
     XCTestExpectation *ex = [self expectationWithDescription:@"First Node submit"];
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeAuthentication userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
         XCTAssertNil(error);
         XCTAssertNil(user);
         XCTAssertNotNil(node);

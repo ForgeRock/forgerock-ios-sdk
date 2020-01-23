@@ -23,12 +23,13 @@ class AuthStepViewController: UIViewController {
     var userCompletion: NodeUICompletion<FRUser>?
     var currentNode: Node?
     var authService: AuthService?
-    var auth: FRAuth?
     var type: Any?
     var flowType: FRAuthFlowType?
     var isKeyboardVisible: Bool = false
     var authCallbacks: [Callback] = []
     var authCallbackValues: [String:String] = [:]
+    var authIndexValue: String?
+    var authIndexType: String?
     
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var authStepLabel: UILabel?
@@ -40,11 +41,11 @@ class AuthStepViewController: UIViewController {
     
     // MARK: - Init
     
-    init<T>(auth: FRAuth, flowType: FRAuthFlowType?, uiCompletion: @escaping NodeUICompletion<T>, nibName: String) {
-        // set FRAuth
-        self.auth = auth
-        // set completion block
+    init<T>(authIndexValue: String, authIndexType: String, uiCompletion: @escaping NodeUICompletion<T>, nibName: String) {
+        self.authIndexValue = authIndexValue
+        self.authIndexType = authIndexType
         
+        // set completion block
         if T.self as AnyObject? === AccessToken.self {
             self.atCompletion = (uiCompletion as! NodeUICompletion<AccessToken>)
             self.type = AccessToken.self
@@ -52,6 +53,24 @@ class AuthStepViewController: UIViewController {
         else if T.self as AnyObject? === Token.self {
             self.tokenCompletion = (uiCompletion as! NodeUICompletion<Token>)
             self.type = Token.self
+        }
+        else if T.self as AnyObject? === FRUser.self {
+            self.userCompletion = (uiCompletion as! NodeUICompletion<FRUser>)
+            self.type = FRUser.self
+        }
+        
+        // Super init
+        super.init(nibName: nibName, bundle: Bundle(for: AuthStepViewController.self))
+        
+        self.initPrivate()
+    }
+    
+    init<T>(flowType: FRAuthFlowType?, uiCompletion: @escaping NodeUICompletion<T>, nibName: String) {
+        
+        // set completion block
+        if T.self as AnyObject? === AccessToken.self {
+            self.atCompletion = (uiCompletion as! NodeUICompletion<AccessToken>)
+            self.type = AccessToken.self
         }
         else if T.self as AnyObject? === FRUser.self {
             self.userCompletion = (uiCompletion as! NodeUICompletion<FRUser>)
@@ -171,33 +190,54 @@ class AuthStepViewController: UIViewController {
                 }
             }
         }
-        else if let auth = self.auth, let flowType = self.flowType {
+        else if let authIndexValue = self.authIndexValue, let authIndexType = self.authIndexType {
+            FRSession.authenticate(authIndexValue: authIndexValue, authIndexType: authIndexType) { (token: Token?, node, error) in
+                DispatchQueue.main.async {
+                    self.stopLoading()
+                    self.handleNode(token, node, error)
+                }
+            }
+        }
+        else if let flowType = self.flowType {
             self.title = "FRAuth Authentication"
+            
             if self.type as AnyObject? === AccessToken.self {
-                auth.next(flowType: flowType) { (token: AccessToken?, node, error) in
-                    //  Perform UI work in the main thread
+                
+                let completionBlock: NodeCompletion = {(user: FRUser?, node, error) in
                     DispatchQueue.main.async {
                         self.stopLoading()
-                        self.handleNode(token, node, error)
+                        if let user = user {
+                            self.handleNode(user.token, node, error)
+                        }
+                        else {
+                            self.handleNode(nil, node, error)
+                        }
                     }
                 }
-            } else if self.type as AnyObject? === Token.self {
-                auth.next(flowType: flowType) { (token: AccessToken?, node, error) in
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(token, node, error)
-                    }
+                
+                if flowType == .registration {
+                    FRUser.register(completion: completionBlock)
+                }
+                else {
+                    FRUser.login(completion: completionBlock)
                 }
             } else if self.type as AnyObject? === FRUser.self {
-                auth.next(flowType: flowType) { (user: FRUser?, node, error) in
-                    //  Perform UI work in the main thread
+                
+                let completionBlock: NodeCompletion = {(user: FRUser?, node, error) in
+                    
                     DispatchQueue.main.async {
                         self.stopLoading()
                         self.handleNode(user, node, error)
                     }
                 }
-            }
+                
+                if flowType == .registration {
+                    FRUser.register(completion: completionBlock)
+                }
+                else {
+                    FRUser.login(completion: completionBlock)
+                }
+            } 
         }
         
         //  Start loading indicator

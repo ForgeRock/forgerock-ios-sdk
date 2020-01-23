@@ -42,7 +42,7 @@
     
     __block FRNode *currentNode = nil;
     XCTestExpectation *ex = [self expectationWithDescription:@"First Node submit: Platform Username/Password creation"];
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeRegistration userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+    [FRUser registerWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
         XCTAssertNil(error);
         XCTAssertNil(user);
         XCTAssertNotNil(node);

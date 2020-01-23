@@ -41,6 +41,7 @@
 		D5877790238DB6E200422605 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D587778F238DB6E200422605 /* Assets.xcassets */; };
 		D5877795238DBFCA00422605 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5877794238DBFCA00422605 /* UIApplication.swift */; };
 		D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5877796238DC3A500422605 /* FRActionSheetButton.swift */; };
+		D58A5EED23CFBC10009D9328 /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58A5EEC23CFBC10009D9328 /* FRSession.swift */; };
 		D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */; };
 		D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */; };
 		D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */; };
@@ -120,6 +121,7 @@
 		D587778F238DB6E200422605 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5877794238DBFCA00422605 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		D5877796238DC3A500422605 /* FRActionSheetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRActionSheetButton.swift; sourceTree = "<group>"; };
+		D58A5EEC23CFBC10009D9328 /* FRSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSession.swift; sourceTree = "<group>"; };
 		D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PollingWaitCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTableViewCell.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 			children = (
 				D5CACF8922B1A6E800656521 /* AuthService.swift */,
 				D5855BDE233EB988003333BD /* FRUser.swift */,
+				D58A5EEC23CFBC10009D9328 /* FRSession.swift */,
 				D5877794238DBFCA00422605 /* UIApplication.swift */,
 			);
 			path = Extensions;
@@ -498,6 +501,7 @@
 				D577B26A22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift in Sources */,
 				D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */,
 				D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */,
+				D58A5EED23CFBC10009D9328 /* FRSession.swift in Sources */,
 				D53A922D22B1869C003DF94E /* AuthStepViewController.swift in Sources */,
 				D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */,
 				D5855BDF233EB988003333BD /* FRUser.swift in Sources */,
@@ -682,7 +686,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -716,7 +720,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

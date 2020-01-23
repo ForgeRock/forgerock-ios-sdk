@@ -295,7 +295,7 @@
     
     __block FRNode *currentNode = nil;
     XCTestExpectation *ex = [self expectationWithDescription:@"First Node submit"];
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeAuthentication userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
         XCTAssertNil(error);
         XCTAssertNil(user);
         XCTAssertNotNil(node);
