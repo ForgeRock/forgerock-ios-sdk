@@ -57,6 +57,8 @@
 		D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */; };
 		D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8922B1A6E800656521 /* AuthService.swift */; };
 		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
+		D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */; };
+		D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +139,8 @@
 		D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownView.swift; sourceTree = "<group>"; };
 		D5CACF8922B1A6E800656521 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
+		D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUICallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallbackTableViewCellFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +203,7 @@
 		D53A91E322B1815B003DF94E /* FRUI */ = {
 			isa = PBXGroup;
 			children = (
+				D5CC1E5723DA4423006C7EAA /* Model */,
 				D5CDAE5C23173A80002CD343 /* UIElements */,
 				D5CACF8D22B1AA0400656521 /* Assets */,
 				D5CACF8822B1A6D300656521 /* Extensions */,
@@ -239,6 +244,7 @@
 				D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */,
 				D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */,
 				D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */,
+				D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,6 +311,14 @@
 				D587778F238DB6E200422605 /* Assets.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		D5CC1E5723DA4423006C7EAA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		D5CDAE5C23173A80002CD343 /* UIElements */ = {
@@ -509,6 +523,8 @@
 				D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */,
 				D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */,
 				D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */,
+				D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */,
+				D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */,
 				D592481523285AAF0027031A /* TextOutputCallbackTableViewCell.swift in Sources */,
 				D5B27E672318B7710058EFE3 /* FRTextField.swift in Sources */,
 				D53A922822B1869C003DF94E /* NameCallbackTableViewCell.swift in Sources */,

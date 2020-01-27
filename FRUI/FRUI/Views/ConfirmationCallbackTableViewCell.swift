@@ -11,7 +11,7 @@
 import UIKit
 import FRAuth
 
-class ConfirmationCallbackTableViewCell: UITableViewCell {
+class ConfirmationCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     // MARK: - Properties
     public static let cellIdentifier = "ConfirmationCallbackTableViewCellId"
@@ -56,15 +56,11 @@ class ConfirmationCallbackTableViewCell: UITableViewCell {
     
     
     // MARK: - Public
-    public func updateCellData(authCallback: ConfirmationCallback) {
+    public func updateCellData(callback: Callback) {
+    
+        self.callback = callback as? ConfirmationCallback
         
-        guard callback == nil else {
-            return
-        }
-        
-        callback = authCallback
-        
-        if let options = authCallback.options {
+        if let options = self.callback?.options {
             for (index, option) in options.enumerated() {
                 let button = FRButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
                 button.setTitle(option, for: .normal)

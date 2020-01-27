@@ -21,12 +21,23 @@ extension FRSession {
     /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object
     public static func authenticateWithUI(_ authIndexValue: String, _ authIndexType: String, _ rootViewController:UIViewController, completion:@escaping NodeUICompletion<Token>) {
         if let _ = FRAuth.shared {
-            let authViewController = AuthStepViewController(authIndexValue: authIndexValue, authIndexType: authIndexType, uiCompletion: completion, nibName: "AuthStepViewController")
-            let navigationController = UINavigationController(rootViewController: authViewController)
-            navigationController.navigationBar.tintColor = UIColor.white
-            navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
-            navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-            rootViewController.present(navigationController, animated: true, completion: nil)
+            FRSession.authenticate(authIndexValue: authIndexValue, authIndexType: authIndexType) { (token: Token?, node, error) in
+                
+                if let node = node {
+                    //  Perform UI work in the main thread
+                    DispatchQueue.main.async {
+                        let authViewController = AuthStepViewController(node: node, uiCompletion: completion, nibName: "AuthStepViewController")
+                        let navigationController = UINavigationController(rootViewController: authViewController)
+                        navigationController.navigationBar.tintColor = UIColor.white
+                        navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
+                        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+                        rootViewController.present(navigationController, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    completion(token, error)
+                }
+            }
         } else {
             FRLog.w("Invalid SDK State")
             completion(nil, ConfigError.invalidSDKState)

@@ -169,6 +169,9 @@ class ViewController: UIViewController {
         self.urlSession = URLSession(configuration: config)
         // - MARK: Token Management - Example ends
         
+        // Comment out below code to demonstrate FRUI customization
+//        CallbackTableViewCellFactory.shared.registerCallbackTableViewCell(callbackType: "NameCallback", cellClass: CustomNameCallbackCell.self, nibName: "CustomNameCallbackCell")
+        
         // Start SDK
         do {
             try FRAuth.start()
