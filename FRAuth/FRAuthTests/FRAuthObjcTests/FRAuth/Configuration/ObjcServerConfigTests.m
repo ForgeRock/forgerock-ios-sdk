@@ -31,7 +31,7 @@
 - (void)testBasicServerConfig {
     
     // Given
-    FRServerConfig *config = [[FRServerConfig alloc] initWithUrl:[NSURL URLWithString:self.serverURL] realm:self.realm timeout:self.timeout];
+    FRServerConfig *config = [[FRServerConfig alloc] initWithUrl:[NSURL URLWithString:self.serverURL] realm:self.realm timeout:self.timeout enableCookie:YES];
     
     // Then
     XCTAssertNotNil(config);
