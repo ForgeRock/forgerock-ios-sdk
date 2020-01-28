@@ -32,12 +32,23 @@ extension FRUser {
             completion(nil, AuthError.userAlreadyAuthenticated(hasAccessToken))
         }
         else if let _ = FRAuth.shared {
-            let authViewController = AuthStepViewController(flowType: .authentication, uiCompletion: completion, nibName: "AuthStepViewController")
-            let navigationController = UINavigationController(rootViewController: authViewController)
-            navigationController.navigationBar.tintColor = UIColor.white
-            navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
-            navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-            rootViewController.present(navigationController, animated: true, completion: nil)
+            
+            FRUser.login { (user: FRUser?, node, error) in
+                if let node = node {
+                    //  Perform UI work in the main thread
+                    DispatchQueue.main.async {
+                        let authViewController = AuthStepViewController(node: node, uiCompletion: completion, nibName: "AuthStepViewController")
+                        let navigationController = UINavigationController(rootViewController: authViewController)
+                        navigationController.navigationBar.tintColor = UIColor.white
+                        navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
+                        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+                        rootViewController.present(navigationController, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    completion(user as? T, error)
+                }
+            }
         } else {
             FRLog.w("Invalid SDK State")
             completion(nil, ConfigError.invalidSDKState)
@@ -64,12 +75,23 @@ extension FRUser {
             completion(nil, AuthError.userAlreadyAuthenticated(hasAccessToken))
         }
         else if let _ = FRAuth.shared {
-            let authViewController = AuthStepViewController(flowType: .registration, uiCompletion: completion, nibName: "AuthStepViewController")
-            let navigationController = UINavigationController(rootViewController: authViewController)
-            navigationController.navigationBar.tintColor = UIColor.white
-            navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
-            navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-            rootViewController.present(navigationController, animated: true, completion: nil)
+            
+            FRUser.register { (user: FRUser?, node, error) in
+                if let node = node {
+                    //  Perform UI work in the main thread
+                    DispatchQueue.main.async {
+                        let authViewController = AuthStepViewController(node: node, uiCompletion: completion, nibName: "AuthStepViewController")
+                        let navigationController = UINavigationController(rootViewController: authViewController)
+                        navigationController.navigationBar.tintColor = UIColor.white
+                        navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
+                        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+                        rootViewController.present(navigationController, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    completion(user as? T, error)
+                }
+            }
         } else {
             FRLog.w("Invalid SDK State")
             completion(nil, ConfigError.invalidSDKState)

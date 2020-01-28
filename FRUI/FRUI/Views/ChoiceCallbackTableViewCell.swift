@@ -11,14 +11,14 @@
 import UIKit
 import FRAuth
 
-class ChoiceCallbackTableViewCell: UITableViewCell {
+class ChoiceCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
     
     // MARK: - Properties
     @IBOutlet weak var dropDown: FRActionSheetButton?
     public static let cellIdentifier = "ChoiceCallbackTableViewCellId"
-    public static let cellHeight:CGFloat = 120.0
+    public static let cellHeight: CGFloat = 120.0
     
-    var callback:ChoiceCallback?
+    var callback: ChoiceCallback?
     
     
     override func awakeFromNib() {
@@ -34,14 +34,17 @@ class ChoiceCallbackTableViewCell: UITableViewCell {
     }
     
     
-    public func updateCellData(authCallback: ChoiceCallback) {
+    public func updateCellData(callback: Callback) {
      
-        self.callback = authCallback
-        self.dropDown?.setTitle(authCallback.prompt, for: .normal)
-        self.dropDown?.setTitle(authCallback.prompt, for: .focused)
-        self.dropDown?.setTitle(authCallback.prompt, for: .highlighted)
-        self.dropDown?.setTitle(authCallback.prompt, for: .selected)        
-        self.dropDown?.dataSource = authCallback.choices
+        self.callback = callback as? ChoiceCallback
+        self.dropDown?.setTitle(self.callback?.prompt, for: .normal)
+        self.dropDown?.setTitle(self.callback?.prompt, for: .focused)
+        self.dropDown?.setTitle(self.callback?.prompt, for: .highlighted)
+        self.dropDown?.setTitle(self.callback?.prompt, for: .selected)
+        
+        if let choices = self.callback?.choices as? [String] {
+            self.dropDown?.dataSource = choices
+        }
     }
 }
 

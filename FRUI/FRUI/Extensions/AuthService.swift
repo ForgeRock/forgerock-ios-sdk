@@ -22,11 +22,22 @@ extension AuthService {
     ///   - completion: completion callback block that notifies the result of the flow
     public func authenticateWithUI<T>(_ rootViewController:UIViewController, completion:@escaping NodeUICompletion<T>) {
         
-        let authViewController = AuthStepViewController(authService: self, uiCompletion: completion, nibName: "AuthStepViewController")
-        let navigationController = UINavigationController(rootViewController: authViewController)
-        navigationController.navigationBar.tintColor = UIColor.white
-        navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
-        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-        rootViewController.present(navigationController, animated: true, completion: nil)
+        self.next { (result: T?, node, error) in
+            
+            if let node = node {
+                //  Perform UI work in the main thread
+                DispatchQueue.main.async {
+                    let authViewController = AuthStepViewController(node: node, uiCompletion: completion, nibName: "AuthStepViewController")
+                    let navigationController = UINavigationController(rootViewController: authViewController)
+                    navigationController.navigationBar.tintColor = UIColor.white
+                    navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
+                    navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+                    rootViewController.present(navigationController, animated: true, completion: nil)
+                }
+            }
+            else {
+                completion(result, error)
+            }
+        }
     }
 }
