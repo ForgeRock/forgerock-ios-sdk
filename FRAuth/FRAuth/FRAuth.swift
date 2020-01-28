@@ -114,6 +114,11 @@ public final class FRAuth: NSObject {
             realm = realmConfig
         }
         
+        var enableCookie = true
+        if let enableCookieConfig = config["forgerock_enable_cookie"] as? Bool {
+            enableCookie = enableCookieConfig
+        }
+        
         // Check if timeout value is in config, otherwise, configure with default
         var timeout = 60.0
         if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
@@ -125,7 +130,7 @@ public final class FRAuth: NSObject {
             threshold = timeOutConfigInt
         }
         
-        let serverConfig = ServerConfig(url: serverUrl, realm: realm, timeout: timeout)
+        let serverConfig = ServerConfig(url: serverUrl, realm: realm, timeout: timeout, enableCookie: enableCookie)
         FRLog.v("ServerConfig created: \(serverConfig)")
         var oAuth2Client: OAuth2Client?
         
@@ -143,7 +148,7 @@ public final class FRAuth: NSObject {
         }
                 
         if let accessGroup = config["forgerock_keychain_access_group"] as? String {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup) {
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup, enableCookie: enableCookie) {
                 
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?
@@ -154,7 +159,7 @@ public final class FRAuth: NSObject {
             }
         }
         else {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm) {
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, enableCookie: enableCookie) {
                 
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?

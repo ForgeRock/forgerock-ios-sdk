@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
 		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
@@ -289,6 +290,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
 		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5167289231F0408007053EE /* CustomCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallbackTests.swift; sourceTree = "<group>"; };
 		D516728D231F1E48007053EE /* NodeFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowTests.swift; sourceTree = "<group>"; };
@@ -498,6 +500,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D5094CD823DF7F590041D5C1 /* Cookie */ = {
+			isa = PBXGroup;
+			children = (
+				D5094CD923DF7F850041D5C1 /* CookieTests.swift */,
+			);
+			path = Cookie;
+			sourceTree = "<group>";
+		};
 		D5167286231EFE09007053EE /* CustomCallback */ = {
 			isa = PBXGroup;
 			children = (
@@ -574,16 +584,17 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
-				D59A0CE123AC27AD008D948E /* Manager */,
-				D52D1638231484D60095905A /* Configuration */,
-				D52D163A231484D60095905A /* Util */,
 				D52D163C231484D60095905A /* Auth */,
-				D52D163F231484D60095905A /* Network */,
+				D52D1652231484D60095905A /* Callback */,
+				D52D1638231484D60095905A /* Configuration */,
+				D5094CD823DF7F590041D5C1 /* Cookie */,
+				D52D164E231484D60095905A /* Device */,
 				D52D1643231484D60095905A /* FRAuth */,
 				D5BF7E7123D64FC600B90BF8 /* FRSession */,
+				D59A0CE123AC27AD008D948E /* Manager */,
 				D52D1645231484D60095905A /* Model */,
-				D52D164E231484D60095905A /* Device */,
-				D52D1652231484D60095905A /* Callback */,
+				D52D163F231484D60095905A /* Network */,
+				D52D163A231484D60095905A /* Util */,
 			);
 			path = FRAuth;
 			sourceTree = "<group>";
@@ -1603,6 +1614,7 @@
 				D52D1669231484D60095905A /* NetworkReachabilityMonitorTests.swift in Sources */,
 				D5843B562315C64500513932 /* ObjcFRDeviceCollectorTests.m in Sources */,
 				D52D166A231484D60095905A /* RequestTests.swift in Sources */,
+				D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */,
 				D52D166B231484D60095905A /* RestClientTests.swift in Sources */,
 				D5843B542315C56A00513932 /* ObjcFRDeviceTests.m in Sources */,
 				D52D166E231484D60095905A /* TokenTests.swift in Sources */,

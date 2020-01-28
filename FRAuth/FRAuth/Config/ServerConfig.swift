@@ -34,6 +34,8 @@ public class ServerConfig: NSObject, Codable {
     @objc let tokenRevokeURL: String
     /// Absolute URL string of SSO Token logout endpoint
     @objc let ssoTokenLogoutURL: String
+    /// Boolean indicator whether SDK should manage the cookie or not; when it is changed to false, all existing cookies will be removed. **Note** If SDK has not been initialized using (FRAuth.start(), this value will be ignored and not persist cookies.
+    @objc let enableCookie: Bool
     
     
     //  MARK: - Init
@@ -44,11 +46,13 @@ public class ServerConfig: NSObject, Codable {
     ///   - url: Base URL of OpenAM
     ///   - realm: Designated 'realm' to be communicated in OpenAM
     ///   - timeout: Timeout in seconds for all requests
+    ///   - enableCookie: Boolean value to enable cookie management in SDK's communication to AM. **Note** If SDK has not been initialized using (FRAuth.start(), this value will be ignored and not persist cookies.
     @objc
-    public init (url:URL, realm:String = "root", timeout:Double = 60.0) {
+    public init (url: URL, realm: String = "root", timeout: Double = 60.0, enableCookie: Bool = true) {
         self.baseURL = url
         self.realm = realm
         self.timeout = timeout
+        self.enableCookie = enableCookie
         self.treeURL = self.baseURL.absoluteString + "/json/realms/\(self.realm)/authenticate"
         self.tokenURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/access_token"
         self.authorizeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/authorize"
