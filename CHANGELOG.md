@@ -5,14 +5,15 @@
 - `FRSession` is now added to replace `SessionManager`. Use `FRSession` to authenticate against Authentication Tree in AM, persist and manage Session Token. [SDKS-174]
 - `FRSession.authenticate` retrieves Session Token, and creates `FRUser.currentUser` without OAuth2 token set. Use `FRUser.currentUser.getAccessToken` to obtain OAuth2 token set if needed. [SDKS-174]
 - `forgerock_enable_cookie` option is now available; you can set Boolean value to indicate whether or not SDK to persist and manage Cookies from AM. [SDKS-183]
+- FRAuth iOS SDK adds security layer on Keychain Service to encrypt all stored data with `SecuredKey` (using Secure Enclave when available). [SDKS-192] 
 
 #### Changed
 - `FRUser.login` now returns `AuthError.userAlreadyAuthenticated` when there is already authenticated user session. [SDKS-174]
-- When Session Token is updated, or changed through `FRSession.authenticate`, or `FRUser.login`, previously granted OAuth2 token set will be automatically revoked. [SDKS-174]
+- When Session Token is updated, or changed through `FRSession.authenticate`, or `FRUser.login`, previously granted OAuth2 token set will automatically be revoked. [SDKS-174]
 
 #### Deprecated
-- `FRAuth.next` is now deprecated; use `FRSession.authenticate` instead.
-- `SessionManager` is now deprecated and will become internal class. Use `FRSession` and `FRUser` instead.
+- `FRAuth.next` is now deprecated; use `FRSession.authenticate` instead. [SDKS-174]
+- `SessionManager` is now deprecated and will become internal class. Use `FRSession` and `FRUser` instead. [SDKS-174]
 
 ## [1.0.1]
 

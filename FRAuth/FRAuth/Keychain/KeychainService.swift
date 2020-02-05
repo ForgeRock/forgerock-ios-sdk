@@ -18,6 +18,8 @@ struct KeychainService {
     
     /// Options for Keychain Service operation
     fileprivate var options: KeychainOptions
+    /// SecuredKey used for encryption/decryption of data in Keychain Service
+    fileprivate var securedKey: SecuredKey?
     
     /// Prints debug, human readable, and meaningful information of Keychain Service instance
     public var debugDescription: String {
@@ -40,18 +42,22 @@ struct KeychainService {
     /// Initializes Keychain Service with Service namespace
     ///
     /// - Parameter service: Service string value which represents namespace for Keychain Storage
-    init(service: String) {
+    /// - Parameter securedKey: SecuredKey object containing public/private keys for encryption/decryption of data
+    init(service: String, securedKey: SecuredKey? = nil) {
         FRLog.v("Called - service: \(service)")
         self.options = KeychainOptions(service: service)
+        self.securedKey = securedKey
     }
     
     
     /// Initializes Keychain Service with given KeychainOption
     ///
     /// - Parameter options: KeychainOption that defines Keychain Operation's default settings
-    init(options: KeychainOptions) {
+    /// - Parameter securedKey: SecuredKey object containing public/private keys for encryption/decryption of data
+    init(options: KeychainOptions, securedKey: SecuredKey? = nil) {
         FRLog.v("Called - options: \(options)")
         self.options = options
+        self.securedKey = securedKey
     }
     
     
@@ -60,9 +66,11 @@ struct KeychainService {
     /// - Parameters:
     ///   - service: Service string value which represents namespace for Keychain Storage
     ///   - accessGroup: Shared Keychain Group identifier which is defined in XCode's Keychain Sharing option under Capabilities tab. AccessGroup can be given with or without Apple's TeamID. Initialization method internally validates, and adds if Apple TeamID is missing. **Note** that this initialization method will NOT validate if AccessGroup is actually accessible or not. KeychainService.validateAccessGroup should be invoked to validate application's access to the access group.
-    init(service: String, accessGroup: String) {
+    /// - Parameter securedKey: SecuredKey object containing public/private keys for encryption/decryption of data   
+    init(service: String, accessGroup: String, securedKey: SecuredKey? = nil) {
         FRLog.v("Called - service: \(service), accessGroup: \(accessGroup)")
         self.options = KeychainOptions(service: service, accessGroup: accessGroup)
+        self.securedKey = securedKey
     }
     
     
@@ -194,7 +202,7 @@ struct KeychainService {
     ///   - itemClass: KeychainItemClass enum value indicating what type of SecItemClass that this data to be stored
     /// - Returns: Bool value indicating whether operation was successful or not
     @discardableResult func set(_ val: Data, key: String, itemClass: KeychainItemClass) -> Bool {
-        
+                
         // Check if item with the same key exists
         var checkQuery = self.options.buildQuery(itemClass)
         checkQuery[SecKeys.account.rawValue] = key
@@ -210,7 +218,13 @@ struct KeychainService {
                 // If deleting old item was successful, add the item
                 var query = self.options.buildQuery(itemClass)
                 query[SecKeys.account.rawValue] = key
-                query[SecKeys.valueData.rawValue] = val
+                
+                if let securedKey = self.securedKey, let encryptedData = securedKey.encrypt(data: val) {
+                    query[SecKeys.valueData.rawValue] = encryptedData
+                }
+                else {
+                    query[SecKeys.valueData.rawValue] = val
+                }
                 
                 let status = SecItemAdd(query as CFDictionary, nil)
                 return status == noErr
@@ -224,7 +238,13 @@ struct KeychainService {
             // If no item was found, simply create new data
             var query = self.options.buildQuery(itemClass)
             query[SecKeys.account.rawValue] = key
-            query[SecKeys.valueData.rawValue] = val
+            
+            if let securedKey = self.securedKey, let encryptedData = securedKey.encrypt(data: val) {
+                query[SecKeys.valueData.rawValue] = encryptedData
+            }
+            else {
+                query[SecKeys.valueData.rawValue] = val
+            }
             
             let status = SecItemAdd(query as CFDictionary, nil)
             return status == noErr
@@ -262,7 +282,12 @@ struct KeychainService {
         let status = SecItemCopyMatching(query as CFDictionary, &result)
         
         if status == noErr {
-            return result as? Data
+            if let securedKey = self.securedKey, let returnedData = result as? Data, let decryptedData = securedKey.decrypt(data: returnedData) {
+                return decryptedData
+            }
+            else {
+                return result as? Data
+            }
         }
         
         return nil
@@ -551,12 +576,17 @@ struct KeychainService {
         
         for attr: [String: Any] in items {
             if let key = attr[SecKeys.account.rawValue] as? String, let data = attr[SecKeys.valueData.rawValue] as? Data {
+
+                var returnedData = data
+                if let securedKey = self.securedKey, let decryptedData = securedKey.decrypt(data: returnedData) {
+                    returnedData = decryptedData
+                }
                 
-                if let str = String(data: data, encoding: .utf8) {
+                if let str = String(data: returnedData, encoding: .utf8) {
                     returnItems[key] = str
                 }
                 else {
-                    returnItems[key] = data
+                    returnItems[key] = returnedData
                 }
             }
         }
@@ -798,6 +828,9 @@ struct KeychainOptions {
                 // REMARK: for iOS only
                 query[SecKeys.keyType.rawValue] = String(kSecAttrKeyTypeRSA)
                 break
+            case .securedKey:
+                query[SecKeys.keyType.rawValue] = String(kSecAttrKeyTypeEC)
+                break
             default:
                 // TODO: implement internet password protocol and other class
                 break
@@ -838,7 +871,13 @@ fileprivate enum SecKeys: String {
     
     case applcationTag
     case keyType
+    case keySizeInBits
     case label
+    
+    case tokenId
+    case privateKeyAttr
+    case accessControl
+    case isPermanent
     
     var description: String {
         
@@ -868,7 +907,13 @@ fileprivate enum SecKeys: String {
             
         case .applcationTag:        return "Application Tag"
         case .keyType:              return "Key Type"
+        case .keySizeInBits:        return "Key Size in bits"
         case .label:                return "Label"
+            
+        case .tokenId:              return "Token ID"
+        case .privateKeyAttr:       return "Private Key Attributes"
+        case .accessControl:        return "Access Control"
+        case .isPermanent:          return "isPermanent"
         }
     }
     
@@ -899,7 +944,13 @@ fileprivate enum SecKeys: String {
             
         case .applcationTag:        return String(kSecAttrApplicationTag)
         case .keyType:              return String(kSecAttrKeyType)
+        case .keySizeInBits:        return String(kSecAttrKeySizeInBits)
         case .label:                return String(kSecAttrLabel)
+            
+        case .tokenId:              return String(kSecAttrTokenID)
+        case .privateKeyAttr:       return String(kSecPrivateKeyAttrs)
+        case .accessControl:        return String(kSecAttrAccessControl)
+        case .isPermanent:          return String(kSecAttrIsPermanent)
         }
     }
 }
@@ -954,6 +1005,7 @@ enum KeychainItemClass: String {
     case internetPassword
     case certificate
     case key
+    case securedKey
     case identity
     case all
     
@@ -966,6 +1018,8 @@ enum KeychainItemClass: String {
         case .certificate:
             return String(kSecClassCertificate)
         case .key:
+            return String(kSecClassKey)
+        case .securedKey:
             return String(kSecClassKey)
         case .identity:
             return String(kSecClassIdentity)

@@ -275,6 +275,7 @@ public class FRLog: NSObject {
             return
         }
         let timePrefix = FRLog.generateTimePrefix()
+        var logPrefix = FRModuleName + FRLog.generateLogPrefix(file: file, line: line, function: function)
         
         var callStack = "\n\tCall stack symbols:\n"
         for symbol in Thread.callStackSymbols {
@@ -282,7 +283,7 @@ public class FRLog: NSObject {
         }
         
         for logger in FRLog.loggers {
-            logger.logError(timePrefix: timePrefix, logPrefix: FRModuleName, message: message + callStack)
+            logger.logError(timePrefix: timePrefix, logPrefix: logPrefix, message: message + callStack)
         }
     }
     
