@@ -339,10 +339,6 @@ public class OAuth2Client: NSObject, Codable {
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
-        if !self.serverConfig.enableCookie {
-            header["Cookie"] = OpenAM.iPlanetDirectoryPro + "=" + ssoToken
-        }
-        
         return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
     }
     

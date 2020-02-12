@@ -148,8 +148,8 @@ public final class FRAuth: NSObject {
         }
                 
         if let accessGroup = config["forgerock_keychain_access_group"] as? String {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup, enableCookie: enableCookie) {
-                
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup) {
+                keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?
                 if let oAuth2Client = oAuth2Client {
@@ -159,8 +159,8 @@ public final class FRAuth: NSObject {
             }
         }
         else {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, enableCookie: enableCookie) {
-                
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm) {
+                keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?
                 if let oAuth2Client = oAuth2Client {
