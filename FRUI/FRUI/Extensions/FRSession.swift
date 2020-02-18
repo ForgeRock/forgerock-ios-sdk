@@ -14,6 +14,35 @@ import FRAuth
 
 extension FRSession {
     
+    /// Invokes /authenticate endpoint in AM with predefined UI elements to go through Authentication Tree flow with PolicyAdvice object which contains information about Authorization and/or Transactional Authorization
+    /// - Parameter policyAdvice: PolicyAdvice object containing authorization information
+    /// - Parameter rootViewController: root viewController which will initiate navigation flow
+    /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object
+    public static func authenticateWithUI(_ policyAdvice: PolicyAdvice, _ rootViewController:UIViewController, completion:@escaping NodeUICompletion<Token>) {
+        if let _ = FRAuth.shared {
+            FRSession.authenticate(policyAdvice: policyAdvice) { (token: Token?, node, error) in
+                if let node = node {
+                    //  Perform UI work in the main thread
+                    DispatchQueue.main.async {
+                        let authViewController = AuthStepViewController(node: node, uiCompletion: completion, nibName: "AuthStepViewController")
+                        let navigationController = UINavigationController(rootViewController: authViewController)
+                        navigationController.navigationBar.tintColor = UIColor.white
+                        navigationController.navigationBar.barTintColor = FRUI.shared.primaryColor
+                        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+                        rootViewController.present(navigationController, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    completion(token, error)
+                }
+            }
+        } else {
+            FRLog.w("Invalid SDK State")
+            completion(nil, ConfigError.invalidSDKState)
+        }
+    }
+    
+    
     /// Invokes /authenticate endpoint in AM with predefined UI elements to go through Authentication Tree flow with specified authIndexValue and authIndexType; authIndexType is an optional parameter defaulted to 'service' if not defined
     /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
     /// - Parameter authIndexType: authIndexType; Authentication Tree type value in String

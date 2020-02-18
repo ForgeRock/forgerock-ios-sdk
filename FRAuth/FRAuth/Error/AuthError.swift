@@ -25,6 +25,7 @@ import Foundation
 /// - invalidOAuth2Client: Invalid AuthService or Node object without OAuth2Client while expecting to process OAuth2 protocol
 /// - invalidGenericType: Invalid generic type
 /// - userAlreadyAuthenticated: An error when there is already authenticated session (Session Token and/or OAuth2 token set)
+/// - authenticationCancelled: An error when the authentication process is cancelled
 public enum AuthError: FRError {
     case requestFailWithError
     case invalidResponseDataType
@@ -39,6 +40,7 @@ public enum AuthError: FRError {
     case invalidOAuth2Client
     case invalidGenericType
     case userAlreadyAuthenticated(Bool)
+    case authenticationCancelled
 }
 
 public extension AuthError {
@@ -82,6 +84,8 @@ extension AuthError {
             return 1000011
         case .userAlreadyAuthenticated:
             return 1000020
+        case .authenticationCancelled:
+            return 1000030
         }
         
     }
@@ -159,6 +163,8 @@ extension AuthError: CustomNSError {
             return [NSLocalizedDescriptionKey: "Invalid generic type: Only Token, AccessToken, and FRUser are allowed"]
         case .userAlreadyAuthenticated(let hasAccessToken):
             return [NSLocalizedDescriptionKey: "User is already authenticated\(hasAccessToken ? "" : " and has Session Token; use FRUser.currentUser.getAccessToken to obtian OAuth2 tokens")"]
+        case .authenticationCancelled:
+            return [NSLocalizedDescriptionKey: "Authentication is cancelled"]
         }
     }
 }

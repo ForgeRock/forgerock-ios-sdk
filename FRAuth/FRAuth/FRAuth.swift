@@ -206,7 +206,7 @@ public final class FRAuth: NSObject {
     /// - Parameter completion:NodeCompletion callback which returns the result of Node submission
     func next<T>(authIndexValue: String, authIndexType: String, completion:@escaping NodeCompletion<T>) {
         
-        let authService: AuthService = AuthService(name: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
+        let authService: AuthService = AuthService(authIndexValue: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager, authIndexType: authIndexType)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
         }
@@ -234,7 +234,7 @@ public final class FRAuth: NSObject {
             break
         }
         
-        let authService: AuthService = AuthService(name: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
+        let authService: AuthService = AuthService(authIndexValue: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
         }

@@ -115,7 +115,7 @@ struct Request {
         thisRequest.httpMethod = self.method.rawValue
         
         //  Get Cookie from Cookie Store, and set it to header
-        if let cookieHeader = self.prepareCookieHeader(url: thisUrl) {
+        if let cookieHeader = Request.prepareCookieHeader(url: thisUrl) {
             thisRequest.allHTTPHeaderFields = cookieHeader
         }
                
@@ -152,7 +152,7 @@ struct Request {
     
     /// Prepares persisted Cookies from Keychain Service, and returns cookie header value
     /// - Parameter url: URL of target server
-    func prepareCookieHeader(url: URL) -> [String: String]? {
+    static func prepareCookieHeader(url: URL) -> [String: String]? {
         
         // Retrieves all cookie items from cookie store
         if let frAuth = FRAuth.shared, frAuth.serverConfig.enableCookie, let cookieItems = frAuth.keychainManager.cookieStore.allItems() {

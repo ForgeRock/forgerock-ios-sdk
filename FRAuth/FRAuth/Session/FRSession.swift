@@ -60,6 +60,25 @@ import Foundation
     
     //  MARK: - Authenticate
     
+    /// Invokes /authenticate endpoint in AM to go through Authentication Tree flow with given PolicyAdvice information
+    /// - Parameter policyAdvice: PolicyAdvice object which contains the information for authorization
+    /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object
+    @objc
+    public static func authenticate(policyAdvice: PolicyAdvice, completion:@escaping NodeCompletion<Token>) {
+        
+        if let frAuth = FRAuth.shared {
+            FRLog.v("Initiating FRSession authenticate process")
+            frAuth.next(authIndexValue: policyAdvice.authIndexValue, authIndexType: policyAdvice.authIndexType) { (token: Token?, node, error) in
+                completion(token, node, error)
+            }
+        }
+        else {
+            FRLog.w("Invalid SDK State")
+            completion(nil, nil, ConfigError.invalidSDKState)
+        }
+    }
+    
+    
     /// Invokes /authenticate endpoint in AM to go through Authentication Tree flow with specified authIndexValue and authIndexType; authIndexType is an optional parameter defaulted to 'service' if not defined
     /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
     /// - Parameter authIndexType: authIndexType; Authentication Tree type value in String
