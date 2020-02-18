@@ -21,6 +21,7 @@ struct OpenAM {
     static let authIndexType = "authIndexType"
     static let authIndexValue = "authIndexValue"
     static let service = "service"
+    static let compositeAdvice = "composite_advice"
     static let authId = "authId"
     static let callbacks = "callbacks"
     static let stage = "stage"

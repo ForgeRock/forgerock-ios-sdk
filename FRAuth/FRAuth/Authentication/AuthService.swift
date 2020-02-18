@@ -40,6 +40,7 @@ public class AuthService: NSObject {
     
     /// String value of AuthService name registered in AM
     @objc public internal(set) var serviceName: String
+    @objc public internal(set) var authIndexType: String?
     /// Unique UUID String value of initiated AuthService flow
     @objc public internal(set) var authServiceId: String
     
@@ -64,6 +65,7 @@ public class AuthService: NSObject {
     public init(name: String, serverConfig:ServerConfig) {
         FRLog.v("AuthService init - service: \(name), ServerConfig: \(serverConfig)")
         self.serviceName = name
+        self.authIndexType = "service"
         self.serverConfig = serverConfig
         self.authServiceId = UUID().uuidString
     }
@@ -73,14 +75,16 @@ public class AuthService: NSObject {
     /// OAuth2Client is used, and when provided, AuthService exchanges SSO Token to OAuth2 token set upon completion
     ///
     /// - Parameters:
-    ///   - name: String value of AuthService name
+    ///   - authIndexValue: String value of Authentication Tree name
     ///   - serverConfig: ServerConfig object for AuthService server communication
     ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
     ///   - sessionManager: SessionManager instance to manage and persist authenticated session
     ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
-    init (name: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil) {
-        FRLog.v("AuthService init - service: \(name), ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
-        self.serviceName = name
+    ///   - authIndexType: String value of Authentication Tree type   
+    init (authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String? = OpenAM.service) {
+        FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType ?? OpenAM.service) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
+        self.serviceName = authIndexValue
+        self.authIndexType = authIndexType
         self.serverConfig = serverConfig
         self.oAuth2Config = oAuth2Config
         self.sessionManager = sessionManager
@@ -240,7 +244,13 @@ public class AuthService: NSObject {
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         var parameter: [String: String] = [:]
-        parameter[OpenAM.authIndexType] = OpenAM.service
+        
+        if let indexType = self.authIndexType {
+            parameter[OpenAM.authIndexType] = indexType
+        }
+        else {
+            parameter[OpenAM.authIndexType] = OpenAM.service
+        }
         parameter[OpenAM.authIndexValue] = self.serviceName
         
         return Request(url: self.serverConfig.treeURL, method: .POST, headers: header, urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)

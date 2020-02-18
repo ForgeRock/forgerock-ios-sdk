@@ -149,10 +149,11 @@ struct TokenManager {
         do {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 if let refreshToken = token.refreshToken {
-                    self.oAuth2Client.refresh(refreshToken: refreshToken) { (token, error) in
+                    self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
                         do {
-                            try self.sessionManager.setAccessToken(token: token)
-                            completion(token, error)
+                            newToken?.sessionToken = token.sessionToken
+                            try self.sessionManager.setAccessToken(token: newToken)
+                            completion(newToken, error)
                         }
                         catch {
                             completion(nil, error)

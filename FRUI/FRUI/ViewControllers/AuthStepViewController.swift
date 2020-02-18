@@ -284,9 +284,17 @@ class AuthStepViewController: UIViewController {
     }
     
     @IBAction func cancelButtonClicked(sender: UIButton) {
+        
+        if let completion = self.atCompletion {
+            completion(nil, AuthError.authenticationCancelled)
+        } else if let completion = self.tokenCompletion {
+            completion(nil, AuthError.authenticationCancelled)
+        } else if let completion = self.userCompletion {
+            completion(nil, AuthError.authenticationCancelled)
+        }
+        
         //  Force to end editing
         self.view.endEditing(true)
-        
         self.dismiss(animated: true, completion: nil)
     }
 }

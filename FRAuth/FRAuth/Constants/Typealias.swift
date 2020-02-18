@@ -57,4 +57,13 @@ public typealias DeviceCollectorCallback = (_ result: [String: Any]) -> Void
 //  MARK: - FRURLProtocol
 
 /// Callback definition for FRURLProtocol's refresh token policy; the callback is invoked to validate whether token refresh is required or not with given request result
-public typealias FRURLProtocolRefreshTokenPolicy = (_ responseData: Data?, _ response: URLResponse?, _ error:Error?) -> Bool
+public typealias FRURLProtocolResponseEvaluationCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> Bool
+
+/// Callback definition for parsing PolicyAdvice object with given response payloads
+public typealias FRURLProtocolParsePolicyAdviceCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> PolicyAdvice?
+
+/// Callback definition for decorating the original request with additional information (i.e. txId)
+public typealias FRURLProtocolUpdateRequestCallback = (_ originalRequest: URLRequest, _ txId: String) -> URLRequest
+
+/// Callback definition for performing Authentication Tree flow with given PolicyAdvice and notifying the SDK with the result
+public typealias FRURLProtocolAuthorizationPolicyReceivedCallback = (_ policyAdvice: PolicyAdvice, @escaping((_ completed: Bool) -> Void)) -> Void

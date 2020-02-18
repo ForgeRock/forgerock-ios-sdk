@@ -101,8 +101,6 @@
 		D53958A623022FA4009CA2BC /* OAuth2_UserInfo_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A523022FA4009CA2BC /* OAuth2_UserInfo_Success.json */; };
 		D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A72302318E009CA2BC /* OAuth2_UserInfo_Failure.json */; };
 		D53958AA2302376D009CA2BC /* OAuth2_Token_Refresh_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A92302376C009CA2BC /* OAuth2_Token_Refresh_Success.json */; };
-		D54237B823358F8F009C868F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5823358EE0007A2194 /* AuthService.swift */; };
-		D54237B923358F8F009C868F /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5923358EE0007A2194 /* Node.swift */; };
 		D54237BA23358F8F009C868F /* TermsAndConditionsCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4123358EDF007A2194 /* TermsAndConditionsCallback.swift */; };
 		D54237BB23358F8F009C868F /* NameCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4223358EDF007A2194 /* NameCallback.swift */; };
 		D54237BC23358F8F009C868F /* PasswordCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4323358EDF007A2194 /* PasswordCallback.swift */; };
@@ -188,6 +186,9 @@
 		D55776B623702B03005A911F /* MetadataCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55776B423702889005A911F /* MetadataCallback.swift */; };
 		D561331923E4B7D300EF6BC0 /* SecuredKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D561331823E4B7D300EF6BC0 /* SecuredKey.swift */; };
 		D571640E23E8B8AC00273980 /* SecuredKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D561331823E4B7D300EF6BC0 /* SecuredKey.swift */; };
+		D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3923F4C65800557AA8 /* AuthService.swift */; };
+		D5723C3D23F4C65800557AA8 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3A23F4C65800557AA8 /* Node.swift */; };
+		D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */; };
 		D5843B542315C56A00513932 /* ObjcFRDeviceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5843B532315C56A00513932 /* ObjcFRDeviceTests.m */; };
 		D5843B562315C64500513932 /* ObjcFRDeviceCollectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5843B552315C64500513932 /* ObjcFRDeviceCollectorTests.m */; };
 		D586CF7723358EE0007A2194 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2123358EDF007A2194 /* AuthError.swift */; };
@@ -238,8 +239,6 @@
 		D586CFA423358EE0007A2194 /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5423358EDF007A2194 /* FRLog.swift */; };
 		D586CFA523358EE0007A2194 /* FRConsoleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5523358EDF007A2194 /* FRConsoleLogger.swift */; };
 		D586CFA623358EE0007A2194 /* FRLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5623358EDF007A2194 /* FRLogger.swift */; };
-		D586CFA723358EE0007A2194 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5823358EE0007A2194 /* AuthService.swift */; };
-		D586CFA823358EE0007A2194 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5923358EE0007A2194 /* Node.swift */; };
 		D586CFA923358EE0007A2194 /* OAuth2Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5B23358EE0007A2194 /* OAuth2Client.swift */; };
 		D586CFAA23358EE0007A2194 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5C23358EE0007A2194 /* ServerConfig.swift */; };
 		D586CFAB23358EE0007A2194 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5E23358EE0007A2194 /* UserInfo.swift */; };
@@ -267,6 +266,9 @@
 		D592482123286B3F0027031A /* TextOutputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592482023286B3F0027031A /* TextOutputCallbackTests.swift */; };
 		D5924823232871AE0027031A /* PollingWaitCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5924822232871AE0027031A /* PollingWaitCallbackTests.swift */; };
 		D59A0CE323AC28C8008D948E /* SessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59A0CE223AC28C8008D948E /* SessionManagerTests.swift */; };
+		D5AF374823FB6F370035FE77 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3923F4C65800557AA8 /* AuthService.swift */; };
+		D5AF374923FB6F370035FE77 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3A23F4C65800557AA8 /* Node.swift */; };
+		D5AF374A23FB6F380035FE77 /* PolicyAdvice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */; };
 		D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */; };
 		D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */; };
 		D5BE349523CD2F38005873BB /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BE349423CD2F38005873BB /* FRSession.swift */; };
@@ -393,6 +395,9 @@
 		D55776B423702889005A911F /* MetadataCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallback.swift; sourceTree = "<group>"; };
 		D5582BA422E276A800C86ED8 /* FRAuthTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRAuthTestHost.entitlements; sourceTree = "<group>"; };
 		D561331823E4B7D300EF6BC0 /* SecuredKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredKey.swift; sourceTree = "<group>"; };
+		D5723C3923F4C65800557AA8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		D5723C3A23F4C65800557AA8 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdvice.swift; sourceTree = "<group>"; };
 		D5843B532315C56A00513932 /* ObjcFRDeviceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRDeviceTests.m; sourceTree = "<group>"; };
 		D5843B552315C64500513932 /* ObjcFRDeviceCollectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRDeviceCollectorTests.m; sourceTree = "<group>"; };
 		D586CF2123358EDF007A2194 /* AuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
@@ -443,8 +448,6 @@
 		D586CF5423358EDF007A2194 /* FRLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLog.swift; sourceTree = "<group>"; };
 		D586CF5523358EDF007A2194 /* FRConsoleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRConsoleLogger.swift; sourceTree = "<group>"; };
 		D586CF5623358EDF007A2194 /* FRLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLogger.swift; sourceTree = "<group>"; };
-		D586CF5823358EE0007A2194 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		D586CF5923358EE0007A2194 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		D586CF5B23358EE0007A2194 /* OAuth2Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Client.swift; sourceTree = "<group>"; };
 		D586CF5C23358EE0007A2194 /* ServerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
 		D586CF5E23358EE0007A2194 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
@@ -980,7 +983,8 @@
 		D55462FA22A6DF720096C7A4 /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
-				D586CF5723358EE0007A2194 /* Auth */,
+				D5723C3823F4C65800557AA8 /* Authentication */,
+				D5723C3B23F4C65800557AA8 /* Authorization */,
 				D586CF4023358EDF007A2194 /* Callbacks */,
 				D586CF5A23358EE0007A2194 /* Config */,
 				D586CF6123358EE0007A2194 /* Constants */,
@@ -1040,6 +1044,23 @@
 				D561331823E4B7D300EF6BC0 /* SecuredKey.swift */,
 			);
 			path = SecureEnclave;
+			sourceTree = "<group>";
+		};
+		D5723C3823F4C65800557AA8 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				D5723C3923F4C65800557AA8 /* AuthService.swift */,
+				D5723C3A23F4C65800557AA8 /* Node.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		D5723C3B23F4C65800557AA8 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */,
+			);
+			path = Authorization;
 			sourceTree = "<group>";
 		};
 		D586CF2023358EDF007A2194 /* Error */ = {
@@ -1139,15 +1160,6 @@
 				D586CF5623358EDF007A2194 /* FRLogger.swift */,
 			);
 			path = Log;
-			sourceTree = "<group>";
-		};
-		D586CF5723358EE0007A2194 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				D586CF5823358EE0007A2194 /* AuthService.swift */,
-				D586CF5923358EE0007A2194 /* Node.swift */,
-			);
-			path = Auth;
 			sourceTree = "<group>";
 		};
 		D586CF5A23358EE0007A2194 /* Config */ = {
@@ -1461,7 +1473,6 @@
 			files = (
 				D586CFB723358EE0007A2194 /* BrowserCollector.swift in Sources */,
 				D586CF9223358EE0007A2194 /* TermsAndConditionsCallback.swift in Sources */,
-				D586CFA823358EE0007A2194 /* Node.swift in Sources */,
 				D586CFA623358EE0007A2194 /* FRLogger.swift in Sources */,
 				D586CF8523358EE0007A2194 /* JBUtil.c in Sources */,
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
@@ -1489,6 +1500,7 @@
 				D586CFAC23358EE0007A2194 /* Address.swift in Sources */,
 				D586CF9C23358EE0007A2194 /* CallbackFactory.swift in Sources */,
 				D586CF8823358EE0007A2194 /* KeychainService.swift in Sources */,
+				D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */,
 				D586CF9123358EE0007A2194 /* Token.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
 				D586CFB523358EE0007A2194 /* FRDevice.swift in Sources */,
@@ -1511,6 +1523,7 @@
 				D586CF9023358EE0007A2194 /* PKCE.swift in Sources */,
 				D586CFBB23358EE0007A2194 /* NetworkCollector.swift in Sources */,
 				D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */,
+				D5723C3D23F4C65800557AA8 /* Node.swift in Sources */,
 				D586CF8B23358EE0007A2194 /* Response.swift in Sources */,
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,
 				D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */,
@@ -1527,13 +1540,13 @@
 				D586CF9923358EE0007A2194 /* ConfirmationCallback.swift in Sources */,
 				D586CF8023358EE0007A2194 /* DyldDetector.swift in Sources */,
 				D586CFB323358EE0007A2194 /* PlatformCollector.swift in Sources */,
+				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */,
 				D586CF9323358EE0007A2194 /* NameCallback.swift in Sources */,
 				D586CF8123358EE0007A2194 /* AptDetector.swift in Sources */,
 				D586CF9F23358EE0007A2194 /* ChoiceCallback.swift in Sources */,
 				D561331923E4B7D300EF6BC0 /* SecuredKey.swift in Sources */,
-				D586CFA723358EE0007A2194 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1541,12 +1554,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5AF374823FB6F370035FE77 /* AuthService.swift in Sources */,
+				D5AF374923FB6F370035FE77 /* Node.swift in Sources */,
+				D5AF374A23FB6F380035FE77 /* PolicyAdvice.swift in Sources */,
 				D571640E23E8B8AC00273980 /* SecuredKey.swift in Sources */,
 				D58A5EF123CFEC84009D9328 /* FRSession.swift in Sources */,
 				D55776B623702B03005A911F /* MetadataCallback.swift in Sources */,
 				D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */,
-				D54237B823358F8F009C868F /* AuthService.swift in Sources */,
-				D54237B923358F8F009C868F /* Node.swift in Sources */,
 				D54237BA23358F8F009C868F /* TermsAndConditionsCallback.swift in Sources */,
 				D54237BB23358F8F009C868F /* NameCallback.swift in Sources */,
 				D54237BC23358F8F009C868F /* PasswordCallback.swift in Sources */,
