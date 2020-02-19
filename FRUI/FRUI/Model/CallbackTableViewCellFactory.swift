@@ -51,7 +51,8 @@ public class CallbackTableViewCellFactory: NSObject {
             "KbaCreateCallback": KbaCreateCallbackTableViewCell.self,
             "PollingWaitCallback": PollingWaitCallbackTableViewCell.self,
             "ConfirmationCallback": ConfirmationCallbackTableViewCell.self,
-            "TextOutputCallback": TextOutputCallbackTableViewCell.self
+            "TextOutputCallback": TextOutputCallbackTableViewCell.self,
+            "DeviceAttributeCallback": DeviceAttributeTableViewCell.self
         ]
         
         self.tableViewCellNibForCallbacks = [
@@ -65,7 +66,8 @@ public class CallbackTableViewCellFactory: NSObject {
             "KbaCreateCallback": "KbaCreateCallbackTableViewCell",
             "PollingWaitCallback": "PollingWaitCallbackTableViewCell",
             "ConfirmationCallback": "ConfirmationCallbackTableViewCell",
-            "TextOutputCallback": "TextOutputCallbackTableViewCell"
+            "TextOutputCallback": "TextOutputCallbackTableViewCell",
+            "DeviceAttributeCallback": "DeviceAttributeTableViewCell"
         ]
     }
     

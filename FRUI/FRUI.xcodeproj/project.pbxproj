@@ -55,6 +55,8 @@
 		D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E652318B7710058EFE3 /* FRLoadingView.swift */; };
 		D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */; };
 		D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */; };
+		D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */; };
+		D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */; };
 		D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8922B1A6E800656521 /* AuthService.swift */; };
 		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
 		D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */; };
@@ -137,6 +139,8 @@
 		D5B27E652318B7710058EFE3 /* FRLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLoadingView.swift; sourceTree = "<group>"; };
 		D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownButton.swift; sourceTree = "<group>"; };
 		D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownView.swift; sourceTree = "<group>"; };
+		D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAttributeTableViewCell.swift; sourceTree = "<group>"; };
+		D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceAttributeTableViewCell.xib; sourceTree = "<group>"; };
 		D5CACF8922B1A6E800656521 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
 		D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUICallbackTableViewCell.swift; sourceTree = "<group>"; };
@@ -228,6 +232,7 @@
 		D53A921C22B1869C003DF94E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */,
 				D53A921D22B1869C003DF94E /* PasswordCallbackTableViewCell.swift */,
 				D53A922022B1869C003DF94E /* PasswordCallbackTableViewCell.xib */,
 				D53A921E22B1869C003DF94E /* ChoiceCallbackTableViewCell.swift */,
@@ -244,7 +249,8 @@
 				D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */,
 				D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */,
 				D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */,
-				D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */,
+				D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */,
+				D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -469,6 +475,7 @@
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
 				D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */,
 				D5962DC1238F47FA0021859F /* forgerock-logo.png in Resources */,
+				D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */,
 				D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */,
 				D5877790238DB6E200422605 /* Assets.xcassets in Resources */,
 			);
@@ -520,6 +527,7 @@
 				D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */,
 				D5855BDF233EB988003333BD /* FRUser.swift in Sources */,
 				D53A922622B1869C003DF94E /* PasswordCallbackTableViewCell.swift in Sources */,
+				D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */,
 				D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */,
 				D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */,
 				D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */,

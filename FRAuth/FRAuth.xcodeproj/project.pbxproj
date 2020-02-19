@@ -270,6 +270,10 @@
 		D5AF374923FB6F370035FE77 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3A23F4C65800557AA8 /* Node.swift */; };
 		D5AF374A23FB6F380035FE77 /* PolicyAdvice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */; };
 		D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */; };
+		D5B2A37E23FC951700764370 /* HiddenValueCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */; };
+		D5B2A38023FCA9A600764370 /* DeviceAttributeCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */; };
+		D5B2A38923FCB25E00764370 /* ActionCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38823FCB25E00764370 /* ActionCallback.swift */; };
+		D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */; };
 		D5BE349523CD2F38005873BB /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BE349423CD2F38005873BB /* FRSession.swift */; };
 		D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
@@ -475,6 +479,10 @@
 		D5924822232871AE0027031A /* PollingWaitCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTests.swift; sourceTree = "<group>"; };
 		D59A0CE223AC28C8008D948E /* SessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerTests.swift; sourceTree = "<group>"; };
 		D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTests.swift; sourceTree = "<group>"; };
+		D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenValueCallback.swift; sourceTree = "<group>"; };
+		D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAttributeCallback.swift; sourceTree = "<group>"; };
+		D5B2A38823FCB25E00764370 /* ActionCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCallback.swift; sourceTree = "<group>"; };
+		D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollector.swift; sourceTree = "<group>"; };
 		D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
 		D5BE349423CD2F38005873BB /* FRSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSession.swift; sourceTree = "<group>"; };
 		D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSessionTests.swift; sourceTree = "<group>"; };
@@ -1148,6 +1156,9 @@
 				D586CF5123358EDF007A2194 /* StringAttributeInputCallback.swift */,
 				D586CF5223358EDF007A2194 /* KbaCreateCallback.swift */,
 				D55776B423702889005A911F /* MetadataCallback.swift */,
+				D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */,
+				D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */,
+				D5B2A38823FCB25E00764370 /* ActionCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1205,6 +1216,7 @@
 				D586CF6F23358EE0007A2194 /* TelephonyCollector.swift */,
 				D586CF7023358EE0007A2194 /* NetworkCollector.swift */,
 				D586CF7223358EE0007A2194 /* FRDeviceIdentifier.swift */,
+				D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -1494,6 +1506,7 @@
 				D586CFB823358EE0007A2194 /* HardwareCollector.swift in Sources */,
 				D586CFAA23358EE0007A2194 /* ServerConfig.swift in Sources */,
 				D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */,
+				D5B2A38023FCA9A600764370 /* DeviceAttributeCallback.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
 				D586CFC023358EE0007A2194 /* SessionManager.swift in Sources */,
 				D586CF8A23358EE0007A2194 /* Result.swift in Sources */,
@@ -1506,6 +1519,8 @@
 				D586CFB523358EE0007A2194 /* FRDevice.swift in Sources */,
 				D586CFBE23358EE0007A2194 /* KeychainManager.swift in Sources */,
 				D586CF9623358EE0007A2194 /* PollingWaitCallback.swift in Sources */,
+				D5B2A37E23FC951700764370 /* HiddenValueCallback.swift in Sources */,
+				D5B2A38923FCB25E00764370 /* ActionCallback.swift in Sources */,
 				D586CF7823358EE0007A2194 /* ConfigError.swift in Sources */,
 				D586CF8723358EE0007A2194 /* BashDetector.swift in Sources */,
 				D586CF7F23358EE0007A2194 /* CydiaSubstrateDetector.swift in Sources */,
@@ -1525,6 +1540,7 @@
 				D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */,
 				D5723C3D23F4C65800557AA8 /* Node.swift in Sources */,
 				D586CF8B23358EE0007A2194 /* Response.swift in Sources */,
+				D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */,
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,
 				D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */,
 				D586CF8E23358EE0007A2194 /* RestClient.swift in Sources */,
