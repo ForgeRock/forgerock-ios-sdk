@@ -29,6 +29,9 @@ public typealias NodeCompletion<T> = (_ result: T?, _ node: Node?, _ error: Erro
 /// Generic typealias for completion with an error occurred
 public typealias CompletionCallback = (_ error:Error?) -> Void
 
+/// Generic typealias for completion with an JSON object
+public typealias JSONCompletionCallback = (_ result: [String: Any]) -> Void
+
 
 //  MARK: - OAuth2Client
 

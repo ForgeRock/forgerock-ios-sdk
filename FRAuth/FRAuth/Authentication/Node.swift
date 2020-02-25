@@ -79,19 +79,9 @@ public class Node: NSObject {
                     FRLog.e("Invalid response: Callback is missing 'type' \n\t\(callback)")
                     throw AuthError.invalidCallbackResponse(String(describing: callback))
                 }
-                // Validate if given callback type is supported
-                guard let callbackClass = CallbackFactory.shared.supportedCallbacks[callbackType] else {
-                    FRLog.e("Unsupported callback: Callback is not supported in SDK \n\t\(callback)")
-                    throw AuthError.unsupportedCallback("callback type, \(callbackType), is not supported")
-                }
                 
-                do {
-                    // Construct callback object based on class type, and throw an error if it fails
-                    self.callbacks.append(try callbackClass.init(json: callback))
-                } catch let authError as AuthError {
-                    FRLog.e("Invalid response: invalid Callback response; failed to construct \(callbackType)\n\tReason: \(authError.localizedDescription)")
-                    throw authError
-                }
+                let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback)
+                self.callbacks.append(callbackObj)
             }
         }
         else {
@@ -100,6 +90,26 @@ public class Node: NSObject {
         }
     }
 
+    
+    static func transformCallback(callbackType: String, json: [String: Any]) throws -> Callback {
+
+        // Validate if given callback type is supported
+        guard let callbackClass = CallbackFactory.shared.supportedCallbacks[callbackType] else {
+            FRLog.e("Unsupported callback: Callback is not supported in SDK \n\t\(json)")
+            throw AuthError.unsupportedCallback("callback type, \(callbackType), is not supported")
+        }
+        
+        let callback = try callbackClass.init(json: json)
+        
+        // Workaround for converting HiddenValueCallback into DeviceAttributeCallback
+        if let hiddenValueCallback = callback as? HiddenValueCallback, let id = hiddenValueCallback.id, let idUrl = URLComponents(string: id), let idUrlScheme = idUrl.scheme {
+            if let deviceAttributeCallback = CallbackFactory.shared.supportedCallbacks[idUrlScheme] {
+                return try deviceAttributeCallback.init(json: json)
+            }
+        }
+        
+        return callback
+    }
     
     //  MARK: - Public methods
     

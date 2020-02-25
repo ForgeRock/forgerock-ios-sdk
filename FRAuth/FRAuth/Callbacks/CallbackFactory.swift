@@ -60,6 +60,8 @@ public class CallbackFactory: NSObject {
             "ConfirmationCallback": ConfirmationCallback.self,
             "TextOutputCallback": TextOutputCallback.self,
             "ReCaptchaCallback": ReCaptchaCallback.self,
+            "HiddenValueCallback": HiddenValueCallback.self,
+            "DeviceAttributeCallback": DeviceAttributeCallback.self,
             "MetadataCallback": MetadataCallback.self
         ]
     }
