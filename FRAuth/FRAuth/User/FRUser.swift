@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 
 /// FRUser represents authenticated user session as FRUser object
@@ -275,7 +276,7 @@ public class FRUser: NSObject, NSSecureCoding {
         
         let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
         
-        let result = RestClient.shared.invokeSync(request: request)
+        let result = FRRestClient.invokeSync(request: request)
         
         switch result {
         case .success(let response, _ ):

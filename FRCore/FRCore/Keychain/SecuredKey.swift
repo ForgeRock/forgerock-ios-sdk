@@ -1,6 +1,6 @@
 // 
 //  SecuredKey.swift
-//  FRAuth
+//  FRCore
 //
 //  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
@@ -12,7 +12,7 @@ import Foundation
 import LocalAuthentication
 
 /// SecuredKey is a representation of Secure Enclave keypair and performing PKI using Secure Enclave
-struct SecuredKey {
+public struct SecuredKey {
     
     /// Private Key of SecuredKey
     fileprivate var privateKey: SecKey
@@ -22,7 +22,7 @@ struct SecuredKey {
     fileprivate let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
     
     /// Validates whether SecuredKey using Secure Enclave is available on the device or not
-    static func isAvailable() -> Bool {
+    public static func isAvailable() -> Bool {
         
         let laContext = LAContext()
         var error: NSError?
@@ -40,7 +40,7 @@ struct SecuredKey {
             }
             
             if !canEvaluatePolicy {
-                FRLog.w("Biometry is not available on the device; SDK continues without storage data encryption")
+                Log.w("Biometry is not available on the device; SDK continues without storage data encryption")
             }
         }
         
@@ -50,7 +50,7 @@ struct SecuredKey {
     
     /// Initializes SecuredKey object with designated service; SecuredKey may return nil if it failed to generate keypair
     /// - Parameter applicationTag: Unique identifier for SecuredKey in Keychain Service
-    init?(applicationTag: String) {
+    public init?(applicationTag: String) {
         
         guard SecuredKey.isAvailable() else {
             return nil
@@ -71,7 +71,7 @@ struct SecuredKey {
         }
         
         // Copy the public key from the private key
-        if let publicKey = SecKeyCopyPublicKey(self.privateKey){
+        if let publicKey = SecKeyCopyPublicKey(self.privateKey) {
             self.publicKey = publicKey
         }
         else {
@@ -122,7 +122,7 @@ struct SecuredKey {
 
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(query as CFDictionary, &error) else {
-            FRLog.e("Error while generating Secure Key: \(error.debugDescription)")
+            Log.e("Error while generating Secure Key: \(error.debugDescription)")
             throw error!.takeRetainedValue() as Error
         }
 
@@ -134,7 +134,7 @@ struct SecuredKey {
     /// - Parameter applicationTag: Application Tag string value for private key
     static func deleteKey(applicationTag: String) {
         var query = [String: Any]()
-        query[String(kSecClass)] = String(kSecAttrKeyTypeEC)
+        query[String(kSecClass)] = String(kSecClassKey)
         query[String(kSecAttrApplicationTag)] = applicationTag
         SecItemDelete(query as CFDictionary)
     }
@@ -142,17 +142,17 @@ struct SecuredKey {
     
     /// Encrypts Data object using SecuredKey object
     /// - Parameter data: Encrypted Data object
-    func encrypt(data: Data) -> Data? {
+    public func encrypt(data: Data) -> Data? {
         
         guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, algorithm) else {
-            FRLog.e("\(algorithm) is not supported on the device.")
+            Log.e("\(algorithm) is not supported on the device.")
             return nil
         }
         
         var error: Unmanaged<CFError>?
         let encryptedData = SecKeyCreateEncryptedData(publicKey, algorithm, data as CFData, &error) as Data?
         if let error = error {
-            FRLog.e("Failed to encrypt data: \(error)")
+            Log.e("Failed to encrypt data: \(error)")
         }
         
         return encryptedData
@@ -161,17 +161,17 @@ struct SecuredKey {
     
     /// Decrypts Data object using SecuredKey object
     /// - Parameter data: Decrypted Data object
-    func decrypt(data: Data) -> Data? {
+    public func decrypt(data: Data) -> Data? {
         
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, algorithm) else {
-            FRLog.e("\(algorithm) is not supported on the device.")
+            Log.e("\(algorithm) is not supported on the device.")
             return nil
         }
         
         var error: Unmanaged<CFError>?
         let decryptedData = SecKeyCreateDecryptedData(privateKey, algorithm, data as CFData, &error) as Data?
         if let error = error {
-            FRLog.e("Failed to decrypt data: \(error)")
+            Log.e("Failed to decrypt data: \(error)")
         }
         return decryptedData
     }

@@ -10,6 +10,7 @@
 
 import UIKit
 import FRAuth
+import FRCore
 
 protocol AuthStepProtocol {
     func submitNode()
@@ -144,9 +145,9 @@ class AuthStepViewController: UIViewController {
                 var message = ""
                 var dismissAfter = false
                 //  Handle error
-                if let authError: AuthError = error as? AuthError {
+                if let networkError: NetworkError = error as? NetworkError {
                     
-                    switch authError {
+                    switch networkError {
                     case .invalidCredentials(_, _, _):
                         message = "Invalid credentials"
                         break

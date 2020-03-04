@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 /// KeychainManager is responsible to manage all Keychain Services maintained and controlled by SDK
 struct KeychainManager {

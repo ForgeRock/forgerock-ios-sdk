@@ -40,7 +40,7 @@ class FRBaseTest: XCTestCase {
             // Construct URLSession with FRURLProtocol
             let config = URLSessionConfiguration.default
             config.protocolClasses = [FRTestNetworkStubProtocol.self]
-            RestClient.shared.setURLSessionConfiguration(config: config)
+            FRRestClient.setURLSessionConfiguration(config: config)
         }
     }
 

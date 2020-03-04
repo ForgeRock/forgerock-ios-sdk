@@ -1,8 +1,8 @@
 //
 //  FRError.swift
-//  FRAuth
+//  FRCore
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,7 +22,7 @@ extension FRError {
     ///   - errorMessage: Error message for NSError's localized error description
     ///   - additionalInfo: Additional information about the error (error response payload) as Dictionary with key 'com.forgerock.auth.errorInfoKey'
     /// - Returns: Dictionary containing a localized error message and optional additional error payload
-    func buildErrorUserInfo(errorMessage: String, additionalInfo: [String: Any]? ) -> [String: Any] {
+    public func buildErrorUserInfo(errorMessage: String, additionalInfo: [String: Any]? ) -> [String: Any] {
         var userInfo: [String: Any] = [:]
         userInfo[NSLocalizedDescriptionKey] = errorMessage
         

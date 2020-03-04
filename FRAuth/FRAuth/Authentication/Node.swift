@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 /**
  Node class is the core abstraction within an authentication tree. Trees are made up of nodes, which may modify the shared state and/or request input from the user via Callbacks. Node is also a representation of each step in the authentication flow, and keeps unique identifier and its state of the authentication flow. Node must be submitted to OpenAM to proceed or finish the authentication flow. Submitting the Node object returns one of following:
@@ -215,7 +216,7 @@ public class Node: NSObject {
     fileprivate func next(completion:@escaping NodeCompletion<Token>) {
 
         let thisRequest = self.buildAuthServiceRequest()
-        RestClient.shared.invoke(request: thisRequest) { (result) in
+        FRRestClient.invoke(request: thisRequest) { (result) in
             switch result {
             case .success(let response, _):
                 

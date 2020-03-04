@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 @objc
 class FRTestNetworkStubProtocol: URLProtocol {
@@ -79,7 +80,7 @@ class FRTestNetworkStubProtocol: URLProtocol {
             }
         }
         else {
-            client?.urlProtocol(self, didFailWithError: AuthError.invalidRequest("Mock response was not found"))
+            client?.urlProtocol(self, didFailWithError: NetworkError.invalidRequest("Mock response was not found"))
             client?.urlProtocolDidFinishLoading(self)
         }
     }

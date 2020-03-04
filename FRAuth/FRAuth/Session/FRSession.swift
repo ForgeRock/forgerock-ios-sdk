@@ -31,7 +31,7 @@ import Foundation
             if let staticSession = _staticSession {
                 return staticSession
             }
-            else if let frAuth = FRAuth.shared, let sessionToken = frAuth.sessionManager.getSSOToken() {
+            else if let frAuth = FRAuth.shared, let _ = frAuth.sessionManager.getSSOToken() {
                 FRLog.v("FRSession retrieved from SessionManager")
                 _staticSession = FRSession()
                 

@@ -9,6 +9,7 @@
 //
 
 import XCTest
+import FRCore
 
 class FRURLProtocolTests: FRBaseTest {
     

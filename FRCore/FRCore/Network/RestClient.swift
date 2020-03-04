@@ -1,8 +1,8 @@
 //
 //  RestClient.swift
-//  FRAuth
+//  FRCore
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -11,16 +11,17 @@
 import Foundation
 import UIKit
 
+/// Completion callback for REST API result as `Result` instance
+public typealias ResultCallback = (Result) -> Void
+
 /// This class is responsible to handle REST API request, and acts as HTTP client for SDK Core
 @objc
-class RestClient: NSObject {
+public class RestClient: NSObject {
     
     //  MARK: - Property
     
-    /// Completion callback for REST API result as `Result` instance
-    typealias Callback = (Result) -> Void
     /// Singleton instance for `RestClient`
-    @objc static let shared = RestClient()
+    @objc public static let shared = RestClient()
     /// URLSession to be consumed through RestClient
     var _urlSession: URLSession?
     /// URLSession instance variable for `RestClient`
@@ -36,13 +37,13 @@ class RestClient: NSObject {
                 config.httpShouldSetCookies = false
                 let urlSession = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
                 _urlSession = urlSession
-                FRLog.v("Default URLSession created")
+                Log.v("Default URLSession created")
                 
                 return urlSession
             }
         }
         set {
-            FRLog.v("Custom URLSession set")
+            Log.v("Custom URLSession set")
             _urlSession = newValue
         }
     }
@@ -55,16 +56,16 @@ class RestClient: NSObject {
     /// - Parameters:
     ///   - request: `Request` object for API request which should contain all information regarding the request
     ///   - completion: `Result` completion callback
-    public func invoke(request: Request, completion: @escaping Callback) {
+    public func invoke(request: Request, completion: @escaping ResultCallback) {
         
         //  Validate whether `Request` object is valid; otherwise, return an error
         guard let urlRequest = request.build() else {
-            completion(Response(data: nil, response: nil, error: AuthError.invalidRequest(request.debugDescription)).parseReponse())
+            completion(Response(data: nil, response: nil, error: NetworkError.invalidRequest(request.debugDescription)).parseReponse())
             return
         }
         
         // Log request / capture request start
-        FRLog.logRequest(request)
+        Log.logRequest(request)
         let start = DispatchTime.now()
         
         var bgTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
@@ -79,7 +80,7 @@ class RestClient: NSObject {
             let end = DispatchTime.now()
             let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
             let timeInterval = Int(nanoTime) / 1_000_000
-            FRLog.logResponse(timeInterval, data, response, error)
+            Log.logResponse(timeInterval, data, response, error)
             
             // Complete the request
             completion(Response(data: data, response: response, error: error).parseReponse())
@@ -95,11 +96,11 @@ class RestClient: NSObject {
     public func invokeSync(request: Request) -> Result {
         //  Validate whether `Request` object is valid; otherwise, return an error
         guard let urlRequest = request.build() else {
-            return Response(data: nil, response: nil, error: AuthError.invalidRequest(request.debugDescription)).parseReponse()
+            return Response(data: nil, response: nil, error: NetworkError.invalidRequest(request.debugDescription)).parseReponse()
         }
         
         // Log request / capture request start
-        FRLog.logRequest(request)
+        Log.logRequest(request)
         let start = DispatchTime.now()
         
         // Sync request
@@ -109,7 +110,7 @@ class RestClient: NSObject {
         let end = DispatchTime.now()
         let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
         let timeInterval = Int(nanoTime) / 1_000_000
-        FRLog.logResponse(timeInterval, data, response, error)
+        Log.logResponse(timeInterval, data, response, error)
         
         return Response(data: data, response: response, error: error).parseReponse()
     }
@@ -122,11 +123,10 @@ class RestClient: NSObject {
     /// - Parameter config: custom URLSessionConfiguration object
     @objc
     public func setURLSessionConfiguration(config: URLSessionConfiguration) {
-        FRLog.v("Custom URLSessionConfiguration set \(config.debugDescription)")
+        Log.v("Custom URLSessionConfiguration set \(config.debugDescription)")
         let session = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
         self.session = session
     }
-    
 }
 
 extension URLSession {
@@ -166,7 +166,7 @@ class RedirectHandler:NSObject, URLSessionTaskDelegate {
     ///   - request: Newly constructed URLRequest object
     ///   - completionHandler: Completion callback
     func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        FRLog.i("HTTP Request re-directed: \n\tSession: \(session.debugDescription)\n\tTask: \(task.debugDescription)\n\tResponse: \(response.debugDescription)\n\tNew Request: \(request.debugDescription)")
+        Log.i("HTTP Request re-directed: \n\tSession: \(session.debugDescription)\n\tTask: \(task.debugDescription)\n\tResponse: \(response.debugDescription)\n\tNew Request: \(request.debugDescription)")
         completionHandler(nil)
     }
 }

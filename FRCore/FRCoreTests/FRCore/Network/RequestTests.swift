@@ -1,8 +1,8 @@
 //
 //  RequestTest.swift
-//  FRAuthTests
+//  FRCoreTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -10,7 +10,7 @@
 
 import XCTest
 
-class RequestTests: FRBaseTest {
+class RequestTests: FRCoreBaseTest {
 
     let testURL: String = "https://httpbin.org"
     
@@ -121,5 +121,12 @@ class RequestTests: FRBaseTest {
         XCTAssertTrue(request.debugDescription.contains("text/plain"))
         XCTAssertTrue(request.debugDescription.contains("application/json"))
         XCTAssertTrue(request.debugDescription.contains(String(77)))
+    }
+    
+    
+    func test_body_param_get_request() {
+        let request = Request(url: self.testURL, method: .GET, bodyParams: ["Test": "Test"])
+        let urlRequest = request.build()
+        XCTAssertNil(urlRequest?.httpBody)
     }
 }
