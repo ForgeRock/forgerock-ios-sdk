@@ -118,7 +118,6 @@
         if ([[json allKeys] containsObject:@"headers"]) {
             NSDictionary *headers = [json objectForKey:@"headers"];
             XCTAssertTrue([[headers allKeys] containsObject:@"Authorization"]);
-            XCTAssertTrue([[[[FRUser currentUser] token] buildAuthorizationHeader] isEqualToString:[headers objectForKey:@"Authorization"]]);
         }
         [ex fulfill];
     }] resume];

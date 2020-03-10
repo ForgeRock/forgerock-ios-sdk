@@ -1,8 +1,8 @@
 //
 //  KeychainService.swift
-//  FRAuth
+//  FRCore
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,7 +12,7 @@ import Foundation
 import Security
 
 /// KeychainService class represents and is responsible internal Keychain Service operation such as storing, retrieving, and deleting String/Bool/Data/Certificate/Key/Identity data with Apple's Keychain Service
-struct KeychainService {
+public struct KeychainService {
     
     // MARK: - Property
     
@@ -43,8 +43,8 @@ struct KeychainService {
     ///
     /// - Parameter service: Service string value which represents namespace for Keychain Storage
     /// - Parameter securedKey: SecuredKey object containing public/private keys for encryption/decryption of data
-    init(service: String, securedKey: SecuredKey? = nil) {
-        FRLog.v("Called - service: \(service)")
+    public init(service: String, securedKey: SecuredKey? = nil) {
+        Log.v("Called - service: \(service)")
         self.options = KeychainOptions(service: service)
         self.securedKey = securedKey
     }
@@ -54,8 +54,8 @@ struct KeychainService {
     ///
     /// - Parameter options: KeychainOption that defines Keychain Operation's default settings
     /// - Parameter securedKey: SecuredKey object containing public/private keys for encryption/decryption of data
-    init(options: KeychainOptions, securedKey: SecuredKey? = nil) {
-        FRLog.v("Called - options: \(options)")
+    public init(options: KeychainOptions, securedKey: SecuredKey? = nil) {
+        Log.v("Called - options: \(options)")
         self.options = options
         self.securedKey = securedKey
     }
@@ -67,8 +67,8 @@ struct KeychainService {
     ///   - service: Service string value which represents namespace for Keychain Storage
     ///   - accessGroup: Shared Keychain Group identifier which is defined in XCode's Keychain Sharing option under Capabilities tab. AccessGroup can be given with or without Apple's TeamID. Initialization method internally validates, and adds if Apple TeamID is missing. **Note** that this initialization method will NOT validate if AccessGroup is actually accessible or not. KeychainService.validateAccessGroup should be invoked to validate application's access to the access group.
     /// - Parameter securedKey: SecuredKey object containing public/private keys for encryption/decryption of data   
-    init(service: String, accessGroup: String, securedKey: SecuredKey? = nil) {
-        FRLog.v("Called - service: \(service), accessGroup: \(accessGroup)")
+    public init(service: String, accessGroup: String, securedKey: SecuredKey? = nil) {
+        Log.v("Called - service: \(service), accessGroup: \(accessGroup)")
         self.options = KeychainOptions(service: service, accessGroup: accessGroup)
         self.securedKey = securedKey
     }
@@ -82,7 +82,7 @@ struct KeychainService {
     ///   - val: String value to store
     ///   - key: Key for the value
     /// - Returns: Bool value that indicates whether operation was successful or not
-    @discardableResult func set(_ val: String?, key: String) -> Bool {
+    @discardableResult public func set(_ val: String?, key: String) -> Bool {
         if let value = val {
             return self.set(value, key: key, itemClass: self.options.defaultClass)
         }
@@ -111,7 +111,7 @@ struct KeychainService {
     ///
     /// - Parameter key: Key for the value
     /// - Returns: String value for the given key; if no data is found, null is returned
-    func getString(_ key: String) -> String? {
+    public func getString(_ key: String) -> String? {
         return self.getString(key, itemClass: self.options.defaultClass)
     }
     
@@ -140,7 +140,7 @@ struct KeychainService {
     ///   - val: Bool value to store
     ///   - key: Key for the value
     /// - Returns: Bool value indicating whether operation was successful or not
-    @discardableResult func set(_ val: Bool, key: String) -> Bool {
+    @discardableResult public func set(_ val: Bool, key: String) -> Bool {
         return self.set(val, key: key, itemClass: self.options.defaultClass)
     }
     
@@ -162,7 +162,7 @@ struct KeychainService {
     ///
     /// - Parameter key: Key for the value
     /// - Returns: Bool data for the given key; if no data is found, null is returned
-    func getBool(_ key: String) -> Bool? {
+    public func getBool(_ key: String) -> Bool? {
         return self.getBool(key, itemClass: self.options.defaultClass)
     }
     
@@ -189,7 +189,7 @@ struct KeychainService {
     ///   - val: Data value to store
     ///   - key: Key for the value
     /// - Returns: Bool value indicating whether operation was successful or not
-    @discardableResult func set(_ val: Data, key: String) -> Bool {
+    @discardableResult public func set(_ val: Data, key: String) -> Bool {
         return self.set(val, key: key, itemClass: self.options.defaultClass)
     }
     
@@ -259,7 +259,7 @@ struct KeychainService {
     ///
     /// - Parameter key: Key for the value
     /// - Returns: Data data for the given key and KeychainItemClass; if no data is found, null is returned
-    func getData(_ key: String) -> Data? {
+    public func getData(_ key: String) -> Data? {
         return self.getData(key, itemClass: self.options.defaultClass)
     }
     
@@ -302,7 +302,7 @@ struct KeychainService {
     ///   - certificate: SecCertificate data to store
     ///   - label: Label string value for the certificate
     /// - Returns: Bool value indicating whether operation was successful or not
-    @discardableResult func setCertificate(_ certificate: SecCertificate, label: String) -> Bool {
+    @discardableResult public func setCertificate(_ certificate: SecCertificate, label: String) -> Bool {
         
         // Check if item with the same label exists
         var checkQuery = self.options.buildQuery(.certificate)
@@ -348,7 +348,7 @@ struct KeychainService {
     ///
     /// - Parameter label: Label value for the certificate
     /// - Returns: SecCertificate with given label value; if no certificate is found, null will be returned
-    func getCertificate(_ label: String) -> SecCertificate? {
+    public func getCertificate(_ label: String) -> SecCertificate? {
         
         var query = self.options.buildQuery(.certificate)
         query[SecKeys.label.rawValue] = label
@@ -374,7 +374,7 @@ struct KeychainService {
     ///
     /// - Parameter label: Label value for the **certificate**; Note that there is no label or key for identity itself; SecIdentity is retrieved based on SecCertificate's label
     /// - Returns: SecIdentity with given SecCertificate's label; if private key associated with given certificate's label, or incorrect key is stored, SecIdentity will not be retrieved and return null
-    func getIdentities(_ label: String) -> SecIdentity? {
+    public func getIdentities(_ label: String) -> SecIdentity? {
         
         var query = self.options.buildQuery(.identity)
         query[SecKeys.label.rawValue] = label
@@ -399,7 +399,7 @@ struct KeychainService {
     ///   - rsaKey: SecKey data to store
     ///   - applicationTag: Application Tag for the SecKey
     /// - Returns: Bool value indicating whether operation was successful or not
-    @discardableResult func setRSAKey(_ rsaKey: SecKey, applicationTag: String) -> Bool {
+    @discardableResult public func setRSAKey(_ rsaKey: SecKey, applicationTag: String) -> Bool {
         
         // Check if item with the same key exists
         var checkQuery = self.options.buildQuery(.key)
@@ -445,7 +445,7 @@ struct KeychainService {
     ///
     /// - Parameter applicationTag: Application Tag string for the SecKey
     /// - Returns: SecKey with given application tag value; if no key is found, null will be returned
-    func getRSAKey(_ applicationTag: String) -> SecKey? {
+    public func getRSAKey(_ applicationTag: String) -> SecKey? {
         
         var query = self.options.buildQuery(.key)
         query[SecKeys.applcationTag.rawValue] = applicationTag
@@ -467,7 +467,7 @@ struct KeychainService {
     /// Retrieves all items with key/applicationTag/label:value map;
     ///
     /// - Returns: Key/Value map Dictionary for all data
-    func allItems() -> [String: Any]? {
+    public func allItems() -> [String: Any]? {
         if let allItems = self.getAllItems() {
             return self.simplifyItems(allItems)
         }
@@ -510,7 +510,7 @@ struct KeychainService {
     ///
     /// - Parameter key: Key for the data in Keychain Service
     /// - Returns: Bool value indicating whether operation was successful or not
-    @discardableResult func delete(_ key: String) -> Bool {
+    @discardableResult public func delete(_ key: String) -> Bool {
         return self.delete(key, itemClass: self.options.defaultClass)
     }
     
@@ -545,7 +545,7 @@ struct KeychainService {
     /// Deletes all data regardless of KeychainItemClass in the Keychain Service
     ///
     /// - Returns: Bool value indicating whether operation was successful or not
-    @discardableResult func deleteAll() -> Bool {
+    @discardableResult public func deleteAll() -> Bool {
         
         let allClasses = KeychainItemClass.allClasses
         
@@ -670,7 +670,7 @@ struct KeychainService {
     ///   - service: Service namespace for Keychain Service
     ///   - accessGroup: Access Group (Shared Keychain Group Identifier) defined in Keychain Sharing under Capabilities tab
     /// - Returns: Bool result indicating whether Keychain Service is accessible with given Service namespace and Access Group
-    static func validateAccessGroup(service: String, accessGroup: String) -> Bool {
+    public static func validateAccessGroup(service: String, accessGroup: String) -> Bool {
         
         var validatedAccessGroup = accessGroup
         if let appleTeamId = KeychainService.getAppleTeamId(), !accessGroup.hasPrefix(appleTeamId) {
@@ -743,24 +743,24 @@ struct KeychainService {
 }
 
 /// KeychainOptions represent available options for Keychain Service
-struct KeychainOptions {
+public struct KeychainOptions {
     
     //  MARK: - Property
     
     /// Service name
-    var service: String = ""
+    public var service: String = ""
     /// AccessGroup as defined in Capabilities tab in XCode project
-    var accessGroup: String?
+    public var accessGroup: String?
     /// URL of designated storage
-    var url: URL?
+    public var url: URL?
     /// Boolean indicator whether the keychain data should be synchronized with iCloud
-    var synchronizable: Bool = false
+    public var synchronizable: Bool = false
     /// Default Accessibility flag
-    var accessibility: KeychainAccessibility = .afterFirstUnlock
+    public var accessibility: KeychainAccessibility = .afterFirstUnlock
     /// Default SecKeyItemClass
     var defaultClass: KeychainItemClass
     /// Default match limit
-    var matchLimit: String = SecKeys.matchLimitOne.rawValue
+    public var matchLimit: String = SecKeys.matchLimitOne.rawValue
     
     
     //  MARK: - Init
@@ -768,7 +768,7 @@ struct KeychainOptions {
     /// Initializes KeychainOptions with given Service namespace
     ///
     /// - Parameter service: Service namespace value as String
-    init(service: String) {
+    public init(service: String) {
         self.service = service
         self.defaultClass = .genericPassword
     }
@@ -779,14 +779,14 @@ struct KeychainOptions {
     /// - Parameters:
     ///   - service: Service namespace value as String
     ///   - accessGroup: Access Group value as defined in XCode's Shared Keychain section under Capabilities tab
-    init(service: String, accessGroup: String) {
+    public init(service: String, accessGroup: String) {
         
         var validatedAccessGroup = accessGroup
         if let appleTeamId = KeychainService.getAppleTeamId(), !accessGroup.hasPrefix(appleTeamId) {
             // If Apple TeamId prefix is found, and accessGroup provided doesn't contain, append it
             validatedAccessGroup = appleTeamId + "." + accessGroup
         }
-        FRLog.v("Keychain Access Group: \(validatedAccessGroup)")
+        Log.v("Keychain Access Group: \(validatedAccessGroup)")
         
         self.service = service
         self.accessGroup = validatedAccessGroup
@@ -797,7 +797,7 @@ struct KeychainOptions {
     /// Initializes KeychainOptions with given URL; designed for KeychainItemClass Internet Password
     ///
     /// - Parameter url: URL value for the internet password
-    init(url: URL) {
+    public init(url: URL) {
         self.url = url
         self.defaultClass = .internetPassword
     }
@@ -956,7 +956,7 @@ fileprivate enum SecKeys: String {
 }
 
 /// KeychainAccessibility represents Accessibility value for Keychain Service
-enum KeychainAccessibility: String {
+public enum KeychainAccessibility: String {
     case afterFirstUnlock
     case afterFirstUnlockThisDeviceOnly
     case whenUnlocked
@@ -964,7 +964,7 @@ enum KeychainAccessibility: String {
     case whenPasscodeSetThisDeviceOnly
     case alwaysThisDeviceOnly
     
-    var description: String {
+    public var description: String {
         switch self {
         case .afterFirstUnlock:
             return "kSecAttrAccessibleAfterFirstUnlock"
@@ -981,7 +981,7 @@ enum KeychainAccessibility: String {
         }
     }
     
-    var rawValue: String {
+    public var rawValue: String {
         switch self {
         case .afterFirstUnlock:
             return String(kSecAttrAccessibleAfterFirstUnlock)

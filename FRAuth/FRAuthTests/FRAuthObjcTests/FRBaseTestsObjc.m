@@ -31,7 +31,8 @@
         [NSURLProtocol registerClass:[FRTestNetworkStubProtocol class]];
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         config.protocolClasses = @[[FRTestNetworkStubProtocol class]];
-        [[RestClient shared] setURLSessionConfigurationWithConfig:config];
+        
+        [FRRestClient setURLSessionConfigurationWithConfig:config];
     }
 }
 

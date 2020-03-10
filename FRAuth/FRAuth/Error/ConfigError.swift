@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 
 /// ConfigError represents an error captured by FRAuth SDK for missing or invalid configuration

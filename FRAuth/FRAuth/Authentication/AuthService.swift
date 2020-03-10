@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 /**
  AuthService represents Authentication Tree in OpenAM to initiate authentication flow with OpenAM. Initiating AuthService returns one of following:
@@ -191,7 +192,7 @@ public class AuthService: NSObject {
         let request = self.buildAuthServiceRequest()
         
         // Invoke request
-        RestClient.shared.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request) { (result) in
             switch result {
             case .success(let response, _):
                 

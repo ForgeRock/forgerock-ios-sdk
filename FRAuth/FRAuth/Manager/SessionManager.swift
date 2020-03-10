@@ -9,7 +9,7 @@
 //
 
 import Foundation
-
+import FRCore
 
 /// SessionManager is a representation of management class for FRAuth's managing session
 @available(*, deprecated, message: "SessionManager has been deprecated and will become private in next major release; use FRUser.login for authentication or FRSession to invoke Authentication Tree and manage Session Token.") // Deprecated as of FRAuth: v1.0.2
@@ -211,7 +211,7 @@ public class SessionManager: NSObject {
             self.keychainManager.cookieStore.deleteAll()
             
             let request = Request(url: self.serverConfig.ssoTokenLogoutURL, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
-            RestClient.shared.invoke(request: request) { (result) in
+            FRRestClient.invoke(request: request) { (result) in
                 switch result {
                 case .success( _, _ ):
                     FRLog.v("SSO Token was successfully revoked")

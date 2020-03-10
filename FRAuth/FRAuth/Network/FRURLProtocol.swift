@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 
 /**
@@ -203,7 +204,7 @@ public class FRURLProtocol: URLProtocol {
         let mutableRequest = ((request as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
         
         // Setting all persistent cookies for the domain
-        if let cookieHeader = Request.prepareCookieHeader(url: mutableRequest.url!) {
+        if let cookieHeader = FRRestClient.prepareCookieHeader(url: mutableRequest.url!) {
             cookieHeader.forEach{ mutableRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
         }
         
@@ -611,7 +612,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         let mutableRequest = ((request as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
         
         // Setting all persistent cookies for the domain
-        if let cookieHeader = Request.prepareCookieHeader(url: mutableRequest.url!) {
+        if let cookieHeader = FRRestClient.prepareCookieHeader(url: mutableRequest.url!) {
             cookieHeader.forEach{ mutableRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
         }
         
