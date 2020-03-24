@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var performActionBtn: FRButton?
     @IBOutlet weak var clearLogBtn: FRButton?
     @IBOutlet weak var dropDown: FRDropDownButton?
+    @IBOutlet weak var invokeBtn: FRButton?
+    @IBOutlet weak var urlField: FRTextField?
     
     var selectedIndex: Int = 0
     var primaryColor: UIColor
@@ -111,6 +113,11 @@ class ViewController: UIViewController {
         // Styling
         self.performActionBtn?.backgroundColor = self.primaryColor
         self.performActionBtn?.tintColor = self.textColor
+        self.invokeBtn?.backgroundColor = self.primaryColor
+        self.invokeBtn?.tintColor = self.textColor
+        
+        self.urlField?.tintColor = self.primaryColor
+        self.urlField?.normalColor = self.primaryColor
         
         self.clearLogBtn?.backgroundColor = UIColor.hexStringToUIColor(hex: "#DC143C")
         self.clearLogBtn?.titleColor = UIColor.white
@@ -150,7 +157,7 @@ class ViewController: UIViewController {
         
         // Add URLs for FRAuth SDK to validate
         // All other URLs will be ignored, and FRAuth SDK will not inject Authorization header if request is not within the list
-        FRURLProtocol.validatedURLs = [URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!]
+        FRURLProtocol.validatedURLs = [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!]
         
         // Define customizable token refresh policy
         FRURLProtocol.refreshTokenPolicy = {(responseData, response, error) in
@@ -164,9 +171,25 @@ class ViewController: UIViewController {
             return shouldHandle
         }
         
+        // Handle PolicyAdvice for Transactional Authorization
+        FRURLProtocol.onPolicyAdviceReceived = {(policyAdvice, completion) in
+            DispatchQueue.main.async {
+                FRSession.authenticateWithUI(policyAdvice, self) { (token: Token?, error) in
+                    if let _ = token, error == nil {
+                        completion(true)
+                    }
+                    else {
+                        completion(false)
+                    }
+                }
+            }
+        }
+        
+        // Configure FRURLProtocol for HTTP client
         let config = URLSessionConfiguration.default
         config.protocolClasses = [FRURLProtocol.self]
         self.urlSession = URLSession(configuration: config)
+        
         // - MARK: Token Management - Example ends
         
         // Comment out below code to demonstrate FRUI customization
@@ -590,6 +613,27 @@ class ViewController: UIViewController {
     
     // MARK: - IBAction
     
+    @IBAction func invokeAPIButton(sender: UIButton) {
+        
+        guard let urlStr = urlField?.text, let url = URL(string: urlStr) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("iPlanetDirectoryPro="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        self.urlSession.dataTask(with: request) { (data, response, error) in
+            guard let responseData = data, let httpresponse = response as? HTTPURLResponse, error == nil else {
+                self.displayLog("Invoking API failed\n\nError: \(String(describing: error))")
+                return
+            }
+
+            let responseStr = String(decoding: responseData, as: UTF8.self)
+            self.displayLog("Response Data: \(responseStr)")
+            self.displayLog("Response Header: \n\(httpresponse.allHeaderFields)")
+        }.resume()
+    }
+    
+    
     @IBAction func clearLogBtnClicked(sender: UIButton) {
         DispatchQueue.main.async {
             self.loggingView?.text = ""
@@ -618,8 +662,7 @@ class ViewController: UIViewController {
             break
         case 3:
             // Display FRUser.currentUser
-//            self.displayLog(String(describing: FRUser.currentUser))
-            self.displayLog(String(describing: FRUser.currentUser?.buildAuthHeader()))
+            self.displayLog(String(describing: FRUser.currentUser))
             break
         case 4:
             // Invoke API

@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Zf-vGY">
-                                <rect key="frame" x="35" y="358" width="344" height="469"/>
+                                <rect key="frame" x="35" y="435" width="344" height="392"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -44,6 +44,25 @@
                                     <action selector="clearLogBtnClickedWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q8E-Ph-PZb"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xP7-ib-U9Q" customClass="FRButton" customModule="FRUI">
+                                <rect key="frame" x="287" y="355" width="92" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="GcK-sU-gob"/>
+                                    <constraint firstAttribute="width" constant="92" id="Tdz-YL-7RK"/>
+                                </constraints>
+                                <state key="normal" title="Invoke"/>
+                                <connections>
+                                    <action selector="invokeAPIButtonWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GeD-82-ynw"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x96-fx-gqH" customClass="FRTextField" customModule="FRUI">
+                                <rect key="frame" x="35" y="354" width="237" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="5TA-bP-kGY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NkK-UP-muE" customClass="FRDropDownButton" customModule="FRUI">
                                 <rect key="frame" x="35" y="128" width="344" height="30"/>
                                 <constraints>
@@ -54,8 +73,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="x96-fx-gqH" firstAttribute="top" secondItem="Orl-ar-tW1" secondAttribute="bottom" constant="36" id="3FR-nb-KaB"/>
+                            <constraint firstItem="xP7-ib-U9Q" firstAttribute="leading" secondItem="x96-fx-gqH" secondAttribute="trailing" constant="15" id="5ri-vH-A6t"/>
+                            <constraint firstItem="tA1-Zf-vGY" firstAttribute="top" secondItem="xP7-ib-U9Q" secondAttribute="bottom" constant="40" id="7BB-8g-YAA"/>
                             <constraint firstItem="vsi-fR-Iuf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="Dw0-Rg-xMw"/>
-                            <constraint firstItem="tA1-Zf-vGY" firstAttribute="top" secondItem="Orl-ar-tW1" secondAttribute="bottom" constant="40" id="JBI-8X-vi0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xP7-ib-U9Q" secondAttribute="trailing" constant="35" id="Gtz-iu-XzK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tA1-Zf-vGY" secondAttribute="trailing" constant="35" id="Mmv-wq-Elr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="tA1-Zf-vGY" secondAttribute="bottom" constant="35" id="OMM-lF-KVF"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vsi-fR-Iuf" secondAttribute="trailing" constant="35" id="PBY-oj-NSI"/>
@@ -63,9 +85,11 @@
                             <constraint firstItem="Orl-ar-tW1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="Whi-p3-FsG"/>
                             <constraint firstItem="NkK-UP-muE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="afc-wH-XuU"/>
                             <constraint firstItem="Orl-ar-tW1" firstAttribute="top" secondItem="vsi-fR-Iuf" secondAttribute="bottom" constant="40" id="d0c-fn-Rrg"/>
+                            <constraint firstItem="xP7-ib-U9Q" firstAttribute="top" secondItem="Orl-ar-tW1" secondAttribute="bottom" constant="37" id="eF8-UK-Q61"/>
                             <constraint firstItem="tA1-Zf-vGY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="hUZ-ze-HqJ"/>
                             <constraint firstItem="NkK-UP-muE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="iTX-yb-prN"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NkK-UP-muE" secondAttribute="trailing" constant="35" id="sM8-nu-G9X"/>
+                            <constraint firstItem="x96-fx-gqH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="tFh-Mk-Yjo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Orl-ar-tW1" secondAttribute="trailing" constant="35" id="tGH-uH-SuH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -74,8 +98,10 @@
                     <connections>
                         <outlet property="clearLogBtn" destination="Orl-ar-tW1" id="rsR-J0-aa0"/>
                         <outlet property="dropDown" destination="NkK-UP-muE" id="2kB-NP-e5A"/>
+                        <outlet property="invokeBtn" destination="xP7-ib-U9Q" id="91H-Ps-Emr"/>
                         <outlet property="loggingView" destination="tA1-Zf-vGY" id="jlz-FG-rnV"/>
                         <outlet property="performActionBtn" destination="vsi-fR-Iuf" id="0pD-by-sSb"/>
+                        <outlet property="urlField" destination="x96-fx-gqH" id="q6Z-Wa-Lbu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
