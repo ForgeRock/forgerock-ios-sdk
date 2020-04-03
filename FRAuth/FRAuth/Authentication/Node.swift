@@ -293,7 +293,7 @@ public class Node: NSObject {
         var parameter: [String: String] = [:]
         parameter[OpenAM.authIndexType] = OpenAM.service
         parameter[OpenAM.authIndexValue] = self.serviceName
-        return Request(url: self.serverConfig.treeURL, method: .POST, headers: header, bodyParams: self.buildRequestPayload(), urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.authenticateURL, method: .POST, headers: header, bodyParams: self.buildRequestPayload(), urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
     
     

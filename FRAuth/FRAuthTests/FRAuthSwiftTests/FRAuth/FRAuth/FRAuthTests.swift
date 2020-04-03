@@ -232,7 +232,7 @@ class FRAuthTests: FRBaseTest {
         // Given
         var config = self.readConfigFile(fileName: "FRAuthConfig")
         config.removeValue(forKey: "forgerock_oauth_client_id")
-        
+    
         var initError: Error?
         
         // Then
@@ -380,6 +380,72 @@ class FRAuthTests: FRBaseTest {
         // Then
         do {
             try FRAuth.initPrivate(config: config)
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
+    }
+    
+    
+    func test_frstart_with_custom_endpoints() {
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config["forgerock_authenticate_endpoint"] = "/custom/authenticate/path"
+        config["forgerock_token_endpoint"] = "/custom/token/path"
+        config["forgerock_authorize_endpoint"] = "/custom/authorize/path"
+        config["forgerock_revoke_endpoint"] = "/custom/token/path"
+        config["forgerock_userinfo_endpoint"] = "/custom/userinfo/path"
+        config["forgerock_session_endpoint"] = "/custom/session/path"
+        
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+            
+            guard let serverConfig = FRAuth.shared?.serverConfig else {
+                XCTFail("Failed to retrieve ServerConfig object")
+                return
+            }
+            
+            XCTAssertEqual(serverConfig.authenticateURL, "http://openam.example.com:8081/openam/custom/authenticate/path")
+            XCTAssertEqual(serverConfig.tokenURL, "http://openam.example.com:8081/openam/custom/token/path")
+            XCTAssertEqual(serverConfig.authorizeURL, "http://openam.example.com:8081/openam/custom/authorize/path")
+            XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/custom/token/path")
+            XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/custom/userinfo/path")
+            XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/custom/session/path")
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
+    }
+    
+    
+    func test_frstart_with_some_custom_endpoints() {
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config["forgerock_authenticate_endpoint"] = "/custom/authenticate/path"
+        config["forgerock_token_endpoint"] = "/custom/token/path"
+        
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+            
+            guard let serverConfig = FRAuth.shared?.serverConfig else {
+                XCTFail("Failed to retrieve ServerConfig object")
+                return
+            }
+            
+            XCTAssertEqual(serverConfig.authenticateURL, "http://openam.example.com:8081/openam/custom/authenticate/path")
+            XCTAssertEqual(serverConfig.tokenURL, "http://openam.example.com:8081/openam/custom/token/path")
+            XCTAssertEqual(serverConfig.authorizeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/authorize")
+            XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/token/revoke")
+            XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/oauth2/realms/root/userinfo")
+            XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/json/realms/root/sessions")
         }
         catch {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")

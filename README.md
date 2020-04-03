@@ -70,6 +70,12 @@ Create a file named `FRAuthConfig.plist` that contains the following information
 | forgerock_auth_service | Authentication Tree name registered in AM for user authentication. |  None   |
 | forgerock_registration_service | Authentication tree name registered in OpenAM for user registration. |  None   |
 | forgerock_enable_cookie | Boolean value for SDK to manage and persist Cookies from AM. |  true   |
+| forgerock_authenticate_endpoint | URL path for /authenticate endpoint in AM. | /json/realms/{realm}/authenticate   |
+| forgerock_authorize_endpoint | URL path for /authorize endpoint in AM. | /oauth2/realms/{realm}/authorize   |
+| forgerock_token_endpoint | URL path for /access_token endpoint in AM. |  /oauth2/realms/{realm}/access_token   |
+| forgerock_revoke_endpoint | URL path for /token/revoke endpoint in AM. |  /oauth2/realms/{realm}/token/revoke   |
+| forgerock_userinfo_endpoint | URL path for /userinfo endpoint in AM. |  /oauth2/realms/{realm}/userinfo    |
+| forgerock_session_endpoint | URL path for /sessions endpoint in AM. |  /json/realms/{realm}/sessions   |
 
 
 <br>
@@ -111,7 +117,12 @@ FRAuth.configPlistFileName = <.plist Configuration File Name>
 	<key>forgerock_registration_service_name</key>
 	<string>UserSignUp</string>
 	<key>forgerock_enable_cookie</key>
+	<string>UserSignUp</string>
+	<key>forgerock_enable_cookie</key>
 	<true/>
+	<!-- Optional configuration values for custom paths; add custom paths as needed -->
+	<key>forgerock_authenticate_endpoint</key>
+	<string>/custom/path</string>
 </dict>
 </plist>
 ```

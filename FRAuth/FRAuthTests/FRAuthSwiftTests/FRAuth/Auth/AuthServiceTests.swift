@@ -30,7 +30,7 @@ class AuthServiceTests: FRBaseTest {
         // Then
         XCTAssertEqual(authService.serviceName, self.authServiceName)
         XCTAssertEqual(authService.serverConfig.baseURL.absoluteString, self.serverURL)
-        XCTAssertEqual(authService.serverConfig.treeURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
+        XCTAssertEqual(authService.serverConfig.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
         XCTAssertEqual(authService.serverConfig.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
         XCTAssertEqual(authService.serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
         XCTAssertEqual(authService.serverConfig.timeout, 90)
@@ -47,7 +47,7 @@ class AuthServiceTests: FRBaseTest {
         // Then
         XCTAssertEqual(authService.serviceName, self.authServiceName)
         XCTAssertEqual(authService.serverConfig.baseURL.absoluteString, self.serverURL)
-        XCTAssertEqual(authService.serverConfig.treeURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
+        XCTAssertEqual(authService.serverConfig.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
         XCTAssertEqual(authService.serverConfig.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
         XCTAssertEqual(authService.serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
         XCTAssertEqual(authService.serverConfig.timeout, 90)
