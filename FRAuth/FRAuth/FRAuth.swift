@@ -99,6 +99,48 @@ public final class FRAuth: NSObject {
                 throw ConfigError.invalidConfiguration(errorMsg)
         }
         
+        // Check if realm value is in config
+        var realm = "root"
+        if let realmConfig = config["forgerock_realm"] as? String {
+            realm = realmConfig
+        }
+        
+        // ServerConfig builder
+        let configBuilder = ServerConfigBuilder(url: serverUrl, realm: realm)
+        
+        // ServerConfig building with config values
+        if let enableCookieConfig = config["forgerock_enable_cookie"] as? Bool {
+            configBuilder.set(enableCookie: enableCookieConfig)
+        }
+        
+        if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
+            configBuilder.set(timeout: timeOutConfigDouble)
+        }
+        
+        if let authenticatePath = config["forgerock_authenticate_endpoint"] as? String {
+            configBuilder.set(authenticatePath: authenticatePath)
+        }
+        
+        if let authorizePath = config["forgerock_authorize_endpoint"] as? String {
+            configBuilder.set(authorizePath: authorizePath)
+        }
+        
+        if let tokenPath = config["forgerock_token_endpoint"] as? String {
+            configBuilder.set(tokenPath: tokenPath)
+        }
+        
+        if let revokePath = config["forgerock_revoke_endpoint"] as? String {
+            configBuilder.set(revokePath: revokePath)
+        }
+        
+        if let userInfoPath = config["forgerock_userinfo_endpoint"] as? String {
+            configBuilder.set(userInfoPath: userInfoPath)
+        }
+        
+        if let sessionPath = config["forgerock_session_endpoint"] as? String {
+            configBuilder.set(sessionPath: sessionPath)
+        }
+        
         // Validate Auth/Registration Service
         guard let authServiceName = config["forgerock_auth_service_name"] as? String else {
             let errorMsg = "forgerock_auth_service_name is empty"
@@ -108,29 +150,12 @@ public final class FRAuth: NSObject {
         
         let registrationServiceName = config["forgerock_registration_service_name"] as? String ?? ""
         
-        // Check if realm value is in config, otherwise, configure with default
-        var realm = "root"
-        if let realmConfig = config["forgerock_realm"] as? String {
-            realm = realmConfig
-        }
-        
-        var enableCookie = true
-        if let enableCookieConfig = config["forgerock_enable_cookie"] as? Bool {
-            enableCookie = enableCookieConfig
-        }
-        
-        // Check if timeout value is in config, otherwise, configure with default
-        var timeout = 60.0
-        if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
-            timeout = timeOutConfigDouble
-        }
-        
         var threshold = 60
         if let thresholdConfigStr = config["forgerock_oauth_threshold"] as? String, let timeOutConfigInt = Int(thresholdConfigStr) {
             threshold = timeOutConfigInt
         }
         
-        let serverConfig = ServerConfig(url: serverUrl, realm: realm, timeout: timeout, enableCookie: enableCookie)
+        let serverConfig = configBuilder.build()
         FRLog.v("ServerConfig created: \(serverConfig)")
         var oAuth2Client: OAuth2Client?
         
@@ -148,7 +173,7 @@ public final class FRAuth: NSObject {
         }
                 
         if let accessGroup = config["forgerock_keychain_access_group"] as? String {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup) {
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup) {
                 keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?
@@ -159,7 +184,7 @@ public final class FRAuth: NSObject {
             }
         }
         else {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm) {
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + serverConfig.realm) {
                 keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?

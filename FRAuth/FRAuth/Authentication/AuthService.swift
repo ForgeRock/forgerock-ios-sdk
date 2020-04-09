@@ -254,7 +254,7 @@ public class AuthService: NSObject {
         }
         parameter[OpenAM.authIndexValue] = self.serviceName
         
-        return Request(url: self.serverConfig.treeURL, method: .POST, headers: header, urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.authenticateURL, method: .POST, headers: header, urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
     
     

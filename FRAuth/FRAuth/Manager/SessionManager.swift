@@ -210,7 +210,7 @@ public class SessionManager: NSObject {
             FRLog.i("Deleting all cookies from Cookie Store as invalidating Session Token.")
             self.keychainManager.cookieStore.deleteAll()
             
-            let request = Request(url: self.serverConfig.ssoTokenLogoutURL, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+            let request = Request(url: self.serverConfig.sessionPath, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
             FRRestClient.invoke(request: request) { (result) in
                 switch result {
                 case .success( _, _ ):
