@@ -127,7 +127,7 @@ class FRRestClient: NSObject {
                         
                         // Validate domain, and path
                         var domainValidated = false
-                        if let host = url.host, cookie.domain.contains(host), url.path.hasPrefix(cookie.path) {
+                        if let host = url.host, host.contains(cookie.domain), url.path.hasPrefix(cookie.path) {
                             domainValidated = true
                         }
                         else {
