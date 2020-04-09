@@ -83,6 +83,15 @@ public class Node: NSObject {
                 
                 let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback)
                 self.callbacks.append(callbackObj)
+                
+                // Support AM 6.5.2 stage property workaround with MetadataCallback
+                if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response["output"] as? [[String: Any]] {
+                    for output in outputs {
+                        if let outputName = output["name"] as? String, outputName == "data", let outputValue = output["value"] as? [String: String] {
+                            self.stage = outputValue["stage"]
+                        }
+                    }
+                }
             }
         }
         else {
@@ -111,6 +120,7 @@ public class Node: NSObject {
         
         return callback
     }
+    
     
     //  MARK: - Public methods
     
