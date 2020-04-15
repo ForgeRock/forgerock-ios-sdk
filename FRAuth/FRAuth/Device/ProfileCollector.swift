@@ -13,7 +13,7 @@ import Foundation
 
 class ProfileCollector: DeviceCollector {
     
-    var name: String = "profile"
+    var name: String = "metadata"
     
     /// An array of DeviceCollector to be collected
     var collectors: [DeviceCollector]

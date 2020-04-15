@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */; };
 		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
@@ -249,7 +250,7 @@
 		D5AF374A23FB6F380035FE77 /* PolicyAdvice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */; };
 		D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */; };
 		D5B2A37E23FC951700764370 /* HiddenValueCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */; };
-		D5B2A38023FCA9A600764370 /* DeviceAttributeCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */; };
+		D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */; };
 		D5B2A38923FCB25E00764370 /* ActionCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38823FCB25E00764370 /* ActionCallback.swift */; };
 		D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */; };
@@ -261,7 +262,7 @@
 		D5C979C12409EA9600DA380A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5F01B1D240F0B9F00BD48AA /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B1C240F0B9F00BD48AA /* FRLog.swift */; };
 		D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */; };
-		D5F01B1F240F1B2900BD48AA /* DeviceAttributeCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */; };
+		D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */; };
 		D5F01B20240F1B2900BD48AA /* ActionCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38823FCB25E00764370 /* ActionCallback.swift */; };
 		D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B1C240F0B9F00BD48AA /* FRLog.swift */; };
@@ -328,6 +329,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
 		D512CD40240DC41E00AF520E /* FRRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRestClient.swift; sourceTree = "<group>"; };
 		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
@@ -497,7 +499,7 @@
 		D59A0CE223AC28C8008D948E /* SessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerTests.swift; sourceTree = "<group>"; };
 		D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTests.swift; sourceTree = "<group>"; };
 		D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenValueCallback.swift; sourceTree = "<group>"; };
-		D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAttributeCallback.swift; sourceTree = "<group>"; };
+		D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallback.swift; sourceTree = "<group>"; };
 		D5B2A38823FCB25E00764370 /* ActionCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCallback.swift; sourceTree = "<group>"; };
 		D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollector.swift; sourceTree = "<group>"; };
 		D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
@@ -730,6 +732,7 @@
 				D592482023286B3F0027031A /* TextOutputCallbackTests.swift */,
 				D5924822232871AE0027031A /* PollingWaitCallbackTests.swift */,
 				D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */,
+				D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -1145,7 +1148,7 @@
 				D586CF5223358EDF007A2194 /* KbaCreateCallback.swift */,
 				D55776B423702889005A911F /* MetadataCallback.swift */,
 				D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */,
-				D5B2A37F23FCA9A600764370 /* DeviceAttributeCallback.swift */,
+				D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */,
 				D5B2A38823FCB25E00764370 /* ActionCallback.swift */,
 			);
 			path = Callbacks;
@@ -1533,7 +1536,7 @@
 				D586CFB823358EE0007A2194 /* HardwareCollector.swift in Sources */,
 				D586CFAA23358EE0007A2194 /* ServerConfig.swift in Sources */,
 				D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */,
-				D5B2A38023FCA9A600764370 /* DeviceAttributeCallback.swift in Sources */,
+				D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
 				D586CFC023358EE0007A2194 /* SessionManager.swift in Sources */,
 				D586CFAC23358EE0007A2194 /* Address.swift in Sources */,
@@ -1591,7 +1594,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */,
-				D5F01B1F240F1B2900BD48AA /* DeviceAttributeCallback.swift in Sources */,
+				D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */,
 				D5F01B20240F1B2900BD48AA /* ActionCallback.swift in Sources */,
 				D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */,
 				D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */,
@@ -1706,6 +1709,7 @@
 				D592481F232865D30027031A /* ReCaptchaCallbackTests.swift in Sources */,
 				D52D167B231484D60095905A /* TermsAndConditionsCallbackTests.swift in Sources */,
 				D535650022CD6F68003972AB /* FRAuth.swift in Sources */,
+				D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */,
 				D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */,
 				D534A2CB22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift in Sources */,
 				D52D16A6231499B70095905A /* ObjcServerConfigTests.m in Sources */,
