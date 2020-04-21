@@ -11,7 +11,7 @@
 
 import Foundation
 
-/// DeviceAttributeCallback is a callback class that collects Device Information using DeviceCollector(s) in FRAuth SDK.
+/// DeviceProfileCallback is a callback class that collects Device Information using DeviceCollector(s) in FRAuth SDK.
 @objc public class DeviceProfileCallback: HiddenValueCallback, ActionCallback {
     
     //  MARK: - Properties
@@ -49,12 +49,11 @@ import Foundation
         
         try super.init(json: json)
         
-        // For now, force Callback.type as DeviceAttributeCallback
-        type = "DeviceAttributeCallback"
+        type = "DeviceProfileCallback"
     }
     
     
-    /// Executes list of DeviceCollector to collect device information based on DeviceAttributeCallback's attributes
+    /// Executes list of DeviceCollector to collect device information based on DeviceProfileCallback's attributes
     /// - Parameter completion: Completion block that returns JSON of collected information
     public func execute(_ completion: @escaping JSONCompletionCallback) {
         let collector = FRDeviceCollector()
@@ -77,7 +76,7 @@ import Foundation
                 collector.collectors.append(locationCollector)
             }
             else {
-                FRLog.w("LocationCollector is not found during DeviceAttributeCallback.execute")
+                FRLog.w("LocationCollector is not found during DeviceProfileCallback.execute")
             }
         }
         
