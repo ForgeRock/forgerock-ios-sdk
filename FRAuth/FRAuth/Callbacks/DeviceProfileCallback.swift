@@ -1,5 +1,5 @@
 // 
-//  DeviceAttributeCallback.swift
+//  DeviceProfileCallback.swift
 //  FRAuth
 //
 //  Copyright (c) 2020 ForgeRock. All rights reserved.
@@ -11,13 +11,17 @@
 
 import Foundation
 
-/// DeviceAttributeCallback is a callback class that collects Device Information using DeviceCollector(s) in FRAuth SDK.
-@objc public class DeviceAttributeCallback: HiddenValueCallback, ActionCallback {
+/// DeviceProfileCallback is a callback class that collects Device Information using DeviceCollector(s) in FRAuth SDK.
+@objc public class DeviceProfileCallback: HiddenValueCallback, ActionCallback {
     
     //  MARK: - Properties
     
-    /// List of attributes to be collected
-    @objc public var attributes: [String] = []
+    /// Boolean indicator whether device metadata is required or not
+    @objc public var metadataRequired: Bool = false
+    /// Boolean indicator whether device location is required or not
+    @objc public var locationRequired: Bool = false
+    /// Message of device profile collector callback
+    @objc public var message: String = ""
     
     //  MARK: - Init
     
@@ -26,22 +30,30 @@ import Foundation
     /// - Parameter json: JSON object of HiddenValueCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     required init(json: [String : Any]) throws {
-        try super.init(json: json)
         
-        // For now, force Callback.type as DeviceAttributeCallback
-        type = "DeviceAttributeCallback"
+        guard let outputs = json["output"] as? [[String: Any]] else {
+                throw AuthError.invalidCallbackResponse(String(describing: json))
+        }
         
-        if let idUrlString = id, let idUrl = URLComponents(string: idUrlString), let queryItems = idUrl.queryItems {
-            for queryItem in queryItems {
-                if queryItem.name == "attributes", let queryValue = queryItem.value {
-                    attributes.append(queryValue)
-                }
+        for output in outputs {
+            if let outputName = output["name"] as? String, outputName == "location", let outputValue = output["value"] as? Bool {
+                locationRequired = outputValue
+            }
+            else if let outputName = output["name"] as? String, outputName == "metadata", let outputValue = output["value"] as? Bool {
+                metadataRequired = outputValue
+            }
+            else if let outputName = output["name"] as? String, outputName == "message", let outputValue = output["value"] as? String {
+                message = outputValue
             }
         }
+        
+        try super.init(json: json)
+        
+        type = "DeviceProfileCallback"
     }
     
     
-    /// Executes list of DeviceCollector to collect device information based on DeviceAttributeCallback's attributes
+    /// Executes list of DeviceCollector to collect device information based on DeviceProfileCallback's attributes
     /// - Parameter completion: Completion block that returns JSON of collected information
     public func execute(_ completion: @escaping JSONCompletionCallback) {
         let collector = FRDeviceCollector()
@@ -59,19 +71,17 @@ import Foundation
             }
         }
         
+        if locationRequired {
+            if let locationCollector = locationCollector {
+                collector.collectors.append(locationCollector)
+            }
+            else {
+                FRLog.w("LocationCollector is not found during DeviceProfileCallback.execute")
+            }
+        }
         
-        for attribute in attributes {
-            if attribute.lowercased() == "location" {
-                if let locationCollector = locationCollector {
-                    collector.collectors.append(locationCollector)
-                }
-                else {
-                    FRLog.w("LocationCollector is not found during DeviceAttributeCallback.execute")
-                }
-            }
-            else if attribute.lowercased() == "profile" {
-                collector.collectors.append(profileCollector)
-            }
+        if metadataRequired {
+            collector.collectors.append(profileCollector)
         }
         
         collector.collect { (json) in
@@ -79,8 +89,7 @@ import Foundation
             completion(json)
         }
     }
-    
-    
+        
     func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
         let options = prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : nil
         if JSONSerialization.isValidJSONObject(value) {

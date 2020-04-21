@@ -111,13 +111,6 @@ public class Node: NSObject {
         
         let callback = try callbackClass.init(json: json)
         
-        // Workaround for converting HiddenValueCallback into DeviceAttributeCallback
-        if let hiddenValueCallback = callback as? HiddenValueCallback, let id = hiddenValueCallback.id, let idUrl = URLComponents(string: id), let idUrlScheme = idUrl.scheme {
-            if let deviceAttributeCallback = CallbackFactory.shared.supportedCallbacks[idUrlScheme] {
-                return try deviceAttributeCallback.init(json: json)
-            }
-        }
-        
         return callback
     }
     

@@ -16,7 +16,7 @@ class DeviceAttributeTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
     
     public static let cellIdentifier = "TextOutputCallbackTableViewCellId"
     public static let cellHeight: CGFloat = 180.0
-    var callback: DeviceAttributeCallback?
+    var callback: DeviceProfileCallback?
     
     @IBOutlet weak var grantButton: FRButton?
     @IBOutlet weak var attributesLabel: UILabel?
@@ -30,11 +30,19 @@ class DeviceAttributeTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     
     func updateCellData(callback: Callback) {
-        self.callback = callback as? DeviceAttributeCallback
+        self.callback = callback as? DeviceProfileCallback
         
         if let thisCallback = self.callback {
             var attributeValues = ""
-            for (index, attribute) in thisCallback.attributes.enumerated() {
+            var attributes: [String] = []
+            if thisCallback.locationRequired {
+                attributes.append("Device Location")
+            }
+            if thisCallback.metadataRequired {
+                attributes.append("Device Metadata")
+            }
+            
+            for (index, attribute) in attributes.enumerated() {
                 
                 if index == 0 {
                     attributeValues += attribute
