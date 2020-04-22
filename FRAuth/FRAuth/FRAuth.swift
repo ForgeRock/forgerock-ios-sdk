@@ -46,14 +46,17 @@ public final class FRAuth: NSObject {
     /// ServerConfig instance for FRAuth; ServerConfig values are retrieved from .plist configuration file
     var serverConfig: ServerConfig
     /// OAuth2Client instance for FRAuth; OAuth2Client values are retrieved from .plist configuration file
-    var oAuth2Client: OAuth2Client
+    var oAuth2Client: OAuth2Client?
     /// TokenManager instance for FRAuth to perform any token related operation
-    var tokenManager: TokenManager
+    var tokenManager: TokenManager?
     /// SessionManager instance for FRAuth to perform manage, and persist session
     var sessionManager: SessionManager
     /// KeychainManager instance for FRAuth to perform any keychain related operation to persist and/or retrieve credentials
     var keychainManager: KeychainManager
     
+    func getServiceName() -> String {
+        return self.authServiceName
+    }
     
     //  MARK: - Init
     
@@ -87,18 +90,6 @@ public final class FRAuth: NSObject {
     /// - Throws: ConfigError
     static func initPrivate(config: [String: Any]) throws {
         
-        // Validate oauth config
-        guard let clientId = config["forgerock_oauth_client_id"] as? String,
-            let redirectUriAsString = config["forgerock_oauth_redirect_uri"] as? String,
-            let redirectUri = URL(string: redirectUriAsString),
-            redirectUri.absoluteString.isValidUrl,
-            let scope = config["forgerock_oauth_scope"] as? String
-            else {
-                let errorMsg = "oauth config (forgerock_oauth_client_id, forgerock_oauth_redirect_uri, or forgerock_oauth_scope) is empty"
-                FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist. \(errorMsg)")
-                throw ConfigError.invalidConfiguration(errorMsg)
-        }
-        
         // Validate server config
         guard let server = config["forgerock_url"] as? String,
             let serverUrl = URL(string: server),
@@ -106,6 +97,48 @@ public final class FRAuth: NSObject {
                 let errorMsg = "server config (forgerock_url) is empty"
                 FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist. \(errorMsg)")
                 throw ConfigError.invalidConfiguration(errorMsg)
+        }
+        
+        // Check if realm value is in config
+        var realm = "root"
+        if let realmConfig = config["forgerock_realm"] as? String {
+            realm = realmConfig
+        }
+        
+        // ServerConfig builder
+        let configBuilder = ServerConfigBuilder(url: serverUrl, realm: realm)
+        
+        // ServerConfig building with config values
+        if let enableCookieConfig = config["forgerock_enable_cookie"] as? Bool {
+            configBuilder.set(enableCookie: enableCookieConfig)
+        }
+        
+        if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
+            configBuilder.set(timeout: timeOutConfigDouble)
+        }
+        
+        if let authenticatePath = config["forgerock_authenticate_endpoint"] as? String {
+            configBuilder.set(authenticatePath: authenticatePath)
+        }
+        
+        if let authorizePath = config["forgerock_authorize_endpoint"] as? String {
+            configBuilder.set(authorizePath: authorizePath)
+        }
+        
+        if let tokenPath = config["forgerock_token_endpoint"] as? String {
+            configBuilder.set(tokenPath: tokenPath)
+        }
+        
+        if let revokePath = config["forgerock_revoke_endpoint"] as? String {
+            configBuilder.set(revokePath: revokePath)
+        }
+        
+        if let userInfoPath = config["forgerock_userinfo_endpoint"] as? String {
+            configBuilder.set(userInfoPath: userInfoPath)
+        }
+        
+        if let sessionPath = config["forgerock_session_endpoint"] as? String {
+            configBuilder.set(sessionPath: sessionPath)
         }
         
         // Validate Auth/Registration Service
@@ -117,40 +150,47 @@ public final class FRAuth: NSObject {
         
         let registrationServiceName = config["forgerock_registration_service_name"] as? String ?? ""
         
-        // Check if realm value is in config, otherwise, configure with default
-        var realm = "root"
-        if let realmConfig = config["forgerock_realm"] as? String {
-            realm = realmConfig
-        }
-        
-        // Check if timeout value is in config, otherwise, configure with default
-        var timeout = 60.0
-        if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
-            timeout = timeOutConfigDouble
-        }
-        
         var threshold = 60
         if let thresholdConfigStr = config["forgerock_oauth_threshold"] as? String, let timeOutConfigInt = Int(thresholdConfigStr) {
             threshold = timeOutConfigInt
         }
         
-        let serverConfig = ServerConfig(url: serverUrl, realm: realm, timeout: timeout)
-        let oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
+        let serverConfig = configBuilder.build()
+        FRLog.v("ServerConfig created: \(serverConfig)")
+        var oAuth2Client: OAuth2Client?
         
-        FRLog.v("OAuth2Client / ServerConfig created: \(oAuth2Client)")
-        if let accessGroup = config["forgerock_keychain_access_group"] as? String {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm, accessGroup: accessGroup) {
+        if let clientId = config["forgerock_oauth_client_id"] as? String,
+        let redirectUriAsString = config["forgerock_oauth_redirect_uri"] as? String,
+        let redirectUri = URL(string: redirectUriAsString),
+        redirectUri.absoluteString.isValidUrl,
+        let scope = config["forgerock_oauth_scope"] as? String
+        {
+            oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
+            FRLog.v("OAuth2Client created: \(String(describing: oAuth2Client))")
+        }
+        else {
+            FRLog.w("Failed to load OAuth2 configuration; continue on SDK initialization without OAuth2 module.")
+        }
                 
+        if let accessGroup = config["forgerock_keychain_access_group"] as? String {
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup) {
+                keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
-                let tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                var tokenManager: TokenManager?
+                if let oAuth2Client = oAuth2Client {
+                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
         }
         else {
-            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + realm) {
-                
+            if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + serverConfig.realm) {
+                keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
-                let tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                var tokenManager: TokenManager?
+                if let oAuth2Client = oAuth2Client {
+                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
         }
@@ -167,7 +207,7 @@ public final class FRAuth: NSObject {
     ///   - tokenManager: TokenMAnager instance
     ///   - keychainManager: KeychainManager instance
     ///   - sessionManager: SessionManager instance
-    init(authServiceName: String, registerServiceName: String, serverConfig: ServerConfig, oAuth2Client: OAuth2Client, tokenManager: TokenManager, keychainManager: KeychainManager, sessionManager: SessionManager) {
+    init(authServiceName: String, registerServiceName: String, serverConfig: ServerConfig, oAuth2Client: OAuth2Client?, tokenManager: TokenManager?, keychainManager: KeychainManager, sessionManager: SessionManager) {
         
         FRLog.i("SDK initializaed", false)
         
@@ -183,13 +223,29 @@ public final class FRAuth: NSObject {
     }
     
     
-    // - MARK: Public
+    // - MARK: Private
+        
+    /// Initiates Authentication Tree with specified authIndexValue and authIndexType.
+    /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
+    /// - Parameter authIndexType: authIndexType: Authentication Tree type value in String
+    /// - Parameter completion:NodeCompletion callback which returns the result of Node submission
+    func next<T>(authIndexValue: String, authIndexType: String, completion:@escaping NodeCompletion<T>) {
+        
+        let authService: AuthService = AuthService(authIndexValue: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager, authIndexType: authIndexType)
+        authService.next { (value: T?, node, error) in
+            completion(value, node, error)
+        }
+    }
+    
+    
+    // - MARK: Deprecated
     
     /// Initiates Authentication or Registration flow with given flowType and expected result type
     ///
     /// - Parameters:
     ///   - flowType: FlowType whether authentication, or registration
     ///   - completion: NodeCompletion callback which returns the result of Node submission.
+    @available(*, deprecated, message: "FRAuth.shared.next() has been deprecated; use FRUser.login for authentication or FRSession.authenticat() instead to invoke Authentication Tree.") // Deprecated as of FRAuth: v1.0.2
     public func next<T>(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<T>) {
         FRLog.v("Called")
         
@@ -203,41 +259,9 @@ public final class FRAuth: NSObject {
             break
         }
         
-        let authService: AuthService = AuthService(name: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager)
+        let authService: AuthService = AuthService(authIndexValue: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
-        }
-    }
-    
-    
-    //  MARK: - Objective-C Compatibility
-    
-    @objc(nextWithFlowType:tokenCompletion:)
-    @available(swift, obsoleted: 1.0)
-    public func nextWithFlowType(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<Token>) {
-        FRLog.v("Called")
-        self.next(flowType: flowType) { (token: Token?, node, error) in
-            completion(token, node, error)
-        }
-    }
-    
-
-    @objc(nextWithFlowType:accessTokenCompletion:)
-    @available(swift, obsoleted: 1.0)
-    public func nextWithFlowType(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<AccessToken>) {
-        FRLog.v("Called")
-        self.next(flowType: flowType) { (token: AccessToken?, node, error) in
-            completion(token, node, error)
-        }
-    }
-    
-    
-    @objc(nextWithFlowType:userCompletion:)
-    @available(swift, obsoleted: 1.0)
-    public func nextWithFlowType(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<FRUser>) {
-        FRLog.v("Called")
-        self.next(flowType: flowType) { (user: FRUser?, node, error) in
-            completion(user, node, error)
         }
     }
 }

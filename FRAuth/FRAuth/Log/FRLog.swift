@@ -1,382 +1,51 @@
-//
+// 
 //  FRLog.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
+
 import Foundation
+import FRCore
 
 /**
- LogLevel is a representation of FRLog's type of log entry.\nAvailable LogLevels are:
-     * none: no log entry is displayed on the debug console or log file
-     * verbose: verbose level of log entry is displayed on the debug console or log file.
-     * info: information level of log entry is displayed on the debug console or log file.
-     * network: network level of log entry is displayed on the debug console or log file. All network traffics going in and out are through FRAuth SDK will be displayed with detailed information of request and response.
-     * warning: warning level of log entry is displayed on the debug console or log file. Any minor issue, or error that would not impact the SDK's functionality will be displayed.
-     * error: error level of log entry is displayed on the debug console or log file. Any severe issue, or major error that would impact the SDK's functionality will be displayed.
-     * all: All types of log entry will be displayed on the debug console or log file.
- */
-@objc(FRLogLevel)
-public class LogLevel: NSObject, OptionSet {
+FRLog is a class responsible for Logging functionalities of FRAuth SDK. FRLog can also be used in the application layer which then be displayed through FRAuth SDK, and through OSLog with FRAuth SDK's system label and LogLevel.
 
-    //  MARK: - Property
+## Note ##
+By default, FRLog uses OSLog to display the log entry in the debug console, and in the log system of iOS; however, when *OS_ACTIVITY_MODE* is *disabled* in the environment variable, FRLog then uses default system *print()* method to display the log entry in the console only.
+*/
+public struct FRLog {
     
-    /// rawValue of LogLevel
-    public var rawValue: Int
-    /// rawValue of LogLevel
-    public typealias RawValue = Int
-    /// none LogLevel indicates that there is no log
-    @objc public static let none = LogLevel(rawValue: 1 << 0)
-    /// verbose LogLevel indicates that the log entry is not important or can be ignored
-    @objc public static let verbose = LogLevel(rawValue: 1 << 1)
-    /// info LogLevel indicates that the log entry maybe helpful, or meaningful for debugging, or understanding the flow
-    @objc public static let info = LogLevel(rawValue: 1 << 2)
-    /// network LogLevel indicates the log entry of any network traffics, including request, and response
-    @objc public static let network = LogLevel(rawValue: 1 << 3)
-    /// warning LogLevel indicates the log entry of any minor issue or error that may occur which can be ignored
-    @objc public static let warning = LogLevel(rawValue: 1 << 4)
-    /// error LogLEvel indicates the log entry of any severe issue, or major error that impacts SDK's functionality or flow
-    @objc public static let error = LogLevel(rawValue: 1 << 5)
-    /// all LogLevel indicates the log entry of all LogLevels
-    @objc public static let all = LogLevel(rawValue: 1 << 6)
-    
-    
-    //  MARK: - Objective-C compatibility
-    
-    /// Init
-    required public override convenience init() {
-        self.init(rawValue: 0)
-    }
-    
-    /// Initializes LogLevel with rawValue
-    ///
-    /// - Parameter rawValue: rawValue of LogLevel
-    required public init(rawValue: Int) {
-        self.rawValue = rawValue
-        super.init()
-    }
-    
-    
-    /// Initializes LogLevel with set of LogLevels
-    ///
-    /// - Parameter logs: An array of LogLevel
-    @objc
-    @available(swift, obsoleted: 1.0)
-    public convenience init(logs: [LogLevel]) {
-        var logLevels: Int = 0
-        for level in logs {
-            logLevels = logLevels | level.rawValue
-        }
-        self.init(rawValue: logLevels)
-    }
-    
-    
-    /// Hash
-    public override var hash: Int {
-        return rawValue
-    }
-    
-    
-    /// Compares the LogLevel
-    ///
-    /// - Parameter object: Any object
-    /// - Returns: Boolean result of whether object is equal to LogLevel or not
-    public override func isEqual(_ object: Any?) -> Bool {
-        guard let that = object as? LogLevel else {
-            return false
-        }
-        return rawValue == that.rawValue
-    }
-    
-    
-    /// Concatenates with another LogLevel
-    ///
-    /// - Parameter other: Additional LogLevel to be concatenated
-    public func formUnion(_ other: LogLevel) {
-        rawValue = rawValue | other.rawValue
-    }
-    
-    
-    /// Makes intersection with another LogLevel
-    ///
-    /// - Parameter other: LogLevel
-    public func formIntersection(_ other: LogLevel) {
-        rawValue = rawValue & other.rawValue
-    }
-    
-    
-    /// Makes symmetric difference with another LogLevel
-    ///
-    /// - Parameter other: LogLevel
-    public func formSymmetricDifference(_ other: LogLevel) {
-        rawValue = rawValue ^ other.rawValue
-    }
-}
-
-
-/**
- FRLog is a class responsible for Logging functionalities of FRAuth SDK. FRLog can also be used in the application layer which then be displayed through FRAuth SDK, and through OSLog with FRAuth SDK's system label and LogLevel.
- 
- ## Note ##
- By default, FRLog uses OSLog to display the log entry in the debug console, and in the log system of iOS; however, when *OS_ACTIVITY_MODE* is *disabled* in the environment variable, FRLog then uses default system *print()* method to display the log entry in the console only.
- */
-@objc
-public class FRLog: NSObject {
-    
-    //  MARK: - Property
-    
-    /// Current LogLevel
-    static var logLevel: LogLevel = .none
-    /// Current Loggers to handle log entries
-    static var loggers: [FRLogger] = [FRConsoleLogger()]
-    /// Date formatter for log entries
-    static var dateFormatter: DateFormatter?
     /// Module name of FRLog
-    static let FRModuleName: String = "[ForgeRock]"
-    
+    static let ModuleName: String = "[FRAuth]"
     
     //  MARK: - Method
     
     /// Sets LogLevel
     ///
     /// - Parameter logLevel: Designated LogLevel to be displayed
-    @objc
     public static func setLogLevel(_ logLevel: LogLevel) {
-        FRLog.logLevel = logLevel
+        Log.setLogLevel(logLevel)
     }
     
-    
-    /// Generates date and time prefix with pre-defined dateFormatter
-    ///
-    /// - Returns: String value of current date and time
-    static func generateTimePrefix() -> String {
-        var timestamp = ""
-        
-        if let df = FRLog.dateFormatter {
-            timestamp = df.string(from: Date())
-        }
-        else {
-            let df = DateFormatter()
-            df.dateFormat = "y-MM-dd H:m:ss.SSS"
-            timestamp = df.string(from: Date())
-        }
-        
-        return timestamp
-    }
-    
-    
-    /// Generates LogPrefix with filename, line number, and name of function that the entry was logged.
-    ///
-    /// - Parameters:
-    ///   - file: String value of Filename
-    ///   - line: Int value of Line# in the File
-    ///   - function: String value of Function name
-    /// - Returns: Combined, and formatted string value of all given information
-    static func generateLogPrefix(file: String, line: Int, function: String) -> String {
-        let fileComponents = file.split(separator: "/")
-        
-        if let callingFileName = fileComponents.last {
-            return " [\(String(describing: callingFileName)):\(line) : \(function)]"
-        }
-        else {
-            return " [\(function)]"
-        }
-    }
-    
-    
-    //  MARK: - Log
-    
-    /// Prints verbose log level message
-    ///
-    /// - Parameters:
-    ///   - message: Log message
-    ///   - includeCallStack: Boolean indicator whether to include call stack or not
-    ///   - file: Filename that the message was logged
-    ///   - line: Line # in the File that the message was logged
-    ///   - function: Name of method that the message was logged
     public static func v(_ message: String, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
-        guard FRLog.logLevel.contains(.verbose) || FRLog.logLevel.contains(.all), !FRLog.logLevel.contains(.none) else {
-            return
-        }
-        let timePrefix = FRLog.generateTimePrefix()
-        var logPrefix = FRModuleName
-        if let includeCallStack = includeCallStack, includeCallStack {
-            logPrefix += FRLog.generateLogPrefix(file: file, line: line, function: function)
-        }
-        
-        for logger in FRLog.loggers {
-            logger.logVerbose(timePrefix: timePrefix, logPrefix: logPrefix, message: message)
-        }
+        Log.v(message, includeCallStack, module: ModuleName, file: file, line: line, function: function)
     }
     
-    
-    /// Prints information log level message
-    ///
-    /// - Parameters:
-    ///   - message: Log message
-    ///   - includeCallStack: Boolean indicator whether to include call stack or not
-    ///   - file: Filename that the message was logged
-    ///   - line: Line # in the File that the message was logged
-    ///   - function: Name of method that the message was logged
     public static func i(_ message: String, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
-        guard (FRLog.logLevel.contains(.info) || FRLog.logLevel.contains(.all)), !FRLog.logLevel.contains(.none) else {
-            return
-        }
-        let timePrefix = FRLog.generateTimePrefix()
-        var logPrefix = FRModuleName
-        if let includeCallStack = includeCallStack, includeCallStack {
-            logPrefix += FRLog.generateLogPrefix(file: file, line: line, function: function)
-        }
-        
-        for logger in FRLog.loggers {
-            logger.logInfo(timePrefix: timePrefix, logPrefix: logPrefix, message: message)
-        }
+        Log.i(message, includeCallStack, module: ModuleName, file: file, line: line, function: function)
     }
     
     
-    /// Prints warning log level message
-    ///
-    /// - Parameters:
-    ///   - message: Log message
-    ///   - includeCallStack: Boolean indicator whether to include call stack or not
-    ///   - file: Filename that the message was logged
-    ///   - line: Line # in the File that the message was logged
-    ///   - function: Name of method that the message was logged
     public static func w(_ message: String, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
-        guard FRLog.logLevel.contains(.warning) || FRLog.logLevel.contains(.all), !FRLog.logLevel.contains(.none) else {
-            return
-        }
-        let timePrefix = FRLog.generateTimePrefix()
-        var logPrefix = FRModuleName
-        if let includeCallStack = includeCallStack, includeCallStack {
-            logPrefix += FRLog.generateLogPrefix(file: file, line: line, function: function)
-        }
-        
-        for logger in FRLog.loggers {
-            logger.logWarning(timePrefix: timePrefix, logPrefix: logPrefix, message: message)
-        }
+        Log.w(message, includeCallStack, module: ModuleName, file: file, line: line, function: function)
     }
     
-    
-    /// Prints error log level message
-    ///
-    /// - Parameters:
-    ///   - message: Log message
-    ///   - includeCallStack: Boolean indicator whether to include call stack or not
-    ///   - file: Filename that the message was logged
-    ///   - line: Line # in the File that the message was logged
-    ///   - function: Name of method that the message was logged
     public static func e(_ message: String, file: String = #file, line: Int = #line, function: String = #function) {
-        guard FRLog.logLevel.contains(.error) || FRLog.logLevel.contains(.all), !FRLog.logLevel.contains(.none) else {
-            return
-        }
-        let timePrefix = FRLog.generateTimePrefix()
-        
-        var callStack = "\n\tCall stack symbols:\n"
-        for symbol in Thread.callStackSymbols {
-            callStack += "\t\t\(symbol)\n"
-        }
-        
-        for logger in FRLog.loggers {
-            logger.logError(timePrefix: timePrefix, logPrefix: FRModuleName, message: message + callStack)
-        }
-    }
-    
-    
-    /// Prints detailed information of given reqeust
-    ///
-    /// - Parameters:
-    ///   - request: Request object that contains the log
-    ///   - file: Filename that the request was logged
-    ///   - line: Filename that the request was logged
-    ///   - function: Name of method that the request was logged
-    static func logRequest(_ request: Request, file: String = #file, line: Int = #line, function: String = #function) {
-        
-        guard FRLog.logLevel.contains(.network) || FRLog.logLevel.contains(.all), !FRLog.logLevel.contains(.none) else {
-            return
-        }
-        
-        var log = "Request | [\(request.method.rawValue)] " + request.url
-        log += "\n\tRequest Type: \(request.requestType.rawValue) | Response Type: \(request.responseType.rawValue) | Timeout Interval: \(request.timeoutInterval)"
-        
-        if request.headers.keys.count > 0 {
-            log += "\n\tAdditional Headers: \(request.headers)"
-        }
-        
-        if request.urlParams.keys.count > 0 {
-            log += "\n\tURL Parameters: \(request.urlParams)"
-        }
-        
-        if request.bodyParams.keys.count > 0 {
-            log += "\n\tBody Parameters: \(request.bodyParams)"
-        }
-        
-        let timePrefix = FRLog.generateTimePrefix()
-        
-        for logger in FRLog.loggers {
-            logger.logNetwork(timePrefix: timePrefix, logPrefix: FRModuleName, message: log)
-        }
-    }
-    
-    
-    /// Prints detailed information of given response
-    ///
-    /// - Parameters:
-    ///   - elapsed: Elapsed time that the response was received after the request is initiated
-    ///   - data: Response data
-    ///   - response: URLResponse object
-    ///   - error: Error of the response
-    static func logResponse(_ elapsed: Int, _ data: Data?, _ response: URLResponse?, _ error: Error?) {
-        
-        guard FRLog.logLevel.contains(.network) || FRLog.logLevel.contains(.all), !FRLog.logLevel.contains(.none) else {
-            return
-        }
-        
-        var log = "Response |"
-        
-        if let httpResponse = response as? HTTPURLResponse {
-            
-            var networkResult = ""
-            if (200 ..< 303) ~= httpResponse.statusCode {
-                networkResult = "✅"
-            }
-            else {
-                networkResult = "🛑"
-            }
-            
-            if let url = httpResponse.url {
-                log += " [\(networkResult) \(httpResponse.statusCode)] : \(url.absoluteString) in \(elapsed) ms"
-            }
-            else {
-                log += " [\(networkResult) \(httpResponse.statusCode)] in \(elapsed) ms"
-            }
-            
-            log += "\n\tResponse Header: \(httpResponse.allHeaderFields)"
-        }
-        
-        if let error = error as NSError? {
-            log += " [🛑 Error]\n\tError: \(error.domain) | \(error.code) | \(error.localizedDescription) | \(error.userInfo)"
-        }
-        
-        if let thisData = data {
-            if let responseString = String(data: thisData, encoding: .utf8) {
-                log += "\n\tResponse Data: \(responseString)"
-            }
-            else {
-                log += "\n\tResponse Data: \(thisData)"
-            }
-        }
-        
-        let timePrefix = FRLog.generateTimePrefix()
-        
-        for logger in FRLog.loggers {
-            logger.logNetwork(timePrefix: timePrefix, logPrefix: FRModuleName, message: log)
-        }
+        Log.e(message, module: ModuleName, file: file, line: line, function: function)
     }
 }
-
-

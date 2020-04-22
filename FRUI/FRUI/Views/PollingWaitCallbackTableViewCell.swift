@@ -11,7 +11,7 @@
 import UIKit
 import FRAuth
 
-class PollingWaitCallbackTableViewCell: UITableViewCell {
+class PollingWaitCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     // MARK: - Properties
     public static let cellIdentifier = "PollingWaitCallbackTableViewCellId"
@@ -33,10 +33,10 @@ class PollingWaitCallbackTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public
-    public func updateCellData(authCallback: PollingWaitCallback) {
-        callback = authCallback
+    public func updateCellData(callback: Callback) {
+        self.callback = callback as? PollingWaitCallback
         
-        loadingView?.loadingText = callback?.message
+        loadingView?.loadingText = self.callback?.message
         loadingView?.startLoading()
     }
 }

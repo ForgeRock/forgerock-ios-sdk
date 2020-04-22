@@ -30,7 +30,7 @@ class AuthServiceTests: FRBaseTest {
         // Then
         XCTAssertEqual(authService.serviceName, self.authServiceName)
         XCTAssertEqual(authService.serverConfig.baseURL.absoluteString, self.serverURL)
-        XCTAssertEqual(authService.serverConfig.treeURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
+        XCTAssertEqual(authService.serverConfig.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
         XCTAssertEqual(authService.serverConfig.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
         XCTAssertEqual(authService.serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
         XCTAssertEqual(authService.serverConfig.timeout, 90)
@@ -42,12 +42,12 @@ class AuthServiceTests: FRBaseTest {
         // Given
         let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
         let oAuth2Client = OAuth2Client(clientId: self.clientId, scope: self.scope, redirectUri: URL(string: self.redirectUri)!, serverConfig: serverConfig)
-        let authService: AuthService = AuthService(name: "loginService", serverConfig: serverConfig, oAuth2Config: oAuth2Client)
+        let authService: AuthService = AuthService(authIndexValue: "loginService", serverConfig: serverConfig, oAuth2Config: oAuth2Client)
         
         // Then
         XCTAssertEqual(authService.serviceName, self.authServiceName)
         XCTAssertEqual(authService.serverConfig.baseURL.absoluteString, self.serverURL)
-        XCTAssertEqual(authService.serverConfig.treeURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
+        XCTAssertEqual(authService.serverConfig.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
         XCTAssertEqual(authService.serverConfig.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
         XCTAssertEqual(authService.serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
         XCTAssertEqual(authService.serverConfig.timeout, 90)

@@ -11,14 +11,14 @@
 import UIKit
 import FRAuth
 
-class NameCallbackTableViewCell: UITableViewCell {
+class NameCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     // MARK: - Properties
     public static let cellIdentifier = "NameCallbackTableViewCellId"
-    public static let cellHeight:CGFloat = 100.0
-    @IBOutlet weak var textField:FRTextField?
+    public static let cellHeight: CGFloat = 100.0
+    @IBOutlet weak var textField: FRTextField?
     
-    var callback:SingleValueCallback?
+    var callback: SingleValueCallback?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,11 +32,11 @@ class NameCallbackTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public
-    public func updateCellData(authCallback: SingleValueCallback) {
-        self.callback = authCallback
-        self.textField?.placeholder = authCallback.prompt
+    public func updateCellData(callback: Callback) {
+        self.callback = callback as? SingleValueCallback
+        self.textField?.placeholder = self.callback?.prompt
         
-        if authCallback is AbstractValidatedCallback, let validatedCallback = authCallback as? AbstractValidatedCallback {
+        if callback is AbstractValidatedCallback, let validatedCallback = callback as? AbstractValidatedCallback {
             self.textField?.text = validatedCallback.value as? String
             if let failedPolicies = validatedCallback.failedPolicies {
                 var failedMessage = ""

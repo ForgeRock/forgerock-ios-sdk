@@ -53,7 +53,6 @@ To try out the ForgeRock iOS SDK sample, perform these steps:
 
 1. Setup an Access Management (AM) instance, as described in the [documentation](https://sdks.forgerock.com/ios/01_prepare-am/).
 2. Clone this repo:
-
     ```
     git clone https://github.com/ForgeRock/forgerock-ios-sdk.git
     ```

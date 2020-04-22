@@ -10,6 +10,7 @@
 
 import Foundation
 import CommonCrypto
+import FRCore
 
 /// FRDeviceIdentifier provides a unique identifier for each device defined in same Shared Keychain Access Group,
 /// and provides a secure mechanism to uniquely generate, persist, and manage the identifier

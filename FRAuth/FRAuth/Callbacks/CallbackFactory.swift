@@ -29,6 +29,8 @@ import Foundation
          10. ConfirmationCallback
          11. TextOutputCallback
          12. ReCaptchaCallback
+         13. MetadataCallback
+         14. DeviceProfileCallback
  */
 @objc(FRCallbackFactory)
 public class CallbackFactory: NSObject {
@@ -60,6 +62,8 @@ public class CallbackFactory: NSObject {
             "ConfirmationCallback": ConfirmationCallback.self,
             "TextOutputCallback": TextOutputCallback.self,
             "ReCaptchaCallback": ReCaptchaCallback.self,
+            "HiddenValueCallback": HiddenValueCallback.self,
+            "DeviceProfileCallback": DeviceProfileCallback.self,
             "MetadataCallback": MetadataCallback.self
         ]
     }

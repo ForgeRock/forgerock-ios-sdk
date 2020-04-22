@@ -118,7 +118,6 @@
         if ([[json allKeys] containsObject:@"headers"]) {
             NSDictionary *headers = [json objectForKey:@"headers"];
             XCTAssertTrue([[headers allKeys] containsObject:@"Authorization"]);
-            XCTAssertTrue([[[[FRUser currentUser] token] buildAuthorizationHeader] isEqualToString:[headers objectForKey:@"Authorization"]]);
         }
         [ex fulfill];
     }] resume];
@@ -295,7 +294,7 @@
     
     __block FRNode *currentNode = nil;
     XCTestExpectation *ex = [self expectationWithDescription:@"First Node submit"];
-    [[FRAuth shared] nextWithFlowType:FRAuthFlowTypeAuthentication userCompletion:^(FRUser *user, FRNode *node, NSError *error) {
+    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
         XCTAssertNil(error);
         XCTAssertNil(user);
         XCTAssertNotNil(node);

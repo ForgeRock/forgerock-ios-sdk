@@ -11,7 +11,7 @@
 import UIKit
 import FRAuth
 
-class TermsAndConditionsTableViewCell: UITableViewCell {
+class TermsAndConditionsTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     // MARK: - Properties
     public static let cellIdentifier = "TermsAndConditionsTableViewCellId"
@@ -31,8 +31,8 @@ class TermsAndConditionsTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public
-    public func updateCellData(authCallback: TermsAndConditionsCallback) {
-        self.callback = authCallback
+    public func updateCellData(callback: Callback) {
+        self.callback = callback as? TermsAndConditionsCallback
         
         if let cb = self.callback, let terms = cb.terms {
             self.terms?.text = terms

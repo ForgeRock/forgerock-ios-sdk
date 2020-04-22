@@ -60,11 +60,13 @@ class FRAuthTests: FRBaseTest {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")
         }
         
-        guard let frAtuh = FRAuth.shared else {
+        guard let frAuth = FRAuth.shared else {
             XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        XCTAssertTrue(frAtuh.keychainManager.isSharedKeychainAccessible)
+        XCTAssertTrue(frAuth.keychainManager.isSharedKeychainAccessible)
+        XCTAssertNotNil(frAuth.oAuth2Client)
+        XCTAssertNotNil(frAuth.tokenManager)
     }
     
     
@@ -81,11 +83,13 @@ class FRAuthTests: FRBaseTest {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")
         }
         
-        guard let frAtuh = FRAuth.shared else {
+        guard let frAuth = FRAuth.shared else {
             XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        XCTAssertFalse(frAtuh.keychainManager.isSharedKeychainAccessible)
+        XCTAssertFalse(frAuth.keychainManager.isSharedKeychainAccessible)
+        XCTAssertNotNil(frAuth.oAuth2Client)
+        XCTAssertNotNil(frAuth.tokenManager)
     }
     
     
@@ -192,17 +196,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuh = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(frAtuh.oAuth2Client)
+        XCTAssertNil(frAtuh.tokenManager)
+        XCTAssertNil(initError)
         
         // Given
         initError = nil
@@ -217,16 +217,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let missingConfigError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuhWithNoUri = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch missingConfigError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(missingConfigError)")
-        }
+        XCTAssertNil(frAtuhWithNoUri.oAuth2Client)
+        XCTAssertNil(frAtuhWithNoUri.tokenManager)
+        XCTAssertNil(initError)
     }
     
     
@@ -235,7 +232,7 @@ class FRAuthTests: FRBaseTest {
         // Given
         var config = self.readConfigFile(fileName: "FRAuthConfig")
         config.removeValue(forKey: "forgerock_oauth_client_id")
-        
+    
         var initError: Error?
         
         // Then
@@ -247,17 +244,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuhWithNoUri = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(frAtuhWithNoUri.oAuth2Client)
+        XCTAssertNil(frAtuhWithNoUri.tokenManager)
+        XCTAssertNil(initError)
     }
     
     
@@ -278,17 +271,13 @@ class FRAuthTests: FRBaseTest {
         }
         
         // It should
-        guard let configError: ConfigError = initError as? ConfigError else {
-            XCTFail("Failed to convert initialization error: \(String(describing: initError))")
+        guard let frAtuhWithNoUri = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
             return
         }
-        switch configError {
-        case .invalidConfiguration:
-            break
-        default:
-            XCTFail("Received unexpected error: \(configError)")
-            break
-        }
+        XCTAssertNil(frAtuhWithNoUri.oAuth2Client)
+        XCTAssertNil(frAtuhWithNoUri.tokenManager)
+        XCTAssertNil(initError)
     }
     
     
@@ -401,13 +390,68 @@ class FRAuthTests: FRBaseTest {
     }
     
     
-    func readConfigFile(fileName: String) -> [String: Any] {
+    func test_frstart_with_custom_endpoints() {
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config["forgerock_authenticate_endpoint"] = "/custom/authenticate/path"
+        config["forgerock_token_endpoint"] = "/custom/token/path"
+        config["forgerock_authorize_endpoint"] = "/custom/authorize/path"
+        config["forgerock_revoke_endpoint"] = "/custom/token/path"
+        config["forgerock_userinfo_endpoint"] = "/custom/userinfo/path"
+        config["forgerock_session_endpoint"] = "/custom/session/path"
         
-        guard let path = Bundle.main.path(forResource: fileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
-            XCTFail("Failed to read \(fileName).plist file")
-            return [:]
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+            
+            guard let serverConfig = FRAuth.shared?.serverConfig else {
+                XCTFail("Failed to retrieve ServerConfig object")
+                return
+            }
+            
+            XCTAssertEqual(serverConfig.authenticateURL, "http://openam.example.com:8081/openam/custom/authenticate/path")
+            XCTAssertEqual(serverConfig.tokenURL, "http://openam.example.com:8081/openam/custom/token/path")
+            XCTAssertEqual(serverConfig.authorizeURL, "http://openam.example.com:8081/openam/custom/authorize/path")
+            XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/custom/token/path")
+            XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/custom/userinfo/path")
+            XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/custom/session/path")
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
         }
         
-        return config
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
+    }
+    
+    
+    func test_frstart_with_some_custom_endpoints() {
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config["forgerock_authenticate_endpoint"] = "/custom/authenticate/path"
+        config["forgerock_token_endpoint"] = "/custom/token/path"
+        
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+            
+            guard let serverConfig = FRAuth.shared?.serverConfig else {
+                XCTFail("Failed to retrieve ServerConfig object")
+                return
+            }
+            
+            XCTAssertEqual(serverConfig.authenticateURL, "http://openam.example.com:8081/openam/custom/authenticate/path")
+            XCTAssertEqual(serverConfig.tokenURL, "http://openam.example.com:8081/openam/custom/token/path")
+            XCTAssertEqual(serverConfig.authorizeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/authorize")
+            XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/token/revoke")
+            XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/oauth2/realms/root/userinfo")
+            XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/json/realms/root/sessions")
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
     }
 }

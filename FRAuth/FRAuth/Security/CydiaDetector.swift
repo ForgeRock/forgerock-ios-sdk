@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 /// CydiaDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class CydiaDetector: JailbreakDetector {

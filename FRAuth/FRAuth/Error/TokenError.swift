@@ -9,6 +9,8 @@
 //
 
 import Foundation
+import FRCore
+
 
 /// ConfigError represents an error captured by FRAuth SDK for invalid operation related to Token with given state
 ///
