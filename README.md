@@ -1,151 +1,157 @@
-# ForgeRock iOS SDK
+[![Cocoapods](https://img.shields.io/cocoapods/v/FRAuth?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
 
-## Release Status
 
-| Version       | Status        |
-|:-------------:|:-------------:|
-| 1.0.0   | General Availability  |
+<p align="center">
+  <a href="https://github.com/ForgeRock">
+    <img src="https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg" alt="Logo">
+  </a>
+  <h2 align="center">ForgeRock SDK for iOS</h2>
+  <p align="center">
+    <a href="./blob/master/CHANGELOG.md">Change Log</a>
+    ·
+    <a href="#support">Support</a>
+    ·
+    <a href="#documentation" target="_blank">Docs</a>
+  </p>
+  <hr/>
+</p>
 
-## Software Requirements
-* iOS 10.0 or later
+The ForgeRock iOS SDK enables you to quickly integrate the [ForgeRock Identity Platform](https://www.forgerock.com/digital-identity-and-access-management-platform) into your iOS apps.
+
+Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com/platform/access-management/intelligent-authentication)_ in [ForgeRock's Access Management (AM)](https://www.forgerock.com/platform/access-management) product, to easily step through each stage of an authentication tree by using callbacks.
+
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- REQUIREMENTS - Supported AM versions, API versions, any other requirements. -->
+
+## Requirements
+
+* ForgeRock Identity Platform
+    * Access Management (AM) 6.5.2+
+
+* iOS 10, 11, 12, 13   
 * Xcode 11.0 or later
 * Swift 5.x or Objective-C
-* CocoaPods dependency manager
-* ForgeRock Access Manager
-* ForgeRock Identity Manager
-* ForgeRock Directory Services
+* CocoaPods dependency manager 
 
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- INSTALLATION -->
 
-## Before You Begin
+## Installation
 
-You'll need your ForgeRock Identity Cloud credentials to access your tenant. If you don't know your tenant credentials, contact your ForgeRock partner or technical consultant.
-
----
-
-## Step 1: Install CocoaPods ##
-
-[Cocoapods](https://cocoapods.org/) is a dependency manager for iOS projects.
-Using Cocoapods with the iOS SDK is the simplest way to the integrate ForgeRock
-iOS SDK into your project.
-
-1. Install the latest version of [CocoaPods](https://guides.cocoapods.org/using/getting-started.html).
-2. If you don't have [Podfile](https://guides.cocoapods.org/syntax/podfile.html) for your project, to create a new [Podfile](https://guides.cocoapods.org/syntax/podfile.html), run this command:
-```
-pod init
-```
-3. Add following line to your Podfile:
 ```
 pod 'FRAuth'
 pod 'FRUI'
 pod 'FRProximity'
 ```
-4. To install pods, run this command:
-```
-pod install
-```
-5. Make sure to use `.xcworkspace` file to open your project.
-6. If you intend to use `FRExample` project, `FRExample` already includes all SDKs as project reference. You do not need to perform `pod` instructions above.
-7. If you connect to your local environment or connect through HTTP, you need to configure [Application Transport Security](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) setting in application's `Info.plist`. 
 
-<br>
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- QUICK START - Get one of the included samples up and running in as few steps as possible. -->
 
-##  Step 2: Create a Configuration File
+## Getting Started
 
-Create a file named `FRAuthConfig.plist` that contains the following information:
+To try out the ForgeRock iOS SDK sample, perform these steps:
 
-| Attribute        | Description           | Default Value  |
-| -----------------|---------------------| -----:|
-| forgerock_oauth_client_id     | OAuth2 client's `client_id` registered in AM| None  |
-| forgerock_oauth_redirect_uri     | OAuth2 client's `redirect_uri` registered in AM      | None     |
-| forgerock_oauth_scope |   OAuth2 client's `scope` registered in AM   |  None  
-| forgerock_oauth_threshold | Optional. Threshold in seconds to refresh OAuth2 token set before `access_token` expires through FRAuth SDK token management. | 30 |
-| forgerock_url | AM base URL |  None   |
-| forgerock_realm | AM `realm` | root |
-| forgerock_timeout | Optional. Timeout in seconds of each request that FRAuth SDK communicates to AM. | 30 |
-| forgerock_keychain_access_group | Keychain Access Group Identifier in Xcode's Capabilities tab in the application's target. This is used to share some credentials across multiple applications that are developed under same Apple's Developer Program, and FRAuth SDK utilizes this for SingleSignOn feature. (optional) |  None   |
-| forgerock_auth_service | Authentication Tree name registered in AM for user authentication. |  None   |
-| forgerock_registration_service | Authentication tree name registered in OpenAM for user registration. |  None   |
+1. Setup an Access Management (AM) instance, as described in the [documentation](https://sdks.forgerock.com/ios/01_prepare-am/).
+2. Clone this repo:
+    ```
+    git clone https://github.com/ForgeRock/forgerock-ios-sdk.git
+    ```
+3. Open the `/SampleApps/FRExample.xcworkspace` file in [Xcode](https://developer.apple.com/xcode/).
+4. Open `/FRExample/FRExample/Configs/FRAuthConfig.plist` and edit the values to match your AM instance.
+5. Ensure the active scheme is "_FRExample-Swift_", and then click the **Run** button.
 
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
 
-<br>
+## Samples
 
-#### Using Multiple Configuration Files
+ForgeRock provides these samples to help demonstrate SDK functionality:
 
-If you need to run the SDK with multiple environments, before you initialize the SDK, change the default configuration file name using following code:
-```
-FRAuth.configPlistFileName = <.plist Configuration File Name>
-```
+- **Swift Sample - `/FRExample/`**
 
-#### FRAuthConfig.plist Example
+    This sample Swift app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface. 
+    
+    Other features include:
 
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>forgerock_oauth_client_id</key>
-	<string>iosclient</string>
-	<key>forgerock_oauth_redirect_uri</key>
-	<string>http://openam.example.com/redirecturi</string>
-	<key>forgerock_oauth_scope</key>
-	<string>openid profile email address</string>
-	<key>forgerock_oauth_url</key>
-	<string>http://openam.example.com/openam</string>
-	<key>forgerock_oauth_threshold</key>
-	<string>60</string>
-	<key>forgerock_url</key>
-	<string>http://openam.example.com/openam</string>
-	<key>forgerock_realm</key>
-	<string>root</string>
-	<key>forgerock_timeout</key>
-	<string>60</string>
-	<key>forgerock_keychain_access_group</key>
-	<string>com.forgerock.sso</string>
-	<key>forgerock_auth_service_name</key>
-	<string>UsernamePassword</string>
-	<key>forgerock_registration_service_name</key>
-	<string>UserSignUp</string>
-</dict>
-</plist>
-```
+    - OAuth 2.0 access tokens
+    - Logout
+    - Collecting device information
+    - Get the current user's details
+    - Jailbreak detection
 
-## Step 3: Start the SDK
+    Configure your AM instance settings in the `/FRexampleObjC/FRexampleObjC/Configs/FRAuthConfig.plist` file to use this sample application.
 
-To initialize the SDK, invoke the following code:
+- **Objective-C Sample - `/FRexampleObjC/`**
 
-```swift
-do {
-  try FRAuth.start()
-}
-catch {
-  print(error)
-}
-```
+    This sample Objective-C app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface. 
+    
+    Other features include:
 
-**NOTE:** The SDK validates the configuration file.  `FRAuth.start()` throws an error if a  mandatory value is missing or misconfigured.
- 
+    - Logout
+    - Collecting device information
+    - Get the current user's details
+    - Jailbreak detection
 
+    Configure your AM instance settings in the `/FRExample/FRExample/Configs/FRAuthConfig.plist` file to use this sample application.
 
-## Using the iOS SDK Modules
-The iOS APIs are grouped into three modules: FRAuth, FRUI, and FRProximity.
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
 
-#### FRAuth
-Use the FRAuth module to integrate ForgeRock Identity Platform authentication and authorization into your mobile app. The FRAuth module currently supports these ForgeRock Access Management (AM) features:
-+ Authentication trees
-+ Select OAuth2 scopes
-+ Device profile
-+ Jailbreak Detection
+## Documentation
 
-#### FRUI
-Use the FRUI module to demonstrate FRAuth functionalityy using pre-defined Express UI elements. FRUI lets you quickly connect your app to the ForgeRock Identity Cloud for user authentication and registration.
+Documentation for the SDKs is provided at **<https://sdks.forgerock.com>**, and includes topics such as:
 
-#### FRProximity
-Use the FRProximity module to collect device geo-location data and BLE data.  through FRAuth module's Device Profile feature. FRProximity is an add-on to FRAuth module. The add-on
-lets the FRAuth module collect information for the AM device profile.
+* Introducting the SDK Features
+* Preparing AM for use with the SDKS
+* API Reference documentation
 
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- SUPPORT -->
 
-## Developer Documentation
-For more detail usage of iOS SDK, and API Reference documentation, please refer to [ForgeRcok Developer Site](https://developer.forgerock.com).
+## Support
+
+If you encounter any issues, be sure to check our **[Troubleshooting](https://backstage.forgerock.com/knowledge/kb/article/a79362752)** pages.
+
+Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
+
+* Suspected bugs or problems with ForgeRock software.
+* Requests for assistance - please look at the **[Documentation](https://sdks.forgerock.com)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
+
+You can raise a ticket using **[BackStage](https://backstage.forgerock.com/support/tickets)**, our customer support portal that provides one stop access to ForgeRock services. 
+
+BackStage shows all currently open support tickets and allows you to raise a new one by clicking **New Ticket**.
+
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- COLLABORATION -->
+
+## Contributing
+
+If you would like to contribute to this project you can fork the repository, clone it to your machine and get started.
+
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- LEGAL -->
+
+## Disclaimer
+
+> This code is provided on an “as is” basis, without warranty of any kind, to the fullest extent permitted by law.
+>
+> ForgeRock does not warrant or guarantee the individual success developers may have in implementing the code on their development platforms or in production configurations.
+>
+> ForgeRock does not warrant, guarantee or make any representations regarding the use, results of use, accuracy, timeliness or completeness of any data or information relating to this code.
+>
+> ForgeRock disclaims all warranties, expressed or implied, and in particular, disclaims all warranties of merchantability, and warranties related to the code, or any service or software related thereto.
+>
+> ForgeRock shall not be liable for any direct, indirect or consequential damages or costs of any type arising out of any action taken by you or others related to the code.
+
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- LICENSE -->
 
 ## License
-ForgeRock iOS SDK is released under the MIT license. See [LICENSE](https://github.com/ForgeRock/forgerock-ios-sdk/blob/master/LICENSE) file for details.
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+---
+
+&copy; Copyright 2020 ForgeRock AS. All Rights Reserved
+
+[forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg "ForgeRock Logo"
