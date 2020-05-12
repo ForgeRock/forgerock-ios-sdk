@@ -24,22 +24,26 @@ class LocationCollector: DeviceCollector {
     /// CLLocationManager's delegation class to collect information
     var locationDelegate: LocationManagerDelegation = LocationManagerDelegation()
     
+    var authorizationStatus: CLAuthorizationStatus {
+        get {
+            return CLLocationManager.authorizationStatus()
+        }
+    }
+    
     /// Collects location information using CLLocationManager
     ///
     /// - Parameter completion: completion block
     func collect(completion: @escaping DeviceCollectorCallback) {
-        var result: [String: Any] = [:]
-        result["latitude"] = 0.0
-        result["longitude"] = 0.0
+        
         // If CLLocationManager's authorization status is not allowed, then do not request location information
-        if CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+        if self.authorizationStatus == .authorizedAlways || self.authorizationStatus == .authorizedWhenInUse {
             self.locationDelegate.completionCallback = completion
             self.locationManager.delegate = self.locationDelegate
             self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             self.locationManager.requestLocation()
         }
         else {
-            completion(result)
+            completion([:])
         }
     }
 }
@@ -61,9 +65,6 @@ class LocationManagerDelegation: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let completion = self.completionCallback {
-            var result: [String: Any] = [:]
-            result["latitude"] = 0.0
-            result["longitude"] = 0.0
             completion([:])
             self.completionCallback = nil
         }

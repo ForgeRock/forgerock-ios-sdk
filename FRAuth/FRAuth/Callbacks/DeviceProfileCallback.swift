@@ -23,6 +23,10 @@ import Foundation
     /// Message of device profile collector callback
     @objc public var message: String = ""
     
+    public var locationCollector: DeviceCollector?
+    public var profileCollector: ProfileCollector = ProfileCollector()
+    public var collector = FRDeviceCollector()
+    
     //  MARK: - Init
     
     /// Designated initialization method for HiddenValueCallback
@@ -49,40 +53,42 @@ import Foundation
         
         try super.init(json: json)
         
+        prepareCollectors()
+        
         type = "DeviceProfileCallback"
+    }
+    
+    
+    func prepareCollectors() {
+        if locationRequired {
+            for deviceCollector in FRDeviceCollector.shared.collectors {
+                if String(describing: deviceCollector) == "FRProximity.LocationCollector" {
+                    self.locationCollector = deviceCollector
+                }
+            }
+            
+            if let locationCollector = self.locationCollector {
+                collector.collectors.append(locationCollector)
+            }
+            else {
+                FRLog.w("LocationCollector is not found while constructing DeviceProfileCallback")
+            }
+        }
+        
+        if metadataRequired {
+            for deviceCollector in FRDeviceCollector.shared.collectors {
+                if String(describing: deviceCollector) == "FRProximity.BluetoothCollector" {
+                    self.profileCollector.collectors.append(deviceCollector)
+                }
+            }
+            collector.collectors.append(self.profileCollector)
+        }
     }
     
     
     /// Executes list of DeviceCollector to collect device information based on DeviceProfileCallback's attributes
     /// - Parameter completion: Completion block that returns JSON of collected information
     public func execute(_ completion: @escaping JSONCompletionCallback) {
-        let collector = FRDeviceCollector()
-        collector.collectors.removeAll()
-        var locationCollector: DeviceCollector?
-        
-        let profileCollector = ProfileCollector()
-        
-        for deviceCollector in FRDeviceCollector.shared.collectors {
-            if String(describing: deviceCollector) == "FRProximity.LocationCollector" {
-                locationCollector = deviceCollector
-            }
-            else if String(describing: deviceCollector) == "FRProximity.BluetoothCollector" {
-                profileCollector.collectors.append(deviceCollector)
-            }
-        }
-        
-        if locationRequired {
-            if let locationCollector = locationCollector {
-                collector.collectors.append(locationCollector)
-            }
-            else {
-                FRLog.w("LocationCollector is not found during DeviceProfileCallback.execute")
-            }
-        }
-        
-        if metadataRequired {
-            collector.collectors.append(profileCollector)
-        }
         
         collector.collect { (json) in
             self.value = self.JSONStringify(value: json as AnyObject)

@@ -1,0 +1,19 @@
+{
+	"responsePayload": {
+        "code":401,
+        "reason":"Unauthorized",
+        "message":"Access Denied"
+	},
+	"response": {
+		"statusCode": 401,
+		"url": "http://localhost/openam/json/realms/root/sessions?_action=logout",
+		"httpVersion": "HTTP/1.1",
+		"headerFields": {
+			"Content-Length": "62",
+			"Content-Type": "application/json;charset=UTF-8",
+			"Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+			"X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff, nosniff"
+		}
+	}
+}

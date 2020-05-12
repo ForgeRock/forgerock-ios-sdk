@@ -22,7 +22,7 @@ class BrowserCollector: DeviceCollector {
     /// - Parameter completion: completion block
     func collect(completion: @escaping DeviceCollectorCallback) {
         var result: [String: Any] = [:]
-        result["agent"] = self.buildUserAgent()
+        result["userAgent"] = self.buildUserAgent()
         completion(result)
     }
     
