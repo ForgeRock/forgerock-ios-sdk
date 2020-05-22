@@ -44,6 +44,9 @@
 		D5CBC25824103E2800F9B6EA /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25424103E2700F9B6EA /* 01-pkey.key */; };
 		D5CBC25924103E2800F9B6EA /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25524103E2700F9B6EA /* 02-pkey.pem */; };
 		D5CBC25A24103E2800F9B6EA /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25624103E2700F9B6EA /* 02-cert.pem */; };
+		D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
+		D5D21498247843C900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
+		D5D2149A247843F100B26403 /* RequestInterceptorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */; };
 		D5E75BD42409B8C0005F589F /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BCA2409B8C0005F589F /* FRCore.framework */; };
 		D5E75BDB2409B8C0005F589F /* FRCore.h in Headers */ = {isa = PBXBuildFile; fileRef = D5E75BCD2409B8C0005F589F /* FRCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B18240EFB1400BD48AA /* NetworkError.swift */; };
@@ -89,6 +92,9 @@
 		D5CBC25524103E2700F9B6EA /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
 		D5CBC25624103E2700F9B6EA /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
 		D5CBC25B24103E4E00F9B6EA /* FRCoreTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRCoreTestHost.entitlements; sourceTree = "<group>"; };
+		D5D21495247843BB00B26403 /* RequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
+		D5D21497247843C900B26403 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorFactory.swift; sourceTree = "<group>"; };
 		D5E75BCA2409B8C0005F589F /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5E75BCD2409B8C0005F589F /* FRCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRCore.h; sourceTree = "<group>"; };
 		D5E75BCE2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -162,6 +168,7 @@
 		D5C979AE2409DF9700DA380A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				D5D21494247843BB00B26403 /* RequestInterceptor */,
 				D5C979AF2409DF9700DA380A /* Result.swift */,
 				D5C979B02409DF9700DA380A /* Response.swift */,
 				D5C979B12409DF9700DA380A /* Request.swift */,
@@ -229,6 +236,16 @@
 				D5CBC25624103E2700F9B6EA /* 02-cert.pem */,
 			);
 			path = Certs;
+			sourceTree = "<group>";
+		};
+		D5D21494247843BB00B26403 /* RequestInterceptor */ = {
+			isa = PBXGroup;
+			children = (
+				D5D21495247843BB00B26403 /* RequestInterceptor.swift */,
+				D5D21497247843C900B26403 /* Action.swift */,
+				D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */,
+			);
+			path = RequestInterceptor;
 			sourceTree = "<group>";
 		};
 		D5E75BC02409B8C0005F589F = {
@@ -434,12 +451,15 @@
 				D5C979BA2409DF9700DA380A /* Request.swift in Sources */,
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
 				D5C979B72409DF9700DA380A /* FRLogger.swift in Sources */,
+				D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */,
+				D5D2149A247843F100B26403 /* RequestInterceptorFactory.swift in Sources */,
 				D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */,
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
 				D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */,
+				D5D21498247843C900B26403 /* Action.swift in Sources */,
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
 			);

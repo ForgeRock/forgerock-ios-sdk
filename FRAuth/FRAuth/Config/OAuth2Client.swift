@@ -67,7 +67,7 @@ public class OAuth2Client: NSObject, Codable {
         
         let request = Request(url: self.serverConfig.tokenRevokeURL, method: .POST, headers: [:], bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
         
-        FRRestClient.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .REVOKE_TOKEN)) { (result) in
             switch result {
             case .success(_ , _):
                 completion(nil)
@@ -91,7 +91,7 @@ public class OAuth2Client: NSObject, Codable {
         
         let request = self.buildRefreshRequest(refreshToken: refreshToken)
         
-        FRRestClient.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .REFRESH_TOKEN)) { (result) in
             switch result {
             case .success(let response, _ ):
                 if let accessToken = AccessToken(tokenResponse: response) {
@@ -121,7 +121,7 @@ public class OAuth2Client: NSObject, Codable {
     @objc public func refreshSync(refreshToken: String) throws -> AccessToken {
         
         let request = self.buildRefreshRequest(refreshToken: refreshToken)
-        let result = FRRestClient.invokeSync(request: request)
+        let result = FRRestClient.invokeSync(request: request, action: Action(type: .REFRESH_TOKEN))
         
         switch result {
         case .success(let response, _ ):
@@ -153,7 +153,7 @@ public class OAuth2Client: NSObject, Codable {
         let pkce = PKCE()
         let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
         
-        FRRestClient.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .AUTHORIZE)) { (result) in
             switch result {
             case .success(_ , let httpResponse):
                     
@@ -178,7 +178,7 @@ public class OAuth2Client: NSObject, Codable {
                         #endif
                         
                         let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
-                        FRRestClient.invoke(request: request, completion: { (result) in
+                        FRRestClient.invoke(request: request, action: Action(type: .EXCHANGE_TOKEN), completion: { (result) in
                             switch result {
                             case .success(let response, _):
                                 if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
@@ -228,7 +228,7 @@ public class OAuth2Client: NSObject, Codable {
         let pkce = PKCE()
         let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
         
-        let result = FRRestClient.invokeSync(request: request)
+        let result = FRRestClient.invokeSync(request: request, action: Action(type: .AUTHORIZE))
         switch result {
         case .success(_ , let httpResponse):
             
@@ -252,7 +252,7 @@ public class OAuth2Client: NSObject, Codable {
                     #endif
                     
                     let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
-                    let result = FRRestClient.invokeSync(request: request)
+                    let result = FRRestClient.invokeSync(request: request, action: Action(type: .EXCHANGE_TOKEN))
                     switch result {
                     case .success(let response, _ ):
                         if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {

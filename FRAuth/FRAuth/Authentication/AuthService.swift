@@ -192,7 +192,7 @@ public class AuthService: NSObject {
         let request = self.buildAuthServiceRequest()
         
         // Invoke request
-        FRRestClient.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .START_AUTHENTICATE)) { (result) in
             switch result {
             case .success(let response, _):
                 

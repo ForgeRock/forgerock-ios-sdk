@@ -24,6 +24,9 @@ public class RestClient: NSObject {
     @objc public static let shared = RestClient()
     /// URLSession to be consumed through RestClient
     var _urlSession: URLSession?
+    /// An array of RequestInterceptor
+    var interceptors: [RequestInterceptor]?
+    
     /// URLSession instance variable for `RestClient`
     fileprivate var session: URLSession {
         get {
@@ -55,17 +58,21 @@ public class RestClient: NSObject {
     ///
     /// - Parameters:
     ///   - request: `Request` object for API request which should contain all information regarding the request
+    ///   - action: Optional `Action` object that represents a type of Request
     ///   - completion: `Result` completion callback
-    public func invoke(request: Request, completion: @escaping ResultCallback) {
+    public func invoke(request: Request, action: Action? = nil, completion: @escaping ResultCallback) {
+        
+        //  Intercept request with current set of interceptors
+        let thisRequest = self.interceptRequest(originalRequest: request, action: action)
         
         //  Validate whether `Request` object is valid; otherwise, return an error
-        guard let urlRequest = request.build() else {
-            completion(Response(data: nil, response: nil, error: NetworkError.invalidRequest(request.debugDescription)).parseReponse())
+        guard let urlRequest = thisRequest.build() else {
+            completion(Response(data: nil, response: nil, error: NetworkError.invalidRequest(thisRequest.debugDescription)).parseReponse())
             return
         }
         
         // Log request / capture request start
-        Log.logRequest(request)
+        Log.logRequest(thisRequest)
         let start = DispatchTime.now()
         
         var bgTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
@@ -92,15 +99,20 @@ public class RestClient: NSObject {
     /// Invokes synchronously REST API Request with `Request` object
     ///
     /// - Parameter request: `Request` object for API request which should contain all information regarding the request
+    /// - Parameter action: Optional `Action` object that represents a type of Request
     /// - Returns: `Result` instance of API Request
-    public func invokeSync(request: Request) -> Result {
+    public func invokeSync(request: Request, action: Action? = nil) -> Result {
+        
+        //  Intercept request with current set of interceptors
+        let thisRequest = self.interceptRequest(originalRequest: request, action: action)
+        
         //  Validate whether `Request` object is valid; otherwise, return an error
-        guard let urlRequest = request.build() else {
-            return Response(data: nil, response: nil, error: NetworkError.invalidRequest(request.debugDescription)).parseReponse()
+        guard let urlRequest = thisRequest.build() else {
+            return Response(data: nil, response: nil, error: NetworkError.invalidRequest(thisRequest.debugDescription)).parseReponse()
         }
         
         // Log request / capture request start
-        Log.logRequest(request)
+        Log.logRequest(thisRequest)
         let start = DispatchTime.now()
         
         // Sync request
@@ -116,6 +128,28 @@ public class RestClient: NSObject {
     }
     
     
+    /// Intercepts current Request object, and evaluates with given set of RequestInterceptors to update the original request
+    /// - Parameter originalRequest: original Request object
+    /// - Returns: updated Request object with given set of RequestInterceptors
+    func interceptRequest(originalRequest: Request, action: Action? = nil) -> Request {
+        if let action = action, let interceptors = self.interceptors {
+            Log.i("Request found with Action (\(action.type); processing with RequestInterceptors (\(interceptors.count) found)")
+            Log.i("Original Request: \(originalRequest.debugDescription)")
+            var currentRequest = originalRequest
+            for interceptor in interceptors {
+                Log.i("Start processing: \(String(describing: interceptor))")
+                currentRequest = interceptor.intercept(request: currentRequest, action: action)
+                Log.i("Executed \(String(describing: interceptor)); updated Request: \(currentRequest.debugDescription)")
+            }
+            
+            return currentRequest
+        }
+        Log.v("RequestInterceptor not found; proceeding with original request")
+        
+        return originalRequest
+    }
+    
+    
     //  MARK: - Config
     
     /// Sets custom URLSessionConfiguration for RestClient's URLSession object
@@ -126,6 +160,15 @@ public class RestClient: NSObject {
         Log.v("Custom URLSessionConfiguration set \(config.debugDescription)")
         let session = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
         self.session = session
+    }
+    
+    
+    //  MARK: - RequestInterceptors
+    
+    /// Registers an array of RequestInterceptors to intercept and modify Requests originated by SDK
+    /// - Parameter interceptors: An array of RequestInterceptors
+    func setRequestInterceptors(interceptors: [RequestInterceptor]) {
+        self.interceptors = interceptors
     }
 }
 

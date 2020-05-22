@@ -211,7 +211,7 @@ public class SessionManager: NSObject {
             self.keychainManager.cookieStore.deleteAll()
             
             let request = Request(url: self.serverConfig.sessionPath, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
-            FRRestClient.invoke(request: request) { (result) in
+            FRRestClient.invoke(request: request, action: Action(type: .LOGOUT)) { (result) in
                 switch result {
                 case .success( _, _ ):
                     FRLog.v("SSO Token was successfully revoked")
