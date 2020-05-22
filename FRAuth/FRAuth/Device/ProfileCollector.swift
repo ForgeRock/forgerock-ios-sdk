@@ -11,12 +11,12 @@
 
 import Foundation
 
-class ProfileCollector: DeviceCollector {
+public class ProfileCollector: DeviceCollector {
     
-    var name: String = "metadata"
+    public var name: String = "metadata"
     
     /// An array of DeviceCollector to be collected
-    var collectors: [DeviceCollector]
+    public var collectors: [DeviceCollector]
     
     /// Private initialization method which initializes default array of ProfileCollector
     init() {

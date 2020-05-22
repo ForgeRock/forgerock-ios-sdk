@@ -119,7 +119,7 @@ class FRDeviceCollectorTests: FRBaseTest {
             XCTFail("Browser section is missing")
             return
         }
-        XCTAssertNotNil((browser["agent"] as? String))
+        XCTAssertNotNil((browser["userAgent"] as? String))
         
         // Then, validate Telephony section
         guard let telephony = deviceInfo["telephony"] as? [String: Any] else {

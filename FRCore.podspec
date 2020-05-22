@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRCore'
-  s.version          = '1.0.3-beta'
+  s.version          = '2.0.0-alpha1'
   s.summary          = 'ForgeRock Auth Proximity SDK for iOS'
   s.description      = <<-DESC
   FRCore is a SDK that allows you to consume some of core functionalities and security features built for FRAuth SDK.

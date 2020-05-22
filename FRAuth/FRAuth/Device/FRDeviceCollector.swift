@@ -51,7 +51,9 @@ public class FRDeviceCollector: NSObject {
         for collector in self.collectors {
             dispatchGroup.enter()
             collector.collect { (collectedData) in
-                result[collector.name] = collectedData
+                if collectedData.keys.count > 0 {
+                    result[collector.name] = collectedData
+                }
                 dispatchGroup.leave()
             }
         }
