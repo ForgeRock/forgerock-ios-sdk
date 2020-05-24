@@ -13,7 +13,7 @@ import Foundation
 
 
 /// RequestInterceptorFactory is responsible to maintain, and manage an array of `RequestInterceptor` for FRCore's network layer
-public struct RequestInterceptorFactory {
+open class RequestInterceptorFactory {
     
     //  MARK: - Property
     

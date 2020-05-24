@@ -10,7 +10,6 @@
 
 
 import XCTest
-import FRCore
 
 class RequestInterceptorTests: FRBaseTest {
     
@@ -32,7 +31,7 @@ class RequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         
         // Set mock responses
         self.loadMockResponses(["AuthTree_UsernamePasswordNode",
@@ -98,7 +97,7 @@ class RequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         
         // Set mock responses
         self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
@@ -128,7 +127,7 @@ class RequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         
         // Set mock responses
         self.loadMockResponses(["OAuth2_Token_Revoke_Success", "AM_Session_Logout_Success"])
@@ -149,35 +148,5 @@ class RequestInterceptorTests: FRBaseTest {
         for intercepted in RequestInterceptorTests.intercepted {
             XCTAssertTrue(interceptorsInOrder.contains(intercepted))
         }
-    }
-}
-
-
-class FRAuthInterceptor: RequestInterceptor {
-    func intercept(request: Request, action: Action) -> Request {
-        
-        if action.type == "START_AUTHENTICATE" {
-            RequestInterceptorTests.intercepted.append("START_AUTHENTICATE")
-        }
-        else if action.type == "AUTHENTICATE" {
-            RequestInterceptorTests.intercepted.append("AUTHENTICATE")
-        }
-        else if action.type == "AUTHORIZE" {
-            RequestInterceptorTests.intercepted.append("AUTHORIZE")
-        }
-        else if action.type == "EXCHANGE_TOKEN" {
-            RequestInterceptorTests.intercepted.append("EXCHANGE_TOKEN")
-        }
-        else if action.type == "REFRESH_TOKEN" {
-            RequestInterceptorTests.intercepted.append("REFRESH_TOKEN")
-        }
-        else if action.type == "REVOKE_TOKEN" {
-            RequestInterceptorTests.intercepted.append("REVOKE_TOKEN")
-        }
-        else if action.type == "LOGOUT" {
-            RequestInterceptorTests.intercepted.append("LOGOUT")
-        }
-        
-        return request
     }
 }
