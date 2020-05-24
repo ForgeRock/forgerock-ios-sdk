@@ -38,9 +38,7 @@ extension String {
         if let _ = Data(base64Encoded: self) {
             return true
         }
-        else {
-            return false
-        }
+        return false
     }
     
     

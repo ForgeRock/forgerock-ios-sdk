@@ -167,7 +167,7 @@ public class RestClient: NSObject {
     
     /// Registers an array of RequestInterceptors to intercept and modify Requests originated by SDK
     /// - Parameter interceptors: An array of RequestInterceptors
-    func setRequestInterceptors(interceptors: [RequestInterceptor]) {
+    func setRequestInterceptors(interceptors: [RequestInterceptor]?) {
         self.interceptors = interceptors
     }
 }

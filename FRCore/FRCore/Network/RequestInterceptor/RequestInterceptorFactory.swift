@@ -27,16 +27,18 @@ public struct RequestInterceptorFactory {
     /// - Parameters:
     ///   - interceptors: An array of RequestInterceptor to be registered
     ///   - shouldOverride: Boolean indicator whether or not to override existing array
-    public func registerInterceptors(interceptors: [RequestInterceptor], shouldOverride: Bool = true) {
+    public func registerInterceptors(interceptors: [RequestInterceptor]?, shouldOverride: Bool = true) {
         if shouldOverride {
             RestClient.shared.setRequestInterceptors(interceptors: interceptors)
         }
         else {
-            var newInterceptors = RestClient.shared.interceptors ?? []
-            for interceptor in interceptors {
-                newInterceptors.append(interceptor)
+            if let interceptors = interceptors {
+                var newInterceptors = RestClient.shared.interceptors ?? []
+                for interceptor in interceptors {
+                    newInterceptors.append(interceptor)
+                }
+                RestClient.shared.setRequestInterceptors(interceptors: newInterceptors)
             }
-            RestClient.shared.setRequestInterceptors(interceptors: newInterceptors)
         }
     }
 }

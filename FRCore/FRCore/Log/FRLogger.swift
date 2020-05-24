@@ -12,6 +12,8 @@ import Foundation
 
 protocol FRLogger {
     var queue: DispatchQueue { get }
+    var enableHistory: Bool { get set }
+    var logHistory: [String] { get }
     
     func logVerbose(timePrefix: String, logPrefix: String, message: String)
     func logInfo(timePrefix: String, logPrefix: String, message: String)

@@ -29,7 +29,7 @@ import Foundation
         9. PUSH_AUTHENTICATE - AM Push authentication for Authenticator SDK: '/json/push/sns/message?_action=authenticate'
  */
 public struct Action {
-    let type: String
+    public let type: String
     public init(type: ActionType) {
         self.type = type.rawValue
     }
