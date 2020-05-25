@@ -1,5 +1,5 @@
 // 
-//  RequestInterceptorTests.swift
+//  FRRequestInterceptorTests.swift
 //  FRAuthTests
 //
 //  Copyright (c) 2020 ForgeRock. All rights reserved.
@@ -11,7 +11,7 @@
 
 import XCTest
 
-class RequestInterceptorTests: FRBaseTest {
+class FRRequestInterceptorTests: FRBaseTest {
     
     static var intercepted: [String] = []
     
@@ -21,7 +21,7 @@ class RequestInterceptorTests: FRBaseTest {
     }
     
     override func tearDown() {
-        RequestInterceptorTests.intercepted = []
+        FRRequestInterceptorTests.intercepted = []
         super.tearDown()
     }
     
@@ -82,9 +82,9 @@ class RequestInterceptorTests: FRBaseTest {
         
         XCTAssertNotNil(FRUser.currentUser)
         
-        XCTAssertEqual(RequestInterceptorTests.intercepted.count, 4)
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 4)
         let interceptorsInOrder: [String] = ["START_AUTHENTICATE", "AUTHENTICATE", "AUTHORIZE", "EXCHANGE_TOKEN"]
-        for (index, intercepted) in RequestInterceptorTests.intercepted.enumerated() {
+        for (index, intercepted) in FRRequestInterceptorTests.intercepted.enumerated() {
             XCTAssertEqual(interceptorsInOrder[index], intercepted)
         }
         
@@ -112,9 +112,9 @@ class RequestInterceptorTests: FRBaseTest {
         })
         waitForExpectations(timeout: 60, handler: nil)
         
-        XCTAssertEqual(RequestInterceptorTests.intercepted.count, 1)
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
         let interceptorsInOrder: [String] = ["REFRESH_TOKEN"]
-        for (index, intercepted) in RequestInterceptorTests.intercepted.enumerated() {
+        for (index, intercepted) in FRRequestInterceptorTests.intercepted.enumerated() {
             XCTAssertEqual(interceptorsInOrder[index], intercepted)
         }
         
@@ -122,7 +122,33 @@ class RequestInterceptorTests: FRBaseTest {
     }
     
     
-    func test_03_logout_interceptor() {
+    func test_03_userinfo_interceptor() {
+        // Start SDK
+        self.startSDK()
+        
+        // Register RequestInterceptors
+        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        // Set mock responses
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        
+        //  Make sure user already exists
+        XCTAssertNotNil(FRUser.currentUser)
+        
+        //  Refresh token
+        let ex = self.expectation(description: "Userinfo")
+        FRUser.currentUser?.getUserInfo(completion: { (userinfo, error) in
+            ex.fulfill()
+        })
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        //  /userinfo should not trigger interceptor; SDK /userinfo should not be ignored
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 0)
+        
+        self.shouldCleanup = false
+    }
+    
+    
+    func test_04_logout_interceptor() {
         // Start SDK
         self.startSDK()
         
@@ -143,9 +169,9 @@ class RequestInterceptorTests: FRBaseTest {
         
         XCTAssertNil(FRUser.currentUser)
         
-        XCTAssertEqual(RequestInterceptorTests.intercepted.count, 2)
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 2)
         let interceptorsInOrder: [String] = ["REVOKE_TOKEN", "LOGOUT"]
-        for intercepted in RequestInterceptorTests.intercepted {
+        for intercepted in FRRequestInterceptorTests.intercepted {
             XCTAssertTrue(interceptorsInOrder.contains(intercepted))
         }
     }
