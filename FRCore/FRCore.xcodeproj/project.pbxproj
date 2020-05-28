@@ -46,11 +46,11 @@
 		D5CBC25A24103E2800F9B6EA /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25624103E2700F9B6EA /* 02-cert.pem */; };
 		D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
 		D5D21498247843C900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
-		D5D2149A247843F100B26403 /* RequestInterceptorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */; };
+		D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */; };
 		D5D2149D2478575900B26403 /* FRStringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C422413002100835035 /* FRStringUtil.swift */; };
 		D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
 		D5D2149F2478575900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
-		D5D214A02478575900B26403 /* RequestInterceptorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */; };
+		D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */; };
 		D5D214A52478581D00B26403 /* NetworkErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214A42478581D00B26403 /* NetworkErrorTests.swift */; };
 		D5D214A924785BD800B26403 /* LogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214A824785BD800B26403 /* LogTests.swift */; };
 		D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214AA24786B7E00B26403 /* RequestInterceptorFactoryTests.swift */; };
@@ -105,7 +105,7 @@
 		D5CBC25B24103E4E00F9B6EA /* FRCoreTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRCoreTestHost.entitlements; sourceTree = "<group>"; };
 		D5D21495247843BB00B26403 /* RequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
 		D5D21497247843C900B26403 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
-		D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorFactory.swift; sourceTree = "<group>"; };
+		D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5D214A42478581D00B26403 /* NetworkErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorTests.swift; sourceTree = "<group>"; };
 		D5D214A824785BD800B26403 /* LogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTests.swift; sourceTree = "<group>"; };
 		D5D214AA24786B7E00B26403 /* RequestInterceptorFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorFactoryTests.swift; sourceTree = "<group>"; };
@@ -265,7 +265,7 @@
 			children = (
 				D5D21495247843BB00B26403 /* RequestInterceptor.swift */,
 				D5D21497247843C900B26403 /* Action.swift */,
-				D5D21499247843F100B26403 /* RequestInterceptorFactory.swift */,
+				D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */,
 			);
 			path = RequestInterceptor;
 			sourceTree = "<group>";
@@ -509,7 +509,7 @@
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
 				D5C979B72409DF9700DA380A /* FRLogger.swift in Sources */,
 				D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */,
-				D5D2149A247843F100B26403 /* RequestInterceptorFactory.swift in Sources */,
+				D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */,
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
@@ -531,7 +531,7 @@
 				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
 				D5D214A924785BD800B26403 /* LogTests.swift in Sources */,
 				D5D2149F2478575900B26403 /* Action.swift in Sources */,
-				D5D214A02478575900B26403 /* RequestInterceptorFactory.swift in Sources */,
+				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5CBC24424102BB100F9B6EA /* FRError.swift in Sources */,
 				D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */,
 				D5CBC24524102BB100F9B6EA /* NetworkError.swift in Sources */,

@@ -35,6 +35,9 @@ class FRAuthInterceptor: RequestInterceptor {
         else if action.type == "LOGOUT" {
             FRRequestInterceptorTests.intercepted.append("LOGOUT")
         }
+        else if action.type == "USER_INFO" {
+            FRRequestInterceptorTests.intercepted.append("USER_INFO")
+        }
         else {
             FRRequestInterceptorTests.intercepted.append(action.type)
         }

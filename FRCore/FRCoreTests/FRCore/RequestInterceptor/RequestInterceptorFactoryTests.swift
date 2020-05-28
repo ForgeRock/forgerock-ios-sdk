@@ -20,50 +20,50 @@ class RequestInterceptorFactoryTests: FRCoreBaseTest {
     
     func test_01_register_interceptors() {
         XCTAssertNil(RestClient.shared.interceptors)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor()])
         XCTAssertEqual(RestClient.shared.interceptors?.count, 1)
     }
     
     
     func test_02_register_multiple_interceptors() {
         XCTAssertNil(RestClient.shared.interceptors)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()])
         XCTAssertEqual(RestClient.shared.interceptors?.count, 2)
     }
     
     
     func test_03_register_multiple_interceptors_override_true() {
         XCTAssertNil(RestClient.shared.interceptors)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor()])
         XCTAssertEqual(RestClient.shared.interceptors?.count, 1)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()], shouldOverride: true)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()], shouldOverride: true)
         XCTAssertEqual(RestClient.shared.interceptors?.count, 2)
     }
     
     
     func test_04_register_multiple_interceptors_override_false() {
         XCTAssertNil(RestClient.shared.interceptors)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor()])
         XCTAssertEqual(RestClient.shared.interceptors?.count, 1)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()], shouldOverride: false)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()], shouldOverride: false)
         XCTAssertEqual(RestClient.shared.interceptors?.count, 3)
     }
     
     
     func test_05_register_null_override_false() {
         XCTAssertNil(RestClient.shared.interceptors)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()])
         XCTAssertEqual(RestClient.shared.interceptors?.count, 2)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: nil, shouldOverride: false)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: nil, shouldOverride: false)
         XCTAssertEqual(RestClient.shared.interceptors?.count, 2)
     }
     
     
     func test_06_register_null_override_true() {
         XCTAssertNil(RestClient.shared.interceptors)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyInterceptor(), DummyInterceptorTwo()])
         XCTAssertEqual(RestClient.shared.interceptors?.count, 2)
-        RequestInterceptorFactory.shared.registerInterceptors(interceptors: nil, shouldOverride: true)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: nil, shouldOverride: true)
         XCTAssertNil(RestClient.shared.interceptors)
     }
 }

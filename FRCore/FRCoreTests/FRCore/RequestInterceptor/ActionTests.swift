@@ -65,4 +65,10 @@ class ActionTests: FRCoreBaseTest {
         let action = Action(type: .PUSH_AUTHENTICATE)
         XCTAssertEqual(action.type, "PUSH_AUTHENTICATE")
     }
+    
+    
+    func test_10_action_user_info() {
+        let action = Action(type: .USER_INFO)
+        XCTAssertEqual(action.type, "USER_INFO")
+    }
 }

@@ -261,8 +261,8 @@
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
 		D5C979C12409EA9600DA380A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
-		D5EC34FB247B329D0005A50C /* FRRequestInterceptorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorFactory.swift */; };
-		D5EC34FE247B33490005A50C /* FRRequestInterceptorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorFactory.swift */; };
+		D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
+		D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
 		D5EC3500247B33A80005A50C /* FRAuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FF247B33A80005A50C /* FRAuthInterceptor.swift */; };
 		D5F01B1D240F0B9F00BD48AA /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B1C240F0B9F00BD48AA /* FRLog.swift */; };
 		D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */; };
@@ -513,7 +513,7 @@
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
 		D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorTests.swift; sourceTree = "<group>"; };
-		D5EC34FA247B329D0005A50C /* FRRequestInterceptorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorFactory.swift; sourceTree = "<group>"; };
+		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5EC34FF247B33A80005A50C /* FRAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuthInterceptor.swift; sourceTree = "<group>"; };
 		D5F01B1C240F0B9F00BD48AA /* FRLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1119,7 +1119,7 @@
 				D586CF3623358EDF007A2194 /* FRURLProtocol.swift */,
 				D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */,
 				D512CD40240DC41E00AF520E /* FRRestClient.swift */,
-				D5EC34FA247B329D0005A50C /* FRRequestInterceptorFactory.swift */,
+				D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1559,7 +1559,7 @@
 				D586CFC023358EE0007A2194 /* SessionManager.swift in Sources */,
 				D586CFAC23358EE0007A2194 /* Address.swift in Sources */,
 				D586CF9C23358EE0007A2194 /* CallbackFactory.swift in Sources */,
-				D5EC34FB247B329D0005A50C /* FRRequestInterceptorFactory.swift in Sources */,
+				D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */,
 				D586CF9123358EE0007A2194 /* Token.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
@@ -1612,7 +1612,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5EC34FE247B33490005A50C /* FRRequestInterceptorFactory.swift in Sources */,
+				D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */,
 				D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */,
 				D5F01B20240F1B2900BD48AA /* ActionCallback.swift in Sources */,

@@ -1,5 +1,5 @@
 // 
-//  RequestInterceptorFactory.swift
+//  RequestInterceptorRegistry.swift
 //  FRCore
 //
 //  Copyright (c) 2020 ForgeRock. All rights reserved.
@@ -12,13 +12,13 @@
 import Foundation
 
 
-/// RequestInterceptorFactory is responsible to maintain, and manage an array of `RequestInterceptor` for FRCore's network layer
-open class RequestInterceptorFactory {
+/// RequestInterceptorRegistry is responsible to maintain, and manage an array of `RequestInterceptor` for FRCore's network layer
+open class RequestInterceptorRegistry {
     
     //  MARK: - Property
     
-    /// Shared instance of `RequestInterceptorFactory`
-    public static let shared = RequestInterceptorFactory()
+    /// Shared instance of `RequestInterceptorRegistry`
+    public static let shared = RequestInterceptorRegistry()
     
     
     //  MARK: - Public

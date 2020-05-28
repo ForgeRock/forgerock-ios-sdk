@@ -31,7 +31,7 @@ class FRRequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         
         // Set mock responses
         self.loadMockResponses(["AuthTree_UsernamePasswordNode",
@@ -97,7 +97,7 @@ class FRRequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         
         // Set mock responses
         self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
@@ -127,9 +127,9 @@ class FRRequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         // Set mock responses
-        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        self.loadMockResponses(["OAuth2_UserInfo_Success"])
         
         //  Make sure user already exists
         XCTAssertNotNil(FRUser.currentUser)
@@ -141,8 +141,11 @@ class FRRequestInterceptorTests: FRBaseTest {
         })
         waitForExpectations(timeout: 60, handler: nil)
         
-        //  /userinfo should not trigger interceptor; SDK /userinfo should not be ignored
-        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 0)
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
+        let interceptorsInOrder: [String] = ["USER_INFO"]
+        for (index, intercepted) in FRRequestInterceptorTests.intercepted.enumerated() {
+            XCTAssertEqual(interceptorsInOrder[index], intercepted)
+        }
         
         self.shouldCleanup = false
     }
@@ -153,7 +156,7 @@ class FRRequestInterceptorTests: FRBaseTest {
         self.startSDK()
         
         // Register RequestInterceptors
-        FRRequestInterceptorFactory.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
         
         // Set mock responses
         self.loadMockResponses(["OAuth2_Token_Revoke_Success", "AM_Session_Logout_Success"])

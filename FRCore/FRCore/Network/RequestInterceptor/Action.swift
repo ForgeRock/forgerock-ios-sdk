@@ -19,7 +19,7 @@ import Foundation
     Currently, ForgeRock SDK makes following Requests with corresponding Actions:
  
         1. START_AUTHENTICATE - Initial Request made: '/json/realms/{realm}/authenticate'
-        2. AUTHENTICATE - Any subsequent Requests made: '/json/realms/{realm}/authenticate'
+        2. AUTHENTICATE - Any subsequent Request made: '/json/realms/{realm}/authenticate'
         3. AUTHORIZE - A '/oauth2/realms/{realm}/authorize' request for exchanging SSO Token to Authorization code
         4. EXCHANGE_TOKEN - OAuth2 token exchange request with Authorization Code: '/oauth2/realms/{realm}/access_token'
         5. REFRESH_TOKEN - OAuth2 token renewal request with given 'refresh_token': '/oauth2/realms/{realm}/access_token'
@@ -27,6 +27,7 @@ import Foundation
         7. LOGOUT - AM Session logout request to revoke SSO Token: '/json/realms/{realm}/sessions?_action=logout'
         8. PUSH_REGISTER - AM Push registration for Authenticator SDK: '/json/push/sns/message?_action=register'
         9. PUSH_AUTHENTICATE - AM Push authentication for Authenticator SDK: '/json/push/sns/message?_action=authenticate'
+        10. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
  */
 public struct Action {
     public let type: String
@@ -47,4 +48,5 @@ public enum ActionType: String {
     case LOGOUT = "LOGOUT"
     case PUSH_REGISTER = "PUSH_REGISTER"
     case PUSH_AUTHENTICATE = "PUSH_AUTHENTICATE"
+    case USER_INFO = "USER_INFO"
 }
