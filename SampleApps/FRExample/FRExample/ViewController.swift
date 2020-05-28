@@ -190,10 +190,15 @@ class ViewController: UIViewController {
         config.protocolClasses = [FRURLProtocol.self]
         self.urlSession = URLSession(configuration: config)
         
-        // - MARK: Token Management - Example ends
-        
+        //  - MARK: FRUI Customize Cell example
         // Comment out below code to demonstrate FRUI customization
 //        CallbackTableViewCellFactory.shared.registerCallbackTableViewCell(callbackType: "NameCallback", cellClass: CustomNameCallbackCell.self, nibName: "CustomNameCallbackCell")
+        
+        
+        //  - MARK: RequestInterceptor example
+        
+        //  By commenting out below code, it registers 'ForceAuthIntercetpr' class into FRCore and FRAuth's RequestInterceptor which then allows developers to customize requests being made by ForgeRock SDK, and modify as needed
+//        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [ForceAuthInterceptor()])
         
         // Start SDK
         do {
