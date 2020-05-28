@@ -219,7 +219,7 @@ public class Node: NSObject {
     fileprivate func next(completion:@escaping NodeCompletion<Token>) {
 
         let thisRequest = self.buildAuthServiceRequest()
-        FRRestClient.invoke(request: thisRequest) { (result) in
+        FRRestClient.invoke(request: thisRequest, action: Action(type: .AUTHENTICATE)) { (result) in
             switch result {
             case .success(let response, _):
                 

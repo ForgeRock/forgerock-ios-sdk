@@ -50,6 +50,10 @@ class FRConsoleLogger: FRLogger {
     
     func log(timePrefix: String, log: String, logLevel: LogLevel) {
         
+        if self.enableHistory {
+            self.logHistory.append("\(timePrefix) \(log)")
+        }
+        
         let osLogType = self.converOSLogType(logLevel: logLevel)
         self.queue.async {
             if self.osActivieModeEnabled {

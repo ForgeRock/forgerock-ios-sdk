@@ -276,13 +276,13 @@ public class FRUser: NSObject, NSSecureCoding {
         
         let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
         
-        let result = FRRestClient.invokeSync(request: request)
-        
-        switch result {
-        case .success(let response, _ ):
-            completion(UserInfo(response), nil)
-        case .failure(let error):
-            completion(nil, error)
+        FRRestClient.invoke(request: request, action: Action(type: .USER_INFO)) { (result) in
+            switch result {
+            case .success(let response, _ ):
+                completion(UserInfo(response), nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
         }
     }
     

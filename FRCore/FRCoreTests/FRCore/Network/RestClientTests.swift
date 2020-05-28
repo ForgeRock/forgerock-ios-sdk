@@ -15,7 +15,7 @@ class RestClientTests: FRCoreBaseTest {
     /// Tests to invoke API request with invalid URLRequest or Request object
     func test_01_test_invalid_request_obj() {
         
-        let request = Request(url: "https://openam-james-go-ea.forgeblocks.com/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=Usern", method: .GET)
+        let request = Request(url: "invalid_request", method: .GET)
         let expectation = self.expectation(description: "GET request should fail with invalid Request object: \(request.debugDescription)")
         
         var response:[String: Any]?, urlResponse: URLResponse?, error: NetworkError?
@@ -42,6 +42,13 @@ class RestClientTests: FRCoreBaseTest {
         guard let _ = error else {
             XCTFail()
             return
+        }
+        switch error {
+        case .invalidRequest(_):
+            break
+        default:
+            XCTFail("RestClient failed with unexpected reason")
+            break
         }
     }
     

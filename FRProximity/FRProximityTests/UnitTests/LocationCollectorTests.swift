@@ -123,7 +123,7 @@ class LocationCollectorTests: FRPBaseTest {
     func test_07_location_fail_to_fetch_location() {
         
         let fakeLocationManager = FakeLocationManager()
-        fakeLocationManager.fakeError = NetworkError.requestFailWithError // fake any error
+        fakeLocationManager.fakeError = NetworkError.invalidResponseDataType // fake any error
         let location = FakeLocationCollector()
         location.locationManager = fakeLocationManager
         

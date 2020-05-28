@@ -30,6 +30,11 @@ public enum NetworkError: FRError {
 
 extension NetworkError {
     
+    /// Unique error code for given error
+    var code: Int {
+        return self.parseErrorCode()
+    }
+    
     /// Parses AuthError value into integer error code
     ///
     /// - Returns: Int value of unique error code
@@ -76,6 +81,9 @@ extension NetworkError {
                 }
             }
             return NetworkError.apiFailedWithError(httpResponse.statusCode, errorMessage, jsonData)
+        }
+        else if let networkError = error as? NetworkError {
+            return networkError
         }
         else {
             return NetworkError.requestFailWithError

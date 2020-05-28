@@ -44,8 +44,22 @@
 		D5CBC25824103E2800F9B6EA /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25424103E2700F9B6EA /* 01-pkey.key */; };
 		D5CBC25924103E2800F9B6EA /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25524103E2700F9B6EA /* 02-pkey.pem */; };
 		D5CBC25A24103E2800F9B6EA /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25624103E2700F9B6EA /* 02-cert.pem */; };
+		D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
+		D5D21498247843C900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
+		D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */; };
+		D5D2149D2478575900B26403 /* FRStringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C422413002100835035 /* FRStringUtil.swift */; };
+		D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
+		D5D2149F2478575900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
+		D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */; };
+		D5D214A52478581D00B26403 /* NetworkErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214A42478581D00B26403 /* NetworkErrorTests.swift */; };
+		D5D214A924785BD800B26403 /* LogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214A824785BD800B26403 /* LogTests.swift */; };
+		D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214AA24786B7E00B26403 /* RequestInterceptorFactoryTests.swift */; };
+		D5D214AD24786DBE00B26403 /* ActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214AC24786DBE00B26403 /* ActionTests.swift */; };
+		D5D214AF24786EA800B26403 /* RequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214AE24786EA800B26403 /* RequestInterceptorTests.swift */; };
+		D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214B124786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift */; };
 		D5E75BD42409B8C0005F589F /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BCA2409B8C0005F589F /* FRCore.framework */; };
 		D5E75BDB2409B8C0005F589F /* FRCore.h in Headers */ = {isa = PBXBuildFile; fileRef = D5E75BCD2409B8C0005F589F /* FRCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */; };
 		D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B18240EFB1400BD48AA /* NetworkError.swift */; };
 /* End PBXBuildFile section */
 
@@ -89,11 +103,21 @@
 		D5CBC25524103E2700F9B6EA /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
 		D5CBC25624103E2700F9B6EA /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
 		D5CBC25B24103E4E00F9B6EA /* FRCoreTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRCoreTestHost.entitlements; sourceTree = "<group>"; };
+		D5D21495247843BB00B26403 /* RequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
+		D5D21497247843C900B26403 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorRegistry.swift; sourceTree = "<group>"; };
+		D5D214A42478581D00B26403 /* NetworkErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorTests.swift; sourceTree = "<group>"; };
+		D5D214A824785BD800B26403 /* LogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTests.swift; sourceTree = "<group>"; };
+		D5D214AA24786B7E00B26403 /* RequestInterceptorFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorFactoryTests.swift; sourceTree = "<group>"; };
+		D5D214AC24786DBE00B26403 /* ActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTests.swift; sourceTree = "<group>"; };
+		D5D214AE24786EA800B26403 /* RequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorTests.swift; sourceTree = "<group>"; };
+		D5D214B124786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRCoreRequestCaptureProtocol.swift; sourceTree = "<group>"; };
 		D5E75BCA2409B8C0005F589F /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5E75BCD2409B8C0005F589F /* FRCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRCore.h; sourceTree = "<group>"; };
 		D5E75BCE2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5E75BD32409B8C0005F589F /* FRCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5E75BDA2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRStringUtilTests.swift; sourceTree = "<group>"; };
 		D5F01B18240EFB1400BD48AA /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,6 +186,7 @@
 		D5C979AE2409DF9700DA380A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				D5D21494247843BB00B26403 /* RequestInterceptor */,
 				D5C979AF2409DF9700DA380A /* Result.swift */,
 				D5C979B02409DF9700DA380A /* Response.swift */,
 				D5C979B12409DF9700DA380A /* Request.swift */,
@@ -188,6 +213,9 @@
 		D5CBC23B24102B8700F9B6EA /* FRCore */ = {
 			isa = PBXGroup;
 			children = (
+				D5D214A12478580600B26403 /* Error */,
+				D5D214A22478580600B26403 /* Log */,
+				D5D214A32478580600B26403 /* RequestInterceptor */,
 				D5CBC23C24102B8700F9B6EA /* Util */,
 				D5CBC23E24102B8700F9B6EA /* Network */,
 			);
@@ -199,6 +227,7 @@
 			children = (
 				D5CBC23D24102B8700F9B6EA /* KeychainServiceTests.swift */,
 				D50115CE2410472F00219761 /* SecuredKeyTests.swift */,
+				D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -229,6 +258,50 @@
 				D5CBC25624103E2700F9B6EA /* 02-cert.pem */,
 			);
 			path = Certs;
+			sourceTree = "<group>";
+		};
+		D5D21494247843BB00B26403 /* RequestInterceptor */ = {
+			isa = PBXGroup;
+			children = (
+				D5D21495247843BB00B26403 /* RequestInterceptor.swift */,
+				D5D21497247843C900B26403 /* Action.swift */,
+				D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */,
+			);
+			path = RequestInterceptor;
+			sourceTree = "<group>";
+		};
+		D5D214A12478580600B26403 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				D5D214A42478581D00B26403 /* NetworkErrorTests.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		D5D214A22478580600B26403 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				D5D214A824785BD800B26403 /* LogTests.swift */,
+			);
+			path = Log;
+			sourceTree = "<group>";
+		};
+		D5D214A32478580600B26403 /* RequestInterceptor */ = {
+			isa = PBXGroup;
+			children = (
+				D5D214AA24786B7E00B26403 /* RequestInterceptorFactoryTests.swift */,
+				D5D214AC24786DBE00B26403 /* ActionTests.swift */,
+				D5D214AE24786EA800B26403 /* RequestInterceptorTests.swift */,
+			);
+			path = RequestInterceptor;
+			sourceTree = "<group>";
+		};
+		D5D214B024786F8F00B26403 /* TestUtil */ = {
+			isa = PBXGroup;
+			children = (
+				D5D214B124786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift */,
+			);
+			path = TestUtil;
 			sourceTree = "<group>";
 		};
 		D5E75BC02409B8C0005F589F = {
@@ -268,6 +341,7 @@
 		D5E75BD72409B8C0005F589F /* FRCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				D5D214B024786F8F00B26403 /* TestUtil */,
 				D5CBC25124103E2700F9B6EA /* TestData */,
 				D5CBC23B24102B8700F9B6EA /* FRCore */,
 				D5E75BDA2409B8C0005F589F /* Info.plist */,
@@ -434,12 +508,15 @@
 				D5C979BA2409DF9700DA380A /* Request.swift in Sources */,
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
 				D5C979B72409DF9700DA380A /* FRLogger.swift in Sources */,
+				D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */,
+				D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */,
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
 				D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */,
+				D5D21498247843C900B26403 /* Action.swift in Sources */,
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
 			);
@@ -449,10 +526,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D2149D2478575900B26403 /* FRStringUtil.swift in Sources */,
+				D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */,
+				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
+				D5D214A924785BD800B26403 /* LogTests.swift in Sources */,
+				D5D2149F2478575900B26403 /* Action.swift in Sources */,
+				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5CBC24424102BB100F9B6EA /* FRError.swift in Sources */,
+				D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */,
 				D5CBC24524102BB100F9B6EA /* NetworkError.swift in Sources */,
 				D5CBC24624102BB100F9B6EA /* KeychainService.swift in Sources */,
 				D5CBC24724102BB100F9B6EA /* SecuredKey.swift in Sources */,
+				D5D214A52478581D00B26403 /* NetworkErrorTests.swift in Sources */,
 				D5CBC24824102BB100F9B6EA /* Log.swift in Sources */,
 				D5CBC24924102BB100F9B6EA /* FRConsoleLogger.swift in Sources */,
 				D5CBC24A24102BB100F9B6EA /* FRLogger.swift in Sources */,
@@ -460,9 +545,12 @@
 				D5CBC24B24102BB100F9B6EA /* Result.swift in Sources */,
 				D5CBC24C24102BB200F9B6EA /* Response.swift in Sources */,
 				D5CBC24D24102BB200F9B6EA /* Request.swift in Sources */,
+				D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */,
 				D5CBC24E24102BB200F9B6EA /* RestClient.swift in Sources */,
 				D5CBC25024103D3700F9B6EA /* FRCoreBaseTest.swift in Sources */,
 				D5CBC24324102B8800F9B6EA /* RestClientTests.swift in Sources */,
+				D5D214AF24786EA800B26403 /* RequestInterceptorTests.swift in Sources */,
+				D5D214AD24786DBE00B26403 /* ActionTests.swift in Sources */,
 				D5CBC24224102B8800F9B6EA /* RequestTests.swift in Sources */,
 				D5CBC24124102B8800F9B6EA /* KeychainServiceTests.swift in Sources */,
 			);

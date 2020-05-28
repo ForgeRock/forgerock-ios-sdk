@@ -24,7 +24,7 @@ class FRRestClient: NSObject {
     /// - Parameters:
     ///   - request: `Request` object for API request which should contain all information regarding the request
     ///   - completion: `Result` completion callback
-    static func invoke(request: Request, completion: @escaping ResultCallback) {
+    static func invoke(request: Request, action: Action? = nil, completion: @escaping ResultCallback) {
         
         var newRequest = request
         //  Get Cookie from Cookie Store, and set it to header
@@ -34,7 +34,7 @@ class FRRestClient: NSObject {
             newRequest = Request(url: request.url, method: request.method, headers: newHeaders, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
         }
         
-        RestClient.shared.invoke(request: newRequest) { (result) in
+        RestClient.shared.invoke(request: newRequest, action: action) { (result) in
             switch result {
             case .success(let response, let httpResponse):
                 FRRestClient.parseResponseForCookie(response: response, httpResponse: httpResponse as? HTTPURLResponse)
@@ -52,7 +52,7 @@ class FRRestClient: NSObject {
     ///
     /// - Parameter request: `Request` object for API request which should contain all information regarding the request
     /// - Returns: `Result` instance of API Request
-    static func invokeSync(request: Request) -> Result {
+    static func invokeSync(request: Request, action: Action? = nil) -> Result {
         
         var newRequest = request
         //  Get Cookie from Cookie Store, and set it to header
@@ -61,7 +61,7 @@ class FRRestClient: NSObject {
             newHeaders.merge(cookieHeader) { (_, new) in new }
             newRequest = Request(url: request.url, method: request.method, headers: newHeaders, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
         }
-        let result = RestClient.shared.invokeSync(request: newRequest)
+        let result = RestClient.shared.invokeSync(request: newRequest, action: action)
         
         switch result {
         case .success(let response, let httpResponse):
