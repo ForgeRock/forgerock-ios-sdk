@@ -174,6 +174,26 @@ struct TokenManager {
     }
     
     
+    /// Refreshs OAuth2 token set synchronously with current refresh_token
+    /// - Throws: TokenError
+    /// - Returns: renewed OAuth2 token 
+    func refreshSync() throws -> AccessToken? {
+        if let token = try self.retrieveAccessTokenFromKeychain() {
+            if let refreshToken = token.refreshToken {
+                let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
+                newToken.sessionToken = token.sessionToken
+                try self.sessionManager.setAccessToken(token: newToken)
+                return newToken
+            }
+            else {
+                throw TokenError.nullRefreshToken
+            }
+        }
+        else {
+            throw TokenError.nullToken
+        }
+    }
+    
     /// Revokes OAuth2 token set using either of access_token or refresh_token
     /// - Parameter completion: Completion block which will return an Error if there was any error encountered
     func revoke(completion: @escaping CompletionCallback) {

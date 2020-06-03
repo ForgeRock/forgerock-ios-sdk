@@ -151,39 +151,15 @@ class ViewController: UIViewController {
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
 
         
-        // - MARK: Token Management - Example starts
+        // - MARK: Token Management - Example
         // Register FRURLProtocol
         URLProtocol.registerClass(FRURLProtocol.self)
+        let policy = TokenManagementPolicy(validatingURL: [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!], delegate: self)
+        FRURLProtocol.tokenManagementPolicy = policy
         
-        // Add URLs for FRAuth SDK to validate
-        // All other URLs will be ignored, and FRAuth SDK will not inject Authorization header if request is not within the list
-        FRURLProtocol.validatedURLs = [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!]
-        
-        // Define customizable token refresh policy
-        FRURLProtocol.refreshTokenPolicy = {(responseData, response, error) in
-            var shouldHandle = false
-            // refresh token policy will only be enforced when HTTP status code is equal to 401 in this case
-            // Developers can define their own policy based on response data, URLResponse, and/or error from the request
-            if let thisResponse = response as? HTTPURLResponse, thisResponse.statusCode == 401 {
-             
-                shouldHandle = true
-            }
-            return shouldHandle
-        }
-        
-        // Handle PolicyAdvice for Transactional Authorization
-        FRURLProtocol.onPolicyAdviceReceived = {(policyAdvice, completion) in
-            DispatchQueue.main.async {
-                FRSession.authenticateWithUI(policyAdvice, self) { (token: Token?, error) in
-                    if let _ = token, error == nil {
-                        completion(true)
-                    }
-                    else {
-                        completion(false)
-                    }
-                }
-            }
-        }
+        //  - MARK: Authorization Policy - Example
+        let authPolicy = AuthorizationPolicy(validatingURL: [URL(string: "http://localhost:9888/policy/transfer")!], delegate: self)
+        FRURLProtocol.authorizationPolicy = authPolicy
         
         // Configure FRURLProtocol for HTTP client
         let config = URLSessionConfiguration.default
@@ -626,6 +602,7 @@ class ViewController: UIViewController {
         
         var request = URLRequest(url: url)
         request.setValue("iPlanetDirectoryPro="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        request.setValue((FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "SSOToken")
         self.urlSession.dataTask(with: request) { (data, response, error) in
             guard let responseData = data, let httpresponse = response as? HTTPURLResponse, error == nil else {
                 self.displayLog("Invoking API failed\n\nError: \(String(describing: error))")
@@ -752,4 +729,53 @@ extension UIColor {
             alpha: CGFloat(1.0)
         )
     }
+}
+
+
+//  - MARK: TokenManagementPolicy example
+extension ViewController: TokenManagementPolicyDelegate {
+    func evaluateTokenRefresh(responseData: Data?, response: URLResponse?, error: Error?) -> Bool {
+        var shouldHandle = false
+        // refresh token policy will only be enforced when HTTP status code is equal to 401 in this case
+        // Developers can define their own policy based on response data, URLResponse, and/or error from the request
+        if let thisResponse = response as? HTTPURLResponse, thisResponse.statusCode == 401 {
+         
+            shouldHandle = true
+        }
+        return shouldHandle
+    }
+}
+
+//  - MARK: AuthorizationPolicy example
+extension ViewController: AuthorizationPolicyDelegate {
+    func onPolicyAdviseReceived(policyAdvice: PolicyAdvice, completion: @escaping FRCompletionResultCallback) {
+        DispatchQueue.main.async {
+            FRSession.authenticateWithUI(policyAdvice, self) { (token: Token?, error) in
+                if let _ = token, error == nil {
+                    completion(true)
+                }
+                else {
+                    completion(false)
+                }
+            }
+        }
+    }
+    
+//    func evaluateAuthorizationPolicy(responseData: Data?, response: URLResponse?, error: Error?) -> PolicyAdvice? {
+//        // Example to evaluate given response data, and constructs PolicyAdvice object
+//        // Following code expects JSON response payload with 'advice' attribute in JSON which contains an array of 'advice' response from AM
+//        if let data = responseData, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+//            if let advice = json["advice"], let adviceData = advice.data(using: .utf8), let adviceJSON = try? JSONSerialization.jsonObject(with: adviceData, options: []) as? [[String: Any]], let evalResult = adviceJSON.first, let policyAdvice = PolicyAdvice(json: evalResult) {
+//                return policyAdvice
+//            }
+//        }
+//        return nil
+//    }
+    
+//    func updateRequest(originalRequest: URLRequest, txId: String?) -> URLRequest {
+//        let mutableRequest = ((originalRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
+//        // Appends given transactionId into header
+//        mutableRequest.setValue(txId, forHTTPHeaderField: "transactionId")
+//        return mutableRequest as URLRequest
+//    }
 }

@@ -304,7 +304,7 @@ public class FRUser: NSObject, NSSecureCoding {
     
     // MARK: - Private methods
     
-    /// Refreshes User's session with refres_token regardless of validity of current access_token
+    /// Refreshes user's session with refresh_token regardless of validity of current access_token
     ///
     /// - Parameter completion: Completion callback that notifies the result of operation
     func refresh(completion:@escaping UserCallback) {
@@ -323,6 +323,23 @@ public class FRUser: NSObject, NSSecureCoding {
         else {
             FRLog.w("Invalid SDK state")
             completion(nil, ConfigError.invalidSDKState)
+        }
+    }
+    
+    
+    /// Refreshes user's session with refresh_token synchronously regardless of validity of current access_token
+    /// - Throws: TokenError
+    /// - Returns: FRUser object with newly renewed OAuth2 token
+    func refresSync() throws -> FRUser {
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            let token = try tokenManager.refreshSync()
+            self.token = token
+            self.save()
+            return self
+        }
+        else {
+            FRLog.w("Invalid SDK state")
+            throw ConfigError.invalidSDKState
         }
     }
     
