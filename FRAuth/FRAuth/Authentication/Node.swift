@@ -227,8 +227,18 @@ public class Node: NSObject {
             switch result {
             case .success(let response, _):
                 
-                // If token received
-                if let tokenId = response[OpenAM.tokenId] as? String {
+                // If authId received
+                if let _ = response[OpenAM.authId] {
+                    do {
+                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.sessionManager, self.tokenManager)
+                        completion(nil, node, nil)
+                    } catch let authError as AuthError {
+                        completion(nil, nil, authError)
+                    } catch {
+                        completion(nil, nil, error)
+                    }
+                }
+                else if let tokenId = response[OpenAM.tokenId] as? String {
                     let token = Token(tokenId)
                     if let sessionManager = self.sessionManager, let tokenManager = self.tokenManager {
                         
@@ -244,15 +254,7 @@ public class Node: NSObject {
                     completion(token, nil, nil)
                 }
                 else {
-                    // If token was not received
-                    do {
-                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.sessionManager, self.tokenManager)
-                        completion(nil, node, nil)
-                    } catch let authError as AuthError {
-                        completion(nil, nil, authError)
-                    } catch {
-                        completion(nil, nil, error)
-                    }
+                    completion(nil, nil, nil)
                 }
                 break
             case .failure(let error):

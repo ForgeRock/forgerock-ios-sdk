@@ -261,6 +261,8 @@
 		D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */; };
 		D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */; };
 		D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
+		D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */; };
+		D5C64E652489925300CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */; };
 		D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
@@ -519,6 +521,8 @@
 		D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicyTests.swift; sourceTree = "<group>"; };
 		D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPolicyTests.swift; sourceTree = "<group>"; };
 		D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSessionTests.swift; sourceTree = "<group>"; };
+		D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
+		D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
 		D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
 		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
@@ -920,6 +924,7 @@
 		D53310492301216A00F1F851 /* AuthTree */ = {
 			isa = PBXGroup;
 			children = (
+				D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */,
 				D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
 				D539587B2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json */,
 				D533104A2301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json */,
@@ -1082,6 +1087,7 @@
 		D5582BA522E2DBB500C86ED8 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				D5C64E632489924300CB7EB3 /* Customization */,
 				D534A2CF22FBF1EB007098D1 /* Certs */,
 				D5167286231EFE09007053EE /* CustomCallback */,
 				D539589C23021851009CA2BC /* ModelData */,
@@ -1275,6 +1281,14 @@
 			children = (
 			);
 			path = FRSession;
+			sourceTree = "<group>";
+		};
+		D5C64E632489924300CB7EB3 /* Customization */ = {
+			isa = PBXGroup;
+			children = (
+				D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */,
+			);
+			path = Customization;
 			sourceTree = "<group>";
 		};
 		D5DE4BAE2488AFAA00FE2654 /* Policy */ = {
@@ -1515,6 +1529,7 @@
 				D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */,
 				D53310582301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json in Resources */,
 				D52D16882314853D0095905A /* UsernamePasswordFlowObjc.png in Resources */,
+				D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */,
 				D53310542301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
 				D53310522301216A00F1F851 /* AM_Session_Logout_Success.json in Resources */,
 				D52D168A2314853D0095905A /* UserSignUpFlowObjc.png in Resources */,
@@ -1772,6 +1787,7 @@
 				D52D1667231484D60095905A /* AuthServiceTests.swift in Sources */,
 				D5924823232871AE0027031A /* PollingWaitCallbackTests.swift in Sources */,
 				D52D162823147FE70095905A /* FRTestUtils.swift in Sources */,
+				D5C64E652489925300CB7EB3 /* NoSessionInterceptor.swift in Sources */,
 				D52D1679231484D60095905A /* MultipleValuesCallbackTests.swift in Sources */,
 				D52D1660231484D60095905A /* KBAAuthenticationFlowTests.swift in Sources */,
 				D52D1664231484D60095905A /* UsernamePasswordFlowTests.swift in Sources */,

@@ -177,6 +177,17 @@ class AuthStepViewController: UIViewController {
                 alert.addAction(action)
                 self.present(alert, animated: true)
             }
+            else {
+                if let completion = self.atCompletion {
+                    completion(nil, nil)
+                } else if let completion = self.tokenCompletion {
+                    completion(nil, nil)
+                } else if let completion = self.userCompletion {
+                    completion(nil, nil)
+                }
+                //  Close viewController
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
     

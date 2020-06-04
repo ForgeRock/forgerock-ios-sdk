@@ -27,6 +27,7 @@
 		D59FAEB6234418EF005D34DA /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5C050EC245A415E00E5A38C /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; };
 		D5C050ED245A415E00E5A38C /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */; };
 		D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
 		D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */; };
 		D5E080D123DA5A070025EA17 /* CustomNameCallbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */; };
@@ -215,6 +216,7 @@
 		D554633922A6EF960096C7A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRProximity.xcodeproj; path = ../../FRProximity/FRProximity.xcodeproj; sourceTree = "<group>"; };
 		D5C050EB245A415E00E5A38C /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
 		D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNameCallbackCell.swift; sourceTree = "<group>"; };
 		D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNameCallbackCell.xib; sourceTree = "<group>"; };
 		D5E6F433233ABF1800D18DF1 /* FRAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FRAuth.framework; path = "/Users/james.go/Documents/workspace/iOS/forgerock-ios-sdk/SampleApps/FRExample/FRExample/FRAuth.framework"; sourceTree = "<absolute>"; };
@@ -324,6 +326,7 @@
 				D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */,
 				D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */,
 				D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */,
+				D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */,
 			);
 			path = Customization;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */,
 				D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */,
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
