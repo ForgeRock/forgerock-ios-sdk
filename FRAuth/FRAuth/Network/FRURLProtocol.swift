@@ -111,22 +111,27 @@ import Foundation
         }
         
         //  TokenManagementPolicy requires modification of current URLRequest to inject authorization header
-        if let _ = FRURLProtocol.tokenManagementPolicy {
+        if let tokenManagementPolicy = FRURLProtocol.tokenManagementPolicy {
             FRLog.i("[FRURLProtocol] TokenManagementPolicy found; evaluating currently authenticated session")
             if let user = FRUser.currentUser {
                 FRLog.i("[FRURLProtocol] [\(String(describing:request))] Authenticated user found; proceeding on getting access_token")
+                var tokenRequest = self.request
                 do {
                     let newUser = try user.getAccessToken()
-                    FRLog.i("[FRURLProtocol] [\(String(describing: self.request))] User's access_token retrieved; injecting Authorization header")
-                    FRLog.v("[FRURLProtocol] [\(String(describing: self.request))] Injected Authorization Header: \(newUser.buildAuthHeader())")
-                    mutableRequest.setValue(newUser.buildAuthHeader(), forHTTPHeaderField: "Authorization")
+                    if let token = newUser.token {
+                        FRLog.i("[FRURLProtocol] [\(String(describing: self.request))] User's access_token retrieved; injecting Authorization header")
+                        tokenRequest = tokenManagementPolicy.updateRequest(originalRequest: tokenRequest, token: token)
+                    }
+                    else {
+                        FRLog.w("[FRURLProtocol] [\(String(describing: self.request))] User's access_token is nil; proceeding with the original request")
+                    }
                 }
                 catch {
                     FRLog.w("[FRURLProtocol] [\(String(describing: self.request))] Failed to retrieve valid access_token; ignoring Authorization Header injection")
                     FRLog.w("[FRURLProtocol] Retrieving AccessToken error: \(error.localizedDescription)")
                 }
                 FRURLProtocol.setProperty(true, forKey: Constants.FRURLProtocolHandled, in: mutableRequest)
-                self.sessionTask = self.session?.dataTask(with: mutableRequest as URLRequest)
+                self.sessionTask = self.session?.dataTask(with: tokenRequest)
                 self.sessionTask?.resume()
                 return
             }
@@ -332,14 +337,13 @@ extension FRURLProtocol: URLSessionDataDelegate {
         if shouldRetry {
             self.responseData = nil
             self.client?.urlProtocol(self, didLoad: Data())
-            let mutableRequest = ((originalRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
             
-            if let token = token {
-                FRLog.i("[FRURLProtocol] Injecting Authorization header with given OAuth2 token")
-                mutableRequest.setValue(token.buildAuthorizationHeader(), forHTTPHeaderField: "Authorization")
+            if let token = token, let tokenManagementPolicy = FRURLProtocol.tokenManagementPolicy {
+                FRLog.i("[FRURLProtocol] Building new URLRequest with TokenManagementPolicy")
+                originalRequest = tokenManagementPolicy.updateRequest(originalRequest: originalRequest, token: token)
             }
             
-            self.sessionTask = self.session?.dataTask(with: mutableRequest as URLRequest)
+            self.sessionTask = self.session?.dataTask(with: originalRequest)
             self.sessionTask?.resume()
         }
         else {

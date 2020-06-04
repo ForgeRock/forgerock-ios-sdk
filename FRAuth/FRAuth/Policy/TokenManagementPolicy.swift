@@ -14,6 +14,7 @@ import FRCore
 
 @objc(FRTokenManagementPolicyDelegate) public protocol TokenManagementPolicyDelegate {
     @objc optional func evaluateTokenRefresh(responseData: Data?, response: URLResponse?, error: Error?) -> Bool
+    @objc optional func updateRequest(originalRequest: URLRequest, token: AccessToken) -> URLRequest
 }
 
 
@@ -108,14 +109,38 @@ import FRCore
     ///   - error: response error
     /// - Returns: Boolean result whether or not TokenManagementPolicy should refresh OAuth2 token
     func evalulateRefreshToken(responseData: Data?, response: URLResponse?, error: Error?) -> Bool {
-        
+        FRLog.v("[TokenManagementPolicy] Evaluating Token Refresh Policy started")
         if let delegate = self.delegate, let evaluation = delegate.evaluateTokenRefresh?(responseData: responseData, response: response, error: error) {
+            FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.evaluateTokenRefresh found, and refresh policy result received from delegate: \(evaluation)")
             return evaluation
         }
         //  MARK: - To be deprecated
         else if let callback = self.evaluationCallback {
-            return callback(responseData, response, error)
+            let evaluation = callback(responseData, response, error)
+            FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.evaluationCallback found, and refresh policy result received from callback: \(evaluation)")
+            return evaluation
         }
+        FRLog.w("[TokenManagementPolicy] No delegation, nor evaluationCallback found; returning false for token refresh evaluation")
         return false
+    }
+    
+    
+    /// Updates original URLRequest with either of delegation method, or default 'Authorization' header
+    /// - Parameters:
+    ///   - originalRequest: original URLRequest object
+    ///   - token: current `AccessToken` object that can be used for authorization header
+    /// - Returns: Updated URLRequest to be invoked
+    func updateRequest(originalRequest: URLRequest, token: AccessToken) -> URLRequest {
+        FRLog.v("[TokenManagementPolicy] Update URLRequest started")
+        if let delegate = self.delegate, let newRequest = delegate.updateRequest?(originalRequest: originalRequest, token: token) {
+            FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.updateRequest found, proceeding with the updated URLRequest")
+            return newRequest
+        }
+        else {
+            FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.updateRequest not found, injecting `access_token` in `Authorization` header")
+            let mutableRequest = ((originalRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
+            mutableRequest.setValue(token.buildAuthorizationHeader(), forHTTPHeaderField: "Authorization")
+            return mutableRequest as URLRequest
+        }
     }
 }
