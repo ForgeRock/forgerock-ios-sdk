@@ -255,11 +255,17 @@
 		D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */; };
 		D5BE349523CD2F38005873BB /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BE349423CD2F38005873BB /* FRSession.swift */; };
+		D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
+		D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
+		D5BEAAFF2488BB300057FC2E /* AuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270C24806687002FF207 /* AuthorizationPolicy.swift */; };
+		D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */; };
+		D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */; };
 		D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
 		D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
 		D5C979C12409EA9600DA380A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */; };
 		D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
 		D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
@@ -510,9 +516,12 @@
 		D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollector.swift; sourceTree = "<group>"; };
 		D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
 		D5BE349423CD2F38005873BB /* FRSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSession.swift; sourceTree = "<group>"; };
+		D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicyTests.swift; sourceTree = "<group>"; };
+		D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPolicyTests.swift; sourceTree = "<group>"; };
 		D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSessionTests.swift; sourceTree = "<group>"; };
 		D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
+		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
 		D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocol.swift; sourceTree = "<group>"; };
 		D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorTests.swift; sourceTree = "<group>"; };
@@ -632,6 +641,8 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				D5DE4BAF2488AFC100FE2654 /* Authorization */,
+				D5DE4BAE2488AFAA00FE2654 /* Policy */,
 				D5EC34E7247B13C10005A50C /* RequestInterceptor */,
 				D52D163C231484D60095905A /* Auth */,
 				D52D1652231484D60095905A /* Callback */,
@@ -1266,6 +1277,23 @@
 			path = FRSession;
 			sourceTree = "<group>";
 		};
+		D5DE4BAE2488AFAA00FE2654 /* Policy */ = {
+			isa = PBXGroup;
+			children = (
+				D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */,
+				D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */,
+			);
+			path = Policy;
+			sourceTree = "<group>";
+		};
+		D5DE4BAF2488AFC100FE2654 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */,
+			);
+			path = Authorization;
+			sourceTree = "<group>";
+		};
 		D5E75BE52409DF6D005F589F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1627,6 +1655,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */,
+				D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */,
+				D5BEAAFF2488BB300057FC2E /* AuthorizationPolicy.swift in Sources */,
 				D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */,
 				D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */,
@@ -1655,6 +1686,7 @@
 				D54237C523358F8F009C868F /* AbstractValidatedCallback.swift in Sources */,
 				D54237C623358F8F009C868F /* ValidatedCreateUsernameCallback.swift in Sources */,
 				D54237C723358F8F009C868F /* ChoiceCallback.swift in Sources */,
+				D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */,
 				D54237C823358F8F009C868F /* AttributeInputCallback.swift in Sources */,
 				D54237C923358F8F009C868F /* Callback.swift in Sources */,
 				D54237CA23358F8F009C868F /* StringAttributeInputCallback.swift in Sources */,
@@ -1674,6 +1706,7 @@
 				D54237D823358F8F009C868F /* HardwareCollector.swift in Sources */,
 				D54237D923358F8F009C868F /* DeviceCollector.swift in Sources */,
 				D54237DA23358F8F009C868F /* TelephonyCollector.swift in Sources */,
+				D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */,
 				D54237DB23358F8F009C868F /* NetworkCollector.swift in Sources */,
 				D54237DD23358F8F009C868F /* FRDeviceIdentifier.swift in Sources */,
 				D54237DE23358F8F009C868F /* AuthError.swift in Sources */,
@@ -1751,6 +1784,7 @@
 				D52D16A6231499B70095905A /* ObjcServerConfigTests.m in Sources */,
 				D52D165D231484D60095905A /* SecondFactorFlowTests.swift in Sources */,
 				D52D169C231493B50095905A /* ObjcSecondFactorFlowTests.m in Sources */,
+				D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */,
 				D52D1676231484D60095905A /* AbstractValidatedCallbackTests.swift in Sources */,
 				D52D167A231484D60095905A /* KbaCreateCallbackTests.swift in Sources */,
 				D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */,

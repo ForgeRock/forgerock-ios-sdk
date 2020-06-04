@@ -17,10 +17,14 @@ extension URL {
     ///   - url: URL to be compared
     ///   - shouldCheckPath: Boolean indicator of whether or not to validate relativePath as well
     /// - Returns: Boolean result whether or not two URLs are the same
-    public func isSame(_ url: URL, shouldCheckPath: Bool = false) -> Bool {
+    public func isSame(_ url: URL, shouldCheckPath: Bool = true) -> Bool {
         if (self.host == url.host && self.scheme == url.scheme && self.port == url.port) {
-            if shouldCheckPath, self.relativePath != url.relativePath {
-                return false
+            if shouldCheckPath {
+                if self.relativePath == "/" && url.relativePath == "" || self.relativePath == "" && url.relativePath == "/" {
+                    return true
+                } else if self.relativePath != url.relativePath {
+                    return false
+                }
             }
             return true
         }
