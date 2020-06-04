@@ -41,10 +41,11 @@ public class AuthService: NSObject {
     
     /// String value of AuthService name registered in AM
     @objc public internal(set) var serviceName: String
-    @objc public internal(set) var authIndexType: String?
     /// Unique UUID String value of initiated AuthService flow
     @objc public internal(set) var authServiceId: String
     
+    /// authIndexType value in AM
+    var authIndexType: String
     /// ServerConfig that contains OpenAM server information
     var serverConfig: ServerConfig
     /// OAuth2CLient that contains OpenAM's OAuth2 client information
@@ -82,8 +83,8 @@ public class AuthService: NSObject {
     ///   - sessionManager: SessionManager instance to manage and persist authenticated session
     ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
     ///   - authIndexType: String value of Authentication Tree type   
-    init (authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String? = OpenAM.service) {
-        FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType ?? OpenAM.service) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
+    init (authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String = OpenAM.service) {
+        FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
         self.serviceName = authIndexValue
         self.authIndexType = authIndexType
         self.serverConfig = serverConfig
@@ -192,7 +193,7 @@ public class AuthService: NSObject {
         let request = self.buildAuthServiceRequest()
         
         // Invoke request
-        FRRestClient.invoke(request: request, action: Action(type: .START_AUTHENTICATE)) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .START_AUTHENTICATE, payload: ["tree": self.serviceName, "type": self.authIndexType])) { (result) in
             switch result {
             case .success(let response, _):
                 
@@ -215,7 +216,7 @@ public class AuthService: NSObject {
                 else {
                     // If token was not received
                     do {
-                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.oAuth2Config, self.sessionManager, self.tokenManager)
+                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.sessionManager, self.tokenManager)
                         completion(nil, node, nil)
                     } catch {
                         completion(nil, nil, error)
@@ -245,13 +246,7 @@ public class AuthService: NSObject {
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         var parameter: [String: String] = [:]
-        
-        if let indexType = self.authIndexType {
-            parameter[OpenAM.authIndexType] = indexType
-        }
-        else {
-            parameter[OpenAM.authIndexType] = OpenAM.service
-        }
+        parameter[OpenAM.authIndexType] = self.authIndexType
         parameter[OpenAM.authIndexValue] = self.serviceName
         
         return Request(url: self.serverConfig.authenticateURL, method: .POST, headers: header, urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
