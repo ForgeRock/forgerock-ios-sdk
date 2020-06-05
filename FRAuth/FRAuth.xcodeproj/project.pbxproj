@@ -263,6 +263,7 @@
 		D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
 		D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */; };
 		D5C64E652489925300CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */; };
+		D5C64E672489B21600CB7EB3 /* CookieValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */; };
 		D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
@@ -523,6 +524,7 @@
 		D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSessionTests.swift; sourceTree = "<group>"; };
 		D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
 		D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
+		D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieValidationTests.swift; sourceTree = "<group>"; };
 		D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
 		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 			isa = PBXGroup;
 			children = (
 				D5094CD923DF7F850041D5C1 /* CookieTests.swift */,
+				D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */,
 			);
 			path = Cookie;
 			sourceTree = "<group>";
@@ -1771,6 +1774,7 @@
 				D52D168D231485580095905A /* ObjcUsernamePasswordFlowTests.m in Sources */,
 				D592482123286B3F0027031A /* TextOutputCallbackTests.swift in Sources */,
 				D52D1665231484D60095905A /* ServerConfigTests.swift in Sources */,
+				D5C64E672489B21600CB7EB3 /* CookieValidationTests.swift in Sources */,
 				D534A2C822FBD880007098D1 /* FRAuth.h in Sources */,
 				D52D1670231484D60095905A /* AccessTokenTests.swift in Sources */,
 				D51672A62321AB21007053EE /* ObjcFRURLProtocolTests.m in Sources */,
@@ -2039,7 +2043,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2071,7 +2075,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

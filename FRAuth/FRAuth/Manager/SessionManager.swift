@@ -192,7 +192,7 @@ public class SessionManager: NSObject {
             var parameter: [String: String] = [:]
             parameter[OpenAM.tokenId] = ssoToken.value
             var header: [String: String] = [:]
-            header[OpenAM.iPlanetDirectoryPro] = ssoToken.value
+            header[self.serverConfig.cookieName] = ssoToken.value
             
             //  AM 6.5.2 - 7.0.0
             //

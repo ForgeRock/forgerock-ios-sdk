@@ -113,29 +113,18 @@ class FRRestClient: NSObject {
             for cookieObj in cookieItems {
                 if let cookieData = cookieObj.value as? Data, let cookie = NSKeyedUnarchiver.unarchiveObject(with: cookieData) as? HTTPCookie {
                     // When Cookie is expired, remove it from the Cookie Store
-                    if let expDate = cookie.expiresDate, expDate.timeIntervalSince1970 < Date().timeIntervalSince1970 {
+                    if cookie.isExpired {
                         frAuth.keychainManager.cookieStore.delete(cookie.name + "-" + cookie.domain)
                         FRLog.v("[Cookies] Delete - Expired - Cookie Name: \(cookie.name)")
                     }
                     else {
-                        // Validate isSecure attribute
-                        var isSecureValidated = true
-                        if cookie.isSecure, let urlScheme = url.scheme, urlScheme.lowercased() != "https" {
-                            FRLog.v("[Cookies] Ignore - isSecure validation failed - Cookie Name: \(cookie.name)")
-                            isSecureValidated = false
+                        if !cookie.validateIsSecure(url) {
+                            FRLog.v("[Cookies] Ignore - isSecure validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
                         }
-                        
-                        // Validate domain, and path
-                        var domainValidated = false
-                        let cookieDomain = cookie.domain.hasPrefix(".") ? String(cookie.domain.dropFirst()) : cookie.domain
-                        if let host = url.host, host.contains(cookieDomain), url.path.hasPrefix(cookie.path) {
-                            domainValidated = true
+                        else if !cookie.validateURL(url) {
+                            FRLog.v("[Cookies] Ignore - Domain validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
                         }
                         else {
-                            FRLog.v("[Cookies] Ignore - Domain validation failed - Cookie Name: \(cookie.name)")
-                        }
-                        
-                        if isSecureValidated, domainValidated {
                             FRLog.v("[Cookies] Injected for the request - Cookie Name: \(cookie.name) | Cookie Value \(cookie.value)")
                             cookieList.append(cookie)
                         }
@@ -158,5 +147,82 @@ class FRRestClient: NSObject {
     @objc
     static func setURLSessionConfiguration(config: URLSessionConfiguration) {
         RestClient.shared.setURLSessionConfiguration(config: config)
+    }
+}
+
+
+extension HTTPCookie {
+    
+    var isExpired: Bool {
+        get {
+            if let expDate = self.expiresDate, expDate.timeIntervalSince1970 < Date().timeIntervalSince1970 {
+                return true
+            }
+            return false
+        }
+    }
+    
+    
+    func validateIsSecure(_ url: URL) -> Bool {
+        if !self.isSecure {
+            return true
+        }
+        if let urlScheme = url.scheme, urlScheme.lowercased() == "https" {
+            return true
+        }
+        return false
+    }
+    
+    
+    func validateURL(_ url: URL) -> Bool {
+        return self.validateDomain(url: url) && self.validatePath(url: url)
+    }
+    
+    
+    private func validatePath(url: URL) -> Bool {
+        let path = url.path.count == 0 ? "/" : url.path
+        
+        //  For exact matching i.e. /path == /path
+        if path == self.path {
+            return true
+        }
+        
+        //  For partial matching
+        if path.hasPrefix(self.path) {
+            //  if Cookie path ends with /
+            //  i.e. /abc == / or /abc/def == /abc/
+            if self.path.hasSuffix("/") {
+                return true
+            }
+            
+            //  making sure to validate exact path matching
+            //  i.e. /abcd != /abc, /abc/def == /abc
+            if path.hasPrefix(self.path + "/") {
+                return true
+            }
+        }
+        return false
+    }
+    
+    private func validateDomain(url: URL) -> Bool {
+        
+        guard let host = url.host else {
+            //  Invalid URL host
+            return false
+        }
+        
+        //  For exact matching i.e. forgerock.com == forgerock.com or am.forgerock.com == am.forgerock.com
+        if host == self.domain {
+            return true
+        }
+        //  For sub domain matching i.e. demo.forgerock.com == .forgerock.com
+        if host.hasSuffix(self.domain) {
+            return true
+        }
+        //  For ignoring leading dot
+        if (self.domain.count - host.count == 1) && self.domain.hasPrefix(".") {
+            return true
+        }
+        return false
     }
 }
