@@ -223,4 +223,66 @@ class NodeFlowTests: FRBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
+    
+    
+    func test_04_no_session_test() {
+        
+        guard let serverConfig = self.config.serverConfig else {
+            XCTFail("Failed to retrieve ServerConfig")
+            return
+        }
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
+                                "AuthTree_NoSession_Success"])
+        
+        //  noSession interceptor
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [NoSessionInterceptor()])
+        
+        // Start SDK
+        self.startSDK()
+        
+        let authService = AuthService(name: "UsernamePassword", serverConfig: serverConfig)
+        var currentNode: Node?
+        
+        var ex = self.expectation(description: "First Node submit")
+        authService.next { (user: FRUser?, node, error) in
+            
+            // Validate result
+            XCTAssertNil(user)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        // Provide input value for callbacks
+        for callback in node.callbacks {
+            if callback is NameCallback, let nameCallback = callback as? NameCallback {
+                nameCallback.value = config.username
+            }
+            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
+                passwordCallback.value = config.password
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Second Node submit")
+        node.next { (user: FRUser?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(user)
+            XCTAssertNil(error)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
 }

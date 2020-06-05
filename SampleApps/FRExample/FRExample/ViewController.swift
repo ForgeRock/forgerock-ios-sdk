@@ -302,8 +302,11 @@ class ViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
-        else {
+        else if let error = error {
             self.displayLog("\(String(describing: error))")
+        }
+        else {
+            self.displayLog("Authentication Tree flow was successful; no result returned")
         }
     }
     
@@ -318,8 +321,11 @@ class ViewController: UIViewController {
                     if let error = error {
                         self.displayLog(error.localizedDescription)
                     }
-                    else {
+                    else if let token = token {
                         self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
                     }
                 })
             }
@@ -328,8 +334,11 @@ class ViewController: UIViewController {
                     if let error = error {
                         self.displayLog(error.localizedDescription)
                     }
-                    else {
+                    else if let token = token {
                         self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
                     }
                 })
             }
@@ -340,8 +349,11 @@ class ViewController: UIViewController {
                     if let error = error {
                         self.displayLog(error.localizedDescription)
                     }
-                    else {
+                    else if let token = token {
                         self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
                     }
                 })
             }
@@ -350,8 +362,11 @@ class ViewController: UIViewController {
                     if let error = error {
                         self.displayLog(error.localizedDescription)
                     }
-                    else {
+                    else if let token = token {
                         self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
                     }
                 })
             }
@@ -362,8 +377,11 @@ class ViewController: UIViewController {
                     if let error = error {
                         self.displayLog(error.localizedDescription)
                     }
-                    else {
+                    else if let user = user {
                         self.displayLog(user.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
                     }
                 })
             }
@@ -372,8 +390,11 @@ class ViewController: UIViewController {
                     if let error = error {
                         self.displayLog(error.localizedDescription)
                     }
-                    else {
+                    else if let user = user {
                         self.displayLog(user.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
                     }
                 })
             }
@@ -435,8 +456,11 @@ class ViewController: UIViewController {
                         if let error = error {
                             self.displayLog(error.localizedDescription)
                         }
-                        else {
+                        else if let token = token {
                             self.displayLog(token.debugDescription)
+                        }
+                        else {
+                            self.displayLog("Authentication Tree flow was successful; no result returned")
                         }
                     }
                 }

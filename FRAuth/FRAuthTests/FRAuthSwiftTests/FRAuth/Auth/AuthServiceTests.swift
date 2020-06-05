@@ -21,7 +21,12 @@ class AuthServiceTests: FRBaseTest {
     var scope = "openid email phone"
     var redirectUri = "http://redirect.uri"
     
-    func testAuthServicePublicInit() {
+    override func setUp() {
+        self.configFileName = "Config"
+        super.setUp()
+    }
+    
+    func test_01_AuthServicePublicInit() {
         
         // Given
         let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
@@ -38,7 +43,7 @@ class AuthServiceTests: FRBaseTest {
         XCTAssertNil(authService.oAuth2Config)
     }
     
-    func testAuthServicePrivateInit() {
+    func test_02_AuthServicePrivateInit() {
         // Given
         let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
         let oAuth2Client = OAuth2Client(clientId: self.clientId, scope: self.scope, redirectUri: URL(string: self.redirectUri)!, serverConfig: serverConfig)
@@ -56,5 +61,32 @@ class AuthServiceTests: FRBaseTest {
         XCTAssertEqual(authService.oAuth2Config?.clientId, self.clientId)
         XCTAssertEqual(authService.oAuth2Config?.redirectUri.absoluteString, self.redirectUri)
         XCTAssertEqual(authService.oAuth2Config?.scope, self.scope)
+    }
+    
+    
+    func test_03_no_session_auth_service_next() {
+        
+        guard let serverConfig = self.config.serverConfig else {
+            XCTFail("Failed to retrieve ServerConfig")
+            return
+        }
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_NoSession_Success"])
+        
+        //  noSession interceptor
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [NoSessionInterceptor()])
+
+        let authService = AuthService(name: "UsernamePassword", serverConfig: serverConfig)
+        let ex = self.expectation(description: "First Node submit")
+        authService.next { (user: FRUser?, node, error) in
+            
+            // Validate result
+            XCTAssertNil(user)
+            XCTAssertNil(error)
+            XCTAssertNil(node)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
     }
 }
