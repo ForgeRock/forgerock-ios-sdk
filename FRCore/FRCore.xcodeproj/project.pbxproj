@@ -59,6 +59,7 @@
 		D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214B124786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift */; };
 		D5E75BD42409B8C0005F589F /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BCA2409B8C0005F589F /* FRCore.framework */; };
 		D5E75BDB2409B8C0005F589F /* FRCore.h in Headers */ = {isa = PBXBuildFile; fileRef = D5E75BCD2409B8C0005F589F /* FRCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D5E86BC12481E6D700DFD5E0 /* FRURLUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BC02481E6D700DFD5E0 /* FRURLUtil.swift */; };
 		D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */; };
 		D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B18240EFB1400BD48AA /* NetworkError.swift */; };
 /* End PBXBuildFile section */
@@ -117,6 +118,7 @@
 		D5E75BCE2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5E75BD32409B8C0005F589F /* FRCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5E75BDA2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5E86BC02481E6D700DFD5E0 /* FRURLUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLUtil.swift; sourceTree = "<group>"; };
 		D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRStringUtilTests.swift; sourceTree = "<group>"; };
 		D5F01B18240EFB1400BD48AA /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				D52D5C422413002100835035 /* FRStringUtil.swift */,
+				D5E86BC02481E6D700DFD5E0 /* FRURLUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				D5C979B82409DF9700DA380A /* Result.swift in Sources */,
 				D5C979BA2409DF9700DA380A /* Request.swift in Sources */,
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
+				D5E86BC12481E6D700DFD5E0 /* FRURLUtil.swift in Sources */,
 				D5C979B72409DF9700DA380A /* FRLogger.swift in Sources */,
 				D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */,
 				D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */,

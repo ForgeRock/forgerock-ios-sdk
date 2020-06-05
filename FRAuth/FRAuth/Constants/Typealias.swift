@@ -59,14 +59,9 @@ public typealias DeviceCollectorCallback = (_ result: [String: Any]) -> Void
 
 //  MARK: - FRURLProtocol
 
+/// Callback definition for completion result
+public typealias FRCompletionResultCallback = (_ result: Bool) -> Void
+
 /// Callback definition for FRURLProtocol's refresh token policy; the callback is invoked to validate whether token refresh is required or not with given request result
+@available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
 public typealias FRURLProtocolResponseEvaluationCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> Bool
-
-/// Callback definition for parsing PolicyAdvice object with given response payloads
-public typealias FRURLProtocolParsePolicyAdviceCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> PolicyAdvice?
-
-/// Callback definition for decorating the original request with additional information (i.e. txId)
-public typealias FRURLProtocolUpdateRequestCallback = (_ originalRequest: URLRequest, _ txId: String) -> URLRequest
-
-/// Callback definition for performing Authentication Tree flow with given PolicyAdvice and notifying the SDK with the result
-public typealias FRURLProtocolAuthorizationPolicyReceivedCallback = (_ policyAdvice: PolicyAdvice, @escaping((_ completed: Bool) -> Void)) -> Void

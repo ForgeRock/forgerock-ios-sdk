@@ -84,6 +84,8 @@
 		D533105B2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104F2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json */; };
 		D533105C2301216A00F1F851 /* AuthTree_KBACreateNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310502301216A00F1F851 /* AuthTree_KBACreateNode.json */; };
 		D533105D2301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310512301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json */; };
+		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
+		D533270D24806687002FF207 /* AuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270C24806687002FF207 /* AuthorizationPolicy.swift */; };
 		D534A2C822FBD880007098D1 /* FRAuth.h in Sources */ = {isa = PBXBuildFile; fileRef = D55462FB22A6DF720096C7A4 /* FRAuth.h */; };
 		D534A2CB22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A2CA22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift */; };
 		D534A2CD22FBE08C007098D1 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A2CC22FBE08C007098D1 /* FRTestStubResponseParser.swift */; };
@@ -140,7 +142,6 @@
 		D54237E623358F8F009C868F /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF7423358EE0007A2194 /* KeychainManager.swift */; };
 		D54237E723358F8F009C868F /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF7523358EE0007A2194 /* TokenManager.swift */; };
 		D54237E823358F8F009C868F /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF7623358EE0007A2194 /* SessionManager.swift */; };
-		D54237E923358F8F009C868F /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3623358EDF007A2194 /* FRURLProtocol.swift */; };
 		D54237ED23358F8F009C868F /* NetworkReachabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */; };
 		D54237EF23358F8F009C868F /* AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3D23358EDF007A2194 /* AccessToken.swift */; };
 		D54237F023358F8F009C868F /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3E23358EDF007A2194 /* PKCE.swift */; };
@@ -195,7 +196,6 @@
 		D586CF8523358EE0007A2194 /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3023358EDF007A2194 /* JBUtil.c */; };
 		D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */; };
 		D586CF8723358EE0007A2194 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3223358EDF007A2194 /* BashDetector.swift */; };
-		D586CF8923358EE0007A2194 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3623358EDF007A2194 /* FRURLProtocol.swift */; };
 		D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */; };
 		D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3D23358EDF007A2194 /* AccessToken.swift */; };
 		D586CF9023358EE0007A2194 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3E23358EDF007A2194 /* PKCE.swift */; };
@@ -255,11 +255,18 @@
 		D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */; };
 		D5BE349523CD2F38005873BB /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BE349423CD2F38005873BB /* FRSession.swift */; };
+		D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
+		D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
+		D5BEAAFF2488BB300057FC2E /* AuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270C24806687002FF207 /* AuthorizationPolicy.swift */; };
+		D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */; };
+		D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */; };
 		D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
 		D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
 		D5C979C12409EA9600DA380A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */; };
+		D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
 		D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
 		D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
@@ -398,6 +405,8 @@
 		D533104F2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AttributeCollectorsNode.json; sourceTree = "<group>"; };
 		D53310502301216A00F1F851 /* AuthTree_KBACreateNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBACreateNode.json; sourceTree = "<group>"; };
 		D53310512301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_PlatformUsernamePasswordNode.json; sourceTree = "<group>"; };
+		D533270A24806665002FF207 /* TokenManagementPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicy.swift; sourceTree = "<group>"; };
+		D533270C24806687002FF207 /* AuthorizationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPolicy.swift; sourceTree = "<group>"; };
 		D534A2CA22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
 		D534A2CC22FBE08C007098D1 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
 		D534A2D022FBF1EB007098D1 /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
@@ -452,7 +461,6 @@
 		D586CF3023358EDF007A2194 /* JBUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = JBUtil.c; sourceTree = "<group>"; };
 		D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateFileWritableDetector.swift; sourceTree = "<group>"; };
 		D586CF3223358EDF007A2194 /* BashDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashDetector.swift; sourceTree = "<group>"; };
-		D586CF3623358EDF007A2194 /* FRURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRURLProtocol.swift; sourceTree = "<group>"; };
 		D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityMonitor.swift; sourceTree = "<group>"; };
 		D586CF3D23358EDF007A2194 /* AccessToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessToken.swift; sourceTree = "<group>"; };
 		D586CF3E23358EDF007A2194 /* PKCE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
@@ -508,10 +516,14 @@
 		D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollector.swift; sourceTree = "<group>"; };
 		D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
 		D5BE349423CD2F38005873BB /* FRSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSession.swift; sourceTree = "<group>"; };
+		D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicyTests.swift; sourceTree = "<group>"; };
+		D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPolicyTests.swift; sourceTree = "<group>"; };
 		D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSessionTests.swift; sourceTree = "<group>"; };
 		D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
+		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
 		D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
+		D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocol.swift; sourceTree = "<group>"; };
 		D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorTests.swift; sourceTree = "<group>"; };
 		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5EC34FF247B33A80005A50C /* FRAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuthInterceptor.swift; sourceTree = "<group>"; };
@@ -629,6 +641,8 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				D5DE4BAF2488AFC100FE2654 /* Authorization */,
+				D5DE4BAE2488AFAA00FE2654 /* Policy */,
 				D5EC34E7247B13C10005A50C /* RequestInterceptor */,
 				D52D163C231484D60095905A /* Auth */,
 				D52D1652231484D60095905A /* Callback */,
@@ -921,6 +935,15 @@
 			path = AuthTree;
 			sourceTree = "<group>";
 		};
+		D533270924806633002FF207 /* Policy */ = {
+			isa = PBXGroup;
+			children = (
+				D533270A24806665002FF207 /* TokenManagementPolicy.swift */,
+				D533270C24806687002FF207 /* AuthorizationPolicy.swift */,
+			);
+			path = Policy;
+			sourceTree = "<group>";
+		};
 		D534A2C922FBE056007098D1 /* TestUtil */ = {
 			isa = PBXGroup;
 			children = (
@@ -1023,6 +1046,7 @@
 				D586CF7323358EE0007A2194 /* Manager */,
 				D586CF3523358EDF007A2194 /* Network */,
 				D586CF3C23358EDF007A2194 /* OAuth2 */,
+				D533270924806633002FF207 /* Policy */,
 				D586CF2523358EDF007A2194 /* Security */,
 				D5BE349323CD2F23005873BB /* Session */,
 				D586CF5D23358EE0007A2194 /* User */,
@@ -1116,10 +1140,10 @@
 		D586CF3523358EDF007A2194 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				D586CF3623358EDF007A2194 /* FRURLProtocol.swift */,
 				D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */,
 				D512CD40240DC41E00AF520E /* FRRestClient.swift */,
 				D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */,
+				D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1251,6 +1275,23 @@
 			children = (
 			);
 			path = FRSession;
+			sourceTree = "<group>";
+		};
+		D5DE4BAE2488AFAA00FE2654 /* Policy */ = {
+			isa = PBXGroup;
+			children = (
+				D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */,
+				D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */,
+			);
+			path = Policy;
+			sourceTree = "<group>";
+		};
+		D5DE4BAF2488AFC100FE2654 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */,
+			);
+			path = Authorization;
 			sourceTree = "<group>";
 		};
 		D5E75BE52409DF6D005F589F /* Products */ = {
@@ -1538,12 +1579,12 @@
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
-				D586CF8923358EE0007A2194 /* FRURLProtocol.swift in Sources */,
 				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,
 				D5BE349523CD2F38005873BB /* FRSession.swift in Sources */,
 				D586CFAE23358EE0007A2194 /* OpenAM.swift in Sources */,
 				D586CFA223358EE0007A2194 /* StringAttributeInputCallback.swift in Sources */,
 				D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */,
+				D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */,
 				D586CF9D23358EE0007A2194 /* AbstractValidatedCallback.swift in Sources */,
 				D586CFBD23358EE0007A2194 /* FRDeviceIdentifier.swift in Sources */,
 				D586CF9723358EE0007A2194 /* SingleValueCallback.swift in Sources */,
@@ -1557,6 +1598,7 @@
 				D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
 				D586CFC023358EE0007A2194 /* SessionManager.swift in Sources */,
+				D533270D24806687002FF207 /* AuthorizationPolicy.swift in Sources */,
 				D586CFAC23358EE0007A2194 /* Address.swift in Sources */,
 				D586CF9C23358EE0007A2194 /* CallbackFactory.swift in Sources */,
 				D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
@@ -1600,6 +1642,7 @@
 				D586CF8023358EE0007A2194 /* DyldDetector.swift in Sources */,
 				D586CFB323358EE0007A2194 /* PlatformCollector.swift in Sources */,
 				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
+				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */,
 				D586CF9323358EE0007A2194 /* NameCallback.swift in Sources */,
@@ -1612,6 +1655,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */,
+				D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */,
+				D5BEAAFF2488BB300057FC2E /* AuthorizationPolicy.swift in Sources */,
 				D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */,
 				D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */,
@@ -1640,6 +1686,7 @@
 				D54237C523358F8F009C868F /* AbstractValidatedCallback.swift in Sources */,
 				D54237C623358F8F009C868F /* ValidatedCreateUsernameCallback.swift in Sources */,
 				D54237C723358F8F009C868F /* ChoiceCallback.swift in Sources */,
+				D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */,
 				D54237C823358F8F009C868F /* AttributeInputCallback.swift in Sources */,
 				D54237C923358F8F009C868F /* Callback.swift in Sources */,
 				D54237CA23358F8F009C868F /* StringAttributeInputCallback.swift in Sources */,
@@ -1659,6 +1706,7 @@
 				D54237D823358F8F009C868F /* HardwareCollector.swift in Sources */,
 				D54237D923358F8F009C868F /* DeviceCollector.swift in Sources */,
 				D54237DA23358F8F009C868F /* TelephonyCollector.swift in Sources */,
+				D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */,
 				D54237DB23358F8F009C868F /* NetworkCollector.swift in Sources */,
 				D54237DD23358F8F009C868F /* FRDeviceIdentifier.swift in Sources */,
 				D54237DE23358F8F009C868F /* AuthError.swift in Sources */,
@@ -1667,7 +1715,6 @@
 				D54237E623358F8F009C868F /* KeychainManager.swift in Sources */,
 				D54237E723358F8F009C868F /* TokenManager.swift in Sources */,
 				D54237E823358F8F009C868F /* SessionManager.swift in Sources */,
-				D54237E923358F8F009C868F /* FRURLProtocol.swift in Sources */,
 				D54237ED23358F8F009C868F /* NetworkReachabilityMonitor.swift in Sources */,
 				D54237EF23358F8F009C868F /* AccessToken.swift in Sources */,
 				D54237F023358F8F009C868F /* PKCE.swift in Sources */,
@@ -1737,6 +1784,7 @@
 				D52D16A6231499B70095905A /* ObjcServerConfigTests.m in Sources */,
 				D52D165D231484D60095905A /* SecondFactorFlowTests.swift in Sources */,
 				D52D169C231493B50095905A /* ObjcSecondFactorFlowTests.m in Sources */,
+				D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */,
 				D52D1676231484D60095905A /* AbstractValidatedCallbackTests.swift in Sources */,
 				D52D167A231484D60095905A /* KbaCreateCallbackTests.swift in Sources */,
 				D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */,
