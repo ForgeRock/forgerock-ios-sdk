@@ -113,6 +113,10 @@ public final class FRAuth: NSObject {
             configBuilder.set(enableCookie: enableCookieConfig)
         }
         
+        if let cookieName = config["forgerock_cookie_name"] as? String {
+            configBuilder.set(cookieName: cookieName)
+        }
+        
         if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
             configBuilder.set(timeout: timeOutConfigDouble)
         }

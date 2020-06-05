@@ -352,6 +352,56 @@ class FRAuthTests: FRBaseTest {
     }
     
     
+    func testFRStartWithMissingCookieName() {
+        
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config.removeValue(forKey: "forgerock_cookie_name")
+        
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        guard let serverConfig = FRAuth.shared?.serverConfig else {
+            XCTFail("Failed to retrieve ServerConfig object")
+            return
+        }
+        
+        XCTAssertEqual(serverConfig.cookieName, OpenAM.iPlanetDirectoryPro)
+        
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
+    }
+    
+    
+    func testFRStartWithCustomCookieName() {
+        
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config["forgerock_cookie_name"] = "customCookieName"
+        
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        guard let serverConfig = FRAuth.shared?.serverConfig else {
+            XCTFail("Failed to retrieve ServerConfig object")
+            return
+        }
+        
+        XCTAssertEqual(serverConfig.cookieName, "customCookieName")
+        
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
+    }
+    
+    
     func testFRStartWithMissingOAuthThreshold() {
         
         // Given
@@ -446,6 +496,31 @@ class FRAuthTests: FRBaseTest {
             XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/token/revoke")
             XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/oauth2/realms/root/userinfo")
             XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/json/realms/root/sessions")
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        
+        // It should
+        XCTAssertNotNil(FRAuth.shared)
+    }
+    
+    
+    func test_frstart_with_custom_cookie_name() {
+        // Given
+        var config = self.readConfigFile(fileName: "FRAuthConfig")
+        config["forgerock_cookie_name"] = "customCookieName"
+        
+        // Then
+        do {
+            try FRAuth.initPrivate(config: config)
+            
+            guard let serverConfig = FRAuth.shared?.serverConfig else {
+                XCTFail("Failed to retrieve ServerConfig object")
+                return
+            }
+            
+            XCTAssertEqual(serverConfig.cookieName, "customCookieName")
         }
         catch {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")

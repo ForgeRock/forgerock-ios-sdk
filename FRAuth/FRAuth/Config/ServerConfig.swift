@@ -36,6 +36,8 @@ public class ServerConfig: NSObject, Codable {
     @objc var sessionPath: String
     /// Boolean indicator whether SDK should manage the cookie or not; when it is changed to false, all existing cookies will be removed. **Note** If SDK has not been initialized using (FRAuth.start(), this value will be ignored and not persist cookies.
     @objc var enableCookie: Bool
+    /// Name of AM's SSO Token cookie;
+    @objc var cookieName: String
     
     
     //  MARK: - Init
@@ -47,13 +49,15 @@ public class ServerConfig: NSObject, Codable {
     ///   - realm: Designated 'realm' to be communicated in OpenAM
     ///   - timeout: Timeout in seconds for all requests
     ///   - enableCookie: Boolean value to enable cookie management in SDK's communication to AM. **Note** If SDK has not been initialized using (FRAuth.start(), this value will be ignored and not persist cookies.
+    ///   - cookieName: `Cookie Name` in AM configuration; defaulted to `iPlanetDirectoryPro`
     @available(*, deprecated, message: "ServerConfig() has been deprecated; use ServerConfigBuilder instead to construct ServerConfig object.") // Deprecated as of FRAuth: v1.0.3
     @objc
-    public init (url: URL, realm: String = "root", timeout: Double = 60.0, enableCookie: Bool = true) {
+    public init (url: URL, realm: String = "root", timeout: Double = 60.0, enableCookie: Bool = true, cookieName: String? = nil) {
         self.baseURL = url
         self.realm = realm
         self.timeout = timeout
         self.enableCookie = enableCookie
+        self.cookieName = cookieName ?? OpenAM.iPlanetDirectoryPro
         self.authenticateURL = self.baseURL.absoluteString + "/json/realms/\(self.realm)/authenticate"
         self.tokenURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/access_token"
         self.authorizeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/authorize"
@@ -75,6 +79,7 @@ public class ServerConfig: NSObject, Codable {
         self.realm = realm
         self.timeout = 60.0
         self.enableCookie = true
+        self.cookieName = OpenAM.iPlanetDirectoryPro
         self.authenticateURL = self.baseURL.absoluteString + "/json/realms/\(self.realm)/authenticate"
         self.tokenURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/access_token"
         self.authorizeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/authorize"
@@ -104,6 +109,12 @@ public class ServerConfigBuilder: NSObject {
     @objc
     @discardableResult public func set(enableCookie: Bool) -> ServerConfigBuilder {
         self.config.enableCookie = enableCookie
+        return self
+    }
+    
+    @objc
+    @discardableResult public func set(cookieName: String) -> ServerConfigBuilder {
+        self.config.cookieName = cookieName
         return self
     }
     

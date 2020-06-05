@@ -31,6 +31,7 @@ class ServerConfigTests: FRBaseTest {
         XCTAssertEqual(serverConfig.timeout, 60.0)
         XCTAssertEqual(serverConfig.realm, "root")
         XCTAssertEqual(serverConfig.enableCookie, true)
+        XCTAssertEqual(serverConfig.cookieName, OpenAM.iPlanetDirectoryPro)
     }
     
     
@@ -49,6 +50,7 @@ class ServerConfigTests: FRBaseTest {
         XCTAssertEqual(serverConfig.timeout, 60.0)
         XCTAssertEqual(serverConfig.realm, self.realm)
         XCTAssertEqual(serverConfig.enableCookie, true)
+        XCTAssertEqual(serverConfig.cookieName, OpenAM.iPlanetDirectoryPro)
     }
     
     
@@ -57,6 +59,7 @@ class ServerConfigTests: FRBaseTest {
         let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!).set(timeout: 100.0).build()
         // Then
         XCTAssertEqual(serverConfig.timeout, 100.0)
+        XCTAssertEqual(serverConfig.cookieName, OpenAM.iPlanetDirectoryPro)
     }
     
     
@@ -65,6 +68,7 @@ class ServerConfigTests: FRBaseTest {
         let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!).set(enableCookie: false).build()
         // Then
         XCTAssertEqual(serverConfig.enableCookie, false)
+        XCTAssertEqual(serverConfig.cookieName, OpenAM.iPlanetDirectoryPro)
     }
     
     
@@ -101,7 +105,7 @@ class ServerConfigTests: FRBaseTest {
     func test_06_custom_nested_server_config() {
         
         // Given
-        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!).set(enableCookie: false).set(timeout: 120.0).set(authenticatePath: "/custom/authenticate").set(sessionPath: "/custom/session").build()
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!).set(enableCookie: false).set(timeout: 120.0).set(authenticatePath: "/custom/authenticate").set(sessionPath: "/custom/session").set(cookieName: "customCookieName").build()
 
         // Then
         XCTAssertEqual(serverConfig.authenticateURL, self.serverURL + "/custom/authenticate")
@@ -113,5 +117,6 @@ class ServerConfigTests: FRBaseTest {
         XCTAssertEqual(serverConfig.timeout, 120.0)
         XCTAssertEqual(serverConfig.realm, "root")
         XCTAssertEqual(serverConfig.enableCookie, false)
+        XCTAssertEqual(serverConfig.cookieName, "customCookieName")
     }
 }
