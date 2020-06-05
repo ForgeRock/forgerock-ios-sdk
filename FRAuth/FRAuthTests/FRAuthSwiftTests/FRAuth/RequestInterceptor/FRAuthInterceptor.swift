@@ -13,7 +13,9 @@ import FRCore
 
 class FRAuthInterceptor: RequestInterceptor {
     func intercept(request: Request, action: Action) -> Request {
-        
+        if let payload = action.payload {
+            FRRequestInterceptorTests.payload.append(payload)
+        }
         if action.type == "START_AUTHENTICATE" {
             FRRequestInterceptorTests.intercepted.append("START_AUTHENTICATE")
         }

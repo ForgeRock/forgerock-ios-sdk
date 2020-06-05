@@ -28,16 +28,18 @@ public class Node: NSObject {
     @objc public var authId: String
     /// Unique UUID String value of initiated AuthService flow
     @objc public var authServiceId: String
-    /// Designated AuthService name defined in OpenAM
-    @objc public var serviceName: String
     /// Stage attribute of Node
     @objc public var stage: String?
+    /// Designated AuthService name defined in OpenAM
+    var serviceName: String
+    /// authIndexType value in AM
+    var authIndexType: String
     /// ServerConfig information for AuthService/Node API communication
-    private var serverConfig: ServerConfig
+    var serverConfig: ServerConfig
     /// OAuth2Client information for AuthService/Node API communication
-    private var oAuth2Config: OAuth2Client?
+    var oAuth2Config: OAuth2Client?
     /// Optional SessionManager for SDK's abstraction layer
-    private var sessionManager: SessionManager?
+    var sessionManager: SessionManager?
     /// TokenManager instance to manage, and persist authenticated session
     var tokenManager: TokenManager?
     
@@ -52,9 +54,10 @@ public class Node: NSObject {
     ///   - authServiceResponse: JSON response object of AuthService in OpenAM
     ///   - serverConfig: ServerConfig object for AuthService/Node communication
     ///   - serviceName: Service name for AuthService (TreeName)
+    ///   - authIndexType: authIndexType value in AM (default to 'service')
     ///   - oAuth2Config: (Optional) OAuth2Client object for AuthService/Node communication for abstraction layer
     /// - Throws: AuthError error may be thrown from parsing AuthService response, and parsing Callback(s)
-    init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ oAuth2Config: OAuth2Client? = nil, _ sessionManager: SessionManager? = nil, _ tokenManager: TokenManager? = nil) throws {
+    init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ authIndexType: String, _ oAuth2Config: OAuth2Client? = nil, _ sessionManager: SessionManager? = nil, _ tokenManager: TokenManager? = nil) throws {
         
         guard let authId = authServiceResponse[OpenAM.authId] as? String else {
             FRLog.e("Invalid response: missing 'authId'")
@@ -65,6 +68,7 @@ public class Node: NSObject {
         self.stage = authServiceResponse[OpenAM.stage] as? String
         self.serverConfig = serverConfig
         self.serviceName = serviceName
+        self.authIndexType = authIndexType
         self.oAuth2Config = oAuth2Config
         self.authId = authId
         
@@ -219,7 +223,7 @@ public class Node: NSObject {
     fileprivate func next(completion:@escaping NodeCompletion<Token>) {
 
         let thisRequest = self.buildAuthServiceRequest()
-        FRRestClient.invoke(request: thisRequest, action: Action(type: .AUTHENTICATE)) { (result) in
+        FRRestClient.invoke(request: thisRequest, action: Action(type: .AUTHENTICATE, payload: ["tree": self.serviceName, "type": self.authIndexType])) { (result) in
             switch result {
             case .success(let response, _):
                 
@@ -242,7 +246,7 @@ public class Node: NSObject {
                 else {
                     // If token was not received
                     do {
-                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.oAuth2Config, self.sessionManager, self.tokenManager)
+                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.sessionManager, self.tokenManager)
                         completion(nil, node, nil)
                     } catch let authError as AuthError {
                         completion(nil, nil, authError)
@@ -293,10 +297,7 @@ public class Node: NSObject {
         
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
-        var parameter: [String: String] = [:]
-        parameter[OpenAM.authIndexType] = OpenAM.service
-        parameter[OpenAM.authIndexValue] = self.serviceName
-        return Request(url: self.serverConfig.authenticateURL, method: .POST, headers: header, bodyParams: self.buildRequestPayload(), urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.authenticateURL, method: .POST, headers: header, bodyParams: self.buildRequestPayload(), urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
     
     

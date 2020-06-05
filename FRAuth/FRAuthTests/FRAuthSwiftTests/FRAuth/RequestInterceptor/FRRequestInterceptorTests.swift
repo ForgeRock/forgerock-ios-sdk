@@ -14,6 +14,7 @@ import XCTest
 class FRRequestInterceptorTests: FRBaseTest {
     
     static var intercepted: [String] = []
+    static var payload: [[String: Any]] = []
     
     override func setUp() {
         self.configFileName = "Config"
@@ -22,6 +23,7 @@ class FRRequestInterceptorTests: FRBaseTest {
     
     override func tearDown() {
         FRRequestInterceptorTests.intercepted = []
+        FRRequestInterceptorTests.payload = []
         super.tearDown()
     }
     
@@ -57,6 +59,16 @@ class FRRequestInterceptorTests: FRBaseTest {
             return
         }
         
+        guard let payload = FRRequestInterceptorTests.payload.first else {
+            XCTFail("Failed to retrieve Action.payload")
+            return
+        }
+        XCTAssertEqual(FRRequestInterceptorTests.payload.count, 1)
+        XCTAssertTrue(payload.keys.contains("tree"))
+        XCTAssertTrue(payload.keys.contains("type"))
+        XCTAssertEqual(payload["tree"] as? String, "UsernamePassword")
+        XCTAssertEqual(payload["type"] as? String, "service")
+        
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
@@ -79,6 +91,16 @@ class FRRequestInterceptorTests: FRBaseTest {
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let payload2 = FRRequestInterceptorTests.payload.last else {
+            XCTFail("Failed to retrieve Action.payload")
+            return
+        }
+        XCTAssertEqual(FRRequestInterceptorTests.payload.count, 2)
+        XCTAssertTrue(payload2.keys.contains("tree"))
+        XCTAssertTrue(payload2.keys.contains("type"))
+        XCTAssertEqual(payload2["tree"] as? String, "UsernamePassword")
+        XCTAssertEqual(payload2["type"] as? String, "service")
         
         XCTAssertNotNil(FRUser.currentUser)
         
@@ -111,6 +133,7 @@ class FRRequestInterceptorTests: FRBaseTest {
             ex.fulfill()
         })
         waitForExpectations(timeout: 60, handler: nil)
+        XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
         
         XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
         let interceptorsInOrder: [String] = ["REFRESH_TOKEN"]
@@ -140,6 +163,7 @@ class FRRequestInterceptorTests: FRBaseTest {
             ex.fulfill()
         })
         waitForExpectations(timeout: 60, handler: nil)
+        XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
         
         XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
         let interceptorsInOrder: [String] = ["USER_INFO"]
@@ -170,6 +194,7 @@ class FRRequestInterceptorTests: FRBaseTest {
         //  Sleep to make sure that logout requests are successfully made
         sleep(5)
         
+        XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
         XCTAssertNil(FRUser.currentUser)
         
         XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 2)

@@ -31,8 +31,10 @@ import Foundation
  */
 public struct Action {
     public let type: String
-    public init(type: ActionType) {
+    public let payload: [String: Any]?
+    public init(type: ActionType, payload: [String: Any]? = nil) {
         self.type = type.rawValue
+        self.payload = payload
     }
 }
 

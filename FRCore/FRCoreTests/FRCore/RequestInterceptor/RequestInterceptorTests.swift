@@ -14,6 +14,7 @@ import XCTest
 class RequestInterceptorTests: FRCoreBaseTest {
 
     static var intercepted: [String] = []
+    static var payload: [String: Any]?
     
     override func setUp() {
         URLProtocol.registerClass(FRCoreRequestCaptureProtocol.self)
@@ -29,6 +30,7 @@ class RequestInterceptorTests: FRCoreBaseTest {
         super.tearDown()
         FRCoreRequestCaptureProtocol.requestHistory = []
         RequestInterceptorTests.intercepted = []
+        RequestInterceptorTests.payload = nil
     }
     
     
@@ -269,6 +271,39 @@ class RequestInterceptorTests: FRCoreBaseTest {
         for (index, intercepted) in RequestInterceptorTests.intercepted.enumerated() {
             XCTAssertEqual(interceptorsInOrder[index], intercepted)
         }
+    }
+    
+    
+    func test_09_action_with_payload() {
+        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PayloadInterceptor()])
+        let ex = self.expectation(description: "Request submit")
+        RestClient.shared.invoke(request: request, action: Action(type: .AUTHENTICATE, payload: ["testKey":"testVal"])) { (result) in
+            switch result {
+            case .success(_, _):
+                break
+            case .failure(_):
+                break
+            }
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let payload = RequestInterceptorTests.payload else {
+            XCTFail("Failed to retrieve Action.payload from interceptor")
+            return
+        }
+        XCTAssertTrue(payload.keys.contains("testKey"))
+        XCTAssertEqual(payload["testKey"] as? String, "testVal")
+    }
+}
+
+
+class PayloadInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        RequestInterceptorTests.intercepted.append("PayloadInterceptor")
+        RequestInterceptorTests.payload = action.payload
+        return request
     }
 }
 
