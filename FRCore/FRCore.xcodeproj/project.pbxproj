@@ -19,12 +19,6 @@
 		D5C979B92409DF9700DA380A /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B02409DF9700DA380A /* Response.swift */; };
 		D5C979BA2409DF9700DA380A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B12409DF9700DA380A /* Request.swift */; };
 		D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B22409DF9700DA380A /* RestClient.swift */; };
-		D5CBC22A24102AA000F9B6EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC22924102AA000F9B6EA /* AppDelegate.swift */; };
-		D5CBC22C24102AA000F9B6EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC22B24102AA000F9B6EA /* SceneDelegate.swift */; };
-		D5CBC22E24102AA000F9B6EA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC22D24102AA000F9B6EA /* ViewController.swift */; };
-		D5CBC23124102AA000F9B6EA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC22F24102AA000F9B6EA /* Main.storyboard */; };
-		D5CBC23324102AA200F9B6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC23224102AA200F9B6EA /* Assets.xcassets */; };
-		D5CBC23624102AA200F9B6EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC23424102AA200F9B6EA /* LaunchScreen.storyboard */; };
 		D5CBC24124102B8800F9B6EA /* KeychainServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC23D24102B8700F9B6EA /* KeychainServiceTests.swift */; };
 		D5CBC24224102B8800F9B6EA /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC23F24102B8700F9B6EA /* RequestTests.swift */; };
 		D5CBC24324102B8800F9B6EA /* RestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC24024102B8700F9B6EA /* RestClientTests.swift */; };
@@ -65,6 +59,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D5A7A215248CDB1700E30CFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5A7A1E5248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
+		};
+		D5A7A217248CDBDC00E30CFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D5A7A1E4248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
+		};
 		D5E75BD52409B8C0005F589F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5E75BC12409B8C0005F589F /* Project object */;
@@ -78,6 +86,7 @@
 		D50115CE2410472F00219761 /* SecuredKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredKeyTests.swift; sourceTree = "<group>"; };
 		D512CD4A240DCD4F00AF520E /* FRError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRError.swift; sourceTree = "<group>"; };
 		D52D5C422413002100835035 /* FRStringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRStringUtil.swift; sourceTree = "<group>"; };
+		D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
 		D5C979A82409DF9700DA380A /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		D5C979A92409DF9700DA380A /* SecuredKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredKey.swift; sourceTree = "<group>"; };
 		D5C979AB2409DF9700DA380A /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -87,14 +96,6 @@
 		D5C979B02409DF9700DA380A /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		D5C979B12409DF9700DA380A /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		D5C979B22409DF9700DA380A /* RestClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestClient.swift; sourceTree = "<group>"; };
-		D5CBC22724102AA000F9B6EA /* FRCoreTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRCoreTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5CBC22924102AA000F9B6EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D5CBC22B24102AA000F9B6EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D5CBC22D24102AA000F9B6EA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D5CBC23024102AA000F9B6EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D5CBC23224102AA200F9B6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D5CBC23524102AA200F9B6EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D5CBC23724102AA200F9B6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5CBC23D24102B8700F9B6EA /* KeychainServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainServiceTests.swift; sourceTree = "<group>"; };
 		D5CBC23F24102B8700F9B6EA /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
 		D5CBC24024102B8700F9B6EA /* RestClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestClientTests.swift; sourceTree = "<group>"; };
@@ -103,7 +104,6 @@
 		D5CBC25424103E2700F9B6EA /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
 		D5CBC25524103E2700F9B6EA /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
 		D5CBC25624103E2700F9B6EA /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
-		D5CBC25B24103E4E00F9B6EA /* FRCoreTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRCoreTestHost.entitlements; sourceTree = "<group>"; };
 		D5D21495247843BB00B26403 /* RequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
 		D5D21497247843C900B26403 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorRegistry.swift; sourceTree = "<group>"; };
@@ -124,13 +124,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D5CBC22424102AA000F9B6EA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D5E75BC72409B8C0005F589F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -167,6 +160,14 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		D5A7A212248CDB1700E30CFE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5A7A216248CDB1700E30CFE /* FRTestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D5C979A72409DF9700DA380A /* Keychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,21 +197,6 @@
 				D5C979B22409DF9700DA380A /* RestClient.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		D5CBC22824102AA000F9B6EA /* FRCoreTestHost */ = {
-			isa = PBXGroup;
-			children = (
-				D5CBC25B24103E4E00F9B6EA /* FRCoreTestHost.entitlements */,
-				D5CBC22924102AA000F9B6EA /* AppDelegate.swift */,
-				D5CBC22B24102AA000F9B6EA /* SceneDelegate.swift */,
-				D5CBC22D24102AA000F9B6EA /* ViewController.swift */,
-				D5CBC22F24102AA000F9B6EA /* Main.storyboard */,
-				D5CBC23224102AA200F9B6EA /* Assets.xcassets */,
-				D5CBC23424102AA200F9B6EA /* LaunchScreen.storyboard */,
-				D5CBC23724102AA200F9B6EA /* Info.plist */,
-			);
-			path = FRCoreTestHost;
 			sourceTree = "<group>";
 		};
 		D5CBC23B24102B8700F9B6EA /* FRCore */ = {
@@ -312,8 +298,8 @@
 			children = (
 				D5E75BCC2409B8C0005F589F /* FRCore */,
 				D5E75BD72409B8C0005F589F /* FRCoreTests */,
-				D5CBC22824102AA000F9B6EA /* FRCoreTestHost */,
 				D5E75BCB2409B8C0005F589F /* Products */,
+				D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -322,7 +308,6 @@
 			children = (
 				D5E75BCA2409B8C0005F589F /* FRCore.framework */,
 				D5E75BD32409B8C0005F589F /* FRCoreTests.xctest */,
-				D5CBC22724102AA000F9B6EA /* FRCoreTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -367,23 +352,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D5CBC22624102AA000F9B6EA /* FRCoreTestHost */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D5CBC23A24102AA200F9B6EA /* Build configuration list for PBXNativeTarget "FRCoreTestHost" */;
-			buildPhases = (
-				D5CBC22324102AA000F9B6EA /* Sources */,
-				D5CBC22424102AA000F9B6EA /* Frameworks */,
-				D5CBC22524102AA000F9B6EA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FRCoreTestHost;
-			productName = FRCoreTestHost;
-			productReference = D5CBC22724102AA000F9B6EA /* FRCoreTestHost.app */;
-			productType = "com.apple.product-type.application";
-		};
 		D5E75BC92409B8C0005F589F /* FRCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5E75BDE2409B8C0005F589F /* Build configuration list for PBXNativeTarget "FRCore" */;
@@ -413,6 +381,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D5A7A218248CDBDC00E30CFE /* PBXTargetDependency */,
 				D5E75BD62409B8C0005F589F /* PBXTargetDependency */,
 			);
 			name = FRCoreTests;
@@ -430,9 +399,6 @@
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "James Go";
 				TargetAttributes = {
-					D5CBC22624102AA000F9B6EA = {
-						CreatedOnToolsVersion = 11.0;
-					};
 					D5E75BC92409B8C0005F589F = {
 						CreatedOnToolsVersion = 11.0;
 					};
@@ -452,26 +418,31 @@
 			mainGroup = D5E75BC02409B8C0005F589F;
 			productRefGroup = D5E75BCB2409B8C0005F589F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D5A7A212248CDB1700E30CFE /* Products */;
+					ProjectRef = D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D5E75BC92409B8C0005F589F /* FRCore */,
 				D5E75BD22409B8C0005F589F /* FRCoreTests */,
-				D5CBC22624102AA000F9B6EA /* FRCoreTestHost */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		D5CBC22524102AA000F9B6EA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D5CBC23624102AA200F9B6EA /* LaunchScreen.storyboard in Resources */,
-				D5CBC23324102AA200F9B6EA /* Assets.xcassets in Resources */,
-				D5CBC23124102AA000F9B6EA /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+/* Begin PBXReferenceProxy section */
+		D5A7A216248CDB1700E30CFE /* FRTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRTestHost.app;
+			remoteRef = D5A7A215248CDB1700E30CFE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
 		D5E75BC82409B8C0005F589F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -493,16 +464,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D5CBC22324102AA000F9B6EA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D5CBC22E24102AA000F9B6EA /* ViewController.swift in Sources */,
-				D5CBC22A24102AA000F9B6EA /* AppDelegate.swift in Sources */,
-				D5CBC22C24102AA000F9B6EA /* SceneDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D5E75BC62409B8C0005F589F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -563,6 +524,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D5A7A218248CDBDC00E30CFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRTestHost;
+			targetProxy = D5A7A217248CDBDC00E30CFE /* PBXContainerItemProxy */;
+		};
 		D5E75BD62409B8C0005F589F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D5E75BC92409B8C0005F589F /* FRCore */;
@@ -570,64 +536,7 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		D5CBC22F24102AA000F9B6EA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D5CBC23024102AA000F9B6EA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D5CBC23424102AA200F9B6EA /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D5CBC23524102AA200F9B6EA /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		D5CBC23824102AA200F9B6EA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = FRCoreTestHost/FRCoreTestHost.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
-				INFOPLIST_FILE = FRCoreTestHost/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCoreTestHost;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		D5CBC23924102AA200F9B6EA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = FRCoreTestHost/FRCoreTestHost.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
-				INFOPLIST_FILE = FRCoreTestHost/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCoreTestHost;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		D5E75BDC2409B8C0005F589F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -819,7 +728,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRCoreTestHost.app/FRCoreTestHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Debug;
 		};
@@ -840,22 +749,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRCoreTestHost.app/FRCoreTestHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D5CBC23A24102AA200F9B6EA /* Build configuration list for PBXNativeTarget "FRCoreTestHost" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D5CBC23824102AA200F9B6EA /* Debug */,
-				D5CBC23924102AA200F9B6EA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D5E75BC42409B8C0005F589F /* Build configuration list for PBXProject "FRCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

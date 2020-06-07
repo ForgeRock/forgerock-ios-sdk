@@ -1,11 +1,9 @@
 //
 //  ViewController.swift
-//  FRAuthTestHost
+//  FRTestHost
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
-//
-//  This software may be modified and distributed under the terms
-//  of the MIT license. See the LICENSE file for details.
+//  Created by James Go on 6/7/20.
+//  Copyright © 2020 James Go. All rights reserved.
 //
 
 import UIKit

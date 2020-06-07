@@ -50,12 +50,6 @@
 		D542AA5F2416FBE900ECBFC1 /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA5E2416FBE900ECBFC1 /* NotificationTests.swift */; };
 		D542AA61241704C800ECBFC1 /* MechanismTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA60241704C800ECBFC1 /* MechanismTests.swift */; };
 		D542AA632417083D00ECBFC1 /* KeychainServiceStorageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA622417083D00ECBFC1 /* KeychainServiceStorageClientTests.swift */; };
-		D542AA6B2417099A00ECBFC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA6A2417099A00ECBFC1 /* AppDelegate.swift */; };
-		D542AA6D2417099A00ECBFC1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA6C2417099A00ECBFC1 /* SceneDelegate.swift */; };
-		D542AA6F2417099A00ECBFC1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA6E2417099A00ECBFC1 /* ViewController.swift */; };
-		D542AA722417099A00ECBFC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D542AA702417099A00ECBFC1 /* Main.storyboard */; };
-		D542AA742417099B00ECBFC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D542AA732417099B00ECBFC1 /* Assets.xcassets */; };
-		D542AA772417099B00ECBFC1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D542AA752417099B00ECBFC1 /* LaunchScreen.storyboard */; };
 		D542AA7D24170F4600ECBFC1 /* FRAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA7C24170F4600ECBFC1 /* FRAuthenticatorTests.swift */; };
 		D542AA7F2417413B00ECBFC1 /* PushMechanismTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D542AA7E2417413B00ECBFC1 /* PushMechanismTests.swift */; };
 		D54E88EE241749BE00E8ACB1 /* FRAError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E88ED241749BE00E8ACB1 /* FRAError.swift */; };
@@ -139,6 +133,20 @@
 			remoteGlobalIDString = D5E75BC92409B8C0005F589F;
 			remoteInfo = FRCore;
 		};
+		D5B68CF1248CDDB300CD2F5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5A7A1E5248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
+		};
+		D5B68CF3248CDDC700CD2F5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D5A7A1E4248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
+		};
 		D5C3548B2412EBF900695A84 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5C354772412EBF800695A84 /* Project object */;
@@ -159,13 +167,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = D5E75BD32409B8C0005F589F;
 			remoteInfo = FRCoreTests;
-		};
-		D5C354BA2412EC5100695A84 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5CBC22724102AA000F9B6EA;
-			remoteInfo = FRCoreTestHost;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -209,14 +210,6 @@
 		D542AA5E2416FBE900ECBFC1 /* NotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		D542AA60241704C800ECBFC1 /* MechanismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MechanismTests.swift; sourceTree = "<group>"; };
 		D542AA622417083D00ECBFC1 /* KeychainServiceStorageClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainServiceStorageClientTests.swift; sourceTree = "<group>"; };
-		D542AA682417099A00ECBFC1 /* FRAuthenticatorTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRAuthenticatorTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D542AA6A2417099A00ECBFC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D542AA6C2417099A00ECBFC1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D542AA6E2417099A00ECBFC1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D542AA712417099A00ECBFC1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D542AA732417099B00ECBFC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D542AA762417099B00ECBFC1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D542AA782417099B00ECBFC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D542AA7C24170F4600ECBFC1 /* FRAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuthenticatorTests.swift; sourceTree = "<group>"; };
 		D542AA7E2417413B00ECBFC1 /* PushMechanismTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushMechanismTests.swift; sourceTree = "<group>"; };
 		D54E88ED241749BE00E8ACB1 /* FRAError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAError.swift; sourceTree = "<group>"; };
@@ -227,6 +220,7 @@
 		D5B55C1E24329ABA00B49320 /* Base32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32.swift; sourceTree = "<group>"; };
 		D5B55C2124329EAB00B49320 /* Base32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32Tests.swift; sourceTree = "<group>"; };
 		D5B55C232432B52800B49320 /* OathAlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathAlgorithmTests.swift; sourceTree = "<group>"; };
+		D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
 		D5C354802412EBF800695A84 /* FRAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5C354832412EBF800695A84 /* FRAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRAuthenticator.h; sourceTree = "<group>"; };
 		D5C354842412EBF800695A84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -277,13 +271,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D542AA652417099A00ECBFC1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D5C3547D2412EBF800695A84 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -482,20 +469,6 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
-		D542AA692417099A00ECBFC1 /* FRAuthenticatorTestHost */ = {
-			isa = PBXGroup;
-			children = (
-				D542AA6A2417099A00ECBFC1 /* AppDelegate.swift */,
-				D542AA6C2417099A00ECBFC1 /* SceneDelegate.swift */,
-				D542AA6E2417099A00ECBFC1 /* ViewController.swift */,
-				D542AA702417099A00ECBFC1 /* Main.storyboard */,
-				D542AA732417099B00ECBFC1 /* Assets.xcassets */,
-				D542AA752417099B00ECBFC1 /* LaunchScreen.storyboard */,
-				D542AA782417099B00ECBFC1 /* Info.plist */,
-			);
-			path = FRAuthenticatorTestHost;
-			sourceTree = "<group>";
-		};
 		D5B55C15243285DC00B49320 /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,15 +477,23 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
+		D5B68CEC248CDDB200CD2F5B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5B68CF2248CDDB300CD2F5B /* FRTestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D5C354762412EBF800695A84 = {
 			isa = PBXGroup;
 			children = (
 				D5C354B02412EC5100695A84 /* FRCore.xcodeproj */,
 				D5C354822412EBF800695A84 /* FRAuthenticator */,
 				D5C3548D2412EBF900695A84 /* FRAuthenticatorTests */,
-				D542AA692417099A00ECBFC1 /* FRAuthenticatorTestHost */,
 				D5C354812412EBF800695A84 /* Products */,
 				D52D5C292412EC6C00835035 /* Frameworks */,
+				D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -521,7 +502,6 @@
 			children = (
 				D5C354802412EBF800695A84 /* FRAuthenticator.framework */,
 				D5C354892412EBF900695A84 /* FRAuthenticatorTests.xctest */,
-				D542AA682417099A00ECBFC1 /* FRAuthenticatorTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -602,7 +582,6 @@
 			children = (
 				D5C354B72412EC5100695A84 /* FRCore.framework */,
 				D5C354B92412EC5100695A84 /* FRCoreTests.xctest */,
-				D5C354BB2412EC5100695A84 /* FRCoreTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -736,23 +715,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D542AA672417099A00ECBFC1 /* FRAuthenticatorTestHost */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D542AA792417099B00ECBFC1 /* Build configuration list for PBXNativeTarget "FRAuthenticatorTestHost" */;
-			buildPhases = (
-				D542AA642417099A00ECBFC1 /* Sources */,
-				D542AA652417099A00ECBFC1 /* Frameworks */,
-				D542AA662417099A00ECBFC1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FRAuthenticatorTestHost;
-			productName = FRAuthenticatorTestHost;
-			productReference = D542AA682417099A00ECBFC1 /* FRAuthenticatorTestHost.app */;
-			productType = "com.apple.product-type.application";
-		};
 		D5C3547F2412EBF800695A84 /* FRAuthenticator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5C354942412EBF900695A84 /* Build configuration list for PBXNativeTarget "FRAuthenticator" */;
@@ -784,6 +746,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D5B68CF4248CDDC700CD2F5B /* PBXTargetDependency */,
 				D5C3548C2412EBF900695A84 /* PBXTargetDependency */,
 			);
 			name = FRAuthenticatorTests;
@@ -801,9 +764,6 @@
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "James Go";
 				TargetAttributes = {
-					D542AA672417099A00ECBFC1 = {
-						CreatedOnToolsVersion = 11.0;
-					};
 					D5C3547F2412EBF800695A84 = {
 						CreatedOnToolsVersion = 11.0;
 					};
@@ -828,17 +788,27 @@
 					ProductGroup = D5C354B12412EC5100695A84 /* Products */;
 					ProjectRef = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
 				},
+				{
+					ProductGroup = D5B68CEC248CDDB200CD2F5B /* Products */;
+					ProjectRef = D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				D5C3547F2412EBF800695A84 /* FRAuthenticator */,
 				D5C354882412EBF900695A84 /* FRAuthenticatorTests */,
-				D542AA672417099A00ECBFC1 /* FRAuthenticatorTestHost */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D5B68CF2248CDDB300CD2F5B /* FRTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRTestHost.app;
+			remoteRef = D5B68CF1248CDDB300CD2F5B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D5C354B72412EC5100695A84 /* FRCore.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -853,26 +823,9 @@
 			remoteRef = D5C354B82412EC5100695A84 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D5C354BB2412EC5100695A84 /* FRCoreTestHost.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FRCoreTestHost.app;
-			remoteRef = D5C354BA2412EC5100695A84 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D542AA662417099A00ECBFC1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D542AA772417099B00ECBFC1 /* LaunchScreen.storyboard in Resources */,
-				D542AA742417099B00ECBFC1 /* Assets.xcassets in Resources */,
-				D542AA722417099A00ECBFC1 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D5C3547E2412EBF800695A84 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -895,16 +848,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D542AA642417099A00ECBFC1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D542AA6F2417099A00ECBFC1 /* ViewController.swift in Sources */,
-				D542AA6B2417099A00ECBFC1 /* AppDelegate.swift in Sources */,
-				D542AA6D2417099A00ECBFC1 /* SceneDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D5C3547C2412EBF800695A84 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1033,6 +976,11 @@
 			name = FRCore;
 			targetProxy = D52D5C242412EC6500835035 /* PBXContainerItemProxy */;
 		};
+		D5B68CF4248CDDC700CD2F5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRTestHost;
+			targetProxy = D5B68CF3248CDDC700CD2F5B /* PBXContainerItemProxy */;
+		};
 		D5C3548C2412EBF900695A84 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D5C3547F2412EBF800695A84 /* FRAuthenticator */;
@@ -1040,64 +988,7 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		D542AA702417099A00ECBFC1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D542AA712417099A00ECBFC1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D542AA752417099B00ECBFC1 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D542AA762417099B00ECBFC1 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		D542AA7A2417099B00ECBFC1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
-				INFOPLIST_FILE = FRAuthenticatorTestHost/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticatorTestHost;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		D542AA7B2417099B00ECBFC1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
-				INFOPLIST_FILE = FRAuthenticatorTestHost/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticatorTestHost;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		D5C354922412EBF900695A84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1290,7 +1181,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "FRAuthenticatorTests/FRAuthenticatorTests-BridgingHeader.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRAuthenticatorTestHost.app/FRAuthenticatorTestHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Debug;
 		};
@@ -1312,22 +1203,13 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "FRAuthenticatorTests/FRAuthenticatorTests-BridgingHeader.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRAuthenticatorTestHost.app/FRAuthenticatorTestHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D542AA792417099B00ECBFC1 /* Build configuration list for PBXNativeTarget "FRAuthenticatorTestHost" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D542AA7A2417099B00ECBFC1 /* Debug */,
-				D542AA7B2417099B00ECBFC1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D5C3547A2412EBF800695A84 /* Build configuration list for PBXProject "FRAuthenticator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

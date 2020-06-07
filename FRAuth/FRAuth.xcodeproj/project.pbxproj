@@ -6,20 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		D5BEF04023396B1D008C69F1 /* FRAuth-Universal */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = D5BEF04323396B1D008C69F1 /* Build configuration list for PBXAggregateTarget "FRAuth-Universal" */;
-			buildPhases = (
-				D5BEF04423396B27008C69F1 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "FRAuth-Universal";
-			productName = "FRAuth-Universal";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */; };
 		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
@@ -27,7 +13,6 @@
 		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
-		D5167292231F3547007053EE /* FRAuthConfigNonSSO.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5167291231F3546007053EE /* FRAuthConfigNonSSO.plist */; };
 		D51672A323219992007053EE /* FRURLProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51672A223219992007053EE /* FRURLProtocolTests.swift */; };
 		D51672A62321AB21007053EE /* ObjcFRURLProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D51672A52321AB21007053EE /* ObjcFRURLProtocolTests.m */; };
 		D52D162823147FE70095905A /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162723147FE70095905A /* FRTestUtils.swift */; };
@@ -162,12 +147,6 @@
 		D54237FF23358F8F009C868F /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5E23358EE0007A2194 /* UserInfo.swift */; };
 		D542380023358F8F009C868F /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5F23358EE0007A2194 /* Address.swift */; };
 		D542380123358F8F009C868F /* FRUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF6023358EE0007A2194 /* FRUser.swift */; };
-		D55118AF22E1268D009EBCD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55118AE22E1268D009EBCD9 /* AppDelegate.swift */; };
-		D55118B122E1268D009EBCD9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55118B022E1268D009EBCD9 /* ViewController.swift */; };
-		D55118B422E1268D009EBCD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D55118B222E1268D009EBCD9 /* Main.storyboard */; };
-		D55118B622E1268E009EBCD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55118B522E1268E009EBCD9 /* Assets.xcassets */; };
-		D55118B922E1268E009EBCD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D55118B722E1268E009EBCD9 /* LaunchScreen.storyboard */; };
-		D553B90E22FCB10900FC0734 /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = D553B90D22FCB10900FC0734 /* FRAuthConfig.plist */; };
 		D553B91122FCBAF600FC0734 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D553B91022FCBAF600FC0734 /* Config.swift */; };
 		D553B91322FCBE7C00FC0734 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D553B91222FCBE7C00FC0734 /* Config.json */; };
 		D554630222A6DF720096C7A4 /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D55462F822A6DF720096C7A4 /* FRAuth.framework */; };
@@ -267,7 +246,6 @@
 		D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
-		D5C979C12409EA9600DA380A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */; };
 		D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
@@ -284,19 +262,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D55118BE22E12772009EBCD9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D55462EF22A6DF720096C7A4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D55118AB22E1268C009EBCD9;
-			remoteInfo = FRAuthTestHost;
-		};
 		D554630322A6DF720096C7A4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D55462EF22A6DF720096C7A4 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D55462F722A6DF720096C7A4;
 			remoteInfo = FRAuth;
+		};
+		D5B68CDD248CDD0500CD2F5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5B68CD7248CDD0500CD2F5B /* FRTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5A7A1E5248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
+		};
+		D5B68CDF248CDD0A00CD2F5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5B68CD7248CDD0500CD2F5B /* FRTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D5A7A1E4248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
 		};
 		D5C979BC2409E8DA00DA380A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -319,28 +304,7 @@
 			remoteGlobalIDString = D5E75BD32409B8C0005F589F;
 			remoteInfo = FRCoreTests;
 		};
-		D5E817DB24105641008F2A46 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5CBC22724102AA000F9B6EA;
-			remoteInfo = FRCoreTestHost;
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D5C979C22409EA9600DA380A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D5C979C12409EA9600DA380A /* FRCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -349,7 +313,6 @@
 		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5167289231F0408007053EE /* CustomCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallbackTests.swift; sourceTree = "<group>"; };
 		D516728D231F1E48007053EE /* NodeFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowTests.swift; sourceTree = "<group>"; };
-		D5167291231F3546007053EE /* FRAuthConfigNonSSO.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigNonSSO.plist; sourceTree = "<group>"; };
 		D51672A223219992007053EE /* FRURLProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocolTests.swift; sourceTree = "<group>"; };
 		D51672A52321AB21007053EE /* ObjcFRURLProtocolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRURLProtocolTests.m; sourceTree = "<group>"; };
 		D52D1626231478D10095905A /* FRObjcTestBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRObjcTestBridgingHeader.h; sourceTree = "<group>"; };
@@ -424,14 +387,6 @@
 		D53958A523022FA4009CA2BC /* OAuth2_UserInfo_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Success.json; sourceTree = "<group>"; };
 		D53958A72302318E009CA2BC /* OAuth2_UserInfo_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Failure.json; sourceTree = "<group>"; };
 		D53958A92302376C009CA2BC /* OAuth2_Token_Refresh_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_Success.json; sourceTree = "<group>"; };
-		D55118AC22E1268C009EBCD9 /* FRAuthTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRAuthTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D55118AE22E1268D009EBCD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D55118B022E1268D009EBCD9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D55118B322E1268D009EBCD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D55118B522E1268E009EBCD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D55118B822E1268E009EBCD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D55118BA22E1268E009EBCD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D553B90D22FCB10900FC0734 /* FRAuthConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfig.plist; sourceTree = "<group>"; };
 		D553B91022FCBAF600FC0734 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		D553B91222FCBE7C00FC0734 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
 		D55462F822A6DF720096C7A4 /* FRAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -442,7 +397,6 @@
 		D554632122A6EDF90096C7A4 /* FRAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuth.swift; sourceTree = "<group>"; };
 		D5554F74235A7259009FC810 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D55776B423702889005A911F /* MetadataCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallback.swift; sourceTree = "<group>"; };
-		D5582BA422E276A800C86ED8 /* FRAuthTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRAuthTestHost.entitlements; sourceTree = "<group>"; };
 		D5723C3923F4C65800557AA8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5723C3A23F4C65800557AA8 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdvice.swift; sourceTree = "<group>"; };
@@ -517,6 +471,7 @@
 		D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallback.swift; sourceTree = "<group>"; };
 		D5B2A38823FCB25E00764370 /* ActionCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCallback.swift; sourceTree = "<group>"; };
 		D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollector.swift; sourceTree = "<group>"; };
+		D5B68CD7248CDD0500CD2F5B /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
 		D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
 		D5BE349423CD2F38005873BB /* FRSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSession.swift; sourceTree = "<group>"; };
 		D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicyTests.swift; sourceTree = "<group>"; };
@@ -537,13 +492,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D55118A922E1268C009EBCD9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D55462F522A6DF720096C7A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -993,22 +941,6 @@
 			path = ModelData;
 			sourceTree = "<group>";
 		};
-		D55118AD22E1268D009EBCD9 /* FRAuthTestHost */ = {
-			isa = PBXGroup;
-			children = (
-				D553B90D22FCB10900FC0734 /* FRAuthConfig.plist */,
-				D5167291231F3546007053EE /* FRAuthConfigNonSSO.plist */,
-				D5582BA422E276A800C86ED8 /* FRAuthTestHost.entitlements */,
-				D55118AE22E1268D009EBCD9 /* AppDelegate.swift */,
-				D55118B022E1268D009EBCD9 /* ViewController.swift */,
-				D55118B222E1268D009EBCD9 /* Main.storyboard */,
-				D55118B522E1268E009EBCD9 /* Assets.xcassets */,
-				D55118B722E1268E009EBCD9 /* LaunchScreen.storyboard */,
-				D55118BA22E1268E009EBCD9 /* Info.plist */,
-			);
-			path = FRAuthTestHost;
-			sourceTree = "<group>";
-		};
 		D553B90F22FCBACE00FC0734 /* TestConfig */ = {
 			isa = PBXGroup;
 			children = (
@@ -1024,9 +956,9 @@
 				D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */,
 				D55462FA22A6DF720096C7A4 /* FRAuth */,
 				D554630522A6DF720096C7A4 /* FRAuthTests */,
-				D55118AD22E1268D009EBCD9 /* FRAuthTestHost */,
 				D55462F922A6DF720096C7A4 /* Products */,
 				D5554F73235A7258009FC810 /* Frameworks */,
+				D5B68CD7248CDD0500CD2F5B /* FRTestHost.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1035,7 +967,6 @@
 			children = (
 				D55462F822A6DF720096C7A4 /* FRAuth.framework */,
 				D554630122A6DF720096C7A4 /* FRAuthTests.xctest */,
-				D55118AC22E1268C009EBCD9 /* FRAuthTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1263,6 +1194,14 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		D5B68CD8248CDD0500CD2F5B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5B68CDE248CDD0500CD2F5B /* FRTestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D5BE349323CD2F23005873BB /* Session */ = {
 			isa = PBXGroup;
 			children = (
@@ -1316,7 +1255,6 @@
 			children = (
 				D5E75BEA2409DF6E005F589F /* FRCore.framework */,
 				D5E75BEC2409DF6E005F589F /* FRCoreTests.xctest */,
-				D5E817DC24105641008F2A46 /* FRCoreTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1353,23 +1291,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D55118AB22E1268C009EBCD9 /* FRAuthTestHost */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D55118BB22E1268E009EBCD9 /* Build configuration list for PBXNativeTarget "FRAuthTestHost" */;
-			buildPhases = (
-				D55118A822E1268C009EBCD9 /* Sources */,
-				D55118A922E1268C009EBCD9 /* Frameworks */,
-				D55118AA22E1268C009EBCD9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FRAuthTestHost;
-			productName = FRAuthTestHost;
-			productReference = D55118AC22E1268C009EBCD9 /* FRAuthTestHost.app */;
-			productType = "com.apple.product-type.application";
-		};
 		D55462F722A6DF720096C7A4 /* FRAuth */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D554630C22A6DF720096C7A4 /* Build configuration list for PBXNativeTarget "FRAuth" */;
@@ -1378,7 +1299,6 @@
 				D55462F422A6DF720096C7A4 /* Sources */,
 				D55462F522A6DF720096C7A4 /* Frameworks */,
 				D55462F622A6DF720096C7A4 /* Resources */,
-				D5C979C22409EA9600DA380A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1401,8 +1321,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				D5B68CE0248CDD0A00CD2F5B /* PBXTargetDependency */,
 				D554630422A6DF720096C7A4 /* PBXTargetDependency */,
-				D55118BF22E12772009EBCD9 /* PBXTargetDependency */,
 			);
 			name = FRAuthTests;
 			productName = FRAuthTests;
@@ -1419,14 +1339,6 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "James Go";
 				TargetAttributes = {
-					D55118AB22E1268C009EBCD9 = {
-						CreatedOnToolsVersion = 10.2.1;
-						SystemCapabilities = {
-							com.apple.Keychain = {
-								enabled = 1;
-							};
-						};
-					};
 					D55462F722A6DF720096C7A4 = {
 						CreatedOnToolsVersion = 10.2.1;
 						LastSwiftMigration = 1030;
@@ -1434,9 +1346,6 @@
 					D554630022A6DF720096C7A4 = {
 						CreatedOnToolsVersion = 10.2.1;
 						TestTargetID = D55118AB22E1268C009EBCD9;
-					};
-					D5BEF04023396B1D008C69F1 = {
-						CreatedOnToolsVersion = 10.3;
 					};
 				};
 			};
@@ -1456,18 +1365,27 @@
 					ProductGroup = D5E75BE52409DF6D005F589F /* Products */;
 					ProjectRef = D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */;
 				},
+				{
+					ProductGroup = D5B68CD8248CDD0500CD2F5B /* Products */;
+					ProjectRef = D5B68CD7248CDD0500CD2F5B /* FRTestHost.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				D55462F722A6DF720096C7A4 /* FRAuth */,
 				D554630022A6DF720096C7A4 /* FRAuthTests */,
-				D55118AB22E1268C009EBCD9 /* FRAuthTestHost */,
-				D5BEF04023396B1D008C69F1 /* FRAuth-Universal */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D5B68CDE248CDD0500CD2F5B /* FRTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRTestHost.app;
+			remoteRef = D5B68CDD248CDD0500CD2F5B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D5E75BEA2409DF6E005F589F /* FRCore.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1482,28 +1400,9 @@
 			remoteRef = D5E75BEB2409DF6E005F589F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D5E817DC24105641008F2A46 /* FRCoreTestHost.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FRCoreTestHost.app;
-			remoteRef = D5E817DB24105641008F2A46 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D55118AA22E1268C009EBCD9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D553B90E22FCB10900FC0734 /* FRAuthConfig.plist in Resources */,
-				D55118B922E1268E009EBCD9 /* LaunchScreen.storyboard in Resources */,
-				D55118B622E1268E009EBCD9 /* Assets.xcassets in Resources */,
-				D5167292231F3547007053EE /* FRAuthConfigNonSSO.plist in Resources */,
-				D55118B422E1268D009EBCD9 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D55462F622A6DF720096C7A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1556,37 +1455,7 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		D5BEF04423396B27008C69F1 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n#################################################\n# 1. Define output directory for universal and final binary\n#################################################\nUNIVERSAL_DIR=${BUILD_DIR}/${CONFIGURATION}-universal\nTARGET_DIR=../SDKs\n\n#################################################\n# 2. Create output directo ries\n#################################################\nmkdir -p \"${UNIVERSAL_DIR}\"\nmkdir -p \"${TARGET_DIR}\"\n\n#################################################\n# 3. Build project for Device and Simulator\n#################################################\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n\n#################################################\n# 4. Copy device binary to universal folder\n#################################################\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_DIR}/\"\n\n#################################################\n# 5. Copy Swift modules from iphonesimulator build\n#################################################\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n#################################################\n# 6. Merge two binaries into universal binary\n#################################################\nlipo -create -output \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n#################################################\n# 7. Copy the final binary to target directory\n#################################################\ncp -R \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\" \"${TARGET_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 8. Open the target directory\n#################################################\nopen \"${TARGET_DIR}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		D55118A822E1268C009EBCD9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D55118B122E1268D009EBCD9 /* ViewController.swift in Sources */,
-				D55118AF22E1268D009EBCD9 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D55462F422A6DF720096C7A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1816,15 +1685,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D55118BF22E12772009EBCD9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D55118AB22E1268C009EBCD9 /* FRAuthTestHost */;
-			targetProxy = D55118BE22E12772009EBCD9 /* PBXContainerItemProxy */;
-		};
 		D554630422A6DF720096C7A4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D55462F722A6DF720096C7A4 /* FRAuth */;
 			targetProxy = D554630322A6DF720096C7A4 /* PBXContainerItemProxy */;
+		};
+		D5B68CE0248CDD0A00CD2F5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRTestHost;
+			targetProxy = D5B68CDF248CDD0A00CD2F5B /* PBXContainerItemProxy */;
 		};
 		D5C979BD2409E8DA00DA380A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1833,74 +1702,7 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		D55118B222E1268D009EBCD9 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D55118B322E1268D009EBCD9 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D55118B722E1268E009EBCD9 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D55118B822E1268E009EBCD9 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		D55118BC22E1268E009EBCD9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = FRAuthTestHost/FRAuthTestHost.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
-				INFOPLIST_FILE = FRAuthTestHost/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthTestHost;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		D55118BD22E1268E009EBCD9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = FRAuthTestHost/FRAuthTestHost.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
-				INFOPLIST_FILE = FRAuthTestHost/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthTestHost;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		D554630A22A6DF720096C7A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2107,7 +1909,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = FRAuthTests/FRObjcTestBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRAuthTestHost.app/FRAuthTestHost";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Debug;
 		};
@@ -2132,40 +1934,13 @@
 				SWIFT_OBJC_BRIDGING_HEADER = FRAuthTests/FRObjcTestBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRAuthTestHost.app/FRAuthTestHost";
-			};
-			name = Release;
-		};
-		D5BEF04123396B1D008C69F1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		D5BEF04223396B1D008C69F1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D55118BB22E1268E009EBCD9 /* Build configuration list for PBXNativeTarget "FRAuthTestHost" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D55118BC22E1268E009EBCD9 /* Debug */,
-				D55118BD22E1268E009EBCD9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D55462F222A6DF720096C7A4 /* Build configuration list for PBXProject "FRAuth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2189,15 +1964,6 @@
 			buildConfigurations = (
 				D554631022A6DF720096C7A4 /* Debug */,
 				D554631122A6DF720096C7A4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D5BEF04323396B1D008C69F1 /* Build configuration list for PBXAggregateTarget "FRAuth-Universal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D5BEF04123396B1D008C69F1 /* Debug */,
-				D5BEF04223396B1D008C69F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

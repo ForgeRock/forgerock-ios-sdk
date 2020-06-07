@@ -6,20 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		D5D0ADDD233AB2B300C16D5E /* FRUI-Universal */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = D5D0ADE3233AB2B300C16D5E /* Build configuration list for PBXAggregateTarget "FRUI-Universal" */;
-			buildPhases = (
-				D5D0ADE4233AB2B700C16D5E /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "FRUI-Universal";
-			productName = "FRUI-Universal";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51F44D722B1B8C900FC8F0D /* FRAuth.framework */; };
 		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
@@ -406,9 +392,6 @@
 					D53A91E922B1815B003DF94E = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
-					D5D0ADDD233AB2B300C16D5E = {
-						CreatedOnToolsVersion = 10.3;
-					};
 				};
 			};
 			buildConfigurationList = D53A91DB22B1815B003DF94E /* Build configuration list for PBXProject "FRUI" */;
@@ -431,7 +414,6 @@
 			targets = (
 				D53A91E022B1815B003DF94E /* FRUI */,
 				D53A91E922B1815B003DF94E /* FRUITests */,
-				D5D0ADDD233AB2B300C16D5E /* FRUI-Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -489,27 +471,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D5D0ADE4233AB2B700C16D5E /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n#################################################\n# 1. Define output directory for universal and final binary\n#################################################\nUNIVERSAL_DIR=${BUILD_DIR}/${CONFIGURATION}-universal\nTARGET_DIR=../SDKs\n\n#################################################\n# 2. Create output directo ries\n#################################################\necho \"Creating output directories..\"\nmkdir -p \"${UNIVERSAL_DIR}\"\nmkdir -p \"${TARGET_DIR}\"\n\n#################################################\n# 3. Build project for Device and Simulator\n#################################################\necho \"Starting to build project for Device and Simulator\"\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n\n#################################################\n# 4. Copy device binary to universal folder\n#################################################\necho \"Copying Device binary into universal folder ${PROJECT_NAME}\"\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 5. Copy Swift modules from iphonesimulator build\n#################################################\necho \"Copying simulator's swiftmodule into univeral binary\"\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n#################################################\n# 6. Merge two binaries into universal binary\n#################################################\necho \"Merging binaries\"\nlipo -create -output \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n#################################################\n# 7. Copy the final binary to target directory\n#################################################\ncp -R \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\" \"${TARGET_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 8. Open the target directory\n#################################################\nopen \"${TARGET_DIR}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D53A91DD22B1815B003DF94E /* Sources */ = {
@@ -793,24 +754,6 @@
 			};
 			name = Release;
 		};
-		D5D0ADDE233AB2B300C16D5E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		D5D0ADDF233AB2B300C16D5E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -837,15 +780,6 @@
 			buildConfigurations = (
 				D53A91F922B1815B003DF94E /* Debug */,
 				D53A91FA22B1815B003DF94E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D5D0ADE3233AB2B300C16D5E /* Build configuration list for PBXAggregateTarget "FRUI-Universal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D5D0ADDE233AB2B300C16D5E /* Debug */,
-				D5D0ADDF233AB2B300C16D5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
