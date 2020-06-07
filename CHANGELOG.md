@@ -10,6 +10,7 @@
 - `FRAuth` now supports `Device Profile Node` in AM 7.0.0. [SDKS-294]
 - `FRCore` introduces an ability to customize internal SDK requests through `RequestInterceptor`. Use `FRCore.RequestInterceptor` to implement the interceptor, and `FRAuth.FRRequestInterceptorRegistry`to register interceptors. [SDKS-250]
 - `FRAuth` now supports customizable cookie name to align with AM. Use `.plist` config file, or `ServerConfigBuilder` to change `cookieName`. [SDKS-382]
+- `FRAuthenticator` SDK is now available; use `FRAuthenticator` to implement OATH, and Push Authentication with AM in the application. 
 
 
 #### Changed
@@ -17,7 +18,7 @@
 
 #### Deprecated
 - `FRURLProtocol.validatedURLs` and `FRURLProtocol.refreshTokenPolicy` are now deprecated; use `TokenManagementPolicy` and `TokenManagementPolicyDelegate` to perform Token Management feature. [SDKS-386]
-- `ServerConfig(url:realm:timeout:)` is not deprecated; use `ServerConfigBuilder` to construct `ServerConfig`. [SDKS-302]
+- `ServerConfig(url:realm:timeout:)` is now deprecated; use `ServerConfigBuilder` to construct `ServerConfig`. [SDKS-302]
 
 ## [1.0.2]
 #### Added

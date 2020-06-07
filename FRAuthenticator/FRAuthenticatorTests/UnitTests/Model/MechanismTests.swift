@@ -1,0 +1,57 @@
+// 
+//  MechanismTests.swift
+//  FRAuthenticatorTests
+//
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//
+//  This software may be modified and distributed under the terms
+//  of the MIT license. See the LICENSE file for details.
+//
+
+
+import XCTest
+
+class MechanismTests: FRABaseTests {
+
+    func test_01_mechanism_serialization() {
+    
+        let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB")
+        let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
+        let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism
+        XCTAssertNotNil(mechanismFromData)
+        
+        XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
+        XCTAssertEqual(mechanism.type, mechanismFromData?.type)
+        XCTAssertEqual(mechanism.version, mechanismFromData?.version)
+        XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
+        XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
+        XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
+        XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+    }
+    
+    
+    func test_02_mechanism_order() {
+        
+        let thisAccount = Account(issuer: "ForgeRock", accountName: "OrderTest")
+        let mechanism1 = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB")
+        sleep(1)
+        let mechanism2 = Mechanism(type: "hotp", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB")
+        sleep(1)
+        let mechanism3 = Mechanism(type: "push", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB")
+        
+        FRAClient.start()
+        FRAClient.storage.setAccount(account: thisAccount)
+        FRAClient.storage.setMechanism(mechanism: mechanism3)
+        FRAClient.storage.setMechanism(mechanism: mechanism1)
+        FRAClient.storage.setMechanism(mechanism: mechanism2)
+        
+        guard let account = FRAClient.shared?.getAccount(identifier: "ForgeRock-OrderTest") else {
+            XCTFail("Failed to retrieve Account, and Mechanism object")
+            return
+        }
+        let mechanismTypes: [String] = ["totp", "hotp", "push"]
+        for (index, mechanism) in account.mechanisms.enumerated() {
+            XCTAssertEqual(mechanismTypes[index], mechanism.type)
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+	"responsePayload": {
+        "code": 400,
+        "reason": "Bad Request",
+        "message": "Bad request."
+	},
+	"response": {
+		"statusCode": 400,
+		"url": "http://openam.example.com:8081/openam/json/push/sns/message?_action=authenticate",
+		"httpVersion": "HTTP/1.1",
+		"headerFields": {
+			"Content-Length": "2",
+			"Content-Type": "application/json;charset=UTF-8",
+            "Content-API-Version": "resource=1.0",
+			"Date": "Tue, 05 May 2020 21:49:02 GMT",
+			"X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff, nosniff"
+		}
+	}
+}

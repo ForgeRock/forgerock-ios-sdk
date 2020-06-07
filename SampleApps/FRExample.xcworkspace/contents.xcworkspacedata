@@ -7,4 +7,7 @@
    <FileRef
       location = "group:FRexampleObjC/FRexampleObjC.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:FRAuthenticatorExample/FRAuthenticatorExample.xcodeproj">
+   </FileRef>
 </Workspace>
