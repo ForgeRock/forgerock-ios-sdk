@@ -130,18 +130,27 @@ public struct Request {
         //  Build http body content
         // TODO: dynamically handle more content-type
         if self.bodyParams.keys.count > 0 {
-            if self.method != .GET {
-                do {
-                    thisRequest.httpBody = try JSONSerialization.data(withJSONObject: self.bodyParams, options: [])
+            if ![HTTPMethod.DELETE, HTTPMethod.GET].contains(method) {
+                if requestType == .json {
+                    do {
+                        thisRequest.httpBody = try JSONSerialization.data(withJSONObject: self.bodyParams, options: [])
+                    }
+                    catch {
+                        Log.e("Failed to serialize HTTP Body: \(self.bodyParams)")
+                    }
                 }
-                catch {
-                    Log.w("Failed to serialize HTTP Body: \(self.bodyParams)")
+                else if requestType == .urlEncoded {
+                    let urlEncoded = bodyParams.map{ "\($0)=\($1)" }.joined(separator: "&")
+                    thisRequest.httpBody = Data(urlEncoded.utf8)
                 }
             }
             else {
-                Log.w("Ignoring body parameters for GET request; \(self.bodyParams)")
+                Log.w("Ignoring body parameters for GET/DELETE request; \(self.bodyParams)")
             }
         }
+        
+        let debugDesc = "\n**URLRequest built**\nURLRequest: URL: [\(thisRequest.httpMethod)] \(thisRequest.url?.absoluteString ?? "")\nHeaders: \(String(describing: thisRequest.allHTTPHeaderFields))\nBody: \(String(describing: String(data: thisRequest.httpBody ?? Data(), encoding: .utf8)))\nTimeout: \(thisRequest.timeoutInterval)"
+        Log.v(debugDesc)
         
         //  Return URLRequest
         return thisRequest as URLRequest

@@ -65,7 +65,7 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.token] = token
         parameter[OAuth2.clientId] = self.clientId
         
-        let request = Request(url: self.serverConfig.tokenRevokeURL, method: .POST, headers: [:], bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        let request = Request(url: self.serverConfig.tokenRevokeURL, method: .POST, headers: [:], bodyParams: parameter, urlParams: [:], requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
         
         FRRestClient.invoke(request: request, action: Action(type: .REVOKE_TOKEN)) { (result) in
             switch result {
@@ -308,7 +308,7 @@ public class OAuth2Client: NSObject, Codable {
         
         let header: [String: String] = [OpenAM.acceptAPIVersion: OpenAM.apiResource21 + "," + OpenAM.apiProtocol10]
         
-        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: parameter, urlParams: [:], requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
     
     
@@ -368,7 +368,7 @@ public class OAuth2Client: NSObject, Codable {
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
         //  Call /token service to exchange auth code to OAuth token set
-        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
 }
 
