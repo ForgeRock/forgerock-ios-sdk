@@ -11,43 +11,50 @@
 #import <XCTest/XCTest.h>
 #import "FRBaseTestsObjc.h"
 
-@interface ObjcFRURLProtocolTests : FRBaseTestsObjc
+@interface ObjcFRURLProtocolTests : FRBaseTestsObjc <FRTokenManagementPolicyDelegate>
+
+@property (assign) BOOL shouldUpdateRequest;
+@property (assign) BOOL evaluateTokenRefresh;
+@property (assign) int evaluateTokenRefreshCount;
 
 @end
+
 
 @implementation ObjcFRURLProtocolTests
 
 - (void)setUp {
     self.configFileName = @"Config";
     [super setUp];
-    
     [NSURLProtocol registerClass:[FRURLProtocol class]];
+    
+    self.shouldUpdateRequest = NO;
+    self.evaluateTokenRefresh = NO;
+    self.evaluateTokenRefreshCount = 0;
 }
 
+- (void)test_01_validate_auth_header_for_not_configured_frurlprotocol {
 
-- (void)test_01_Validate_AuthHeader_For_URLSessionRequest_With_FRURLPRotocol_WithoutUserSession {
-
-    // If user session is not valid, clean it up before test
-    [FRTestUtils cleanUpAfterTearDown];
-    
-    // SDK Init
-    [self startSDK];
-    
+    //  Given URLSession with FRURLProtocol
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     [config setProtocolClasses:@[[FRURLProtocol class]]];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
+
+    //  Invalidate all configuration for FRURLProtocol
+    FRURLProtocol.authorizationPolicy = nil;
+    FRURLProtocol.tokenManagementPolicy = nil;
+    
+    //  Perform login
+    [self performUsernamePasswordLogin];
     
     // When
     XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
     [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
+
         // Only validate specific case as request is being made to external API
         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        
-        if ([[json allKeys] containsObject:@"headers"]) {
-            NSDictionary *headers = [json objectForKey:@"headers"];
-            XCTAssertFalse([[headers allKeys] containsObject:@"Authorization"]);
-        }
+
+        NSDictionary *headers = [json objectForKey:@"headers"];
+        XCTAssertFalse([[headers allKeys] containsObject:@"Authorization"]);
         [ex fulfill];
     }] resume];
     XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
@@ -57,29 +64,35 @@
 }
 
 
-- (void)test_02_Validate_AuthHeader_For_URLSessionRequest_Without_FRURLProtocol {
+- (void)test_02_validate_auth_header_for_non_validating_url {
     
-    // Initial session check
+    //  Init SDK
     [self startSDK];
-    if ([FRUser currentUser] == nil) {
-        [FRTestUtils cleanUpAfterTearDown];
-        [self performUserLogin];
+    
+    if ([FRUser currentUser] == nil || [[FRUser currentUser] token] == nil) {
+        XCTFail("Failed to retreive previous authenticated session");
     }
     
-    // Given plain URLSession
-    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    //  Given URLSession with FRURLProtocol
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    [config setProtocolClasses:@[[FRURLProtocol class]]];
+    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
+
+
+    //  Set TokenManagementPolicy, but with different URL for validation
+    FRTokenManagementPolicy *tokenManagementPolicy = [[FRTokenManagementPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"https://httpbin.org/any"]] delegate:nil];
+    FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy;
+    FRURLProtocol.authorizationPolicy = nil;
     
-    // When
+        // When
     XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
     [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
+
         // Only validate specific case as request is being made to external API
         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        
-        if ([[json allKeys] containsObject:@"headers"]) {
-            NSDictionary *headers = [json objectForKey:@"headers"];
-            XCTAssertFalse([[headers allKeys] containsObject:@"Authorization"]);
-        }
+
+        NSDictionary *headers = [json objectForKey:@"headers"];
+        XCTAssertFalse([[headers allKeys] containsObject:@"Authorization"]);
         [ex fulfill];
     }] resume];
     XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
@@ -89,36 +102,36 @@
 }
 
 
-- (void)test_03_Validate_AuthHeader_For_URLSessionRequest_With_FRURLPRotocol {
+- (void)test_03_validate_auth_header_with_validating_url {
     
-    // Initial session check
+    //  Init SDK
     [self startSDK];
-    if ([FRUser currentUser] == nil) {
-        [FRTestUtils cleanUpAfterTearDown];
-        [self performUserLogin];
+    
+    if ([FRUser currentUser] == nil || [[FRUser currentUser] token] == nil) {
+        XCTFail("Failed to retreive previous authenticated session");
     }
     
-    // SDK Init
-    [self startSDK];
-    
+    //  Given URLSession with FRURLProtocol
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     [config setProtocolClasses:@[[FRURLProtocol class]]];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
+
+
+    //  Set TokenManagementPolicy, but with different URL for validation
+    FRTokenManagementPolicy *tokenManagementPolicy = [[FRTokenManagementPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"https://httpbin.org/anything"]] delegate:nil];
+    FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy;
+    FRURLProtocol.authorizationPolicy = nil;
     
-    // Register whitelist URLs
-    [FRURLProtocol setValidatedURLs:@[[NSURL URLWithString:@"https://httpbin.org/anything"]]];
-    
-    // When
+        // When
     XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
     [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
+
         // Only validate specific case as request is being made to external API
         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        
-        if ([[json allKeys] containsObject:@"headers"]) {
-            NSDictionary *headers = [json objectForKey:@"headers"];
-            XCTAssertTrue([[headers allKeys] containsObject:@"Authorization"]);
-        }
+
+        NSDictionary *headers = [json objectForKey:@"headers"];
+        XCTAssertTrue([[headers allKeys] containsObject:@"Authorization"]);
+        XCTAssertTrue([[[[FRUser currentUser] token] buildAuthorizationHeader] isEqualToString:[headers objectForKey:@"Authorization"]]);
         [ex fulfill];
     }] resume];
     XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
@@ -128,208 +141,149 @@
 }
 
 
-- (void)test_04_Validate_AuthHeader_For_URLSessionRequest_With_FRURLPRotocol_NotInWhitelist {
+- (void)test_04_validate_auth_header_with_validating_url_in_custom_header {
     
-    // Initial session check
+    //  Init SDK
     [self startSDK];
-    if ([FRUser currentUser] == nil) {
-        [FRTestUtils cleanUpAfterTearDown];
-        [self performUserLogin];
+    
+    if ([FRUser currentUser] == nil || [[FRUser currentUser] token] == nil) {
+        XCTFail("Failed to retreive previous authenticated session");
     }
     
-    // SDK Init
-    [self startSDK];
-    
+    //  Given URLSession with FRURLProtocol
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     [config setProtocolClasses:@[[FRURLProtocol class]]];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
+
+
+    //  Set TokenManagementPolicy, but with different URL for validation
+    FRTokenManagementPolicy *tokenManagementPolicy = [[FRTokenManagementPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"https://httpbin.org/anything"]] delegate:self];
+    FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy;
+    FRURLProtocol.authorizationPolicy = nil;
     
-    // Register whitelist URLs
-    [FRURLProtocol setValidatedURLs:@[[NSURL URLWithString:@"https://httpbin.org/notcorrect"]]];
-    
-    // When
+        // When
     XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
     [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
+
         // Only validate specific case as request is being made to external API
         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        
-        if ([[json allKeys] containsObject:@"headers"]) {
-            NSDictionary *headers = [json objectForKey:@"headers"];
-            XCTAssertFalse([[headers allKeys] containsObject:@"Authorization"]);
-        }
+
+        NSDictionary *headers = [json objectForKey:@"headers"];
+        XCTAssertTrue([[headers allKeys] containsObject:@"Auth"]);
+        XCTAssertTrue([[[[FRUser currentUser] token] buildAuthorizationHeader] isEqualToString:[headers objectForKey:@"Auth"]]);
         [ex fulfill];
     }] resume];
     XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
     
-    self.shouldCleanup = YES;
+    // Ignore cleanup to reuse session for further tests
+    self.shouldCleanup = NO;
 }
 
 
-- (void)test_05_Validate_AuthHeader_For_URLSessionRequest_With_FRURLPRotocol_TokenRefresh_With_UnsatisfiedRefreshPolicy {
+- (void)test_05_validate_token_refresh_evaluation_and_token_renewal {
     
-    // Initial session check
+    //  Init SDK
     [self startSDK];
-    if ([FRUser currentUser] == nil) {
-        [FRTestUtils cleanUpAfterTearDown];
-        [self performUserLogin];
-    }
     
-    // Set mock response
+    //  Mock update token response
     [self loadMockResponses:@[@"OAuth2_Token_Refresh_Success"]];
     
-    // SDK Init
-    [self startSDK];
-    
+    if ([FRUser currentUser] == nil || [[FRUser currentUser] token] == nil) {
+        XCTFail("Failed to retreive previous authenticated session");
+    }
+    AccessToken *token = [[FRUser currentUser] token];
+    //  Given URLSession with FRURLProtocol
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     [config setProtocolClasses:@[[FRURLProtocol class]]];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
+
+
+    //  Set TokenManagementPolicy, but with different URL for validation
+    self.evaluateTokenRefresh = YES;
+    FRTokenManagementPolicy *tokenManagementPolicy = [[FRTokenManagementPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"https://httpbin.org/anything"]] delegate:self];
+    FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy;
+    FRURLProtocol.authorizationPolicy = nil;
     
-    // Register whitelist URLs
-    [FRURLProtocol setValidatedURLs:@[[NSURL URLWithString:@"https://httpbin.org/anything"]]];
+        // When
+    XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
+    [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+        // Only validate specific case as request is being made to external API
+        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+
+        NSDictionary *headers = [json objectForKey:@"headers"];
+        XCTAssertTrue([[headers allKeys] containsObject:@"Auth"]);
+        XCTAssertTrue([[[[FRUser currentUser] token] buildAuthorizationHeader] isEqualToString:[headers objectForKey:@"Auth"]]);
+        XCTAssertFalse([[token buildAuthorizationHeader] isEqualToString:[headers objectForKey:@"Auth"]]);
+        [ex fulfill];
+    }] resume];
+    XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
     
-    // Only satisfy refresh policy upon HTTP 401
-    [FRURLProtocol setRefreshTokenPolicy:^BOOL(NSData *responseData, NSURLResponse *response, NSError *error) {
+    // Ignore cleanup to reuse session for further tests
+    self.shouldCleanup = NO;
+}
+
+
+- (void)test_06_validate_token_refresh_evaluation_keep_failing_and_test_max_retry_count {
+    
+    //  Init SDK
+    [self startSDK];
+
+    //  Mock update token response
+    [self loadMockResponses:@[@"OAuth2_Token_Refresh_Success"]];
+
+    if ([FRUser currentUser] == nil || [[FRUser currentUser] token] == nil) {
+        XCTFail("Failed to retreive previous authenticated session");
+    }
+    //  Given URLSession with FRURLProtocol
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    [config setProtocolClasses:@[[FRURLProtocol class]]];
+    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
+
+
+    //  Set TokenManagementPolicy, but with different URL for validation
+    FRTokenManagementPolicy *tokenManagementPolicy = [[FRTokenManagementPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"https://httpbin.org/status/401"]] delegate:self];
+    FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy;
+    FRURLProtocol.authorizationPolicy = nil;
+    
+        // When
+    XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
+    [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/status/401"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        // Refresh token when 401 received
+        XCTAssertEqual(httpResponse.statusCode, 401);
+        [ex fulfill];
+    }] resume];
+    XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
+
+    //  While API keeps returning 401; TokenManagementPolicyDelegate.evaluateTokenRefresh must only be invoked twice due to maximum retry count
+    XCTAssertEqual(self.evaluateTokenRefreshCount, 2);
+}
+
+
+# pragma mark - FRTokenManagementPolicyDelegate
+
+- (BOOL)evaluateTokenRefreshWithResponseData:(NSData *)responseData response:(NSURLResponse *)response error:(NSError *)error {
+    self.evaluateTokenRefreshCount++;
+    
+    if (self.evaluateTokenRefresh) {
+        self.evaluateTokenRefresh = NO;
+        return YES;
+    }
+    else {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if (httpResponse.statusCode == 401) {
             return YES;
         }
         else {
             return NO;
         }
-    }];
-    
-    // Make sure to capture previous AccessToken
-    NSString *originalAuthHeader = [[[FRUser currentUser] token] buildAuthorizationHeader];
-    
-    // When
-    XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
-    [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        // Only validate specific case as request is being made to external API
-        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        
-        if ([[json allKeys] containsObject:@"headers"]) {
-            NSDictionary *headers = [json objectForKey:@"headers"];
-            XCTAssertTrue([[headers allKeys] containsObject:@"Authorization"]);
-            XCTAssertTrue([originalAuthHeader isEqualToString:[headers objectForKey:@"Authorization"]]);
-        }
-        [ex fulfill];
-    }] resume];
-    XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
-    
-    // Ignore cleanup to reuse session for further tests
-    self.shouldCleanup = NO;
+    }
 }
 
-
-- (void)test_06_Validate_AuthHeader_For_URLSessionRequest_With_FRURLPRotocol_TokenRefresh_With_SatisfiedRefreshPolicy {
-    
-    // Initial session check
-    [self startSDK];
-    if ([FRUser currentUser] == nil) {
-        [FRTestUtils cleanUpAfterTearDown];
-        [self performUserLogin];
-    }
-    
-    // Set mock response
-    [self loadMockResponses:@[@"OAuth2_Token_Refresh_Success"]];
-    
-    // SDK Init
-    [self startSDK];
-    
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    [config setProtocolClasses:@[[FRURLProtocol class]]];
-    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:config];
-    
-    // Register whitelist URLs
-    [FRURLProtocol setValidatedURLs:@[[NSURL URLWithString:@"https://httpbin.org/anything"]]];
-    
-    // Should always satisfy refresh policy
-    [FRURLProtocol setRefreshTokenPolicy:^BOOL(NSData *responseData, NSURLResponse *response, NSError *error) {
-        return YES;
-    }];
-    
-    // Make sure to capture previous AccessToken
-    NSString *originalAuthHeader = [[[FRUser currentUser] token] buildAuthorizationHeader];
-    
-    // When
-    XCTestExpectation *ex = [self expectationWithDescription:@"Making request"];
-    [[urlSession dataTaskWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        // Only validate specific case as request is being made to external API
-        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        
-        if ([[json allKeys] containsObject:@"headers"]) {
-            NSDictionary *headers = [json objectForKey:@"headers"];
-            XCTAssertTrue([[headers allKeys] containsObject:@"Authorization"]);
-            
-            NSLog(@"user token: %@", [[[FRUser currentUser] token] buildAuthorizationHeader]);
-            NSLog(@"response token: %@", [headers objectForKey:@"Authorization"]);
-            XCTAssertFalse([originalAuthHeader isEqualToString:[headers objectForKey:@"Authorization"]]);
-        }
-        [ex fulfill];
-    }] resume];
-    XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
-    
-    // Should cleanup for further tests
-    self.shouldCleanup = YES;
-}
-
-
-# pragma mark - Helper for Login
-
-- (void)performUserLogin {
-    
-    // Start SDK
-    self.config.authServiceName = @"UsernamePassword";
-    [self startSDK];
-    
-    // Set mock response
-    [self loadMockResponses:@[@"AuthTree_UsernamePasswordNode",
-                              @"AuthTree_SSOToken_Success",
-                              @"OAuth2_AuthorizeRedirect_Success",
-                              @"OAuth2_Token_Success"]];
-    
-    __block FRNode *currentNode = nil;
-    XCTestExpectation *ex = [self expectationWithDescription:@"First Node submit"];
-    [FRUser loginWithCompletion:^(FRUser *user, FRNode *node, NSError *error) {
-        XCTAssertNil(error);
-        XCTAssertNil(user);
-        XCTAssertNotNil(node);
-        currentNode = node;
-        [ex fulfill];
-    }];
-    XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
-    XCTAssertNotNil(currentNode);
-    
-    for (FRCallback *callback in [currentNode callbacks]) {
-        if ([callback isKindOfClass:[FRNameCallback class]]) {
-            FRNameCallback *thisCallback = (FRNameCallback *)callback;
-            thisCallback.value = self.config.username;
-        }
-        else if ([callback isKindOfClass:[FRPasswordCallback class]]) {
-            FRPasswordCallback *thisCallback = (FRPasswordCallback *)callback;
-            thisCallback.value = self.config.password;
-        }
-        else {
-            XCTFail("Received unexpected callback %@", callback);
-        }
-    }
-    
-    ex = [self expectationWithDescription:@"Second Node submit"];
-    [currentNode nextWithUserCompletion:^(FRUser *user, FRNode *node, NSError *error) {
-        XCTAssertNil(error);
-        XCTAssertNil(node);
-        XCTAssertNotNil(user);
-        currentNode = node;
-        [ex fulfill];
-    }];
-    XCTAssertTrue([self waitForExpectiontion], @"Expectation failure - %@", [ex description]);
-    XCTAssertNil(currentNode);
-    
-    XCTAssertNotNil([FRUser currentUser]);
+- (NSURLRequest *)updateRequestWithOriginalRequest:(NSURLRequest *)originalRequest token:(AccessToken *)token {
+    NSMutableURLRequest *mutableRequest = [originalRequest mutableCopy];
+    [mutableRequest setValue:[token buildAuthorizationHeader] forHTTPHeaderField:@"Auth"];
+    return (NSURLRequest *)mutableRequest;
 }
 
 @end

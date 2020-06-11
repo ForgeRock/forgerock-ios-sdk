@@ -49,7 +49,7 @@ public extension TokenError {
 extension TokenError: CustomNSError {
     
     /// An error domain for ConfigError
-    public static var errorDomain: String { return "com.forgerock.ios.frauth.token-refresh" }
+    public static var errorDomain: String { return "com.forgerock.ios.frauth.token" }
     
     /// Error codes for each error enum
     public var errorCode: Int {

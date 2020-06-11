@@ -23,5 +23,6 @@
 - (void)loadMockResponses:(NSArray<NSString *> *)responseFileNames;
 - (NSDictionary *)readDataFromJSON:(NSString *)fileName;
 - (BOOL)waitForExpectiontion;
+- (void)performUsernamePasswordLogin;
 
 @end
