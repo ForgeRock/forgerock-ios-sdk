@@ -54,10 +54,6 @@ public class TextOutputCallback: Callback {
         
         try super.init(json: json)
         
-        if message.count == 0 || messageType == .unknown {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
-        
         self.type = callbackType
         self.response = json
     }

@@ -16,7 +16,7 @@ class TextOutputCallbackTests: FRBaseTest {
         
         // Given
         let message = "This is message"
-        let messageType: Int = 0
+        let messageType: String = "0"
         let jsonStr = """
         {
         "type": "TextOutputCallback",
@@ -25,7 +25,7 @@ class TextOutputCallbackTests: FRBaseTest {
         "value": "\(message)"
         }, {
         "name": "messageType",
-        "value": \(messageType)
+        "value": "\(messageType)"
         }]
         }
         """
@@ -51,7 +51,7 @@ class TextOutputCallbackTests: FRBaseTest {
         
         // Given
         let message = "This is message"
-        let messageType: Int = 0
+        let messageType: String = "0"
         let inputName = "IDToken1"
         let jsonStr = """
         {
@@ -61,7 +61,7 @@ class TextOutputCallbackTests: FRBaseTest {
                 "value": "\(message)"
             }, {
                 "name": "messageType",
-                "value": \(messageType)
+                "value": "\(messageType)"
             }],
             "input": [{
                 "name": "\(inputName)",
@@ -77,7 +77,7 @@ class TextOutputCallbackTests: FRBaseTest {
             
             // Then
             XCTAssertEqual(callback.message, message)
-            XCTAssertEqual(callback.messageType.rawValue, messageType)
+            XCTAssertEqual(callback.messageType.rawValue, Int(messageType))
             let requestPayload = callback.buildResponse()
             XCTAssertTrue(requestPayload == callbackResponse)
         }
@@ -110,24 +110,31 @@ class TextOutputCallbackTests: FRBaseTest {
     func test_04_CallbackConstruction_Missing_Message() {
         
         // Given
-        let messageType: Int = 0
+        let messageType: String = "0"
         let jsonStr = """
         {
         "type": "TextOutputCallback",
         "output": [{
         "name": "messageType",
-        "value": \(messageType)
+        "value": "\(messageType)"
         }]
         }
         """
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
-        // Then
+        
+        // When
         do {
-            let _ = try TextOutputCallback(json: callbackResponse)
-            XCTFail("Failed to validate missing message attribute; succeed while expecting failure: \(callbackResponse)")
+            let callback = try TextOutputCallback(json: callbackResponse)
+            
+            // Then
+            XCTAssertEqual(callback.message.count, 0)
+            XCTAssertEqual(callback.messageType.rawValue, Int(messageType))
+            let requestPayload = callback.buildResponse()
+            XCTAssertTrue(requestPayload == callbackResponse)
         }
         catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
         }
     }
     
@@ -136,7 +143,7 @@ class TextOutputCallbackTests: FRBaseTest {
         
         // Given
         let message = "This is message"
-        let messageType: Int = 5
+        let messageType: String = "5"
         let jsonStr = """
         {
         "type": "TextOutputCallback",
@@ -145,18 +152,25 @@ class TextOutputCallbackTests: FRBaseTest {
         "value": "\(message)"
         }, {
         "name": "messageType",
-        "value": \(messageType)
+        "value": "\(messageType)"
         }]
         }
         """
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
-        // Then
+        
+        // When
         do {
-            let _ = try TextOutputCallback(json: callbackResponse)
-            XCTFail("Failed to validate missing message attribute; succeed while expecting failure: \(callbackResponse)")
+            let callback = try TextOutputCallback(json: callbackResponse)
+            
+            // Then
+            XCTAssertEqual(callback.message, message)
+            XCTAssertEqual(callback.messageType, .unknown)
+            let requestPayload = callback.buildResponse()
+            XCTAssertTrue(requestPayload == callbackResponse)
         }
         catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
         }
     }
     
@@ -165,7 +179,7 @@ class TextOutputCallbackTests: FRBaseTest {
         
         // Given
         let message = "This is message"
-        let messageType: Int = 1
+        let messageType: String = "1"
         let jsonStr = """
         {
         "type": "TextOutputCallback",
@@ -174,7 +188,7 @@ class TextOutputCallbackTests: FRBaseTest {
         "value": "\(message)"
         }, {
         "name": "messageType",
-        "value": \(messageType)
+        "value": "\(messageType)"
         }]
         }
         """
@@ -200,7 +214,7 @@ class TextOutputCallbackTests: FRBaseTest {
         
         // Given
         let message = "This is message"
-        let messageType: Int = 2
+        let messageType: String = "2"
         let jsonStr = """
         {
         "type": "TextOutputCallback",
@@ -209,7 +223,7 @@ class TextOutputCallbackTests: FRBaseTest {
         "value": "\(message)"
         }, {
         "name": "messageType",
-        "value": \(messageType)
+        "value": "\(messageType)"
         }]
         }
         """
