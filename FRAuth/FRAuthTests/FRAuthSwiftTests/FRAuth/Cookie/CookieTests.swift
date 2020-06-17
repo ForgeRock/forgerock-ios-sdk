@@ -16,6 +16,7 @@ class CookieTests: FRBaseTest {
     override func setUp() {
         self.configFileName = "Config"
         super.setUp()
+        self.shouldLoadMockResponses = true
     }
     
     

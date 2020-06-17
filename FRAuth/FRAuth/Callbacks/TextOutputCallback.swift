@@ -47,7 +47,7 @@ public class TextOutputCallback: Callback {
             if let outputName = output["name"] as? String, outputName == "message", let outputValue = output["value"] as? String {
                 message = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "messageType", let messageTypeInt = output["value"] as? Int, let messageType = MessageType(rawValue: messageTypeInt) {
+            else if let outputName = output["name"] as? String, outputName == "messageType", let messageTypeStr = output["value"] as? String, let messageTypeInt = Int(messageTypeStr), let messageType = MessageType(rawValue: messageTypeInt) {
                 self.messageType = messageType
             }
         }

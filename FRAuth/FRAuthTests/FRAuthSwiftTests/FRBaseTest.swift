@@ -47,6 +47,7 @@ class FRBaseTest: XCTestCase {
     override func tearDown() {
         if shouldCleanup {
             FRTestUtils.cleanUpAfterTearDown()
+            FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: nil)
         }
     }
     

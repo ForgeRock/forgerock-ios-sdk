@@ -329,6 +329,14 @@ extension AuthStepViewController: UITableViewDataSource {
             let callbackTableViewCellNib = CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks[callback.type] {
             let cell = Bundle(for: callbackTableViewCell.self).loadNibNamed(callbackTableViewCellNib, owner: self, options: nil)?.first as! FRUICallbackTableViewCell
             cell.updateCellData(callback: callback)
+            
+            if let confirmationCallbackCell = cell as? ConfirmationCallbackTableViewCell {
+                confirmationCallbackCell.delegate = self
+            }
+            else if let pollingWaitCallbackCell = cell as? PollingWaitCallbackTableViewCell {
+                pollingWaitCallbackCell.delegate = self
+            }
+            
             return cell
         }
         else {

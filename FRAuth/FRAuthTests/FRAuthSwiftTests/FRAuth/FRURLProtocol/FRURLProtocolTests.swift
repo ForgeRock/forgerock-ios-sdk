@@ -258,7 +258,7 @@ class FRURLProtocolTests: FRBaseTest {
             ex.fulfill()
             }.resume()
         waitForExpectations(timeout: 60, handler: nil)
-        if let user = FRUser.currentUser {
+        if let _ = FRUser.currentUser {
             print("user found")
         }
         else {
@@ -272,7 +272,7 @@ class FRURLProtocolTests: FRBaseTest {
     func test_06_validate_token_refresh_evaluation_keep_failing_and_test_max_retry_count() {
         //  Init SDK
         self.startSDK()
-        if let user = FRUser.currentUser {
+        if let _ = FRUser.currentUser {
             print("user found")
         }
         else {

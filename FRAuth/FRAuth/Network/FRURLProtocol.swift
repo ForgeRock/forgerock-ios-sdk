@@ -288,7 +288,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
                         FRLog.i("[FRURLProtocol] [\(String(describing:self.request))] OAuth2 Token refresh succeeded; retrying original request with new auth header")
                     }
                     catch {
-                        FRLog.e("[FRURLProtocol] [\(String(describing:self.request))] OAuth2 Token refresh failed; returning original response")
+                        FRLog.e("[FRURLProtocol] [\(String(describing:self.request))] OAuth2 Token refresh failed; returning original response: \(error.localizedDescription)")
                     }
                 }
                 else {

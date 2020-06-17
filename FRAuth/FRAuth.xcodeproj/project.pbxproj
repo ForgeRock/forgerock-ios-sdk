@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D5015FEF24996AE50025FEB6 /* MetadataCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */; };
 		D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */; };
 		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
@@ -310,6 +311,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
 		D512CD40240DC41E00AF520E /* FRRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRestClient.swift; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 				D5924822232871AE0027031A /* PollingWaitCallbackTests.swift */,
 				D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */,
 				D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */,
+				D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -1653,6 +1656,7 @@
 				D542380123358F8F009C868F /* FRUser.swift in Sources */,
 				D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */,
 				D52D1661231484D60095905A /* UserSignUpFlowTests.swift in Sources */,
+				D5015FEF24996AE50025FEB6 /* MetadataCallbackTests.swift in Sources */,
 				D52D169A231493940095905A /* ObjcUserSignUpFlowTests.m in Sources */,
 				D5167288231EFE28007053EE /* CustomCallback.swift in Sources */,
 				D52D1674231484D60095905A /* FRDeviceCollectorTests.swift in Sources */,
