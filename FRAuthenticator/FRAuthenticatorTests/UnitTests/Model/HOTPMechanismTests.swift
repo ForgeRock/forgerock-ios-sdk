@@ -34,7 +34,7 @@ class HOTPMechanismTests: FRABaseTests {
              XCTAssertEqual(mechanism.type, "hotp")
              XCTAssertEqual(mechanism.accountName, "demo")
              XCTAssertEqual(mechanism.secret, "IJQWIZ3FOIQUEYLE")
-             XCTAssertEqual(mechanism.algorithm, "SHA256")
+             XCTAssertEqual(mechanism.algorithm.rawValue, "sha256")
          }
          catch {
              XCTFail("Failed with unexpected error: \(error.localizedDescription)")

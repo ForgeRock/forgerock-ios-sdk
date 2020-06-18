@@ -153,7 +153,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         let account = Account(issuer: "ForgeRock", accountName: "demo")
         storage.setAccount(account: account)
         
-        let hotp = URL(string: "otpauth://hotp/ForgeRock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=ForgeRock&counter=0&algorithm=SHA%20256")!
+        let hotp = URL(string: "otpauth://hotp/ForgeRock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=ForgeRock&counter=0&algorithm=SHA256")!
         let totp = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
         
         do {

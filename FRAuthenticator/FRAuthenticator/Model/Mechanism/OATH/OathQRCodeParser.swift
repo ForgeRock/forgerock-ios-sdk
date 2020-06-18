@@ -29,7 +29,9 @@ struct OathQRCodeParser {
     /// shared secret of OATH
     var secret: String
     /// defined algorithm of OATH
-    var algorithm: String?
+    var algorithm: String
+    /// OATH algorithm enum
+    var oathAlgorithm: OathAlgorithm
     /// number of digits for OTP
     var digits: Int?
     /// valid timeframe for OTP credentials
@@ -77,16 +79,18 @@ struct OathQRCodeParser {
         }
         
         var secretValue: String?
+        var algorithmValue: String?
+        var digitsValue: Int?
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let queryItems = components.queryItems {
             for item in queryItems {
                 if item.name == "algorithm" {
-                    self.algorithm = item.value
+                    algorithmValue = item.value
                 }
                 if item.name == "secret", let strVal = item.value {
                     secretValue = strVal
                 }
-                if item.name == "digits", let strVal = item.value, let intVal = Int(strVal), (intVal == 6 || intVal == 8) {
-                    self.digits = intVal
+                if item.name == "digits", let strVal = item.value, let intVal = Int(strVal) {
+                    digitsValue = intVal
                 }
                 if item.name == "period" {
                     if let strVal = item.value, let intVal = Int(strVal) {
@@ -106,6 +110,32 @@ struct OathQRCodeParser {
                     self.issuer = strVal
                 }
             }
+        }
+        
+        if let digits = digitsValue {
+            if digits == 6 || digits == 8 {
+                self.digits = digits
+            }
+            else {
+                throw MechanismError.invalidInformation("digits (\(digits))")
+            }
+        }
+        else {
+            self.digits = 6
+        }
+        
+        if let algorithmStr = algorithmValue {
+            if let oathAlgorithm = OathAlgorithm(algorithm: algorithmStr) {
+                self.algorithm = algorithmStr.lowercased()
+                self.oathAlgorithm = oathAlgorithm
+            }
+            else {
+                throw MechanismError.invalidInformation("algorithm (\(algorithmStr))")
+            }
+        }
+        else {
+            self.algorithm = "sha1"
+            self.oathAlgorithm = OathAlgorithm(algorithm: "sha1")!
         }
         
         guard let secret = secretValue else {

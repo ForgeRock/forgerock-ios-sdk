@@ -30,8 +30,7 @@ public class HOTPMechanism: OathMechanism {
     ///   - algorithm: algorithm in string for OATH Mechanism
     ///   - counter: counter of HOTP
     ///   - digits: number of digits for TOTP code
-    init(issuer: String, accountName: String, secret: String, algorithm: String? = nil, counter: Int? = 0, digits: Int? = 6) {
-        
+    init(issuer: String, accountName: String, secret: String, algorithm: String?, counter: Int? = 0, digits: Int? = 6) {
         self.counter = counter ?? 0
         super.init(type: FRAConstants.hotp, issuer: issuer, accountName: accountName, secret: secret, algorithm: algorithm, digits: digits)
     }
@@ -88,7 +87,7 @@ public class HOTPMechanism: OathMechanism {
     public func generateCode() throws -> OathTokenCode {
         
         let startTimeInSeconds = Date().timeIntervalSince1970
-        let currentCode = try OathCodeGenerator.generateOTP(secret: self.secret.base64Pad(), algorithm: OathAlgorithm(algorithm: self.algorithm), counter: UInt64(self.counter), digits: self.digits)
+        let currentCode = try OathCodeGenerator.generateOTP(secret: self.secret.base64Pad(), algorithm: self.algorithm, counter: UInt64(self.counter), digits: self.digits)
         self.counter += 1
         
         if FRAClient.storage.setMechanism(mechanism: self) {
