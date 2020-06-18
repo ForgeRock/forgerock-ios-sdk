@@ -46,7 +46,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - FRUser.login
     
-    func testFRUserLogin() {
+    func test_FRUserLogin() {
         
         // Start SDK
         self.config.authServiceName = "UsernamePassword"
@@ -102,7 +102,7 @@ class FRUserTests: FRBaseTest {
         XCTAssertNotNil(FRUser.currentUser)
     }
     
-    func testFRUserLoginAfterAlreadyLoggedIn() {
+    func test_FRUserLoginAfterAlreadyLoggedIn() {
         
         // Start SDK
         self.startSDK()
@@ -120,6 +120,19 @@ class FRUserTests: FRBaseTest {
             XCTAssertNil(user)
             XCTAssertNil(node)
             XCTAssertNotNil(error)
+            
+            if let authError = error as? AuthError {
+                switch authError {
+                case .userAlreadyAuthenticated:
+                    break
+                default:
+                    XCTFail("While expecting AuthError.userAlreadyAuthenticated; failed with different error \(authError.localizedDescription)")
+                    break
+                }
+            }
+            else {
+                XCTFail("While expecting AuthError.userAlreadyAuthenticated; failed with different error \(String(describing: error?.localizedDescription))")
+            }
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
@@ -129,7 +142,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - Token Refresh
     
-    func testFRUserRefreshSessionSyncSuccess() {
+    func test_01_01_FRUserRefreshSessionSyncSuccess() {
         // Start SDK
         self.startSDK()
         
@@ -167,7 +180,7 @@ class FRUserTests: FRBaseTest {
         XCTAssertNotEqual(at1, user.token)
     }
     
-    func testFRUserRefreshSessionAsyncSuccess() {
+    func test_01_02_FRUserRefreshSessionAsyncSuccess() {
         
         // Start SDK
         self.startSDK()
@@ -208,7 +221,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testFRUserRefreshSessionAsyncFailureNoRefreshToken() {
+    func test_01_03_FRUserRefreshSessionAsyncFailureNoRefreshToken() {
         
         // Start SDK
         self.startSDK()
@@ -263,7 +276,7 @@ class FRUserTests: FRBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testFRUserRefreshSessionSyncFailureNoRefreshToken() {
+    func test_01_04_FRUserRefreshSessionSyncFailureNoRefreshToken() {
         
         // Start SDK
         self.startSDK()
@@ -316,7 +329,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testFRUserRefreshTokenSyncNoToken() {
+    func test_01_05_FRUserRefreshTokenSyncNoToken() {
     
         // Start SDK
         self.startSDK()
@@ -360,7 +373,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testFRUserRefreshTokenAsyncNoToken() {
+    func test_01_05_FRUserRefreshTokenAsyncNoToken() {
         
         // Start SDK
         self.startSDK()
@@ -408,7 +421,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - Get UserInfo
     
-    func testGetUserInfoFailure() {
+    func test_02_01_GetUserInfoFailure() {
         
         // Load mock responses for failure response of /userinfo
         self.loadMockResponses(["OAuth2_UserInfo_Failure"])
@@ -441,7 +454,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testGetUserInfoSuccess() {
+    func test_02_02_GetUserInfoSuccess() {
         // Perform login first
         self.performUserLogin()
         
@@ -468,7 +481,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testUserInfoObjAndDescription() {
+    func test_02_03_UserInfoObjAndDescription() {
         
         guard self.shouldLoadMockResponses else {
             // No point of testing pre-loaded userInfo for real server
@@ -586,7 +599,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - User Logout
     
-    func testUserLogoutFailOnAMAPI() {
+    func test_03_01_UserLogoutFailOnAMAPI() {
         // Perform login first
         self.performUserLogin()
         
@@ -620,7 +633,7 @@ class FRUserTests: FRBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testUserLogOutSuccess() {
+    func test_03_02_UserLogOutSuccess() {
         
         // Perform login first
         self.performUserLogin()
@@ -655,7 +668,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testUserLogOutWithAccessToken() {
+    func test_03_03_UserLogOutWithAccessToken() {
         // Perform login first
         self.performUserLogin()
         
@@ -695,7 +708,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testUserLogOutWithoutSDKInit() {
+    func test_03_04_UserLogOutWithoutSDKInit() {
         
         // This doesn't do anything yet; just to validate it doesn't crash
         // Given
@@ -725,12 +738,12 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - currentUser / SDK State
     
-    func test_00_CurrentUserShouldBeNilBeforeSDKInit() {
+    func test_04_00_CurrentUserShouldBeNilBeforeSDKInit() {
         XCTAssertNil(FRUser.currentUser)
     }
     
     
-    func test_01_LoginToPersistCurrentUser() {
+    func test_04_01_LoginToPersistCurrentUser() {
         
         // Perform login first
         self.performUserLogin()
@@ -745,7 +758,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func test_02_CurrentUserNotNilAfterSDKInit() {
+    func test_04_02_CurrentUserNotNilAfterSDKInit() {
         
         // Given previous test of authenticating, and persisting FRUser
         self.startSDK()
@@ -758,7 +771,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func test_03_validate_login_with_existing_session() {
+    func test_04_03_validate_login_with_existing_session() {
         // Given previous test of authenticating, and persisting FRUser
         self.startSDK()
         
@@ -792,7 +805,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func test_04_user_login_with_no_session() {
+    func test_04_04_user_login_with_no_session() {
         
         // Start SDK
         self.config.authServiceName = "UsernamePassword"

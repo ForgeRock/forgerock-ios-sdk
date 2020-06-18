@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let window = self.window, let rootViewController = window.rootViewController,
             let viewController: NotificationRequestViewController = sb.instantiateViewController(withIdentifier: "NotificationRequestViewControllerId") as? NotificationRequestViewController {
             
-            if let _ = FRAClient.shared {
+            if FRAClient.shared == nil {
                 FRAClient.start()
             }
             

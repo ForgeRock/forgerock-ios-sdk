@@ -51,8 +51,26 @@ struct KeychainManager {
         let currentService = baseUrl + "/" + service
         self.primaryServiceStore = KeychainService(service: service)
         
+        
+        if let accessGroup = accessGroup {
+            // If Access Group was provided, construct KeychainService with Access Group
+            
+            // Validate whether given Access Group is accessible or not
+            if !KeychainService.validateAccessGroup(service: currentService, accessGroup: accessGroup) {
+                throw ConfigError.invalidAccessGroup(accessGroup)
+            }
+            
+            var validatedAccessGroup = accessGroup
+            if let appleTeamId = KeychainService.getAppleTeamId(), !accessGroup.hasPrefix(appleTeamId) {
+                // If Apple TeamId prefix is found, and accessGroup provided doesn't contain, append it
+                validatedAccessGroup = appleTeamId + "." + accessGroup
+            }
+            self.accessGroup = validatedAccessGroup
+        }
+        
+        
         // Create SecuredKey if available
-        if let securedKey = SecuredKey(applicationTag: "com.forgerock.ios.securedKey.identifier") {
+        if let securedKey = SecuredKey(applicationTag: "com.forgerock.ios.securedKey.identifier", accessGroup: self.accessGroup) {
             self.securedKey = securedKey
         }
         
@@ -81,25 +99,16 @@ struct KeychainManager {
         self.currentService = currentService
         
         if let accessGroup = accessGroup {
-            // If Access Group was provided, construct KeychainService with Access Group
-            self.accessGroup = accessGroup
+            self.privateStore = KeychainService(service: currentService + KeychainStoreType.local.rawValue, securedKey: self.securedKey)
+            self.sharedStore = KeychainService(service: currentService + KeychainStoreType.shared.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
+            self.cookieStore = KeychainService(service: currentService + KeychainStoreType.cookie.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
             
-            // Validate whether given Access Group is accessible or not
-            if KeychainService.validateAccessGroup(service: currentService, accessGroup: accessGroup) {
-                self.privateStore = KeychainService(service: currentService + KeychainStoreType.local.rawValue, securedKey: self.securedKey)
-                self.sharedStore = KeychainService(service: currentService + KeychainStoreType.shared.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
-                self.cookieStore = KeychainService(service: currentService + KeychainStoreType.cookie.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
-                
-                // Constructs Device Identifier storage with specific Keychain Options
-                var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue, accessGroup: accessGroup)
-                option.accessibility = .alwaysThisDeviceOnly
-                self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
-                
-                self.isSharedKeychainAccessible = true
-            }
-            else {
-                throw ConfigError.invalidAccessGroup(accessGroup)
-            }
+            // Constructs Device Identifier storage with specific Keychain Options
+            var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue, accessGroup: accessGroup)
+            option.accessibility = .alwaysThisDeviceOnly
+            self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+            
+            self.isSharedKeychainAccessible = true
         }
         else {
             // If Access Group is not provided, construct KeychainService without Access Group

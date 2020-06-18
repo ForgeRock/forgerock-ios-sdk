@@ -41,9 +41,12 @@ struct OathCodeGenerator {
         let tmpCode = String(discard % modulus)
         
         if (digits - tmpCode.count) > 0 {
-            return String(repeating: "0", count: (digits - tmpCode.count)) + tmpCode
+            let code = String(repeating: "0", count: (digits - tmpCode.count)) + tmpCode
+            FRALog.v("OathCode generated: \(code)")
+            return code
         }
         else {
+            FRALog.v("OathCode generated: \(tmpCode)")
             return tmpCode
         }
     }

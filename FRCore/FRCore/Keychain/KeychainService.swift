@@ -710,7 +710,7 @@ public struct KeychainService {
     /// Retrieves Apple's TeamID in the current application's Developer Program
     ///
     /// - Returns: String Apple TeamID
-    fileprivate static func getAppleTeamId() -> String? {
+    public static func getAppleTeamId() -> String? {
         // Get Apple TeamId by retrieving dummy data from Keychain Service
         var query: [String: Any] = [:]
         let itemKey = "_forgercok_internal_keychain_bundleSeedId"
