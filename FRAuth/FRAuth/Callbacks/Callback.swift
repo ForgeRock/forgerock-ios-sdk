@@ -41,7 +41,7 @@ open class Callback: NSObject {
     /// - Throws: AuthError when invalid Callback response is passed, or missing required value for the callback
     @objc
     required public init(json: [String: Any]) throws {
-        
+        self.response = json
     }
     
     

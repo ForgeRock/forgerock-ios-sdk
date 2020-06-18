@@ -13,7 +13,6 @@ import FRCore
 
 @objc
 class FRTestNetworkStubProtocol: URLProtocol {
-//    static mockedResponses: [FRTest]
     
     struct TestConstants {
         static let FRTestURLProtocolHandled = "FRTestURLProtocolHandled"

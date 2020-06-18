@@ -51,9 +51,9 @@ import FRCore
     
     //  MARK: - Property
     //  URLs that will be enforced for TokenManagement for injecting authorization header, and renewing OAuth2 token if needed
-    public var validatingURL: [URL]
+    var validatingURL: [URL]
     //  Delegation of TokenManagementPolicy evaluation
-    public var delegate: TokenManagementPolicyDelegate?
+    var delegate: TokenManagementPolicyDelegate?
     //  MARK: - To be deprecated; for backward comaptibility
     //  Backward compatibility callback for token refresh policy
     var evaluationCallback: FRURLProtocolResponseEvaluationCallback?
@@ -79,7 +79,7 @@ import FRCore
     /// - Parameters:
     ///   - validatingURL: URLs to be validated for TokenManagementPolicy
     ///   - delegate: delegation to enforce token policy evaluation
-    public init(validatingURL: [URL], delegate: TokenManagementPolicyDelegate? = nil) {
+    @objc public init(validatingURL: [URL], delegate: TokenManagementPolicyDelegate? = nil) {
         self.validatingURL = validatingURL
         self.delegate = delegate
     }

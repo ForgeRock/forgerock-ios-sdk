@@ -42,7 +42,7 @@ class ChoiceCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
         self.dropDown?.setTitle(self.callback?.prompt, for: .highlighted)
         self.dropDown?.setTitle(self.callback?.prompt, for: .selected)
         
-        if let choices = self.callback?.choices as? [String] {
+        if let choices = self.callback?.choices {
             self.dropDown?.dataSource = choices
         }
     }

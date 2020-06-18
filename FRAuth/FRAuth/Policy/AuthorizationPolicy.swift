@@ -68,7 +68,7 @@ import Foundation
     /// - Parameters:
     ///   - validatingURL: URLs to be validated for AuthorizationPolicy
     ///   - delegate: delegation to enforce authorization policy evaluation
-    public init(validatingURL: [URL], delegate: AuthorizationPolicyDelegate? = nil) {
+    @objc public init(validatingURL: [URL], delegate: AuthorizationPolicyDelegate? = nil) {
         self.validatingURL = validatingURL
         self.delegate = delegate
     }

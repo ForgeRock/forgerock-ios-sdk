@@ -12,8 +12,7 @@ import Foundation
 import FRCore
 
 /// SessionManager is a representation of management class for FRAuth's managing session
-@available(*, deprecated, message: "SessionManager has been deprecated and will become private in next major release; use FRUser.login for authentication or FRSession to invoke Authentication Tree and manage Session Token.") // Deprecated as of FRAuth: v1.0.2
-public class SessionManager: NSObject {
+class SessionManager: NSObject {
     
     /// KeychainManager responsible for Keychain Service activities
     var keychainManager: KeychainManager
@@ -27,8 +26,7 @@ public class SessionManager: NSObject {
     }
     
     /// Singletone object of SessionManager
-    @available(*, deprecated, message: "SessionManager has been deprecated; use FRUser.login for authentication or FRSession to invoke Authentication Tree and manage Session Token.") // Deprecated as of FRAuth: v1.0.2
-    @objc public static var currentManager: SessionManager? {
+    @objc static var currentManager: SessionManager? {
         get {
             if let frAuth = FRAuth.shared {
                 return frAuth.sessionManager
@@ -109,8 +107,7 @@ public class SessionManager: NSObject {
     //  MARK: - AccessToken
     
     /// Returns current session's AccessToken object with OAuth2 token set
-    @available(*, deprecated, message: "SessionManager.getAccessToken has been deprecated; use FRUser.token or FRUser.getAccessToken to retrieve access_token") // Deprecated as of FRAuth: v1.0.2
-    public func getAccessToken() throws -> AccessToken? {
+    func getAccessToken() throws -> AccessToken? {
         if let tokenData = self.keychainManager.privateStore.getData("access_token") {
             do {
                 
@@ -160,8 +157,7 @@ public class SessionManager: NSObject {
     //  MARK: - SSO Token
     
     /// Returns current session's Token object that represents SSO Token
-    @available(*, deprecated, message: "SessionManager.getSSOToken has been deprecated; use FRSession.currentSession.sessionToken instead.") // Deprecated as of FRAuth: v1.0.2
-    public func getSSOToken() -> Token? {
+    func getSSOToken() -> Token? {
         if let ssoTokenString = self.keychainManager.sharedStore.getString("sso_token") {
             return Token(ssoTokenString)
         }
@@ -184,8 +180,7 @@ public class SessionManager: NSObject {
     
         
     /// Revokes currently authenticated and stored SSO Token and removes it from Keychain Service
-    @available(*, deprecated, message: "SessionManager.revokeSSOToken() has been deprecated; use FRSession.logout() instead.") // Deprecated as of FRAuth: v1.0.2
-    public func revokeSSOToken() -> Void {
+    func revokeSSOToken() -> Void {
 
         if let ssoToken = self.getSSOToken() {
             FRLog.v("Invalidating SSO Token")
