@@ -265,23 +265,30 @@ public class FRUser: NSObject, NSSecureCoding {
     public func getUserInfo(completion: @escaping UserInfoCallback) {
         FRLog.v("Requesting UserInfo")
         
-        //  AM 6.5.2 - 7.0.0
-        //
-        //  Endpoint: /oauth2/realms/userinfo
-        //  API Version: resource=2.1,protocol=1.0
-        
-        var header: [String: String] = [:]
-        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
-        header[OAuth2.authorization] = self.buildAuthHeader()
-        
-        let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
-        
-        FRRestClient.invoke(request: request, action: Action(type: .USER_INFO)) { (result) in
-            switch result {
-            case .success(let response, _ ):
-                completion(UserInfo(response), nil)
-            case .failure(let error):
+        self.getAccessToken { (user, error) in
+            guard error == nil, let user = user else {
                 completion(nil, error)
+                return
+            }
+            
+            //  AM 6.5.2 - 7.0.0
+            //
+            //  Endpoint: /oauth2/realms/userinfo
+            //  API Version: resource=2.1,protocol=1.0
+            
+            var header: [String: String] = [:]
+            header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+            header[OAuth2.authorization] = user.buildAuthHeader()
+            
+            let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+            
+            FRRestClient.invoke(request: request, action: Action(type: .USER_INFO)) { (result) in
+                switch result {
+                case .success(let response, _ ):
+                    completion(UserInfo(response), nil)
+                case .failure(let error):
+                    completion(nil, error)
+                }
             }
         }
     }

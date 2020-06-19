@@ -216,9 +216,11 @@ public class PushNotification: NSObject, NSSecureCoding {
                           onSuccess()
                               break
                           case .failure(let error):
+                            self.approved = false
+                            self.pending = true
                             Log.i("PushNotification authentication failed with following error: \(error.localizedDescription)")
                             onError(error)
-                              break
+                                break
                           }
                       }
             }

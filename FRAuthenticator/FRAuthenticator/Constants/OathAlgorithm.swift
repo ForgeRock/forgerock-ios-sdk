@@ -14,27 +14,38 @@ import CommonCrypto
 
 
 /// OathAlgorithm is an enum representation of supported OATH algorithm in FRAuthenticator SDK
-enum OathAlgorithm: Equatable {
-    case md5
-    case sha256
-    case sha512
-    case sha1
+enum OathAlgorithm: String, Equatable {
+    
+    case md5 = "md5"
+    case sha224 = "sha224"
+    case sha256 = "sha256"
+    case sha384 = "sha384"
+    case sha512 = "sha512"
+    case sha1 = "sha1"
     
     /// Initializes OathAlgorithm enum
     /// - Parameter algorithm: optional case-insensitive string value of hash algorithm; default to SHA1 if invalid string value / or unsupported algorithm
-    init(algorithm: String?) {
-        let algorithm = algorithm ?? ""
+    init?(algorithm: String) {
         if algorithm.lowercased() == "md5" {
             self = .md5
+        }
+        else if algorithm.lowercased() == "sha224" {
+            self = .sha224
         }
         else if algorithm.lowercased() == "sha256" {
             self = .sha256
         }
+        else if algorithm.lowercased() == "sha384" {
+            self = .sha384
+        }
         else if algorithm.lowercased() == "sha512" {
             self = .sha512
         }
-        else {
+        else if algorithm.lowercased() == "sha1" {
             self = .sha1
+        }
+        else {
+            return nil
         }
     }
     
@@ -44,8 +55,12 @@ enum OathAlgorithm: Equatable {
         switch self {
         case .md5:
             return kCCHmacAlgMD5
+        case .sha224:
+            return kCCHmacAlgSHA224
         case .sha256:
             return kCCHmacAlgSHA256
+        case .sha384:
+            return kCCHmacAlgSHA384
         case .sha512:
             return kCCHmacAlgSHA512
         case .sha1:
@@ -59,8 +74,12 @@ enum OathAlgorithm: Equatable {
         switch self {
         case .md5:
             return CC_MD5_DIGEST_LENGTH
+        case .sha224:
+            return CC_SHA224_DIGEST_LENGTH
         case .sha256:
             return CC_SHA256_DIGEST_LENGTH
+        case .sha384:
+            return CC_SHA384_DIGEST_LENGTH
         case .sha512:
             return CC_SHA512_DIGEST_LENGTH
         case .sha1:

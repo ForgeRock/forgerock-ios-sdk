@@ -50,20 +50,20 @@ public struct SecuredKey {
     
     /// Initializes SecuredKey object with designated service; SecuredKey may return nil if it failed to generate keypair
     /// - Parameter applicationTag: Unique identifier for SecuredKey in Keychain Service
-    public init?(applicationTag: String) {
+    public init?(applicationTag: String, accessGroup: String? = nil) {
         
         guard SecuredKey.isAvailable() else {
             return nil
         }
         
         // If SecuredKey already exists, return from the storage
-        if let privateKey = SecuredKey.readKey(applicationTag: applicationTag) {
+        if let privateKey = SecuredKey.readKey(applicationTag: applicationTag, accessGroup: accessGroup) {
             self.privateKey = privateKey
         }
         else {
             // Otherwise, generate new keypair
             do {
-                self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag)
+                self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag, accessGroup: accessGroup)
             }
             catch {
                 return nil
@@ -82,12 +82,17 @@ public struct SecuredKey {
     
     /// Retrieves private key with given 'ApplicationTag'
     /// - Parameter applicationTag: Application Tag string value for private key
-    static func readKey(applicationTag: String) -> SecKey? {
+    static func readKey(applicationTag: String, accessGroup: String? = nil) -> SecKey? {
         var query = [String: Any]()
         query[String(kSecClass)] = kSecClassKey
         query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeEC)
         query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = applicationTag
+        
+        if let accessGroup = accessGroup {
+            query[String(kSecAttrAccessGroup)] = accessGroup
+        }
+        
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {
@@ -99,11 +104,15 @@ public struct SecuredKey {
     
     /// Generates private key with given 'ApplicationTag'
     /// - Parameter applicationTag: Application Tag string value for private key
-    static func generateKey(applicationTag: String) throws -> SecKey {
+    static func generateKey(applicationTag: String, accessGroup: String? = nil) throws -> SecKey {
         var query = [String: Any]()
         
         query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeEC)
         query[String(kSecAttrKeySizeInBits)] = 256
+        
+        if let accessGroup = accessGroup {
+            query[String(kSecAttrAccessGroup)] = accessGroup
+        }
         
         var keyAttr = [String: Any]()
         keyAttr[String(kSecAttrIsPermanent)] = true

@@ -16,10 +16,10 @@ public class OathMechanism: Mechanism {
     //  MARK: - Properties
     
     /// Algorithm of OATH OTP
-    var algorithm: String?
+    var algorithm: OathAlgorithm
     /// Length of OATH Code
     public var digits: Int
-    
+
     
     //  MARK: - Init
     
@@ -31,9 +31,13 @@ public class OathMechanism: Mechanism {
     ///   - secret: shared secret in string of OATH Mechanism
     ///   - algorithm: algorithm in string for OATH Mechanism
     ///   - digits: number of digits for TOTP code
-    init(type: String, issuer: String, accountName: String, secret: String, algorithm: String? = nil, digits: Int? = 6) {
-        
-        self.algorithm = algorithm
+    init(type: String, issuer: String, accountName: String, secret: String, algorithm: String?, digits: Int? = 6) {
+        if let algorithmStr = algorithm, let oathAlgorithm = OathAlgorithm(algorithm: algorithmStr) {
+            self.algorithm = oathAlgorithm
+        }
+        else {
+            self.algorithm = .sha1
+        }
         self.digits = digits ?? 6
         super.init(type: type, issuer: issuer, accountName: accountName, secret: secret)
     }
@@ -50,7 +54,10 @@ public class OathMechanism: Mechanism {
     /// - Parameter digits: length of OTP Credentials
     /// - Parameter timeAdded: Date timestamp for creation of Mechanism object 
     init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, algorithm: String?, digits: Int, timeAdded: Double) {
-        self.algorithm = algorithm
+        guard let algorithm = algorithm, let oathAlgorithm = OathAlgorithm(algorithm: algorithm) else {
+            return nil
+        }
+        self.algorithm = oathAlgorithm
         self.digits = digits
         super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
     }
@@ -62,7 +69,7 @@ public class OathMechanism: Mechanism {
     
     
     override public func encode(with coder: NSCoder) {
-        coder.encode(self.algorithm, forKey: "algorithm")
+        coder.encode(self.algorithm.rawValue, forKey: "algorithm")
         coder.encode(self.digits, forKey: "digits")
         super.encode(with: coder)
     }

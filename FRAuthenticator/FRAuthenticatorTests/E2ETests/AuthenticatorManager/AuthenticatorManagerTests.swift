@@ -194,7 +194,7 @@ class AuthenticatorManagerTests: FRABaseTests {
     func test_08_store_hotp_oath_qrcode() {
         
         // Given
-        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
         let authenticatorManager = AuthenticatorManager(storageClient: FRAClient.storage)
         
         do {
@@ -218,7 +218,7 @@ class AuthenticatorManagerTests: FRABaseTests {
         let storageClient = DummyStorageClient()
         storageClient.setMechanismResult = false
         let authenticatorManager = AuthenticatorManager(storageClient: storageClient)
-        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
         
         do {
             let _ = try authenticatorManager.storeOathQRCode(uri: qrCode)
@@ -237,7 +237,7 @@ class AuthenticatorManagerTests: FRABaseTests {
     func test_10_store_hotp_oath_qrcode_fail_for_duplication() {
         
         //  Given
-        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
         let authenticatorManager = AuthenticatorManager(storageClient: FRAClient.storage)
         
         do {
@@ -571,7 +571,7 @@ class AuthenticatorManagerTests: FRABaseTests {
         //  Given
         let storageClient = DummyStorageClient()
         let authenticatorManager = AuthenticatorManager(storageClient: storageClient)
-        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
         
         let ex = self.expectation(description: "AuthenticatorManager.createMechanismFromUri")
         authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in

@@ -66,4 +66,101 @@ class HOTPCodeGenerationTests: FRABaseTests {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    
+    func test_04_generate_hotp_sha1() {
+        // Given
+        let mechanism = HOTPMechanism(issuer: "tester", accountName: "tester", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", counter: 0)
+        
+        do {
+            // When
+            // When
+            let code = try mechanism.generateCode()
+            // Then
+            XCTAssertNotNil(code)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_05_generate_hotp_sha224() {
+        // Given
+        let mechanism = HOTPMechanism(issuer: "tester", accountName: "tester", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha224", counter: 0)
+        
+        do {
+            // When
+            let code = try mechanism.generateCode()
+            // Then
+            XCTAssertNotNil(code)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_06_generate_hotp_sha256() {
+        // Given
+        let mechanism = HOTPMechanism(issuer: "tester", accountName: "tester", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha256", counter: 0)
+        
+        do {
+            // When
+            let code = try mechanism.generateCode()
+            // Then
+            XCTAssertNotNil(code)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_07_generate_hotp_sha384() {
+        // Given
+        let mechanism = HOTPMechanism(issuer: "tester", accountName: "tester", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha384", counter: 0)
+        
+        do {
+            // When
+            let code = try mechanism.generateCode()
+            // Then
+            XCTAssertNotNil(code)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_08_generate_hotp_sha384() {
+        // Given
+        let mechanism = HOTPMechanism(issuer: "tester", accountName: "tester", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha512", counter: 0)
+        
+        do {
+            // When
+            let code = try mechanism.generateCode()
+            // Then
+            XCTAssertNotNil(code)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_09_generate_hotp_md5() {
+        // Given
+        let mechanism = HOTPMechanism(issuer: "tester", accountName: "tester", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "md5", counter: 0)
+        
+        do {
+            // When
+            let code = try mechanism.generateCode()
+            // Then
+            XCTAssertNotNil(code)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
 }

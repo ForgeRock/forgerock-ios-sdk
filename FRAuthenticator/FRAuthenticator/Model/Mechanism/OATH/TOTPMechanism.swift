@@ -95,7 +95,7 @@ public class TOTPMechanism: OathMechanism {
         let startTimeInSeconds = (Int(timeInterval) / self.period * self.period)
         let endTimeInSeconds = (startTimeInSeconds + self.period) 
         
-        let currentCode = try OathCodeGenerator.generateOTP(secret: self.secret, algorithm: OathAlgorithm(algorithm: self.algorithm), counter: counter, digits: self.digits)
+        let currentCode = try OathCodeGenerator.generateOTP(secret: self.secret, algorithm: self.algorithm, counter: counter, digits: self.digits)
         
         return OathTokenCode(tokenType: self.type, code: currentCode, start: TimeInterval(startTimeInSeconds), until: TimeInterval(endTimeInSeconds))
     }

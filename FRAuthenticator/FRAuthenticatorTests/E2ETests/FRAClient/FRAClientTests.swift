@@ -51,7 +51,7 @@ class FRAClientTests: FRABaseTests {
         self.shouldCleanup = false
         
         // Given
-        let hotp = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+        let hotp = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
         let totp = URL(string: "otpauth://totp/Forgerock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
         
         do {
@@ -108,7 +108,7 @@ class FRAClientTests: FRABaseTests {
             
             
             //  Store same HOTPMechanism under same Account
-            let hotp2 = URL(string: "otpauth://hotp/Forgerock:demo?secret=T7SIIEPTZJQQDSCB&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+            let hotp2 = URL(string: "otpauth://hotp/Forgerock:demo?secret=T7SIIEPTZJQQDSCB&issuer=Forgerock&counter=4&algorithm=SHA256")!
             ex = self.expectation(description: "FRAClient.createMechanismFromUri")
             FRAClient.shared?.createMechanismFromUri(uri: hotp2, onSuccess: { (mechanism) in
                 XCTFail("FRAClient.createMechanismFromUri was expected to fail for duplication; but somehow passed")
@@ -801,7 +801,7 @@ class FRAClientTests: FRABaseTests {
     
     
     func test_07_get_account_from_mechanism() {
-        let hotp = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA%20256")!
+        let hotp = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
         
         do {
             try FRAClient.setStorage(storage: DummyStorageClient())

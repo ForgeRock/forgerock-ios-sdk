@@ -164,7 +164,7 @@ class TOTPMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanismFromData?.secret, "T7SIIEPTZJQQDSCB")
             XCTAssertEqual(mechanismFromData?.version, 1)
             XCTAssertEqual(mechanismFromData?.accountName, "demo")
-            XCTAssertEqual(mechanismFromData?.algorithm, "SHA256")
+            XCTAssertEqual(mechanismFromData?.algorithm.rawValue, "sha256")
             XCTAssertEqual(mechanismFromData?.digits, 8)
             XCTAssertEqual(mechanismFromData?.period, 45)
             

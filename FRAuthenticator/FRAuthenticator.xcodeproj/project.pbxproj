@@ -98,6 +98,8 @@
 		D5E3089F2473942300724502 /* OathTokenCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3089E2473942300724502 /* OathTokenCode.swift */; };
 		D5E308A024739E6C00724502 /* OathTokenCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3089E2473942300724502 /* OathTokenCode.swift */; };
 		D5E308A22473A0B500724502 /* OathTokenCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E308A12473A0B500724502 /* OathTokenCodeTests.swift */; };
+		D5E92E4E249B34ED008DB541 /* TOTPCodeGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */; };
+		D5E92E53249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */; };
 		D5EBEC46243166A8007F474C /* base32.c in Sources */ = {isa = PBXBuildFile; fileRef = D5EBEC42243166A8007F474C /* base32.c */; };
 		D5EBEC47243166A8007F474C /* base32.h in Headers */ = {isa = PBXBuildFile; fileRef = D5EBEC43243166A8007F474C /* base32.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D5EBEC5124316AC7007F474C /* base32.h in Sources */ = {isa = PBXBuildFile; fileRef = D5EBEC43243166A8007F474C /* base32.h */; };
@@ -254,6 +256,8 @@
 		D5E3089C2473865000724502 /* OathMechanismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathMechanismTests.swift; sourceTree = "<group>"; };
 		D5E3089E2473942300724502 /* OathTokenCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathTokenCode.swift; sourceTree = "<group>"; };
 		D5E308A12473A0B500724502 /* OathTokenCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathTokenCodeTests.swift; sourceTree = "<group>"; };
+		D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPCodeGenerationTests.swift; sourceTree = "<group>"; };
+		D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAClientOATHMechanismAlgorithmTests.swift; sourceTree = "<group>"; };
 		D5EBEC42243166A8007F474C /* base32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base32.c; sourceTree = "<group>"; };
 		D5EBEC43243166A8007F474C /* base32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base32.h; sourceTree = "<group>"; };
 		D5EBEC5524316B48007F474C /* FRAuthenticatorTests-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FRAuthenticatorTests-BridgingHeader.h"; sourceTree = "<group>"; };
@@ -402,6 +406,7 @@
 		D52D5C6A241333D500835035 /* TOTP */ = {
 			isa = PBXGroup;
 			children = (
+				D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */,
 			);
 			path = TOTP;
 			sourceTree = "<group>";
@@ -643,6 +648,7 @@
 			isa = PBXGroup;
 			children = (
 				D5C7CBC32468A63B00823168 /* FRAClientTests.swift */,
+				D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */,
 			);
 			path = FRAClient;
 			sourceTree = "<group>";
@@ -919,12 +925,14 @@
 				D5E308A22473A0B500724502 /* OathTokenCodeTests.swift in Sources */,
 				D5EBEC5624316B5C007F474C /* FRAuthenticatorTests-BridgingHeader.h in Sources */,
 				D541AC0F2432BADD0057A060 /* FRAErrorTests.swift in Sources */,
+				D5E92E4E249B34ED008DB541 /* TOTPCodeGenerationTests.swift in Sources */,
 				D5EBEC5124316AC7007F474C /* base32.h in Sources */,
 				D5EBEC5224316AC7007F474C /* base32.c in Sources */,
 				D5EBEC5324316AC7007F474C /* OathAlgorithm.swift in Sources */,
 				D5E3089D2473865000724502 /* OathMechanismTests.swift in Sources */,
 				D541AC112432BB330057A060 /* OathErrorTests.swift in Sources */,
 				D5EBEC5424316AC7007F474C /* OathCodeGenerator.swift in Sources */,
+				D5E92E53249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift in Sources */,
 				D54E88F124174B0E00E8ACB1 /* FRAError.swift in Sources */,
 				D542AA492416DDB200ECBFC1 /* StorageClient.swift in Sources */,
 				D542AA4A2416DDB200ECBFC1 /* KeychainServiceClient.swift in Sources */,
@@ -1127,7 +1135,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticator;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1154,7 +1162,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticator;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
