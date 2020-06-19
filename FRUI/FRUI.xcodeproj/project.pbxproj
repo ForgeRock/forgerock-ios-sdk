@@ -78,13 +78,6 @@
 			remoteGlobalIDString = D53A91E022B1815B003DF94E;
 			remoteInfo = FRUI;
 		};
-		D5E98AB322E7A36E00F5DD3A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D55118AC22E1268C009EBCD9;
-			remoteInfo = FRAuthTestHost;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -158,7 +151,6 @@
 			children = (
 				D51F44D722B1B8C900FC8F0D /* FRAuth.framework */,
 				D51F44D922B1B8C900FC8F0D /* FRAuthTests.xctest */,
-				D5E98AB422E7A36E00F5DD3A /* FRAuthTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -431,13 +423,6 @@
 			fileType = wrapper.cfbundle;
 			path = FRAuthTests.xctest;
 			remoteRef = D51F44D822B1B8C900FC8F0D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D5E98AB422E7A36E00F5DD3A /* FRAuthTestHost.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FRAuthTestHost.app;
-			remoteRef = D5E98AB322E7A36E00F5DD3A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -723,6 +708,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -742,6 +728,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
