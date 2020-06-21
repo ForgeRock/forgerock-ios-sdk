@@ -44,8 +44,19 @@ struct KeychainServiceClient: StorageClient {
     
     
     @discardableResult func setAccount(account: Account) -> Bool {
-        let accountData = NSKeyedArchiver.archivedData(withRootObject: account)
-        return self.accountStorage.set(accountData, key: account.identifier)
+        if #available(iOS 11.0, *) {
+            do {
+                let accountData = try NSKeyedArchiver.archivedData(withRootObject: account, requiringSecureCoding: true)
+                return self.accountStorage.set(accountData, key: account.identifier)
+            }
+            catch {
+                FRALog.e("Failed to serialize Account object: \(error.localizedDescription)")
+                return false
+            }
+        } else {
+            let accountData = NSKeyedArchiver.archivedData(withRootObject: account)
+            return self.accountStorage.set(accountData, key: account.identifier)
+        }
     }
     
     
@@ -81,8 +92,19 @@ struct KeychainServiceClient: StorageClient {
     
     
     @discardableResult func setMechanism(mechanism: Mechanism) -> Bool {
-        let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-        return self.mechanismStorage.set(mechanismData, key: mechanism.identifier)
+        if #available(iOS 11.0, *) {
+            do {
+                let mechanismData = try NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true)
+                return self.mechanismStorage.set(mechanismData, key: mechanism.identifier)
+            }
+            catch {
+                FRALog.e("Failed to serialize Mechanism object: \(error.localizedDescription)")
+                return false
+            }
+        } else {
+            let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
+            return self.mechanismStorage.set(mechanismData, key: mechanism.identifier)
+        }
     }
     
     
@@ -125,8 +147,19 @@ struct KeychainServiceClient: StorageClient {
     
     
     @discardableResult func setNotification(notification: PushNotification) -> Bool {
-        let notificationData = NSKeyedArchiver.archivedData(withRootObject: notification)
-        return self.notificationStorage.set(notificationData, key: notification.identifier)
+        if #available(iOS 11.0, *) {
+            do {
+                let notificationData = try NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true)
+                return self.notificationStorage.set(notificationData, key: notification.identifier)
+            }
+            catch {
+                FRALog.e("Failed to serialize PushNotification object: \(error.localizedDescription)")
+                return false
+            }
+        } else {
+            let notificationData = NSKeyedArchiver.archivedData(withRootObject: notification)
+            return self.notificationStorage.set(notificationData, key: notification.identifier)
+        }
     }
     
     
