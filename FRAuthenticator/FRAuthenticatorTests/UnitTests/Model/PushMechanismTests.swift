@@ -50,19 +50,35 @@ class PushMechanismTests: FRABaseTests {
         do {
             let parser = try PushQRCodeParser(url: qrCode)
             let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
-            let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-            
-            let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
-            
-            XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-            XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-            XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-            XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-            XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-            XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-            XCTAssertEqual(mechanism.regEndpoint, mechanismFromData?.regEndpoint)
-            XCTAssertEqual(mechanism.authEndpoint, mechanismFromData?.authEndpoint)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            if #available(iOS 11.0, *) {
+                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
+                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
+                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
+                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
+                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
+                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
+                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
+                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
+                    XCTAssertEqual(mechanism.regEndpoint, mechanismFromData?.regEndpoint)
+                    XCTAssertEqual(mechanism.authEndpoint, mechanismFromData?.authEndpoint)
+                    XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+                }
+                else {
+                    XCTFail("Failed to serialize PushMechanism object with Secure Coding")
+                }
+            } else {
+                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
+                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
+                XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
+                XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
+                XCTAssertEqual(mechanism.type, mechanismFromData?.type)
+                XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
+                XCTAssertEqual(mechanism.version, mechanismFromData?.version)
+                XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
+                XCTAssertEqual(mechanism.regEndpoint, mechanismFromData?.regEndpoint)
+                XCTAssertEqual(mechanism.authEndpoint, mechanismFromData?.authEndpoint)
+                XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            }
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

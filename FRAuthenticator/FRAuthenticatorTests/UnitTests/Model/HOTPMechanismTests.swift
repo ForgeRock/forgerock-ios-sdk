@@ -48,21 +48,39 @@ class HOTPMechanismTests: FRABaseTests {
         do {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
-            let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-
-            let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? HOTPMechanism
-            XCTAssertNotNil(mechanismFromData)
-
-            XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-            XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-            XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-            XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-            XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-            XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-            XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
-            XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
-            XCTAssertEqual(mechanism.counter, mechanismFromData?.counter)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            if #available(iOS 11.0, *) {
+                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
+                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? HOTPMechanism
+                    XCTAssertNotNil(mechanismFromData)
+                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
+                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
+                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
+                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
+                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
+                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
+                    XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
+                    XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
+                    XCTAssertEqual(mechanism.counter, mechanismFromData?.counter)
+                    XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+                }
+                else {
+                    XCTFail("Failed to serialize HOTPMechnaism object with Secure Coding")
+                }
+            } else {
+                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
+                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? HOTPMechanism
+                XCTAssertNotNil(mechanismFromData)
+                XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
+                XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
+                XCTAssertEqual(mechanism.type, mechanismFromData?.type)
+                XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
+                XCTAssertEqual(mechanism.version, mechanismFromData?.version)
+                XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
+                XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
+                XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
+                XCTAssertEqual(mechanism.counter, mechanismFromData?.counter)
+                XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            }
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

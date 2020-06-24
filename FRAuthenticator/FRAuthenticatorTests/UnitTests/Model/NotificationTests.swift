@@ -175,15 +175,30 @@ class NotificationTests: FRABaseTests {
             let notification = try PushNotification(messageId: messageId, payload: payload)
             XCTAssertNotNil(notification)
 
-            let notificationData = NSKeyedArchiver.archivedData(withRootObject: notification)
-            let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
-            
-            XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
-            XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
-            XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
-            XCTAssertEqual(notification.ttl, notificationFromData?.ttl)
-            XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
-            XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
+            if #available(iOS 11.0, *) {
+                if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
+                    let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
+                    XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
+                    XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
+                    XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
+                    XCTAssertEqual(notification.ttl, notificationFromData?.ttl)
+                    XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
+                    XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
+                }
+                else {
+                    XCTFail("Failed to serialize PushNotification object with Secure Coding")
+                }
+            } else {
+                let notificationData = NSKeyedArchiver.archivedData(withRootObject: notification)
+                let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
+                
+                XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
+                XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
+                XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
+                XCTAssertEqual(notification.ttl, notificationFromData?.ttl)
+                XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
+                XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
+            }
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

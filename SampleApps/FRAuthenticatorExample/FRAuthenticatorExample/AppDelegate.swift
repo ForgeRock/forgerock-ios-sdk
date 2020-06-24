@@ -14,6 +14,7 @@ import FRAuthenticator
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    var privacyScreen: UIImageView = UIImageView()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FRALog.setLogLevel(.all)
@@ -22,6 +23,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         return true
     }
+    
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        let blurredImg = captureBlurredScreenshot()
+        privacyScreen = UIImageView(image: blurredImg)
+        self.window?.addSubview(privacyScreen)
+    }
+    
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        privacyScreen.removeFromSuperview()
+    }
+    
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         FRAPushHandler.shared.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
@@ -51,6 +65,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             currentController.present(viewController, animated: true)
         }
+    }
+    
+    
+    //  MARK: - Helper
+    
+    func captureBlurredScreenshot() -> UIImage? {
+        //  Capture current screenshot
+        let size = self.window?.screen.bounds.size ?? CGSize()
+        UIGraphicsBeginImageContext(size)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        self.window?.layer.render(in: context)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        //  Convert image to CIImage
+        guard let screenshotImg = image, let inputImage = CIImage(image: screenshotImg) else {
+            return nil
+        }
+        //  Apply blurred filter
+        let gaussianFilter = CIFilter(name: "CIBokehBlur")
+        gaussianFilter?.setValue(inputImage, forKey: kCIInputImageKey)
+        gaussianFilter?.setValue(10, forKey: kCIInputRadiusKey)
+            
+        guard let outputImage = gaussianFilter?.outputImage else {
+            return nil
+        }
+            
+        return UIImage(ciImage: outputImage)
     }
 }
 
