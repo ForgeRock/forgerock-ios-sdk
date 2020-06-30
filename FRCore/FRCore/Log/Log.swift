@@ -135,7 +135,15 @@ public class Log: NSObject {
     /// Date formatter for log entries
     static var dateFormatter: DateFormatter?
     /// Defuault module name of Log
-    static let DefaultModuleName: String = "[FRCore]"
+    static var DefaultModuleName: String {
+        get {
+            var versionStr = ""
+            if let version = Bundle(for: RestClient.self).infoDictionary?["CFBundleShortVersionString"] as? String {
+                versionStr = "[\(version)]"
+            }
+            return "[FRCore]" + versionStr
+        }
+    }
     
     
     //  MARK: - Method

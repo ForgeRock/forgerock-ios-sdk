@@ -21,7 +21,15 @@ By default, FRLog uses OSLog to display the log entry in the debug console, and 
 public struct FRLog {
     
     /// Module name of FRLog
-    static let ModuleName: String = "[FRAuth]"
+    static var ModuleName: String {
+        get {
+            var versionStr = ""
+            if let version = Bundle(for: FRAuth.self).infoDictionary?["CFBundleShortVersionString"] as? String {
+                versionStr = "[\(version)]"
+            }
+            return "[FRAuth]" + versionStr
+        }
+    }
     
     //  MARK: - Method
     
