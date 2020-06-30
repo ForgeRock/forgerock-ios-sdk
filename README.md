@@ -27,7 +27,6 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 * ForgeRock Identity Platform
     * Access Management (AM) 6.5.2+
-
 * iOS 10, 11, 12, 13   
 * Xcode 11.0 or later
 * Swift 5.x or Objective-C
@@ -97,6 +96,7 @@ ForgeRock provides these samples to help demonstrate SDK functionality:
     
 - **Authenticator App Sample - `/FRAuthenticatorExample/`**
 	This Authenticator sample app demonstrates HMAC-based, and Time-based One-time Password, and Push Registration and Authentication with ForgeRock's Access Manager.
+
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
