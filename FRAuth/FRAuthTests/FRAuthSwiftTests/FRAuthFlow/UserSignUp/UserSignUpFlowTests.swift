@@ -21,7 +21,7 @@ class UserSignUpFlowTests: FRBaseTest {
     func testUserSignUpFlow() {
         
         // Start SDK
-        self.config.authServiceName = "UserSignUp"
+        self.config.registrationServiceName = "UserSignUp"
         self.startSDK()
         
         // Set mock responses
@@ -39,15 +39,14 @@ class UserSignUpFlowTests: FRBaseTest {
         let username = config.username + String(describing: Date().timeIntervalSince1970)
         
         var ex = self.expectation(description: "First Node submit: Platform Username/Password creation")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: AccessToken?, node, error) in
-            
+        FRUser.register { (user: FRUser?, node, error) in
             // Validate result
-            XCTAssertNil(token)
+            XCTAssertNil(user)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             currentNode = node
             ex.fulfill()
-        })
+        }
         waitForExpectations(timeout: 60, handler: nil)
         
         guard let firstNode = currentNode else {

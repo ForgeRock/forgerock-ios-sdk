@@ -1,0 +1,20 @@
+{
+    "responsePayload": {
+        "error_description": "The access token provided is expired, revoked, malformed, or invalid for other reasons.",
+        "error":"invalid_token"
+        
+    },
+    "response": {
+        "statusCode": 401,
+        "url": "http://localhost/openam/oauth2/realms/root/userinfo",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Cache-Control": "no-store",
+            "Content-Length": "174",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "SAMEORIGIN"
+        }
+    }
+}

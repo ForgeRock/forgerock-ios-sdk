@@ -10,6 +10,7 @@
 
 import Foundation
 import CommonCrypto
+import FRCore
 
 /// FRDeviceIdentifier provides a unique identifier for each device defined in same Shared Keychain Access Group,
 /// and provides a secure mechanism to uniquely generate, persist, and manage the identifier
@@ -87,8 +88,8 @@ struct FRDeviceIdentifier {
         data.withUnsafeBytes {
             _ = CC_SHA1($0.baseAddress, CC_LONG(data.count), &digest)
         }
-        let hashString = Data(bytes: digest, count: digest.count).base64EncodedString()
-        return hashString
+        let hexString = Data(bytes: digest, count: digest.count).toHexString()
+        return hexString
     }
     
     
@@ -185,5 +186,12 @@ struct FRDeviceIdentifier {
         }
         
         return query
+    }
+}
+
+
+extension Data {
+    func toHexString() -> String {
+        return map { String(format: "%02hhx", $0) }.joined()
     }
 }

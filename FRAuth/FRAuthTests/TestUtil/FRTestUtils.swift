@@ -18,6 +18,7 @@ class FRTestUtils: XCTest {
         if let frAuth = FRAuth.shared {
             frAuth.keychainManager.sharedStore.deleteAll()
             frAuth.keychainManager.privateStore.deleteAll()
+            frAuth.keychainManager.cookieStore.deleteAll()
             frAuth.keychainManager.deviceIdentifierStore.deleteAll()
         }
         

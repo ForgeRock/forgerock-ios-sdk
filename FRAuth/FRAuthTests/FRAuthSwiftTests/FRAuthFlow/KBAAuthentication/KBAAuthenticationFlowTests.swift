@@ -34,15 +34,14 @@ class KBAAuthenticationFlowTests: FRBaseTest {
         var currentNode: Node?
         
         var ex = self.expectation(description: "First Node submit")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: AccessToken?, node, error) in
-            
+        FRUser.login { (user: FRUser?, node, error) in
             // Validate result
-            XCTAssertNil(token)
+            XCTAssertNil(user)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             currentNode = node
             ex.fulfill()
-        })
+        }
         waitForExpectations(timeout: 60, handler: nil)
         
         guard let firstNode = currentNode else {

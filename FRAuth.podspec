@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRAuth'
-  s.version          = '1.0.0'
+  s.version          = '2.0.0'
   s.summary          = 'ForgeRock Auth SDK for iOS'
   s.description      = <<-DESC
   FRAuth is a SDK that allows you easily and quickly develop an application with ForgeRock Platform or ForgeRock Identity Cloud. FRAuth SDK provides interfaces and functionalities of user authentication, registration, and identity and access management against ForgeRock solutions.
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.source           = {
       :git => 'https://github.com/ForgeRock/forgerock-ios-sdk.git',
-      :tag => 'FRAuth-' + s.version.to_s
+      :tag => s.version.to_s
   }
 
   s.module_name   = 'FRAuth'
@@ -29,4 +29,5 @@ Pod::Spec.new do |s|
 
   base_dir = "FRAuth/FRAuth"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.ios.dependency 'FRCore', '~> 2.0.0'
 end

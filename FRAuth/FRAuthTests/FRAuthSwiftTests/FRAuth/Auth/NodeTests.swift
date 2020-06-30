@@ -92,7 +92,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             
             XCTAssertNotNil(node)
             XCTAssertNotNil(node?.authId)
@@ -131,7 +131,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             // If not fail, should fail
             XCTFail("Passed while expecting failure with empty Dictionary, and callback obj: \(node.debugDescription)")
         } catch let error as AuthError { // Catch AuthError
@@ -189,7 +189,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             // If not fail, should fail
             XCTFail("Passed while expecting failure with empty Dictionary, and callback obj: \(node.debugDescription)")
         } catch let error as AuthError { // Catch AuthError
@@ -253,7 +253,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             // If not fail, should fail
             XCTFail("Passed while expecting failure with empty Dictionary, and callback obj: \(node.debugDescription)")
         } catch let error as AuthError { // Catch AuthError
@@ -316,7 +316,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             // If not fail, should fail
             XCTFail("Passed while expecting failure with empty Dictionary, and callback obj: \(node.debugDescription)")
         } catch let error as AuthError { // Catch AuthError
@@ -349,7 +349,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             // If not fail, should fail
             XCTFail("Passed while expecting failure with empty Dictionary, and callback obj: \(node.debugDescription)")
         } catch let error as AuthError { // Catch AuthError
@@ -383,7 +383,7 @@ class NodeTests: FRBaseTest {
         
         do {
             // Then
-            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName")
+            let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
             // If not fail, should fail
             XCTFail("Passed while expecting failure with empty Dictionary, and callback obj: \(node.debugDescription)")
         } catch let error as AuthError { // Catch AuthError

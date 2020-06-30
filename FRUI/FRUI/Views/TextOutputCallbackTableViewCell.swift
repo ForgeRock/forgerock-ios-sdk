@@ -11,7 +11,7 @@
 import UIKit
 import FRAuth
 
-class TextOutputCallbackTableViewCell: UITableViewCell {
+class TextOutputCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
     
     public static let cellIdentifier = "TextOutputCallbackTableViewCellId"
     public static let cellHeight: CGFloat = 100.0
@@ -28,8 +28,8 @@ class TextOutputCallbackTableViewCell: UITableViewCell {
 
     
     // MARK: - Public
-    public func updateCellData(authCallback: TextOutputCallback) {
-        self.callback = authCallback
+    public func updateCellData(callback: Callback) {
+        self.callback = callback as? TextOutputCallback
         self.textField?.textAlignment = .center
         self.textField?.text = self.callback?.message
         
@@ -39,7 +39,7 @@ class TextOutputCallbackTableViewCell: UITableViewCell {
             textColor = UIColor.label
         }
         
-        switch authCallback.messageType {
+        switch self.callback?.messageType {
         case .error:
             textColor = FRUI.shared.errorColor
             break

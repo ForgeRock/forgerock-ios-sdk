@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 
 /// OAuth2 client object represents OAuth2 client, and provides methods related to OAuth2 protocol
 @objc(FROAuth2Client)
@@ -64,9 +65,9 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.token] = token
         parameter[OAuth2.clientId] = self.clientId
         
-        let request = Request(url: self.serverConfig.tokenRevokeURL, method: .POST, headers: [:], bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        let request = Request(url: self.serverConfig.tokenRevokeURL, method: .POST, headers: [:], bodyParams: parameter, urlParams: [:], requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
         
-        RestClient.shared.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .REVOKE_TOKEN)) { (result) in
             switch result {
             case .success(_ , _):
                 completion(nil)
@@ -90,7 +91,7 @@ public class OAuth2Client: NSObject, Codable {
         
         let request = self.buildRefreshRequest(refreshToken: refreshToken)
         
-        RestClient.shared.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .REFRESH_TOKEN)) { (result) in
             switch result {
             case .success(let response, _ ):
                 if let accessToken = AccessToken(tokenResponse: response) {
@@ -120,7 +121,7 @@ public class OAuth2Client: NSObject, Codable {
     @objc public func refreshSync(refreshToken: String) throws -> AccessToken {
         
         let request = self.buildRefreshRequest(refreshToken: refreshToken)
-        let result = RestClient.shared.invokeSync(request: request)
+        let result = FRRestClient.invokeSync(request: request, action: Action(type: .REFRESH_TOKEN))
         
         switch result {
         case .success(let response, _ ):
@@ -152,7 +153,7 @@ public class OAuth2Client: NSObject, Codable {
         let pkce = PKCE()
         let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
         
-        RestClient.shared.invoke(request: request) { (result) in
+        FRRestClient.invoke(request: request, action: Action(type: .AUTHORIZE)) { (result) in
             switch result {
             case .success(_ , let httpResponse):
                     
@@ -171,16 +172,16 @@ public class OAuth2Client: NSObject, Codable {
                             let error = "invalid_request"
                             let errorDescription = "Invalid request using PKCE; invalid credentials."
                             let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                            completion(nil, AuthError.apiFailedWithError(0, errorDescription, errorResponse))
+                            completion(nil, NetworkError.apiFailedWithError(0, errorDescription, errorResponse))
                             return
                         }
                         #endif
                         
                         let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
-                        RestClient.shared.invoke(request: request, completion: { (result) in
+                        FRRestClient.invoke(request: request, action: Action(type: .EXCHANGE_TOKEN), completion: { (result) in
                             switch result {
                             case .success(let response, _):
-                                if let accessToken = AccessToken(tokenResponse: response) {
+                                if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
                                     completion(accessToken, nil)
                                 }
                                 else {
@@ -194,17 +195,17 @@ public class OAuth2Client: NSObject, Codable {
                     }
                     else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
                         let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                        completion(nil, AuthError.apiFailedWithError(0, errorDescription, errorResponse))
+                        completion(nil, NetworkError.apiFailedWithError(0, errorDescription, errorResponse))
                     }
                     else {
-                        completion(nil, AuthError.requestFailWithError)
+                        completion(nil, NetworkError.requestFailWithError)
                     }
                 }
                 else {
                     let error = "invalid_request"
                     let errorDescription = "/authorize endpoint is returned without redirect location."
                     let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                    completion(nil, AuthError.apiFailedWithError(0, errorDescription, errorResponse))
+                    completion(nil, NetworkError.apiFailedWithError(0, errorDescription, errorResponse))
                 }
                 break
             case .failure(let error):
@@ -227,7 +228,7 @@ public class OAuth2Client: NSObject, Codable {
         let pkce = PKCE()
         let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
         
-        let result = RestClient.shared.invokeSync(request: request)
+        let result = FRRestClient.invokeSync(request: request, action: Action(type: .AUTHORIZE))
         switch result {
         case .success(_ , let httpResponse):
             
@@ -246,15 +247,15 @@ public class OAuth2Client: NSObject, Codable {
                         let error = "invalid_request"
                         let errorDescription = "Invalid request using PKCE; invalid credentials."
                         let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                        throw AuthError.apiFailedWithError(0, errorDescription, errorResponse)
+                        throw NetworkError.apiFailedWithError(0, errorDescription, errorResponse)
                     }
                     #endif
                     
                     let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
-                    let result = RestClient.shared.invokeSync(request: request)
+                    let result = FRRestClient.invokeSync(request: request, action: Action(type: .EXCHANGE_TOKEN))
                     switch result {
                     case .success(let response, _ ):
-                        if let accessToken = AccessToken(tokenResponse: response) {
+                        if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
                             return accessToken
                         }
                         else {
@@ -266,17 +267,17 @@ public class OAuth2Client: NSObject, Codable {
                 }
                 else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
                     let errorResponse: [String: String] = ["error": errorDescription, "error_description": errorDescription]
-                    throw AuthError.apiFailedWithError(0, error, errorResponse)
+                    throw NetworkError.apiFailedWithError(0, error, errorResponse)
                 }
                 else {
-                    throw AuthError.requestFailWithError
+                    throw NetworkError.requestFailWithError
                 }
             }
             else {
                 let error = "invalid_request"
                 let errorDescription = "/authorize endpoint is returned without redirect location."
                 let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                throw AuthError.apiFailedWithError(0, errorDescription, errorResponse)
+                throw NetworkError.apiFailedWithError(0, errorDescription, errorResponse)
             }
         case .failure(let error):
             throw error
@@ -307,7 +308,7 @@ public class OAuth2Client: NSObject, Codable {
         
         let header: [String: String] = [OpenAM.acceptAPIVersion: OpenAM.apiResource21 + "," + OpenAM.apiProtocol10]
         
-        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: parameter, urlParams: [:], requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
     
     
@@ -322,11 +323,10 @@ public class OAuth2Client: NSObject, Codable {
         //  Construct parameter for the request
         var parameter: [String: String] = [:]
         parameter[OAuth2.responseType] = OAuth2.code
-        parameter[OAuth2.csrf] = ssoToken
+        parameter[self.serverConfig.cookieName] = ssoToken
         parameter[OAuth2.clientId] = self.clientId
         parameter[OAuth2.scope] = self.scope
         parameter[OAuth2.redirecUri] = self.redirectUri.absoluteString
-        parameter[OAuth2.decision] = "allow"
         parameter[OAuth2.state] = pkce.state
         parameter[OAuth2.codeChallenge] = pkce.codeChallenge
         parameter[OAuth2.codeChallengeMethod] = pkce.codeChallengeMethod
@@ -337,10 +337,9 @@ public class OAuth2Client: NSObject, Codable {
         //  API Version: resource=2.1,protocol=1.0
         
         var header: [String: String] = [:]
-        header["Cookie"] = OpenAM.iPlanetDirectoryPro + "=" + ssoToken
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
-        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
+        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
     }
     
     
@@ -369,7 +368,7 @@ public class OAuth2Client: NSObject, Codable {
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
         //  Call /token service to exchange auth code to OAuth token set
-        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: 60)
+        return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
 }
 

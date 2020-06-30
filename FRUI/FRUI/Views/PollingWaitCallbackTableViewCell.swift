@@ -11,12 +11,14 @@
 import UIKit
 import FRAuth
 
-class PollingWaitCallbackTableViewCell: UITableViewCell {
+class PollingWaitCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     // MARK: - Properties
     public static let cellIdentifier = "PollingWaitCallbackTableViewCellId"
     public static let cellHeight: CGFloat = 140.0
+    public var delegate: AuthStepProtocol?
     var loadingView: FRLoadingView?
+    var loaded: Bool = false
     
     var callback: PollingWaitCallback?
     
@@ -33,10 +35,18 @@ class PollingWaitCallbackTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public
-    public func updateCellData(authCallback: PollingWaitCallback) {
-        callback = authCallback
-        
-        loadingView?.loadingText = callback?.message
+    public func updateCellData(callback: Callback) {
+        self.callback = callback as? PollingWaitCallback
+        loadingView?.loadingText = self.callback?.message
         loadingView?.startLoading()
+        
+        if let waitTime = self.callback?.waitTime {
+            if !loaded {
+                loaded = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + Double(waitTime/1000)) {
+                    self.delegate?.submitNode()
+                }
+            }
+        }
     }
 }

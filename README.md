@@ -27,7 +27,6 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 * ForgeRock Identity Platform
     * Access Management (AM) 6.5.2+
-
 * iOS 10, 11, 12, 13   
 * Xcode 11.0 or later
 * Swift 5.x or Objective-C
@@ -39,9 +38,10 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 ## Installation
 
 ```
-pod 'FRAuth'
-pod 'FRUI'
-pod 'FRProximity'
+pod 'FRAuth' // Authentication module for Access Manager
+pod 'FRUI' // UI SDK demonstrates FRAuth SDK functionalities
+pod 'FRProximity' // Add-on for FRAuth's Device Profile feature related to location, and BLE
+pod 'FRAutheneticator' // Authenticator module that generates HOTP, TOTP, and Push registration/authentication
 ```
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
@@ -93,6 +93,10 @@ ForgeRock provides these samples to help demonstrate SDK functionality:
     - Jailbreak detection
 
     Configure your AM instance settings in the `/FRExample/FRExample/Configs/FRAuthConfig.plist` file to use this sample application.
+    
+- **Authenticator App Sample - `/FRAuthenticatorExample/`**
+	This Authenticator sample app demonstrates HMAC-based, and Time-based One-time Password, and Push Registration and Authentication with ForgeRock's Access Manager.
+
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->

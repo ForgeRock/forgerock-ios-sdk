@@ -12,6 +12,7 @@
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
 		D521A2102303644300EDD28E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D554633622A6EF960096C7A4 /* Assets.xcassets */; };
 		D521A2122303644300EDD28E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
+		D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */; };
 		D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D554633522A6EF950096C7A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
 		D554633722A6EF960096C7A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D554633622A6EF960096C7A4 /* Assets.xcassets */; };
@@ -24,7 +25,12 @@
 		D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F443233AC39500D18DF1 /* FRAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; };
 		D59FAEB6234418EF005D34DA /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5C050EC245A415E00E5A38C /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; };
+		D5C050ED245A415E00E5A38C /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */; };
 		D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
+		D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */; };
+		D5E080D123DA5A070025EA17 /* CustomNameCallbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */; };
 		D5E6F45B233AC3B700D18DF1 /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; };
 		D5E6F45C233AC3B700D18DF1 /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5E6F45F233AC3B700D18DF1 /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F443233AC39500D18DF1 /* FRAuth.framework */; };
@@ -34,6 +40,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D53327052480613E002FF207 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D548EC952469D107002DE328;
+			remoteInfo = FRProximityTestHost;
+		};
 		D59FAE552344141A005D34DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */;
@@ -183,6 +196,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
+				D5C050ED245A415E00E5A38C /* FRCore.framework in Embed Frameworks */,
 				D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */,
 				D59FAEB6234418EF005D34DA /* FRUI.framework in Embed Frameworks */,
 			);
@@ -193,6 +207,7 @@
 
 /* Begin PBXFileReference section */
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceAuthInterceptor.swift; sourceTree = "<group>"; };
 		D554632C22A6EF950096C7A4 /* FRExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D554632F22A6EF950096C7A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D554633122A6EF950096C7A4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +215,10 @@
 		D554633622A6EF960096C7A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D554633922A6EF960096C7A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRProximity.xcodeproj; path = ../../FRProximity/FRProximity.xcodeproj; sourceTree = "<group>"; };
+		D5C050EB245A415E00E5A38C /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
+		D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNameCallbackCell.swift; sourceTree = "<group>"; };
+		D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNameCallbackCell.xib; sourceTree = "<group>"; };
 		D5E6F433233ABF1800D18DF1 /* FRAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FRAuth.framework; path = "/Users/james.go/Documents/workspace/iOS/forgerock-ios-sdk/SampleApps/FRExample/FRExample/FRAuth.framework"; sourceTree = "<absolute>"; };
 		D5E6F434233ABF1800D18DF1 /* FRUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FRUI.framework; path = "/Users/james.go/Documents/workspace/iOS/forgerock-ios-sdk/SampleApps/FRExample/FRExample/FRUI.framework"; sourceTree = "<absolute>"; };
 		D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
@@ -228,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
+				D5C050EC245A415E00E5A38C /* FRCore.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
 			);
@@ -270,6 +290,7 @@
 		D554632E22A6EF950096C7A4 /* FRExample */ = {
 			isa = PBXGroup;
 			children = (
+				D5E080C623DA58310025EA17 /* Customization */,
 				D5FE5E5B23190A0000E04658 /* Configs */,
 				D5FE5E5E23190A0000E04658 /* Supporting Files */,
 				D554632F22A6EF950096C7A4 /* AppDelegate.swift */,
@@ -284,6 +305,7 @@
 		D5554F6F235A6F78009FC810 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D5C050EB245A415E00E5A38C /* FRCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -293,8 +315,20 @@
 			children = (
 				D59FAE562344141A005D34DA /* FRProximity.framework */,
 				D59FAE582344141A005D34DA /* FRProximityTests.xctest */,
+				D53327062480613E002FF207 /* FRProximityTestHost.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D5E080C623DA58310025EA17 /* Customization */ = {
+			isa = PBXGroup;
+			children = (
+				D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */,
+				D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */,
+				D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */,
+				D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */,
+			);
+			path = Customization;
 			sourceTree = "<group>";
 		};
 		D5E6F43C233AC39500D18DF1 /* Products */ = {
@@ -392,7 +426,7 @@
 		D554632422A6EF950096C7A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "James Go";
 				TargetAttributes = {
@@ -456,6 +490,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D53327062480613E002FF207 /* FRProximityTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRProximityTestHost.app;
+			remoteRef = D53327052480613E002FF207 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D59FAE562344141A005D34DA /* FRProximity.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -524,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D554633A22A6EF960096C7A4 /* LaunchScreen.storyboard in Resources */,
+				D5E080D123DA5A070025EA17 /* CustomNameCallbackCell.xib in Resources */,
 				D554633722A6EF960096C7A4 /* Assets.xcassets in Resources */,
 				D5FE5E6823190A7700E04658 /* FRAuthConfig.plist in Resources */,
 				D554633522A6EF950096C7A4 /* Main.storyboard in Resources */,
@@ -546,6 +588,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */,
+				D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */,
+				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
 			);

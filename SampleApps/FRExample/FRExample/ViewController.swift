@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var performActionBtn: FRButton?
     @IBOutlet weak var clearLogBtn: FRButton?
     @IBOutlet weak var dropDown: FRDropDownButton?
+    @IBOutlet weak var invokeBtn: FRButton?
+    @IBOutlet weak var urlField: FRTextField?
     
     var selectedIndex: Int = 0
     var primaryColor: UIColor
@@ -111,6 +113,11 @@ class ViewController: UIViewController {
         // Styling
         self.performActionBtn?.backgroundColor = self.primaryColor
         self.performActionBtn?.tintColor = self.textColor
+        self.invokeBtn?.backgroundColor = self.primaryColor
+        self.invokeBtn?.tintColor = self.textColor
+        
+        self.urlField?.tintColor = self.primaryColor
+        self.urlField?.normalColor = self.primaryColor
         
         self.clearLogBtn?.backgroundColor = UIColor.hexStringToUIColor(hex: "#DC143C")
         self.clearLogBtn?.titleColor = UIColor.white
@@ -133,42 +140,41 @@ class ViewController: UIViewController {
             "JailbreakDetector.analyze()",
             "FRUser.getAccessToken()",
             "Login with UI (Accesstoken)",
-            "Login with UI (Token)",
+            "FRSession.authenticate with UI (Token)",
             "Register User with UI (FRUser)",
             "Register User with UI (Accesstoken)",
-            "Register User with UI (Token)",
             "Login without UI (FRUser)",
             "Login without UI (Accesstoken)",
-            "Login without UI (Token)",
+            "FRSession.authenticate without UI (Token)",
             "Display Configurations"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
 
         
-        // - MARK: Token Management - Example starts
+        // - MARK: Token Management - Example
         // Register FRURLProtocol
         URLProtocol.registerClass(FRURLProtocol.self)
+        let policy = TokenManagementPolicy(validatingURL: [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!], delegate: self)
+        FRURLProtocol.tokenManagementPolicy = policy
         
-        // Add URLs for FRAuth SDK to validate
-        // All other URLs will be ignored, and FRAuth SDK will not inject Authorization header if request is not within the list
-        FRURLProtocol.validatedURLs = [URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!]
+        //  - MARK: Authorization Policy - Example
+        let authPolicy = AuthorizationPolicy(validatingURL: [URL(string: "http://localhost:9888/policy/transfer")!], delegate: self)
+        FRURLProtocol.authorizationPolicy = authPolicy
         
-        // Define customizable token refresh policy
-        FRURLProtocol.refreshTokenPolicy = {(responseData, response, error) in
-            var shouldHandle = false
-            // refresh token policy will only be enforced when HTTP status code is equal to 401 in this case
-            // Developers can define their own policy based on response data, URLResponse, and/or error from the request
-            if let thisResponse = response as? HTTPURLResponse, thisResponse.statusCode == 401 {
-             
-                shouldHandle = true
-            }
-            return shouldHandle
-        }
-        
+        // Configure FRURLProtocol for HTTP client
         let config = URLSessionConfiguration.default
         config.protocolClasses = [FRURLProtocol.self]
         self.urlSession = URLSession(configuration: config)
-        // - MARK: Token Management - Example ends
+        
+        //  - MARK: FRUI Customize Cell example
+        // Comment out below code to demonstrate FRUI customization
+//        CallbackTableViewCellFactory.shared.registerCallbackTableViewCell(callbackType: "NameCallback", cellClass: CustomNameCallbackCell.self, nibName: "CustomNameCallbackCell")
+        
+        
+        //  - MARK: RequestInterceptor example
+        
+        //  By commenting out below code, it registers 'ForceAuthIntercetpr' class into FRCore and FRAuth's RequestInterceptor which then allows developers to customize requests being made by ForgeRock SDK, and modify as needed
+//        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [ForceAuthInterceptor()])
         
         // Start SDK
         do {
@@ -296,8 +302,11 @@ class ViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
-        else {
+        else if let error = error {
             self.displayLog("\(String(describing: error))")
+        }
+        else {
+            self.displayLog("Authentication Tree flow was successful; no result returned")
         }
     }
     
@@ -309,57 +318,169 @@ class ViewController: UIViewController {
         if expectedType as AnyObject? === AccessToken.self {
             if flowType == .authentication {
                 FRUser.authenticateWithUI(self, completion: { (token: AccessToken?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else if let token = token {
+                        self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
+                    }
                 })
             }
             else {
                 FRUser.registerWithUI(self, completion: { (token: AccessToken?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else if let token = token {
+                        self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
+                    }
                 })
             }
         }
         else if expectedType as AnyObject? === Token.self {
             if flowType == .authentication {
                 FRUser.authenticateWithUI(self, completion: { (token: Token?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else if let token = token {
+                        self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
+                    }
                 })
             }
             else {
                 FRUser.registerWithUI(self, completion: { (token: Token?, error) in
-                    self.displayLog(token.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else if let token = token {
+                        self.displayLog(token.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
+                    }
                 })
             }
         }
         else if expectedType as AnyObject? === FRUser.self {
             if flowType == .authentication {
                 FRUser.authenticateWithUI(self, completion: { (user: FRUser?, error) in
-                    self.displayLog(user.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else if let user = user {
+                        self.displayLog(user.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
+                    }
                 })
             }
             else {
                 FRUser.registerWithUI(self, completion: { (user: FRUser?, error) in
-                    self.displayLog(user.debugDescription)
+                    if let error = error {
+                        self.displayLog(error.localizedDescription)
+                    }
+                    else if let user = user {
+                        self.displayLog(user.debugDescription)
+                    }
+                    else {
+                        self.displayLog("Authentication Tree flow was successful; no result returned")
+                    }
                 })
             }
         }
     }
     
     func performActionHelper<T>(auth: FRAuth, flowType: FRAuthFlowType, expectedType: T) {
-        if expectedType as AnyObject as AnyObject? === AccessToken.self {
-            auth.next(flowType: flowType) { (result: AccessToken?, node, error) in
-                self.handleNode(result, node, error)
+        
+        if expectedType as AnyObject? === FRUser.self {
+            let completionBlock: NodeCompletion = {(user: FRUser?, node, error) in
+               
+               DispatchQueue.main.async {
+                   self.stopLoading()
+                   self.handleNode(user, node, error)
+               }
+           }
+            
+            if flowType == .registration {
+                FRUser.register(completion: completionBlock)
+            }
+            else {
+                FRUser.login(completion: completionBlock)
             }
         }
-        else if expectedType as AnyObject as AnyObject? === Token.self {
-            auth.next(flowType: flowType) { (result: Token?, node, error) in
-                self.handleNode(result, node, error)
+        else if expectedType as AnyObject? === AccessToken.self {
+            let completionBlock: NodeCompletion = {(user: FRUser?, node, error) in
+                DispatchQueue.main.async {
+                    self.stopLoading()
+                    self.handleNode(user?.token, node, error)
+                }
+            }
+            
+            if flowType == .registration {
+                FRUser.register(completion: completionBlock)
+            }
+            else {
+                FRUser.login(completion: completionBlock)
             }
         }
-        else if expectedType as AnyObject as AnyObject? === FRUser.self {
-            auth.next(flowType: flowType) { (result: FRUser?, node, error) in
-                self.handleNode(result, node, error)
+    }
+    
+    func performSessionAuthenticate(handleWithUI: Bool) {
+
+        let alert = UIAlertController(title: "FRSession Authenticate", message: nil, preferredStyle: .alert)
+        alert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "Enter authIndex (tree name) value"
+            textField.autocorrectionType = .no
+            textField.autocapitalizationType = .none
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let submitAction = UIAlertAction(title: "Continue", style: .default, handler: { (_) in
+             
+            if let authIndexValue = alert.textFields?.first?.text {
+                
+                if handleWithUI {
+                    FRSession.authenticateWithUI(authIndexValue, "service", self) { (token: Token?, error) in
+                        
+                        if let error = error {
+                            self.displayLog(error.localizedDescription)
+                        }
+                        else if let token = token {
+                            self.displayLog(token.debugDescription)
+                        }
+                        else {
+                            self.displayLog("Authentication Tree flow was successful; no result returned")
+                        }
+                    }
+                }
+                else {
+                    FRSession.authenticate(authIndexValue: authIndexValue) { (token: Token?, node, error) in
+                        DispatchQueue.main.async {
+                            self.handleNode(token, node, error)
+                        }
+                    }
+                }
             }
-        }
+            else {
+                self.displayLog("Invalid authIndexValue.")
+            }
+        });
+        
+        alert.addAction(cancelAction)
+        alert.addAction(submitAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     func getAccessTokenFromUser() {
@@ -497,6 +618,28 @@ class ViewController: UIViewController {
     
     // MARK: - IBAction
     
+    @IBAction func invokeAPIButton(sender: UIButton) {
+        
+        guard let urlStr = urlField?.text, let url = URL(string: urlStr) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("iPlanetDirectoryPro="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        request.setValue((FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "SSOToken")
+        self.urlSession.dataTask(with: request) { (data, response, error) in
+            guard let responseData = data, let httpresponse = response as? HTTPURLResponse, error == nil else {
+                self.displayLog("Invoking API failed\n\nError: \(String(describing: error))")
+                return
+            }
+
+            let responseStr = String(decoding: responseData, as: UTF8.self)
+            self.displayLog("Response Data: \(responseStr)")
+            self.displayLog("Response Header: \n\(httpresponse.allHeaderFields)")
+        }.resume()
+    }
+    
+    
     @IBAction func clearLogBtnClicked(sender: UIButton) {
         DispatchQueue.main.async {
             self.loggingView?.text = ""
@@ -548,8 +691,8 @@ class ViewController: UIViewController {
             self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
         case 9:
-            // Login for SSO Token
-            self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: Token.self)
+            // FRSession.authenticate with UI (Token)
+            self.performSessionAuthenticate(handleWithUI: true)
             break
         case 10:
             // Register a user for FRUser
@@ -560,22 +703,18 @@ class ViewController: UIViewController {
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
             break
         case 12:
-            // Register a user for Token
-            self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: Token.self)
-            break
-        case 13:
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 14:
+        case 13:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 15:
-            // Login for Token without UI
-            self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: Token.self)
+        case 14:
+            // FRSession.authenticate without UI (Token)
+            self.performSessionAuthenticate(handleWithUI: false)
             break
-        case 16:
+        case 15:
             // Display current Configuration
             self.displayCurrentConfig()
             break
@@ -614,4 +753,53 @@ extension UIColor {
             alpha: CGFloat(1.0)
         )
     }
+}
+
+
+//  - MARK: TokenManagementPolicy example
+extension ViewController: TokenManagementPolicyDelegate {
+    func evaluateTokenRefresh(responseData: Data?, response: URLResponse?, error: Error?) -> Bool {
+        var shouldHandle = false
+        // refresh token policy will only be enforced when HTTP status code is equal to 401 in this case
+        // Developers can define their own policy based on response data, URLResponse, and/or error from the request
+        if let thisResponse = response as? HTTPURLResponse, thisResponse.statusCode == 401 {
+         
+            shouldHandle = true
+        }
+        return shouldHandle
+    }
+}
+
+//  - MARK: AuthorizationPolicy example
+extension ViewController: AuthorizationPolicyDelegate {
+    func onPolicyAdviseReceived(policyAdvice: PolicyAdvice, completion: @escaping FRCompletionResultCallback) {
+        DispatchQueue.main.async {
+            FRSession.authenticateWithUI(policyAdvice, self) { (token: Token?, error) in
+                if let _ = token, error == nil {
+                    completion(true)
+                }
+                else {
+                    completion(false)
+                }
+            }
+        }
+    }
+    
+//    func evaluateAuthorizationPolicy(responseData: Data?, response: URLResponse?, error: Error?) -> PolicyAdvice? {
+//        // Example to evaluate given response data, and constructs PolicyAdvice object
+//        // Following code expects JSON response payload with 'advice' attribute in JSON which contains an array of 'advice' response from AM
+//        if let data = responseData, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+//            if let advice = json["advice"], let adviceData = advice.data(using: .utf8), let adviceJSON = try? JSONSerialization.jsonObject(with: adviceData, options: []) as? [[String: Any]], let evalResult = adviceJSON.first, let policyAdvice = PolicyAdvice(json: evalResult) {
+//                return policyAdvice
+//            }
+//        }
+//        return nil
+//    }
+    
+//    func updateRequest(originalRequest: URLRequest, txId: String?) -> URLRequest {
+//        let mutableRequest = ((originalRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
+//        // Appends given transactionId into header
+//        mutableRequest.setValue(txId, forHTTPHeaderField: "transactionId")
+//        return mutableRequest as URLRequest
+//    }
 }

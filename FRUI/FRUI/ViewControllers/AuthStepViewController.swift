@@ -10,6 +10,7 @@
 
 import UIKit
 import FRAuth
+import FRCore
 
 protocol AuthStepProtocol {
     func submitNode()
@@ -21,11 +22,8 @@ class AuthStepViewController: UIViewController {
     var tokenCompletion: NodeUICompletion<Token>?
     var atCompletion: NodeUICompletion<AccessToken>?
     var userCompletion: NodeUICompletion<FRUser>?
-    var currentNode: Node?
-    var authService: AuthService?
-    var auth: FRAuth?
+    var currentNode: Node
     var type: Any?
-    var flowType: FRAuthFlowType?
     var isKeyboardVisible: Bool = false
     var authCallbacks: [Callback] = []
     var authCallbackValues: [String:String] = [:]
@@ -40,36 +38,13 @@ class AuthStepViewController: UIViewController {
     
     // MARK: - Init
     
-    init<T>(auth: FRAuth, flowType: FRAuthFlowType?, uiCompletion: @escaping NodeUICompletion<T>, nibName: String) {
-        // set FRAuth
-        self.auth = auth
-        // set completion block
+    init<T>(node: Node, uiCompletion: @escaping NodeUICompletion<T>, nibName: String) {
         
-        if T.self as AnyObject? === AccessToken.self {
-            self.atCompletion = (uiCompletion as! NodeUICompletion<AccessToken>)
-            self.type = AccessToken.self
-        }
-        else if T.self as AnyObject? === Token.self {
-            self.tokenCompletion = (uiCompletion as! NodeUICompletion<Token>)
-            self.type = Token.self
-        }
-        else if T.self as AnyObject? === FRUser.self {
-            self.userCompletion = (uiCompletion as! NodeUICompletion<FRUser>)
-            self.type = FRUser.self
-        }
-        
-        self.flowType = flowType
+        currentNode = node
         
         // Super init
         super.init(nibName: nibName, bundle: Bundle(for: AuthStepViewController.self))
         
-        self.initPrivate()
-    }
-    
-    
-    init<T>(authService: AuthService, uiCompletion: @escaping NodeUICompletion<T>, nibName: String) {
-        // set AuthService
-        self.authService = authService
         // set completion block
         if T.self as AnyObject? === AccessToken.self {
             self.atCompletion = (uiCompletion as! NodeUICompletion<AccessToken>)
@@ -84,11 +59,9 @@ class AuthStepViewController: UIViewController {
             self.type = FRUser.self
         }
         
-        // Super init
-        super.init(nibName: nibName, bundle: Bundle(for: AuthStepViewController.self))
-        
         self.initPrivate()
     }
+    
     
     fileprivate func initPrivate() {
         
@@ -96,21 +69,16 @@ class AuthStepViewController: UIViewController {
         loadingView.add(inView: self.view)
         
         // Register tableViewCell
-        self.tableView?.register(UINib(nibName: "NameCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: NameCallbackTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "PasswordCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: PasswordCallbackTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "ChoiceCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: ChoiceCallbackTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "TermsAndConditionsTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: TermsAndConditionsTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "KbaCreateCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: KbaCreateCallbackTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "PollingWaitCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: PollingWaitCallbackTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "ConfirmationCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: ConfirmationCallbackTableViewCell.cellIdentifier)
-        self.tableView?.register(UINib(nibName: "TextOutputCallbackTableViewCell", bundle: Bundle(for: AuthStepViewController.self)), forCellReuseIdentifier: TextOutputCallbackTableViewCell.cellIdentifier)
+        for callbackType in CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks.keys {
+            guard let callbackTableViewCell = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callbackType],
+                let callbackTableViewCellNib = CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks[callbackType] else {
+                    return
+            }
+            
+            self.tableView?.register(UINib(nibName: callbackTableViewCellNib, bundle: Bundle(for: callbackTableViewCell.self)), forCellReuseIdentifier: callbackTableViewCell.cellIdentifier)
+        }
         
-        if self.flowType == FRAuthFlowType.authentication {
-            self.title = "User Login"
-        }
-        else {
-            self.title = "User Registration"
-        }
+        self.title = "FRUI"
         
         // Notification for Keyboard appearance
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
@@ -128,86 +96,22 @@ class AuthStepViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.logoImageView?.image = FRUI.shared.logoImage
         self.authStepLabel?.textColor = FRUI.shared.primaryTextColor
-        
-        self.startLoading()
-        
-        //  Start authentication
-        if let authService = self.authService {
-            
-            self.title = authService.serviceName + " Flow"
-            
-            if self.type as AnyObject? === AccessToken.self {
-                authService.next { (token: AccessToken?, node, error) in
-                    
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(token, node, error)
-                    }
-                }
-            } else if self.type as AnyObject? === Token.self {
-                authService.next { (token: Token?, node, error) in
-                    
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(token, node, error)
-                    }
-                }
-            } else if self.type as AnyObject? === FRUser.self {
-                authService.next { (user: FRUser?, node, error) in
-                    
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(user, node, error)
-                    }
-                }
-            }
-        }
-        else if let auth = self.auth, let flowType = self.flowType {
-            self.title = "FRAuth Authentication"
-            if self.type as AnyObject? === AccessToken.self {
-                auth.next(flowType: flowType) { (token: AccessToken?, node, error) in
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(token, node, error)
-                    }
-                }
-            } else if self.type as AnyObject? === Token.self {
-                auth.next(flowType: flowType) { (token: AccessToken?, node, error) in
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(token, node, error)
-                    }
-                }
-            } else if self.type as AnyObject? === FRUser.self {
-                auth.next(flowType: flowType) { (user: FRUser?, node, error) in
-                    //  Perform UI work in the main thread
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.handleNode(user, node, error)
-                    }
-                }
-            }
-        }
-        
-        //  Start loading indicator
-        self.startLoading()
-        
+                
         //  Styling buttons
         self.nextButton?.backgroundColor = FRUI.shared.primaryColor
         self.nextButton?.titleColor = UIColor.white
         self.cancelButton?.backgroundColor = FRUI.shared.secondaryColor
         self.cancelButton?.titleColor = UIColor.white
+        
+        self.handleNode(nil, self.currentNode, nil)
     }
     
     
@@ -241,9 +145,9 @@ class AuthStepViewController: UIViewController {
                 var message = ""
                 var dismissAfter = false
                 //  Handle error
-                if let authError: AuthError = error as? AuthError {
+                if let networkError: NetworkError = error as? NetworkError {
                     
-                    switch authError {
+                    switch networkError {
                     case .invalidCredentials(_, _, _):
                         message = "Invalid credentials"
                         break
@@ -272,6 +176,17 @@ class AuthStepViewController: UIViewController {
                 })
                 alert.addAction(action)
                 self.present(alert, animated: true)
+            }
+            else {
+                if let completion = self.atCompletion {
+                    completion(nil, nil)
+                } else if let completion = self.tokenCompletion {
+                    completion(nil, nil)
+                } else if let completion = self.userCompletion {
+                    completion(nil, nil)
+                }
+                //  Close viewController
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -335,11 +250,7 @@ class AuthStepViewController: UIViewController {
         //  Force to end editing
         self.view.endEditing(true)
         self.startLoading()
-        
-        guard let currentNode = self.currentNode else {
-            return
-        }
-        
+                
         for (identifier, value) in self.authCallbackValues {
             
             for authCallback: Callback in self.authCallbacks
@@ -385,9 +296,17 @@ class AuthStepViewController: UIViewController {
     }
     
     @IBAction func cancelButtonClicked(sender: UIButton) {
+        
+        if let completion = self.atCompletion {
+            completion(nil, AuthError.authenticationCancelled)
+        } else if let completion = self.tokenCompletion {
+            completion(nil, AuthError.authenticationCancelled)
+        } else if let completion = self.userCompletion {
+            completion(nil, AuthError.authenticationCancelled)
+        }
+        
         //  Force to end editing
         self.view.endEditing(true)
-        
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -405,40 +324,19 @@ extension AuthStepViewController: UITableViewDataSource {
         
         let callback = self.authCallbacks[indexPath.row]
         
-        if (callback is NameCallback || callback is StringAttributeInputCallback || callback is ValidatedCreateUsernameCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("NameCallbackTableViewCell", owner: self, options: nil)?.first as! NameCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! SingleValueCallback)
-            return cell
-        }
-        else if (callback is PasswordCallback || callback is ValidatedCreatePasswordCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("PasswordCallbackTableViewCell", owner: self, options: nil)?.first as! PasswordCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! SingleValueCallback)
-            return cell
-        }
-        else if (callback is ChoiceCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("ChoiceCallbackTableViewCell", owner: self, options: nil)?.first as! ChoiceCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! ChoiceCallback)
-            return cell
-        } else if (callback is TermsAndConditionsCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("TermsAndConditionsTableViewCell", owner: self, options: nil)?.first as! TermsAndConditionsTableViewCell
-            cell.updateCellData(authCallback: callback as! TermsAndConditionsCallback)
-            return cell
-        } else if (callback is KbaCreateCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("KbaCreateCallbackTableViewCell", owner: self, options: nil)?.first as! KbaCreateCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! KbaCreateCallback)
-            return cell
-        } else if (callback is PollingWaitCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("PollingWaitCallbackTableViewCell", owner: self, options: nil)?.first as! PollingWaitCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! PollingWaitCallback)
-            return cell
-        } else if (callback is ConfirmationCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("ConfirmationCallbackTableViewCell", owner: self, options: nil)?.first as! ConfirmationCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! ConfirmationCallback)
-            cell.delegate = self
-            return cell
-        } else if (callback is TextOutputCallback) {
-            let cell = Bundle(for: AuthStepViewController.self).loadNibNamed("TextOutputCallbackTableViewCell", owner: self, options: nil)?.first as! TextOutputCallbackTableViewCell
-            cell.updateCellData(authCallback: callback as! TextOutputCallback)
+        
+        if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type],
+            let callbackTableViewCellNib = CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks[callback.type] {
+            let cell = Bundle(for: callbackTableViewCell.self).loadNibNamed(callbackTableViewCellNib, owner: self, options: nil)?.first as! FRUICallbackTableViewCell
+            cell.updateCellData(callback: callback)
+            
+            if let confirmationCallbackCell = cell as? ConfirmationCallbackTableViewCell {
+                confirmationCallbackCell.delegate = self
+            }
+            else if let pollingWaitCallbackCell = cell as? PollingWaitCallbackTableViewCell {
+                pollingWaitCallbackCell.delegate = self
+            }
+            
             return cell
         }
         else {
@@ -472,31 +370,10 @@ extension AuthStepViewController: UITableViewDelegate {
         
         let callback = self.authCallbacks[indexPath.row]
         
-        var cellHeight:CGFloat = 0.0
+        let cellHeight:CGFloat = 0.0
         
-        if (callback is NameCallback || callback is StringAttributeInputCallback || callback is ValidatedCreateUsernameCallback) {
-            cellHeight = NameCallbackTableViewCell.cellHeight
-        }
-        else if (callback is PasswordCallback || callback is ValidatedCreatePasswordCallback) {
-            cellHeight = PasswordCallbackTableViewCell.cellHeight
-        }
-        else if (callback is ChoiceCallback) {
-            cellHeight = ChoiceCallbackTableViewCell.cellHeight
-        }
-        else if (callback is TermsAndConditionsCallback) {
-            cellHeight = TermsAndConditionsTableViewCell.cellHeight
-        }
-        else if (callback is KbaCreateCallback) {
-            cellHeight = KbaCreateCallbackTableViewCell.cellHeight
-        }
-        else if (callback is PollingWaitCallback) {
-            cellHeight = PollingWaitCallbackTableViewCell.cellHeight
-        }
-        else if (callback is ConfirmationCallback) {
-            cellHeight = ConfirmationCallbackTableViewCell.cellHeight
-        }
-        else if (callback is TextOutputCallback) {
-            cellHeight = TextOutputCallbackTableViewCell.cellHeight
+        if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type] {
+            return callbackTableViewCell.cellHeight
         }
         
         return cellHeight

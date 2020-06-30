@@ -53,7 +53,19 @@ struct TokenManager {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 if token.willExpireIn(threshold: self.oAuth2Client.threshold) {
                     if let refreshToken = token.refreshToken {
-                        self.oAuth2Client.refresh(refreshToken: refreshToken) { (token, error) in
+                        self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
+                            do {
+                                newToken?.sessionToken = token.sessionToken
+                                try self.sessionManager.setAccessToken(token: newToken)
+                                completion(token, error)
+                            }
+                            catch {
+                                completion(nil, error)
+                            }
+                        }
+                    }
+                    else if let ssoToken = self.sessionManager.getSSOToken() {
+                        self.oAuth2Client.exchangeToken(token: ssoToken) { (token, error) in
                             do {
                                 try self.sessionManager.setAccessToken(token: token)
                                 completion(token, error)
@@ -102,7 +114,13 @@ struct TokenManager {
         if let token = try self.retrieveAccessTokenFromKeychain() {
             if token.willExpireIn(threshold: self.oAuth2Client.threshold) {
                 if let refreshToken = token.refreshToken {
-                    let token = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
+                    let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
+                    newToken.sessionToken = token.sessionToken
+                    try self.sessionManager.setAccessToken(token: newToken)
+                    return token
+                }
+                else if let ssoToken = self.sessionManager.getSSOToken() {
+                    let token = try self.oAuth2Client.exchangeTokenSync(token: ssoToken)
                     try self.sessionManager.setAccessToken(token: token)
                     return token
                 }
@@ -125,14 +143,17 @@ struct TokenManager {
     }
     
     
+    /// Refreshes OAuth2 token set using refresh_token
+    /// - Parameter completion: TokenCompletion block which will return an AccessToken object, or Error
     func refresh(completion: @escaping TokenCompletionCallback) {
         do {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 if let refreshToken = token.refreshToken {
-                    self.oAuth2Client.refresh(refreshToken: refreshToken) { (token, error) in
+                    self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
                         do {
-                            try self.sessionManager.setAccessToken(token: token)
-                            completion(token, error)
+                            newToken?.sessionToken = token.sessionToken
+                            try self.sessionManager.setAccessToken(token: newToken)
+                            completion(newToken, error)
                         }
                         catch {
                             completion(nil, error)
@@ -149,6 +170,45 @@ struct TokenManager {
         }
         catch {
             completion(nil, error)
+        }
+    }
+    
+    
+    /// Refreshs OAuth2 token set synchronously with current refresh_token
+    /// - Throws: TokenError
+    /// - Returns: renewed OAuth2 token 
+    func refreshSync() throws -> AccessToken? {
+        if let token = try self.retrieveAccessTokenFromKeychain() {
+            if let refreshToken = token.refreshToken {
+                let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
+                newToken.sessionToken = token.sessionToken
+                try self.sessionManager.setAccessToken(token: newToken)
+                return newToken
+            }
+            else {
+                throw TokenError.nullRefreshToken
+            }
+        }
+        else {
+            throw TokenError.nullToken
+        }
+    }
+    
+    /// Revokes OAuth2 token set using either of access_token or refresh_token
+    /// - Parameter completion: Completion block which will return an Error if there was any error encountered
+    func revoke(completion: @escaping CompletionCallback) {
+        
+        do {
+            if let token = try self.retrieveAccessTokenFromKeychain() {
+                self.oAuth2Client.revoke(accessToken: token, completion: completion)
+                try? self.sessionManager.setAccessToken(token: nil)
+            }
+            else {
+                completion(TokenError.nullToken)
+            }
+        }
+        catch {
+            completion(error)
         }
     }
 }

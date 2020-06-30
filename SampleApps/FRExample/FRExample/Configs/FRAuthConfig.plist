@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>forgerock_enable_cookie</key>
+	<true/>
 	<key>forgerock_oauth_client_id</key>
 	<string>iosclient</string>
 	<key>forgerock_oauth_redirect_uri</key>

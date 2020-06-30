@@ -46,7 +46,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - FRUser.login
     
-    func testFRUserLogin() {
+    func test_FRUserLogin() {
         
         // Start SDK
         self.config.authServiceName = "UsernamePassword"
@@ -102,7 +102,7 @@ class FRUserTests: FRBaseTest {
         XCTAssertNotNil(FRUser.currentUser)
     }
     
-    func testFRUserLoginAfterAlreadyLoggedIn() {
+    func test_FRUserLoginAfterAlreadyLoggedIn() {
         
         // Start SDK
         self.startSDK()
@@ -117,9 +117,22 @@ class FRUserTests: FRBaseTest {
         
         let ex = self.expectation(description: "FRUser.login after already logged-in")
         FRUser.login { (user, node, error) in
-            XCTAssertNotNil(user)
+            XCTAssertNil(user)
             XCTAssertNil(node)
-            XCTAssertNil(error)
+            XCTAssertNotNil(error)
+            
+            if let authError = error as? AuthError {
+                switch authError {
+                case .userAlreadyAuthenticated:
+                    break
+                default:
+                    XCTFail("While expecting AuthError.userAlreadyAuthenticated; failed with different error \(authError.localizedDescription)")
+                    break
+                }
+            }
+            else {
+                XCTFail("While expecting AuthError.userAlreadyAuthenticated; failed with different error \(String(describing: error?.localizedDescription))")
+            }
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
@@ -129,7 +142,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - Token Refresh
     
-    func testFRUserRefreshSessionSyncSuccess() {
+    func test_01_01_FRUserRefreshSessionSyncSuccess() {
         // Start SDK
         self.startSDK()
         
@@ -167,7 +180,7 @@ class FRUserTests: FRBaseTest {
         XCTAssertNotEqual(at1, user.token)
     }
     
-    func testFRUserRefreshSessionAsyncSuccess() {
+    func test_01_02_FRUserRefreshSessionAsyncSuccess() {
         
         // Start SDK
         self.startSDK()
@@ -208,7 +221,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testFRUserRefreshSessionAsyncFailureNoRefreshToken() {
+    func test_01_03_FRUserRefreshSessionAsyncFailureNoRefreshToken() {
         
         // Start SDK
         self.startSDK()
@@ -263,7 +276,7 @@ class FRUserTests: FRBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testFRUserRefreshSessionSyncFailureNoRefreshToken() {
+    func test_01_04_FRUserRefreshSessionSyncFailureNoRefreshToken() {
         
         // Start SDK
         self.startSDK()
@@ -316,7 +329,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testFRUserRefreshTokenSyncNoToken() {
+    func test_01_05_FRUserRefreshTokenSyncNoToken() {
     
         // Start SDK
         self.startSDK()
@@ -360,7 +373,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testFRUserRefreshTokenAsyncNoToken() {
+    func test_01_05_FRUserRefreshTokenAsyncNoToken() {
         
         // Start SDK
         self.startSDK()
@@ -408,7 +421,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - Get UserInfo
     
-    func testGetUserInfoFailure() {
+    func test_02_01_GetUserInfoFailure() {
         
         // Load mock responses for failure response of /userinfo
         self.loadMockResponses(["OAuth2_UserInfo_Failure"])
@@ -441,7 +454,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testGetUserInfoSuccess() {
+    func test_02_02_GetUserInfoSuccess() {
         // Perform login first
         self.performUserLogin()
         
@@ -468,7 +481,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func testUserInfoObjAndDescription() {
+    func test_02_03_UserInfoObjAndDescription() {
         
         guard self.shouldLoadMockResponses else {
             // No point of testing pre-loaded userInfo for real server
@@ -586,7 +599,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - User Logout
     
-    func testUserLogoutFailOnAMAPI() {
+    func test_03_01_UserLogoutFailOnAMAPI() {
         // Perform login first
         self.performUserLogin()
         
@@ -609,18 +622,18 @@ class FRUserTests: FRBaseTest {
         
         // Validate if AuthService doesn't return stored SSO TOken in the cookie
         let ex = self.expectation(description: "First Node submit")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: AccessToken?, node, error) in
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
             
             // Validate result
             XCTAssertNil(token)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             ex.fulfill()
-        })
+        }
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func testUserLogOutSuccess() {
+    func test_03_02_UserLogOutSuccess() {
         
         // Perform login first
         self.performUserLogin()
@@ -642,21 +655,20 @@ class FRUserTests: FRBaseTest {
         // Validate if FRUser.currentUser is nil
         XCTAssertNil(FRUser.currentUser)
         
-        // Validate if AuthService doesn't return stored SSO TOken in the cookie
+        // Validate if AuthService doesn't return stored SSO Token in the cookie
         let ex = self.expectation(description: "First Node submit")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: AccessToken?, node, error) in
-            
+        FRUser.login { (user: FRUser?, node, error) in
             // Validate result
-            XCTAssertNil(token)
+            XCTAssertNil(user)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             ex.fulfill()
-        })
+        }
         waitForExpectations(timeout: 60, handler: nil)
     }
     
     
-    func testUserLogOutWithAccessToken() {
+    func test_03_03_UserLogOutWithAccessToken() {
         // Perform login first
         self.performUserLogin()
         
@@ -684,60 +696,19 @@ class FRUserTests: FRBaseTest {
         
         // Validate if AuthService doesn't return stored SSO TOken in the cookie
         let ex = self.expectation(description: "First Node submit")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: AccessToken?, node, error) in
-            
+        FRUser.login { (user: FRUser?, node, error) in
             // Validate result
-            XCTAssertNil(token)
+            XCTAssertNil(user)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             ex.fulfill()
-        })
+        }
         waitForExpectations(timeout: 60, handler: nil)
         
     }
     
-    func testUserLogOutWithoutToken() {
-        
-        // Given
-        self.startSDK()
-        
-        guard let tokenData = self.readDataFromJSON("AccessToken") else {
-            XCTFail("Failed to read 'AccessToken.json' for \(String(describing: self)) testing")
-            return
-        }
-        
-        guard let at = AccessToken(tokenResponse: tokenData) else {
-            XCTFail("Failed to construct AccessToken objects from 'AccessToken.json")
-            return
-        }
-        
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        guard let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to load SessionManager")
-            return
-        }
-        
-        // When set currentUser without SSO Token, nor AccessToken
-        let user = FRUser(token: at, serverConfig: serverConfig)
-        user.token = nil
-        sessionManager.setCurrentUser(user: user)
-        
-        // Then
-        XCTAssertNotNil(FRUser.currentUser)
-        
-        // And, when
-        FRUser.currentUser?.logout()
-        
-        // Then
-        XCTAssertNil(FRUser.currentUser)
-    }
     
-    
-    func testUserLogOutWithoutSDKInit() {
+    func test_03_04_UserLogOutWithoutSDKInit() {
         
         // This doesn't do anything yet; just to validate it doesn't crash
         // Given
@@ -767,12 +738,12 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - currentUser / SDK State
     
-    func test_00_CurrentUserShouldBeNilBeforeSDKInit() {
+    func test_04_00_CurrentUserShouldBeNilBeforeSDKInit() {
         XCTAssertNil(FRUser.currentUser)
     }
     
     
-    func test_01_LoginToPersistCurrentUser() {
+    func test_04_01_LoginToPersistCurrentUser() {
         
         // Perform login first
         self.performUserLogin()
@@ -787,48 +758,110 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func test_02_CurrentUserNotNilAfterSDKInit() {
+    func test_04_02_CurrentUserNotNilAfterSDKInit() {
         
         // Given previous test of authenticating, and persisting FRUser
         self.startSDK()
         
         // Then
         XCTAssertNotNil(FRUser.currentUser)
+        
+        // Should not clean up session for next test
+        self.shouldCleanup = false
     }
-
     
-    // MARK: - Auth Header
     
-    func testToBuildAuthHeader() {
-        
-        // Given
-        guard let tokenData = self.readDataFromJSON("AccessToken") else {
-            XCTFail("Failed to read 'AccessToken.json' for \(String(describing: self)) testing")
-            return
-        }
-        
-        guard let at = AccessToken(tokenResponse: tokenData) else {
-            XCTFail("Failed to construct AccessToken objects from 'AccessToken.json")
-            return
-        }
-        
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        // When set currentUser without SSO Token, nor AccessToken
-        let user = FRUser(token: at, serverConfig: serverConfig)
+    func test_04_03_validate_login_with_existing_session() {
+        // Given previous test of authenticating, and persisting FRUser
+        self.startSDK()
         
         // Then
-        XCTAssertTrue(user.buildAuthHeader().count > 0)
+        XCTAssertNotNil(FRUser.currentUser)
         
-        // If
-        user.token = nil
+        var loginError: Error?
         
-        // Then
-        XCTAssertTrue(user.buildAuthHeader().count == 0)
+        let ex = self.expectation(description: "First Node submit")
+        FRUser.login { (user: FRUser?, node, error) in
+            XCTAssertNil(user)
+            XCTAssertNil(node)
+            XCTAssertNotNil(error)
+            loginError = error
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let authError: AuthError = loginError as? AuthError else {
+            XCTFail("Unexpected error received: \(String(describing: loginError))")
+            return
+        }
+        
+        switch authError {
+        case .userAlreadyAuthenticated:
+            break
+        default:
+            XCTFail("Received unexpected error: \(authError)")
+            break
+        }
     }
+    
+    
+    func test_04_04_user_login_with_no_session() {
+        
+        // Start SDK
+        self.config.authServiceName = "UsernamePassword"
+        self.startSDK()
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
+                                "AuthTree_NoSession_Success"])
+        
+        //  noSession interceptor
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [NoSessionInterceptor()])
+        
+        XCTAssertNil(FRUser.currentUser)
+        
+        var currentNode: Node?
+        var ex = self.expectation(description: "First Node submit")
+        FRUser.login { (user: FRUser?, node, error) in
+            
+            // Validate result
+            XCTAssertNil(user)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        // Provide input value for callbacks
+        for callback in node.callbacks {
+            if callback is NameCallback, let nameCallback = callback as? NameCallback {
+                nameCallback.value = config.username
+            }
+            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
+                passwordCallback.value = config.password
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Second Node submit")
+        node.next { (user: FRUser?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(user)
+            XCTAssertNil(error)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
     
     // MARK: - Helper Method
     
@@ -847,7 +880,7 @@ class FRUserTests: FRBaseTest {
         var currentNode: Node?
         
         var ex = self.expectation(description: "First Node submit")
-        FRAuth.shared?.next(flowType: .authentication, completion: { (token: AccessToken?, node, error) in
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
             
             // Validate result
             XCTAssertNil(token)
@@ -855,7 +888,7 @@ class FRUserTests: FRBaseTest {
             XCTAssertNotNil(node)
             currentNode = node
             ex.fulfill()
-        })
+        }
         waitForExpectations(timeout: 60, handler: nil)
         
         guard let node = currentNode else {

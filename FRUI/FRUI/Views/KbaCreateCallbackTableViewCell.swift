@@ -11,7 +11,7 @@
 import UIKit
 import FRAuth
 
-class KbaCreateCallbackTableViewCell: UITableViewCell {
+class KbaCreateCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
     // MARK: - Properties
     public static let cellIdentifier = "KbaCreateCallbackTableViewCellId"
@@ -37,10 +37,10 @@ class KbaCreateCallbackTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public
-    public func updateCellData(authCallback: KbaCreateCallback) {
-        callback = authCallback
+    public func updateCellData(callback: Callback) {
+        self.callback = callback as? KbaCreateCallback
         
-        if let cb = callback {
+        if let cb = self.callback {
             self.dropDown?.setTitle(cb.prompt, for: .normal)
             self.dropDown?.setTitle(cb.prompt, for: .focused)
             self.dropDown?.setTitle(cb.prompt, for: .highlighted)

@@ -29,6 +29,9 @@ public typealias NodeCompletion<T> = (_ result: T?, _ node: Node?, _ error: Erro
 /// Generic typealias for completion with an error occurred
 public typealias CompletionCallback = (_ error:Error?) -> Void
 
+/// Generic typealias for completion with an JSON object
+public typealias JSONCompletionCallback = (_ result: [String: Any]) -> Void
+
 
 //  MARK: - OAuth2Client
 
@@ -56,5 +59,9 @@ public typealias DeviceCollectorCallback = (_ result: [String: Any]) -> Void
 
 //  MARK: - FRURLProtocol
 
+/// Callback definition for completion result
+public typealias FRCompletionResultCallback = (_ result: Bool) -> Void
+
 /// Callback definition for FRURLProtocol's refresh token policy; the callback is invoked to validate whether token refresh is required or not with given request result
-public typealias FRURLProtocolRefreshTokenPolicy = (_ responseData: Data?, _ response: URLResponse?, _ error:Error?) -> Bool
+@available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
+public typealias FRURLProtocolResponseEvaluationCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> Bool

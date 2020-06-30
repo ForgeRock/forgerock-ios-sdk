@@ -33,6 +33,8 @@ class Config: NSObject {
     var sessionManager: SessionManager?
     var tokenManager: TokenManager?
     
+    @objc var configJSON: [String: Any]?
+    
     override init() {
         self.username = "test_username"
         self.password = "test_password"
@@ -55,7 +57,7 @@ class Config: NSObject {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
                 if let config = jsonResult as? [String: Any] {
-                    
+                    self.configJSON = config
                     guard let username = config["username"] as? String,
                         let password = config["password"] as? String,
                         let email = config["user-email"] as? String,
@@ -85,7 +87,9 @@ class Config: NSObject {
                         self.authServiceName = authServiceName
                         self.registrationServiceName = registrationServiceName
                         
-                        let serverConfig = ServerConfig(url: url, realm: realm, timeout: timeout)
+                        let enableCookie = config["forgerock_enable_cookie"] as? Bool ?? true
+                        
+                        let serverConfig = ServerConfig(url: url, realm: realm, timeout: timeout, enableCookie: enableCookie)
                         let oAuth2Client = OAuth2Client(clientId: oauthClientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
                         self.serverConfig = serverConfig
                         self.oAuth2Client = oAuth2Client

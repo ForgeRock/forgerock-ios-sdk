@@ -117,8 +117,8 @@
     NSDictionary *browser = [deviceInfo objectForKey:@"browser"];
     XCTAssertNotNil(browser);
     
-    XCTAssertNotNil([browser objectForKey:@"agent"]);
-    XCTAssertTrue([[browser objectForKey:@"agent"] isKindOfClass:[NSString class]]);
+    XCTAssertNotNil([browser objectForKey:@"userAgent"]);
+    XCTAssertTrue([[browser objectForKey:@"userAgent"] isKindOfClass:[NSString class]]);
 
     // Telephony information
     NSDictionary *telephony = [deviceInfo objectForKey:@"telephony"];

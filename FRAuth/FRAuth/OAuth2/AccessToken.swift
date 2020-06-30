@@ -27,6 +27,8 @@ import Foundation
     @objc public var idToken: String?
     /// Timestamp of given access_token's authenticated time
     var authenticatedTimestamp: Date
+    /// SessionToken that granted current AccessToken
+    var sessionToken: String?
     /// Expiration Date of AccessToken
     @objc public var expiration: Date {
         get {
@@ -71,7 +73,8 @@ import Foundation
     /// Initializes AccessToken object with Dictionary object containing access_token, scope, expires_in, token_type, and other optional values
     ///
     /// - Parameter tokenResponse: Dictionary containing access_token related information
-    init?(tokenResponse: [String: Any]) {
+    /// - Parameter sessionToken: SessionToken associated with AccessToken
+    init?(tokenResponse: [String: Any], sessionToken: String? = nil) {
         
         /// Make sure minimum required information is provided
         guard let accessToken = tokenResponse[OAuth2.accessToken] as? String, let scope = tokenResponse[OAuth2.scope] as? String, let lifetime = tokenResponse[OAuth2.tokenExpiresIn] as? Int, let tokenType = tokenResponse[OAuth2.tokenType] as? String else {
@@ -85,6 +88,7 @@ import Foundation
         self.refreshToken = tokenResponse[OAuth2.refreshToken] as? String
         self.idToken = tokenResponse[OAuth2.idToken] as? String
         self.authenticatedTimestamp = Date()
+        self.sessionToken = sessionToken
         super.init(accessToken)
     }
     
@@ -99,7 +103,8 @@ import Foundation
     ///   - refreshToken: String value of refresh_token
     ///   - idToken: String value of id_token
     ///   - authenticatedTimestamp: Double value of authenticated timestamp
-    init?(token: String?, expiresIn: Int?, scope: String?, tokenType: String?, refreshToken: String?, idToken:String?, authenticatedTimestamp: Double?) {
+    ///   - sessionToken: SessionToken associated with AccessToken
+    init?(token: String?, expiresIn: Int?, scope: String?, tokenType: String?, refreshToken: String?, idToken:String?, authenticatedTimestamp: Double?, sessionToken: String? = nil) {
         
         guard let token = token, let expiresIn = expiresIn, let scope = scope, let tokenType = tokenType, let authenticatedTimestamp = authenticatedTimestamp else {
             FRLog.w("Invalid access_token response: some information is missing.")
@@ -112,6 +117,7 @@ import Foundation
         self.refreshToken = refreshToken
         self.idToken = idToken
         self.authenticatedTimestamp = Date(timeIntervalSince1970: authenticatedTimestamp)
+        self.sessionToken = sessionToken
         super.init(token)
     }
     
@@ -142,8 +148,9 @@ import Foundation
         let refreshToken = aDecoder.decodeObject(of: NSString.self, forKey: "refresh_token") as String?
         let idToken = aDecoder.decodeObject(of: NSString.self, forKey: "id_token") as String?
         let authenticatedTimestamp = aDecoder.decodeDouble(forKey: "authenticatedTimestamp")
+        let sessionToken = aDecoder.decodeObject(of: NSString.self, forKey: "session_token") as String?
         
-        self.init(token: token, expiresIn: expiresIn, scope: scope, tokenType: tokenType, refreshToken: refreshToken, idToken: idToken, authenticatedTimestamp: authenticatedTimestamp)
+        self.init(token: token, expiresIn: expiresIn, scope: scope, tokenType: tokenType, refreshToken: refreshToken, idToken: idToken, authenticatedTimestamp: authenticatedTimestamp, sessionToken: sessionToken)
     }
     
     
@@ -158,6 +165,7 @@ import Foundation
         aCoder.encode(self.refreshToken, forKey: "refresh_token")
         aCoder.encode(self.idToken, forKey: "id_token")
         aCoder.encode(self.authenticatedTimestamp.timeIntervalSince1970, forKey: "authenticatedTimestamp")
+        aCoder.encode(self.sessionToken, forKey: "session_token")
     }
     
     
@@ -175,7 +183,8 @@ import Foundation
                 lhs.scope == rhs.scope &&
                 lhs.refreshToken == rhs.refreshToken &&
                 lhs.idToken == rhs.idToken &&
-                lhs.authenticatedTimestamp.timeIntervalSince1970 == rhs.authenticatedTimestamp.timeIntervalSince1970
+                lhs.authenticatedTimestamp.timeIntervalSince1970 == rhs.authenticatedTimestamp.timeIntervalSince1970 &&
+                lhs.sessionToken == rhs.sessionToken
     }
     
     
@@ -192,7 +201,8 @@ import Foundation
                     self.scope == obj.scope &&
                     self.refreshToken == obj.refreshToken &&
                     self.idToken == obj.idToken &&
-                    self.authenticatedTimestamp.timeIntervalSince1970 == obj.authenticatedTimestamp.timeIntervalSince1970
+                    self.authenticatedTimestamp.timeIntervalSince1970 == obj.authenticatedTimestamp.timeIntervalSince1970 &&
+                    self.sessionToken == obj.sessionToken
         }
         return false
     }

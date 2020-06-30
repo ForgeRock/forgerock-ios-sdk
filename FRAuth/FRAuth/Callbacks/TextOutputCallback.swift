@@ -47,16 +47,12 @@ public class TextOutputCallback: Callback {
             if let outputName = output["name"] as? String, outputName == "message", let outputValue = output["value"] as? String {
                 message = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "messageType", let messageTypeInt = output["value"] as? Int, let messageType = MessageType(rawValue: messageTypeInt) {
+            else if let outputName = output["name"] as? String, outputName == "messageType", let messageTypeStr = output["value"] as? String, let messageTypeInt = Int(messageTypeStr), let messageType = MessageType(rawValue: messageTypeInt) {
                 self.messageType = messageType
             }
         }
         
         try super.init(json: json)
-        
-        if message.count == 0 && messageType == .unknown {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
         
         self.type = callbackType
         self.response = json

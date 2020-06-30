@@ -6,20 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		D5D0ADDD233AB2B300C16D5E /* FRUI-Universal */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = D5D0ADE3233AB2B300C16D5E /* Build configuration list for PBXAggregateTarget "FRUI-Universal" */;
-			buildPhases = (
-				D5D0ADE4233AB2B700C16D5E /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "FRUI-Universal";
-			productName = "FRUI-Universal";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51F44D722B1B8C900FC8F0D /* FRAuth.framework */; };
 		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
@@ -41,6 +27,7 @@
 		D5877790238DB6E200422605 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D587778F238DB6E200422605 /* Assets.xcassets */; };
 		D5877795238DBFCA00422605 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5877794238DBFCA00422605 /* UIApplication.swift */; };
 		D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5877796238DC3A500422605 /* FRActionSheetButton.swift */; };
+		D58A5EED23CFBC10009D9328 /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58A5EEC23CFBC10009D9328 /* FRSession.swift */; };
 		D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */; };
 		D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */; };
 		D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */; };
@@ -54,8 +41,12 @@
 		D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E652318B7710058EFE3 /* FRLoadingView.swift */; };
 		D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */; };
 		D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */; };
+		D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */; };
+		D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */; };
 		D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8922B1A6E800656521 /* AuthService.swift */; };
 		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
+		D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */; };
+		D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,13 +78,6 @@
 			remoteGlobalIDString = D53A91E022B1815B003DF94E;
 			remoteInfo = FRUI;
 		};
-		D5E98AB322E7A36E00F5DD3A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D55118AC22E1268C009EBCD9;
-			remoteInfo = FRAuthTestHost;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +104,7 @@
 		D587778F238DB6E200422605 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5877794238DBFCA00422605 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		D5877796238DC3A500422605 /* FRActionSheetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRActionSheetButton.swift; sourceTree = "<group>"; };
+		D58A5EEC23CFBC10009D9328 /* FRSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSession.swift; sourceTree = "<group>"; };
 		D592480523283E830027031A /* PollingWaitCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D592480623283E830027031A /* PollingWaitCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PollingWaitCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D592480B2328446B0027031A /* ConfirmationCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTableViewCell.swift; sourceTree = "<group>"; };
@@ -133,8 +118,12 @@
 		D5B27E652318B7710058EFE3 /* FRLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLoadingView.swift; sourceTree = "<group>"; };
 		D5B27E692318B77F0058EFE3 /* FRDropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownButton.swift; sourceTree = "<group>"; };
 		D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownView.swift; sourceTree = "<group>"; };
+		D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAttributeTableViewCell.swift; sourceTree = "<group>"; };
+		D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceAttributeTableViewCell.xib; sourceTree = "<group>"; };
 		D5CACF8922B1A6E800656521 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
+		D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUICallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallbackTableViewCellFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +151,6 @@
 			children = (
 				D51F44D722B1B8C900FC8F0D /* FRAuth.framework */,
 				D51F44D922B1B8C900FC8F0D /* FRAuthTests.xctest */,
-				D5E98AB422E7A36E00F5DD3A /* FRAuthTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,6 +185,7 @@
 		D53A91E322B1815B003DF94E /* FRUI */ = {
 			isa = PBXGroup;
 			children = (
+				D5CC1E5723DA4423006C7EAA /* Model */,
 				D5CDAE5C23173A80002CD343 /* UIElements */,
 				D5CACF8D22B1AA0400656521 /* Assets */,
 				D5CACF8822B1A6D300656521 /* Extensions */,
@@ -221,6 +210,7 @@
 		D53A921C22B1869C003DF94E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */,
 				D53A921D22B1869C003DF94E /* PasswordCallbackTableViewCell.swift */,
 				D53A922022B1869C003DF94E /* PasswordCallbackTableViewCell.xib */,
 				D53A921E22B1869C003DF94E /* ChoiceCallbackTableViewCell.swift */,
@@ -237,6 +227,8 @@
 				D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */,
 				D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */,
 				D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */,
+				D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */,
+				D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -289,6 +281,7 @@
 			children = (
 				D5CACF8922B1A6E800656521 /* AuthService.swift */,
 				D5855BDE233EB988003333BD /* FRUser.swift */,
+				D58A5EEC23CFBC10009D9328 /* FRSession.swift */,
 				D5877794238DBFCA00422605 /* UIApplication.swift */,
 			);
 			path = Extensions;
@@ -302,6 +295,14 @@
 				D587778F238DB6E200422605 /* Assets.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		D5CC1E5723DA4423006C7EAA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		D5CDAE5C23173A80002CD343 /* UIElements */ = {
@@ -383,9 +384,6 @@
 					D53A91E922B1815B003DF94E = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
-					D5D0ADDD233AB2B300C16D5E = {
-						CreatedOnToolsVersion = 10.3;
-					};
 				};
 			};
 			buildConfigurationList = D53A91DB22B1815B003DF94E /* Build configuration list for PBXProject "FRUI" */;
@@ -408,7 +406,6 @@
 			targets = (
 				D53A91E022B1815B003DF94E /* FRUI */,
 				D53A91E922B1815B003DF94E /* FRUITests */,
-				D5D0ADDD233AB2B300C16D5E /* FRUI-Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -428,13 +425,6 @@
 			remoteRef = D51F44D822B1B8C900FC8F0D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D5E98AB422E7A36E00F5DD3A /* FRAuthTestHost.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FRAuthTestHost.app;
-			remoteRef = D5E98AB322E7A36E00F5DD3A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -452,6 +442,7 @@
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
 				D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */,
 				D5962DC1238F47FA0021859F /* forgerock-logo.png in Resources */,
+				D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */,
 				D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */,
 				D5877790238DB6E200422605 /* Assets.xcassets in Resources */,
 			);
@@ -466,27 +457,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		D5D0ADE4233AB2B700C16D5E /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n#################################################\n# 1. Define output directory for universal and final binary\n#################################################\nUNIVERSAL_DIR=${BUILD_DIR}/${CONFIGURATION}-universal\nTARGET_DIR=../SDKs\n\n#################################################\n# 2. Create output directo ries\n#################################################\necho \"Creating output directories..\"\nmkdir -p \"${UNIVERSAL_DIR}\"\nmkdir -p \"${TARGET_DIR}\"\n\n#################################################\n# 3. Build project for Device and Simulator\n#################################################\necho \"Starting to build project for Device and Simulator\"\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n\n#################################################\n# 4. Copy device binary to universal folder\n#################################################\necho \"Copying Device binary into universal folder ${PROJECT_NAME}\"\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 5. Copy Swift modules from iphonesimulator build\n#################################################\necho \"Copying simulator's swiftmodule into univeral binary\"\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n#################################################\n# 6. Merge two binaries into universal binary\n#################################################\necho \"Merging binaries\"\nlipo -create -output \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n#################################################\n# 7. Copy the final binary to target directory\n#################################################\ncp -R \"${UNIVERSAL_DIR}/${PROJECT_NAME}.framework\" \"${TARGET_DIR}/${PROJECT_NAME}.framework\"\n\n#################################################\n# 8. Open the target directory\n#################################################\nopen \"${TARGET_DIR}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		D53A91DD22B1815B003DF94E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -498,13 +468,17 @@
 				D577B26A22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.swift in Sources */,
 				D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */,
 				D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */,
+				D58A5EED23CFBC10009D9328 /* FRSession.swift in Sources */,
 				D53A922D22B1869C003DF94E /* AuthStepViewController.swift in Sources */,
 				D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */,
 				D5855BDF233EB988003333BD /* FRUser.swift in Sources */,
 				D53A922622B1869C003DF94E /* PasswordCallbackTableViewCell.swift in Sources */,
+				D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */,
 				D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */,
 				D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */,
 				D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */,
+				D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */,
+				D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */,
 				D592481523285AAF0027031A /* TextOutputCallbackTableViewCell.swift in Sources */,
 				D5B27E672318B7710058EFE3 /* FRTextField.swift in Sources */,
 				D53A922822B1869C003DF94E /* NameCallbackTableViewCell.swift in Sources */,
@@ -663,7 +637,7 @@
 		D53A91F622B1815B003DF94E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -682,7 +656,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -697,7 +671,7 @@
 		D53A91F722B1815B003DF94E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -716,7 +690,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -734,6 +708,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -753,6 +728,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -762,24 +738,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		D5D0ADDE233AB2B300C16D5E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		D5D0ADDF233AB2B300C16D5E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -809,15 +767,6 @@
 			buildConfigurations = (
 				D53A91F922B1815B003DF94E /* Debug */,
 				D53A91FA22B1815B003DF94E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D5D0ADE3233AB2B300C16D5E /* Build configuration list for PBXAggregateTarget "FRUI-Universal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D5D0ADDE233AB2B300C16D5E /* Debug */,
-				D5D0ADDF233AB2B300C16D5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
