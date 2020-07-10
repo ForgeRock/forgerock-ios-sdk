@@ -47,6 +47,8 @@
 		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
 		D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */; };
 		D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */; };
+		D5F8F9F324B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */; };
+		D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,8 @@
 		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
 		D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUICallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallbackTableViewCellFactory.swift; sourceTree = "<group>"; };
+		D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BooleanAttributeInputCallbackTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +233,8 @@
 				D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */,
 				D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */,
 				D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */,
+				D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */,
+				D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -437,6 +443,7 @@
 				D5962DC0238F47FA0021859F /* arrow.png in Resources */,
 				D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */,
 				D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */,
+				D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */,
 				D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */,
 				D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */,
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
@@ -485,6 +492,7 @@
 				D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */,
 				D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */,
 				D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */,
+				D5F8F9F324B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

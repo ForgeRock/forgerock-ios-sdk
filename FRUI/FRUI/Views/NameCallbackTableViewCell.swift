@@ -49,6 +49,10 @@ class NameCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
                 textField?.errorMessage = failedMessage
             }
         }
+        
+        if callback is NumberAttributeInputCallback {
+            textField?.keyboardType = .decimalPad
+        }
     }
 }
 
@@ -63,13 +67,14 @@ extension NameCallbackTableViewCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        callback?.value = textField.text
         if callback is AttributeInputCallback,
             let inputCallback = callback as? AttributeInputCallback,
             inputCallback.required {
             if textField.text == nil || textField.text?.count == 0 {
                 self.textField?.errorMessage = "Value must not be empty"
+                return
             }
         }
+        callback?.value = textField.text
     }
 }

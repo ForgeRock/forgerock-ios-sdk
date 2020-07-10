@@ -31,6 +31,8 @@ import Foundation
          12. ReCaptchaCallback
          13. MetadataCallback
          14. DeviceProfileCallback
+         15. BooleanAttributeInputCallback
+         16. NumberAttributeInputCallback
  */
 @objc(FRCallbackFactory)
 public class CallbackFactory: NSObject {
@@ -64,7 +66,9 @@ public class CallbackFactory: NSObject {
             "ReCaptchaCallback": ReCaptchaCallback.self,
             "HiddenValueCallback": HiddenValueCallback.self,
             "DeviceProfileCallback": DeviceProfileCallback.self,
-            "MetadataCallback": MetadataCallback.self
+            "MetadataCallback": MetadataCallback.self,
+            "BooleanAttributeInputCallback": BooleanAttributeInputCallback.self,
+            "NumberAttributeInputCallback": NumberAttributeInputCallback.self
         ]
     }
     
