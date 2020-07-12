@@ -256,7 +256,7 @@ class AuthStepViewController: UIViewController {
             for authCallback: Callback in self.authCallbacks
             {
                 if authCallback is SingleValueCallback, let callback = authCallback as? SingleValueCallback, callback.inputName == identifier {                    
-                    callback.value = value
+                    callback.setValue(value)
                 }
             }
         }

@@ -91,7 +91,7 @@ import Foundation
     public func execute(_ completion: @escaping JSONCompletionCallback) {
         
         collector.collect { (json) in
-            self.value = self.JSONStringify(value: json as AnyObject)
+            self._value = self.JSONStringify(value: json as AnyObject)
             completion(json)
         }
     }

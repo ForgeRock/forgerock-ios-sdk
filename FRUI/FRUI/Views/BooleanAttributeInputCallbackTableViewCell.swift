@@ -36,13 +36,14 @@ class BooleanAttributeInputCallbackTableViewCell: UITableViewCell, FRUICallbackT
     func updateCellData(callback: Callback) {
         if let callback = callback as? BooleanAttributeInputCallback {
             self.callback = callback
+            
             descriptionLabel?.text = callback.prompt
-            toggleSwitch?.isOn = callback.value as? Bool ?? false
+            toggleSwitch?.isOn = callback.getValue() as? Bool ?? false
         }
     }
     
     // MARK: - IBOutlet
     @IBAction func valueChanged(sender: UISwitch) {
-        self.callback?.value = sender.isOn
+        self.callback?.setValue(sender.isOn)
     }
 }

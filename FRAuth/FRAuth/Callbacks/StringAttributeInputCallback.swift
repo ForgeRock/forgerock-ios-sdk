@@ -15,4 +15,13 @@ import Foundation
  */
 @objc(FRStringAttributeInputCallback)
 public class StringAttributeInputCallback: AttributeInputCallback {
+    
+    /// Sets String input value for StringAttributeInputCallback.
+    /// - Parameter val: String input value for Callback
+    /// - Returns: Boolean indicator whether or not it was successful
+    @objc(setStringValue:)
+    @discardableResult public func setValue(_ val: String) -> Bool {
+        self._value = val
+        return true
+    }
 }

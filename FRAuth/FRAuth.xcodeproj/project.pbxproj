@@ -15,6 +15,8 @@
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
 		D51672A62321AB21007053EE /* ObjcFRURLProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D51672A52321AB21007053EE /* ObjcFRURLProtocolTests.m */; };
+		D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
+		D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
 		D52D162823147FE70095905A /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162723147FE70095905A /* FRTestUtils.swift */; };
 		D52D165D231484D60095905A /* SecondFactorFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162C231484D60095905A /* SecondFactorFlowTests.swift */; };
 		D52D165E231484D60095905A /* SecondFactorFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D52D162D231484D60095905A /* SecondFactorFlow.png */; };
@@ -266,6 +268,8 @@
 		D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
+		D5FBD8A324B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */; };
+		D5FBD8A624B930F00005DD0F /* NumberAttributeInputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -503,6 +507,8 @@
 		D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedPolicyTests.swift; sourceTree = "<group>"; };
 		D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
+		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
+		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -727,6 +733,8 @@
 				D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */,
 				D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */,
 				D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */,
+				D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */,
+				D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -1581,6 +1589,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */,
+				D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */,
 				D5C87B4B2491A2CF000F2F75 /* FRURLProtocolTests.swift in Sources */,
 				D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */,
 				D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */,
@@ -1636,6 +1646,7 @@
 				D54237DA23358F8F009C868F /* TelephonyCollector.swift in Sources */,
 				D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */,
 				D54237DB23358F8F009C868F /* NetworkCollector.swift in Sources */,
+				D5FBD8A324B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift in Sources */,
 				D54237DD23358F8F009C868F /* FRDeviceIdentifier.swift in Sources */,
 				D54237DE23358F8F009C868F /* AuthError.swift in Sources */,
 				D54237DF23358F8F009C868F /* ConfigError.swift in Sources */,
@@ -1695,6 +1706,7 @@
 				D52D1671231484D60095905A /* FRUserTests.swift in Sources */,
 				D52D167C231484D60095905A /* FRBaseTest.swift in Sources */,
 				D52D166F231484D60095905A /* PKCETests.swift in Sources */,
+				D5FBD8A624B930F00005DD0F /* NumberAttributeInputCallbackTests.swift in Sources */,
 				D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */,
 				D534A2CD22FBE08C007098D1 /* FRTestStubResponseParser.swift in Sources */,
 				D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */,

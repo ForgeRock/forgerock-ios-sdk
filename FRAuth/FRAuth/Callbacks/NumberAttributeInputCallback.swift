@@ -15,23 +15,14 @@ import Foundation
  NumberAttributeInputCallback is a representation of OpenAM's NumberAttributeInputCallback to collect double value with OpenAM validation and given policies.
  */
 @objc(FRNumberAttributeInputCallback)
-public class NumberAttributeInputCallback: AttributeInputCallback {
+public class NumberAttributeInputCallback: AttributeInputCallback {    
     
-    var doubleValue: Double?
-    @objc public override var value: Any? {
-        set {
-            if let newValue = newValue as? Double {
-                doubleValue = newValue
-            }
-            else if let newValue = newValue as? String, let newDoubleValue = Double(newValue){
-                doubleValue = newDoubleValue
-            }
-            else {
-                FRLog.e("Unexpected data type is set for NumberAttributeInputCallback: \(String(describing: newValue))")
-            }
-        }
-        get {
-            return doubleValue
-        }
+    /// Sets Double input value for NumberAttributeInputCallback.
+    /// - Parameter val: Double input value for Callback
+    /// - Returns: Boolean indicator whether or not it was successful
+    @objc(setNumberValue:)
+    @discardableResult public func setValue(_ val: Double) -> Bool {
+        self._value = val
+        return true
     }
 }

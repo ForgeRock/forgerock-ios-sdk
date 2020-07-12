@@ -37,7 +37,7 @@ class NameCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
         self.textField?.placeholder = self.callback?.prompt
         
         if callback is AbstractValidatedCallback, let validatedCallback = callback as? AbstractValidatedCallback {
-            self.textField?.text = validatedCallback.value as? String
+            self.textField?.text = validatedCallback.getValue() as? String
             if let failedPolicies = validatedCallback.failedPolicies {
                 var failedMessage = ""
                 for (index, failedPolicy) in failedPolicies.enumerated() {
@@ -75,6 +75,11 @@ extension NameCallbackTableViewCell: UITextFieldDelegate {
                 return
             }
         }
-        callback?.value = textField.text
+        if let numberCallback = callback as? NumberAttributeInputCallback, let stringValue = textField.text {
+            numberCallback.setValue(Double(stringValue))
+        }
+        else {
+            callback?.setValue(textField.text)
+        }
     }
 }
