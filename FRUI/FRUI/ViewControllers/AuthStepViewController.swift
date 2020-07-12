@@ -126,7 +126,33 @@ class AuthStepViewController: UIViewController {
                 //  Set auth callbacks in list for rendering
                 self.currentNode = node
                 self.authCallbacks = node.callbacks
-                self.renderAuthStep()
+                
+                //  If DeviceProfileCallback is the only Callback, then immediately collect, and submit
+                if self.authCallbacks.count == 1, let deviceProfileCallback = self.authCallbacks.first as? DeviceProfileCallback {
+                    deviceProfileCallback.execute { (profile) in
+                        self.submitNode()
+                    }
+                }
+                else {
+                    var deviceProfileCallback: DeviceProfileCallback?
+                    for callback in self.authCallbacks {
+                        if let thisCallback = callback as? DeviceProfileCallback {
+                            deviceProfileCallback = thisCallback
+                        }
+                    }
+                    //  If DeviceProfileCallback is found as one of Callbacks, collect data first
+                    if let deviceProfileCallback = deviceProfileCallback {
+                        self.startLoading()
+                        deviceProfileCallback.execute { (profile) in
+                            self.stopLoading()
+                            self.renderAuthStep()
+                        }
+                    }
+                    else {
+                        //  Otherwise, just render as usual
+                        self.renderAuthStep()
+                    }
+                }
             }
             else if let result = result {
                 
@@ -373,7 +399,12 @@ extension AuthStepViewController: UITableViewDelegate {
         let cellHeight:CGFloat = 0.0
         
         if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type] {
-            return callbackTableViewCell.cellHeight
+            if callback is DeviceProfileCallback, self.authCallbacks.count > 1 {
+                return 0
+            }
+            else {
+                return callbackTableViewCell.cellHeight
+            }
         }
         
         return cellHeight
