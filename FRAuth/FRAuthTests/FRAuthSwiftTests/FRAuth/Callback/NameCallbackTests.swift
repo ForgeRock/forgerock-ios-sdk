@@ -62,7 +62,7 @@ class NameCallbackTests: FRBaseTest {
             XCTAssertEqual(callback.inputName, "IDToken2")
             
             // Sets Username
-            callback.value = "username"
+            callback.setValue("username")
             
             // Builds new response
             let jsonStr2 = """

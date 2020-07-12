@@ -92,7 +92,7 @@ class CookieTests: FRBaseTest {
             return
         }
         
-        self.config.serverConfig = ServerConfig(url: serverConfig.baseURL, realm: serverConfig.realm, timeout: serverConfig.timeout, enableCookie: false)
+        self.config.serverConfig = ServerConfigBuilder(url: serverConfig.baseURL, realm: serverConfig.realm).set(timeout: serverConfig.timeout).set(enableCookie: false).build()
         
         // Start SDK
         self.startSDK()
@@ -135,7 +135,7 @@ class CookieTests: FRBaseTest {
             return
         }
         
-        self.config.serverConfig = ServerConfig(url: serverConfig.baseURL, realm: serverConfig.realm, timeout: serverConfig.timeout, enableCookie: false)
+        self.config.serverConfig = ServerConfigBuilder(url: serverConfig.baseURL, realm: serverConfig.realm).set(timeout: serverConfig.timeout).set(enableCookie: false).build()
         
         // Start SDK
         self.startSDK()
@@ -250,10 +250,10 @@ class CookieTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")

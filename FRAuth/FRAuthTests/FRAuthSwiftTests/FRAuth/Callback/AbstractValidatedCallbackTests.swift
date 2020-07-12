@@ -724,7 +724,7 @@ class AbstractValidatedCallbackTests: FRBaseTest {
         do {
             let callback = try ValidatedCreateUsernameCallback(json: callbackResponse)
             // Sets Username
-            callback.value = "username"
+            callback.setValue("username")
             callback.validateOnly = true
             
             // Builds new response
