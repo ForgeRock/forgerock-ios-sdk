@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import <FRAuth/FRAuth.h>
+#import <FRCore/FRCore.h>
 
 @interface AppDelegate ()
 
