@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AuthStepViewController" customModule="FRUI" customModuleProvider="target">
             <connections>
-                <outlet property="authStepLabel" destination="Omk-Nm-dZl" id="6Va-Ip-ufA"/>
                 <outlet property="cancelButton" destination="SoY-Qx-b8g" id="82I-Xt-p5v"/>
+                <outlet property="descriptionTextView" destination="uwS-4n-hHf" id="egJ-7a-oRZ"/>
+                <outlet property="descriptionTextViewHeight" destination="trY-kF-ccM" id="PH4-Zm-zBN"/>
+                <outlet property="headerLabel" destination="Omk-Nm-dZl" id="aPA-0D-utr"/>
                 <outlet property="logoImageView" destination="xZZ-lI-dJU" id="3R5-eE-nZC"/>
                 <outlet property="nextButton" destination="5Jw-g5-Wly" id="b0A-Xa-NLD"/>
                 <outlet property="tableView" destination="ppv-W8-4CG" id="VYg-Pb-eDs"/>
@@ -58,11 +60,11 @@
                         <viewLayoutGuide key="safeArea" id="vxd-9w-RC7"/>
                     </view>
                     <view key="tableFooterView" contentMode="scaleToFill" id="8aw-s1-4RY">
-                        <rect key="frame" x="0.0" y="1082" width="414" height="115"/>
+                        <rect key="frame" x="0.0" y="1082" width="414" height="215"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Jw-g5-Wly" customClass="FRButton" customModule="FRUI" customModuleProvider="target">
-                                <rect key="frame" x="217" y="28" width="162" height="45"/>
+                                <rect key="frame" x="217" y="45" width="162" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="rRF-Hr-alF"/>
                                 </constraints>
@@ -72,7 +74,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-Qx-b8g" customClass="FRButton" customModule="FRUI" customModuleProvider="target">
-                                <rect key="frame" x="35" y="28" width="162" height="45"/>
+                                <rect key="frame" x="35" y="45" width="162" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="3Gt-Or-n2F"/>
                                 </constraints>
@@ -81,15 +83,29 @@
                                     <action selector="cancelButtonClickedWithSender:" destination="-1" eventType="touchUpInside" id="fyD-jP-3Cc"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uwS-4n-hHf">
+                                <rect key="frame" x="35" y="20" width="344" height="10"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="trY-kF-ccM"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" textContentType="url"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="SoY-Qx-b8g" firstAttribute="leading" secondItem="8aw-s1-4RY" secondAttribute="leading" constant="35" id="3cz-fR-XZ1"/>
+                            <constraint firstItem="5Jw-g5-Wly" firstAttribute="top" secondItem="uwS-4n-hHf" secondAttribute="bottom" constant="15" id="AdR-U0-Lmu"/>
+                            <constraint firstItem="uwS-4n-hHf" firstAttribute="leading" secondItem="SYA-xQ-4kH" secondAttribute="leading" constant="35" id="Eaq-70-d5o"/>
                             <constraint firstAttribute="trailing" secondItem="5Jw-g5-Wly" secondAttribute="trailing" constant="35" id="F9I-z5-ebt"/>
-                            <constraint firstItem="5Jw-g5-Wly" firstAttribute="top" secondItem="8aw-s1-4RY" secondAttribute="top" constant="28" id="Xbg-k8-0qA"/>
+                            <constraint firstItem="SoY-Qx-b8g" firstAttribute="top" secondItem="uwS-4n-hHf" secondAttribute="bottom" constant="15" id="HeS-7x-npH"/>
+                            <constraint firstItem="SYA-xQ-4kH" firstAttribute="trailing" secondItem="uwS-4n-hHf" secondAttribute="trailing" constant="35" id="Z4J-6R-fgK"/>
                             <constraint firstItem="SoY-Qx-b8g" firstAttribute="width" secondItem="5Jw-g5-Wly" secondAttribute="width" id="hzP-1R-Dmk"/>
                             <constraint firstItem="5Jw-g5-Wly" firstAttribute="leading" secondItem="SoY-Qx-b8g" secondAttribute="trailing" constant="20" id="i4c-uN-VxX"/>
                             <constraint firstItem="5Jw-g5-Wly" firstAttribute="leading" secondItem="SoY-Qx-b8g" secondAttribute="trailing" constant="20" id="kd3-lI-ceC"/>
-                            <constraint firstItem="SoY-Qx-b8g" firstAttribute="top" secondItem="8aw-s1-4RY" secondAttribute="top" constant="28" id="x0g-pP-EPl"/>
+                            <constraint firstItem="uwS-4n-hHf" firstAttribute="top" secondItem="SYA-xQ-4kH" secondAttribute="top" constant="20" id="kzW-Ll-vWX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SYA-xQ-4kH"/>
                     </view>
