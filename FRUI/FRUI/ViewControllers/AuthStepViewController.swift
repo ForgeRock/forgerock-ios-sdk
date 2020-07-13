@@ -117,7 +117,9 @@ class AuthStepViewController: UIViewController {
     
     // MARK: - Authentication handling methods
     func handleNode(_ result: Any?, _ node: Node?, _ error: Error?) {
-    
+
+        self.loadingView.loadingText = "Loading..."
+        
         //  Perform UI work in the main thread
         DispatchQueue.main.async {
             
@@ -133,7 +135,6 @@ class AuthStepViewController: UIViewController {
                     self.startLoading()
                     deviceProfileCallback.execute { (profile) in
                         self.stopLoading()
-                        self.loadingView.loadingText = "Loading..."
                         self.submitNode()
                     }
                 }
