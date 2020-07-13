@@ -129,7 +129,11 @@ class AuthStepViewController: UIViewController {
                 
                 //  If DeviceProfileCallback is the only Callback, then immediately collect, and submit
                 if self.authCallbacks.count == 1, let deviceProfileCallback = self.authCallbacks.first as? DeviceProfileCallback {
+                    self.loadingView.loadingText = "Collecting device metadata"
+                    self.startLoading()
                     deviceProfileCallback.execute { (profile) in
+                        self.stopLoading()
+                        self.loadingView.loadingText = "Loading..."
                         self.submitNode()
                     }
                 }
