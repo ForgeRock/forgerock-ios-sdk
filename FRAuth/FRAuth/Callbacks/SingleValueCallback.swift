@@ -91,11 +91,9 @@ public class SingleValueCallback: Callback {
     
     /// Sets input value in Callback with generic type
     /// - Parameter val: value to be set for Callback's input
-    /// - Returns: Boolean indicator whether or not it was successful
     @objc(setInputValue:)
-    @discardableResult public func setValue(_ val: Any?) -> Bool {
+    public func setValue(_ val: Any?) {
         self._value = val
-        return true
     }
     
     

@@ -61,9 +61,7 @@ public class TermsAndConditionsCallback: SingleValueCallback {
     
     /// Sets Boolean input value for TermsAndConditionsCallback.
     /// - Parameter val: Boolean input value for Callback
-    /// - Returns: Boolean indicator whether or not it was successful
-    @discardableResult public func setValue(_ val: Bool) -> Bool {
+    public func setValue(_ val: Bool) {
         self._value = val
-        return true
     }
 }

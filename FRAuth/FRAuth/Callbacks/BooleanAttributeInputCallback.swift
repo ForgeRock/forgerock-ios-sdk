@@ -18,10 +18,8 @@ public class BooleanAttributeInputCallback: AttributeInputCallback {
     
     /// Sets Boolean input value for BooleanAttributeInputCallback.
     /// - Parameter val: Boolean input value for Callback
-    /// - Returns: Boolean indicator whether or not it was successful
     @objc(setBoolValue:)
-    @discardableResult public func setValue(_ val: Bool) -> Bool {
+    public func setValue(_ val: Bool) {
         self._value = val
-        return true
     }
 }

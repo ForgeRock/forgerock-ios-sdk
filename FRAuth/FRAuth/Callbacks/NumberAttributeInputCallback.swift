@@ -19,10 +19,8 @@ public class NumberAttributeInputCallback: AttributeInputCallback {
     
     /// Sets Double input value for NumberAttributeInputCallback.
     /// - Parameter val: Double input value for Callback
-    /// - Returns: Boolean indicator whether or not it was successful
     @objc(setNumberValue:)
-    @discardableResult public func setValue(_ val: Double) -> Bool {
+    public func setValue(_ val: Double) {
         self._value = val
-        return true
     }
 }

@@ -18,10 +18,8 @@ public class StringAttributeInputCallback: AttributeInputCallback {
     
     /// Sets String input value for StringAttributeInputCallback.
     /// - Parameter val: String input value for Callback
-    /// - Returns: Boolean indicator whether or not it was successful
     @objc(setStringValue:)
-    @discardableResult public func setValue(_ val: String) -> Bool {
+    public func setValue(_ val: String) {
         self._value = val
-        return true
     }
 }

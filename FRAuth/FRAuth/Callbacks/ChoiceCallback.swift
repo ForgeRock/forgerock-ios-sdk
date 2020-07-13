@@ -61,9 +61,7 @@ public class ChoiceCallback: SingleValueCallback {
     
     /// Sets Int input value of the choice for ChoiceCallback.
     /// - Parameter val: Int input value for ChoiceCallback
-    /// - Returns: Boolean indicator whether or not it was successful
-    @discardableResult public func setValue(_ val: Int) -> Bool {
+    public func setValue(_ val: Int) {
         self._value = val
-        return true
     }
 }
