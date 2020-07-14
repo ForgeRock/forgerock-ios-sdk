@@ -19,16 +19,23 @@ public class SingleValueCallback: Callback {
     //  MARK: - Property
     
     /// String value of inputName attribute in Callback response
-    @objc
-    public var inputName: String?
+    @objc public var inputName: String?
     /// String value of prompt attribute in Callback response; prompt is usually human readable text that can be displayed in UI
-    @objc
-    public var prompt: String?
+    @objc public var prompt: String?
     /// A value provided from user interaction for this particular callback; the value can be any type
-    @objc
-    public var value: Any?
+    @available(*, deprecated, message: "Callback.value propert is deprecated; use Callback.setValue() and Callback.getValue() method to set the input value of the Callback.") // Deprecated as of FRAuth: v2.1.0
+    @objc public var value: Any? {
+        get {
+            return _value
+        }
+        set {
+            _value = newValue
+        }
+    }
+    var _value: Any?
     /// Unique identifier for this particular callback in Node
     public var _id: Int?
+    
     
     //  MARK: - Init
     
@@ -51,7 +58,7 @@ public class SingleValueCallback: Callback {
                     if inputName.range(of: "IDToken\\d{1,2}$", options: .regularExpression, range: nil, locale: nil) != nil {
                         self.inputName = inputName
                         if let inputValue = input["value"] as? String {
-                            self.value = inputValue
+                            self._value = inputValue
                         }
                     }
                 }
@@ -80,6 +87,24 @@ public class SingleValueCallback: Callback {
     }
     
     
+    //  MARK: - Value
+    
+    /// Sets input value in Callback with generic type
+    /// - Parameter val: value to be set for Callback's input
+    @objc(setInputValue:)
+    public func setValue(_ val: Any?) {
+        self._value = val
+    }
+    
+    
+    /// Returns input value in Callback with generic type
+    /// - Returns: value that was set for Callback's input
+    @objc(getInputValue)
+    public func getValue() -> Any? {
+        return self._value
+    }
+    
+    
     //  MARK: - Build
     
     /// Builds JSON request payload for the Callback
@@ -94,7 +119,7 @@ public class SingleValueCallback: Callback {
             if key == "input", var inputs = value as? [[String: Any]] {
                 for (index, input) in inputs.enumerated() {
                     if let inputName = input["name"] as? String, inputName == self.inputName {
-                        inputs[index]["value"] = self.value
+                        inputs[index]["value"] = self._value
                     }
                 }
                 responsePayload["input"] = inputs

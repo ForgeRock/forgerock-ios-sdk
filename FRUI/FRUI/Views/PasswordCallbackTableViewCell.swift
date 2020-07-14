@@ -65,7 +65,7 @@ extension PasswordCallbackTableViewCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        callback?.value = textField.text
+        callback?.setValue(textField.text)
         if callback is AttributeInputCallback,
             let inputCallback = callback as? AttributeInputCallback,
             inputCallback.required {

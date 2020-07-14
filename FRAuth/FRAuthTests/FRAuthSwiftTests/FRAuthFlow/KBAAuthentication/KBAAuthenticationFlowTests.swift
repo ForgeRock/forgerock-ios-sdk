@@ -52,10 +52,10 @@ class KBAAuthenticationFlowTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in firstNode.callbacks {
             if callback is ValidatedCreateUsernameCallback, let usernameCallback = callback as? ValidatedCreateUsernameCallback {
-                usernameCallback.value = config.username
+                usernameCallback.setValue(config.username)
             }
             else if callback is ValidatedCreatePasswordCallback, let passwordCallback = callback as? ValidatedCreatePasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -83,7 +83,7 @@ class KBAAuthenticationFlowTests: FRBaseTest {
         for callback in secondNode.callbacks {
             if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
                 if let kba = config.kba, let kbaQuestion = passwordCallback.prompt, let kbaAnswer = kba[kbaQuestion] {
-                    passwordCallback.value = kbaAnswer
+                    passwordCallback.setValue(kbaAnswer)
                 }
                 else {
                     XCTFail("KBA Answer was not identified \(callback)")

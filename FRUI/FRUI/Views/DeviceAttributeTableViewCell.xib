@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,51 +11,40 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" restorationIdentifier="DeviceAttributeTableViewCellId" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeviceAttributeTableViewCellId" rowHeight="155" id="Up2-3h-DEY" customClass="DeviceAttributeTableViewCell" customModule="FRUI" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Up2-3h-DEY" id="Fq2-Ov-S0T">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application is requesting to collect following information of your device" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAg-86-Umy">
-                        <rect key="frame" x="35" y="15" width="250" height="33.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q02-Vn-FWT">
-                        <rect key="frame" x="16" y="73.5" width="288" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poV-36-9K0" customClass="FRButton" customModule="FRUI" customModuleProvider="target">
-                        <rect key="frame" x="51" y="124" width="218" height="30"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4hM-fa-8uw" customClass="FRLoadingView" customModule="FRUI" customModuleProvider="target">
+                        <rect key="frame" x="110" y="20" width="100" height="100"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="tfm-Ar-tNC"/>
+                            <constraint firstAttribute="width" constant="100" id="Tar-Ny-NJo"/>
+                            <constraint firstAttribute="height" constant="100" id="ag0-xA-Jou"/>
                         </constraints>
-                        <state key="normal" title="Grant"/>
-                        <connections>
-                            <action selector="grantClickedWithSender:" destination="Up2-3h-DEY" eventType="touchUpInside" id="TGq-uh-s7w"/>
-                        </connections>
-                    </button>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fy-Ob-CIY">
+                        <rect key="frame" x="51" y="140" width="218" height="49"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="q02-Vn-FWT" firstAttribute="top" secondItem="sAg-86-Umy" secondAttribute="bottom" constant="25" id="6NO-5p-2DV"/>
-                    <constraint firstItem="sAg-86-Umy" firstAttribute="top" secondItem="Fq2-Ov-S0T" secondAttribute="top" constant="15" id="Wzi-zf-VwQ"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="poV-36-9K0" secondAttribute="trailing" constant="35" id="ZPl-ty-hMn"/>
-                    <constraint firstItem="sAg-86-Umy" firstAttribute="leading" secondItem="Fq2-Ov-S0T" secondAttribute="leading" constant="35" id="bwi-8j-1jr"/>
-                    <constraint firstItem="q02-Vn-FWT" firstAttribute="leading" secondItem="Fq2-Ov-S0T" secondAttribute="leadingMargin" id="cRa-4c-hGO"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="poV-36-9K0" secondAttribute="bottom" constant="15" id="kJ6-I7-dWX"/>
-                    <constraint firstItem="q02-Vn-FWT" firstAttribute="trailing" secondItem="Fq2-Ov-S0T" secondAttribute="trailingMargin" id="tBs-hJ-1Ig"/>
-                    <constraint firstAttribute="trailing" secondItem="sAg-86-Umy" secondAttribute="trailing" constant="35" id="vrF-wQ-pS3"/>
-                    <constraint firstItem="poV-36-9K0" firstAttribute="leading" secondItem="Fq2-Ov-S0T" secondAttribute="leadingMargin" constant="35" id="yoW-a4-FH5"/>
+                    <constraint firstItem="2Fy-Ob-CIY" firstAttribute="top" secondItem="4hM-fa-8uw" secondAttribute="bottom" constant="20" id="8fy-ag-m5F"/>
+                    <constraint firstItem="2Fy-Ob-CIY" firstAttribute="leading" secondItem="Fq2-Ov-S0T" secondAttribute="leadingMargin" constant="35" id="A3f-eg-a8c"/>
+                    <constraint firstItem="2Fy-Ob-CIY" firstAttribute="bottom" secondItem="Fq2-Ov-S0T" secondAttribute="bottomMargin" id="PbW-5a-4Cx"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="2Fy-Ob-CIY" secondAttribute="trailing" constant="35" id="SwJ-ba-qNc"/>
+                    <constraint firstItem="4hM-fa-8uw" firstAttribute="top" secondItem="Fq2-Ov-S0T" secondAttribute="top" constant="20" id="V23-vy-pwN"/>
+                    <constraint firstItem="4hM-fa-8uw" firstAttribute="centerX" secondItem="Fq2-Ov-S0T" secondAttribute="centerX" id="b33-qx-a2t"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="zLv-cF-N5q"/>
             <connections>
-                <outlet property="attributesLabel" destination="q02-Vn-FWT" id="74t-jd-JM7"/>
-                <outlet property="grantButton" destination="poV-36-9K0" id="Mzb-66-eMf"/>
+                <outlet property="loadingView" destination="4hM-fa-8uw" id="LAg-h0-5Yx"/>
+                <outlet property="messageLabel" destination="2Fy-Ob-CIY" id="Rc2-bK-AtE"/>
             </connections>
             <point key="canvasLocation" x="-175.36231884057972" y="108.48214285714285"/>
         </tableViewCell>

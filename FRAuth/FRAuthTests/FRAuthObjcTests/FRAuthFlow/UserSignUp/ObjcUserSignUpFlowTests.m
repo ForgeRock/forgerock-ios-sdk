@@ -56,11 +56,11 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRValidatedCreateUsernameCallback class]]) {
             FRValidatedCreateUsernameCallback *thisCallback = (FRValidatedCreateUsernameCallback *)callback;
-            thisCallback.value = username;
+            [thisCallback setInputName:username];
         }
         else if ([callback isKindOfClass:[FRValidatedCreatePasswordCallback class]]) {
             FRValidatedCreatePasswordCallback *thisCallback = (FRValidatedCreatePasswordCallback *)callback;
-            thisCallback.value = self.config.password;
+            [thisCallback setInputName:self.config.password];
         }
         else {
             XCTFail("Received unexpected callback %@", callback);
@@ -86,15 +86,15 @@
             
             if ([thisCallback.name isEqualToString:@"sn"])
             {
-                thisCallback.value = self.config.userLastName;
+                [thisCallback setStringValue:self.config.userLastName];
             }
             else if ([thisCallback.name isEqualToString:@"givenName"])
             {
-                thisCallback.value = self.config.userFirstName;
+                [thisCallback setStringValue:self.config.userFirstName];
             }
             else if ([thisCallback.name isEqualToString:@"mail"])
             {
-                thisCallback.value = self.config.userEmail;
+                [thisCallback setStringValue:self.config.userEmail];
             }
             else {
                 XCTFail("Received unexpected callback %@", [thisCallback debugDescription]);
@@ -146,7 +146,7 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRTermsAndConditionsCallback class]]) {
             FRTermsAndConditionsCallback *thisCallback = (FRTermsAndConditionsCallback *)callback;
-            thisCallback.value = [NSNumber numberWithBool:YES];
+            [thisCallback setInputValue:[NSNumber numberWithBool:YES]];
         }
         else {
             XCTFail("Received unexpected callback %@", callback);

@@ -29,7 +29,7 @@ class AuthServiceTests: FRBaseTest {
     func test_01_AuthServicePublicInit() {
         
         // Given
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         let authService: AuthService = AuthService(name: "loginService", serverConfig: serverConfig)
         
         // Then
@@ -45,7 +45,7 @@ class AuthServiceTests: FRBaseTest {
     
     func test_02_AuthServicePrivateInit() {
         // Given
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         let oAuth2Client = OAuth2Client(clientId: self.clientId, scope: self.scope, redirectUri: URL(string: self.redirectUri)!, serverConfig: serverConfig)
         let authService: AuthService = AuthService(authIndexValue: "loginService", serverConfig: serverConfig, oAuth2Config: oAuth2Client)
         
@@ -100,10 +100,10 @@ class AuthServiceTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")

@@ -33,6 +33,6 @@ class CustomNameCallbackCell: UITableViewCell, FRUICallbackTableViewCell {
 // MARK: - UITextFieldDelegate
 extension CustomNameCallbackCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        callback?.value = textField.text
+        callback?.setValue(textField.text)
     }
 }

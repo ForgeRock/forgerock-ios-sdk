@@ -117,7 +117,7 @@ class AuthStepViewController: UIViewController {
     
     // MARK: - Authentication handling methods
     func handleNode(_ result: Any?, _ node: Node?, _ error: Error?) {
-    
+        
         //  Perform UI work in the main thread
         DispatchQueue.main.async {
             
@@ -126,7 +126,28 @@ class AuthStepViewController: UIViewController {
                 //  Set auth callbacks in list for rendering
                 self.currentNode = node
                 self.authCallbacks = node.callbacks
-                self.renderAuthStep()
+                
+                var deviceProfileCallback: DeviceProfileCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    if let thisCallback = callback as? DeviceProfileCallback {
+                        deviceProfileCallback = thisCallback
+                        if self.authCallbacks.count > 1 {
+                            self.authCallbacks.remove(at: index)
+                        }
+                    }
+                }
+                //  If DeviceProfileCallback is found as one of Callbacks, collect data first
+                if let deviceProfileCallback = deviceProfileCallback, self.authCallbacks.count > 1 {
+                    self.startLoading()
+                    deviceProfileCallback.execute { (profile) in
+                        self.stopLoading()
+                        self.renderAuthStep()
+                    }
+                }
+                else {
+                    //  Otherwise, just render as usual
+                    self.renderAuthStep()
+                }
             }
             else if let result = result {
                 
@@ -256,7 +277,7 @@ class AuthStepViewController: UIViewController {
             for authCallback: Callback in self.authCallbacks
             {
                 if authCallback is SingleValueCallback, let callback = authCallback as? SingleValueCallback, callback.inputName == identifier {                    
-                    callback.value = value
+                    callback.setValue(value)
                 }
             }
         }
@@ -336,6 +357,9 @@ extension AuthStepViewController: UITableViewDataSource {
             else if let pollingWaitCallbackCell = cell as? PollingWaitCallbackTableViewCell {
                 pollingWaitCallbackCell.delegate = self
             }
+            else if let deviceProfileCallbackCell = cell as? DeviceAttributeTableViewCell {
+                deviceProfileCallbackCell.delegate = self
+            }
             
             return cell
         }
@@ -370,10 +394,10 @@ extension AuthStepViewController: UITableViewDelegate {
         
         let callback = self.authCallbacks[indexPath.row]
         
-        let cellHeight:CGFloat = 0.0
+        var cellHeight: CGFloat = 0.0
         
         if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type] {
-            return callbackTableViewCell.cellHeight
+            cellHeight = callbackTableViewCell.cellHeight
         }
         
         return cellHeight

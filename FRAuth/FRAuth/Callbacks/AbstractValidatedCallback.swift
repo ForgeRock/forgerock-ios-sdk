@@ -49,6 +49,8 @@ public class AbstractValidatedCallback: SingleValueCallback {
                 self.policies = policies
             } else if let name = output["name"] as? String, name == "validateOnly", let validateOnly = output["value"] as? Bool {
                 self.validateOnly = validateOnly
+            } else if let name = output["name"] as? String, name == "value", let theValue = output["value"] {
+                self._value = theValue
             } else if let name = output["name"] as? String, name == "failedPolicies", let failedPolicies = output["value"] as? [String], failedPolicies.count > 0 {
                 self.failedPolicies = []
                 for policy in failedPolicies {

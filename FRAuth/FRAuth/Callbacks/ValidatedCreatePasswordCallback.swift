@@ -37,6 +37,5 @@ public class ValidatedCreatePasswordCallback: AbstractValidatedCallback {
                 self.echoOn = echoOn
             }
         }
-        self.echoOn = true
     }
 }

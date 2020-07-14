@@ -88,8 +88,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
-        
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         do {
             // Then
             let node = try Node(UUID().uuidString, authServiceResponse, serverConfig, "serviceName", "service")
@@ -127,7 +126,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         
         do {
             // Then
@@ -185,7 +184,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         
         do {
             // Then
@@ -249,7 +248,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         
         do {
             // Then
@@ -312,7 +311,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         
         do {
             // Then
@@ -345,7 +344,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         
         do {
             // Then
@@ -379,7 +378,7 @@ class NodeTests: FRBaseTest {
         }
         """
         let authServiceResponse = self.parseStringToDictionary(jsonStr)
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         
         do {
             // Then

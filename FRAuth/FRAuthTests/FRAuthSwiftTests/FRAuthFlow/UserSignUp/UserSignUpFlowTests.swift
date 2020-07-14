@@ -57,10 +57,10 @@ class UserSignUpFlowTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in firstNode.callbacks {
             if callback is ValidatedCreateUsernameCallback, let usernameCallback = callback as? ValidatedCreateUsernameCallback {
-                usernameCallback.value = username
+                usernameCallback.setValue(username)
             }
             else if callback is ValidatedCreatePasswordCallback, let passwordCallback = callback as? ValidatedCreatePasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -88,13 +88,13 @@ class UserSignUpFlowTests: FRBaseTest {
             if callback is StringAttributeInputCallback, let inputCallback = callback as? StringAttributeInputCallback {
                 
                 if inputCallback.name == "sn" {
-                    inputCallback.value = config.userLastName
+                    inputCallback.setValue(config.userLastName)
                 }
                 else if inputCallback.name == "givenName" {
-                    inputCallback.value = config.userFirstName
+                    inputCallback.setValue(config.userFirstName)
                 }
                 else if inputCallback.name == "mail" {
-                    inputCallback.value = config.userEmail
+                    inputCallback.setValue(config.userEmail)
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -155,7 +155,7 @@ class UserSignUpFlowTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in fourthNode.callbacks {
             if callback is TermsAndConditionsCallback, let tocCallback = callback as? TermsAndConditionsCallback {
-                tocCallback.value = true
+                tocCallback.setValue(true)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")

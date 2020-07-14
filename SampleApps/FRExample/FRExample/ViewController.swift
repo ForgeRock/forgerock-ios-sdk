@@ -275,7 +275,7 @@ class ViewController: UIViewController {
                     for textField in alert.textFields! {
                         
                         let thisCallback:SingleValueCallback = node.callbacks[counter] as! SingleValueCallback
-                        thisCallback.value = textField.text
+                        thisCallback.setValue(textField.text)
                         counter += 1
                     }
                     
