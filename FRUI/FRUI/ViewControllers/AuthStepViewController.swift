@@ -117,8 +117,6 @@ class AuthStepViewController: UIViewController {
     
     // MARK: - Authentication handling methods
     func handleNode(_ result: Any?, _ node: Node?, _ error: Error?) {
-
-        self.loadingView.loadingText = "Loading..."
         
         //  Perform UI work in the main thread
         DispatchQueue.main.async {
@@ -129,34 +127,26 @@ class AuthStepViewController: UIViewController {
                 self.currentNode = node
                 self.authCallbacks = node.callbacks
                 
-                //  If DeviceProfileCallback is the only Callback, then immediately collect, and submit
-                if self.authCallbacks.count == 1, let deviceProfileCallback = self.authCallbacks.first as? DeviceProfileCallback {
-                    self.loadingView.loadingText = deviceProfileCallback.message
+                var deviceProfileCallback: DeviceProfileCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    if let thisCallback = callback as? DeviceProfileCallback {
+                        deviceProfileCallback = thisCallback
+                        if self.authCallbacks.count > 1 {
+                            self.authCallbacks.remove(at: index)
+                        }
+                    }
+                }
+                //  If DeviceProfileCallback is found as one of Callbacks, collect data first
+                if let deviceProfileCallback = deviceProfileCallback, self.authCallbacks.count > 1 {
                     self.startLoading()
                     deviceProfileCallback.execute { (profile) in
                         self.stopLoading()
-                        self.submitNode()
+                        self.renderAuthStep()
                     }
                 }
                 else {
-                    var deviceProfileCallback: DeviceProfileCallback?
-                    for callback in self.authCallbacks {
-                        if let thisCallback = callback as? DeviceProfileCallback {
-                            deviceProfileCallback = thisCallback
-                        }
-                    }
-                    //  If DeviceProfileCallback is found as one of Callbacks, collect data first
-                    if let deviceProfileCallback = deviceProfileCallback {
-                        self.startLoading()
-                        deviceProfileCallback.execute { (profile) in
-                            self.stopLoading()
-                            self.renderAuthStep()
-                        }
-                    }
-                    else {
-                        //  Otherwise, just render as usual
-                        self.renderAuthStep()
-                    }
+                    //  Otherwise, just render as usual
+                    self.renderAuthStep()
                 }
             }
             else if let result = result {
@@ -367,6 +357,9 @@ extension AuthStepViewController: UITableViewDataSource {
             else if let pollingWaitCallbackCell = cell as? PollingWaitCallbackTableViewCell {
                 pollingWaitCallbackCell.delegate = self
             }
+            else if let deviceProfileCallbackCell = cell as? DeviceAttributeTableViewCell {
+                deviceProfileCallbackCell.delegate = self
+            }
             
             return cell
         }
@@ -401,15 +394,10 @@ extension AuthStepViewController: UITableViewDelegate {
         
         let callback = self.authCallbacks[indexPath.row]
         
-        let cellHeight:CGFloat = 0.0
+        var cellHeight: CGFloat = 0.0
         
         if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type] {
-            if callback is DeviceProfileCallback, self.authCallbacks.count > 1 {
-                return 0
-            }
-            else {
-                return callbackTableViewCell.cellHeight
-            }
+            cellHeight = callbackTableViewCell.cellHeight
         }
         
         return cellHeight
