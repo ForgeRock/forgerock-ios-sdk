@@ -18,10 +18,14 @@ public class AbstractValidatedCallback: SingleValueCallback {
     
     //  MARK: - Property
     
-    /// Policies that will validate user input
-    @objc public var policies: [String]?
+    /// Policies as in JSON format that contains validation rules and details for the input
+    @objc public var policies: [String: Any]?
     /// An array of FailedPolicy for user input validation
     @objc public var failedPolicies: [FailedPolicy]?
+    /// Boolean indicator when it's set to `true`, `Node` does not advance even if all validations are passed; only works when validation is enabled in AM's Node
+    @objc public var validateOnly: Bool = false
+    /// InputName for IDTokenValidateOnly attribute in the response
+    var idTokenValidateOnlyName: String = ""
     
     
     //  MARK: - Init 
@@ -41,13 +45,11 @@ public class AbstractValidatedCallback: SingleValueCallback {
         for output in outputs {
             if let name = output["name"] as? String, name == "prompt", let prompt = output["value"] as? String {
                 self.prompt = prompt
-            } else if let name = output["name"] as? String, name == "policies", let policies = output["value"] as? [String] {
+            } else if let name = output["name"] as? String, name == "policies", let policies = output["value"] as? [String: Any] {
                 self.policies = policies
-            }
-        }
-        
-        for output in outputs {
-            if let name = output["name"] as? String, name == "failedPolicies", let failedPolicies = output["value"] as? [String], failedPolicies.count > 0 {
+            } else if let name = output["name"] as? String, name == "validateOnly", let validateOnly = output["value"] as? Bool {
+                self.validateOnly = validateOnly
+            } else if let name = output["name"] as? String, name == "failedPolicies", let failedPolicies = output["value"] as? [String], failedPolicies.count > 0 {
                 self.failedPolicies = []
                 for policy in failedPolicies {
                     if let strData = policy.data(using: .utf8) {
@@ -66,6 +68,33 @@ public class AbstractValidatedCallback: SingleValueCallback {
                 FRLog.w("\(self.type) is returned with FailedPolicies: \(failedPolicies)")
             }
         }
+        
+        guard let inputs = json["input"] as? [[String: Any]] else {
+            throw AuthError.invalidCallbackResponse(String(describing: json))
+        }
+        
+        for input in inputs {
+            if let inputName = input["name"] as? String {
+                if inputName.range(of: "IDToken\\d{1,2}validateOnly$", options: .regularExpression, range: nil, locale: nil) != nil {
+                    self.idTokenValidateOnlyName = inputName
+                }
+            }
+        }
+    }
+    
+    public override func buildResponse() -> [String : Any] {
+        var responsePayload = super.buildResponse()
+        for (key, value) in responsePayload {
+            if key == "input", var inputs = value as? [[String: Any]] {
+                for (index, input) in inputs.enumerated() {
+                    if let inputName = input["name"] as? String, inputName == self.idTokenValidateOnlyName {
+                        inputs[index]["value"] = self.validateOnly
+                    }
+                }
+                responsePayload["input"] = inputs
+            }
+        }
+        return responsePayload
     }
 }
 

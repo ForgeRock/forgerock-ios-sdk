@@ -49,17 +49,83 @@ class AbstractValidatedCallbackTests: FRBaseTest {
             "output": [
                 {
                     "name": "policies",
-                    "value": [
-                        "unique",
-                        "no-internal-user-conflict",
-                        "cannot-contain-characters",
-                        "minimum-length",
-                        "maximum-length"
-                    ]
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "UNIQUE",
+                            "CANNOT_CONTAIN_CHARACTERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "userName",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "required"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 1
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "unique",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "no-internal-user-conflict",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-characters",
+                                "params": {
+                                    "forbiddenChars": [
+                                        "/"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_CHARACTERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
                 },
                 {
                     "name": "failedPolicies",
                     "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
                 },
                 {
                     "name": "prompt",
@@ -70,8 +136,13 @@ class AbstractValidatedCallbackTests: FRBaseTest {
                 {
                     "name": "IDToken1",
                     "value": ""
+                },
+                {
+                    "name": "IDToken1validateOnly",
+                    "value": false
                 }
-            ]
+            ],
+            "_id": 0
         }
         """
         let callbackResponse = self.parseStringToDictionary(jsonStr)
@@ -90,13 +161,19 @@ class AbstractValidatedCallbackTests: FRBaseTest {
                 XCTFail("Failed to convert \"policies\" in Callback response")
                 return
             }
-            
-            XCTAssertTrue(policies.count == 5)
-            XCTAssertTrue(policies.contains("unique"))
-            XCTAssertTrue(policies.contains("no-internal-user-conflict"))
-            XCTAssertTrue(policies.contains("cannot-contain-characters"))
-            XCTAssertTrue(policies.contains("minimum-length"))
-            XCTAssertTrue(policies.contains("maximum-length"))
+            guard let policyRequirements = policies["policyRequirements"] as? [String] else {
+                XCTFail("Failed to convert \"policyRequirements\" in Callback response")
+                return
+            }
+            XCTAssertNotNil(policyRequirements)
+            XCTAssertEqual(policyRequirements.count, 5)
+            XCTAssertTrue(policyRequirements.contains("REQUIRED"))
+            XCTAssertTrue(policyRequirements.contains("MIN_LENGTH"))
+            XCTAssertTrue(policyRequirements.contains("VALID_TYPE"))
+            XCTAssertTrue(policyRequirements.contains("UNIQUE"))
+            XCTAssertTrue(policyRequirements.contains("CANNOT_CONTAIN_CHARACTERS"))
+            XCTAssertNotNil(policies["name"])
+            XCTAssertEqual(policies["name"] as? String ?? "", "userName")
             
         } catch let error {
             XCTFail("Failed while expecting success: \(error)")
@@ -113,17 +190,83 @@ class AbstractValidatedCallbackTests: FRBaseTest {
             "output": [
                 {
                     "name": "policies",
-                    "value": [
-                        "unique",
-                        "no-internal-user-conflict",
-                        "cannot-contain-characters",
-                        "minimum-length",
-                        "maximum-length"
-                    ]
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "UNIQUE",
+                            "CANNOT_CONTAIN_CHARACTERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "userName",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "required"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 1
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "unique",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "no-internal-user-conflict",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-characters",
+                                "params": {
+                                    "forbiddenChars": [
+                                        "/"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_CHARACTERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
                 },
                 {
                     "name": "failedPolicies",
                     "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
                 },
                 {
                     "name": "prompt",
@@ -134,8 +277,13 @@ class AbstractValidatedCallbackTests: FRBaseTest {
                 {
                     "name": "IDToken1",
                     "value": ""
+                },
+                {
+                    "name": "IDToken1validateOnly",
+                    "value": false
                 }
-            ]
+            ],
+            "_id": 2
         }
         """
         var callbackResponse = self.parseStringToDictionary(jsonStr)
@@ -212,17 +360,83 @@ class AbstractValidatedCallbackTests: FRBaseTest {
             "output": [
                 {
                     "name": "policies",
-                    "value": [
-                        "unique",
-                        "no-internal-user-conflict",
-                        "cannot-contain-characters",
-                        "minimum-length",
-                        "maximum-length"
-                    ]
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "UNIQUE",
+                            "CANNOT_CONTAIN_CHARACTERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "userName",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "required"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 1
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "unique",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "no-internal-user-conflict",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-characters",
+                                "params": {
+                                    "forbiddenChars": [
+                                        "/"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_CHARACTERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
                 },
                 {
                     "name": "failedPolicies",
                     "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
                 },
                 {
                     "name": "prompt",
@@ -233,8 +447,13 @@ class AbstractValidatedCallbackTests: FRBaseTest {
                 {
                     "name": "IDToken1",
                     "value": ""
+                },
+                {
+                    "name": "IDToken1validateOnly",
+                    "value": false
                 }
-            ]
+            ],
+            "_id": 2
         }
         """
         var callbackResponse = self.parseStringToDictionary(jsonStr)
@@ -271,17 +490,83 @@ class AbstractValidatedCallbackTests: FRBaseTest {
             "output": [
                 {
                     "name": "policies",
-                    "value": [
-                        "unique",
-                        "no-internal-user-conflict",
-                        "cannot-contain-characters",
-                        "minimum-length",
-                        "maximum-length"
-                    ]
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "UNIQUE",
+                            "CANNOT_CONTAIN_CHARACTERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "userName",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "required"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 1
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "unique",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "no-internal-user-conflict",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-characters",
+                                "params": {
+                                    "forbiddenChars": [
+                                        "/"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_CHARACTERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
                 },
                 {
                     "name": "failedPolicies",
                     "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
                 },
                 {
                     "name": "prompt",
@@ -292,8 +577,13 @@ class AbstractValidatedCallbackTests: FRBaseTest {
                 {
                     "name": "IDToken1",
                     "value": ""
+                },
+                {
+                    "name": "IDToken1validateOnly",
+                    "value": false
                 }
-            ]
+            ],
+            "_id": 2
         }
         """
         var callbackResponse = self.parseStringToDictionary(jsonStr)
@@ -331,17 +621,83 @@ class AbstractValidatedCallbackTests: FRBaseTest {
             "output": [
                 {
                     "name": "policies",
-                    "value": [
-                        "unique",
-                        "no-internal-user-conflict",
-                        "cannot-contain-characters",
-                        "minimum-length",
-                        "maximum-length"
-                    ]
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "UNIQUE",
+                            "CANNOT_CONTAIN_CHARACTERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "userName",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "required"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 1
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "unique",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "no-internal-user-conflict",
+                                "policyRequirements": [
+                                    "UNIQUE"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-characters",
+                                "params": {
+                                    "forbiddenChars": [
+                                        "/"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_CHARACTERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
                 },
                 {
                     "name": "failedPolicies",
                     "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
                 },
                 {
                     "name": "prompt",
@@ -352,8 +708,13 @@ class AbstractValidatedCallbackTests: FRBaseTest {
                 {
                     "name": "IDToken1",
                     "value": ""
+                },
+                {
+                    "name": "IDToken1validateOnly",
+                    "value": false
                 }
-            ]
+            ],
+            "_id": 2
         }
         """
         let callbackResponse = self.parseStringToDictionary(jsonStr)
@@ -364,39 +725,111 @@ class AbstractValidatedCallbackTests: FRBaseTest {
             let callback = try ValidatedCreateUsernameCallback(json: callbackResponse)
             // Sets Username
             callback.value = "username"
+            callback.validateOnly = true
             
             // Builds new response
             let builtJson = """
-        {
-            "type": "ValidatedCreateUsernameCallback",
-            "output": [
-                {
-                    "name": "policies",
-                    "value": [
-                        "unique",
-                        "no-internal-user-conflict",
-                        "cannot-contain-characters",
-                        "minimum-length",
-                        "maximum-length"
-                    ]
-                },
-                {
-                    "name": "failedPolicies",
-                    "value": []
-                },
-                {
-                    "name": "prompt",
-                    "value": "Username"
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1",
-                    "value": "username"
-                }
-            ]
-        }
-        """
+            {
+                "type": "ValidatedCreateUsernameCallback",
+                "output": [
+                    {
+                        "name": "policies",
+                        "value": {
+                            "policyRequirements": [
+                                "REQUIRED",
+                                "MIN_LENGTH",
+                                "VALID_TYPE",
+                                "UNIQUE",
+                                "CANNOT_CONTAIN_CHARACTERS"
+                            ],
+                            "fallbackPolicies": null,
+                            "name": "userName",
+                            "policies": [
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "required"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "not-empty"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "MIN_LENGTH"
+                                    ],
+                                    "policyId": "minimum-length",
+                                    "params": {
+                                        "minLength": 1
+                                    }
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "VALID_TYPE"
+                                    ],
+                                    "policyId": "valid-type",
+                                    "params": {
+                                        "types": [
+                                            "string"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "policyId": "unique",
+                                    "policyRequirements": [
+                                        "UNIQUE"
+                                    ]
+                                },
+                                {
+                                    "policyId": "no-internal-user-conflict",
+                                    "policyRequirements": [
+                                        "UNIQUE"
+                                    ]
+                                },
+                                {
+                                    "policyId": "cannot-contain-characters",
+                                    "params": {
+                                        "forbiddenChars": [
+                                            "/"
+                                        ]
+                                    },
+                                    "policyRequirements": [
+                                        "CANNOT_CONTAIN_CHARACTERS"
+                                    ]
+                                }
+                            ],
+                            "conditionalPolicies": null
+                        }
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Username"
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken1",
+                        "value": "username"
+                    },
+                    {
+                        "name": "IDToken1validateOnly",
+                        "value": true
+                    }
+                ],
+                "_id": 2
+            }
+            """
             let response = self.parseStringToDictionary(builtJson)
             
             // Should equal when built
@@ -407,303 +840,304 @@ class AbstractValidatedCallbackTests: FRBaseTest {
     }
     
     
-    // - MARK: FailedPolicy
-    
-    func testFailedPolicyInitWithInvalidFormat() {
+    func testValidateCreatePasswordCallback_EchoOff() {
+        
         // Given
         let jsonStr = """
         {
-            "params": {"numNums": 1}
+            "type": "ValidatedCreatePasswordCallback",
+            "output": [
+                {
+                    "name": "echoOn",
+                    "value": false
+                },
+                {
+                    "name": "policies",
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "AT_LEAST_X_CAPITAL_LETTERS",
+                            "AT_LEAST_X_NUMBERS",
+                            "CANNOT_CONTAIN_OTHERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "password",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 8
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "at-least-X-capitals",
+                                "params": {
+                                    "numCaps": 1
+                                },
+                                "policyRequirements": [
+                                    "AT_LEAST_X_CAPITAL_LETTERS"
+                                ]
+                            },
+                            {
+                                "policyId": "at-least-X-numbers",
+                                "params": {
+                                    "numNums": 1
+                                },
+                                "policyRequirements": [
+                                    "AT_LEAST_X_NUMBERS"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-others",
+                                "params": {
+                                    "disallowedFields": [
+                                        "userName",
+                                        "givenName",
+                                        "sn"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_OTHERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
+                },
+                {
+                    "name": "failedPolicies",
+                    "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
+                },
+                {
+                    "name": "prompt",
+                    "value": "Password"
+                }
+            ],
+            "input": [
+                {
+                    "name": "IDToken2",
+                    "value": ""
+                },
+                {
+                    "name": "IDToken2validateOnly",
+                    "value": false
+                }
+            ],
+            "_id": 3
         }
         """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
         
         // Try
         do {
-            let _ = try FailedPolicy("Username", failedPolicyJson)
-            XCTFail("Succeed while expecting failure for invalid FailedPolicy response: \(failedPolicyJson)")
-        } catch {
-        }
-    }
-    
-    
-    func testFailedPolicyInit_UNKNOWN_FORMAT() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "UNKNOWN_FORMAT"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
+            let callback = try ValidatedCreatePasswordCallback(json: callbackResponse)
             
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "UNKNOWN_FORMAT")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username: Unknown policy requirement - UNKNOWN_FORMAT")
+            // Then
+            XCTAssertEqual(callback.type, "ValidatedCreatePasswordCallback")
+            XCTAssertEqual(callback.prompt, "Password")
+            XCTAssertEqual(callback.inputName, "IDToken2")
+            XCTAssertEqual(callback.echoOn, false)
             
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_REQUIRED() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "REQUIRED"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "REQUIRED")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username is required")
-            
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_UNIQUE() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "UNIQUE"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "UNIQUE")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username must be unique")
-            
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_INVALID_DATE() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "VALID_DATE"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "VALID_DATE")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Invalid date")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_INVALID_EMAIL_FORMAT() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "VALID_EMAIL_ADDRESS_FORMAT"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "VALID_EMAIL_ADDRESS_FORMAT")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Invalid Email format")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_INVALID_NAME_FORMAT() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "VALID_NAME_FORMAT"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "VALID_NAME_FORMAT")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Invalid name format")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_INVALID_PHONE_FORMAT() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "VALID_PHONE_FORMAT"
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "VALID_PHONE_FORMAT")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Invalid phone number")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_AtLeastCapital() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "AT_LEAST_X_CAPITAL_LETTERS",
-            "params" : {
-                "numCaps" : 5
+            guard let policies = callback.policies else {
+                XCTFail("Failed to convert \"policies\" in Callback response")
+                return
             }
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNotNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "AT_LEAST_X_CAPITAL_LETTERS")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username must contain at least 5 capital letter(s)")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_AtLeastNumber() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "AT_LEAST_X_NUMBERS",
-            "params" : {
-                "numNums" : 5
+            guard let policyRequirements = policies["policyRequirements"] as? [String] else {
+                XCTFail("Failed to convert \"policyRequirements\" in Callback response")
+                return
             }
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
+            XCTAssertNotNil(policyRequirements)
+            XCTAssertEqual(policyRequirements.count, 6)
             
-            XCTAssertNotNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "AT_LEAST_X_NUMBERS")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username must contain at least 5 numeric value(s)")
+            XCTAssertTrue(policyRequirements.contains("REQUIRED"))
+            XCTAssertTrue(policyRequirements.contains("MIN_LENGTH"))
+            XCTAssertTrue(policyRequirements.contains("VALID_TYPE"))
+            XCTAssertTrue(policyRequirements.contains("AT_LEAST_X_CAPITAL_LETTERS"))
+            XCTAssertTrue(policyRequirements.contains("AT_LEAST_X_NUMBERS"))
+            XCTAssertTrue(policyRequirements.contains("CANNOT_CONTAIN_OTHERS"))
+            XCTAssertNotNil(policies["name"])
+            XCTAssertEqual(policies["name"] as? String ?? "", "password")
+            
         } catch let error {
             XCTFail("Failed while expecting success: \(error)")
         }
     }
     
-    
-    func testFailedPolicyInit_INVALID_NUMBER() {
+    func testValidateCreatePasswordCallback_EchoOn() {
+        
         // Given
         let jsonStr = """
         {
-            "policyRequirement" : "VALID_NUMBER"
+            "type": "ValidatedCreatePasswordCallback",
+            "output": [
+                {
+                    "name": "echoOn",
+                    "value": true
+                },
+                {
+                    "name": "policies",
+                    "value": {
+                        "policyRequirements": [
+                            "REQUIRED",
+                            "MIN_LENGTH",
+                            "VALID_TYPE",
+                            "AT_LEAST_X_CAPITAL_LETTERS",
+                            "AT_LEAST_X_NUMBERS",
+                            "CANNOT_CONTAIN_OTHERS"
+                        ],
+                        "fallbackPolicies": null,
+                        "name": "password",
+                        "policies": [
+                            {
+                                "policyRequirements": [
+                                    "REQUIRED"
+                                ],
+                                "policyId": "not-empty"
+                            },
+                            {
+                                "policyRequirements": [
+                                    "MIN_LENGTH"
+                                ],
+                                "policyId": "minimum-length",
+                                "params": {
+                                    "minLength": 8
+                                }
+                            },
+                            {
+                                "policyRequirements": [
+                                    "VALID_TYPE"
+                                ],
+                                "policyId": "valid-type",
+                                "params": {
+                                    "types": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            {
+                                "policyId": "at-least-X-capitals",
+                                "params": {
+                                    "numCaps": 1
+                                },
+                                "policyRequirements": [
+                                    "AT_LEAST_X_CAPITAL_LETTERS"
+                                ]
+                            },
+                            {
+                                "policyId": "at-least-X-numbers",
+                                "params": {
+                                    "numNums": 1
+                                },
+                                "policyRequirements": [
+                                    "AT_LEAST_X_NUMBERS"
+                                ]
+                            },
+                            {
+                                "policyId": "cannot-contain-others",
+                                "params": {
+                                    "disallowedFields": [
+                                        "userName",
+                                        "givenName",
+                                        "sn"
+                                    ]
+                                },
+                                "policyRequirements": [
+                                    "CANNOT_CONTAIN_OTHERS"
+                                ]
+                            }
+                        ],
+                        "conditionalPolicies": null
+                    }
+                },
+                {
+                    "name": "failedPolicies",
+                    "value": []
+                },
+                {
+                    "name": "validateOnly",
+                    "value": false
+                },
+                {
+                    "name": "prompt",
+                    "value": "Password"
+                }
+            ],
+            "input": [
+                {
+                    "name": "IDToken2",
+                    "value": ""
+                },
+                {
+                    "name": "IDToken2validateOnly",
+                    "value": false
+                }
+            ],
+            "_id": 3
         }
         """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
         
         // Try
         do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
+            let callback = try ValidatedCreatePasswordCallback(json: callbackResponse)
             
-            XCTAssertNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "VALID_NUMBER")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Invalid number")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_MIN_LENGTH() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "MIN_LENGTH",
-            "params" : {
-                "minLength" : 5
+            // Then
+            XCTAssertEqual(callback.type, "ValidatedCreatePasswordCallback")
+            XCTAssertEqual(callback.prompt, "Password")
+            XCTAssertEqual(callback.inputName, "IDToken2")
+            XCTAssertEqual(callback.echoOn, true)
+            
+            guard let policies = callback.policies else {
+                XCTFail("Failed to convert \"policies\" in Callback response")
+                return
             }
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
-            
-            XCTAssertNotNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "MIN_LENGTH")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username must be at least 5 character(s)")
-        } catch let error {
-            XCTFail("Failed while expecting success: \(error)")
-        }
-    }
-    
-    
-    func testFailedPolicyInit_MAX_LENGTH() {
-        // Given
-        let jsonStr = """
-        {
-            "policyRequirement" : "MAX_LENGTH",
-            "params" : {
-                "maxLength" : 5
+            guard let policyRequirements = policies["policyRequirements"] as? [String] else {
+                XCTFail("Failed to convert \"policyRequirements\" in Callback response")
+                return
             }
-        }
-        """
-        let failedPolicyJson = self.parseStringToDictionary(jsonStr)
-        
-        // Try
-        do {
-            let failedPolicy = try FailedPolicy("Username", failedPolicyJson)
+            XCTAssertNotNil(policyRequirements)
+            XCTAssertEqual(policyRequirements.count, 6)
             
-            XCTAssertNotNil(failedPolicy.params)
-            XCTAssertEqual(failedPolicy.policyRequirement, "MAX_LENGTH")
-            XCTAssertEqual(failedPolicy.failedDescription(), "Username must be at most 5 character(s)")
+            XCTAssertTrue(policyRequirements.contains("REQUIRED"))
+            XCTAssertTrue(policyRequirements.contains("MIN_LENGTH"))
+            XCTAssertTrue(policyRequirements.contains("VALID_TYPE"))
+            XCTAssertTrue(policyRequirements.contains("AT_LEAST_X_CAPITAL_LETTERS"))
+            XCTAssertTrue(policyRequirements.contains("AT_LEAST_X_NUMBERS"))
+            XCTAssertTrue(policyRequirements.contains("CANNOT_CONTAIN_OTHERS"))
+            XCTAssertNotNil(policies["name"])
+            XCTAssertEqual(policies["name"] as? String ?? "", "password")
+            
         } catch let error {
             XCTFail("Failed while expecting success: \(error)")
         }
     }
-    
 }
 

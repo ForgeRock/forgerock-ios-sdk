@@ -263,6 +263,7 @@
 		D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B1C240F0B9F00BD48AA /* FRLog.swift */; };
 		D5F01B23240F1B2900BD48AA /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
+		D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -497,6 +498,7 @@
 		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5EC34FF247B33A80005A50C /* FRAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuthInterceptor.swift; sourceTree = "<group>"; };
 		D5F01B1C240F0B9F00BD48AA /* FRLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLog.swift; sourceTree = "<group>"; };
+		D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedPolicyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -720,6 +722,7 @@
 				D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */,
 				D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */,
 				D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */,
+				D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -1684,6 +1687,7 @@
 				D52D1671231484D60095905A /* FRUserTests.swift in Sources */,
 				D52D167C231484D60095905A /* FRBaseTest.swift in Sources */,
 				D52D166F231484D60095905A /* PKCETests.swift in Sources */,
+				D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */,
 				D534A2CD22FBE08C007098D1 /* FRTestStubResponseParser.swift in Sources */,
 				D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */,
 				D553B91122FCBAF600FC0734 /* Config.swift in Sources */,

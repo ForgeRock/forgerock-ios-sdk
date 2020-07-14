@@ -39,7 +39,7 @@ class PasswordCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
         self.callback = callback as? SingleValueCallback
         self.passwordField?.placeholder = self.callback?.prompt
         
-        if callback is AbstractValidatedCallback, let validatedCallback = callback as? AbstractValidatedCallback {
+        if callback is AbstractValidatedCallback, let validatedCallback = callback as? ValidatedCreatePasswordCallback {
             if let failedPolicies = validatedCallback.failedPolicies {
                 var failedMessage = ""
                 for (index, failedPolicy) in failedPolicies.enumerated() {
@@ -50,6 +50,7 @@ class PasswordCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
                 }
                 passwordField?.errorMessage = failedMessage
             }
+            self.passwordField?.isSecureTextEntry = !validatedCallback.echoOn
         }
     }
 }

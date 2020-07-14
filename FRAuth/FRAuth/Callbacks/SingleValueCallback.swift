@@ -48,10 +48,12 @@ public class SingleValueCallback: Callback {
         if let inputs = json["input"] as? [[String: Any]] {
             for input in inputs {
                 if let inputName = input["name"] as? String {
-                    self.inputName = inputName
-                }
-                if let inputValue = input["value"] as? String {
-                    self.value = inputValue
+                    if inputName.range(of: "IDToken\\d{1,2}$", options: .regularExpression, range: nil, locale: nil) != nil {
+                        self.inputName = inputName
+                        if let inputValue = input["value"] as? String {
+                            self.value = inputValue
+                        }
+                    }
                 }
             }
         }
@@ -88,7 +90,16 @@ public class SingleValueCallback: Callback {
     /// - Returns: JSON request payload for the Callback
     public override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
-        responsePayload["input"] = [["name": self.inputName, "value": self.value]]
+        for (key, value) in responsePayload {
+            if key == "input", var inputs = value as? [[String: Any]] {
+                for (index, input) in inputs.enumerated() {
+                    if let inputName = input["name"] as? String, inputName == self.inputName {
+                        inputs[index]["value"] = self.value
+                    }
+                }
+                responsePayload["input"] = inputs
+            }
+        }
         return responsePayload
     }
 }
