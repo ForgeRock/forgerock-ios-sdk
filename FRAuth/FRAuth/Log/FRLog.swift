@@ -18,7 +18,7 @@ FRLog is a class responsible for Logging functionalities of FRAuth SDK. FRLog ca
 ## Note ##
 By default, FRLog uses OSLog to display the log entry in the debug console, and in the log system of iOS; however, when *OS_ACTIVITY_MODE* is *disabled* in the environment variable, FRLog then uses default system *print()* method to display the log entry in the console only.
 */
-public struct FRLog {
+@objc public class FRLog: NSObject {
     
     /// Module name of FRLog
     static var ModuleName: String {
@@ -36,7 +36,7 @@ public struct FRLog {
     /// Sets LogLevel
     ///
     /// - Parameter logLevel: Designated LogLevel to be displayed
-    public static func setLogLevel(_ logLevel: LogLevel) {
+    @objc public static func setLogLevel(_ logLevel: LogLevel) {
         Log.setLogLevel(logLevel)
     }
     
