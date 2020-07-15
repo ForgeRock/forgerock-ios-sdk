@@ -29,7 +29,9 @@ class AuthStepViewController: UIViewController {
     var authCallbackValues: [String:String] = [:]
     
     @IBOutlet weak var tableView: UITableView?
-    @IBOutlet weak var authStepLabel: UILabel?
+    @IBOutlet weak var headerLabel: UILabel?
+    @IBOutlet weak var descriptionTextView: UITextView?
+    @IBOutlet weak var descriptionTextViewHeight: NSLayoutConstraint?
     @IBOutlet weak var cancelButton: FRButton?
     @IBOutlet weak var nextButton: FRButton?
     @IBOutlet weak var logoImageView: UIImageView?
@@ -103,7 +105,10 @@ class AuthStepViewController: UIViewController {
         super.viewDidLoad()
         
         self.logoImageView?.image = FRUI.shared.logoImage
-        self.authStepLabel?.textColor = FRUI.shared.primaryTextColor
+        self.headerLabel?.textColor = FRUI.shared.primaryTextColor
+        self.descriptionTextView?.textColor = FRUI.shared.primaryTextColor
+        self.descriptionTextView?.translatesAutoresizingMaskIntoConstraints = true
+        self.descriptionTextView?.isScrollEnabled = false
                 
         //  Styling buttons
         self.nextButton?.backgroundColor = FRUI.shared.primaryColor
@@ -126,6 +131,17 @@ class AuthStepViewController: UIViewController {
                 //  Set auth callbacks in list for rendering
                 self.currentNode = node
                 self.authCallbacks = node.callbacks
+        
+                self.headerLabel?.text = node.pageHeader != nil ? node.pageHeader : node.stage != nil ? node.stage : ""
+                if let descriptionText = node.pageDescription {
+                    self.descriptionTextView?.setHTMLString(descriptionText)
+                }
+                else {
+                    self.descriptionTextView?.text = ""
+                }
+                self.descriptionTextView?.sizeToFit()
+                self.descriptionTextViewHeight?.constant = self.descriptionTextView?.frame.size.height ?? 0.0
+                
                 
                 var deviceProfileCallback: DeviceProfileCallback?
                 for (index, callback) in self.authCallbacks.enumerated() {
