@@ -32,7 +32,7 @@ class DeviceAttributeTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
     func updateCellData(callback: Callback) {
         self.callback = callback as? DeviceProfileCallback
         self.loadingView?.startLoading()
-        self.messageLabel?.text = self.callback?.message.count ?? 0 > 0 ? self.callback?.message : "Collecting Device metadata..."
+        self.messageLabel?.text = self.callback?.message
         
         self.callback?.execute({ (_) in
             DispatchQueue.main.async {
