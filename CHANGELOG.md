@@ -1,4 +1,4 @@
-# Version 1.0.3
+# Version 2.0.0
 
 ## [2.0.0]
 #### Added
@@ -15,6 +15,9 @@
 
 #### Changed
 - `FRAuth` now supports `noSession` parameter in Authentication Tree. If no SSO Token is returned with 200 status code, `NodeCompletion` returns `nil` for all three parameters. [SDKS-433]
+- `ConfirmationCallback` and `TextOutputCallback`'s invalid `MessageType` error is fixed. SDK should now be able to support those callbacks received from AM.
+- Single Sign-On issue where it fails to decrypt the data from other applications is fixed. SDK should now be able to encrypt/decrypt and share the data across the apps within SSO group.
+
 
 #### Deprecated
 - `FRURLProtocol.validatedURLs` and `FRURLProtocol.refreshTokenPolicy` are now deprecated; use `TokenManagementPolicy` and `TokenManagementPolicyDelegate` to perform Token Management feature. [SDKS-386]
