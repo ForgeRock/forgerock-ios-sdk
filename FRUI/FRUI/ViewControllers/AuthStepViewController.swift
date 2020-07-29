@@ -140,8 +140,10 @@ class AuthStepViewController: UIViewController {
                     self.descriptionTextView?.text = ""
                 }
                 self.descriptionTextView?.sizeToFit()
-                self.descriptionTextViewHeight?.constant = self.descriptionTextView?.frame.size.height ?? 0.0
-                
+                let descriptionTextViewHeightConstant = self.descriptionTextView?.frame.size.height ?? 0.0
+                self.descriptionTextViewHeight?.constant = descriptionTextViewHeightConstant
+                let headerFrame = self.tableView?.tableHeaderView?.bounds ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+                self.tableView?.tableHeaderView?.frame = CGRect(x: headerFrame.origin.x, y: headerFrame.origin.y, width: headerFrame.size.width, height: 225 + descriptionTextViewHeightConstant)
                 
                 var deviceProfileCallback: DeviceProfileCallback?
                 for (index, callback) in self.authCallbacks.enumerated() {

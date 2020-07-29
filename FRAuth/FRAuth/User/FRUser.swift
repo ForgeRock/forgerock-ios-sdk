@@ -56,10 +56,10 @@ public class FRUser: NSObject, NSSecureCoding {
     @objc
     public var token: AccessToken? {
         get {
-            if let frAuth = FRAuth.shared, let accessToken = try? frAuth.sessionManager.getAccessToken(), let sessionToken = frAuth.sessionManager.getSSOToken() {
-                
-                if sessionToken.value != accessToken.sessionToken {
-                    FRLog.w("SDK identified current Session Token (\(sessionToken.value)) and Session Token (\(String(describing: accessToken.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
+            if let frAuth = FRAuth.shared, let accessToken = try? frAuth.sessionManager.getAccessToken() {
+                let sessionToken = frAuth.sessionManager.getSSOToken()
+                if sessionToken?.value != accessToken.sessionToken {
+                    FRLog.w("SDK identified current Session Token (\(sessionToken?.value ?? "null")) and Session Token (\(String(describing: accessToken.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                     frAuth.tokenManager?.revoke(completion: { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(String(describing: error))")
                     })
