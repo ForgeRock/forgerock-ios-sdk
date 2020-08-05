@@ -22,6 +22,9 @@ class FRAuthInterceptor: RequestInterceptor {
         else if action.type == "AUTHENTICATE" {
             FRRequestInterceptorTests.intercepted.append("AUTHENTICATE")
         }
+        else if action.type == "RESUME_AUTHENTICATE" {
+            FRRequestInterceptorTests.intercepted.append("RESUME_AUTHENTICATE")
+        }
         else if action.type == "AUTHORIZE" {
             FRRequestInterceptorTests.intercepted.append("AUTHORIZE")
         }

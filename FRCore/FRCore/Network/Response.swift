@@ -30,25 +30,26 @@ public struct Response {
     ///
     /// - Returns: Result object notifying whether the request was successful, or failed with an error
     public func parseReponse() -> Result {
-        //  Make sure the response data is returned, HTTP response status code is within successful range, and error is nil
-        guard let responseData = self.data, let httpresponse = self.response as? HTTPURLResponse, (200 ..< 303) ~= httpresponse.statusCode, self.error == nil else {
-            return Result.failure(error: NetworkError.apiRequestFailure(self.data, self.response, self.error))
-        }
-        
+
         if let error = self.error {
             return Result.failure(error: error)
         }
-        else if responseData.isEmpty {
-            return Result.success(result: [:], httpResponse: self.response)
-        }
-        else {
-            //  TODO: Response handling as per Accept header
-            if let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String:AnyObject] {
-                return Result.success(result: jsonData, httpResponse: self.response)
+        else if let httpResponse = self.response as? HTTPURLResponse, (200 ..< 303) ~= httpResponse.statusCode {
+            if let responseData = self.data, responseData.isEmpty {
+                return Result.success(result: [:], httpResponse: self.response)
             }
             else {
-                return Result.failure(error: NetworkError.invalidResponseDataType)
+                //  TODO: Response handling as per Accept header
+                if let jsonData = try? JSONSerialization.jsonObject(with: self.data ?? Data(), options: []) as? [String:AnyObject] {
+                    return Result.success(result: jsonData, httpResponse: self.response)
+                }
+                else {
+                    return Result.failure(error: NetworkError.invalidResponseDataType)
+                }
             }
+        }
+        else {
+            return Result.failure(error: NetworkError.apiRequestFailure(self.data, self.response, self.error))
         }
     }
 }

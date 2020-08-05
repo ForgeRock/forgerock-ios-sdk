@@ -1,0 +1,19 @@
+{
+    "responsePayload": {
+        "code": 401,
+        "reason": "Unauthorized",
+        "message": "org.forgerock.openam.auth.nodes.framework.token.SuspendedAuthSessionException: Token not found. It may have expired."
+    },
+    "response": {
+        "statusCode": 401,
+        "url": "http://localhost/openam/json/realms/root/authenticate?suspendedId=boPYZD4C5YogReyHSmmuDnLI2-c",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Content-Length": "162",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Date": "Wed, 05 Aug 2020 07:44:57 GMT",
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff, nosniff"
+        }
+    }
+}
