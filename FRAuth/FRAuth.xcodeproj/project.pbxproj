@@ -12,6 +12,11 @@
 		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
+		D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
+		D513F17824DA87B10042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
+		D513F17A24DA91630042228B /* AuthApiErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17924DA91630042228B /* AuthApiErrorTests.swift */; };
+		D513F17D24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json in Resources */ = {isa = PBXBuildFile; fileRef = D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */; };
+		D513F17E24DA9B4D0042228B /* AuthTree_AuthTimedOut.json in Resources */ = {isa = PBXBuildFile; fileRef = D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */; };
 		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
@@ -325,6 +330,9 @@
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
 		D512CD40240DC41E00AF520E /* FRRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRestClient.swift; sourceTree = "<group>"; };
 		D513F17424DA6B490042228B /* AuthApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiError.swift; sourceTree = "<group>"; };
+		D513F17924DA91630042228B /* AuthApiErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiErrorTests.swift; sourceTree = "<group>"; };
+		D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SuspendedAuthSessionException.json; sourceTree = "<group>"; };
+		D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AuthTimedOut.json; sourceTree = "<group>"; };
 		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5167289231F0408007053EE /* CustomCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallbackTests.swift; sourceTree = "<group>"; };
 		D516728D231F1E48007053EE /* NodeFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowTests.swift; sourceTree = "<group>"; };
@@ -904,6 +912,8 @@
 		D53310492301216A00F1F851 /* AuthTree */ = {
 			isa = PBXGroup;
 			children = (
+				D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */,
+				D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */,
 				D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */,
 				D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
 				D539587B2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json */,
@@ -1272,6 +1282,7 @@
 				D5C87B432491920F000F2F75 /* AuthErrorTests.swift */,
 				D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */,
 				D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */,
+				D513F17924DA91630042228B /* AuthApiErrorTests.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1469,6 +1480,7 @@
 				D534A2D722FBF1EB007098D1 /* 02-cert.pem in Resources */,
 				D52D1663231484D60095905A /* UsernamePasswordFlow.png in Resources */,
 				D52D16892314853D0095905A /* SecondFactorFlowObjc.png in Resources */,
+				D513F17E24DA9B4D0042228B /* AuthTree_AuthTimedOut.json in Resources */,
 				D53958AA2302376D009CA2BC /* OAuth2_Token_Refresh_Success.json in Resources */,
 				D53958A423022C92009CA2BC /* AM_Session_Logout_Failure.json in Resources */,
 				D553B91322FCBE7C00FC0734 /* Config.json in Resources */,
@@ -1482,6 +1494,7 @@
 				D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */,
 				D53310582301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json in Resources */,
 				D52D16882314853D0095905A /* UsernamePasswordFlowObjc.png in Resources */,
+				D513F17D24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json in Resources */,
 				D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */,
 				D53310542301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
 				D53310522301216A00F1F851 /* AM_Session_Logout_Success.json in Resources */,
@@ -1597,6 +1610,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */,
+				D513F17824DA87B10042228B /* AuthApiError.swift in Sources */,
 				D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */,
 				D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */,
 				D5C87B4B2491A2CF000F2F75 /* FRURLProtocolTests.swift in Sources */,
@@ -1669,6 +1684,7 @@
 				D54237F223358F8F009C868F /* CydiaDetector.swift in Sources */,
 				D54237F323358F8F009C868F /* SandboxDetector.swift in Sources */,
 				D54237F423358F8F009C868F /* SymbolicLinkDetector.swift in Sources */,
+				D513F17A24DA91630042228B /* AuthApiErrorTests.swift in Sources */,
 				D54237F523358F8F009C868F /* JBUtil.h in Sources */,
 				D5C87B4624919969000F2F75 /* ConfigErrorTests.swift in Sources */,
 				D54237F623358F8F009C868F /* CydiaSubstrateDetector.swift in Sources */,

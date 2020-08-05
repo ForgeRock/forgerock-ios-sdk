@@ -13,7 +13,7 @@ import Foundation
 import FRCore
 
 public enum AuthApiError: FRError {
-    case apiRequestFailure(Data?, URLResponse?, Error?, String?)
+    case apiRequestFailure(Data?, URLResponse?, Error?)
     case authenticationTimout(String, String, Int?, [String: Any]?)
     case apiFailureWithMessage(String, String, Int?, [String: Any]?)
     case suspendedAuthSessionError(String, String, Int?, [String: Any]?)
@@ -71,7 +71,7 @@ extension AuthApiError {
                 return AuthApiError.apiFailureWithMessage(errorReason, errorMessage, jsonData["code"] as? Int, jsonData["detail"] as? [String: Any])
             }
         }
-        return AuthApiError.apiRequestFailure(data, response, error, nil)
+        return AuthApiError.apiRequestFailure(data, response, error)
     }
 }
 
@@ -89,8 +89,8 @@ extension AuthApiError: CustomNSError {
     public var errorUserInfo: [String : Any] {
         var userInfo: [String: Any] = [:]
         switch self {
-        case .apiRequestFailure(let data, let response, let error, let message):
-            userInfo[NSLocalizedDescriptionKey] = message ?? "Request failed"
+        case .apiRequestFailure(let data, let response, let error):
+            userInfo[NSLocalizedDescriptionKey] = "Request failed"
             userInfo["com.forgerock.ios.frauth.authapierror.responseData"] = data
             userInfo["com.forgerock.ios.frauth.authapierror.urlresponse"] = response
             userInfo["com.forgerock.ios.frauth.authapierror.error"] = error
