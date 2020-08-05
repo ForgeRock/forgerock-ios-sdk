@@ -11,6 +11,7 @@
 		D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */; };
 		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
+		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
@@ -323,6 +324,7 @@
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
 		D512CD40240DC41E00AF520E /* FRRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRestClient.swift; sourceTree = "<group>"; };
+		D513F17424DA6B490042228B /* AuthApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiError.swift; sourceTree = "<group>"; };
 		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5167289231F0408007053EE /* CustomCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallbackTests.swift; sourceTree = "<group>"; };
 		D516728D231F1E48007053EE /* NodeFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowTests.swift; sourceTree = "<group>"; };
@@ -1080,6 +1082,7 @@
 				D586CF2123358EDF007A2194 /* AuthError.swift */,
 				D586CF2223358EDF007A2194 /* ConfigError.swift */,
 				D586CF2423358EDF007A2194 /* TokenError.swift */,
+				D513F17424DA6B490042228B /* AuthApiError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1512,6 +1515,7 @@
 				D586CF9223358EE0007A2194 /* TermsAndConditionsCallback.swift in Sources */,
 				D586CF8523358EE0007A2194 /* JBUtil.c in Sources */,
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
+				D513F17524DA6B490042228B /* AuthApiError.swift in Sources */,
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
 				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,

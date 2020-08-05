@@ -32,7 +32,7 @@ public struct Response {
     public func parseReponse() -> Result {
         //  Make sure the response data is returned, HTTP response status code is within successful range, and error is nil
         guard let responseData = self.data, let httpresponse = self.response as? HTTPURLResponse, (200 ..< 303) ~= httpresponse.statusCode, self.error == nil else {
-            return Result.failure(error: NetworkError.converToNetworkError(data: self.data, response: self.response, error: self.error))
+            return Result.failure(error: NetworkError.apiRequestFailure(self.data, self.response, self.error))
         }
         
         if let error = self.error {

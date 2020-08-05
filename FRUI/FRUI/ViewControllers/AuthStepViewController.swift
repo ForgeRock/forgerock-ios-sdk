@@ -192,24 +192,22 @@ class AuthStepViewController: UIViewController {
             else if let error = error {
                 
                 var message = ""
+                var title = "Error"
                 var dismissAfter = false
                 //  Handle error
-                if let networkError: NetworkError = error as? NetworkError {
+                if let authApiError: AuthApiError = error as? AuthApiError {
                     
-                    switch networkError {
-                    case .invalidCredentials(_, _, _):
-                        message = "Invalid credentials"
-                        break
-                    case .authenticationTimeout(_, _, _):
+                    switch authApiError {
+                    case .authenticationTimout:
                         message = "Process timed out; please try again"
                         dismissAfter = true
                         break
-                    case .apiFailedWithError(_, _, _):
-                        message = "Something went wrong; please try again"
-                        dismissAfter = false
+                    case .apiFailureWithMessage(let reason, let errorMessage, _, _):
+                        title = reason
+                        message = errorMessage
                         break
                     default:
-                        message = error.localizedDescription
+                        message = "Something went wrong; please try again"
                         break
                     }
                 }
@@ -217,7 +215,7 @@ class AuthStepViewController: UIViewController {
                     message = error.localizedDescription
                 }
                 
-                let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
                     if dismissAfter {
                         self.dismiss(animated: true, completion: nil)
