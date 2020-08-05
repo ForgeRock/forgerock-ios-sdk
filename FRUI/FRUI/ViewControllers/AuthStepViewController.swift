@@ -34,6 +34,7 @@ class AuthStepViewController: UIViewController {
     @IBOutlet weak var descriptionTextViewHeight: NSLayoutConstraint?
     @IBOutlet weak var cancelButton: FRButton?
     @IBOutlet weak var nextButton: FRButton?
+    @IBOutlet weak var closeButton: FRButton?
     @IBOutlet weak var logoImageView: UIImageView?
     
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120.0, height: 120.0), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
@@ -115,6 +116,8 @@ class AuthStepViewController: UIViewController {
         self.nextButton?.titleColor = UIColor.white
         self.cancelButton?.backgroundColor = FRUI.shared.secondaryColor
         self.cancelButton?.titleColor = UIColor.white
+        self.closeButton?.backgroundColor = FRUI.shared.secondaryColor
+        self.closeButton?.titleColor = UIColor.white
         
         self.handleNode(nil, self.currentNode, nil)
     }
@@ -147,11 +150,18 @@ class AuthStepViewController: UIViewController {
                 
                 var deviceProfileCallback: DeviceProfileCallback?
                 for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceProfileCallback handling
                     if let thisCallback = callback as? DeviceProfileCallback {
                         deviceProfileCallback = thisCallback
                         if self.authCallbacks.count > 1 {
                             self.authCallbacks.remove(at: index)
                         }
+                    }
+                    //  SuspendedTextOutputCallback handling
+                    else if let _ = callback as? SuspendedTextOutputCallback {
+                        self.cancelButton?.isHidden = true
+                        self.nextButton?.isHidden = true
+                        self.closeButton?.isHidden = false
                     }
                 }
                 //  If DeviceProfileCallback is found as one of Callbacks, collect data first
@@ -342,6 +352,20 @@ class AuthStepViewController: UIViewController {
             completion(nil, AuthError.authenticationCancelled)
         } else if let completion = self.userCompletion {
             completion(nil, AuthError.authenticationCancelled)
+        }
+        
+        //  Force to end editing
+        self.view.endEditing(true)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func closeButtonClicked(sender: UIButton) {
+        if let completion = self.atCompletion {
+            completion(nil, nil)
+        } else if let completion = self.tokenCompletion {
+            completion(nil, nil)
+        } else if let completion = self.userCompletion {
+            completion(nil, nil)
         }
         
         //  Force to end editing

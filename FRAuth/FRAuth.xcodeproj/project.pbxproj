@@ -265,6 +265,7 @@
 		D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B1C240F0B9F00BD48AA /* FRLog.swift */; };
 		D5F01B23240F1B2900BD48AA /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
+		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
@@ -504,6 +505,7 @@
 		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5EC34FF247B33A80005A50C /* FRAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuthInterceptor.swift; sourceTree = "<group>"; };
 		D5F01B1C240F0B9F00BD48AA /* FRLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLog.swift; sourceTree = "<group>"; };
+		D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspendedTextOutputCallback.swift; sourceTree = "<group>"; };
 		D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedPolicyTests.swift; sourceTree = "<group>"; };
 		D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
@@ -1150,6 +1152,7 @@
 				D5B2A38823FCB25E00764370 /* ActionCallback.swift */,
 				D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */,
 				D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */,
+				D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1537,6 +1540,7 @@
 				D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */,
 				D586CF9123358EE0007A2194 /* Token.swift in Sources */,
+				D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
 				D586CFB523358EE0007A2194 /* FRDevice.swift in Sources */,
 				D586CFBE23358EE0007A2194 /* KeychainManager.swift in Sources */,

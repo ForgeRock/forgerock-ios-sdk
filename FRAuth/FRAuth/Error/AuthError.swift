@@ -31,6 +31,7 @@ public enum AuthError: FRError {
     case invalidGenericType
     case userAlreadyAuthenticated(Bool)
     case authenticationCancelled
+    case invalidResumeURI(String)
 }
 
 public extension AuthError {
@@ -64,6 +65,8 @@ extension AuthError {
             return 1000020
         case .authenticationCancelled:
             return 1000030
+        case .invalidResumeURI:
+            return 1000031
         }
         
     }
@@ -100,6 +103,8 @@ extension AuthError: CustomNSError {
             return [NSLocalizedDescriptionKey: "User is already authenticated\(hasAccessToken ? "" : " and has Session Token; use FRUser.currentUser.getAccessToken to obtian OAuth2 tokens")"]
         case .authenticationCancelled:
             return [NSLocalizedDescriptionKey: "Authentication is cancelled"]
+        case .invalidResumeURI(let message):
+            return [NSLocalizedDescriptionKey: "Invalid Resume URI; missing \(message)"]
         }
     }
 }

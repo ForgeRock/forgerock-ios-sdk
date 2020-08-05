@@ -29,4 +29,5 @@ struct OpenAM {
     static let description = "description"
     static let xRequestedWith = "X-Requested-With"
     static let xmlHTTPRequest = "XMLHTTPRequest"
+    static let suspendedId = "suspendedId"
 }

@@ -54,7 +54,8 @@ public class CallbackTableViewCellFactory: NSObject {
             "TextOutputCallback": TextOutputCallbackTableViewCell.self,
             "DeviceProfileCallback": DeviceAttributeTableViewCell.self,
             "BooleanAttributeInputCallback": BooleanAttributeInputCallbackTableViewCell.self,
-            "NumberAttributeInputCallback": NameCallbackTableViewCell.self
+            "NumberAttributeInputCallback": NameCallbackTableViewCell.self,
+            "SuspendedTextOutputCallback": TextOutputCallbackTableViewCell.self
         ]
         
         self.tableViewCellNibForCallbacks = [
@@ -71,7 +72,8 @@ public class CallbackTableViewCellFactory: NSObject {
             "TextOutputCallback": "TextOutputCallbackTableViewCell",
             "DeviceProfileCallback": "DeviceAttributeTableViewCell",
             "BooleanAttributeInputCallback": "BooleanAttributeInputCallbackTableViewCell",
-            "NumberAttributeInputCallback": "NameCallbackTableViewCell"
+            "NumberAttributeInputCallback": "NameCallbackTableViewCell",
+            "SuspendedTextOutputCallback": "TextOutputCallbackTableViewCell"
         ]
     }
     

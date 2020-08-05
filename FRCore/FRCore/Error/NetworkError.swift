@@ -107,7 +107,7 @@ extension NetworkError: CustomNSError {
     public var errorUserInfo: [String : Any] {
         switch self {
         case .invalidRequest(let requestDescription):
-            return [NSLocalizedDescriptionKey: "Invalid request: "+requestDescription]
+            return [NSLocalizedDescriptionKey: "Invalid request: " + requestDescription]
         case .apiFailedWithError(_, let errorMessage, let userInfo):
             return self.buildErrorUserInfo(errorMessage: errorMessage, additionalInfo: userInfo)
         case .authenticationTimeout(_, let errorMessage, let userInfo):

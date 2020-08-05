@@ -228,6 +228,18 @@ public final class FRAuth: NSObject {
     
     
     // - MARK: Private
+    
+    /// Initiates Authentication Tree with `suspendedId`
+    /// - Parameters:
+    ///   - suspendedId: suspendedId contained in resumeURI contained in Email received from `Email Suspend Node` in AM
+    ///   - completion: NodeCompletion callback which returns the result of Node submission
+    func next<T>(suspendedId: String, completion:@escaping NodeCompletion<T>) {
+        let authService: AuthService = AuthService(suspendedId: suspendedId, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
+        authService.next { (value: T?, node, error) in
+            completion(value, node, error)
+        }
+    }
+    
         
     /// Initiates Authentication Tree with specified authIndexValue and authIndexType.
     /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
