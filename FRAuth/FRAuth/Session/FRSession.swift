@@ -101,7 +101,7 @@ import Foundation
     
     /// Invokes /authenticate endpoint in AM to go through Authentication Tree flow with  `resumeURI` and `suspendedId` to resume Authentication Tree flow.
     /// - Parameters:
-    ///   - resumeURI: Resume URI received in Email from Suspned Email Node; URI **must** contain `suspendedId` in URL query parameter
+    ///   - resumeURI: Resume URI received in Email from Suspend Email Node; URI **must** contain `suspendedId` in URL query parameter
     ///   - completion: NodeCompletion callback which returns the result of Session Token as Token object
     @objc public static func authenticate(resumeURI: URL, completion:@escaping NodeCompletion<Token>) {
         if let frAuth = FRAuth.shared {

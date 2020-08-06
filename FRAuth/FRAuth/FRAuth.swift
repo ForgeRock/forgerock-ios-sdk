@@ -233,7 +233,7 @@ public final class FRAuth: NSObject {
     /// - Parameters:
     ///   - suspendedId: suspendedId contained in resumeURI contained in Email received from `Email Suspend Node` in AM
     ///   - completion: NodeCompletion callback which returns the result of Node submission
-    func next<T>(suspendedId: String, completion:@escaping NodeCompletion<T>) {
+    func next<T>(suspendedId: String, completion: @escaping NodeCompletion<T>) {
         let authService: AuthService = AuthService(suspendedId: suspendedId, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
@@ -245,7 +245,7 @@ public final class FRAuth: NSObject {
     /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
     /// - Parameter authIndexType: authIndexType: Authentication Tree type value in String
     /// - Parameter completion:NodeCompletion callback which returns the result of Node submission
-    func next<T>(authIndexValue: String, authIndexType: String, completion:@escaping NodeCompletion<T>) {
+    func next<T>(authIndexValue: String, authIndexType: String, completion: @escaping NodeCompletion<T>) {
         
         let authService: AuthService = AuthService(authIndexValue: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager, authIndexType: authIndexType)
         authService.next { (value: T?, node, error) in
@@ -262,7 +262,7 @@ public final class FRAuth: NSObject {
     ///   - flowType: FlowType whether authentication, or registration
     ///   - completion: NodeCompletion callback which returns the result of Node submission.
     @available(*, deprecated, message: "FRAuth.shared.next() has been deprecated; use FRUser.login for authentication or FRSession.authenticat() instead to invoke Authentication Tree.") // Deprecated as of FRAuth: v1.0.2
-    public func next<T>(flowType: FRAuthFlowType, completion:@escaping NodeCompletion<T>) {
+    public func next<T>(flowType: FRAuthFlowType, completion: @escaping NodeCompletion<T>) {
         FRLog.v("Called")
         
         var serviceName = ""
