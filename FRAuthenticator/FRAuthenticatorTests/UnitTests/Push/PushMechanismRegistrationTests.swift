@@ -104,14 +104,7 @@ class PushMechanismRegistrationTests: FRABaseTests {
             }) { (error) in
                 
                 switch error {
-                case NetworkError.apiFailedWithError(let statusCode, let message, let userInfo):
-                    XCTAssertEqual(statusCode, 400)
-                    XCTAssertEqual(message, "Bad request.")
-                    if let userInfo = userInfo {
-                        XCTAssertEqual(userInfo["reason"] as? String, "Bad Request")
-                        XCTAssertEqual(userInfo["message"] as? String, "Bad request.")
-                        XCTAssertEqual(userInfo["code"] as? Int, 400)
-                    }
+                case NetworkError.apiRequestFailure(_, _, _):
                     break
                 default:
                     XCTFail("PushMechanism registration with invalid JWT failed with unexpected error")

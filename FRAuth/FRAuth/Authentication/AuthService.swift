@@ -2,7 +2,7 @@
 //  AuthService.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -18,7 +18,7 @@ import FRCore
     * An error, if occurred during the authentication flow
  
  ## Notes ##
-     * Any Callback type returned from OpenAM must be supported within CallbackFactory.shared.supportedCallbacks.
+     * Any Callback type returned from AM must be supported within CallbackFactory.shared.supportedCallbacks.
      * Any custom Callback must be implemented custom Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
      * FRAuth SDK currently supports following Callback types:
          1. NameCallback
@@ -33,6 +33,11 @@ import FRCore
          10. ConfirmationCallback
          11. TextOutputCallback
          12. ReCaptchaCallback
+         13. MetadataCallback
+         14. DeviceProfileCallback
+         15. BooleanAttributeInputCallback
+         16. NumberAttributeInputCallback
+         17. SuspendedTextOutputCallback
  */
 @objc(FRAuthService)
 public class AuthService: NSObject {
@@ -69,6 +74,25 @@ public class AuthService: NSObject {
         self.serviceName = name
         self.authIndexType = "service"
         self.serverConfig = serverConfig
+        self.authServiceId = UUID().uuidString
+    }
+    
+    
+    /// Initializes AuthService instance with suspendedId
+    /// - Parameters:
+    ///   - suspendedId: suspendedId to resume Authentication Tree flow
+    ///   - serverConfig: ServerConfig object for AuthService server communication
+    ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
+    ///   - sessionManager: SessionManager instance to manage and persist authenticated session
+    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
+    init(suspendedId: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil) {
+        FRLog.v("AuthService init - suspendedId: \(suspendedId), ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
+        self.serviceName = suspendedId
+        self.authIndexType = OpenAM.suspendedId
+        self.serverConfig = serverConfig
+        self.oAuth2Config = oAuth2Config
+        self.sessionManager = sessionManager
+        self.tokenManager = tokenManager
         self.authServiceId = UUID().uuidString
     }
     
@@ -192,8 +216,18 @@ public class AuthService: NSObject {
         // Construct Request object for AuthService flow with given serviceName
         let request = self.buildAuthServiceRequest()
         
+        var action: Action?
+        //  For /authenticate request with suspendedId, return .RESUME_AUTHENTICATE type
+        if self.authIndexType == OpenAM.suspendedId {
+            action = Action(type: .RESUME_AUTHENTICATE)
+        }
+        //  Otherwise, regular .START_AUTHENTICATE Action type
+        else {
+            action = Action(type: .START_AUTHENTICATE, payload: ["tree": self.serviceName, "type": self.authIndexType])
+        }
+        
         // Invoke request
-        FRRestClient.invoke(request: request, action: Action(type: .START_AUTHENTICATE, payload: ["tree": self.serviceName, "type": self.authIndexType])) { (result) in
+        FRRestClient.invoke(request: request, action: action) { (result) in
             switch result {
             case .success(let response, _):
                 
@@ -250,8 +284,16 @@ public class AuthService: NSObject {
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         var parameter: [String: String] = [:]
-        parameter[OpenAM.authIndexType] = self.authIndexType
-        parameter[OpenAM.authIndexValue] = self.serviceName
+        
+        //  If authIndexType is suspendedId, only add suspendedId for AuthService
+        if self.authIndexType == OpenAM.suspendedId {
+            parameter[OpenAM.suspendedId] = self.serviceName
+        }
+        else {
+            //  Set authIndexType, and authIndexValue
+            parameter[OpenAM.authIndexType] = self.authIndexType
+            parameter[OpenAM.authIndexValue] = self.serviceName
+        }
         
         return Request(url: self.serverConfig.authenticateURL, method: .POST, headers: header, urlParams: parameter, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
