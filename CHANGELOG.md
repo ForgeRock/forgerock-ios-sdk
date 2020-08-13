@@ -2,6 +2,7 @@
 
 ## [2.1.0]
 #### Added
+- `SuspendedTextOutputCallback`is now supported in iOS SDK for `Email Suspend Node` in AM. [SDKS-504]
 - `Node` now supports `pageHeader`, and `pageDescription` attributes from `Page Node`. [SDKS-517]
 - `NumberAttributeInputCallback`, and `BooleanAttributeInputCallback` are now supported for IDM integration `Callback`. [SDKS-494]
 - `AbstractValidatedCallback` supports updated `Policies` structures. [SDKS-460]

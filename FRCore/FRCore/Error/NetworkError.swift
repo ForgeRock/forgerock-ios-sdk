@@ -44,7 +44,6 @@ extension NetworkError {
         case .invalidRequest:
             return 5000005
         }
-        
     }
 }
 
