@@ -2,7 +2,7 @@
 //  BluetoothCollector.swift
 //  FRProximity
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,10 +13,10 @@ import CoreBluetooth
 import FRAuth
 
 /// BluetoothCollector is responsible for collecting BLE information of the device using CBPeripheralManager.
-class BluetoothCollector: DeviceCollector {
+public class BluetoothCollector: DeviceCollector {
     
     /// Name of current collector
-    var name: String = "bluetooth"
+    public var name: String = "bluetooth"
     /// CBPeripheralManager to validate if the device can turn on BLE
     var manager = CBPeripheralManager()
     /// BluetoothManagerDelegation class for implementing CBPeripheralManagerDelegate protocols
@@ -25,7 +25,7 @@ class BluetoothCollector: DeviceCollector {
     /// Collects BLE information using CBPeripheralManager
     ///
     /// - Parameter completion: completion block
-    func collect(completion: @escaping DeviceCollectorCallback) {
+    public func collect(completion: @escaping DeviceCollectorCallback) {
         if self.manager.state == .unknown {
             self.managerDelegate.completionCallback = completion
             self.manager.delegate = self.managerDelegate

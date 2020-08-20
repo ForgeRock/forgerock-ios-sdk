@@ -44,12 +44,17 @@
 		D548ECB4246A1359002DE328 /* BluetoothCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE88234415AF005D34DA /* BluetoothCollector.swift */; };
 		D548ECB5246A135A002DE328 /* LocationCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE87234415AF005D34DA /* LocationCollector.swift */; };
 		D54B7502246B51C500E6394E /* CustomCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54B7501246B51C500E6394E /* CustomCollector.swift */; };
+		D5850E0024EE39B7004C9B98 /* FRPLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337E24EDCAB800737F14 /* FRPLog.swift */; };
+		D5850E0124EE39B7004C9B98 /* FRLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */; };
+		D5850E0324EE39C8004C9B98 /* FRProximity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE81234414DB005D34DA /* FRProximity.swift */; };
 		D59FAE28234413D3005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE1E234413D3005D34DA /* FRProximity.framework */; };
 		D59FAE2F234413D3005D34DA /* FRProximity.h in Headers */ = {isa = PBXBuildFile; fileRef = D59FAE21234413D3005D34DA /* FRProximity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D59FAE82234414DB005D34DA /* FRProximity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE81234414DB005D34DA /* FRProximity.swift */; };
 		D59FAE89234415AF005D34DA /* LocationCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE87234415AF005D34DA /* LocationCollector.swift */; };
 		D59FAE8A234415AF005D34DA /* BluetoothCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE88234415AF005D34DA /* BluetoothCollector.swift */; };
 		D59FAE9F234418BD005D34DA /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE40234413F3005D34DA /* FRAuth.framework */; };
+		D5F1337B24EDBDAD00737F14 /* FRLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */; };
+		D5F1337F24EDCAB800737F14 /* FRPLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337E24EDCAB800737F14 /* FRPLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +148,8 @@
 		D59FAE87234415AF005D34DA /* LocationCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCollector.swift; sourceTree = "<group>"; };
 		D59FAE88234415AF005D34DA /* BluetoothCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothCollector.swift; sourceTree = "<group>"; };
 		D5B68CE1248CDD7000CD2F5B /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
+		D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLocationManager.swift; sourceTree = "<group>"; };
+		D5F1337E24EDCAB800737F14 /* FRPLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRPLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +172,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D505659224ECE8CC005E55BE /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		D548EC1F2469CCAA002DE328 /* TestUtil */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +313,8 @@
 		D59FAE20234413D3005D34DA /* FRProximity */ = {
 			isa = PBXGroup;
 			children = (
+				D5F1337D24EDCAAF00737F14 /* Log */,
+				D505659224ECE8CC005E55BE /* Location */,
 				D59FAE862344156A005D34DA /* Device */,
 				D59FAE21234413D3005D34DA /* FRProximity.h */,
 				D59FAE22234413D3005D34DA /* Info.plist */,
@@ -351,6 +368,14 @@
 				D5B68CE8248CDD7000CD2F5B /* FRTestHost.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D5F1337D24EDCAAF00737F14 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				D5F1337E24EDCAB800737F14 /* FRPLog.swift */,
+			);
+			path = Log;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -524,8 +549,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5F1337F24EDCAB800737F14 /* FRPLog.swift in Sources */,
 				D59FAE8A234415AF005D34DA /* BluetoothCollector.swift in Sources */,
 				D59FAE89234415AF005D34DA /* LocationCollector.swift in Sources */,
+				D5F1337B24EDBDAD00737F14 /* FRLocationManager.swift in Sources */,
 				D59FAE82234414DB005D34DA /* FRProximity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,6 +561,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5850E0324EE39C8004C9B98 /* FRProximity.swift in Sources */,
+				D5850E0024EE39B7004C9B98 /* FRPLog.swift in Sources */,
+				D5850E0124EE39B7004C9B98 /* FRLocationManager.swift in Sources */,
 				D548ECB4246A1359002DE328 /* BluetoothCollector.swift in Sources */,
 				D548ECB5246A135A002DE328 /* LocationCollector.swift in Sources */,
 				D548ECB3246A1322002DE328 /* BluetoothCollectorTests.swift in Sources */,
