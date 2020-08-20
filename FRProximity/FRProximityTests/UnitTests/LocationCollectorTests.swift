@@ -16,18 +16,17 @@ import FRCore
 class LocationCollectorTests: FRPBaseTest {
     
     func test_01_basic_init() {
-        
+
         let location = LocationCollector()
         XCTAssertEqual(location.name, "location")
         XCTAssertNotNil(location.locationManager)
-        XCTAssertNotNil(location.locationDelegate)
     }
 
     
     func test_02_location_status_denied() {
         
         let location = FakeLocationCollector()
-        location.changeStatus(status: .denied)
+        FakeFRLocationManager.changeStatus(status: .denied)
         let ex = self.expectation(description: "Location collect")
         location.collect { (response) in
             XCTAssertFalse(response.keys.contains("latitude"))
@@ -41,7 +40,7 @@ class LocationCollectorTests: FRPBaseTest {
     func test_03_location_status_notDetermined() {
         
         let location = FakeLocationCollector()
-        location.changeStatus(status: .notDetermined)
+        FakeFRLocationManager.changeStatus(status: .notDetermined)
         let ex = self.expectation(description: "Location collect")
         location.collect { (response) in
             XCTAssertFalse(response.keys.contains("latitude"))
@@ -55,7 +54,7 @@ class LocationCollectorTests: FRPBaseTest {
     func test_04_location_status_restricted() {
         
         let location = FakeLocationCollector()
-        location.changeStatus(status: .restricted)
+        FakeFRLocationManager.changeStatus(status: .restricted)
         let ex = self.expectation(description: "Location collect")
         location.collect { (response) in
             XCTAssertFalse(response.keys.contains("latitude"))
@@ -71,10 +70,10 @@ class LocationCollectorTests: FRPBaseTest {
         let fakeLocationManager = FakeLocationManager()
         fakeLocationManager.fakeLocation = [CLLocation(latitude: 37.7749, longitude: 122.4194)]
         let location = FakeLocationCollector()
-        location.locationManager = fakeLocationManager
+        location.locationManager.locationManager = fakeLocationManager
+        location.locationManager.locationManager.delegate = location.locationManager
         
-        
-        location.changeStatus(status: .authorizedAlways)
+        FakeFRLocationManager.changeStatus(status: .authorizedAlways)
         let ex = self.expectation(description: "Location collect")
         location.collect { (response) in
             XCTAssertTrue(response.keys.contains("latitude"))
@@ -98,10 +97,9 @@ class LocationCollectorTests: FRPBaseTest {
         let fakeLocationManager = FakeLocationManager()
         fakeLocationManager.fakeLocation = [CLLocation(latitude: 49.2827, longitude: 123.1207)]
         let location = FakeLocationCollector()
-        location.locationManager = fakeLocationManager
-        
-        
-        location.changeStatus(status: .authorizedWhenInUse)
+        location.locationManager.locationManager = fakeLocationManager
+        location.locationManager.locationManager.delegate = location.locationManager
+        FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
         let ex = self.expectation(description: "Location collect")
         location.collect { (response) in
             XCTAssertTrue(response.keys.contains("latitude"))
@@ -125,10 +123,11 @@ class LocationCollectorTests: FRPBaseTest {
         let fakeLocationManager = FakeLocationManager()
         fakeLocationManager.fakeError = NetworkError.invalidResponseDataType // fake any error
         let location = FakeLocationCollector()
-        location.locationManager = fakeLocationManager
+        location.locationManager.locationManager = fakeLocationManager
+        location.locationManager.locationManager.delegate = location.locationManager
         
         
-        location.changeStatus(status: .authorizedWhenInUse)
+        FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
         let ex = self.expectation(description: "Location collect")
         location.collect { (response) in
             XCTAssertFalse(response.keys.contains("latitude"))
@@ -141,21 +140,28 @@ class LocationCollectorTests: FRPBaseTest {
 
 
 class FakeLocationCollector: LocationCollector {
+    override init() {
+        super.init()
+        let locMgr = FakeFRLocationManager()
+        locMgr.locationManager = FakeLocationManager()
+        locMgr.locationManager.delegate = locMgr
+        self.locationManager = locMgr
+    }
+}
+
+class FakeFRLocationManager: FRLocationManager {
     
-    var status: CLAuthorizationStatus = .notDetermined
-    func changeStatus(status: CLAuthorizationStatus) {
-        self.status = status
+    static var status: CLAuthorizationStatus = .notDetermined
+    static func changeStatus(status: CLAuthorizationStatus) {
+        FakeFRLocationManager.status = status
+    }
+    
+    override var authorizationStatus: CLAuthorizationStatus {
+        return FakeFRLocationManager.status
     }
     
     override init() {
         super.init()
-        self.locationManager = FakeLocationManager()
-    }
-    
-    override var authorizationStatus: CLAuthorizationStatus {
-        get {
-            return self.status
-        }
     }
 }
 
@@ -164,7 +170,7 @@ class FakeLocationManager: CLLocationManager {
     
     var fakeError: Error?
     var fakeLocation: [CLLocation]?
-        
+    
     override func requestLocation() {
         
         if let error = self.fakeError {
