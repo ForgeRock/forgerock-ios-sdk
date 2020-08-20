@@ -9,7 +9,7 @@
 - `FRProximity.setLocationAccuracy` is added to specify `CLLocationManager.desiredAccuracy` configuration used in `LocationCollector`. [SDKS-617]
 
 #### Changed
-- `FRUI` now longer asks for user's consent when `DeviceProfileCallback` is the only `Callback` in the `Node`. [SDKS-436]
+- `FRUI` no longer asks for user's consent when `DeviceProfileCallback` is the only `Callback` in the `Node`. [SDKS-436]
 - `FRAuth` was mistakenly allowing other app's private Keychain Access storage when .entitlement is misconfigured. [SDKS-552]
 - `FRProximity` SDK's `LocationCollector` now requests for Location Authorization while collecting Device Profile information if the authorization has not been asked yet. [SDKS-617]
 
