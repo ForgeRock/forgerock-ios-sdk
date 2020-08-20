@@ -14,7 +14,7 @@ import Foundation
  MultipleValuesCallback is a base Callback implementation that has one or more user input values. Any Callback that accepts multiple values from user interaction without OpenAM's validation with policies may inherit from this class.
  */
 @objc(FRMultipleValuesCallback)
-public class MultipleValuesCallback: Callback {
+open class MultipleValuesCallback: Callback {
     
     //  MARK: - Property
     
@@ -40,7 +40,7 @@ public class MultipleValuesCallback: Callback {
     ///
     /// - Parameter json: JSON object of MultipleValuesCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
-    required init(json: [String : Any]) throws {
+    public required init(json: [String : Any]) throws {
         guard let callbackType = json["type"] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
@@ -81,7 +81,7 @@ public class MultipleValuesCallback: Callback {
     /// Any Callback inherits from this class may override *buildResponse()* method to construct the payload with any additional input value.
     ///
     /// - Returns: JSON request payload for the Callback
-    public override func buildResponse() -> [String : Any] {
+    open override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
         
         var input: [[String: Any]] = []
