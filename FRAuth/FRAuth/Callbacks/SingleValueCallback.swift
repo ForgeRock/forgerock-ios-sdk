@@ -14,7 +14,7 @@ import Foundation
  SingleValueCallback is a base Callback implementation that has single user input value. Any Callback that accepts single value from user interaction without OpenAM's validation with policies may inherit from this class.
  */
 @objc(FRSingleValueCallback)
-public class SingleValueCallback: Callback {
+open class SingleValueCallback: Callback {
     
     //  MARK: - Property
     
@@ -46,7 +46,7 @@ public class SingleValueCallback: Callback {
     ///
     /// - Parameter json: JSON object of SingleValueCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
-    required init(json: [String : Any]) throws {
+    public required init(json: [String : Any]) throws {
         
         guard let callbackType = json["type"] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
@@ -113,7 +113,7 @@ public class SingleValueCallback: Callback {
     /// Any Callback inherits from this class may override *buildResponse()* method to construct the payload with any additional input value.
     ///
     /// - Returns: JSON request payload for the Callback
-    public override func buildResponse() -> [String : Any] {
+    open override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
         for (key, value) in responsePayload {
             if key == "input", var inputs = value as? [[String: Any]] {
