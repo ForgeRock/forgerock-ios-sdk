@@ -56,14 +56,15 @@ class DeviceProfileCallbackTests: FRPBaseTest {
             // Fake location collector
             let fakeLocationManager = FakeLocationManager()
             fakeLocationManager.fakeLocation = [CLLocation(latitude: 49.2827, longitude: 123.1207)]
+            FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
             let location = FakeLocationCollector()
-            location.locationManager = fakeLocationManager
-            location.changeStatus(status: .authorizedWhenInUse)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
             callback.collector.collectors.append(location)
 
             // Assign FakeLocationCollector to callback
             for (index, collector) in callback.collector.collectors.enumerated() {
-                if String(describing:collector) == "FRProximity.LocationCollector" {
+                if String(describing:collector).contains("FRProximity.LocationCollector") {
                     callback.collector.collectors.remove(at: index)
                 }
             }
@@ -136,9 +137,10 @@ class DeviceProfileCallbackTests: FRPBaseTest {
             
             // Fake location collector
             let fakeLocationManager = FakeLocationManager()
+            FakeFRLocationManager.changeStatus(status: .denied)
             let location = FakeLocationCollector()
-            location.locationManager = fakeLocationManager
-            location.changeStatus(status: .denied)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
             callback.collector.collectors.append(location)
 
             // Assign FakeLocationCollector to callback
