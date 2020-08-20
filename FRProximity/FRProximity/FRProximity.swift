@@ -38,7 +38,7 @@ import CoreLocation
     
     /// Sets CLLocationAccuracy for LocationCollector
     /// - Parameter accuracy: CLLocationAccuracy that LocationCollector will be using to fetch location
-    @objc static func setLocationAccuracy(accuracy: CLLocationAccuracy) {
+    @objc static public func setLocationAccuracy(accuracy: CLLocationAccuracy) {
         FRLocationManager.shared.locationManager.desiredAccuracy = accuracy
         FRPLog.i("CLLocationAccuracy has changed: \(accuracy)")
     }
