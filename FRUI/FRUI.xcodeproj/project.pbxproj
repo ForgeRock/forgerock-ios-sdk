@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51F44D722B1B8C900FC8F0D /* FRAuth.framework */; };
+		D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D527D03024BCDB4E00C21663 /* FRUITextView.swift */; };
 		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
 		D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */; };
 		D53A91EB22B1815B003DF94E /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D53A91E122B1815B003DF94E /* FRUI.framework */; };
@@ -47,6 +48,8 @@
 		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
 		D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */; };
 		D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */; };
+		D5F8F9F324B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */; };
+		D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +85,7 @@
 
 /* Begin PBXFileReference section */
 		D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
+		D527D03024BCDB4E00C21663 /* FRUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUITextView.swift; sourceTree = "<group>"; };
 		D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsTableViewCell.swift; sourceTree = "<group>"; };
 		D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsAndConditionsTableViewCell.xib; sourceTree = "<group>"; };
 		D53A91E122B1815B003DF94E /* FRUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +128,8 @@
 		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
 		D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUICallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D5CC1E5823DA4432006C7EAA /* CallbackTableViewCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallbackTableViewCellFactory.swift; sourceTree = "<group>"; };
+		D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BooleanAttributeInputCallbackTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +235,8 @@
 				D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */,
 				D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */,
 				D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */,
+				D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */,
+				D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -283,6 +291,7 @@
 				D5855BDE233EB988003333BD /* FRUser.swift */,
 				D58A5EEC23CFBC10009D9328 /* FRSession.swift */,
 				D5877794238DBFCA00422605 /* UIApplication.swift */,
+				D527D03024BCDB4E00C21663 /* FRUITextView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -437,6 +446,7 @@
 				D5962DC0238F47FA0021859F /* arrow.png in Resources */,
 				D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */,
 				D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */,
+				D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */,
 				D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */,
 				D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */,
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
@@ -476,6 +486,7 @@
 				D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */,
 				D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */,
 				D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */,
+				D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */,
 				D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */,
 				D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */,
 				D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */,
@@ -485,6 +496,7 @@
 				D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */,
 				D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */,
 				D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */,
+				D5F8F9F324B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,7 +668,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -690,7 +702,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -705,8 +717,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -716,6 +728,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -725,8 +739,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -736,6 +750,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

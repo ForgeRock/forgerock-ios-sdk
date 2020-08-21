@@ -63,7 +63,7 @@ class PasswordCallbackTests: FRBaseTest {
             
             
             // Sets Username
-            callback.value = "Password123!"
+            callback.setValue("Password123!")
             
             // Builds new response
             let jsonStr2 = """

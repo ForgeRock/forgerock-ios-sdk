@@ -20,14 +20,15 @@ import Foundation
  
         1. START_AUTHENTICATE - Initial Request made: '/json/realms/{realm}/authenticate'
         2. AUTHENTICATE - Any subsequent Request made: '/json/realms/{realm}/authenticate'
-        3. AUTHORIZE - A '/oauth2/realms/{realm}/authorize' request for exchanging SSO Token to Authorization code
-        4. EXCHANGE_TOKEN - OAuth2 token exchange request with Authorization Code: '/oauth2/realms/{realm}/access_token'
-        5. REFRESH_TOKEN - OAuth2 token renewal request with given 'refresh_token': '/oauth2/realms/{realm}/access_token'
-        6. REVOKE_TOKEN - OAuth2 token revocation with given 'access_token' or 'refresh_token': '/oauth2/realms/{realm}/token/revoke'
-        7. LOGOUT - AM Session logout request to revoke SSO Token: '/json/realms/{realm}/sessions?_action=logout'
-        8. PUSH_REGISTER - AM Push registration for Authenticator SDK: '/json/push/sns/message?_action=register'
-        9. PUSH_AUTHENTICATE - AM Push authentication for Authenticator SDK: '/json/push/sns/message?_action=authenticate'
-        10. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
+        3. RESUME_AUTHENTICATE - Resume /authenticate request made with 'suspendedId': '/json/realms/{realm}/authenticate'
+        4. AUTHORIZE - A '/oauth2/realms/{realm}/authorize' request for exchanging SSO Token to Authorization code
+        5. EXCHANGE_TOKEN - OAuth2 token exchange request with Authorization Code: '/oauth2/realms/{realm}/access_token'
+        6. REFRESH_TOKEN - OAuth2 token renewal request with given 'refresh_token': '/oauth2/realms/{realm}/access_token'
+        7. REVOKE_TOKEN - OAuth2 token revocation with given 'access_token' or 'refresh_token': '/oauth2/realms/{realm}/token/revoke'
+        8. LOGOUT - AM Session logout request to revoke SSO Token: '/json/realms/{realm}/sessions?_action=logout'
+        9. PUSH_REGISTER - AM Push registration for Authenticator SDK: '/json/push/sns/message?_action=register'
+        10. PUSH_AUTHENTICATE - AM Push authentication for Authenticator SDK: '/json/push/sns/message?_action=authenticate'
+        11. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
  */
 public struct Action {
     public let type: String
@@ -43,6 +44,7 @@ public struct Action {
 public enum ActionType: String {
     case START_AUTHENTICATE = "START_AUTHENTICATE"
     case AUTHENTICATE = "AUTHENTICATE"
+    case RESUME_AUTHENTICATE = "RESUME_AUTHENTICATE"
     case AUTHORIZE = "AUTHORIZE"
     case EXCHANGE_TOKEN = "EXCHANGE_TOKEN"
     case REFRESH_TOKEN = "REFRESH_TOKEN"

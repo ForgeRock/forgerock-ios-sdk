@@ -62,7 +62,7 @@ import Foundation
     func prepareCollectors() {
         if locationRequired {
             for deviceCollector in FRDeviceCollector.shared.collectors {
-                if String(describing: deviceCollector) == "FRProximity.LocationCollector" {
+                if String(describing: deviceCollector).contains("FRProximity.LocationCollector") {
                     self.locationCollector = deviceCollector
                 }
             }
@@ -77,7 +77,7 @@ import Foundation
         
         if metadataRequired {
             for deviceCollector in FRDeviceCollector.shared.collectors {
-                if String(describing: deviceCollector) == "FRProximity.BluetoothCollector" {
+                if String(describing: deviceCollector).contains("FRProximity.BluetoothCollector") {
                     self.profileCollector.collectors.append(deviceCollector)
                 }
             }
@@ -91,7 +91,7 @@ import Foundation
     public func execute(_ completion: @escaping JSONCompletionCallback) {
         
         collector.collect { (json) in
-            self.value = self.JSONStringify(value: json as AnyObject)
+            self._value = self.JSONStringify(value: json as AnyObject)
             completion(json)
         }
     }

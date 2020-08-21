@@ -55,6 +55,13 @@ public class ChoiceCallback: SingleValueCallback {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
-        self.value = "\(self.defaultChoice)"
+        self._value = "\(self.defaultChoice)"
+    }
+    
+    
+    /// Sets Int input value of the choice for ChoiceCallback.
+    /// - Parameter val: Int input value for ChoiceCallback
+    public func setValue(_ val: Int) {
+        self._value = val
     }
 }

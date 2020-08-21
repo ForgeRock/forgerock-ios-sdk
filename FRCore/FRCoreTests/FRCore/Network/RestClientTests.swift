@@ -27,8 +27,7 @@ class RestClientTests: FRCoreBaseTest {
                 urlResponse = requestUrlResponse
                 expectation.fulfill()
                 break
-            case .failure(let requestError):
-                
+            case .failure(let requestError):                
                 error = requestError as? NetworkError
                 expectation.fulfill()
                 break

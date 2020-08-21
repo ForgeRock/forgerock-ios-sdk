@@ -106,13 +106,6 @@
 			remoteGlobalIDString = D554630122A6DF720096C7A4;
 			remoteInfo = FRAuthTests;
 		};
-		D5FE5E39231908D200E04658 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5FE5E2F231908D200E04658 /* FRAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D55118AC22E1268C009EBCD9;
-			remoteInfo = FRAuthTestHost;
-		};
 		D5FE5E4D2319091500E04658 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5FE5E2F231908D200E04658 /* FRAuth.xcodeproj */;
@@ -278,7 +271,6 @@
 			children = (
 				D5FE5E36231908D200E04658 /* FRAuth.framework */,
 				D5FE5E38231908D200E04658 /* FRAuthTests.xctest */,
-				D5FE5E3A231908D200E04658 /* FRAuthTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -452,13 +444,6 @@
 			remoteRef = D5FE5E37231908D200E04658 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D5FE5E3A231908D200E04658 /* FRAuthTestHost.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FRAuthTestHost.app;
-			remoteRef = D5FE5E39231908D200E04658 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -579,7 +564,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "FRExampleObjC/Supporting Files/FRexampleSSOObjC.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/FRexampleObjC/Supporting Files/FRExampleSSOObjC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -599,7 +584,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "FRExampleObjC/Supporting Files/FRexampleSSOObjC.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/FRexampleObjC/Supporting Files/FRExampleSSOObjC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -731,7 +716,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "FRexampleObjC/Supporting Files/FRexampleObjC.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "FRexampleObjC/Supporting Files/FRExampleObjC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -751,7 +736,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "FRexampleObjC/Supporting Files/FRexampleObjC.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B67QY6U5YF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "FRexampleObjC/Supporting Files/FRExampleObjC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -51,11 +51,11 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRNameCallback class]]) {
             FRNameCallback *thisCallback = (FRNameCallback *)callback;
-            thisCallback.value = self.config.username;
+            [thisCallback setInputValue:self.config.username];
         }
         else if ([callback isKindOfClass:[FRPasswordCallback class]]) {
             FRPasswordCallback *thisCallback = (FRPasswordCallback *)callback;
-            thisCallback.value = self.config.password;
+            [thisCallback setInputValue:self.config.password];
         }
         else {
             XCTFail("Received unexpected callback %@", callback);
@@ -77,7 +77,7 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRChoiceCallback class]]) {
             FRChoiceCallback *thisCallback = (FRChoiceCallback *)callback;
-            thisCallback.value = [NSNumber numberWithInteger: thisCallback.defaultChoice];
+            [thisCallback setInputValue:[NSNumber numberWithInteger: thisCallback.defaultChoice]];
         }
         else {
             XCTFail("Received unexpected callback %@", callback);
@@ -104,7 +104,7 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRPasswordCallback class]]) {
             FRPasswordCallback *thisCallback = (FRPasswordCallback *)callback;
-            thisCallback.value = @"OTP Dummy Credentials";
+            [thisCallback setInputValue:@"OTP Dummy Credentials"];
         }
         else {
             XCTFail("Received unexpected callback %@", callback);

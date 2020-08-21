@@ -2,7 +2,7 @@
 //  AuthServiceTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -29,7 +29,7 @@ class AuthServiceTests: FRBaseTest {
     func test_01_AuthServicePublicInit() {
         
         // Given
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         let authService: AuthService = AuthService(name: "loginService", serverConfig: serverConfig)
         
         // Then
@@ -45,7 +45,7 @@ class AuthServiceTests: FRBaseTest {
     
     func test_02_AuthServicePrivateInit() {
         // Given
-        let serverConfig = ServerConfig(url: URL(string: self.serverURL)!, realm: self.realm, timeout: self.timeout)
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!, realm: self.realm).set(timeout: self.timeout).build()
         let oAuth2Client = OAuth2Client(clientId: self.clientId, scope: self.scope, redirectUri: URL(string: self.redirectUri)!, serverConfig: serverConfig)
         let authService: AuthService = AuthService(authIndexValue: "loginService", serverConfig: serverConfig, oAuth2Config: oAuth2Client)
         
@@ -100,10 +100,10 @@ class AuthServiceTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -120,4 +120,32 @@ class AuthServiceTests: FRBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
+    
+    
+    func test_04_auth_service_with_suspended_id() {
+        
+        guard let serverConfig = self.config.serverConfig else {
+            XCTFail("Failed to retrieve ServerConfig")
+            return
+        }
+        
+        let authService = AuthService(suspendedId: "6IIIUln3ajONR4ySwZt15qzh8X4", serverConfig: serverConfig, oAuth2Config: nil)
+        XCTAssertNotNil(authService)
+        XCTAssertEqual(authService.authIndexType, "suspendedId")
+        XCTAssertEqual(authService.serviceName, "6IIIUln3ajONR4ySwZt15qzh8X4")
+        
+        let request = authService.buildAuthServiceRequest()
+        let urlRequest = request.build()
+        let urlStr = urlRequest?.url?.absoluteString
+        XCTAssertNotNil(urlRequest)
+        XCTAssertNotNil(urlStr)
+        guard let urlString = urlStr else {
+            XCTFail("Failed to construct URLRequest object with AuthService and suspendedId")
+            return
+        }
+        XCTAssertTrue(urlString.contains("suspendedId=6IIIUln3ajONR4ySwZt15qzh8X4"))
+        XCTAssertFalse(urlString.contains("authIndexType"))
+        XCTAssertFalse(urlString.contains("authIndexValue"))
+    }
 }
+

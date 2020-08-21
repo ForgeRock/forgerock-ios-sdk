@@ -53,10 +53,10 @@ class SecondFactorFlowTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -82,7 +82,7 @@ class SecondFactorFlowTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in secondNode.callbacks {
             if callback is ChoiceCallback, let choiceCallback = callback as? ChoiceCallback {
-                choiceCallback.value = choiceCallback.defaultChoice
+                choiceCallback.setValue(choiceCallback.defaultChoice)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -113,7 +113,7 @@ class SecondFactorFlowTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in thirdNode.callbacks {
             if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = "OTP Dummy Credentials"
+                passwordCallback.setValue("OTP Dummy Credentials")
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")

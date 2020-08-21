@@ -77,7 +77,7 @@ class ChoiceCallbackTests: FRBaseTest {
             XCTAssertEqual(callback.prompt, "SecondFactorChoice")
             XCTAssertEqual(callback.inputName, "IDToken2")
             XCTAssertEqual(callback.defaultChoice, 0)
-            XCTAssertEqual(callback.value as? String, "0")
+            XCTAssertEqual(callback.getValue() as? String, "0")
             XCTAssertEqual(callback.choices, ["Email", "SMS"])
             
         } catch let error {
@@ -132,7 +132,7 @@ class ChoiceCallbackTests: FRBaseTest {
             XCTAssertEqual(callback.prompt, "SecondFactorChoice")
             XCTAssertEqual(callback.inputName, "IDToken2")
             XCTAssertEqual(callback.defaultChoice, 0)
-            XCTAssertEqual(callback.value as? String, "0")
+            XCTAssertEqual(callback.getValue() as? String, "0")
             XCTAssertEqual(callback.choices, ["Email", "SMS"])
             
         } catch let error {
@@ -186,7 +186,7 @@ class ChoiceCallbackTests: FRBaseTest {
             XCTAssertEqual(callback.prompt, "SecondFactorChoice")
             XCTAssertEqual(callback.inputName, "IDToken2")
             XCTAssertEqual(callback.defaultChoice, 3)
-            XCTAssertEqual(callback.value as? String, "3")
+            XCTAssertEqual(callback.getValue() as? String, "3")
             XCTAssertEqual(callback.choices, ["Email", "SMS1", "SMS2", "SMS3", "SMS4"])
             
         } catch let error {

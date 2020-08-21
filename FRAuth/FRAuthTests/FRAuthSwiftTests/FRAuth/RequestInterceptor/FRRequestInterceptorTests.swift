@@ -72,10 +72,10 @@ class FRRequestInterceptorTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -202,5 +202,30 @@ class FRRequestInterceptorTests: FRBaseTest {
         for intercepted in FRRequestInterceptorTests.intercepted {
             XCTAssertTrue(interceptorsInOrder.contains(intercepted))
         }
+    }
+    
+    
+    func test_05_resume_authenticate() {
+        // Start SDK
+        self.startSDK()
+        
+        // Register RequestInterceptors
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [FRAuthInterceptor()])
+        
+        guard let serverConfig = self.config.serverConfig else {
+            XCTFail("Failed to retrieve ServerConfig")
+            return
+        }
+        
+        let authService = AuthService(suspendedId: "6IIIUln3ajONR4ySwZt15qzh8X4", serverConfig: serverConfig, oAuth2Config: nil)
+        
+        let ex = self.expectation(description: "Userinfo")
+        authService.next { (token: Token?, node, error) in
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.first, "RESUME_AUTHENTICATE")
     }
 }

@@ -51,11 +51,11 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRValidatedCreateUsernameCallback class]]) {
             FRValidatedCreateUsernameCallback *thisCallback = (FRValidatedCreateUsernameCallback *)callback;
-            thisCallback.value = self.config.username;
+            [thisCallback setInputValue:self.config.username];
         }
         else if ([callback isKindOfClass:[FRValidatedCreatePasswordCallback class]]) {
             FRValidatedCreatePasswordCallback *thisCallback = (FRValidatedCreatePasswordCallback *)callback;
-            thisCallback.value = self.config.password;
+            [thisCallback setInputValue:self.config.password];
         }
         else {
             XCTFail("Received unexpected callback %@", callback);
@@ -80,7 +80,7 @@
             NSString *kbaAnswer = self.config.kba[thisCallback.prompt];
             if (kbaAnswer != nil && [kbaAnswer length] > 0)
             {
-                thisCallback.value = kbaAnswer;
+                [thisCallback setInputValue:kbaAnswer];
             }
             else {
                 XCTFail(@"KBA Answer was not identified %@", [thisCallback debugDescription]);

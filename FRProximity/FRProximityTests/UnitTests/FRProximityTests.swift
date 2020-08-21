@@ -10,6 +10,7 @@
 
 
 import XCTest
+import CoreLocation
 @testable import FRAuth
 
 class FRProximityTests: FRPBaseTest {
@@ -31,5 +32,16 @@ class FRProximityTests: FRPBaseTest {
         catch {
             XCTFail("SDK init failed with unexpected error: \(error.localizedDescription)")
         }
+    }
+    
+    
+    func test_02_location_accuracy_default() {
+        XCTAssertEqual(FRLocationManager.shared.locationManager.desiredAccuracy, kCLLocationAccuracyHundredMeters)
+    }
+    
+    
+    func test_03_update_location_accuracy() {
+        FRProximity.setLocationAccuracy(accuracy: kCLLocationAccuracyHundredMeters)
+        XCTAssertEqual(FRLocationManager.shared.locationManager.desiredAccuracy, kCLLocationAccuracyHundredMeters)
     }
 }

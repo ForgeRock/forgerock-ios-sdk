@@ -57,4 +57,11 @@ public class TermsAndConditionsCallback: SingleValueCallback {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
     }
+    
+    
+    /// Sets Boolean input value for TermsAndConditionsCallback.
+    /// - Parameter val: Boolean input value for Callback
+    public func setValue(_ val: Bool) {
+        self._value = val
+    }
 }

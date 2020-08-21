@@ -88,8 +88,8 @@ class Config: NSObject {
                         self.registrationServiceName = registrationServiceName
                         
                         let enableCookie = config["forgerock_enable_cookie"] as? Bool ?? true
-                        
-                        let serverConfig = ServerConfig(url: url, realm: realm, timeout: timeout, enableCookie: enableCookie)
+
+                        let serverConfig = ServerConfigBuilder(url: url, realm: realm).set(timeout: timeout).set(enableCookie: enableCookie).build()
                         let oAuth2Client = OAuth2Client(clientId: oauthClientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
                         self.serverConfig = serverConfig
                         self.oAuth2Client = oAuth2Client

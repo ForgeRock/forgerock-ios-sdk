@@ -116,7 +116,7 @@ alpha:1.0]
         NSString *realm = dict[@"forgerock_realm"];
         NSString *timeout = dict[@"forgerock_timeout"];
         
-        self.serverConfig = [[FRServerConfig alloc] initWithUrl:[NSURL URLWithString:url] realm:realm timeout:[timeout doubleValue]];
+        self.serverConfig = [[[[FRServerConfigBuilder alloc] initWithUrl:[NSURL URLWithString:url] realm:realm] setWithTimeout:[timeout doubleValue]] build];
         
         NSString *clientId = dict[@"forgerock_oauth_client_id"];
         NSString *redirect_uri = dict[@"forgerock_oauth_redirect_uri"];
@@ -407,7 +407,7 @@ alpha:1.0]
                     for (id callback in nodeBlock.callbacks) {
                         FRSingleValueCallback *thisCallback = (FRSingleValueCallback *)callback;
                         if ([thisCallback.type isEqualToString:callbackType]) {
-                            thisCallback.value = value;
+                            [thisCallback setInputValue:value];
                         }
                     }
                 }

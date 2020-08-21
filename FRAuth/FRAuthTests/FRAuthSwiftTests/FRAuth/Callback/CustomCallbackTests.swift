@@ -201,10 +201,10 @@ class CustomCallbackTests: FRBaseTest {
         // Validate received Callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else if callback is CustomCallback, let customCallback = callback as? CustomCallback {
                 customCallback.value = customCallbackValue
@@ -311,7 +311,7 @@ class CustomCallbackTests: FRBaseTest {
         // Validate received Callbacks
         for callback in node.callbacks {
             if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else if callback is CustomCallback, let customCallback = callback as? CustomCallback {
                 customCallback.value = customCallbackValue

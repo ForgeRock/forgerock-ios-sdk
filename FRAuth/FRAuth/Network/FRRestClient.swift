@@ -39,10 +39,20 @@ class FRRestClient: NSObject {
             case .success(let response, let httpResponse):
                 FRRestClient.parseResponseForCookie(response: response, httpResponse: httpResponse as? HTTPURLResponse)
                 break
-            case .failure(_):
+            case .failure(let error):
+                if let networkError: NetworkError = error as? NetworkError {
+                    switch networkError {
+                    case .apiRequestFailure(let data, let response, let error):
+                        //  Parse and convert NetworkError.apiRequestFailure to AuthApiError
+                        completion(Result.failure(error: AuthApiError.convertToAuthApiError(data: data, response: response, error: error)))
+                        return
+                    default:
+                        //  Otherwise, return as it is
+                        break
+                    }
+                }
                 break
             }
-            
             completion(result)
         }
     }
