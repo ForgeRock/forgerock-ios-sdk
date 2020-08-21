@@ -2,7 +2,7 @@
 //  AuthStepViewController.swift
 //  FRUI
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -29,9 +29,12 @@ class AuthStepViewController: UIViewController {
     var authCallbackValues: [String:String] = [:]
     
     @IBOutlet weak var tableView: UITableView?
-    @IBOutlet weak var authStepLabel: UILabel?
+    @IBOutlet weak var headerLabel: UILabel?
+    @IBOutlet weak var descriptionTextView: UITextView?
+    @IBOutlet weak var descriptionTextViewHeight: NSLayoutConstraint?
     @IBOutlet weak var cancelButton: FRButton?
     @IBOutlet weak var nextButton: FRButton?
+    @IBOutlet weak var closeButton: FRButton?
     @IBOutlet weak var logoImageView: UIImageView?
     
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120.0, height: 120.0), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
@@ -103,13 +106,18 @@ class AuthStepViewController: UIViewController {
         super.viewDidLoad()
         
         self.logoImageView?.image = FRUI.shared.logoImage
-        self.authStepLabel?.textColor = FRUI.shared.primaryTextColor
+        self.headerLabel?.textColor = FRUI.shared.primaryTextColor
+        self.descriptionTextView?.textColor = FRUI.shared.primaryTextColor
+        self.descriptionTextView?.translatesAutoresizingMaskIntoConstraints = true
+        self.descriptionTextView?.isScrollEnabled = false
                 
         //  Styling buttons
         self.nextButton?.backgroundColor = FRUI.shared.primaryColor
         self.nextButton?.titleColor = UIColor.white
         self.cancelButton?.backgroundColor = FRUI.shared.secondaryColor
         self.cancelButton?.titleColor = UIColor.white
+        self.closeButton?.backgroundColor = FRUI.shared.secondaryColor
+        self.closeButton?.titleColor = UIColor.white
         
         self.handleNode(nil, self.currentNode, nil)
     }
@@ -117,7 +125,7 @@ class AuthStepViewController: UIViewController {
     
     // MARK: - Authentication handling methods
     func handleNode(_ result: Any?, _ node: Node?, _ error: Error?) {
-    
+        
         //  Perform UI work in the main thread
         DispatchQueue.main.async {
             
@@ -126,7 +134,48 @@ class AuthStepViewController: UIViewController {
                 //  Set auth callbacks in list for rendering
                 self.currentNode = node
                 self.authCallbacks = node.callbacks
-                self.renderAuthStep()
+        
+                self.headerLabel?.text = node.pageHeader != nil ? node.pageHeader : node.stage != nil ? node.stage : ""
+                if let descriptionText = node.pageDescription {
+                    self.descriptionTextView?.setHTMLString(descriptionText)
+                }
+                else {
+                    self.descriptionTextView?.text = ""
+                }
+                self.descriptionTextView?.sizeToFit()
+                let descriptionTextViewHeightConstant = self.descriptionTextView?.frame.size.height ?? 0.0
+                self.descriptionTextViewHeight?.constant = descriptionTextViewHeightConstant
+                let headerFrame = self.tableView?.tableHeaderView?.bounds ?? CGRect(x: 0, y: 0, width: 0, height: 0)
+                self.tableView?.tableHeaderView?.frame = CGRect(x: headerFrame.origin.x, y: headerFrame.origin.y, width: headerFrame.size.width, height: 225 + descriptionTextViewHeightConstant)
+                
+                var deviceProfileCallback: DeviceProfileCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceProfileCallback handling
+                    if let thisCallback = callback as? DeviceProfileCallback {
+                        deviceProfileCallback = thisCallback
+                        if self.authCallbacks.count > 1 {
+                            self.authCallbacks.remove(at: index)
+                        }
+                    }
+                    //  SuspendedTextOutputCallback handling
+                    else if let _ = callback as? SuspendedTextOutputCallback {
+                        self.cancelButton?.isHidden = true
+                        self.nextButton?.isHidden = true
+                        self.closeButton?.isHidden = false
+                    }
+                }
+                //  If DeviceProfileCallback is found as one of Callbacks, collect data first
+                if let deviceProfileCallback = deviceProfileCallback, self.authCallbacks.count > 1 {
+                    self.startLoading()
+                    deviceProfileCallback.execute { (profile) in
+                        self.stopLoading()
+                        self.renderAuthStep()
+                    }
+                }
+                else {
+                    //  Otherwise, just render as usual
+                    self.renderAuthStep()
+                }
             }
             else if let result = result {
                 
@@ -143,24 +192,22 @@ class AuthStepViewController: UIViewController {
             else if let error = error {
                 
                 var message = ""
+                var title = "Error"
                 var dismissAfter = false
                 //  Handle error
-                if let networkError: NetworkError = error as? NetworkError {
+                if let authApiError: AuthApiError = error as? AuthApiError {
                     
-                    switch networkError {
-                    case .invalidCredentials(_, _, _):
-                        message = "Invalid credentials"
-                        break
-                    case .authenticationTimeout(_, _, _):
+                    switch authApiError {
+                    case .authenticationTimout:
                         message = "Process timed out; please try again"
                         dismissAfter = true
                         break
-                    case .apiFailedWithError(_, _, _):
-                        message = "Something went wrong; please try again"
-                        dismissAfter = false
+                    case .apiFailureWithMessage(let reason, let errorMessage, _, _):
+                        title = reason
+                        message = errorMessage
                         break
                     default:
-                        message = error.localizedDescription
+                        message = "Something went wrong; please try again"
                         break
                     }
                 }
@@ -168,7 +215,7 @@ class AuthStepViewController: UIViewController {
                     message = error.localizedDescription
                 }
                 
-                let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
                     if dismissAfter {
                         self.dismiss(animated: true, completion: nil)
@@ -256,7 +303,7 @@ class AuthStepViewController: UIViewController {
             for authCallback: Callback in self.authCallbacks
             {
                 if authCallback is SingleValueCallback, let callback = authCallback as? SingleValueCallback, callback.inputName == identifier {                    
-                    callback.value = value
+                    callback.setValue(value)
                 }
             }
         }
@@ -309,6 +356,20 @@ class AuthStepViewController: UIViewController {
         self.view.endEditing(true)
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func closeButtonClicked(sender: UIButton) {
+        if let completion = self.atCompletion {
+            completion(nil, nil)
+        } else if let completion = self.tokenCompletion {
+            completion(nil, nil)
+        } else if let completion = self.userCompletion {
+            completion(nil, nil)
+        }
+        
+        //  Force to end editing
+        self.view.endEditing(true)
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 
@@ -335,6 +396,9 @@ extension AuthStepViewController: UITableViewDataSource {
             }
             else if let pollingWaitCallbackCell = cell as? PollingWaitCallbackTableViewCell {
                 pollingWaitCallbackCell.delegate = self
+            }
+            else if let deviceProfileCallbackCell = cell as? DeviceAttributeTableViewCell {
+                deviceProfileCallbackCell.delegate = self
             }
             
             return cell
@@ -370,10 +434,10 @@ extension AuthStepViewController: UITableViewDelegate {
         
         let callback = self.authCallbacks[indexPath.row]
         
-        let cellHeight:CGFloat = 0.0
+        var cellHeight: CGFloat = 0.0
         
         if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type] {
-            return callbackTableViewCell.cellHeight
+            cellHeight = callbackTableViewCell.cellHeight
         }
         
         return cellHeight

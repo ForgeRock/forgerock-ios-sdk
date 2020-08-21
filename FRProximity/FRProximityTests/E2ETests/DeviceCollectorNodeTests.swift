@@ -47,10 +47,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "username"
+                    nameCallback.setValue("username")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "password"
+                    passwordCallback.setValue("password")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -95,8 +95,8 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertTrue(response.keys.contains("metadata"))
                 XCTAssertTrue(response.keys.contains("identifier"))
                 XCTAssertFalse(response.keys.contains("location"))
-                XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.value as! String)
+                XCTAssertNotNil(deviceProfileCallback.getValue())
+                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -150,10 +150,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "username"
+                    nameCallback.setValue("username")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "password"
+                    passwordCallback.setValue("password")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -193,12 +193,13 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             let fakeLocationManager = FakeLocationManager()
             fakeLocationManager.fakeLocation = [CLLocation(latitude: 49.2827, longitude: 123.1207)]
             let location = FakeLocationCollector()
-            location.locationManager = fakeLocationManager
-            location.changeStatus(status: .authorizedWhenInUse)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
+            FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
 
             // Assign FakeLocationCollector to callback
             for (index, collector) in deviceProfileCallback.collector.collectors.enumerated() {
-                if String(describing:collector) == "FRProximity.LocationCollector" {
+                if String(describing:collector).contains("FRProximity.LocationCollector") {
                     deviceProfileCallback.collector.collectors.remove(at: index)
                     deviceProfileCallback.collector.collectors.append(location)
                 }
@@ -222,8 +223,8 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertEqual(lat, 49.2827)
                 XCTAssertEqual(long, 123.1207)
                 
-                XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.value as! String)
+                XCTAssertNotNil(deviceProfileCallback.getValue())
+                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -277,10 +278,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "username"
+                    nameCallback.setValue("username")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "password"
+                    passwordCallback.setValue("password")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -317,9 +318,12 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             }
             
             // Fake location collector
+            let fakeLocationManager = FakeLocationManager()
             let location = FakeLocationCollector()
-            location.changeStatus(status: .denied)
-
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
+            FakeFRLocationManager.changeStatus(status: .denied)
+            
             // Assign FakeLocationCollector to callback
             for (index, collector) in deviceProfileCallback.collector.collectors.enumerated() {
                 if String(describing:collector) == "FRProximity.LocationCollector" {
@@ -337,8 +341,8 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertTrue(response.keys.contains("metadata"))
                 XCTAssertTrue(response.keys.contains("identifier"))
                 XCTAssertFalse(response.keys.contains("location"))
-                XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.value as! String)
+                XCTAssertNotNil(deviceProfileCallback.getValue())
+                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -392,10 +396,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "username"
+                    nameCallback.setValue("username")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "password"
+                    passwordCallback.setValue("password")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -433,14 +437,15 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             
             // Fake location collector
             let fakeLocationManager = FakeLocationManager()
+            FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
             fakeLocationManager.fakeLocation = [CLLocation(latitude: 49.2827, longitude: 123.1207)]
             let location = FakeLocationCollector()
-            location.locationManager = fakeLocationManager
-            location.changeStatus(status: .authorizedWhenInUse)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
 
             // Assign FakeLocationCollector to callback
             for (index, collector) in deviceProfileCallback.collector.collectors.enumerated() {
-                if String(describing:collector) == "FRProximity.LocationCollector" {
+                if String(describing:collector).contains("FRProximity.LocationCollector") {
                     deviceProfileCallback.collector.collectors.remove(at: index)
                     deviceProfileCallback.collector.collectors.append(location)
                 }
@@ -464,8 +469,8 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertEqual(lat, 49.2827)
                 XCTAssertEqual(long, 123.1207)
                 
-                XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.value as! String)
+                XCTAssertNotNil(deviceProfileCallback.getValue())
+                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -519,10 +524,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "username"
+                    nameCallback.setValue("username")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "password"
+                    passwordCallback.setValue("password")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -559,8 +564,11 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             }
             
             // Fake location collector
+            let fakeLocationManager = FakeLocationManager()
             let location = FakeLocationCollector()
-            location.changeStatus(status: .denied)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
+            FakeFRLocationManager.changeStatus(status: .denied)
 
             // Assign FakeLocationCollector to callback
             for (index, collector) in deviceProfileCallback.collector.collectors.enumerated() {
@@ -579,8 +587,8 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertFalse(response.keys.contains("metadata"))
                 XCTAssertTrue(response.keys.contains("identifier"))
                 XCTAssertFalse(response.keys.contains("location"))
-                XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.value as! String)
+                XCTAssertNotNil(deviceProfileCallback.getValue())
+                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -635,10 +643,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "username"
+                    nameCallback.setValue("username")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "password"
+                    passwordCallback.setValue("password")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -678,8 +686,9 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             let fakeLocationManager = FakeLocationManager()
             fakeLocationManager.fakeLocation = [CLLocation(latitude: 49.2827, longitude: 123.1207)]
             let location = FakeLocationCollector()
-            location.locationManager = fakeLocationManager
-            location.changeStatus(status: .authorizedWhenInUse)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
+            FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
 
             // Assign FakeLocationCollector to callback
             for (index, collector) in deviceProfileCallback.collector.collectors.enumerated() {
@@ -731,10 +740,10 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             // Provide input value for callbacks
             for callback in firstNode.callbacks {
                 if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                    nameCallback.value = "james.go@forgerock.com"
+                    nameCallback.setValue("james.go@forgerock.com")
                 }
                 else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                    passwordCallback.value = "Password123!"
+                    passwordCallback.setValue("Password123!")
                 }
                 else {
                     XCTFail("Received unexpected callback \(callback)")
@@ -774,8 +783,9 @@ class DeviceCollectorNodeTests: FRPBaseTest {
             let fakeLocationManager = FakeLocationManager()
             fakeLocationManager.fakeLocation = [CLLocation(latitude: 49.2827, longitude: 123.1207)]
             let location = FakeLocationCollector()
-            location.locationManager = fakeLocationManager
-            location.changeStatus(status: .authorizedWhenInUse)
+            location.locationManager.locationManager = fakeLocationManager
+            location.locationManager.locationManager.delegate = location.locationManager
+            FakeFRLocationManager.changeStatus(status: .authorizedWhenInUse)
 
             // Assign FakeLocationCollector to callback
             deviceProfileCallback.collector.collectors.removeAll()
@@ -801,7 +811,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertEqual(long, 123.1207)
                 
                 XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.value as! String)
+                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }

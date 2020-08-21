@@ -41,6 +41,6 @@ class TermsAndConditionsTableViewCell: UITableViewCell, FRUICallbackTableViewCel
     
     // MARK: - IBOutlet
     @IBAction func termsAcceptedChanged(sender: UISwitch) {
-        self.callback?.value = sender.isOn
+        self.callback?.setValue(sender.isOn)
     }
 }

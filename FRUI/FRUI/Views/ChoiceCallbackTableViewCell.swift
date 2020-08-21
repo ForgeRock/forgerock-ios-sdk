@@ -50,6 +50,6 @@ class ChoiceCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
 
 extension ChoiceCallbackTableViewCell: FRActionSheetProtocol {
     func selectedItem(index: Int, item: String) {
-        self.callback?.value = index
+        self.callback?.setValue(index)
     }
 }

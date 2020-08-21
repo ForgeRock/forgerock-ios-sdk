@@ -178,11 +178,11 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRNameCallback class]]) {
             FRNameCallback *thisCallback = (FRNameCallback *)callback;
-            thisCallback.value = self.config.username;
+            [thisCallback setInputValue:self.config.username];
         }
         else if ([callback isKindOfClass:[FRPasswordCallback class]]) {
             FRPasswordCallback *thisCallback = (FRPasswordCallback *)callback;
-            thisCallback.value = self.config.password;
+            [thisCallback setInputValue:self.config.password];
         }
         else if ([callback isKindOfClass:[CustomCallback class]]) {
             CustomCallback *thisCallback = (CustomCallback *)callback;
@@ -286,7 +286,7 @@
     for (FRCallback *callback in [currentNode callbacks]) {
         if ([callback isKindOfClass:[FRPasswordCallback class]]) {
             FRPasswordCallback *thisCallback = (FRPasswordCallback *)callback;
-            thisCallback.value = self.config.password;
+            [thisCallback setInputValue:self.config.password];
         }
         else if ([callback isKindOfClass:[CustomCallback class]]) {
             CustomCallback *thisCallback = (CustomCallback *)callback;

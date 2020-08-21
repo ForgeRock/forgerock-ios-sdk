@@ -2,7 +2,7 @@
 //  OpenAM.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -25,6 +25,9 @@ struct OpenAM {
     static let authId = "authId"
     static let callbacks = "callbacks"
     static let stage = "stage"
+    static let header = "header"
+    static let description = "description"
     static let xRequestedWith = "X-Requested-With"
     static let xmlHTTPRequest = "XMLHTTPRequest"
+    static let suspendedId = "suspendedId"
 }

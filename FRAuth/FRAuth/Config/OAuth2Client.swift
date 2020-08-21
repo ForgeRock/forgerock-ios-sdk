@@ -2,7 +2,7 @@
 //  OAuth2Client.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -169,10 +169,7 @@ public class OAuth2Client: NSObject, Codable {
                         #if !FRTests
                         guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
                             FRLog.e("Failed to validate PKCE state: PKCE: \(pkce), Redirect URL: \(redirectURLAsString)")
-                            let error = "invalid_request"
-                            let errorDescription = "Invalid request using PKCE; invalid credentials."
-                            let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                            completion(nil, NetworkError.apiFailedWithError(0, errorDescription, errorResponse))
+                            completion(nil, AuthError.invalidPKCEState)
                             return
                         }
                         #endif
@@ -194,18 +191,14 @@ public class OAuth2Client: NSObject, Codable {
                         })
                     }
                     else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
-                        let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                        completion(nil, NetworkError.apiFailedWithError(0, errorDescription, errorResponse))
+                        completion(nil, AuthApiError.apiFailureWithMessage(error, errorDescription, nil, nil))
                     }
                     else {
-                        completion(nil, NetworkError.requestFailWithError)
+                        completion(nil, AuthError.invalidRedirectURI)
                     }
                 }
                 else {
-                    let error = "invalid_request"
-                    let errorDescription = "/authorize endpoint is returned without redirect location."
-                    let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                    completion(nil, NetworkError.apiFailedWithError(0, errorDescription, errorResponse))
+                    completion(nil, AuthError.missingRedirectLocation)
                 }
                 break
             case .failure(let error):
@@ -243,11 +236,7 @@ public class OAuth2Client: NSObject, Codable {
                     // Bypass PKCE state validation for FRTests
                     #if !FRTests
                     guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
-                        FRLog.e("Failed to validate PKCE state: PKCE: \(pkce), Redirect URL: \(redirectURLAsString)")
-                        let error = "invalid_request"
-                        let errorDescription = "Invalid request using PKCE; invalid credentials."
-                        let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                        throw NetworkError.apiFailedWithError(0, errorDescription, errorResponse)
+                        throw AuthError.invalidPKCEState
                     }
                     #endif
                     
@@ -266,18 +255,14 @@ public class OAuth2Client: NSObject, Codable {
                     }
                 }
                 else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
-                    let errorResponse: [String: String] = ["error": errorDescription, "error_description": errorDescription]
-                    throw NetworkError.apiFailedWithError(0, error, errorResponse)
+                    throw AuthApiError.apiFailureWithMessage(error, errorDescription, nil, nil)
                 }
                 else {
-                    throw NetworkError.requestFailWithError
+                    throw AuthError.invalidRedirectURI
                 }
             }
             else {
-                let error = "invalid_request"
-                let errorDescription = "/authorize endpoint is returned without redirect location."
-                let errorResponse: [String: String] = ["error": error, "error_description": errorDescription]
-                throw NetworkError.apiFailedWithError(0, errorDescription, errorResponse)
+                throw AuthError.missingRedirectLocation
             }
         case .failure(let error):
             throw error

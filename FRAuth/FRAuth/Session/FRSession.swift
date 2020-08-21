@@ -99,6 +99,30 @@ import Foundation
     }
     
     
+    /// Invokes /authenticate endpoint in AM to go through Authentication Tree flow with  `resumeURI` and `suspendedId` to resume Authentication Tree flow.
+    /// - Parameters:
+    ///   - resumeURI: Resume URI received in Email from Suspend Email Node; URI **must** contain `suspendedId` in URL query parameter
+    ///   - completion: NodeCompletion callback which returns the result of Session Token as Token object
+    @objc public static func authenticate(resumeURI: URL, completion:@escaping NodeCompletion<Token>) {
+        if let frAuth = FRAuth.shared {
+            FRLog.v("Initiating FRSession authenticate process with resumeURI")
+            if let suspendedId = resumeURI.valueOf("suspendedId") {
+                frAuth.next(suspendedId: suspendedId) { (token: Token?, node, error) in
+                    completion(token, node, error)
+                }
+            }
+            else {
+                FRLog.w("Invalid resumeURI for missing suspendedId")
+                completion(nil, nil, AuthError.invalidResumeURI("suspendedId"))
+            }
+        }
+        else {
+            FRLog.w("Invalid SDK State")
+            completion(nil, nil, ConfigError.invalidSDKState)
+        }
+    }
+    
+    
     //  MARK: - Logout
     /// Invalidates Session Token using AM's REST API
     @objc

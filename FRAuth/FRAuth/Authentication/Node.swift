@@ -28,8 +28,12 @@ public class Node: NSObject {
     @objc public var authId: String
     /// Unique UUID String value of initiated AuthService flow
     @objc public var authServiceId: String
-    /// Stage attribute of Node
+    /// Stage attribute in Page Node
     @objc public var stage: String?
+    /// Header attribute in Page Node
+    @objc public var pageHeader: String?
+    /// Description attribute in Page Node
+    @objc public var pageDescription: String?
     /// Designated AuthService name defined in OpenAM
     var serviceName: String
     /// authIndexType value in AM
@@ -66,6 +70,8 @@ public class Node: NSObject {
         
         self.authServiceId = authServiceId
         self.stage = authServiceResponse[OpenAM.stage] as? String
+        self.pageHeader = authServiceResponse[OpenAM.header] as? String
+        self.pageDescription = authServiceResponse[OpenAM.description] as? String
         self.serverConfig = serverConfig
         self.serviceName = serviceName
         self.authIndexType = authIndexType

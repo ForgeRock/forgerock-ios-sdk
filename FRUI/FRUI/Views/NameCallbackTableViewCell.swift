@@ -37,7 +37,7 @@ class NameCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
         self.textField?.placeholder = self.callback?.prompt
         
         if callback is AbstractValidatedCallback, let validatedCallback = callback as? AbstractValidatedCallback {
-            self.textField?.text = validatedCallback.value as? String
+            self.textField?.text = validatedCallback.getValue() as? String
             if let failedPolicies = validatedCallback.failedPolicies {
                 var failedMessage = ""
                 for (index, failedPolicy) in failedPolicies.enumerated() {
@@ -48,6 +48,10 @@ class NameCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
                 }
                 textField?.errorMessage = failedMessage
             }
+        }
+        
+        if callback is NumberAttributeInputCallback {
+            textField?.keyboardType = .decimalPad
         }
     }
 }
@@ -63,13 +67,19 @@ extension NameCallbackTableViewCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        callback?.value = textField.text
         if callback is AttributeInputCallback,
             let inputCallback = callback as? AttributeInputCallback,
             inputCallback.required {
             if textField.text == nil || textField.text?.count == 0 {
                 self.textField?.errorMessage = "Value must not be empty"
+                return
             }
+        }
+        if let numberCallback = callback as? NumberAttributeInputCallback, let stringValue = textField.text {
+            numberCallback.setValue(Double(stringValue))
+        }
+        else {
+            callback?.setValue(textField.text)
         }
     }
 }

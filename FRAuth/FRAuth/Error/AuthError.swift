@@ -2,7 +2,7 @@
 //  AuthError.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -31,6 +31,10 @@ public enum AuthError: FRError {
     case invalidGenericType
     case userAlreadyAuthenticated(Bool)
     case authenticationCancelled
+    case invalidResumeURI(String)
+    case invalidPKCEState
+    case invalidRedirectURI
+    case missingRedirectLocation
 }
 
 public extension AuthError {
@@ -64,6 +68,14 @@ extension AuthError {
             return 1000020
         case .authenticationCancelled:
             return 1000030
+        case .invalidResumeURI:
+            return 1000031
+        case .invalidPKCEState:
+            return 1000032
+        case .invalidRedirectURI:
+            return 1000033
+        case .missingRedirectLocation:
+            return 1000034
         }
         
     }
@@ -100,6 +112,14 @@ extension AuthError: CustomNSError {
             return [NSLocalizedDescriptionKey: "User is already authenticated\(hasAccessToken ? "" : " and has Session Token; use FRUser.currentUser.getAccessToken to obtian OAuth2 tokens")"]
         case .authenticationCancelled:
             return [NSLocalizedDescriptionKey: "Authentication is cancelled"]
+        case .invalidResumeURI(let message):
+            return [NSLocalizedDescriptionKey: "Invalid Resume URI; missing \(message)"]
+        case .invalidPKCEState:
+            return [NSLocalizedDescriptionKey: "Invalid request with wrong PKCE state; invalid credentials"]
+        case .invalidRedirectURI:
+            return [NSLocalizedDescriptionKey: "Invalid redirect URI; missing authorization_code, and/or error"]
+        case .missingRedirectLocation:
+            return [NSLocalizedDescriptionKey: "/authorize endpoint is returned without redirect location."]
         }
     }
 }

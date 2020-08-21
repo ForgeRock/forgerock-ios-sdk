@@ -2,7 +2,7 @@
 //  TextOutputCallbackTableViewCell.swift
 //  FRUI
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -14,24 +14,23 @@ import FRAuth
 class TextOutputCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
     
     public static let cellIdentifier = "TextOutputCallbackTableViewCellId"
-    public static let cellHeight: CGFloat = 100.0
+    public static let cellHeight: CGFloat = 200.0
     @IBOutlet weak var textField:FRTextField?
+    @IBOutlet weak var textView: UITextView?
     var callback: TextOutputCallback?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.textField?.tintColor = FRUI.shared.primaryColor
-        self.textField?.textColor = FRUI.shared.primaryColor
-        self.textField?.isUserInteractionEnabled = false
+        self.textView?.tintColor = FRUI.shared.primaryColor
+        self.textView?.textColor = FRUI.shared.primaryColor
     }
 
     
     // MARK: - Public
     public func updateCellData(callback: Callback) {
         self.callback = callback as? TextOutputCallback
-        self.textField?.textAlignment = .center
-        self.textField?.text = self.callback?.message
+        self.textView?.text = self.callback?.message
         
         var textColor = FRUI.shared.primaryTextColor
         
@@ -50,7 +49,7 @@ class TextOutputCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCel
             break
         }
         
-        self.textField?.tintColor = textColor
-        self.textField?.textColor = textColor
+        self.textView?.tintColor = textColor
+        self.textView?.textColor = textColor
     }
 }

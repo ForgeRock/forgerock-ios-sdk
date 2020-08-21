@@ -19,7 +19,7 @@ public class MetadataCallback: Callback {
     
     /// Designated initialization method for MetadataCallback
     ///
-    /// - Parameter callbackJSON: JSON object of MetadataCallback
+    /// - Parameter json: JSON object of MetadataCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     public required init(json: [String : Any]) throws {
         

@@ -2,7 +2,7 @@
 //  BrowserCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,15 +12,15 @@ import Foundation
 import WebKit
 
 /// BrowserCollector is responsible for collecting browser information of the device.
-class BrowserCollector: DeviceCollector {
+public class BrowserCollector: DeviceCollector {
     
     /// Name of current collector
-    var name: String = "browser"
+    public var name: String = "browser"
     
     /// Collects browser information
     ///
     /// - Parameter completion: completion block
-    func collect(completion: @escaping DeviceCollectorCallback) {
+    public func collect(completion: @escaping DeviceCollectorCallback) {
         var result: [String: Any] = [:]
         result["userAgent"] = self.buildUserAgent()
         completion(result)

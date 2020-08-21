@@ -141,6 +141,7 @@ class ViewController: UIViewController {
             "FRUser.getAccessToken()",
             "Login with UI (Accesstoken)",
             "FRSession.authenticate with UI (Token)",
+            "FRSession.logout()",
             "Register User with UI (FRUser)",
             "Register User with UI (Accesstoken)",
             "Login without UI (FRUser)",
@@ -149,7 +150,6 @@ class ViewController: UIViewController {
             "Display Configurations"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
-
         
         // - MARK: Token Management - Example
         // Register FRURLProtocol
@@ -275,7 +275,7 @@ class ViewController: UIViewController {
                     for textField in alert.textFields! {
                         
                         let thisCallback:SingleValueCallback = node.callbacks[counter] as! SingleValueCallback
-                        thisCallback.value = textField.text
+                        thisCallback.setValue(textField.text)
                         counter += 1
                     }
                     
@@ -636,6 +636,8 @@ class ViewController: UIViewController {
             let responseStr = String(decoding: responseData, as: UTF8.self)
             self.displayLog("Response Data: \(responseStr)")
             self.displayLog("Response Header: \n\(httpresponse.allHeaderFields)")
+            FRLog.i("Response Data: \(responseStr)")
+            FRLog.i("Response Header: \n\(httpresponse.allHeaderFields)")
         }.resume()
     }
     
@@ -695,26 +697,30 @@ class ViewController: UIViewController {
             self.performSessionAuthenticate(handleWithUI: true)
             break
         case 10:
+            // FRSession.logout
+            FRSession.currentSession?.logout()
+            break
+        case 11:
             // Register a user for FRUser
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: FRUser.self)
             break
-        case 11:
+        case 12:
             // Register a user for AccessToken
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
             break
-        case 12:
+        case 13:
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 13:
+        case 14:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 14:
+        case 15:
             // FRSession.authenticate without UI (Token)
             self.performSessionAuthenticate(handleWithUI: false)
             break
-        case 15:
+        case 16:
             // Display current Configuration
             self.displayCurrentConfig()
             break

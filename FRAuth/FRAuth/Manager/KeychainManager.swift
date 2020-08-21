@@ -50,7 +50,8 @@ struct KeychainManager {
         let service = "com.forgerock.ios.keychainservice"
         let currentService = baseUrl + "/" + service
         self.primaryServiceStore = KeychainService(service: service)
-        
+        var appBundleIdentifier = Bundle.main.bundleIdentifier ?? "com.forgerock.ios.sdk"
+        appBundleIdentifier = "-" + appBundleIdentifier
         
         if let accessGroup = accessGroup {
             // If Access Group was provided, construct KeychainService with Access Group
@@ -99,7 +100,7 @@ struct KeychainManager {
         self.currentService = currentService
         
         if let accessGroup = accessGroup {
-            self.privateStore = KeychainService(service: currentService + KeychainStoreType.local.rawValue, securedKey: self.securedKey)
+            self.privateStore = KeychainService(service: currentService + appBundleIdentifier + KeychainStoreType.local.rawValue, securedKey: self.securedKey)
             self.sharedStore = KeychainService(service: currentService + KeychainStoreType.shared.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
             self.cookieStore = KeychainService(service: currentService + KeychainStoreType.cookie.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
             
@@ -112,9 +113,9 @@ struct KeychainManager {
         }
         else {
             // If Access Group is not provided, construct KeychainService without Access Group
-            self.privateStore = KeychainService(service: currentService + KeychainStoreType.local.rawValue, securedKey: self.securedKey)
-            self.sharedStore = KeychainService(service: currentService + KeychainStoreType.shared.rawValue, securedKey: self.securedKey)
-            self.cookieStore = KeychainService(service: currentService + KeychainStoreType.cookie.rawValue, securedKey: self.securedKey)
+            self.privateStore = KeychainService(service: currentService + appBundleIdentifier + KeychainStoreType.local.rawValue, securedKey: self.securedKey)
+            self.sharedStore = KeychainService(service: currentService + appBundleIdentifier + KeychainStoreType.shared.rawValue, securedKey: self.securedKey)
+            self.cookieStore = KeychainService(service: currentService + appBundleIdentifier + KeychainStoreType.cookie.rawValue, securedKey: self.securedKey)
             
             // Constructs Device Identifier storage with specific Keychain Options
             var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue)
@@ -165,8 +166,10 @@ struct KeychainManager {
     /// - Parameter service: Service identifier
     /// - Parameter accessGroup: AcessGroup identifier
     static func clearAllKeychainStore(service: String, accessGroup: String?) {
+        var appBundleIdentifier = Bundle.main.bundleIdentifier ?? "com.forgerock.ios.sdk"
+        appBundleIdentifier = "-" + appBundleIdentifier
         // Initiate old stores, and delete all items
-        let oldPrivateStore = KeychainService(service: service + KeychainStoreType.local.rawValue)
+        let oldPrivateStore = KeychainService(service: service + appBundleIdentifier + KeychainStoreType.local.rawValue)
         oldPrivateStore.deleteAll()
         if let accessGroup = accessGroup, KeychainService.validateAccessGroup(service: service, accessGroup: accessGroup) {
           let oldSharedStore = KeychainService(service: service + KeychainStoreType.shared.rawValue, accessGroup: accessGroup)
@@ -175,9 +178,9 @@ struct KeychainManager {
           oldCookieStore.deleteAll()
         }
         else {
-          let oldSharedStore = KeychainService(service: service + KeychainStoreType.shared.rawValue)
+          let oldSharedStore = KeychainService(service: service + appBundleIdentifier + KeychainStoreType.shared.rawValue)
           oldSharedStore.deleteAll()
-          let oldCookieStore = KeychainService(service: service + KeychainStoreType.cookie.rawValue)
+          let oldCookieStore = KeychainService(service: service + appBundleIdentifier + KeychainStoreType.cookie.rawValue)
           oldCookieStore.deleteAll()
         }
     }

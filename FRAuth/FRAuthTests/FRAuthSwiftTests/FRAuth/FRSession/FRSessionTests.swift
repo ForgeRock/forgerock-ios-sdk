@@ -10,12 +10,19 @@
 
 
 import XCTest
+import FRCore
 
 class FRSessionTests: FRBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"
         super.setUp()
+    }
+    
+    override func tearDown() {
+        SuspendedRequestInterceptor.actions = []
+        SuspendedRequestInterceptor.requests = []
+        super.tearDown()
     }
     
     func test_01_basic_FRSession_authenticate() {
@@ -50,10 +57,10 @@ class FRSessionTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -132,10 +139,10 @@ class FRSessionTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -220,10 +227,10 @@ class FRSessionTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -301,10 +308,10 @@ class FRSessionTests: FRBaseTest {
         // Provide input value for callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.value = config.username
+                nameCallback.setValue(config.username)
             }
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.value = config.password
+                passwordCallback.setValue(config.password)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -347,4 +354,117 @@ class FRSessionTests: FRBaseTest {
         XCTAssertNil(FRUser.currentUser?.token)
         XCTAssertNil(FRSession.currentSession)
     }
+    
+    
+    func test_07_authenticate_with_suspended_id() {
+        
+        self.startSDK()
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_UsernamePasswordNode"])
+        
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [SuspendedRequestInterceptor()])
+        let url = URL(string: "http://default.iam.forgeops.com/am/XUI?realm=/&suspendedId=6IIIUln3ajONR4ySwZt15qzh8X4")!
+        
+        let ex = self.expectation(description: "First Node submit")
+        FRSession.authenticate(resumeURI: url) { (token: Token?, node, error) in
+            XCTAssertNil(error)
+            XCTAssertNil(token)
+            XCTAssertNotNil(node)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertEqual(SuspendedRequestInterceptor.requests.count, 1)
+        XCTAssertEqual(SuspendedRequestInterceptor.actions.count, 1)
+        XCTAssertEqual(SuspendedRequestInterceptor.actions.first?.type, "RESUME_AUTHENTICATE")
+        let request = SuspendedRequestInterceptor.requests.first
+        
+        guard let urlRequest = request?.build(), let requestURL = urlRequest.url?.absoluteString else {
+            XCTFail("Failed to get URL from suspendedId request using FRSession")
+            return
+        }
+        
+        XCTAssertTrue(requestURL.contains("suspendedId=6IIIUln3ajONR4ySwZt15qzh8X4"))
+    }
+    
+    
+    func test_08_authenticate_with_resume_uri_missing_suspended_id() {
+        
+        self.startSDK()
+        
+        let url = URL(string: "http://default.iam.forgeops.com/am/XUI?realm=/")!
+        
+        var thisError: Error?
+        let ex = self.expectation(description: "First Node submit")
+        FRSession.authenticate(resumeURI: url) { (token: Token?, node, error) in
+            XCTAssertNotNil(error)
+            thisError = error
+            XCTAssertNil(token)
+            XCTAssertNil(node)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let authError = thisError as? AuthError else {
+            XCTFail("Authenticate with ResumeURI missing suspendedId failed with different reason")
+            return
+        }
+        
+        switch authError {
+        case .invalidResumeURI:
+            break
+        default:
+            XCTFail("Authenticate with ResumeURI missing suspendedId failed with different reason")
+            break
+        }
+    }
+    
+    
+    func test_09_authenticate_with_expired_suspended_id() {
+        
+        self.startSDK()
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_SuspendedAuthSessionException"])
+        
+        let url = URL(string: "http://default.iam.forgeops.com/am/XUI?realm=/&suspendedId=boPYZD4C5YogReyHSmmuDnLI2-c")!
+        
+        var thisError: Error?
+        let ex = self.expectation(description: "First Node submit")
+        FRSession.authenticate(resumeURI: url) { (token: Token?, node, error) in
+            XCTAssertNotNil(error)
+            thisError = error
+            XCTAssertNil(token)
+            XCTAssertNil(node)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let authApiError = thisError as? AuthApiError else {
+            XCTFail("Authenticate with ResumeURI expired suspendedId failed with different reason")
+            return
+        }
+        
+        switch authApiError {
+        case .suspendedAuthSessionError:
+            break
+        default:
+            XCTFail("Authenticate with ResumeURI expired suspendedId failed with different reason")
+            break
+        }
+    }
+}
+
+
+class SuspendedRequestInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        SuspendedRequestInterceptor.requests.append(request)
+        SuspendedRequestInterceptor.actions.append(action)
+        
+        return request
+    }
+    
+    static var requests: [Request] = []
+    static var actions: [Action] = []
 }

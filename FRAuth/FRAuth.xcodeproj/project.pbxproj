@@ -11,10 +11,18 @@
 		D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */; };
 		D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5094CD923DF7F850041D5C1 /* CookieTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
+		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
+		D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
+		D513F17824DA87B10042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
+		D513F17A24DA91630042228B /* AuthApiErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17924DA91630042228B /* AuthApiErrorTests.swift */; };
+		D513F17D24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json in Resources */ = {isa = PBXBuildFile; fileRef = D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */; };
+		D513F17E24DA9B4D0042228B /* AuthTree_AuthTimedOut.json in Resources */ = {isa = PBXBuildFile; fileRef = D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */; };
 		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
 		D51672A62321AB21007053EE /* ObjcFRURLProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D51672A52321AB21007053EE /* ObjcFRURLProtocolTests.m */; };
+		D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
+		D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
 		D52D162823147FE70095905A /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162723147FE70095905A /* FRTestUtils.swift */; };
 		D52D165D231484D60095905A /* SecondFactorFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162C231484D60095905A /* SecondFactorFlowTests.swift */; };
 		D52D165E231484D60095905A /* SecondFactorFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D52D162D231484D60095905A /* SecondFactorFlow.png */; };
@@ -263,6 +271,12 @@
 		D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */; };
 		D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B1C240F0B9F00BD48AA /* FRLog.swift */; };
 		D5F01B23240F1B2900BD48AA /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
+		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
+		D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */; };
+		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
+		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
+		D5FBD8A324B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */; };
+		D5FBD8A624B930F00005DD0F /* NumberAttributeInputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -315,6 +329,10 @@
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
 		D512CD40240DC41E00AF520E /* FRRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRestClient.swift; sourceTree = "<group>"; };
+		D513F17424DA6B490042228B /* AuthApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiError.swift; sourceTree = "<group>"; };
+		D513F17924DA91630042228B /* AuthApiErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiErrorTests.swift; sourceTree = "<group>"; };
+		D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SuspendedAuthSessionException.json; sourceTree = "<group>"; };
+		D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AuthTimedOut.json; sourceTree = "<group>"; };
 		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5167289231F0408007053EE /* CustomCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallbackTests.swift; sourceTree = "<group>"; };
 		D516728D231F1E48007053EE /* NodeFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowTests.swift; sourceTree = "<group>"; };
@@ -497,6 +515,12 @@
 		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5EC34FF247B33A80005A50C /* FRAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAuthInterceptor.swift; sourceTree = "<group>"; };
 		D5F01B1C240F0B9F00BD48AA /* FRLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLog.swift; sourceTree = "<group>"; };
+		D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspendedTextOutputCallback.swift; sourceTree = "<group>"; };
+		D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedPolicyTests.swift; sourceTree = "<group>"; };
+		D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallback.swift; sourceTree = "<group>"; };
+		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
+		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
+		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -720,6 +744,9 @@
 				D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */,
 				D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */,
 				D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */,
+				D5F8F9E824B7CA9800EC9AEB /* FailedPolicyTests.swift */,
+				D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */,
+				D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -885,6 +912,8 @@
 		D53310492301216A00F1F851 /* AuthTree */ = {
 			isa = PBXGroup;
 			children = (
+				D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */,
+				D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */,
 				D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */,
 				D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
 				D539587B2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json */,
@@ -1063,6 +1092,7 @@
 				D586CF2123358EDF007A2194 /* AuthError.swift */,
 				D586CF2223358EDF007A2194 /* ConfigError.swift */,
 				D586CF2423358EDF007A2194 /* TokenError.swift */,
+				D513F17424DA6B490042228B /* AuthApiError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1133,6 +1163,9 @@
 				D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */,
 				D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */,
 				D5B2A38823FCB25E00764370 /* ActionCallback.swift */,
+				D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */,
+				D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */,
+				D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1249,6 +1282,7 @@
 				D5C87B432491920F000F2F75 /* AuthErrorTests.swift */,
 				D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */,
 				D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */,
+				D513F17924DA91630042228B /* AuthApiErrorTests.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1446,6 +1480,7 @@
 				D534A2D722FBF1EB007098D1 /* 02-cert.pem in Resources */,
 				D52D1663231484D60095905A /* UsernamePasswordFlow.png in Resources */,
 				D52D16892314853D0095905A /* SecondFactorFlowObjc.png in Resources */,
+				D513F17E24DA9B4D0042228B /* AuthTree_AuthTimedOut.json in Resources */,
 				D53958AA2302376D009CA2BC /* OAuth2_Token_Refresh_Success.json in Resources */,
 				D53958A423022C92009CA2BC /* AM_Session_Logout_Failure.json in Resources */,
 				D553B91322FCBE7C00FC0734 /* Config.json in Resources */,
@@ -1459,6 +1494,7 @@
 				D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */,
 				D53310582301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json in Resources */,
 				D52D16882314853D0095905A /* UsernamePasswordFlowObjc.png in Resources */,
+				D513F17D24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json in Resources */,
 				D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */,
 				D53310542301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
 				D53310522301216A00F1F851 /* AM_Session_Logout_Success.json in Resources */,
@@ -1492,6 +1528,7 @@
 				D586CF9223358EE0007A2194 /* TermsAndConditionsCallback.swift in Sources */,
 				D586CF8523358EE0007A2194 /* JBUtil.c in Sources */,
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
+				D513F17524DA6B490042228B /* AuthApiError.swift in Sources */,
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
 				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,
@@ -1512,6 +1549,7 @@
 				D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */,
 				D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
+				D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */,
 				D586CFC023358EE0007A2194 /* SessionManager.swift in Sources */,
 				D533270D24806687002FF207 /* AuthorizationPolicy.swift in Sources */,
 				D586CFAC23358EE0007A2194 /* Address.swift in Sources */,
@@ -1519,6 +1557,7 @@
 				D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */,
 				D586CF9123358EE0007A2194 /* Token.swift in Sources */,
+				D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
 				D586CFB523358EE0007A2194 /* FRDevice.swift in Sources */,
 				D586CFBE23358EE0007A2194 /* KeychainManager.swift in Sources */,
@@ -1555,6 +1594,7 @@
 				D586CFAB23358EE0007A2194 /* UserInfo.swift in Sources */,
 				D586CF9923358EE0007A2194 /* ConfirmationCallback.swift in Sources */,
 				D586CF8023358EE0007A2194 /* DyldDetector.swift in Sources */,
+				D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */,
 				D586CFB323358EE0007A2194 /* PlatformCollector.swift in Sources */,
 				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
 				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
@@ -1570,6 +1610,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */,
+				D513F17824DA87B10042228B /* AuthApiError.swift in Sources */,
+				D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */,
+				D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */,
 				D5C87B4B2491A2CF000F2F75 /* FRURLProtocolTests.swift in Sources */,
 				D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */,
 				D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */,
@@ -1625,6 +1669,7 @@
 				D54237DA23358F8F009C868F /* TelephonyCollector.swift in Sources */,
 				D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */,
 				D54237DB23358F8F009C868F /* NetworkCollector.swift in Sources */,
+				D5FBD8A324B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift in Sources */,
 				D54237DD23358F8F009C868F /* FRDeviceIdentifier.swift in Sources */,
 				D54237DE23358F8F009C868F /* AuthError.swift in Sources */,
 				D54237DF23358F8F009C868F /* ConfigError.swift in Sources */,
@@ -1639,6 +1684,7 @@
 				D54237F223358F8F009C868F /* CydiaDetector.swift in Sources */,
 				D54237F323358F8F009C868F /* SandboxDetector.swift in Sources */,
 				D54237F423358F8F009C868F /* SymbolicLinkDetector.swift in Sources */,
+				D513F17A24DA91630042228B /* AuthApiErrorTests.swift in Sources */,
 				D54237F523358F8F009C868F /* JBUtil.h in Sources */,
 				D5C87B4624919969000F2F75 /* ConfigErrorTests.swift in Sources */,
 				D54237F623358F8F009C868F /* CydiaSubstrateDetector.swift in Sources */,
@@ -1684,6 +1730,8 @@
 				D52D1671231484D60095905A /* FRUserTests.swift in Sources */,
 				D52D167C231484D60095905A /* FRBaseTest.swift in Sources */,
 				D52D166F231484D60095905A /* PKCETests.swift in Sources */,
+				D5FBD8A624B930F00005DD0F /* NumberAttributeInputCallbackTests.swift in Sources */,
+				D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */,
 				D534A2CD22FBE08C007098D1 /* FRTestStubResponseParser.swift in Sources */,
 				D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */,
 				D553B91122FCBAF600FC0734 /* Config.swift in Sources */,
@@ -1877,7 +1925,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1909,7 +1957,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1924,9 +1972,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRAuthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1937,6 +1985,8 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = FRTests;
 				SWIFT_OBJC_BRIDGING_HEADER = FRAuthTests/FRObjcTestBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
@@ -1949,9 +1999,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRAuthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1962,6 +2012,8 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = FRTests;
 				SWIFT_OBJC_BRIDGING_HEADER = FRAuthTests/FRObjcTestBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
