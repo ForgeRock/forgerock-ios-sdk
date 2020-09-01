@@ -1,4 +1,14 @@
-# Version 2.1.0
+# Version 2.1.1
+
+## [2.1.1]
+#### Added
+- 
+
+#### Changed
+- 
+
+#### Deprecated
+- 
 
 ## [2.1.0]
 #### Added
