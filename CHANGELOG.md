@@ -5,6 +5,7 @@
 
 #### Changed
 - Fix Secure Enclave availability validation using `CryptoKit` for iOS 13 and above. [SDKS-673]
+- Fix inconsistent font size for TextField in login screen. [SDKS-675]
 
 #### Deprecated
 
