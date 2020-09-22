@@ -1,4 +1,12 @@
-# Version 2.1.0
+# Version 2.1.1
+
+## [2.1.1]
+#### Added
+
+#### Changed
+- Fix Secure Enclave availability validation using `CryptoKit` for iOS 13 and above. [SDKS-673]
+
+#### Deprecated
 
 ## [2.1.0]
 #### Added
