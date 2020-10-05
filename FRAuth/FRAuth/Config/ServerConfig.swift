@@ -2,7 +2,7 @@
 //  ServerConfig.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -33,7 +33,9 @@ public class ServerConfig: NSObject, Codable {
     /// Absolute URL string of Token Revoke endpoint
     @objc var tokenRevokeURL: String
     /// Absolute URL string of session endpoint
-    @objc var sessionPath: String
+    @objc var sessionURL: String
+    /// Absolute URL string of endSession endpoint
+    @objc var endSessionURL: String
     /// Boolean indicator whether SDK should manage the cookie or not; when it is changed to false, all existing cookies will be removed. **Note** If SDK has not been initialized using (FRAuth.start(), this value will be ignored and not persist cookies.
     @objc var enableCookie: Bool
     /// Name of AM's SSO Token cookie;
@@ -63,17 +65,16 @@ public class ServerConfig: NSObject, Codable {
         self.authorizeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/authorize"
         self.userInfoURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/userinfo"
         self.tokenRevokeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/token/revoke"
-        self.sessionPath = self.baseURL.absoluteString + "/json/realms/\(self.realm)/sessions"
+        self.sessionURL = self.baseURL.absoluteString + "/json/realms/\(self.realm)/sessions"
+        self.endSessionURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/connect/endSession"
     }
     
     
-    /// Constructs ServerConfig instance with URL, realm in OpenAM, and timeout for all requests
+    /// Constructs ServerConfig instance with URL, realm in AM, and timeout for all requests
     ///
     /// - Parameters:
-    ///   - url: Base URL of OpenAM
-    ///   - realm: Designated 'realm' to be communicated in OpenAM
-    ///   - timeout: Timeout in seconds for all requests
-    ///   - enableCookie: Boolean value to enable cookie management in SDK's communication to AM. **Note** If SDK has not been initialized using (FRAuth.start(), this value will be ignored and not persist cookies.
+    ///   - url: Base URL of AM
+    ///   - realm: Designated 'realm' to be communicated in AM
     init(url: URL, realm: String) {
         self.baseURL = url
         self.realm = realm
@@ -85,7 +86,8 @@ public class ServerConfig: NSObject, Codable {
         self.authorizeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/authorize"
         self.userInfoURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/userinfo"
         self.tokenRevokeURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/token/revoke"
-        self.sessionPath = self.baseURL.absoluteString + "/json/realms/\(self.realm)/sessions"
+        self.sessionURL = self.baseURL.absoluteString + "/json/realms/\(self.realm)/sessions"
+        self.endSessionURL = self.baseURL.absoluteString + "/oauth2/realms/\(self.realm)/connect/endSession"
     }
 }
 
@@ -150,7 +152,13 @@ public class ServerConfigBuilder: NSObject {
     
     @objc
     @discardableResult public func set(sessionPath: String) -> ServerConfigBuilder {
-        self.config.sessionPath = self.config.baseURL.absoluteString + sessionPath
+        self.config.sessionURL = self.config.baseURL.absoluteString + sessionPath
+        return self
+    }
+    
+    @objc
+    @discardableResult public func set(endSessionPath: String) -> ServerConfigBuilder {
+        self.config.endSessionURL = self.config.baseURL.absoluteString + endSessionPath
         return self
     }
     

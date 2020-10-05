@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 while let presentedController = currentController.presentedViewController {
                     currentController = presentedController
                 }
+                
                 FRSession.authenticateWithUI(resumeURL, currentController) { (token: Token?, error) in
                     if let error = error {
                         FRLog.e(error.localizedDescription)
@@ -50,6 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
             }
+        }
+        else if Browser.validateBrowserLogin(url: url) {
+            FRLog.w("Incoming URL from native Safari App")
+            return true
         }
 
         return true
