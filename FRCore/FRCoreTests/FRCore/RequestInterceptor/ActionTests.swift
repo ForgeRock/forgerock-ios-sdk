@@ -71,4 +71,10 @@ class ActionTests: FRCoreBaseTest {
         let action = Action(type: .USER_INFO)
         XCTAssertEqual(action.type, "USER_INFO")
     }
+    
+    
+    func test_11_action_end_session() {
+        let action = Action(type: .END_SESSION)
+        XCTAssertEqual(action.type, "END_SESSION")
+    }
 }

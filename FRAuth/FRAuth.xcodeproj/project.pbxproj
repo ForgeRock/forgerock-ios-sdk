@@ -260,6 +260,14 @@
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
 		D5CD493225265FF8006DD932 /* BrowserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD493125265FF8006DD932 /* BrowserError.swift */; };
+		D5CD493725266A2C006DD932 /* BrowserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */; };
+		D5CD493A25266A5E006DD932 /* BrowserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD493125265FF8006DD932 /* BrowserError.swift */; };
+		D5CD493B25266A5E006DD932 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C6DB672509747D00E1A857 /* Browser.swift */; };
+		D5CD4942252689E2006DD932 /* BrowserBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD4941252689E2006DD932 /* BrowserBuilderTests.swift */; };
+		D5CD494625268BCD006DD932 /* BrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD494525268BCD006DD932 /* BrowserTests.swift */; };
+		D5CDB7232527CB1800D7BA49 /* FRUserBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */; };
+		D5CDB7292527D39300D7BA49 /* OAuth2_EndSession_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5CDB7272527D39300D7BA49 /* OAuth2_EndSession_Failure.json */; };
+		D5CDB72A2527D39300D7BA49 /* OAuth2_EndSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5CDB7282527D39300D7BA49 /* OAuth2_EndSession_Success.json */; };
 		D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */; };
 		D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
@@ -512,6 +520,12 @@
 		D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
 		D5CD493125265FF8006DD932 /* BrowserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserError.swift; sourceTree = "<group>"; };
+		D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserErrorTests.swift; sourceTree = "<group>"; };
+		D5CD4941252689E2006DD932 /* BrowserBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserBuilderTests.swift; sourceTree = "<group>"; };
+		D5CD494525268BCD006DD932 /* BrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserTests.swift; sourceTree = "<group>"; };
+		D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUserBrowserTests.swift; sourceTree = "<group>"; };
+		D5CDB7272527D39300D7BA49 /* OAuth2_EndSession_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Failure.json; sourceTree = "<group>"; };
+		D5CDB7282527D39300D7BA49 /* OAuth2_EndSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Success.json; sourceTree = "<group>"; };
 		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
 		D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocol.swift; sourceTree = "<group>"; };
@@ -632,6 +646,7 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				D5CD493E252687D1006DD932 /* Browser */,
 				D5C87B492491A052000F2F75 /* FRURLProtocol */,
 				D5DE4BAF2488AFC100FE2654 /* Authorization */,
 				D5DE4BAE2488AFAA00FE2654 /* Policy */,
@@ -717,6 +732,7 @@
 			isa = PBXGroup;
 			children = (
 				D52D164D231484D60095905A /* FRUserTests.swift */,
+				D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -903,6 +919,8 @@
 		D53310452301216A00F1F851 /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
+				D5CDB7272527D39300D7BA49 /* OAuth2_EndSession_Failure.json */,
+				D5CDB7282527D39300D7BA49 /* OAuth2_EndSession_Success.json */,
 				D53958A72302318E009CA2BC /* OAuth2_UserInfo_Failure.json */,
 				D53958A523022FA4009CA2BC /* OAuth2_UserInfo_Success.json */,
 				D53310462301216A00F1F851 /* OAuth2_Token_Revoke_Success.json */,
@@ -1289,6 +1307,7 @@
 				D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */,
 				D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */,
 				D513F17924DA91630042228B /* AuthApiErrorTests.swift */,
+				D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1299,6 +1318,15 @@
 				D5C87B4A2491A2CF000F2F75 /* FRURLProtocolTests.swift */,
 			);
 			path = FRURLProtocol;
+			sourceTree = "<group>";
+		};
+		D5CD493E252687D1006DD932 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				D5CD4941252689E2006DD932 /* BrowserBuilderTests.swift */,
+				D5CD494525268BCD006DD932 /* BrowserTests.swift */,
+			);
+			path = Browser;
 			sourceTree = "<group>";
 		};
 		D5DE4BAE2488AFAA00FE2654 /* Policy */ = {
@@ -1497,6 +1525,7 @@
 				D53310562301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json in Resources */,
 				D53310532301216A00F1F851 /* OAuth2_Token_Revoke_Success.json in Resources */,
 				D534A2D422FBF1EB007098D1 /* 01-cert.cert in Resources */,
+				D5CDB7292527D39300D7BA49 /* OAuth2_EndSession_Failure.json in Resources */,
 				D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */,
 				D53310582301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json in Resources */,
 				D52D16882314853D0095905A /* UsernamePasswordFlowObjc.png in Resources */,
@@ -1508,6 +1537,7 @@
 				D53310592301216A00F1F851 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
 				D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
 				D539587C2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json in Resources */,
+				D5CDB72A2527D39300D7BA49 /* OAuth2_EndSession_Success.json in Resources */,
 				D53310572301216A00F1F851 /* AuthTree_SSOToken_Success.json in Resources */,
 				D533105C2301216A00F1F851 /* AuthTree_KBACreateNode.json in Resources */,
 				D53310552301216A00F1F851 /* OAuth2_Token_Success.json in Resources */,
@@ -1618,18 +1648,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5CD493A25266A5E006DD932 /* BrowserError.swift in Sources */,
+				D5CD493B25266A5E006DD932 /* Browser.swift in Sources */,
 				D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */,
 				D513F17824DA87B10042228B /* AuthApiError.swift in Sources */,
 				D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */,
 				D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */,
 				D5C87B4B2491A2CF000F2F75 /* FRURLProtocolTests.swift in Sources */,
 				D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */,
+				D5CD494625268BCD006DD932 /* BrowserTests.swift in Sources */,
 				D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */,
 				D5BEAAFF2488BB300057FC2E /* AuthorizationPolicy.swift in Sources */,
 				D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */,
 				D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */,
 				D5F01B20240F1B2900BD48AA /* ActionCallback.swift in Sources */,
+				D5CD4942252689E2006DD932 /* BrowserBuilderTests.swift in Sources */,
 				D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */,
 				D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */,
 				D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */,
@@ -1700,6 +1734,7 @@
 				D54237F823358F8F009C868F /* AptDetector.swift in Sources */,
 				D54237F923358F8F009C868F /* SSHDetector.swift in Sources */,
 				D54237FA23358F8F009C868F /* JailbreakDetector.swift in Sources */,
+				D5CDB7232527CB1800D7BA49 /* FRUserBrowserTests.swift in Sources */,
 				D54237FB23358F8F009C868F /* FRJailbreakDetector.swift in Sources */,
 				D54237FC23358F8F009C868F /* JBUtil.c in Sources */,
 				D54237FD23358F8F009C868F /* PrivateFileWritableDetector.swift in Sources */,
@@ -1745,6 +1780,7 @@
 				D553B91122FCBAF600FC0734 /* Config.swift in Sources */,
 				D52D1673231484D60095905A /* FRDeviceIdentifierTests.swift in Sources */,
 				D52D1672231484D60095905A /* FRDeviceTests.swift in Sources */,
+				D5CD493725266A2C006DD932 /* BrowserErrorTests.swift in Sources */,
 				D52D1667231484D60095905A /* AuthServiceTests.swift in Sources */,
 				D5924823232871AE0027031A /* PollingWaitCallbackTests.swift in Sources */,
 				D52D162823147FE70095905A /* FRTestUtils.swift in Sources */,

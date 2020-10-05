@@ -2,7 +2,7 @@
 //  FRUserTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -611,6 +611,7 @@ class FRUserTests: FRBaseTest {
         // Load mock responses for AM Session revoke, and OAuth2 token revoke
         self.loadMockResponses(["AM_Session_Logout_Failure",
                                 "OAuth2_Token_Revoke_Success",
+                                "OAuth2_EndSession_Success",
                                 "AuthTree_UsernamePasswordNode"])
         user.logout()
         
@@ -646,6 +647,7 @@ class FRUserTests: FRBaseTest {
         // Load mock responses for AM Session revoke, and OAuth2 token revoke
         self.loadMockResponses(["AM_Session_Logout_Success",
                                 "OAuth2_Token_Revoke_Success",
+                                "OAuth2_EndSession_Success",
                                 "AuthTree_UsernamePasswordNode"])
         user.logout()
         
@@ -680,6 +682,7 @@ class FRUserTests: FRBaseTest {
         // Load mock responses for AM Session revoke, and OAuth2 token revoke
         self.loadMockResponses(["AM_Session_Logout_Success",
                                 "OAuth2_Token_Revoke_Success",
+                                "OAuth2_EndSession_Success",
                                 "AuthTree_UsernamePasswordNode"])
         
         // Given

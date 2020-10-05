@@ -1,0 +1,19 @@
+{
+    "responsePayload": {
+        "error_description":"java.security.SignatureException: Signature length not correct: got 260 but was expecting 256",
+        "error":"server_error"
+    },
+    "response": {
+        "statusCode": 500,
+        "url": "http://localhost/oauth2/realms/root/connect/endSession",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Cache-Control": "no-store",
+            "Content-Length": "2794",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "SAMEORIGIN"
+        }
+    }
+}
