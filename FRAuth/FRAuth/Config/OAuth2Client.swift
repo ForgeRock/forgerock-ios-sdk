@@ -214,15 +214,15 @@ public class OAuth2Client: NSObject, Codable {
                             }
                         })
                     }
-                    else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
-                        completion(nil, AuthApiError.apiFailureWithMessage(error, errorDescription, nil, nil))
+                    else if let _ = redirectURL?.valueOf("error"), let _ = redirectURL?.valueOf("error_description") {
+                        completion(nil, OAuth2Error.convertOAuth2Error(urlValue: redirectURL?.absoluteString))
                     }
                     else {
-                        completion(nil, AuthError.invalidRedirectURI)
+                        completion(nil, OAuth2Error.missingOrInvalidRedirectURI(redirectURL?.absoluteString))
                     }
                 }
                 else {
-                    completion(nil, AuthError.missingRedirectLocation)
+                    completion(nil, OAuth2Error.missingOrInvalidRedirectURI(nil))
                 }
                 break
             case .failure(let error):
@@ -303,15 +303,15 @@ public class OAuth2Client: NSObject, Codable {
                         throw error
                     }
                 }
-                else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
-                    throw AuthApiError.apiFailureWithMessage(error, errorDescription, nil, nil)
+                else if let _ = redirectURL?.valueOf("error"), let _ = redirectURL?.valueOf("error_description") {
+                    throw OAuth2Error.convertOAuth2Error(urlValue: redirectURL?.absoluteString)
                 }
                 else {
-                    throw AuthError.invalidRedirectURI
+                    throw OAuth2Error.missingOrInvalidRedirectURI(redirectURL?.absoluteString)
                 }
             }
             else {
-                throw AuthError.missingRedirectLocation
+                throw OAuth2Error.missingOrInvalidRedirectURI(nil)
             }
         case .failure(let error):
             throw error

@@ -252,6 +252,9 @@
 		D5C64E652489925300CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */; };
 		D5C64E672489B21600CB7EB3 /* CookieValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */; };
 		D5C6DB682509747D00E1A857 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C6DB672509747D00E1A857 /* Browser.swift */; };
+		D5C8641A252E880D00268F06 /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C86419252E880D00268F06 /* OAuth2Error.swift */; };
+		D5C8641E252EE87800268F06 /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C86419252E880D00268F06 /* OAuth2Error.swift */; };
+		D5C8642C252EEE2900268F06 /* OAuth2ErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C8642B252EEE2900268F06 /* OAuth2ErrorTests.swift */; };
 		D5C87B442491920F000F2F75 /* AuthErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B432491920F000F2F75 /* AuthErrorTests.swift */; };
 		D5C87B4624919969000F2F75 /* ConfigErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */; };
 		D5C87B4824919A0D000F2F75 /* TokenErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */; };
@@ -513,6 +516,8 @@
 		D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
 		D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieValidationTests.swift; sourceTree = "<group>"; };
 		D5C6DB672509747D00E1A857 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
+		D5C86419252E880D00268F06 /* OAuth2Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Error.swift; sourceTree = "<group>"; };
+		D5C8642B252EEE2900268F06 /* OAuth2ErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B432491920F000F2F75 /* AuthErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenErrorTests.swift; sourceTree = "<group>"; };
@@ -1116,6 +1121,7 @@
 				D586CF2423358EDF007A2194 /* TokenError.swift */,
 				D513F17424DA6B490042228B /* AuthApiError.swift */,
 				D5CD493125265FF8006DD932 /* BrowserError.swift */,
+				D5C86419252E880D00268F06 /* OAuth2Error.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1308,6 +1314,7 @@
 				D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */,
 				D513F17924DA91630042228B /* AuthApiErrorTests.swift */,
 				D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */,
+				D5C8642B252EEE2900268F06 /* OAuth2ErrorTests.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1565,6 +1572,7 @@
 				D586CF8523358EE0007A2194 /* JBUtil.c in Sources */,
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
 				D513F17524DA6B490042228B /* AuthApiError.swift in Sources */,
+				D5C8641A252E880D00268F06 /* OAuth2Error.swift in Sources */,
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
 				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,
@@ -1648,6 +1656,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5C8641E252EE87800268F06 /* OAuth2Error.swift in Sources */,
 				D5CD493A25266A5E006DD932 /* BrowserError.swift in Sources */,
 				D5CD493B25266A5E006DD932 /* Browser.swift in Sources */,
 				D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */,
@@ -1791,6 +1800,7 @@
 				D592481F232865D30027031A /* ReCaptchaCallbackTests.swift in Sources */,
 				D52D167B231484D60095905A /* TermsAndConditionsCallbackTests.swift in Sources */,
 				D535650022CD6F68003972AB /* FRAuth.swift in Sources */,
+				D5C8642C252EEE2900268F06 /* OAuth2ErrorTests.swift in Sources */,
 				D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */,
 				D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */,
 				D534A2CB22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift in Sources */,

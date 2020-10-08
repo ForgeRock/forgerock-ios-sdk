@@ -46,14 +46,4 @@ class BrowserErrorTests: FRBaseTest {
         XCTAssertNotNil(error.errorUserInfo)
         XCTAssertTrue(error.localizedDescription.hasPrefix("External user-agent authentication is cancelled"))
     }
-    
-    
-    func test_04_missing_auth_code() {
-        let error = BrowserError.missingAuthCode
-        
-        XCTAssertEqual(error.code, 1400003)
-        XCTAssertEqual(error.errorCode, 1400003)
-        XCTAssertNotNil(error.errorUserInfo)
-        XCTAssertTrue(error.localizedDescription.hasPrefix("redirect_uri is missing authorization_code; cancelling external user-agent flow"))
-    }
 }

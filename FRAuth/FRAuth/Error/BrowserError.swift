@@ -19,7 +19,6 @@ public enum BrowserError: FRError {
     case externalUserAgentFailure
     case externalUserAgentAuthenticationInProgress
     case externalUserAgentCancelled
-    case missingAuthCode
 }
 
 public extension BrowserError {
@@ -40,8 +39,6 @@ public extension BrowserError {
             return 1400001
         case .externalUserAgentCancelled:
             return 1400002
-        case .missingAuthCode:
-            return 1400003
         }
     }
 }
@@ -66,8 +63,6 @@ extension BrowserError: CustomNSError {
             return [NSLocalizedDescriptionKey: "External user-agent authentication is currently in progress"]
         case .externalUserAgentCancelled:
             return [NSLocalizedDescriptionKey: "External user-agent authentication is cancelled"]
-        case .missingAuthCode:
-            return [NSLocalizedDescriptionKey: "redirect_uri is missing authorization_code; cancelling external user-agent flow"]
         }
     }
 }

@@ -110,7 +110,8 @@ import SafariServices
                     }
                     else {
                         completion(nil, BrowserError.externalUserAgentFailure)
-                        self.cancel()
+                        self.close()
+                        self.cleanUp()
                     }
                 }
             }
@@ -121,6 +122,8 @@ import SafariServices
                 }
                 else {
                     completion(nil, BrowserError.externalUserAgentFailure)
+                    self.close()
+                    self.cleanUp()
                 }
             }
             else {
@@ -156,18 +159,24 @@ import SafariServices
             return
         }
         
-        self.close()
-        self.currentSession = nil
-        
         if let completionCallback = self.completionCallback {
             completionCallback(nil, BrowserError.externalUserAgentCancelled)
         }
         
+        self.close()
+        self.cleanUp()
+    }
+    
+    
+    /// Cleans up the object for subsequent request
+    func cleanUp() {
+        self.currentSession = nil
         self.completionCallback = nil
         Browser.currentBrowser = nil
     }
     
     
+    /// Closes currently presenting ViewController
     func close() {
         
         if let sfViewController = self.currentSession as? SFSafariViewController {
@@ -219,10 +228,10 @@ import SafariServices
         else {
             
             if let completionCallback = Browser.currentBrowser?.completionCallback {
-                completionCallback(nil, BrowserError.missingAuthCode)
-                Browser.currentBrowser?.completionCallback = nil
+                completionCallback(nil, OAuth2Error.convertOAuth2Error(urlValue: url.absoluteString))
             }
-            Browser.currentBrowser?.cancel()
+            Browser.currentBrowser?.close()
+            Browser.currentBrowser?.cleanUp()
             FRLog.w("authorization_code is not found from URL")
             return false
         }
@@ -243,7 +252,8 @@ import SafariServices
             if let error = error {
                 FRLog.e("Failed to complete authorization using ASWebAuthenticationSession: \(error.localizedDescription)")
                 completion(nil, error)
-                self.cancel()
+                self.close()
+                self.cleanUp()
                 return
             }
             
@@ -251,8 +261,9 @@ import SafariServices
                 self.exchangeAuthCode(code: authCode, completion: completion)
             }
             else {
-                completion(nil, BrowserError.missingAuthCode)
-                self.cancel()
+                completion(nil, OAuth2Error.convertOAuth2Error(urlValue: url?.absoluteString))
+                self.close()
+                self.cleanUp()
             }
         }
         //  Provide Context Provider with given viewController for iOS 13 or above
@@ -274,9 +285,10 @@ import SafariServices
         let sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
         
             if let error = error {
-                FRLog.e("Failed to complete authorization using ASWebAuthenticationSession: \(error.localizedDescription)")
+                FRLog.e("Failed to complete authorization using SFAuthenticationSession: \(error.localizedDescription)")
                 completion(nil, error)
-                self.cancel()
+                self.close()
+                self.cleanUp()
                 return
             }
             
@@ -284,8 +296,9 @@ import SafariServices
                 self.exchangeAuthCode(code: authCode, completion: completion)
             }
             else {
-                completion(nil, BrowserError.missingAuthCode)
-                self.cancel()
+                completion(nil, OAuth2Error.convertOAuth2Error(urlValue: url?.absoluteString))
+                self.close()
+                self.cleanUp()
             }
         }
         self.currentSession = sfAuthSession
@@ -318,11 +331,6 @@ import SafariServices
         }
         else {
             FRLog.e("Fail to launch SFSafariViewController; missing presenting ViewController")
-            
-            if let completionCallback = self.completionCallback {
-                completionCallback(nil, BrowserError.externalUserAgentFailure)
-            }
-            self.cancel()
             return false
         }
     }
@@ -353,10 +361,7 @@ import SafariServices
         self.oAuth2Client.exchangeToken(code: code, pkce: self.pkce) { (token, error) in
 
             self.close()
-            
-            self.currentSession = nil
-            self.isInProgress = false
-            Browser.currentBrowser = nil
+            self.cleanUp()
             
             if let error = error {
                 completionCallback?(nil, error)
@@ -377,6 +382,7 @@ extension Browser: SFSafariViewControllerDelegate {
     
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         FRLog.i("User cancelled the authorization process by closing the window")
+        self.cancel()
     }
     
     public func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
@@ -391,6 +397,11 @@ extension Browser: SFSafariViewControllerDelegate {
             }
             else {
                 FRLog.e("Failed to retrieve authorization_code upon redirect_uri; completed redirect: \(URL.absoluteString)")
+                if let completionCallback = self.completionCallback {
+                    completionCallback(nil, OAuth2Error.convertOAuth2Error(urlValue: URL.absoluteString))
+                }
+                self.close()
+                self.cleanUp()
             }
         }
     }

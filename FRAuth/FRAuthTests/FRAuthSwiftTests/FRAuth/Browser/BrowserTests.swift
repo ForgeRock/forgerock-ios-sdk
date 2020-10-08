@@ -248,17 +248,17 @@ class BrowserTests: FRBaseTest {
             XCTAssertNil(user)
             XCTAssertNotNil(error)
             
-            if let browserError = error as? BrowserError {
-                switch browserError {
-                case .missingAuthCode:
+            if let oauth2Error = error as? OAuth2Error {
+                switch oauth2Error {
+                case .unknown:
                     break
                 default:
-                    XCTFail("While expecting BrowserError.missingAuthCode; failed with different error \(browserError.localizedDescription)")
+                    XCTFail("While expecting OAuth2Error.unknown; failed with different error \(oauth2Error.localizedDescription)")
                     break
                 }
             }
             else {
-                XCTFail("While expecting BrowserError.missingAuthCode; failed with different error \(error?.localizedDescription ?? "")")
+                XCTFail("While expecting OAuth2Error.unknown; failed with different error \(error?.localizedDescription ?? "")")
             }
             
             ex.fulfill()
