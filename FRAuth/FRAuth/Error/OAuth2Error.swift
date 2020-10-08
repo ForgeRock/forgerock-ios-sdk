@@ -70,7 +70,7 @@ public extension OAuth2Error {
 // MARK: - CustomNSError protocols
 extension OAuth2Error: CustomNSError {
     
-    /// An error domain for ConfigError
+    /// An error domain for OAuth2Error
     public static var errorDomain: String { return "com.forgerock.ios.frauth.oauth2" }
     
     /// Error codes for each error enum

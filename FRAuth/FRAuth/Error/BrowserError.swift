@@ -46,7 +46,7 @@ public extension BrowserError {
 // MARK: - CustomNSError protocols
 extension BrowserError: CustomNSError {
     
-    /// An error domain for ConfigError
+    /// An error domain for BrowserError
     public static var errorDomain: String { return "com.forgerock.ios.frauth.browser" }
     
     /// Error codes for each error enum
