@@ -2,7 +2,7 @@
 //  ObjcServerConfigTests.m
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -50,7 +50,9 @@
     NSString *tokenRevokeURL = [NSString stringWithFormat:@"%@/oauth2/realms/%@/token/revoke", self.serverURL, self.realm];
     XCTAssertTrue([config.tokenRevokeURL isEqualToString:tokenRevokeURL]);
     NSString *sessionUrl = [NSString stringWithFormat:@"%@/json/realms/%@/sessions", self.serverURL, self.realm];
-    XCTAssertTrue([config.sessionPath isEqualToString:sessionUrl]);
+    XCTAssertTrue([config.sessionURL isEqualToString:sessionUrl]);
+    NSString *endSessionUrl = [NSString stringWithFormat:@"%@/oauth2/realms/%@/connect/endSession", self.serverURL, self.realm];
+    XCTAssertTrue([config.endSessionURL isEqualToString:endSessionUrl]);
 }
 
 
@@ -114,7 +116,13 @@
     config = [[builder setWithSessionPath:@"/custom/session/path"] build];
     XCTAssertNotNil(config);
     NSString *session = [NSString stringWithFormat:@"%@/custom/session/path", self.serverURL];
-    XCTAssertTrue([config.sessionPath isEqualToString:session]);
+    XCTAssertTrue([config.sessionURL isEqualToString:session]);
+    
+    // endSession path
+    config = [[builder setWithEndSessionPath:@"/custom/endSession/path"] build];
+    XCTAssertNotNil(config);
+    NSString *endSession = [NSString stringWithFormat:@"%@/custom/endSession/path", self.serverURL];
+    XCTAssertTrue([config.endSessionURL isEqualToString:endSession]);
 }
 
 
@@ -122,7 +130,7 @@
     // Given
     FRServerConfigBuilder *builder = [[FRServerConfigBuilder alloc] initWithUrl:[NSURL URLWithString:self.serverURL] realm:self.realm];
     
-    FRServerConfig *config = [[[[[builder setWithEnableCookie:NO] setWithTimeout:self.timeout] setWithAuthenticatePath:@"/custom/authenticate/path"] setWithSessionPath:@"/custom/session/path"] build];
+    FRServerConfig *config = [[[[[[builder setWithEnableCookie:NO] setWithTimeout:self.timeout] setWithAuthenticatePath:@"/custom/authenticate/path"] setWithSessionPath:@"/custom/session/path"] setWithEndSessionPath:@"/custom/endSession/path"] build];
     
     XCTAssertNotNil(config);
     XCTAssertEqual(config.baseURL.absoluteString, self.serverURL);
@@ -140,7 +148,9 @@
     NSString *tokenRevokeURL = [NSString stringWithFormat:@"%@/oauth2/realms/%@/token/revoke", self.serverURL, self.realm];
     XCTAssertTrue([config.tokenRevokeURL isEqualToString:tokenRevokeURL]);
     NSString *sessionUrl = [NSString stringWithFormat:@"%@/custom/session/path", self.serverURL];
-    XCTAssertTrue([config.sessionPath isEqualToString:sessionUrl]);
+    XCTAssertTrue([config.sessionURL isEqualToString:sessionUrl]);
+    NSString *endSessionUrl = [NSString stringWithFormat:@"%@/custom/endSession/path", self.serverURL];
+    XCTAssertTrue([config.endSessionURL isEqualToString:endSessionUrl]);
 }
 
 @end

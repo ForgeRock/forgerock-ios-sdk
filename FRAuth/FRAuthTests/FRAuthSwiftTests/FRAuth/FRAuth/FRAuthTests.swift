@@ -2,7 +2,7 @@
 //  FRAuthTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -464,7 +464,7 @@ class FRAuthTests: FRBaseTest {
             XCTAssertEqual(serverConfig.authorizeURL, "http://openam.example.com:8081/openam/custom/authorize/path")
             XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/custom/token/path")
             XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/custom/userinfo/path")
-            XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/custom/session/path")
+            XCTAssertEqual(serverConfig.sessionURL, "http://openam.example.com:8081/openam/custom/session/path")
         }
         catch {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")
@@ -495,7 +495,7 @@ class FRAuthTests: FRBaseTest {
             XCTAssertEqual(serverConfig.authorizeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/authorize")
             XCTAssertEqual(serverConfig.tokenRevokeURL, "http://openam.example.com:8081/openam/oauth2/realms/root/token/revoke")
             XCTAssertEqual(serverConfig.userInfoURL, "http://openam.example.com:8081/openam/oauth2/realms/root/userinfo")
-            XCTAssertEqual(serverConfig.sessionPath, "http://openam.example.com:8081/openam/json/realms/root/sessions")
+            XCTAssertEqual(serverConfig.sessionURL, "http://openam.example.com:8081/openam/json/realms/root/sessions")
         }
         catch {
             XCTFail("SDK Initialization failed: \(error.localizedDescription)")

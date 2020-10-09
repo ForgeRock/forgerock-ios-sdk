@@ -80,6 +80,30 @@ public class OAuth2Client: NSObject, Codable {
     }
     
     
+    /// Invalidates OIDC sessions
+    /// - Parameters:
+    ///   - idToken: OIDC id_token
+    ///   - completion: Completion callback
+    @objc public func endSession(idToken: String, completion: @escaping CompletionCallback) {
+        var parameter:[String: String] = [:]
+        parameter[OAuth2.clientId] = self.clientId
+        parameter[OAuth2.idTokenHint] = idToken
+        
+        let request = Request(url: self.serverConfig.endSessionURL, method: .GET, headers: [:], bodyParams: [:], urlParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+        
+        FRRestClient.invoke(request: request, action: Action(type: .END_SESSION)) { (result) in
+            switch result {
+            case .success(_ , _):
+                completion(nil)
+                break
+            case .failure(let error):
+                completion(error)
+                break
+            }
+        }
+    }
+    
+    
     // - MARK: Toekn Refresh
     
     /// Refreshes OAuth2 token set asynchronously with given refresh_token
@@ -190,21 +214,46 @@ public class OAuth2Client: NSObject, Codable {
                             }
                         })
                     }
-                    else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
-                        completion(nil, AuthApiError.apiFailureWithMessage(error, errorDescription, nil, nil))
+                    else if let _ = redirectURL?.valueOf("error"), let _ = redirectURL?.valueOf("error_description") {
+                        completion(nil, OAuth2Error.convertOAuth2Error(urlValue: redirectURL?.absoluteString))
                     }
                     else {
-                        completion(nil, AuthError.invalidRedirectURI)
+                        completion(nil, OAuth2Error.missingOrInvalidRedirectURI(redirectURL?.absoluteString))
                     }
                 }
                 else {
-                    completion(nil, AuthError.missingRedirectLocation)
+                    completion(nil, OAuth2Error.missingOrInvalidRedirectURI(nil))
                 }
                 break
             case .failure(let error):
                 completion(nil, error)
             }
         }
+    }
+    
+    
+    /// Exchanges authorization code for OAuth2 token set
+    /// - Parameters:
+    ///   - code: authorization_code
+    ///   - pkce: PKCE information requested in /authorize
+    ///   - completion: Completion callback
+    func exchangeToken(code: String, pkce: PKCE? = nil, completion: @escaping TokenCompletionCallback) {
+
+        let request = self.buildTokenWithCodeRequest(code: code, pkce: pkce)
+        FRRestClient.invoke(request: request, action: Action(type: .EXCHANGE_TOKEN), completion: { (result) in
+            switch result {
+            case .success(let response, _):
+                if let accessToken = AccessToken(tokenResponse: response) {
+                    completion(accessToken, nil)
+                }
+                else {
+                    completion(nil, AuthError.invalidTokenResponse(response))
+                }
+            case .failure(let error):
+                completion(nil, error)
+                break
+            }
+        })
     }
     
     
@@ -254,15 +303,15 @@ public class OAuth2Client: NSObject, Codable {
                         throw error
                     }
                 }
-                else if let error = redirectURL?.valueOf("error"), let errorDescription = redirectURL?.valueOf("error_description") {
-                    throw AuthApiError.apiFailureWithMessage(error, errorDescription, nil, nil)
+                else if let _ = redirectURL?.valueOf("error"), let _ = redirectURL?.valueOf("error_description") {
+                    throw OAuth2Error.convertOAuth2Error(urlValue: redirectURL?.absoluteString)
                 }
                 else {
-                    throw AuthError.invalidRedirectURI
+                    throw OAuth2Error.missingOrInvalidRedirectURI(redirectURL?.absoluteString)
                 }
             }
             else {
-                throw AuthError.missingRedirectLocation
+                throw OAuth2Error.missingOrInvalidRedirectURI(nil)
             }
         case .failure(let error):
             throw error
@@ -328,13 +377,47 @@ public class OAuth2Client: NSObject, Codable {
     }
     
     
+    /// Builds /authorize request for an external user-agent based on given OAuth2 client information
+    /// - Parameters:
+    ///   - pkce: PKCE information to be sent for /authorize
+    ///   - customParams: Any custom parameters in Dictionary
+    /// - Returns: Request object
+    func buildAuthorizeRequestForExternalAgent(pkce: PKCE, customParams: [String: String]? = nil) -> Request {
+        //  Construct parameter for the request
+        var parameter: [String: String] = [:]
+        parameter[OAuth2.responseType] = OAuth2.code
+        parameter[OAuth2.clientId] = self.clientId
+        parameter[OAuth2.scope] = self.scope
+        parameter[OAuth2.redirecUri] = self.redirectUri.absoluteString
+        parameter[OAuth2.state] = pkce.state
+        parameter[OAuth2.codeChallenge] = pkce.codeChallenge
+        parameter[OAuth2.codeChallengeMethod] = pkce.codeChallengeMethod
+        
+        if let customParams = customParams {
+            for (key, value) in customParams {
+                parameter[key] = value
+            }
+        }
+        
+        //  AM 6.5.2 - 7.0.0
+        //
+        //  Endpoint: /oauth2/realms/authorize
+        //  API Version: resource=2.1,protocol=1.0
+        
+        var header: [String: String] = [:]
+        header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+        
+        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
+    }
+    
+    
     /// Builds Token request with Authorization Code
     ///
     /// - Parameters:
     ///   - code: String value of authorization_code
     ///   - pkce: PKCE instace for authorization code flow
     /// - Returns: Request object
-    func buildTokenWithCodeRequest(code: String, pkce: PKCE) -> Request {
+    func buildTokenWithCodeRequest(code: String, pkce: PKCE?) -> Request {
         
         //  Construct the request parameter
         var parameter:[String:String] = [:]
@@ -342,7 +425,9 @@ public class OAuth2Client: NSObject, Codable {
         parameter[OAuth2.redirecUri] = self.redirectUri.absoluteString
         parameter[OAuth2.clientId] = self.clientId
         parameter[OAuth2.grantType] = OAuth2.grantTypeAuthCode
-        parameter[OAuth2.codeVerifier] = pkce.codeVerifider
+        if let pkce = pkce {
+            parameter[OAuth2.codeVerifier] = pkce.codeVerifider
+        }
         
         //  AM 6.5.2 - 7.0.0
         //

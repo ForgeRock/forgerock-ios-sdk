@@ -48,7 +48,7 @@ public extension TokenError {
 // MARK: - CustomNSError protocols
 extension TokenError: CustomNSError {
     
-    /// An error domain for ConfigError
+    /// An error domain for TokenError
     public static var errorDomain: String { return "com.forgerock.ios.frauth.token" }
     
     /// Error codes for each error enum

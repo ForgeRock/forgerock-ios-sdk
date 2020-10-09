@@ -1,13 +1,16 @@
-# Version 2.1.1
+# Version 2.2.0
 
-## [2.1.1]
+## [2.2.0]
 #### Added
+- `FRUser.browser()` is introduced to support external user-agent authorization. `Browser` object can be constructed through `BrowserBuilder`, and `BrowserBuilder` allows to customize URL query parameter, and to choose which external user-agent to be used. [SDKS-328]
 
 #### Changed
+- `FRUser.logout()` now also invalidates `id_token`, if exists, using OIDC end session endpoint after it invalidates SSO Token (using `/sessions` endpoint), and OAuth2 token(s) (using `/token/revoke` endpoint). [SDKS-328]
 - Fix Secure Enclave availability validation using `CryptoKit` for iOS 13 and above. [SDKS-673]
 - Fix inconsistent font size for TextField in login screen. [SDKS-675]
 
 #### Deprecated
+- 
 
 ## [2.1.0]
 #### Added

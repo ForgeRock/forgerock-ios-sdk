@@ -77,7 +77,7 @@ extension AuthApiError {
 
 extension AuthApiError: CustomNSError {
     
-    /// An error domain for AuthError
+    /// An error domain for AuthApiError
     public static var errorDomain: String { return "com.forgerock.ios.frauth.authapierror" }
     
     /// Error codes for each error enum
