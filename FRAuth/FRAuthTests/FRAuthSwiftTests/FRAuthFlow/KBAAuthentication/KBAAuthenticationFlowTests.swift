@@ -13,7 +13,8 @@ import XCTest
 class KBAAuthenticationFlowTests: FRBaseTest {
 
     override func setUp() {
-        self.configFileName = "Config"
+        self.configFileName = "Config-Live"
+        self.shouldLoadMockResponses = false
         super.setUp()
     }
     

@@ -1,6 +1,6 @@
 //
-//  UsernamePasswordPageNodeFlow.swift
-//  FRAuthTests
+//  PageCallback65Test.swift
+//  Callback Live Tests
 //
 //  Copyright (c) 2019 ForgeRock. All rights reserved.
 //
@@ -10,33 +10,26 @@
 
 import XCTest
 
-class UsernamePasswordFlowTests: FRBaseTest {
+class PageCallback65Test: FRBaseTest {
     
     override func setUp() {
         self.configFileName = "Config-Live"
         self.shouldLoadMockResponses = false;
         super.setUp()
+        self.config.authServiceName = "PageCallback65Test"
     }
     
-    /// Tests simple AuthTree flow with Username Collector and Password Collector in Page Node to obtain SSOToken
-    func testUsernamePasswordPageNodeFlow() {
+    // MARK: - Helper Method
+    func test_01_test_page_node65()  {
         
         // Start SDK
-        self.config.authServiceName = "UsernamePassword"
         self.startSDK()
-        
-        // Set mock responses
-        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
-                                "AuthTree_SSOToken_Success",
-                                "OAuth2_AuthorizeRedirect_Success",
-                                "OAuth2_Token_Success"])
-        
         var currentNode: Node?
         
         var ex = self.expectation(description: "First Node submit")
-        FRUser.login { (user: FRUser?, node, error) in
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
             // Validate result
-            XCTAssertNil(user)
+            XCTAssertNil(token)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             currentNode = node
@@ -49,7 +42,10 @@ class UsernamePasswordFlowTests: FRBaseTest {
             return
         }
         
-        // Provide input value for callbacks
+        // In AM 6.5 there is no "stage" property. The workaround is to send it within MetadataCallback...
+        XCTAssertEqual(node.stage, "UsernamePassword");
+        
+        // Provide input values for the name and password callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
                 nameCallback.setValue(config.username)
@@ -57,13 +53,17 @@ class UsernamePasswordFlowTests: FRBaseTest {
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
                 passwordCallback.setValue(config.password)
             }
+            else if callback is MetadataCallback {
+                continue // ignore the MetadataCallback callback...
+            }
             else {
                 XCTFail("Received unexpected callback \(callback)")
             }
         }
         
         ex = self.expectation(description: "Second Node submit")
-        node.next { (token: AccessToken?, node, error) in
+        currentNode?.next { (token: AccessToken?, node, error) in
+            
             // Validate result
             XCTAssertNil(node)
             XCTAssertNil(error)

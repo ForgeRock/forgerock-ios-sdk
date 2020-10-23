@@ -13,7 +13,8 @@ import XCTest
 class UserSignUpFlowTests: FRBaseTest {
 
     override func setUp() {
-        self.configFileName = "Config"
+        self.configFileName = "Config-Live"
+        self.shouldLoadMockResponses = false
         super.setUp()
     }
     

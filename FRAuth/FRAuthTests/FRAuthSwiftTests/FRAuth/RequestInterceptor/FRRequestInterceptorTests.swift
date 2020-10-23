@@ -17,7 +17,8 @@ class FRRequestInterceptorTests: FRBaseTest {
     static var payload: [[String: Any]] = []
     
     override func setUp() {
-        self.configFileName = "Config"
+        self.configFileName = "Config-Live"
+        self.shouldLoadMockResponses = false
         super.setUp()
     }
     

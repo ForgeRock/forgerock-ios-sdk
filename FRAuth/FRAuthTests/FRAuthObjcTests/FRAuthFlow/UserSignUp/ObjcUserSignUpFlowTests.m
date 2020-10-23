@@ -18,7 +18,8 @@
 @implementation ObjcUserSignUpFlowTests
 
 - (void)setUp {
-    self.configFileName = @"Config";
+    self.configFileName = @"Config-Live";
+    self.shouldLoadMockResponses = false;
     [super setUp];
 }
 

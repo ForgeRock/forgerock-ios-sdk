@@ -1,6 +1,6 @@
 //
-//  UsernamePasswordPageNodeFlow.swift
-//  FRAuthTests
+//  CallbackBaseTest.swift
+//  Callback Live Tests
 //
 //  Copyright (c) 2019 ForgeRock. All rights reserved.
 //
@@ -10,33 +10,26 @@
 
 import XCTest
 
-class UsernamePasswordFlowTests: FRBaseTest {
+class CallbackBaseTest: FRBaseTest {
     
     override func setUp() {
         self.configFileName = "Config-Live"
         self.shouldLoadMockResponses = false;
+        self.config.authServiceName = "UsernamePassword"
         super.setUp()
     }
     
-    /// Tests simple AuthTree flow with Username Collector and Password Collector in Page Node to obtain SSOToken
-    func testUsernamePasswordPageNodeFlow() {
+    // MARK: - Helper Method
+    func fulfillUsernamePasswordNodes() throws -> Node  {
         
         // Start SDK
-        self.config.authServiceName = "UsernamePassword"
         self.startSDK()
-        
-        // Set mock responses
-        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
-                                "AuthTree_SSOToken_Success",
-                                "OAuth2_AuthorizeRedirect_Success",
-                                "OAuth2_Token_Success"])
-        
         var currentNode: Node?
         
         var ex = self.expectation(description: "First Node submit")
-        FRUser.login { (user: FRUser?, node, error) in
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
             // Validate result
-            XCTAssertNil(user)
+            XCTAssertNil(token)
             XCTAssertNil(error)
             XCTAssertNotNil(node)
             currentNode = node
@@ -46,10 +39,10 @@ class UsernamePasswordFlowTests: FRBaseTest {
         
         guard let node = currentNode else {
             XCTFail("Failed to get Node from the first request")
-            return
+            throw AuthError.invalidCallbackResponse("Expected username/password nodes, but got nothing...")
         }
         
-        // Provide input value for callbacks
+        // Provide input values for the Name and Password callbacks
         for callback in node.callbacks {
             if callback is NameCallback, let nameCallback = callback as? NameCallback {
                 nameCallback.setValue(config.username)
@@ -57,21 +50,32 @@ class UsernamePasswordFlowTests: FRBaseTest {
             else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
                 passwordCallback.setValue(config.password)
             }
+            else if callback is ValidatedCreateUsernameCallback, let validatedNameCallback = callback as? ValidatedCreateUsernameCallback {
+                validatedNameCallback.setValue(config.username)
+            }
+            else if callback is ValidatedCreatePasswordCallback, let validatedPasswordCallback = callback as? ValidatedCreatePasswordCallback {
+                validatedPasswordCallback.setValue(config.password)
+            }
             else {
                 XCTFail("Received unexpected callback \(callback)")
             }
         }
         
         ex = self.expectation(description: "Second Node submit")
-        node.next { (token: AccessToken?, node, error) in
+        currentNode?.next { (token: AccessToken?, node, error) in
             // Validate result
-            XCTAssertNil(node)
+            XCTAssertNil(token)
             XCTAssertNil(error)
-            XCTAssertNotNil(token)
+            XCTAssertNotNil(node)
+            currentNode = node
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        XCTAssertNotNil(FRUser.currentUser)
+        guard currentNode != nil else {
+            XCTFail("Failed to get Node from the second request")
+            throw AuthError.invalidCallbackResponse("Expected at least one more node, but got nothing...")
+        }
+        return currentNode!
     }
 }
