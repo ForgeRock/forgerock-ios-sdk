@@ -20,7 +20,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - FRUser Initialization
     
-    func testBasicFRUserCreation() {
+    func test_00_00_BasicFRUserCreation() {
         guard let tokenData = self.readDataFromJSON("AccessToken"), let tokenNoRefreshData = self.readDataFromJSON("AccessTokenNoRefresh") else {
             XCTFail("Failed to read 'AccessToken.json' or 'AccessTokenNoRefresh.json' for \(String(describing: self)) testing")
             return
@@ -46,7 +46,7 @@ class FRUserTests: FRBaseTest {
     
     // MARK: - FRUser.login
     
-    func test_FRUserLogin() {
+    func test_00_01_FRUserLogin() {
         
         // Start SDK
         self.config.authServiceName = "UsernamePassword"
@@ -102,7 +102,7 @@ class FRUserTests: FRBaseTest {
         XCTAssertNotNil(FRUser.currentUser)
     }
     
-    func test_FRUserLoginAfterAlreadyLoggedIn() {
+    func test_00_02_FRUserLoginAfterAlreadyLoggedIn() {
         
         // Start SDK
         self.startSDK()
@@ -373,7 +373,7 @@ class FRUserTests: FRBaseTest {
     }
     
     
-    func test_01_05_FRUserRefreshTokenAsyncNoToken() {
+    func test_01_06_FRUserRefreshTokenAsyncNoToken() {
         
         // Start SDK
         self.startSDK()
@@ -418,6 +418,181 @@ class FRUserTests: FRBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
+    
+    
+    func test_01_07_FRUserGetAccessToken_NoRefreshToken_On_TokenRenewal_Sync() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUserLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update token lifetime to force token refresh
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        let oldRefreshToken = at1.refreshToken
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        do {
+            let newUser = try user.getAccessToken()
+            
+            XCTAssertNotEqual(at1, newUser.token)
+            XCTAssertNotNil(newUser.token?.refreshToken)
+            XCTAssertEqual(oldRefreshToken, newUser.token?.refreshToken)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(String(describing: error))")
+        }
+    }
+    
+    
+    func test_01_08_FRUserGetAccessToken_NoRefreshToken_On_TokenRenewal_Async() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUserLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update token lifetime to force token refresh
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        let oldRefreshToken = at1.refreshToken
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken() { (user, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(user)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNotEqual(at1, user.token)
+        XCTAssertNotNil(user.token?.refreshToken)
+        XCTAssertEqual(oldRefreshToken, user.token?.refreshToken)
+    }
+    
+    
+    func test_01_09_FRUserRefresh_NoRefreshToken_On_TokenRenewal_Sync() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUserLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update token lifetime to force token refresh
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        let oldRefreshToken = at1.refreshToken
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        do {
+            let newUser = try user.refresSync()
+            
+            XCTAssertNotEqual(at1, newUser.token)
+            XCTAssertNotNil(newUser.token?.refreshToken)
+            XCTAssertEqual(oldRefreshToken, newUser.token?.refreshToken)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(String(describing: error))")
+        }
+    }
+    
+    
+    func test_01_08_FRUserRefresh_NoRefreshToken_On_TokenRenewal_Async() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUserLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update token lifetime to force token refresh
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        let oldRefreshToken = at1.refreshToken
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        let ex = self.expectation(description: "Get Access Token")
+        user.refresh() { (user, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(user)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNotEqual(at1, user.token)
+        XCTAssertNotNil(user.token?.refreshToken)
+        XCTAssertEqual(oldRefreshToken, user.token?.refreshToken)
+    }
+    
     
     // MARK: - Get UserInfo
     
