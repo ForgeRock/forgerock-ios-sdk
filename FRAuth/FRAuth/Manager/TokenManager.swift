@@ -56,6 +56,10 @@ struct TokenManager {
                         self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
                             do {
                                 newToken?.sessionToken = token.sessionToken
+                                //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
+                                if newToken?.refreshToken == nil, token.refreshToken != nil {
+                                    newToken?.refreshToken = token.refreshToken
+                                }
                                 try self.sessionManager.setAccessToken(token: newToken)
                                 completion(token, error)
                             }
@@ -116,6 +120,10 @@ struct TokenManager {
                 if let refreshToken = token.refreshToken {
                     let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
                     newToken.sessionToken = token.sessionToken
+                    //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
+                    if newToken.refreshToken == nil, token.refreshToken != nil {
+                        newToken.refreshToken = token.refreshToken
+                    }
                     try self.sessionManager.setAccessToken(token: newToken)
                     return token
                 }
@@ -152,6 +160,10 @@ struct TokenManager {
                     self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
                         do {
                             newToken?.sessionToken = token.sessionToken
+                            //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
+                            if newToken?.refreshToken == nil, token.refreshToken != nil {
+                                newToken?.refreshToken = token.refreshToken
+                            }
                             try self.sessionManager.setAccessToken(token: newToken)
                             completion(newToken, error)
                         }
@@ -182,6 +194,10 @@ struct TokenManager {
             if let refreshToken = token.refreshToken {
                 let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
                 newToken.sessionToken = token.sessionToken
+                //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
+                if newToken.refreshToken == nil, token.refreshToken != nil {
+                    newToken.refreshToken = token.refreshToken
+                }
                 try self.sessionManager.setAccessToken(token: newToken)
                 return newToken
             }
