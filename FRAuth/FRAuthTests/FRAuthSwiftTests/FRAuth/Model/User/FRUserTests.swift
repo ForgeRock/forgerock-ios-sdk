@@ -260,8 +260,9 @@ class FRUserTests: FRBaseTest {
             XCTAssertNotNil(error)
             XCTAssertNil(user)
             if let tokenError = error as? TokenError {
+                //  This should fail with TokenError.nullToken as it attempts to renew the session using SSO Token, and SSO Token is missing
                 switch tokenError {
-                case .nullRefreshToken:
+                case .nullToken:
                     break
                 default:
                     XCTFail("Failed with unexpected error: \(tokenError)")
@@ -314,8 +315,9 @@ class FRUserTests: FRBaseTest {
         }
         catch {
             if let tokenError = error as? TokenError {
+                //  This should fail with TokenError.nullToken as it attempts to renew the session using SSO Token, and SSO Token is missing
                 switch tokenError {
-                case .nullRefreshToken:
+                case .nullToken:
                     break
                 default:
                     XCTFail("Failed with unexpected error: \(tokenError)")
