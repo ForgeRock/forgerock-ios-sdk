@@ -71,13 +71,23 @@ class FRRestClient: NSObject {
             newHeaders.merge(cookieHeader) { (_, new) in new }
             newRequest = Request(url: request.url, method: request.method, headers: newHeaders, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
         }
-        let result = RestClient.shared.invokeSync(request: newRequest, action: action)
+        var result = RestClient.shared.invokeSync(request: newRequest, action: action)
         
         switch result {
         case .success(let response, let httpResponse):
             FRRestClient.parseResponseForCookie(response: response, httpResponse: httpResponse as? HTTPURLResponse)
             break
-        case .failure(_):
+        case .failure(let error):
+            if let networkError = error as? NetworkError {
+                switch networkError {
+                case .apiRequestFailure(let data, let response, let error):
+                    //  Parse and convert NetworkError.apiRequestFailure to AuthApiError
+                    result = Result.failure(error: AuthApiError.convertToAuthApiError(data: data, response: response, error: error))
+                default:
+                    //  Otherwise, return as it is
+                    break
+                }
+            }
             break
         }
         

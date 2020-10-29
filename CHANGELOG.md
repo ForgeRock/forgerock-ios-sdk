@@ -8,6 +8,8 @@
 - `FRUser.logout()` now also invalidates `id_token`, if exists, using OIDC end session endpoint after it invalidates SSO Token (using `/sessions` endpoint), and OAuth2 token(s) (using `/token/revoke` endpoint). [SDKS-328]
 - Fix Secure Enclave availability validation using `CryptoKit` for iOS 13 and above. [SDKS-673]
 - Fix inconsistent font size for TextField in login screen. [SDKS-675]
+- `AuthorizationPolicy`'s `validatingURL` and `delegate` properties are now public properties. [SDKS-696]
+- Fix the issue that `refresh_token` is not persisted when refresh_token grant type does not return new `refresh_token`. [SDKS-648]
 
 #### Deprecated
 - 
