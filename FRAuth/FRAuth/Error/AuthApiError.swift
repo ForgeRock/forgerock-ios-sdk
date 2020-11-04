@@ -73,6 +73,45 @@ extension AuthApiError {
         }
         return AuthApiError.apiRequestFailure(data, response, error)
     }
+    
+    
+    func convertToOAuth2Error() -> OAuth2Error? {
+        switch self {
+        case .apiRequestFailure(let data, _, _):
+            if let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                if let error = json["error"] as? String {
+                    let errorDesc = json["error_description"] as? String ?? ""
+                    let urlString = "http://localhost.com?error=\(error)&error_description=" + errorDesc
+                    
+                    switch error {
+                    case "invalid_request":
+                        return OAuth2Error.invalidAuthorizeRequest(urlString)
+                    case "invalid_client":
+                        return OAuth2Error.invalidClient(urlString)
+                    case "invalid_grant":
+                        return OAuth2Error.invalidGrant(urlString)
+                    case "unauthorized_client":
+                        return OAuth2Error.unauthorizedClient(urlString)
+                    case "unsupported_grant_type":
+                        return OAuth2Error.unsupportedGrantType(urlString)
+                    case "unsupported_response_type":
+                        return OAuth2Error.unsupportedResponseType(urlString)
+                    case "invalid_scope":
+                        return OAuth2Error.invalidScope(urlString)
+                    case "access_denied":
+                        return OAuth2Error.accessDenied(urlString)
+                    default:
+                        break
+                    }
+                }
+            }
+            break
+        default:
+            break
+        }
+        
+        return nil
+    }
 }
 
 extension AuthApiError: CustomNSError {
