@@ -134,7 +134,7 @@ extension OAuth2Error: CustomNSError {
             return "unknown"
         }
     }
-    
+        
     
     static func convertOAuth2Error(urlValue: String?) -> OAuth2Error {
         guard let urlString = urlValue, let url = URL(string: urlString) else {

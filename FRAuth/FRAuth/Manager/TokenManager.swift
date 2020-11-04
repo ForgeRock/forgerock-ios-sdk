@@ -57,16 +57,18 @@ struct TokenManager {
                             FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
                             self.refreshUsingSSOToken(completion: completion)
                         }
-                        else if error is AuthApiError {
+                        else if let oAuthError = error as? OAuth2Error, case OAuth2Error.invalidGrant = oAuthError {
                             FRLog.w("refresh_token grant failed; try to exchange SSO Token for OAuth2 tokens")
                             self.refreshUsingSSOToken(completion: completion)
                         }
                         else {
+                            FRLog.i("refresh_token grant was successful; returning new token")
                             completion(token, error)
                         }
                     }
                 }
                 else {
+                    FRLog.v("access_token still valid; returning existing token")
                     completion(token, nil)
                 }
             }
@@ -75,6 +77,7 @@ struct TokenManager {
                 self.refreshUsingSSOToken(completion: completion)
             }
         } catch {
+            FRLog.e("An error encountered while retrieving tokens from storage")
             completion(nil, error)
         }
     }
@@ -96,17 +99,13 @@ struct TokenManager {
                     FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
                     return try self.refreshUsingSSOTokenAsync()
                 }
-                catch {
-                    if error is AuthApiError {
-                        FRLog.w("refresh_token grant failed; try to exchange SSO Token for OAuth2 tokens")
-                        return try self.refreshUsingSSOTokenAsync()
-                    }
-                    else {
-                        throw error
-                    }
+                catch OAuth2Error.invalidGrant {
+                    FRLog.w("refresh_token grant failed; try to exchange SSO Token for OAuth2 tokens")
+                    return try self.refreshUsingSSOTokenAsync()
                 }
             }
             else {
+                FRLog.v("access_token still valid; returning existing token")
                 return token
             }
         }
@@ -124,9 +123,11 @@ struct TokenManager {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 self.refreshUsingRefreshToken(token: token) { (token, error) in
                     if let tokenError = error as? TokenError, case TokenError.nullRefreshToken = tokenError {
+                        FRLog.i("No refresh_token found; proceeding with SSO Token to obtain OAuth2 token(s)")
                         self.refreshUsingSSOToken(completion: completion)
                     }
-                    else if error is AuthApiError {
+                    else if let oAuthError = error as? OAuth2Error, case OAuth2Error.invalidGrant = oAuthError {
+                        FRLog.i("invalid_grant received during refresh_token grant; proceeding with SSO Token to obtain OAuth2 token(s)")
                         self.refreshUsingSSOToken(completion: completion)
                     }
                     else {
@@ -135,6 +136,7 @@ struct TokenManager {
                 }
             }
             else {
+                FRLog.e("No OAuth2 token(s) found")
                 completion(nil, TokenError.nullToken)
             }
         }
@@ -149,21 +151,20 @@ struct TokenManager {
     /// - Returns: renewed OAuth2 token 
     func refreshSync() throws -> AccessToken? {
         if let token = try self.retrieveAccessTokenFromKeychain() {
-            if let refreshToken = token.refreshToken {
-                let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
-                newToken.sessionToken = token.sessionToken
-                //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
-                if newToken.refreshToken == nil, token.refreshToken != nil {
-                    newToken.refreshToken = token.refreshToken
-                }
-                try self.sessionManager.setAccessToken(token: newToken)
-                return newToken
+            do {
+                return try self.refreshUsingRefreshTokenAsync(token: token)
             }
-            else {
-                throw TokenError.nullRefreshToken
+            catch TokenError.nullRefreshToken {
+                FRLog.i("No refresh_token found; proceeding with SSO Token to obtain OAuth2 token(s)")
+                return try self.refreshUsingSSOTokenAsync()
+            }
+            catch OAuth2Error.invalidGrant {
+                FRLog.i("invalid_grant received during refresh_token grant; proceeding with SSO Token to obtain OAuth2 token(s)")
+                return try self.refreshUsingSSOTokenAsync()
             }
         }
         else {
+            FRLog.e("No OAuth2 token(s) found")
             throw TokenError.nullToken
         }
     }
@@ -172,7 +173,6 @@ struct TokenManager {
     /// Revokes OAuth2 token set using either of access_token or refresh_token
     /// - Parameter completion: Completion block which will return an Error if there was any error encountered
     func revoke(completion: @escaping CompletionCallback) {
-        
         do {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 self.oAuth2Client.revoke(accessToken: token, completion: completion)
@@ -202,9 +202,23 @@ struct TokenManager {
     /// - Returns: AccessToken object containing OAuth 2 token if it was successful
     func refreshUsingSSOTokenAsync() throws -> AccessToken? {
         if let ssoToken = self.sessionManager.getSSOToken() {
-            let token = try self.oAuth2Client.exchangeTokenSync(token: ssoToken)
-            try self.sessionManager.setAccessToken(token: token)
-            return token
+            do {
+                let token = try self.oAuth2Client.exchangeTokenSync(token: ssoToken)
+                try self.sessionManager.setAccessToken(token: token)
+                return token
+            }
+            catch {
+                if error is OAuth2Error || error is AuthApiError {
+                    FRLog.i("OAuth2Error or AuthApiError received while /authorize flow with SSO Token; no more valid credentials and user authentication is required.")
+                    FRLog.w("Removing all credentials and state")
+                    self.clearCredentials()
+                    throw AuthError.userAuthenticationRequired
+                }
+                else {
+                    FRLog.e("Unexpected error captured during /authorize flow with SSO Token - \(error.localizedDescription)")
+                    throw error
+                }
+            }
         }
         else {
             throw TokenError.nullToken
@@ -218,10 +232,21 @@ struct TokenManager {
         if let ssoToken = self.sessionManager.getSSOToken() {
             self.oAuth2Client.exchangeToken(token: ssoToken) { (token, error) in
                 do {
-                    try self.sessionManager.setAccessToken(token: token)
-                    completion(token, error)
+                    if error is OAuth2Error || error is AuthApiError {
+                        FRLog.i("OAuth2Error or AuthApiError received while /authorize flow with SSO Token; no more valid credentials and user authentication is required.")
+                        FRLog.w("Removing all credentials and state")
+                        self.clearCredentials()
+                        completion(nil, AuthError.userAuthenticationRequired)
+                    }
+                    else {
+                        if error == nil {
+                            try self.sessionManager.setAccessToken(token: token)
+                        }
+                        completion(token, error)
+                    }
                 }
                 catch {
+                    FRLog.e("Unexpected error captured during /authorize flow with SSO Token - \(error.localizedDescription)")
                     completion(nil, error)
                 }
             }
@@ -242,6 +267,7 @@ struct TokenManager {
             newToken.sessionToken = token.sessionToken
             //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
             if newToken.refreshToken == nil, token.refreshToken != nil {
+                FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
                 newToken.refreshToken = token.refreshToken
             }
             try self.sessionManager.setAccessToken(token: newToken)
@@ -264,6 +290,7 @@ struct TokenManager {
                     newToken?.sessionToken = token.sessionToken
                     //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
                     if newToken?.refreshToken == nil, token.refreshToken != nil {
+                        FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
                         newToken?.refreshToken = token.refreshToken
                     }
                     try self.sessionManager.setAccessToken(token: newToken)
@@ -277,5 +304,17 @@ struct TokenManager {
         else {
             completion(nil, TokenError.nullRefreshToken)
         }
+    }
+    
+    
+    /// Clears all credentials locally as there is no more valid credentials to renew user's session
+    func clearCredentials() {
+        self.sessionManager.keychainManager.cookieStore.deleteAll()
+        try? self.sessionManager.setAccessToken(token: nil)
+        self.sessionManager.setSSOToken(ssoToken: nil)
+        self.sessionManager.setCurrentUser(user: nil)
+        FRSession._staticSession = nil
+        FRUser._staticUser = nil
+        Browser.currentBrowser = nil
     }
 }
