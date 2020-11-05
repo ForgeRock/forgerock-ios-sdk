@@ -205,7 +205,7 @@ public class OAuth2Client: NSObject, Codable {
                         #if !FRTests
                         guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
                             FRLog.e("Failed to validate PKCE state: PKCE: \(pkce), Redirect URL: \(redirectURLAsString)")
-                            completion(nil, AuthError.invalidPKCEState)
+                            completion(nil, OAuth2Error.invalidPKCEState)
                             return
                         }
                         #endif
@@ -297,7 +297,7 @@ public class OAuth2Client: NSObject, Codable {
                     // Bypass PKCE state validation for FRTests
                     #if !FRTests
                     guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
-                        throw AuthError.invalidPKCEState
+                        throw OAuth2Error.invalidPKCEState
                     }
                     #endif
                     
