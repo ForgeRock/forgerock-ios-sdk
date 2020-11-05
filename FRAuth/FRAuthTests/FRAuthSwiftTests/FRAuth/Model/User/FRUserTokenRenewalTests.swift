@@ -418,7 +418,7 @@ class FRUserTokenRenewalTests: FRBaseTest {
         }
         
         do {
-            let newUser = try user.refresSync()
+            let newUser = try user.refreshSync()
             
             XCTAssertNotEqual(at1, newUser.token)
             XCTAssertNotNil(newUser.token?.refreshToken)
@@ -1041,7 +1041,7 @@ class FRUserTokenRenewalTests: FRBaseTest {
         
         //  FRUser.refresh will enforce token renewl using: 1) refresh_token grant, and 2) /authorize with SSO Token if 1) failed with OAuth2Error.invalidGrant
         do {
-            let newUser = try user.refresSync()
+            let newUser = try user.refreshSync()
             XCTAssertNotNil(newUser)
         }
         catch {
@@ -1074,7 +1074,7 @@ class FRUserTokenRenewalTests: FRBaseTest {
         }
         
         do {
-            let newUser = try user.refresSync()
+            let newUser = try user.refreshSync()
             XCTAssertNil(newUser)
         }
         catch OAuth2Error.invalidClient {
@@ -1109,7 +1109,7 @@ class FRUserTokenRenewalTests: FRBaseTest {
         }
         
         do {
-            let newUser = try user.refresSync()
+            let newUser = try user.refreshSync()
             XCTAssertNil(newUser)
         }
         catch OAuth2Error.invalidScope {
@@ -1145,7 +1145,7 @@ class FRUserTokenRenewalTests: FRBaseTest {
         
         
         do {
-            let newUser = try user.refresSync()
+            let newUser = try user.refreshSync()
             XCTAssertNil(newUser)
         }
         catch AuthError.userAuthenticationRequired {

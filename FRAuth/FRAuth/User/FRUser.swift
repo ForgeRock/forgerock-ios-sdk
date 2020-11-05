@@ -377,7 +377,7 @@ public class FRUser: NSObject, NSSecureCoding {
     /// Refreshes user's session with refresh_token synchronously regardless of validity of current access_token
     /// - Throws: TokenError
     /// - Returns: FRUser object with newly renewed OAuth2 token
-    func refresSync() throws -> FRUser {
+    func refreshSync() throws -> FRUser {
         if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
             let token = try tokenManager.refreshSync()
             self.token = token
