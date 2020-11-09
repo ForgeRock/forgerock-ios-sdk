@@ -322,13 +322,15 @@ struct TokenManager {
         if let refreshToken = token.refreshToken {
             self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
                 do {
-                    newToken?.sessionToken = token.sessionToken
-                    //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
-                    if newToken?.refreshToken == nil, token.refreshToken != nil {
-                        FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
-                        newToken?.refreshToken = token.refreshToken
+                    if error == nil, let newToken = newToken {
+                        newToken.sessionToken = token.sessionToken
+                        //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
+                        if newToken.refreshToken == nil, token.refreshToken != nil {
+                            FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
+                            newToken.refreshToken = token.refreshToken
+                        }
+                        try self.sessionManager.setAccessToken(token: newToken)
                     }
-                    try self.sessionManager.setAccessToken(token: newToken)
                     completion(newToken, error)
                 }
                 catch {
