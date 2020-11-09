@@ -11,6 +11,7 @@
 - `AuthorizationPolicy`'s `validatingURL` and `delegate` properties are now public properties. [SDKS-696]
 - Fix the issue that `refresh_token` is not persisted when refresh_token grant type does not return new `refresh_token`. [SDKS-648]
 - Change `FRUser.getAccessToken` to clear OAuth2 tokens and handle error more percisely to reflect the user authentication status. If `refresh_token` grant returns `invalid_grant`, SDK will resume with `/authorize` flow with SSO Token (other errors with `refresh_token` grant will throw an exception), and if the `/authorize` request fails with current SSO Token, SDK will clear all credentials and states assuming that there is no more valid credentials. [SDKS-700]
+- `FRUser.currentUser.getAccessToken` method will now validate SSO Token associated with `AccessToken`, and make sure that it is same as current `FRSession.currentSession.sessionToken` value. If two values are different, SDK will invalidate OAuth2 token, and try to authorize new OAuth2 token(s) with current SSO Token. [SDKS-700] 
 
 #### Deprecated
 - 

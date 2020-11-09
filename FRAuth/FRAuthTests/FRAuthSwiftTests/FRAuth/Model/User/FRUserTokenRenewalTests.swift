@@ -1155,4 +1155,166 @@ class FRUserTokenRenewalTests: FRBaseTest {
         }
     }
     
+    
+    //  MARK: - Token Renewal
+    
+    func test_27_FRUser_GetAccessToken_SSOToken_Mismatch() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUsernamePasswordLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update SSO Token
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
+        at1.sessionToken = "different_sso_token"
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(user)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    
+    func test_28_FRUser_GetAccessToken_SSOToken_Mismatch_Sync() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUsernamePasswordLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update SSO Token
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
+        at1.sessionToken = "different_sso_token"
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        do {
+            let newUser = try user.getAccessToken()
+            XCTAssertNotNil(newUser)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_29_FRUser_Refresh_SSOToken_Mismatch() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUsernamePasswordLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update SSO Token
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
+        at1.sessionToken = "different_sso_token"
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        let ex = self.expectation(description: "Get Access Token")
+        user.refresh { (user, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(user)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    
+    func test_30_FRUser_Refresh_SSOToken_Mismatch_Sync() {
+        
+        // Start SDK
+        self.startSDK()
+        
+        // Perform login first
+        self.performUsernamePasswordLogin()
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
+        
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Persist original AccessToken
+        // Manually update SSO Token
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
+        at1.sessionToken = "different_sso_token"
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        do {
+            let newUser = try user.refreshSync()
+            XCTAssertNotNil(newUser)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
 }
