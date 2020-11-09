@@ -284,10 +284,6 @@ public class FRUser: NSObject, NSSecureCoding {
         FRLog.v("Requesting UserInfo")
         
         self.getAccessToken { (user, error) in
-            guard error == nil, let user = user else {
-                completion(nil, error)
-                return
-            }
             
             //  AM 6.5.2 - 7.0.0
             //
@@ -296,7 +292,10 @@ public class FRUser: NSObject, NSSecureCoding {
             
             var header: [String: String] = [:]
             header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
-            header[OAuth2.authorization] = user.buildAuthHeader()
+            
+            if error == nil, let user = user {
+                header[OAuth2.authorization] = user.buildAuthHeader()
+            }
             
             let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
             
