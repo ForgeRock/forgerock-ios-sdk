@@ -127,7 +127,13 @@ public class OAuth2Client: NSObject, Codable {
                     completion(nil, AuthError.invalidTokenResponse(response))
                 }
             case .failure(let error):
-                completion(nil, error)
+                if let apiError = error as? AuthApiError, let oAuth2Error = apiError.convertToOAuth2Error() {
+                    FRLog.i("refresh_tokn grant returned OAuth2 related error; converting the error to OAuth2Error")
+                    completion(nil, oAuth2Error)
+                }
+                else {
+                    completion(nil, error)
+                }
                 break
             }
         }
@@ -157,7 +163,13 @@ public class OAuth2Client: NSObject, Codable {
                 throw AuthError.invalidTokenResponse(response)
             }
         case .failure(let error):
-            throw error
+            if let apiError = error as? AuthApiError, let oAuth2Error = apiError.convertToOAuth2Error() {
+                FRLog.i("refresh_tokn grant returned OAuth2 related error; converting the error to OAuth2Error")
+                throw oAuth2Error
+            }
+            else {
+                throw error
+            }
         }
     }
     
@@ -193,7 +205,7 @@ public class OAuth2Client: NSObject, Codable {
                         #if !FRTests
                         guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
                             FRLog.e("Failed to validate PKCE state: PKCE: \(pkce), Redirect URL: \(redirectURLAsString)")
-                            completion(nil, AuthError.invalidPKCEState)
+                            completion(nil, OAuth2Error.invalidPKCEState)
                             return
                         }
                         #endif
@@ -285,7 +297,7 @@ public class OAuth2Client: NSObject, Codable {
                     // Bypass PKCE state validation for FRTests
                     #if !FRTests
                     guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
-                        throw AuthError.invalidPKCEState
+                        throw OAuth2Error.invalidPKCEState
                     }
                     #endif
                     
