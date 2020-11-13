@@ -25,6 +25,7 @@ public enum OAuth2Error: FRError {
     case invalidScope(String?)
     case missingOrInvalidRedirectURI(String?)
     case accessDenied(String?)
+    case invalidPKCEState
     case other(String?)
     case unknown(String?)
 }
@@ -59,6 +60,8 @@ public extension OAuth2Error {
             return 1500008
         case .accessDenied:
             return 1500009
+        case .invalidPKCEState:
+            return 1500010
         case .other:
             return 1500098
         case .unknown:
@@ -100,6 +103,8 @@ extension OAuth2Error: CustomNSError {
             return self.converURLToUserInfo(url, "Missing or invalid redirect_uri")
         case .accessDenied(let url):
             return self.converURLToUserInfo(url, "Resource owner did not authorize the request")
+        case .invalidPKCEState:
+            return [NSLocalizedDescriptionKey: "Invalid request with wrong PKCE state; invalid credentials"]
         case .other(let url):
             return self.converURLToUserInfo(url, "OAuth2 /authorize Error")
         case .unknown(let url):
@@ -128,13 +133,15 @@ extension OAuth2Error: CustomNSError {
             return self.extractError(url)
         case .accessDenied(let url):
             return self.extractError(url)
+        case .invalidPKCEState:
+            return "invalid_pkce_state"
         case .other(let url):
             return self.extractError(url)
         default:
             return "unknown"
         }
     }
-    
+        
     
     static func convertOAuth2Error(urlValue: String?) -> OAuth2Error {
         guard let urlString = urlValue, let url = URL(string: urlString) else {

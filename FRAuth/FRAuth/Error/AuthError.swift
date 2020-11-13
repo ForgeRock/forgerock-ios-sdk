@@ -32,9 +32,7 @@ public enum AuthError: FRError {
     case userAlreadyAuthenticated(Bool)
     case authenticationCancelled
     case invalidResumeURI(String)
-    case invalidPKCEState
-    case invalidRedirectURI
-    case missingRedirectLocation
+    case userAuthenticationRequired
 }
 
 public extension AuthError {
@@ -70,12 +68,8 @@ extension AuthError {
             return 1000030
         case .invalidResumeURI:
             return 1000031
-        case .invalidPKCEState:
-            return 1000032
-        case .invalidRedirectURI:
-            return 1000033
-        case .missingRedirectLocation:
-            return 1000034
+        case .userAuthenticationRequired:
+            return 1000035
         }
         
     }
@@ -114,12 +108,8 @@ extension AuthError: CustomNSError {
             return [NSLocalizedDescriptionKey: "Authentication is cancelled"]
         case .invalidResumeURI(let message):
             return [NSLocalizedDescriptionKey: "Invalid Resume URI; missing \(message)"]
-        case .invalidPKCEState:
-            return [NSLocalizedDescriptionKey: "Invalid request with wrong PKCE state; invalid credentials"]
-        case .invalidRedirectURI:
-            return [NSLocalizedDescriptionKey: "Invalid redirect URI; missing authorization_code, and/or error"]
-        case .missingRedirectLocation:
-            return [NSLocalizedDescriptionKey: "/authorize endpoint is returned without redirect location."]
+        case .userAuthenticationRequired:
+            return [NSLocalizedDescriptionKey: "All user credentials are expired or invalid; user authentication is required"]
         }
     }
 }

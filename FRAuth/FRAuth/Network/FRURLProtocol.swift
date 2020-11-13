@@ -282,7 +282,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
                     // make sure if current user exists, and original request was captured
                     do {
                         self.retryCount += 1
-                        let newUser = try user.refresSync()
+                        let newUser = try user.refreshSync()
                         token = newUser.token
                         shouldRetry = true
                         FRLog.i("[FRURLProtocol] [\(String(describing:self.request))] OAuth2 Token refresh succeeded; retrying original request with new auth header")
