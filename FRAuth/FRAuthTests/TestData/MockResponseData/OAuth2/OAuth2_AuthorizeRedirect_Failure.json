@@ -1,0 +1,15 @@
+{
+    "redirectRequest": "invalid",
+	"response": {
+		"statusCode": 400,
+		"url": "http://localhost/oauth2/realms/root/authorize?response_type=code&code_challenge_method=S256&code_challenge=aKTj-NLHJ_8WBS4sqmcmbnHZZNIflzFZJkpy7BOxZhc&state=Zpkuk5SToGIFplzsCrt22H93ZhTnxilB&scope=openid%20profile%20email%20address%20sdf&iPlanetDirectoryPro=i_pmq7ql_7VzcYuFCS4qMjs95uw.*AAJTSQACMDIAAlNLABxxS0pOWnFOcEtrQWRPanc3a3lyUDkwc253SVU9AAR0eXBlAANDVFMAAlMxAAIwMQ..*&client_id=testclient&redirect_uri=http://localhost",
+		"httpVersion": "HTTP/1.1",
+		"headerFields": {
+            "Cache-Control": "no-store",
+			"Content-Length": "174",
+			"Content-Type": "application/json;charset=UTF-8",
+			"Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+			"X-Frame-Options": "SAMEORIGIN"
+		}
+	}
+}
