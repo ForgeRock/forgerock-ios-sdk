@@ -319,6 +319,92 @@ class FRUserTests: FRBaseTest {
     }
     
     
+    func test_02_04_UserInfo_Expired_RefreshToken_Renewal_Successful() {
+        
+        // Perform login first
+        self.performUserLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success", "OAuth2_UserInfo_Success"])
+        
+        // Persist original AccessToken
+        // Manually update token lifetime to force token refresh
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        let ex = self.expectation(description: "Get User Info")
+        FRUser.currentUser?.getUserInfo(completion: { (userInfo, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(userInfo)
+            ex.fulfill()
+        })
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        if let lastRequest = FRBaseTest.internalRequestsHistory.last {
+            XCTAssertTrue(lastRequest.headers.keys.contains("Authorization"))
+        }
+        else {
+            XCTFail("Failed to fatch request history")
+        }
+    }
+    
+    
+    func test_02_05_UserInfo_Expired_Tokens_Renewal_Failure() {
+        
+        // Perform login first
+        self.performUserLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Failure", "OAuth2_UserInfo_Failure"])
+        
+        // Persist original AccessToken
+        // Manually update token lifetime to force token refresh
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.persist(token: at1)
+        }
+        
+        let ex = self.expectation(description: "Get User Info")
+        FRUser.currentUser?.getUserInfo(completion: { (userInfo, error) in
+            XCTAssertNotNil(error)
+            XCTAssertNil(userInfo)
+            ex.fulfill()
+        })
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        if let lastRequest = FRBaseTest.internalRequestsHistory.last {
+            //  User session/token expired, /userinfo request shouldn't inject Authorization header
+            XCTAssertFalse(lastRequest.headers.keys.contains("Authorization"))
+            XCTAssertFalse(lastRequest.headers.keys.contains("authorization"))
+        }
+        else {
+            XCTFail("Failed to fatch request history")
+        }
+    }
+    
+    
     // MARK: - User Logout
     
     func test_03_01_UserLogoutFailOnAMAPI() {
