@@ -48,7 +48,7 @@ class FRURLProtocolTests: FRAuthBaseTest {
         FRURLProtocol.tokenManagementPolicy = nil
         
         //  Perform login
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         //  When
         let ex = self.expectation(description: "Making request")

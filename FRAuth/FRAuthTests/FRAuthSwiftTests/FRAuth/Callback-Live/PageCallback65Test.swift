@@ -14,9 +14,9 @@ class PageCallback65Test: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config-Live"
-        self.shouldLoadMockResponses = false;
         super.setUp()
         self.config.authServiceName = "PageCallback65Test"
+        self.shouldLoadMockResponses = false;
     }
     
     // MARK: - Helper Method
