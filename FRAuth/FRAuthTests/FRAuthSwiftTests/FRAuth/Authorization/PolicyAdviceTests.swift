@@ -11,7 +11,7 @@
 
 import XCTest
 
-class PolicyAdviceTests: FRBaseTest {
+class PolicyAdviceTests: FRAuthBaseTest {
     
     
     func test_01_policy_advice_init_with_invalid_json() {

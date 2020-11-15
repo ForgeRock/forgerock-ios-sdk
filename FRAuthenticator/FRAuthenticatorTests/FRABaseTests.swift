@@ -10,34 +10,32 @@
 
 
 import XCTest
-import FRCore
 
-class FRABaseTests: XCTestCase {
-    
-    var shouldCleanup: Bool = true
-    var shouldLoadMockResponses: Bool = true
+class FRABaseTests: FRBaseTestCase {
     
     override func setUp() {
-        
-        if shouldLoadMockResponses {
-            // Register Mock URLProtocol
-            URLProtocol.registerClass(FRATestNetworkStubProtocol.self)
-            let config = URLSessionConfiguration.default
-            config.protocolClasses = [FRATestNetworkStubProtocol.self]
-            RestClient.shared.setURLSessionConfiguration(config: config)
-        }
+        super.setUp()
     }
     
 
     override func tearDown() {
+        super.tearDown()
         
         if shouldCleanup {
-            FRATestUtils.cleanUpAfterTearDown()
+            FRAPushHandler.shared.deviceToken = nil
+            if let keychainStorageClient = FRAClient.storage as? KeychainServiceClient {
+                keychainStorageClient.accountStorage.deleteAll()
+                keychainStorageClient.mechanismStorage.deleteAll()
+                keychainStorageClient.notificationStorage.deleteAll()
+                FRAClient.storage = KeychainServiceClient()
+            }
+            if let keychainStorageClient = FRAClient.storage as? DummyStorageClient {
+                keychainStorageClient.defaultStorageClient.accountStorage.deleteAll()
+                keychainStorageClient.defaultStorageClient.mechanismStorage.deleteAll()
+                keychainStorageClient.defaultStorageClient.notificationStorage.deleteAll()
+                FRAClient.storage = DummyStorageClient()
+            }
+            FRAClient.shared = nil
         }
-    }
-    
-    
-    func loadMockResponses(_ responseFileNames: [String]) {
-        FRATestUtils.loadMockResponses(responseFileNames)
     }
 }

@@ -10,8 +10,14 @@
 
 import XCTest
 
-class RestClientTests: FRCoreBaseTest {
+class RestClientTests: FRBaseTestCase {
 
+    override func setUp() {
+        super.setUp()
+        self.shouldLoadMockResponses = false
+    }
+    
+    
     /// Tests to invoke API request with invalid URLRequest or Request object
     func test_01_test_invalid_request_obj() {
         

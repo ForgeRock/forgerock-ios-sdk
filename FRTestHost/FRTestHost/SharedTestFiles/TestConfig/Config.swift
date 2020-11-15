@@ -10,6 +10,9 @@
 
 import Foundation
 
+@testable import FRCore
+@testable import FRAuth
+
 @objc(FRTestConfig)
 class Config: NSObject {
     @objc var username: String
@@ -52,7 +55,7 @@ class Config: NSObject {
         self.userFirstName = ""
         self.userEmail = ""
         
-        if let path = Bundle(for: FRBaseTest.self).path(forResource: configFileName, ofType: "json") {
+        if let path = Bundle(for: FRAuthBaseTest.self).path(forResource: configFileName, ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)

@@ -10,7 +10,7 @@
 
 import XCTest
 
-class NameCallbackTests: FRBaseTest {
+class NameCallbackTests: FRAuthBaseTest {
 
     func testNameCallbackWithEmptyJSON() {
         

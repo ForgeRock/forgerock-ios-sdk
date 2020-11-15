@@ -41,12 +41,13 @@
     
     if (self.shouldCleanup) {
         [FRTestUtils cleanUpAfterTearDown];
+        [FRAuthBaseTest cleanUp];
     }
 }
 
 
 - (void)startSDK {
-    [FRTestUtils startSDK:self.config];
+    [FRAuthBaseTest startSDK:self.config];
 }
 
 

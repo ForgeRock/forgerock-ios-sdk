@@ -10,7 +10,7 @@
 
 import XCTest
 
-class KeychainServiceTests: FRCoreBaseTest {
+class KeychainServiceTests: FRBaseTestCase {
 
     var kc: KeychainService?
     

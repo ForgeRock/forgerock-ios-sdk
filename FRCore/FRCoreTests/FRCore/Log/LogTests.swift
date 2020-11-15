@@ -11,7 +11,7 @@
 
 import XCTest
 
-class LogTests: FRCoreBaseTest {
+class LogTests: FRBaseTestCase {
 
     override func setUp() {
         //  Enable history

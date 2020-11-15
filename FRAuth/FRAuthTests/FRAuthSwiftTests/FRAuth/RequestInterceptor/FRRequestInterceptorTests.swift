@@ -11,14 +11,14 @@
 
 import XCTest
 
-class FRRequestInterceptorTests: FRBaseTest {
+class FRRequestInterceptorTests: FRAuthBaseTest {
     
     static var intercepted: [String] = []
     static var payload: [[String: Any]] = []
     
     override func setUp() {
-        self.configFileName = "Config-Live"
-        self.shouldLoadMockResponses = false
+        self.configFileName = "Config"
+//        self.shouldLoadMockResponses = false
         super.setUp()
     }
     

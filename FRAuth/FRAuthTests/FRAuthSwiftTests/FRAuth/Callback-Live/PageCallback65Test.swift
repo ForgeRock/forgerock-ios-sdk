@@ -10,7 +10,7 @@
 
 import XCTest
 
-class PageCallback65Test: FRBaseTest {
+class PageCallback65Test: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config-Live"

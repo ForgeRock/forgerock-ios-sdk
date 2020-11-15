@@ -11,7 +11,7 @@
 
 import XCTest
 
-class RequestInterceptorTests: FRCoreBaseTest {
+class RequestInterceptorTests: FRBaseTestCase {
 
     static var intercepted: [String] = []
     static var payload: [String: Any]?

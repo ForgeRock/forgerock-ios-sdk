@@ -11,7 +11,7 @@
 
 import XCTest
 
-class NetworkErrorTests: FRCoreBaseTest {
+class NetworkErrorTests: FRBaseTestCase {
 
     func test_01_domain() {
         XCTAssertEqual(NetworkError.errorDomain, "com.forgerock.ios.frcore.network")

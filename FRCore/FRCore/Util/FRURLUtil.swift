@@ -12,6 +12,7 @@
 import Foundation
 
 extension URL {
+    
     /// Compares given URL object with host, scheme, port, and optionally relativePath
     /// - Parameters:
     ///   - url: URL to be compared
@@ -29,5 +30,15 @@ extension URL {
             return true
         }
         return false
+    }
+    
+    
+    /// Extracts value in given URL's URL parameters
+    ///
+    /// - Parameter queryParamaterName: String value of parameter name in URL query parameter
+    /// - Returns: String value of given parameter name
+    public func valueOf(_ queryParamaterName: String) -> String? {
+        guard let url = URLComponents(string: self.absoluteString) else { return nil }
+        return url.queryItems?.first(where: { $0.name == queryParamaterName })?.value
     }
 }

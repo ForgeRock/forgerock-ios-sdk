@@ -11,7 +11,7 @@
 
 import XCTest
 
-class FailedPolicyTests: FRBaseTest {
+class FailedPolicyTests: FRAuthBaseTest {
     
     // - MARK: FailedPolicy
     

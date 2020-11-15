@@ -11,7 +11,7 @@
 
 import XCTest
 
-class CookieValidationTests: FRBaseTest {
+class CookieValidationTests: FRAuthBaseTest {
     
     
     //  MARK: - Domain validation

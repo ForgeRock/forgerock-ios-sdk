@@ -11,7 +11,7 @@
 import XCTest
 import SystemConfiguration
 
-class NetworkReachabilityMonitorTests: FRBaseTest {
+class NetworkReachabilityMonitorTests: FRAuthBaseTest {
 
     func testGeneralReachabilityMonitoring() {
         // Given

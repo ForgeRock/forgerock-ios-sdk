@@ -11,7 +11,7 @@
 
 import XCTest
 
-class SessionManagerTests: FRBaseTest {
+class SessionManagerTests: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config"
