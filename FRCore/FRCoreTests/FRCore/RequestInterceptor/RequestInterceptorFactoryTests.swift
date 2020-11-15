@@ -11,9 +11,16 @@
 
 import XCTest
 
-class RequestInterceptorFactoryTests: FRCoreBaseTest {
+class RequestInterceptorFactoryTests: FRBaseTestCase {
 
+    override func setUp() {
+        super.setUp()
+        RestClient.shared.interceptors = nil
+    }
+    
+    
     override func tearDown() {
+        super.tearDown()
         RestClient.shared.interceptors = nil
     }
     

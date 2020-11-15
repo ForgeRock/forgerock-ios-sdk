@@ -10,7 +10,7 @@
 
 import XCTest
 
-class RequestTests: FRCoreBaseTest {
+class RequestTests: FRBaseTestCase {
 
     let testURL: String = "https://httpbin.org"
     

@@ -12,7 +12,7 @@
 import XCTest
 import FRCore
 
-class FRSessionTests: FRBaseTest {
+class FRSessionTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"

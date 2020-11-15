@@ -11,7 +11,7 @@
 import XCTest
 import FRCore
 
-class FRDeviceIdentifierTests: FRBaseTest {
+class FRDeviceIdentifierTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"

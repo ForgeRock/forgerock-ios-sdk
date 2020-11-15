@@ -10,7 +10,7 @@
 
 import XCTest
 
-class NodeTests: FRBaseTest {
+class NodeTests: FRAuthBaseTest {
     
     var serverURL = "http://localhost:8080/am"
     var realm = "customRealm"

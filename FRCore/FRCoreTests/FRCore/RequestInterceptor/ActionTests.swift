@@ -11,7 +11,7 @@
 
 import XCTest
 
-class ActionTests: FRCoreBaseTest {
+class ActionTests: FRBaseTestCase {
     
     func test_01_action_start_authenticate() {
         let action = Action(type: .START_AUTHENTICATE)

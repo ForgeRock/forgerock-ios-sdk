@@ -10,7 +10,7 @@
 
 import XCTest
 
-class FRAuthTests: FRBaseTest {
+class FRAuthTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"

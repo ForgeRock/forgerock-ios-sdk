@@ -11,7 +11,7 @@
 
 import XCTest
 
-class FRStringUtilTests: FRCoreBaseTest {
+class FRStringUtilTests: FRBaseTestCase {
 
     func test_01_base64_encode_decode() {
         let plain = "testing_base64"

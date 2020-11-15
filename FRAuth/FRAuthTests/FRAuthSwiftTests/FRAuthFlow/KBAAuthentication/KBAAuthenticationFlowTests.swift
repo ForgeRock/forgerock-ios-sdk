@@ -10,11 +10,10 @@
 
 import XCTest
 
-class KBAAuthenticationFlowTests: FRBaseTest {
+class KBAAuthenticationFlowTests: FRAuthBaseTest {
 
     override func setUp() {
-        self.configFileName = "Config-Live"
-        self.shouldLoadMockResponses = false
+        self.configFileName = "Config"
         super.setUp()
     }
     

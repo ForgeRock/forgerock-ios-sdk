@@ -11,7 +11,7 @@
 
 import XCTest
 
-class BrowserBuilderTests: FRBaseTest {
+class BrowserBuilderTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"

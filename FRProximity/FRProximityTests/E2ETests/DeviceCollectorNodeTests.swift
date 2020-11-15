@@ -13,7 +13,7 @@ import XCTest
 import CoreLocation
 @testable import FRAuth
 
-class DeviceCollectorNodeTests: FRPBaseTest {
+class DeviceCollectorNodeTests: FRAuthBaseTest {
 
     func test_01_device_collector_metadata_only() {
         
@@ -96,7 +96,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertTrue(response.keys.contains("identifier"))
                 XCTAssertFalse(response.keys.contains("location"))
                 XCTAssertNotNil(deviceProfileCallback.getValue())
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
+                let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -224,7 +224,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertEqual(long, 123.1207)
                 
                 XCTAssertNotNil(deviceProfileCallback.getValue())
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
+                let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -342,7 +342,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertTrue(response.keys.contains("identifier"))
                 XCTAssertFalse(response.keys.contains("location"))
                 XCTAssertNotNil(deviceProfileCallback.getValue())
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
+                let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -470,7 +470,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertEqual(long, 123.1207)
                 
                 XCTAssertNotNil(deviceProfileCallback.getValue())
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
+                let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -588,7 +588,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertTrue(response.keys.contains("identifier"))
                 XCTAssertFalse(response.keys.contains("location"))
                 XCTAssertNotNil(deviceProfileCallback.getValue())
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
+                let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }
@@ -811,7 +811,7 @@ class DeviceCollectorNodeTests: FRPBaseTest {
                 XCTAssertEqual(long, 123.1207)
                 
                 XCTAssertNotNil(deviceProfileCallback.value)
-                let requestPayload = FRPTestUtils.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
+                let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()
             }

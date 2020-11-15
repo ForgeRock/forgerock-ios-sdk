@@ -10,5 +10,5 @@
 
 import XCTest
 
-class MultipleValuesCallbackTests: FRBaseTest {
+class MultipleValuesCallbackTests: FRAuthBaseTest {
 }

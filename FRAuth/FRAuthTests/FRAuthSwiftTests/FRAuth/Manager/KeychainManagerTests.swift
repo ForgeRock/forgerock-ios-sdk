@@ -11,7 +11,7 @@
 import XCTest
 import FRCore
 
-class KeychainManagerTests: FRBaseTest {
+class KeychainManagerTests: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config"

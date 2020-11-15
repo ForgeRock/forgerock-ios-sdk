@@ -10,7 +10,7 @@
 
 import XCTest
 
-class PKCETests: FRBaseTest {
+class PKCETests: FRAuthBaseTest {
 
     func testThatPKCEDoesNotContainInvalidCharacters() {
         

@@ -11,7 +11,7 @@
 
 import XCTest
 
-class FRUserTokenRenewalTests: FRBaseTest {
+class FRUserTokenRenewalTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"

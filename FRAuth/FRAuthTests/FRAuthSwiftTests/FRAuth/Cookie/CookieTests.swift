@@ -11,7 +11,7 @@
 
 import XCTest
 
-class CookieTests: FRBaseTest {
+class CookieTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"

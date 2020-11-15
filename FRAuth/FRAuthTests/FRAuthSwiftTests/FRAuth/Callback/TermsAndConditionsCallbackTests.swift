@@ -10,5 +10,5 @@
 
 import XCTest
 
-class TermsAndConditionsCallbackTests: FRBaseTest {
+class TermsAndConditionsCallbackTests: FRAuthBaseTest {
 }
