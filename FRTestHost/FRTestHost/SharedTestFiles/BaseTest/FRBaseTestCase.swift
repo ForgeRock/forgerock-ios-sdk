@@ -46,6 +46,7 @@ class FRBaseTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         self.continueAfterFailure = false
+        self.shouldLoadMockResponses = true
         //  Set Log level to none to ignore logs for set-up
         Log.setLogLevel(.none)
         //  Register internal request interceptors for request tracking purpose
