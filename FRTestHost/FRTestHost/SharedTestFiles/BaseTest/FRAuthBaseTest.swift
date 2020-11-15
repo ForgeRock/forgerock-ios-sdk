@@ -91,7 +91,7 @@ class FRAuthBaseTest: FRBaseTestCase {
     }
     
     
-    func performUsernamePasswordLogin() {
+    func performLogin() {
 
         // Start SDK
         self.config.authServiceName = "UsernamePassword"

@@ -48,7 +48,7 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Perform Login
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         XCTAssertNotNil(FRUser.currentUser?.token)
         
         //  Construct Browser

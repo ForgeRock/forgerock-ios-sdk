@@ -18,7 +18,6 @@ class FRRequestInterceptorTests: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config"
-//        self.shouldLoadMockResponses = false
         super.setUp()
     }
     

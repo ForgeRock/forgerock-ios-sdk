@@ -25,7 +25,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
@@ -64,7 +64,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
@@ -306,7 +306,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
@@ -349,7 +349,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
@@ -393,7 +393,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
@@ -436,7 +436,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Refresh_No_RefreshToken_Success"])
@@ -482,7 +482,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -522,7 +522,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
@@ -575,7 +575,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
@@ -628,7 +628,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Failure"])
@@ -681,7 +681,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -721,7 +721,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
@@ -763,7 +763,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
@@ -805,7 +805,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Failure"])
@@ -850,7 +850,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -884,7 +884,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
@@ -930,7 +930,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
@@ -976,7 +976,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Failure"])
@@ -1022,7 +1022,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -1056,7 +1056,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
@@ -1091,7 +1091,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
@@ -1126,7 +1126,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant", "OAuth2_AuthorizeRedirect_Failure"])
@@ -1164,7 +1164,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -1204,7 +1204,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -1244,7 +1244,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
@@ -1284,7 +1284,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         // Load mock responses for refresh token
         self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])

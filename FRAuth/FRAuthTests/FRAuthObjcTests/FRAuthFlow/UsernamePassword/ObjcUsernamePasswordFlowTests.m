@@ -19,7 +19,6 @@
 
 - (void)setUp {
     self.configFileName = @"Config";
-//    self.shouldLoadMockResponses = false;
     [super setUp];
 }
 

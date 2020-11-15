@@ -108,7 +108,7 @@ class FRUserTests: FRAuthBaseTest {
         self.startSDK()
         
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let initialCurrentUser = FRUser.currentUser else {
             XCTFail("Failed to login before test start")
@@ -178,7 +178,7 @@ class FRUserTests: FRAuthBaseTest {
     
     func test_02_02_GetUserInfoSuccess() {
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         // Load mock responses for retrieving UserInfo from /userinfo
         self.loadMockResponses(["OAuth2_UserInfo_Success"])
@@ -211,7 +211,7 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         // Load mock responses for retrieving UserInfo from /userinfo
         self.loadMockResponses(["OAuth2_UserInfo_Success"])
@@ -322,7 +322,7 @@ class FRUserTests: FRAuthBaseTest {
     func test_02_04_UserInfo_Expired_RefreshToken_Renewal_Successful() {
         
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -364,7 +364,7 @@ class FRUserTests: FRAuthBaseTest {
     func test_02_05_UserInfo_Expired_Tokens_Renewal_Failure() {
         
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -409,7 +409,7 @@ class FRUserTests: FRAuthBaseTest {
     
     func test_03_01_UserLogoutFailOnAMAPI() {
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -445,7 +445,7 @@ class FRUserTests: FRAuthBaseTest {
     func test_03_02_UserLogOutSuccess() {
         
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -480,7 +480,7 @@ class FRUserTests: FRAuthBaseTest {
     
     func test_03_03_UserLogOutWithAccessToken() {
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -557,7 +557,7 @@ class FRUserTests: FRAuthBaseTest {
     func test_04_01_LoginToPersistCurrentUser() {
         
         // Perform login first
-        self.performUserLogin()
+        self.performLogin()
         
         guard let _ = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -671,65 +671,5 @@ class FRUserTests: FRAuthBaseTest {
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
-    }
-    
-    
-    // MARK: - Helper Method
-    
-    func performUserLogin() {
-        
-        // Start SDK
-        self.config.authServiceName = "UsernamePassword"
-        self.startSDK()
-        
-        // Set mock responses
-        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
-                                "AuthTree_SSOToken_Success",
-                                "OAuth2_AuthorizeRedirect_Success",
-                                "OAuth2_Token_Success"])
-        
-        var currentNode: Node?
-        
-        var ex = self.expectation(description: "First Node submit")
-        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
-            
-            // Validate result
-            XCTAssertNil(token)
-            XCTAssertNil(error)
-            XCTAssertNotNil(node)
-            currentNode = node
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        guard let node = currentNode else {
-            XCTFail("Failed to get Node from the first request")
-            return
-        }
-        
-        // Provide input value for callbacks
-        for callback in node.callbacks {
-            if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.setValue(config.username)
-            }
-            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.setValue(config.password)
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        ex = self.expectation(description: "Second Node submit")
-        node.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(node)
-            XCTAssertNil(error)
-            XCTAssertNotNil(token)
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        XCTAssertNotNil(FRUser.currentUser)
     }
 }
