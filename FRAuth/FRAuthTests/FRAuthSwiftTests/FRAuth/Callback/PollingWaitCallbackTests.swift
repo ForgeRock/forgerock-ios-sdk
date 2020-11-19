@@ -10,7 +10,7 @@
 
 import XCTest
 
-class PollingWaitCallbackTests: FRBaseTest {
+class PollingWaitCallbackTests: FRAuthBaseTest {
     
     func test_01_CallbackConstruction_Successful() {
         

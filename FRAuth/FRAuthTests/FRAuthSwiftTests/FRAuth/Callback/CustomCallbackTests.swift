@@ -10,7 +10,7 @@
 
 import XCTest
 
-class CustomCallbackTests: FRBaseTest {
+class CustomCallbackTests: FRAuthBaseTest {
     
     var originalSupportedCallbacks: [String: Callback.Type]?
     

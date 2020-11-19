@@ -11,7 +11,7 @@
 
 import XCTest
 
-class BrowserTests: FRBaseTest {
+class BrowserTests: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config"
@@ -48,7 +48,7 @@ class BrowserTests: FRBaseTest {
         self.startSDK()
         
         //  Perform Login
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         XCTAssertNotNil(FRUser.currentUser?.token)
         
         //  Construct Browser

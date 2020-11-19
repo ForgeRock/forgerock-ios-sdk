@@ -13,7 +13,7 @@ import XCTest
 import CoreLocation
 @testable import FRAuth
 
-class DeviceProfileCallbackTests: FRPBaseTest {
+class DeviceProfileCallbackTests: FRAuthBaseTest {
 
     func test_01_callback_execute_all() {
         // Given
@@ -42,7 +42,7 @@ class DeviceProfileCallbackTests: FRPBaseTest {
             ]
         }
         """
-        let callbackResponse = FRPTestUtils.parseStringToDictionary(jsonStr)
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         // When
         do {
@@ -123,7 +123,7 @@ class DeviceProfileCallbackTests: FRPBaseTest {
             ]
         }
         """
-        let callbackResponse = FRPTestUtils.parseStringToDictionary(jsonStr)
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         // When
         do {

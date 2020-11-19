@@ -11,7 +11,7 @@
 
 import XCTest
 
-class CookieTests: FRBaseTest {
+class CookieTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"
@@ -26,7 +26,7 @@ class CookieTests: FRBaseTest {
         self.config.authServiceName = "UsernamePassword"
         self.startSDK()
 
-        self.performUserLogin()
+        self.performLogin()
         
         // Given last authentication request is OAuth2 token endpoint which should contain Session Token Cookie
         let request = FRTestNetworkStubProtocol.requestHistory.last
@@ -140,7 +140,7 @@ class CookieTests: FRBaseTest {
         // Start SDK
         self.startSDK()
         
-        self.performUserLogin()
+        self.performLogin()
         
         // Given last authentication request is OAuth2 token endpoint which should contain Session Token Cookie
         let request = FRTestNetworkStubProtocol.requestHistory.last
@@ -163,7 +163,7 @@ class CookieTests: FRBaseTest {
         self.config.authServiceName = "UsernamePassword"
         self.startSDK()
 
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -191,7 +191,7 @@ class CookieTests: FRBaseTest {
         self.config.authServiceName = "UsernamePassword"
         self.startSDK()
 
-        self.performUserLogin()
+        self.performLogin()
         
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
@@ -211,65 +211,5 @@ class CookieTests: FRBaseTest {
             return
         }
         XCTAssertEqual(count, 0)
-    }
-    
-    
-    // MARK: - Helper Method
-    
-    func performUserLogin() {
-        
-        // Start SDK
-        self.config.authServiceName = "UsernamePassword"
-        self.startSDK()
-        
-        // Set mock responses
-        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
-                                "AuthTree_SSOToken_Success",
-                                "OAuth2_AuthorizeRedirect_Success",
-                                "OAuth2_Token_Success"])
-        
-        var currentNode: Node?
-        
-        var ex = self.expectation(description: "First Node submit")
-        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
-            
-            // Validate result
-            XCTAssertNil(token)
-            XCTAssertNil(error)
-            XCTAssertNotNil(node)
-            currentNode = node
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        guard let node = currentNode else {
-            XCTFail("Failed to get Node from the first request")
-            return
-        }
-        
-        // Provide input value for callbacks
-        for callback in node.callbacks {
-            if callback is NameCallback, let nameCallback = callback as? NameCallback {
-                nameCallback.setValue(config.username)
-            }
-            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
-                passwordCallback.setValue(config.password)
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        ex = self.expectation(description: "Second Node submit")
-        node.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(node)
-            XCTAssertNil(error)
-            XCTAssertNotNil(token)
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        XCTAssertNotNil(FRUser.currentUser)
     }
 }

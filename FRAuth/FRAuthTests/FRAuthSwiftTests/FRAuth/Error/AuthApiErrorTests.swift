@@ -12,7 +12,7 @@
 import XCTest
 
 
-class AuthApiErrorTests: FRBaseTest {
+class AuthApiErrorTests: FRAuthBaseTest {
     
     
     func test_01_domain() {

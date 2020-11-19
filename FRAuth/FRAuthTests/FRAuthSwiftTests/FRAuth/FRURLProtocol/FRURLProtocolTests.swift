@@ -12,7 +12,7 @@
 import XCTest
 import FRCore
 
-class FRURLProtocolTests: FRBaseTest {
+class FRURLProtocolTests: FRAuthBaseTest {
 
     var shouldUpdateRequest: Bool = false
     var evaluateTokenRefresh: Bool = false
@@ -48,7 +48,7 @@ class FRURLProtocolTests: FRBaseTest {
         FRURLProtocol.tokenManagementPolicy = nil
         
         //  Perform login
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         //  When
         let ex = self.expectation(description: "Making request")

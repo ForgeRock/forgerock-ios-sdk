@@ -10,7 +10,7 @@
 
 import XCTest
 
-class ChoiceCallbackTests: FRBaseTest {
+class ChoiceCallbackTests: FRAuthBaseTest {
 
     func testChoiceCallbackWithEmptyJSON() {
         

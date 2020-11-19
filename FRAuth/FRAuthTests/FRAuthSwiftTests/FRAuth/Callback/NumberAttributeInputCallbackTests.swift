@@ -11,7 +11,7 @@
 
 import XCTest
 
-class NumberAttributeInputCallbackTests: FRBaseTest {
+class NumberAttributeInputCallbackTests: FRAuthBaseTest {
 
     func test_01_number_attribute_init() {
         let jsonStr = """

@@ -10,7 +10,7 @@
 
 import XCTest
 
-class TokenTests: FRBaseTest {
+class TokenTests: FRAuthBaseTest {
     
     func testBasicTokenValue() {
         

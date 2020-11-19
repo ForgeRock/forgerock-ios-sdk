@@ -11,7 +11,7 @@
 import XCTest
 import FRAuth
 
-class JailbreakDetectorTests: FRBaseTest {
+class JailbreakDetectorTests: FRAuthBaseTest {
 
     
     func testNoJailbreakDetector() {

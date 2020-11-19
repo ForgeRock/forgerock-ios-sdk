@@ -10,7 +10,7 @@
 
 import XCTest
 
-class AbstractValidatedCallbackTests: FRBaseTest {
+class AbstractValidatedCallbackTests: FRAuthBaseTest {
     
     // - MARK: ValidatedCreateUsernameCallback
     
