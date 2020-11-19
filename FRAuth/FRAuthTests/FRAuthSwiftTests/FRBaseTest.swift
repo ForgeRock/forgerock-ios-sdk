@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRCore
 @testable import FRAuth
 
 let FRTest = true
@@ -19,6 +20,8 @@ class FRBaseTest: XCTestCase {
     var shouldLoadMockResponses: Bool = true
     var config: Config = Config()
     var configFileName: String = ""
+    static var internalRequestsHistory: [Request] = []
+    static var internalRequestActions: [Action] = []
     
     override func setUp() {
         FRLog.setLogLevel(.all)
@@ -42,6 +45,8 @@ class FRBaseTest: XCTestCase {
             config.protocolClasses = [FRTestNetworkStubProtocol.self]
             FRRestClient.setURLSessionConfiguration(config: config)
         }
+        
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [InternalRequestInterceptor()])
     }
 
     override func tearDown() {
@@ -49,6 +54,9 @@ class FRBaseTest: XCTestCase {
             FRTestUtils.cleanUpAfterTearDown()
             FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: nil)
         }
+        
+        FRBaseTest.internalRequestsHistory.removeAll()
+        FRBaseTest.internalRequestActions.removeAll()
     }
     
     func startSDK() {
@@ -132,5 +140,13 @@ class FRBaseTest: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
+    }
+}
+
+class InternalRequestInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        FRBaseTest.internalRequestsHistory.append(request)
+        FRBaseTest.internalRequestActions.append(action)
+        return request
     }
 }
