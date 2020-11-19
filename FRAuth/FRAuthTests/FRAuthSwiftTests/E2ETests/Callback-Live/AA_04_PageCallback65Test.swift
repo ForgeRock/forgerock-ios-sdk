@@ -1,6 +1,6 @@
 //
-//  PageCallback65Test.swift
-//  Callback Live Tests
+//  AA_04_PageCallback65Test.swift
+//  FRAuthTests
 //
 //  Copyright (c) 2019 ForgeRock. All rights reserved.
 //
@@ -10,7 +10,7 @@
 
 import XCTest
 
-class PageCallback65Test: FRAuthBaseTest {
+class AA_04_PageCallback65Test: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config-Live"
