@@ -1,0 +1,627 @@
+{
+	"responsePayload": {
+        "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6IlJlZ2lzdHJhdGlvbiIsIm90ayI6Ijd0ZjRjbHZwOWIyamE1ZGk5aWI5ZGo4cHU4IiwiYXV0aEluZGV4VHlwZSI6InNlcnZpY2UiLCJyZWFsbSI6Ii8iLCJzZXNzaW9uSWQiOiIqQUFKVFNRQUNNRElBQkhSNWNHVUFDRXBYVkY5QlZWUklBQUpUTVFBQ01ERS4qZXlKMGVYQWlPaUpLVjFRaUxDSmpkSGtpT2lKS1YxUWlMQ0poYkdjaU9pSklVekkxTmlKOS5aWGxLTUdWWVFXbFBhVXBMVmpGUmFVeERTbXhpYlUxcFQybEtRazFVU1RSUk1FcEVURlZvVkUxcVZUSkphWGRwV1ZkNGJrbHFiMmxhUjJ4NVNXNHdMaTVtTkVKMmRIaFhiRlp3YjFGM1oxZFZUVkV5VUhsQkxrYzJOR0V3ZEdwd1dHaHlWRTVXUjNCeldtbDZjMmhOYVhwTFpIUldhaTFtUVRSU1FtWkxXalJNTVVGcE56bHlVVzl6WWs1clNWOUNSREJ1Y0ROMWJsUllXbnBxWkRSRlgyazNWbXMxYmtnMlNWSkVZV3g1VjJsVFdHbDVhbXRSVG1kalowUlRabGhpZVhaeGMyTnRibFZWZVZwaGVWaG1kMjgzTVc5bVpYSnVibkUwYkY5Vk1YcE1UMGhYYTIxVmVFZDBTbFY0TWxGRFgwWlNYM1pGWW1jMGNEQXhaME5VTm01blZ5MDRiRUpmT0ZoNVEzUlpPWFZNYkZOVE1sUk9Rbmh5UTJGTk1YaFNSRlkwY0RCNFdGVlZORWw2YUUxSFJrOTFURU5MUWpac2NIRlZOekpYUmtrek5uUlBUMHhuTkZCaE56RXlRVjk1UlZGcmIzbFBNVkprVGs1clQxZE5NbnBFYjNvNFVGRk1NbGs0YkhKMlVWSnpSbmhIUmtreFEwTnFVME5uY0V0S1QyRmhRbkpSUVhCbE5IbzBRVXBTTVVwMmJGVlFiazUwZUVocFNXVmhjbXhKVjNjM1FWaFlXRmhwU1hKUGEwRjVZWFJPZFdsR2N6aHRXV1JCZG14ZmREQXhTbkpvWVdsRldXSTFiRWd5WjFVdFZWaG9RbEpUWmtKbU5sOXZMVlZVZGxSa1kydE5NVGd3VmxWUVMyUTJSV1prUm5RMGRtWm1jVnA1UWtFdGNVa3dabGN3V2xaQmJUTkRVMDlpWjJaaGMwRlFjbE5yYjBWVGRrWllhakYxVW1oaVdETkZNazFaTjBwNk1GQnRTMUpKVjNOelFsQjFhbXRIVHpaeFJsaHhhbDl1Wlc5b1NGWktZVTlxVDFsRFpXZFpUVUZMWkVkd1VrRTJNR052T1ZWV1lWWkJRbU53UVZwUVJ6SmFiVFJCVVRocE1YWnVNRTh6VmpJMFJsZERNbWRpVjJoVWVWOWFWRVJRTXpBMU5YQlpNelJhZUdsVlZuUXpNakkwTm1oTVdXUXpPVE5SYWtoUlpuZE9aVjkwVGt0cFkxQmtNMjV3VGxwNFJGaDNOazVQWm5SYVZVSlROalZHUzFWUVZWcEViV2x3U3pKQ04xaDFWVnB5YmtoQ1FTMDRVMWxGUnpaQk9Xa3lkalZwTjNZd2JrOVlUSGd0ZG1WdlYwczVUR0pIVW5wTFZqTlliRWROWTNGQ2IzazViV1J3Y1Y4emJsazFNV0pSVWxsNGVIUndWMGhuVjB0alpGVXpMVEpqTkU1eFRrRmhSR3R3UTNCWVEwMXJTRVZWWjJKdU9HaEtZVjlTTXpsU09EQk9hbU5sUW1wU05GTnlaR1pIT0RNd09VZFJaMFJvZFZJMlFYRjVhazh3WlZFdWRXVkhiMUozV2t0bE0ycHVWVVl0VlUweGMzcElkdy5xblVuY3hJTldWcU1zcEhrMXprcUN4QkktSEVfNUlSeFR6MGFreUhkQ3RjIiwiZXhwIjoxNjA1NDkxOTI4LCJpYXQiOjE2MDU0OTE2Mjh9.b1EFBoTVQu6sZY4lO41zgigcpYOUVEUibupdMPwW-Dg",
+        "callbacks": [
+            {
+                "type": "ValidatedCreateUsernameCallback",
+                "output": [
+                    {
+                        "name": "policies",
+                        "value": {
+                            "policyRequirements": [
+                                "REQUIRED",
+                                "MIN_LENGTH",
+                                "VALID_TYPE",
+                                "VALID_USERNAME",
+                                "CANNOT_CONTAIN_CHARACTERS",
+                                "MAX_LENGTH"
+                            ],
+                            "fallbackPolicies": null,
+                            "name": "userName",
+                            "policies": [
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "required"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "not-empty"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "MIN_LENGTH"
+                                    ],
+                                    "policyId": "minimum-length",
+                                    "params": {
+                                        "minLength": 1
+                                    }
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "VALID_TYPE"
+                                    ],
+                                    "policyId": "valid-type",
+                                    "params": {
+                                        "types": [
+                                            "string"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "policyId": "valid-username",
+                                    "policyRequirements": [
+                                        "VALID_USERNAME"
+                                    ]
+                                },
+                                {
+                                    "policyId": "cannot-contain-characters",
+                                    "params": {
+                                        "forbiddenChars": [
+                                            "/"
+                                        ]
+                                    },
+                                    "policyRequirements": [
+                                        "CANNOT_CONTAIN_CHARACTERS"
+                                    ]
+                                },
+                                {
+                                    "policyId": "minimum-length",
+                                    "params": {
+                                        "minLength": 1
+                                    },
+                                    "policyRequirements": [
+                                        "MIN_LENGTH"
+                                    ]
+                                },
+                                {
+                                    "policyId": "maximum-length",
+                                    "params": {
+                                        "maxLength": 255
+                                    },
+                                    "policyRequirements": [
+                                        "MAX_LENGTH"
+                                    ]
+                                }
+                            ],
+                            "conditionalPolicies": null
+                        }
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Username"
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken1",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken1validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 0
+            },
+            {
+                "type": "StringAttributeInputCallback",
+                "output": [
+                    {
+                        "name": "name",
+                        "value": "givenName"
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "First Name"
+                    },
+                    {
+                        "name": "required",
+                        "value": true
+                    },
+                    {
+                        "name": "policies",
+                        "value": {
+                            "policyRequirements": [
+                                "REQUIRED",
+                                "VALID_TYPE"
+                            ],
+                            "fallbackPolicies": null,
+                            "name": "givenName",
+                            "policies": [
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "required"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "VALID_TYPE"
+                                    ],
+                                    "policyId": "valid-type",
+                                    "params": {
+                                        "types": [
+                                            "string"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "conditionalPolicies": null
+                        }
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "value",
+                        "value": ""
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken2",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken2validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 1
+            },
+            {
+                "type": "StringAttributeInputCallback",
+                "output": [
+                    {
+                        "name": "name",
+                        "value": "sn"
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Last Name"
+                    },
+                    {
+                        "name": "required",
+                        "value": true
+                    },
+                    {
+                        "name": "policies",
+                        "value": {
+                            "policyRequirements": [
+                                "REQUIRED",
+                                "VALID_TYPE"
+                            ],
+                            "fallbackPolicies": null,
+                            "name": "sn",
+                            "policies": [
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "required"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "VALID_TYPE"
+                                    ],
+                                    "policyId": "valid-type",
+                                    "params": {
+                                        "types": [
+                                            "string"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "conditionalPolicies": null
+                        }
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "value",
+                        "value": ""
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken3",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken3validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 2
+            },
+            {
+                "type": "StringAttributeInputCallback",
+                "output": [
+                    {
+                        "name": "name",
+                        "value": "mail"
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Email Address"
+                    },
+                    {
+                        "name": "required",
+                        "value": true
+                    },
+                    {
+                        "name": "policies",
+                        "value": {
+                            "policyRequirements": [
+                                "REQUIRED",
+                                "VALID_TYPE",
+                                "VALID_EMAIL_ADDRESS_FORMAT"
+                            ],
+                            "fallbackPolicies": null,
+                            "name": "mail",
+                            "policies": [
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "required"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "VALID_TYPE"
+                                    ],
+                                    "policyId": "valid-type",
+                                    "params": {
+                                        "types": [
+                                            "string"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "policyId": "valid-email-address-format",
+                                    "policyRequirements": [
+                                        "VALID_EMAIL_ADDRESS_FORMAT"
+                                    ]
+                                }
+                            ],
+                            "conditionalPolicies": null
+                        }
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "value",
+                        "value": ""
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken4",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken4validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 3
+            },
+            {
+                "type": "BooleanAttributeInputCallback",
+                "output": [
+                    {
+                        "name": "name",
+                        "value": "preferences/marketing"
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Send me special offers and services"
+                    },
+                    {
+                        "name": "required",
+                        "value": true
+                    },
+                    {
+                        "name": "policies",
+                        "value": {}
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "value",
+                        "value": false
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken5",
+                        "value": false
+                    },
+                    {
+                        "name": "IDToken5validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 4
+            },
+            {
+                "type": "BooleanAttributeInputCallback",
+                "output": [
+                    {
+                        "name": "name",
+                        "value": "preferences/updates"
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Send me news and updates"
+                    },
+                    {
+                        "name": "required",
+                        "value": true
+                    },
+                    {
+                        "name": "policies",
+                        "value": {}
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "value",
+                        "value": false
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken6",
+                        "value": false
+                    },
+                    {
+                        "name": "IDToken6validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 5
+            },
+            {
+                "type": "ValidatedCreatePasswordCallback",
+                "output": [
+                    {
+                        "name": "echoOn",
+                        "value": false
+                    },
+                    {
+                        "name": "policies",
+                        "value": {
+                            "policyRequirements": [
+                                "REQUIRED",
+                                "MIN_LENGTH",
+                                "VALID_TYPE",
+                                "AT_LEAST_X_CAPITAL_LETTERS",
+                                "AT_LEAST_X_NUMBERS",
+                                "CANNOT_CONTAIN_OTHERS"
+                            ],
+                            "fallbackPolicies": null,
+                            "name": "password",
+                            "policies": [
+                                {
+                                    "policyRequirements": [
+                                        "REQUIRED"
+                                    ],
+                                    "policyId": "not-empty"
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "MIN_LENGTH"
+                                    ],
+                                    "policyId": "minimum-length",
+                                    "params": {
+                                        "minLength": 8
+                                    }
+                                },
+                                {
+                                    "policyRequirements": [
+                                        "VALID_TYPE"
+                                    ],
+                                    "policyId": "valid-type",
+                                    "params": {
+                                        "types": [
+                                            "string"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "policyId": "at-least-X-capitals",
+                                    "params": {
+                                        "numCaps": 1
+                                    },
+                                    "policyRequirements": [
+                                        "AT_LEAST_X_CAPITAL_LETTERS"
+                                    ]
+                                },
+                                {
+                                    "policyId": "at-least-X-numbers",
+                                    "params": {
+                                        "numNums": 1
+                                    },
+                                    "policyRequirements": [
+                                        "AT_LEAST_X_NUMBERS"
+                                    ]
+                                },
+                                {
+                                    "policyId": "cannot-contain-others",
+                                    "params": {
+                                        "disallowedFields": [
+                                            "userName",
+                                            "givenName",
+                                            "sn"
+                                        ]
+                                    },
+                                    "policyRequirements": [
+                                        "CANNOT_CONTAIN_OTHERS"
+                                    ]
+                                }
+                            ],
+                            "conditionalPolicies": null
+                        }
+                    },
+                    {
+                        "name": "failedPolicies",
+                        "value": []
+                    },
+                    {
+                        "name": "validateOnly",
+                        "value": false
+                    },
+                    {
+                        "name": "prompt",
+                        "value": "Password"
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken7",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken7validateOnly",
+                        "value": false
+                    }
+                ],
+                "_id": 6
+            },
+            {
+                "type": "KbaCreateCallback",
+                "output": [
+                    {
+                        "name": "prompt",
+                        "value": "Select a security question"
+                    },
+                    {
+                        "name": "predefinedQuestions",
+                        "value": [
+                            "What's your favorite color?",
+                            "Who was your first employer?"
+                        ]
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken8question",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken8answer",
+                        "value": ""
+                    }
+                ],
+                "_id": 7
+            },
+            {
+                "type": "KbaCreateCallback",
+                "output": [
+                    {
+                        "name": "prompt",
+                        "value": "Select a security question"
+                    },
+                    {
+                        "name": "predefinedQuestions",
+                        "value": [
+                            "What's your favorite color?",
+                            "Who was your first employer?"
+                        ]
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken9question",
+                        "value": ""
+                    },
+                    {
+                        "name": "IDToken9answer",
+                        "value": ""
+                    }
+                ],
+                "_id": 8
+            },
+            {
+                "type": "TermsAndConditionsCallback",
+                "output": [
+                    {
+                        "name": "version",
+                        "value": "0.0"
+                    },
+                    {
+                        "name": "terms",
+                        "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    },
+                    {
+                        "name": "createDate",
+                        "value": "2019-10-28T04:20:11.320Z"
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken10",
+                        "value": false
+                    }
+                ],
+                "_id": 9
+            }
+        ],
+        "header": "Sign Up",
+        "description": "Signing up is fast and easy.<br>Already have an account? <a href='#/service/Login'>Sign In</a>"
+	},
+	"response": {
+		"statusCode": 200,
+		"url": "https://localhost/json/realms/root/authenticate?authIndex=service&authIndexValue=Registration",
+		"httpVersion": "HTTP/1.1",
+		"headerFields": {
+			"Content-Length": "2150",
+			"Content-Type": "application/json;charset=UTF-8",
+			"Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+			"X-Frame-Options": "SAMEORIGIN",
+            "content-api-version": "resource=2.1"
+		}
+	}
+}

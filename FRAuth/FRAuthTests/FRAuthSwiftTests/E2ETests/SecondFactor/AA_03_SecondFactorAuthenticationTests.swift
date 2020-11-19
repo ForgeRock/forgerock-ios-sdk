@@ -1,5 +1,5 @@
 //
-//  SecondFactorFlowTests.swift
+//  AA_03_SecondFactorAuthenticationTests.swift
 //  FRAuthTests
 //
 //  Copyright (c) 2019 ForgeRock. All rights reserved.
@@ -10,7 +10,7 @@
 
 import XCTest
 
-class SecondFactorFlowTests: FRAuthBaseTest {
+class AA_03_SecondFactorAuthenticationTests: FRAuthBaseTest {
 
     override func setUp() {
         self.configFileName = "Config"
