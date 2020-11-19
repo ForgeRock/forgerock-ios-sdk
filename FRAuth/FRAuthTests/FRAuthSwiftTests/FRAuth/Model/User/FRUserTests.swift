@@ -10,7 +10,7 @@
 
 import XCTest
 
-class FRUserTests: FRBaseTest {
+class FRUserTests: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config"
@@ -352,7 +352,7 @@ class FRUserTests: FRBaseTest {
         })
         waitForExpectations(timeout: 60, handler: nil)
         
-        if let lastRequest = FRBaseTest.internalRequestsHistory.last {
+        if let lastRequest = FRBaseTestCase.internalRequestsHistory.last {
             XCTAssertTrue(lastRequest.headers.keys.contains("Authorization"))
         }
         else {
@@ -394,7 +394,7 @@ class FRUserTests: FRBaseTest {
         })
         waitForExpectations(timeout: 60, handler: nil)
         
-        if let lastRequest = FRBaseTest.internalRequestsHistory.last {
+        if let lastRequest = FRBaseTestCase.internalRequestsHistory.last {
             //  User session/token expired, /userinfo request shouldn't inject Authorization header
             XCTAssertFalse(lastRequest.headers.keys.contains("Authorization"))
             XCTAssertFalse(lastRequest.headers.keys.contains("authorization"))

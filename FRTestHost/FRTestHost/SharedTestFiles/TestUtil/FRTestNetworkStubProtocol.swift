@@ -39,6 +39,11 @@ class FRTestNetworkStubProtocol: URLProtocol {
         if FRTestNetworkStubProtocol.property(forKey: TestConstants.FRTestURLProtocolHandled, in: request) != nil {
             return false
         }
+        
+        if FRBaseTestCase.useMockServer == false {
+            return false
+        }
+        
         print("[FRAuthTest] Proceeding protocol")
         return true
     }

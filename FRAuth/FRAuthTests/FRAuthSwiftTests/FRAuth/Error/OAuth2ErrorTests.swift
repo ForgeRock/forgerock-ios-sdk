@@ -11,7 +11,7 @@
 
 import XCTest
 
-class OAuth2ErrorTests: FRBaseTest {
+class OAuth2ErrorTests: FRAuthBaseTest {
 
     
     func test_01_domain() {

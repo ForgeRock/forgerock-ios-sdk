@@ -12,7 +12,7 @@
 import XCTest
 import CoreBluetooth
 
-class BluetoothCollectorTests: FRPBaseTest {
+class BluetoothCollectorTests: FRAuthBaseTest {
     
     func test_01_basic_init() {
         let ble = BluetoothCollector()

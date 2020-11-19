@@ -11,7 +11,7 @@
 
 import XCTest
 
-class TokenManagementPolicyTests: FRBaseTest {
+class TokenManagementPolicyTests: FRAuthBaseTest {
 
     var list: [String] = []
     var evaluationResult: Bool = false

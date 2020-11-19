@@ -11,7 +11,7 @@
 
 import XCTest
 
-class BrowserErrorTests: FRBaseTest {
+class BrowserErrorTests: FRAuthBaseTest {
 
     func test_01_domain() {
         XCTAssertEqual(BrowserError.errorDomain, "com.forgerock.ios.frauth.browser")

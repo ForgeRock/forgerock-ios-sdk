@@ -11,7 +11,7 @@
 
 import XCTest
 
-class TokenErrorTests: FRBaseTest {
+class TokenErrorTests: FRAuthBaseTest {
     
     func test_01_domain() {
         XCTAssertEqual(TokenError.errorDomain, "com.forgerock.ios.frauth.token")

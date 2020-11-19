@@ -11,7 +11,7 @@
 
 import XCTest
 
-class MetadataCallbackTests: FRBaseTest {
+class MetadataCallbackTests: FRAuthBaseTest {
 
     
     func test_01_metadatacallback_init_with_empty_json() {

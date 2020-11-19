@@ -11,7 +11,7 @@
 
 import XCTest
 
-class BooleanAttributeInputCallbackTests: FRBaseTest {
+class BooleanAttributeInputCallbackTests: FRAuthBaseTest {
     
     func test_01_bool_attribute_init() {
         let jsonStr = """

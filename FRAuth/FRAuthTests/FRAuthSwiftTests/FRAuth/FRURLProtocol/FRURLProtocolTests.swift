@@ -12,7 +12,7 @@
 import XCTest
 import FRCore
 
-class FRURLProtocolTests: FRBaseTest {
+class FRURLProtocolTests: FRAuthBaseTest {
 
     var shouldUpdateRequest: Bool = false
     var evaluateTokenRefresh: Bool = false
