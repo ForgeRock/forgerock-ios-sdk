@@ -1,0 +1,53 @@
+{
+	"responsePayload": {
+        "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6IkxvZ2luIiwib3RrIjoiZXE5YzV2YWk5cXBxbW45dWZmbzRmajI0ZzAiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiLyIsInNlc3Npb25JZCI6IipBQUpUU1FBQ01ESUFCSFI1Y0dVQUNFcFhWRjlCVlZSSUFBSlRNUUFDTURFLipleUowZVhBaU9pSktWMVFpTENKamRIa2lPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5LlpYbEtNR1ZZUVdsUGFVcExWakZSYVV4RFNteGliVTFwVDJsS1FrMVVTVFJSTUVwRVRGVm9WRTFxVlRKSmFYZHBXVmQ0YmtscWIybGFSMng1U1c0d0xpNVRhbWN5UlhoS1NtbGtjblZSV21aYU5YVkhNbkJSTGt0UlZtWkdMVzFuUkZkdE5tNUNhUzF4UzJSVlJsQjVXVGsyT0VKUGQxSjVaaTFhUWtoMlRrYzVRMnAzZGtJeU1taFlSV3RaWm1adlMwVmFiV2sxWVVsR1ZYSnNSVU53U1RsT2MxUmpUbkZ4U0VsV1ZVRlNRMjFDVG1RM1QzRlVZbFpQWlhKWmNEWkthVFZYTVZORFNqRjZhelJRWjNsUlZFcHRNRmh1WWpFd1NVRnlUVGN5V25GNU1YQlFUM2hHTTJkR1RWVmZaRVF0Y2w5NGF6aFhTR1IyYm14NGRVSnBWVGxQZW5ob1dsVnZkbk5CZVU1RGRYQjZZMFJOV0c1SFZuRkhWbk5tV1RCak1EZHBha05wTUhoWlYzbE5jM1JaTTBKNWNucGhVamhRZG5sU1gwNVpkMlpEYjNOR2JsSnJVREE1WnpZMlRXWjBjMDVhU1dWRE5VNHhkekZTVDJveFVteFpWWGx4Y1dnMmJ6UnlUVnA2TVhrNU4yTkllRTF1VDFOWFJHUlpUSEZxUlV0RVFrcGxNSFpXTVRWclNVNVlka1U0Y0ZCZk5HMXpNbDl4UWxSNFlWaFFVRGhCVEdJNVNVMTJPVVJUVG5aUlpXWjRMVGhrZEZwYVgweFRiM2hIY1dGNFZXMU1Za1l0WmtSUldVdHBaMmhNUmpZNVVHMUtlUzB0ZW04eWFTMWxWazFGYkhOclJWaG5jMTlNYTFwR1lsRkVkVEJ3U1VKeVFtUTNjVTVEWVhOcFpEYzNPVFIyYlVkZk0xcGxjbEZIWHpGbWQxOHlRMmt4UVc5WVJISmhXRWxaV0hRNFNtZFhUVlJ3YjJkeWVYRmpPV2xwVDFCa2RqUnVOaTFpWHpORmR6RklWRFJaVFc5VmNuUjRTM2cwY2taNWRXOTJSVkEyY2pOYU5ubENTMDU2TW5Kd2VVOTJNWGRFZGxCS1l5MDRNRVZNVkZFekxVVTBlWHBJWkV0NE4xWlBhVVJKYUVkMlpFMWhlVkZCYkZFMmNsWnlNR290Um5nMk9WQTJRakpsZUY4eVV6TlhXbGxIYlRSMWVUWjVXWGhTT0RseGJIZHBVWFJmTlhwNGFVcEZSRk55ZW5wWmVrSkhWV2RRV1hrelZtWXhjVVpoTjJwTWJtaGxWMnhvUXpOaVJrY3djRXQxWTB0b2VUSm5MaTF4UWxOc1ZIazFNa1ZpZG5wQmFFZHhSRFpyYUZFLjZsYXFiaGZ1TmFDNVBKazBzMHJuS1Q3OFlsOE0xMDAxVUVfUXV5X2JpazgiLCJleHAiOjE2MDU0OTE4MDIsImlhdCI6MTYwNTQ5MTUwMn0.OsfpKKJfVVt9JSc_DA3aaVCgt4Y-Yi7PR0myqwdkCAc",
+        "callbacks": [
+            {
+                "type": "NameCallback",
+                "output": [
+                    {
+                        "name": "prompt",
+                        "value": "User Name"
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken1",
+                        "value": ""
+                    }
+                ],
+                "_id": 0
+            },
+            {
+                "type": "PasswordCallback",
+                "output": [
+                    {
+                        "name": "prompt",
+                        "value": "Password"
+                    }
+                ],
+                "input": [
+                    {
+                        "name": "IDToken2",
+                        "value": ""
+                    }
+                ],
+                "_id": 1
+            }
+        ],
+        "header": "Sign In",
+        "description": "New here? <a href=\"#/service/Registration\">Create an account</a><br><a href=\"#/service/ForgottenUsername\">Forgot username?</a><a href=\"#/service/ResetPassword\"> Forgot password?</a>"
+	},
+	"response": {
+		"statusCode": 200,
+		"url": "https://localhost/json/realms/root/authenticate?authIndex=service&authIndexValue=Login",
+		"httpVersion": "HTTP/1.1",
+		"headerFields": {
+			"Content-Length": "2150",
+			"Content-Type": "application/json;charset=UTF-8",
+			"Date": "Thu, 08 Aug 2019 06:12:31 GMT",
+			"X-Frame-Options": "SAMEORIGIN",
+            "content-api-version": "resource=2.1"
+		}
+	}
+}
