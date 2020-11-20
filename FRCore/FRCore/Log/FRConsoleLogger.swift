@@ -57,10 +57,10 @@ class FRConsoleLogger: FRLogger {
         let osLogType = self.converOSLogType(logLevel: logLevel)
         self.queue.async {
             if self.osActivieModeEnabled {
-                os_log("%@", log: self.osLog, type: osLogType, log)
+//                os_log("%@", log: self.osLog, type: osLogType, log)
             }
             else {
-                print("\(timePrefix) \(log)")
+//                print("\(timePrefix) \(log)")
             }
         }
     }
