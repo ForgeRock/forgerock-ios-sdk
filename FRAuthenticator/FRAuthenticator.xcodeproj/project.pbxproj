@@ -110,6 +110,8 @@
 		D5D0A51C24621C0E00BA9FE0 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D0A51B24621C0E00BA9FE0 /* CryptoTests.swift */; };
 		D5D1DC0B2465D77D0004B4CB /* AuthenticatorManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1DC0A2465D77D0004B4CB /* AuthenticatorManagerTests.swift */; };
 		D5D1DC0D2465E0B10004B4CB /* DummyStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1DC0C2465E0B10004B4CB /* DummyStorageClient.swift */; };
+		D5D34ED325676407008065FD /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; };
+		D5D34ED425676407008065FD /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D54E89245A1FA90001EE34 /* FRCompactJWT.swift */; };
 		D5D54E8F245A27AC0001EE34 /* FRCompactJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D54E89245A1FA90001EE34 /* FRCompactJWT.swift */; };
 		D5D9147A242E844600E24ECA /* OathCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D91479242E844600E24ECA /* OathCodeGenerator.swift */; };
@@ -193,6 +195,20 @@
 			remoteInfo = FRCore;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D5D34ED525676408008065FD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D5D34ED425676407008065FD /* FRCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
@@ -311,6 +327,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D34ED325676407008065FD /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -825,6 +842,7 @@
 				D5C3547C2412EBF800695A84 /* Sources */,
 				D5C3547D2412EBF800695A84 /* Frameworks */,
 				D5C3547E2412EBF800695A84 /* Resources */,
+				D5D34ED525676408008065FD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
