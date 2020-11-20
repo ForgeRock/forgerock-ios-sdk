@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
+		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
+		D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D52D5C382412ECA800835035 /* MechanismError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C372412ECA800835035 /* MechanismError.swift */; };
 		D52D5C3B2412F1A400835035 /* MechanismError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C372412ECA800835035 /* MechanismError.swift */; };
 		D52D5C3C2412F1A400835035 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C354A22412EC0600695A84 /* Account.swift */; };
@@ -110,8 +112,6 @@
 		D5D0A51C24621C0E00BA9FE0 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D0A51B24621C0E00BA9FE0 /* CryptoTests.swift */; };
 		D5D1DC0B2465D77D0004B4CB /* AuthenticatorManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1DC0A2465D77D0004B4CB /* AuthenticatorManagerTests.swift */; };
 		D5D1DC0D2465E0B10004B4CB /* DummyStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1DC0C2465E0B10004B4CB /* DummyStorageClient.swift */; };
-		D5D34ED325676407008065FD /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; };
-		D5D34ED425676407008065FD /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D54E89245A1FA90001EE34 /* FRCompactJWT.swift */; };
 		D5D54E8F245A27AC0001EE34 /* FRCompactJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D54E89245A1FA90001EE34 /* FRCompactJWT.swift */; };
 		D5D9147A242E844600E24ECA /* OathCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D91479242E844600E24ECA /* OathCodeGenerator.swift */; };
@@ -152,6 +152,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D525BDFB2567650B0012CE33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5E75BCA2409B8C0005F589F;
+			remoteInfo = FRCore;
+		};
+		D525BDFD2567650B0012CE33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5E75BD32409B8C0005F589F;
+			remoteInfo = FRCoreTests;
+		};
+		D525BDFF256765130012CE33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D5E75BC92409B8C0005F589F;
+			remoteInfo = FRCore;
+		};
 		D5B68CF1248CDDB300CD2F5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */;
@@ -173,27 +194,6 @@
 			remoteGlobalIDString = D5C3547F2412EBF800695A84;
 			remoteInfo = FRAuthenticator;
 		};
-		D5C354B62412EC5100695A84 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5E75BCA2409B8C0005F589F;
-			remoteInfo = FRCore;
-		};
-		D5C354B82412EC5100695A84 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5E75BD32409B8C0005F589F;
-			remoteInfo = FRCoreTests;
-		};
-		D5D34EA6256761F0008065FD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D5E75BC92409B8C0005F589F;
-			remoteInfo = FRCore;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -203,7 +203,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D5D34ED425676407008065FD /* FRCore.framework in Embed Frameworks */,
+				D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -212,6 +212,7 @@
 
 /* Begin PBXFileReference section */
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
+		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D52D5C372412ECA800835035 /* MechanismError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MechanismError.swift; sourceTree = "<group>"; };
 		D52D5C4D241318F000835035 /* OathQRCodeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OathQRCodeParser.swift; sourceTree = "<group>"; };
 		D52D5C4F241318F000835035 /* PushQRCodeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushQRCodeParser.swift; sourceTree = "<group>"; };
@@ -286,7 +287,6 @@
 		D5C3549C2412EC0600695A84 /* Mechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mechanism.swift; sourceTree = "<group>"; };
 		D5C354A02412EC0600695A84 /* PushNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotification.swift; sourceTree = "<group>"; };
 		D5C354A22412EC0600695A84 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		D5C354B02412EC5100695A84 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = "../../forgerock-ios-sdk-public/FRCore/FRCore.xcodeproj"; sourceTree = "<group>"; };
 		D5C7CBB624688F5400823168 /* URLUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLUtilTests.swift; sourceTree = "<group>"; };
 		D5C7CBC32468A63B00823168 /* FRAClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAClientTests.swift; sourceTree = "<group>"; };
 		D5C9A1AF24636A73004D5941 /* AuthenticatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorManager.swift; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5D34ED325676407008065FD /* FRCore.framework in Frameworks */,
+				D525BE01256765190012CE33 /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +342,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D525BDF72567650B0012CE33 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D525BDFC2567650B0012CE33 /* FRCore.framework */,
+				D525BDFE2567650B0012CE33 /* FRCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D52D5C292412EC6C00835035 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -626,7 +635,7 @@
 		D5C354762412EBF800695A84 = {
 			isa = PBXGroup;
 			children = (
-				D5C354B02412EC5100695A84 /* FRCore.xcodeproj */,
+				D525BDF62567650B0012CE33 /* FRCore.xcodeproj */,
 				D5C354822412EBF800695A84 /* FRAuthenticator */,
 				D5C3548D2412EBF900695A84 /* FRAuthenticatorTests */,
 				D5C354812412EBF800695A84 /* Products */,
@@ -713,15 +722,6 @@
 				D5C354A22412EC0600695A84 /* Account.swift */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		D5C354B12412EC5100695A84 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D5C354B72412EC5100695A84 /* FRCore.framework */,
-				D5C354B92412EC5100695A84 /* FRCoreTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		D5C9A1AC24636A5A004D5941 /* Manager */ = {
@@ -847,7 +847,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D5D34EA7256761F0008065FD /* PBXTargetDependency */,
+				D525BE00256765130012CE33 /* PBXTargetDependency */,
 			);
 			name = FRAuthenticator;
 			productName = FRAuthenticator;
@@ -904,8 +904,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D5C354B12412EC5100695A84 /* Products */;
-					ProjectRef = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
+					ProductGroup = D525BDF72567650B0012CE33 /* Products */;
+					ProjectRef = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
 				},
 				{
 					ProductGroup = D5B68CEC248CDDB200CD2F5B /* Products */;
@@ -921,25 +921,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D525BDFC2567650B0012CE33 /* FRCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRCore.framework;
+			remoteRef = D525BDFB2567650B0012CE33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D525BDFE2567650B0012CE33 /* FRCoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRCoreTests.xctest;
+			remoteRef = D525BDFD2567650B0012CE33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D5B68CF2248CDDB300CD2F5B /* FRTestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = FRTestHost.app;
 			remoteRef = D5B68CF1248CDDB300CD2F5B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D5C354B72412EC5100695A84 /* FRCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FRCore.framework;
-			remoteRef = D5C354B62412EC5100695A84 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D5C354B92412EC5100695A84 /* FRCoreTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FRCoreTests.xctest;
-			remoteRef = D5C354B82412EC5100695A84 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1116,6 +1116,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D525BE00256765130012CE33 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRCore;
+			targetProxy = D525BDFF256765130012CE33 /* PBXContainerItemProxy */;
+		};
 		D5B68CF4248CDDC700CD2F5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FRTestHost;
@@ -1125,11 +1130,6 @@
 			isa = PBXTargetDependency;
 			target = D5C3547F2412EBF800695A84 /* FRAuthenticator */;
 			targetProxy = D5C3548B2412EBF900695A84 /* PBXContainerItemProxy */;
-		};
-		D5D34EA7256761F0008065FD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRCore;
-			targetProxy = D5D34EA6256761F0008065FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
