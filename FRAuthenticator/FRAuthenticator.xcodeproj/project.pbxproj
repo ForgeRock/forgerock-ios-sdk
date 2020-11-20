@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
-		D52D5C2A2412EC6C00835035 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; };
-		D52D5C2B2412EC6C00835035 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D52D5C382412ECA800835035 /* MechanismError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C372412ECA800835035 /* MechanismError.swift */; };
 		D52D5C3B2412F1A400835035 /* MechanismError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C372412ECA800835035 /* MechanismError.swift */; };
 		D52D5C3C2412F1A400835035 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C354A22412EC0600695A84 /* Account.swift */; };
@@ -112,6 +110,8 @@
 		D5D0A51C24621C0E00BA9FE0 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D0A51B24621C0E00BA9FE0 /* CryptoTests.swift */; };
 		D5D1DC0B2465D77D0004B4CB /* AuthenticatorManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1DC0A2465D77D0004B4CB /* AuthenticatorManagerTests.swift */; };
 		D5D1DC0D2465E0B10004B4CB /* DummyStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1DC0C2465E0B10004B4CB /* DummyStorageClient.swift */; };
+		D5D34E882567607A008065FD /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; };
+		D5D34E892567607A008065FD /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D54E89245A1FA90001EE34 /* FRCompactJWT.swift */; };
 		D5D54E8F245A27AC0001EE34 /* FRCompactJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D54E89245A1FA90001EE34 /* FRCompactJWT.swift */; };
 		D5D9147A242E844600E24ECA /* OathCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D91479242E844600E24ECA /* OathCodeGenerator.swift */; };
@@ -152,13 +152,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D52D5C242412EC6500835035 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D5E75BC92409B8C0005F589F;
-			remoteInfo = FRCore;
-		};
 		D5B68CF1248CDDB300CD2F5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */;
@@ -197,13 +190,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D52D5C2C2412EC6C00835035 /* Embed Frameworks */ = {
+		D5D34E8A2567607A008065FD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D52D5C2B2412EC6C00835035 /* FRCore.framework in Embed Frameworks */,
+				D5D34E892567607A008065FD /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,7 +320,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D52D5C2A2412EC6C00835035 /* FRCore.framework in Frameworks */,
+				D5D34E882567607A008065FD /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,12 +835,11 @@
 				D5C3547C2412EBF800695A84 /* Sources */,
 				D5C3547D2412EBF800695A84 /* Frameworks */,
 				D5C3547E2412EBF800695A84 /* Resources */,
-				D52D5C2C2412EC6C00835035 /* Embed Frameworks */,
+				D5D34E8A2567607A008065FD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D52D5C252412EC6500835035 /* PBXTargetDependency */,
 			);
 			name = FRAuthenticator;
 			productName = FRAuthenticator;
@@ -1116,11 +1108,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D52D5C252412EC6500835035 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRCore;
-			targetProxy = D52D5C242412EC6500835035 /* PBXContainerItemProxy */;
-		};
 		D5B68CF4248CDDC700CD2F5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FRTestHost;
