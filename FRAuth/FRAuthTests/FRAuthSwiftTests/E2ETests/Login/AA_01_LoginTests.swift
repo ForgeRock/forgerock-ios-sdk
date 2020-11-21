@@ -14,7 +14,7 @@ import XCTest
 class AA_01_LoginTests: FRAuthBaseTest {
 
     override func setUp() {
-        self.configFileName = "Config-Live"
+        self.configFileName = "Config-live-01"
         super.setUp()
         self.shouldLoadMockResponses = false
     }

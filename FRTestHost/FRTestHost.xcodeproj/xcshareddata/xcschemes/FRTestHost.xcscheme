@@ -20,6 +20,62 @@
                ReferencedContainer = "container:FRTestHost.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5E75BD22409B8C0005F589F"
+               BuildableName = "FRCoreTests.xctest"
+               BlueprintName = "FRCoreTests"
+               ReferencedContainer = "container:../FRCore/FRCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5C354882412EBF900695A84"
+               BuildableName = "FRAuthenticatorTests.xctest"
+               BlueprintName = "FRAuthenticatorTests"
+               ReferencedContainer = "container:../FRAuthenticator/FRAuthenticator.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D554630022A6DF720096C7A4"
+               BuildableName = "FRAuthTests.xctest"
+               BlueprintName = "FRAuthTests"
+               ReferencedContainer = "container:../FRAuth/FRAuth.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D59FAE26234413D3005D34DA"
+               BuildableName = "FRProximityTests.xctest"
+               BlueprintName = "FRProximityTests"
+               ReferencedContainer = "container:../FRProximity/FRProximity.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

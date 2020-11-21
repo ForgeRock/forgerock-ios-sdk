@@ -259,7 +259,6 @@
 		D5888CB925664EDF0041FD94 /* AccessToken2.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7C25664EDF0041FD94 /* AccessToken2.json */; };
 		D5888CBA25664EDF0041FD94 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7E25664EDF0041FD94 /* Config.json */; };
 		D5888CBB25664EDF0041FD94 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C7F25664EDF0041FD94 /* Config.swift */; };
-		D5888CBC25664EDF0041FD94 /* Config-Live.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C8025664EDF0041FD94 /* Config-Live.json */; };
 		D5888CBD25664EDF0041FD94 /* FRAuthBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8225664EDF0041FD94 /* FRAuthBaseTest.swift */; };
 		D5888CBE25664EDF0041FD94 /* FRBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8325664EDF0041FD94 /* FRBaseTestCase.swift */; };
 		D5888CBF25664EDF0041FD94 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8525664EDF0041FD94 /* FRTestStubResponseParser.swift */; };
@@ -273,6 +272,7 @@
 		D5AF374823FB6F370035FE77 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3923F4C65800557AA8 /* AuthService.swift */; };
 		D5AF374923FB6F370035FE77 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3A23F4C65800557AA8 /* Node.swift */; };
 		D5AF374A23FB6F380035FE77 /* PolicyAdvice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */; };
+		D5AFD0792568D352005E69FA /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D5AFD0782568D352005E69FA /* Config-live-01.json */; };
 		D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */; };
 		D5B2A37E23FC951700764370 /* HiddenValueCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */; };
 		D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */; };
@@ -562,7 +562,6 @@
 		D5888C7C25664EDF0041FD94 /* AccessToken2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken2.json; sourceTree = "<group>"; };
 		D5888C7E25664EDF0041FD94 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
 		D5888C7F25664EDF0041FD94 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
-		D5888C8025664EDF0041FD94 /* Config-Live.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-Live.json"; sourceTree = "<group>"; };
 		D5888C8225664EDF0041FD94 /* FRAuthBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAuthBaseTest.swift; sourceTree = "<group>"; };
 		D5888C8325664EDF0041FD94 /* FRBaseTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRBaseTestCase.swift; sourceTree = "<group>"; };
 		D5888C8525664EDF0041FD94 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
@@ -572,6 +571,7 @@
 		D592482023286B3F0027031A /* TextOutputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputCallbackTests.swift; sourceTree = "<group>"; };
 		D5924822232871AE0027031A /* PollingWaitCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTests.swift; sourceTree = "<group>"; };
 		D59A0CE223AC28C8008D948E /* SessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerTests.swift; sourceTree = "<group>"; };
+		D5AFD0782568D352005E69FA /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
 		D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTests.swift; sourceTree = "<group>"; };
 		D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenValueCallback.swift; sourceTree = "<group>"; };
 		D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallback.swift; sourceTree = "<group>"; };
@@ -1372,9 +1372,9 @@
 		D5888C7D25664EDF0041FD94 /* TestConfig */ = {
 			isa = PBXGroup;
 			children = (
+				D5AFD0782568D352005E69FA /* Config-live-01.json */,
 				D5888C7E25664EDF0041FD94 /* Config.json */,
 				D5888C7F25664EDF0041FD94 /* Config.swift */,
-				D5888C8025664EDF0041FD94 /* Config-Live.json */,
 			);
 			path = TestConfig;
 			sourceTree = "<group>";
@@ -1699,6 +1699,7 @@
 				D5888CB925664EDF0041FD94 /* AccessToken2.json in Resources */,
 				D5888C3B25664E930041FD94 /* Login.png in Resources */,
 				D5888C2925664E920041FD94 /* Registration.png in Resources */,
+				D5AFD0792568D352005E69FA /* Config-live-01.json in Resources */,
 				D5888C9925664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
 				D5888CB425664EDF0041FD94 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */,
 				D5888CA925664EDF0041FD94 /* AuthTree_KBAVerificationNode.json in Resources */,
@@ -1706,7 +1707,6 @@
 				D52D168B2314853D0095905A /* KBAAuthenticationFlowObjc.png in Resources */,
 				D5888C8E25664EDF0041FD94 /* AM_Session_Logout_Success.json in Resources */,
 				D5888CA625664EDF0041FD94 /* AuthTree_AuthTimedOut.json in Resources */,
-				D5888CBC25664EDF0041FD94 /* Config-Live.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
