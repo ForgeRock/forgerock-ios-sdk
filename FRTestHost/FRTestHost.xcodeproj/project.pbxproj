@@ -305,14 +305,14 @@
 				CODE_SIGN_ENTITLEMENTS = FRTestHost/FRTestHost.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9QSE66762D;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRTestHost/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRTestHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.FRTestHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -327,14 +327,14 @@
 				CODE_SIGN_ENTITLEMENTS = FRTestHost/FRTestHost.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9QSE66762D;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRTestHost/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRTestHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.FRTestHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
