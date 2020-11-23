@@ -197,8 +197,8 @@ class FRRequestInterceptorTests: FRAuthBaseTest {
         XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
         XCTAssertNil(FRUser.currentUser)
         
-        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 3)
-        let interceptorsInOrder: [String] = ["REVOKE_TOKEN", "LOGOUT", "END_SESSION"]
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 2)
+        let interceptorsInOrder: [String] = ["REVOKE_TOKEN", "LOGOUT"]
         for intercepted in FRRequestInterceptorTests.intercepted {
             XCTAssertTrue(interceptorsInOrder.contains(intercepted))
         }

@@ -246,7 +246,6 @@
     // Load mock responses for retrieving UserInfo from /userinfo
     [self loadMockResponses:@[@"AM_Session_Logout_Failure",
                               @"OAuth2_Token_Revoke_Success",
-                              @"OAuth2_EndSession_Success",
                               @"AuthTree_UsernamePasswordNode"]];
     
     // Perform logout
@@ -277,7 +276,6 @@
     // Load mock responses for retrieving UserInfo from /userinfo
     [self loadMockResponses:@[@"AM_Session_Logout_Success",
                               @"OAuth2_Token_Revoke_Success",
-                              @"OAuth2_EndSession_Success",
                               @"AuthTree_UsernamePasswordNode"]];
     
     // Perform logout
