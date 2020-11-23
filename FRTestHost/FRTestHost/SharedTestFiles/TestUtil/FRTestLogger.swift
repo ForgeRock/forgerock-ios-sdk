@@ -1,6 +1,6 @@
-//
-//  FRConsoleLogger.swift
-//  FRCore
+// 
+//  FRTestLogger.swift
+//  FRAuthTests
 //
 //  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
@@ -8,24 +8,18 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-import Foundation
-import os
 
-class FRConsoleLogger: FRLogger {
+import Foundation
+import FRCore
+
+class FRTestLogger: FRLogger {
 
     var queue: DispatchQueue
-    var osLog: OSLog
-    var osActivieModeEnabled: Bool = true
     var logHistory: [String] = []
     var enableHistory: Bool = false
     
     init() {
         self.queue = DispatchQueue(label: "com.forgerock.ios.frlogger.frconsolelogger-dispatch-queue")
-        self.osLog = OSLog(subsystem: "com.forgerock.ios", category: "Default")
-        
-        if let osActivityMode = ProcessInfo.processInfo.environment["OS_ACTIVITY_MODE"], osActivityMode.lowercased() == "disable" {
-            self.osActivieModeEnabled = false
-        }
     }
     
     func logVerbose(timePrefix: String, logPrefix: String, message: String) {
@@ -54,37 +48,6 @@ class FRConsoleLogger: FRLogger {
             self.logHistory.append("\(timePrefix) \(log)")
         }
         
-        let osLogType = self.converOSLogType(logLevel: logLevel)
-        self.queue.async {
-            if self.osActivieModeEnabled {
-                os_log("%@", log: self.osLog, type: osLogType, log)
-            }
-            else {
-                print("\(timePrefix) \(log)")
-            }
-        }
-    }
-    
-    func converOSLogType(logLevel: LogLevel) -> OSLogType {
-        var logType: OSLogType
-        switch logLevel {
-        case .info:
-            logType = .info
-            break
-        case .network:
-            logType = .debug
-            break
-        case .warning:
-            logType = .error
-            break
-        case .error:
-            logType = .fault
-            break
-        default:
-            logType = .default
-            break
-        }
-        
-        return logType
+        print("\(timePrefix) \(log)")
     }
 }

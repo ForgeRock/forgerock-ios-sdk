@@ -122,6 +122,7 @@
 		D5E3089F2473942300724502 /* OathTokenCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3089E2473942300724502 /* OathTokenCode.swift */; };
 		D5E308A024739E6C00724502 /* OathTokenCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3089E2473942300724502 /* OathTokenCode.swift */; };
 		D5E308A22473A0B500724502 /* OathTokenCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E308A12473A0B500724502 /* OathTokenCodeTests.swift */; };
+		D5E7B1D3256C60B100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1D1256C60B100DF2AB6 /* FRTestLogger.swift */; };
 		D5E92E4E249B34ED008DB541 /* TOTPCodeGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */; };
 		D5E92E53249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */; };
 		D5EBEC46243166A8007F474C /* base32.c in Sources */ = {isa = PBXBuildFile; fileRef = D5EBEC42243166A8007F474C /* base32.c */; };
@@ -304,6 +305,7 @@
 		D5E3089C2473865000724502 /* OathMechanismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathMechanismTests.swift; sourceTree = "<group>"; };
 		D5E3089E2473942300724502 /* OathTokenCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathTokenCode.swift; sourceTree = "<group>"; };
 		D5E308A12473A0B500724502 /* OathTokenCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathTokenCodeTests.swift; sourceTree = "<group>"; };
+		D5E7B1D1256C60B100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPCodeGenerationTests.swift; sourceTree = "<group>"; };
 		D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAClientOATHMechanismAlgorithmTests.swift; sourceTree = "<group>"; };
 		D5EBEC42243166A8007F474C /* base32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base32.c; sourceTree = "<group>"; };
@@ -625,6 +627,7 @@
 		D5C3342D2560EE8B00CC6C19 /* TestUtil */ = {
 			isa = PBXGroup;
 			children = (
+				D5E7B1D1256C60B100DF2AB6 /* FRTestLogger.swift */,
 				D5C3342E2560EE8B00CC6C19 /* FRTestStubResponseParser.swift */,
 				D5C3342F2560EE8B00CC6C19 /* FRTestUtils.swift */,
 				D5C334302560EE8B00CC6C19 /* FRTestNetworkStubProtocol.swift */,
@@ -1038,6 +1041,7 @@
 			files = (
 				D5E308A024739E6C00724502 /* OathTokenCode.swift in Sources */,
 				D5E3089B247384E500724502 /* OathMechanism.swift in Sources */,
+				D5E7B1D3256C60B100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D53FBFA42464CC960019CC1A /* AuthenticatorManager.swift in Sources */,
 				D5D1DC0D2465E0B10004B4CB /* DummyStorageClient.swift in Sources */,
 				D53FBFA52464CC960019CC1A /* URLUtil.swift in Sources */,

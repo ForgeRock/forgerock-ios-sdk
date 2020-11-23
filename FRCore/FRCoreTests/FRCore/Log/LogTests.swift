@@ -14,9 +14,12 @@ import XCTest
 class LogTests: FRBaseTestCase {
 
     override func setUp() {
-        //  Enable history
-        Log.enableHistory(true)
         super.setUp()
+        //  Enable history
+        let logger = FRConsoleLogger()
+        logger.osActivieModeEnabled = true
+        Log.loggers = [logger]
+        Log.enableHistory(true)
     }
     
     

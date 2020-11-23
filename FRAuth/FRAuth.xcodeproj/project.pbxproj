@@ -305,6 +305,7 @@
 		D5CD494625268BCD006DD932 /* BrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD494525268BCD006DD932 /* BrowserTests.swift */; };
 		D5CDB7232527CB1800D7BA49 /* FRUserBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */; };
 		D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */; };
+		D5E7B1C0256C5F0100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1BF256C5F0100DF2AB6 /* FRTestLogger.swift */; };
 		D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
 		D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
@@ -599,6 +600,7 @@
 		D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUserBrowserTests.swift; sourceTree = "<group>"; };
 		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
 		D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
+		D5E7B1BF256C5F0100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocol.swift; sourceTree = "<group>"; };
 		D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorTests.swift; sourceTree = "<group>"; };
 		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
@@ -1394,6 +1396,7 @@
 				D5888C8525664EDF0041FD94 /* FRTestStubResponseParser.swift */,
 				D5888C8625664EDF0041FD94 /* FRTestUtils.swift */,
 				D5888C8725664EDF0041FD94 /* FRTestNetworkStubProtocol.swift */,
+				D5E7B1BF256C5F0100DF2AB6 /* FRTestLogger.swift */,
 			);
 			path = TestUtil;
 			sourceTree = "<group>";
@@ -1929,6 +1932,7 @@
 				D52D166C231484D60095905A /* FRAuthTests.swift in Sources */,
 				D52D1678231484D60095905A /* NameCallbackTests.swift in Sources */,
 				D52D1669231484D60095905A /* NetworkReachabilityMonitorTests.swift in Sources */,
+				D5E7B1C0256C5F0100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5843B562315C64500513932 /* ObjcFRDeviceCollectorTests.m in Sources */,
 				D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */,
 				D5843B542315C56A00513932 /* ObjcFRDeviceTests.m in Sources */,

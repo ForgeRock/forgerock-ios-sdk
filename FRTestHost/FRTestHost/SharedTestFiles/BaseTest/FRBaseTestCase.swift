@@ -47,6 +47,8 @@ class FRBaseTestCase: XCTestCase {
         super.setUp()
         self.continueAfterFailure = false
         self.shouldLoadMockResponses = true
+        //  Set TestLogger
+        Log.loggers = [FRTestLogger()]
         //  Set Log level to none to ignore logs for set-up
         Log.setLogLevel(.none)
         //  Register internal request interceptors for request tracking purpose

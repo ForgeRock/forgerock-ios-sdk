@@ -76,6 +76,7 @@
 		D5C333E22560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */; };
 		D5C333E32560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */; };
 		D5C333E42560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */; };
+		D5E7B1CC256C60A100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */; };
 		D5F1337B24EDBDAD00737F14 /* FRLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */; };
 		D5F1337F24EDCAB800737F14 /* FRPLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337E24EDCAB800737F14 /* FRPLog.swift */; };
 /* End PBXBuildFile section */
@@ -194,6 +195,7 @@
 		D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeLocationOnly.json; sourceTree = "<group>"; };
 		D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeNone.json; sourceTree = "<group>"; };
 		D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeWithMessage.json; sourceTree = "<group>"; };
+		D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLocationManager.swift; sourceTree = "<group>"; };
 		D5F1337E24EDCAB800737F14 /* FRPLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRPLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -489,6 +491,7 @@
 		D5C3339B2560E91F00CC6C19 /* TestUtil */ = {
 			isa = PBXGroup;
 			children = (
+				D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */,
 				D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */,
 				D5C3339D2560E91F00CC6C19 /* FRTestUtils.swift */,
 				D5C3339E2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift */,
@@ -723,6 +726,7 @@
 				D5C333C92560E91F00CC6C19 /* FRBaseTestCase.swift in Sources */,
 				D548ECB0246A108E002DE328 /* FRProximityTests.swift in Sources */,
 				D502101C246A304D00A45A51 /* DeviceProfileCallbackTests.swift in Sources */,
+				D5E7B1CC256C60A100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D54B7502246B51C500E6394E /* CustomCollector.swift in Sources */,
 				D5143C22246A191100B5DE80 /* LocationCollectorTests.swift in Sources */,
 			);

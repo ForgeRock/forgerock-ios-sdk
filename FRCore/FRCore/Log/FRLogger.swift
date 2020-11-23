@@ -10,7 +10,7 @@
 
 import Foundation
 
-protocol FRLogger {
+public protocol FRLogger {
     var queue: DispatchQueue { get }
     var enableHistory: Bool { get set }
     var logHistory: [String] { get }
