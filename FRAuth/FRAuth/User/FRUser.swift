@@ -177,13 +177,17 @@ public class FRUser: NSObject, NSSecureCoding {
     @objc
     public func logout() {
         
+        var ssoTokenInvalidated = false
         let tempToken = FRUser.currentUser?.token
         if let frSession = FRSession.currentSession {
+            FRLog.v("Invaliding SSO Token")
             // Revoke Session Token
             frSession.logout()
+            ssoTokenInvalidated = true
         }
         
         if let frAuth = FRAuth.shared, let tokens = tempToken {
+            FRLog.v("Invalidating OAuth2 token(s)")
             // Revoke OAuth2 tokens
             frAuth.tokenManager?.revoke(completion: { (error) in
                 if let error = error {
@@ -196,7 +200,8 @@ public class FRUser: NSObject, NSSecureCoding {
                     FRLog.v("Invalidating OAuth2 token(s) successful")
                 }
                 
-                if let idToken = tokens.idToken {
+                if let idToken = tokens.idToken, ssoTokenInvalidated == false {
+                    FRLog.v("Invalidating session using id_token")
                     // End Session if id_token exists
                     frAuth.tokenManager?.endSession(idToken: idToken, completion: { (error) in
                         
