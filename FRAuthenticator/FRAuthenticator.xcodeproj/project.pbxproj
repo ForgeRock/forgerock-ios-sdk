@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
-		D52D5C2A2412EC6C00835035 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; };
-		D52D5C2B2412EC6C00835035 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C354B72412EC5100695A84 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
+		D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D52D5C382412ECA800835035 /* MechanismError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C372412ECA800835035 /* MechanismError.swift */; };
 		D52D5C3B2412F1A400835035 /* MechanismError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C372412ECA800835035 /* MechanismError.swift */; };
 		D52D5C3C2412F1A400835035 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C354A22412EC0600695A84 /* Account.swift */; };
@@ -122,6 +122,7 @@
 		D5E3089F2473942300724502 /* OathTokenCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3089E2473942300724502 /* OathTokenCode.swift */; };
 		D5E308A024739E6C00724502 /* OathTokenCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3089E2473942300724502 /* OathTokenCode.swift */; };
 		D5E308A22473A0B500724502 /* OathTokenCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E308A12473A0B500724502 /* OathTokenCodeTests.swift */; };
+		D5E7B1D3256C60B100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1D1256C60B100DF2AB6 /* FRTestLogger.swift */; };
 		D5E92E4E249B34ED008DB541 /* TOTPCodeGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */; };
 		D5E92E53249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */; };
 		D5EBEC46243166A8007F474C /* base32.c in Sources */ = {isa = PBXBuildFile; fileRef = D5EBEC42243166A8007F474C /* base32.c */; };
@@ -152,9 +153,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D52D5C242412EC6500835035 /* PBXContainerItemProxy */ = {
+		D525BDFB2567650B0012CE33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
+			containerPortal = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5E75BCA2409B8C0005F589F;
+			remoteInfo = FRCore;
+		};
+		D525BDFD2567650B0012CE33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5E75BD32409B8C0005F589F;
+			remoteInfo = FRCoreTests;
+		};
+		D525BDFF256765130012CE33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = D5E75BC92409B8C0005F589F;
 			remoteInfo = FRCore;
@@ -180,30 +195,16 @@
 			remoteGlobalIDString = D5C3547F2412EBF800695A84;
 			remoteInfo = FRAuthenticator;
 		};
-		D5C354B62412EC5100695A84 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5E75BCA2409B8C0005F589F;
-			remoteInfo = FRCore;
-		};
-		D5C354B82412EC5100695A84 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5E75BD32409B8C0005F589F;
-			remoteInfo = FRCoreTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D52D5C2C2412EC6C00835035 /* Embed Frameworks */ = {
+		D5D34ED525676408008065FD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D52D5C2B2412EC6C00835035 /* FRCore.framework in Embed Frameworks */,
+				D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -212,6 +213,7 @@
 
 /* Begin PBXFileReference section */
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
+		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D52D5C372412ECA800835035 /* MechanismError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MechanismError.swift; sourceTree = "<group>"; };
 		D52D5C4D241318F000835035 /* OathQRCodeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OathQRCodeParser.swift; sourceTree = "<group>"; };
 		D52D5C4F241318F000835035 /* PushQRCodeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushQRCodeParser.swift; sourceTree = "<group>"; };
@@ -286,7 +288,6 @@
 		D5C3549C2412EC0600695A84 /* Mechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mechanism.swift; sourceTree = "<group>"; };
 		D5C354A02412EC0600695A84 /* PushNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotification.swift; sourceTree = "<group>"; };
 		D5C354A22412EC0600695A84 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		D5C354B02412EC5100695A84 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = "../../forgerock-ios-sdk-public/FRCore/FRCore.xcodeproj"; sourceTree = "<group>"; };
 		D5C7CBB624688F5400823168 /* URLUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLUtilTests.swift; sourceTree = "<group>"; };
 		D5C7CBC32468A63B00823168 /* FRAClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAClientTests.swift; sourceTree = "<group>"; };
 		D5C9A1AF24636A73004D5941 /* AuthenticatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorManager.swift; sourceTree = "<group>"; };
@@ -304,6 +305,7 @@
 		D5E3089C2473865000724502 /* OathMechanismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathMechanismTests.swift; sourceTree = "<group>"; };
 		D5E3089E2473942300724502 /* OathTokenCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathTokenCode.swift; sourceTree = "<group>"; };
 		D5E308A12473A0B500724502 /* OathTokenCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathTokenCodeTests.swift; sourceTree = "<group>"; };
+		D5E7B1D1256C60B100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5E92E4D249B34ED008DB541 /* TOTPCodeGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPCodeGenerationTests.swift; sourceTree = "<group>"; };
 		D5E92E52249B3682008DB541 /* FRAClientOATHMechanismAlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAClientOATHMechanismAlgorithmTests.swift; sourceTree = "<group>"; };
 		D5EBEC42243166A8007F474C /* base32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base32.c; sourceTree = "<group>"; };
@@ -327,7 +329,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D52D5C2A2412EC6C00835035 /* FRCore.framework in Frameworks */,
+				D525BE01256765190012CE33 /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +344,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D525BDF72567650B0012CE33 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D525BDFC2567650B0012CE33 /* FRCore.framework */,
+				D525BDFE2567650B0012CE33 /* FRCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D52D5C292412EC6C00835035 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -616,6 +627,7 @@
 		D5C3342D2560EE8B00CC6C19 /* TestUtil */ = {
 			isa = PBXGroup;
 			children = (
+				D5E7B1D1256C60B100DF2AB6 /* FRTestLogger.swift */,
 				D5C3342E2560EE8B00CC6C19 /* FRTestStubResponseParser.swift */,
 				D5C3342F2560EE8B00CC6C19 /* FRTestUtils.swift */,
 				D5C334302560EE8B00CC6C19 /* FRTestNetworkStubProtocol.swift */,
@@ -626,7 +638,7 @@
 		D5C354762412EBF800695A84 = {
 			isa = PBXGroup;
 			children = (
-				D5C354B02412EC5100695A84 /* FRCore.xcodeproj */,
+				D525BDF62567650B0012CE33 /* FRCore.xcodeproj */,
 				D5C354822412EBF800695A84 /* FRAuthenticator */,
 				D5C3548D2412EBF900695A84 /* FRAuthenticatorTests */,
 				D5C354812412EBF800695A84 /* Products */,
@@ -713,15 +725,6 @@
 				D5C354A22412EC0600695A84 /* Account.swift */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		D5C354B12412EC5100695A84 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D5C354B72412EC5100695A84 /* FRCore.framework */,
-				D5C354B92412EC5100695A84 /* FRCoreTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		D5C9A1AC24636A5A004D5941 /* Manager */ = {
@@ -842,12 +845,12 @@
 				D5C3547C2412EBF800695A84 /* Sources */,
 				D5C3547D2412EBF800695A84 /* Frameworks */,
 				D5C3547E2412EBF800695A84 /* Resources */,
-				D52D5C2C2412EC6C00835035 /* Embed Frameworks */,
+				D5D34ED525676408008065FD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D52D5C252412EC6500835035 /* PBXTargetDependency */,
+				D525BE00256765130012CE33 /* PBXTargetDependency */,
 			);
 			name = FRAuthenticator;
 			productName = FRAuthenticator;
@@ -904,8 +907,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D5C354B12412EC5100695A84 /* Products */;
-					ProjectRef = D5C354B02412EC5100695A84 /* FRCore.xcodeproj */;
+					ProductGroup = D525BDF72567650B0012CE33 /* Products */;
+					ProjectRef = D525BDF62567650B0012CE33 /* FRCore.xcodeproj */;
 				},
 				{
 					ProductGroup = D5B68CEC248CDDB200CD2F5B /* Products */;
@@ -921,25 +924,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D525BDFC2567650B0012CE33 /* FRCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRCore.framework;
+			remoteRef = D525BDFB2567650B0012CE33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D525BDFE2567650B0012CE33 /* FRCoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRCoreTests.xctest;
+			remoteRef = D525BDFD2567650B0012CE33 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D5B68CF2248CDDB300CD2F5B /* FRTestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = FRTestHost.app;
 			remoteRef = D5B68CF1248CDDB300CD2F5B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D5C354B72412EC5100695A84 /* FRCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FRCore.framework;
-			remoteRef = D5C354B62412EC5100695A84 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D5C354B92412EC5100695A84 /* FRCoreTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FRCoreTests.xctest;
-			remoteRef = D5C354B82412EC5100695A84 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1038,6 +1041,7 @@
 			files = (
 				D5E308A024739E6C00724502 /* OathTokenCode.swift in Sources */,
 				D5E3089B247384E500724502 /* OathMechanism.swift in Sources */,
+				D5E7B1D3256C60B100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D53FBFA42464CC960019CC1A /* AuthenticatorManager.swift in Sources */,
 				D5D1DC0D2465E0B10004B4CB /* DummyStorageClient.swift in Sources */,
 				D53FBFA52464CC960019CC1A /* URLUtil.swift in Sources */,
@@ -1116,10 +1120,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D52D5C252412EC6500835035 /* PBXTargetDependency */ = {
+		D525BE00256765130012CE33 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FRCore;
-			targetProxy = D52D5C242412EC6500835035 /* PBXContainerItemProxy */;
+			targetProxy = D525BDFF256765130012CE33 /* PBXContainerItemProxy */;
 		};
 		D5B68CF4248CDDC700CD2F5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

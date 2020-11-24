@@ -13,7 +13,7 @@ import XCTest
 class CallbackBaseTest: FRAuthBaseTest {
     
     override func setUp() {
-        self.configFileName = "Config-Live"
+        self.configFileName = "Config-live-01"
         self.config.authServiceName = "UsernamePassword"
         super.setUp()
         self.shouldLoadMockResponses = false;

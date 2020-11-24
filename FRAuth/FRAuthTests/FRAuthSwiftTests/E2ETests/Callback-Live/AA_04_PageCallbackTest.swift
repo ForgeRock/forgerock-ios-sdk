@@ -13,7 +13,7 @@ import XCTest
 class AA_04_PageCallbackTest: FRAuthBaseTest {
     
     override func setUp() {
-        self.configFileName = "Config-Live"
+        self.configFileName = "Config-live-01"
         super.setUp()
         self.config.authServiceName = "PageCallbackTest"
         self.shouldLoadMockResponses = false;

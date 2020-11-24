@@ -25,6 +25,7 @@
 		D59FAE89234415AF005D34DA /* LocationCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE87234415AF005D34DA /* LocationCollector.swift */; };
 		D59FAE8A234415AF005D34DA /* BluetoothCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE88234415AF005D34DA /* BluetoothCollector.swift */; };
 		D59FAE9F234418BD005D34DA /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE40234413F3005D34DA /* FRAuth.framework */; };
+		D5AFD0802568D76B005E69FA /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D5AFD07F2568D76B005E69FA /* Config-live-01.json */; };
 		D5C3339F2560E91F00CC6C19 /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333672560E91F00CC6C19 /* CustomCallback.swift */; };
 		D5C333A02560E91F00CC6C19 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333692560E91F00CC6C19 /* NoSessionInterceptor.swift */; };
 		D5C333A12560E91F00CC6C19 /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D5C3336B2560E91F00CC6C19 /* 01-cert.cert */; };
@@ -65,7 +66,6 @@
 		D5C333C42560E91F00CC6C19 /* AccessToken2.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333932560E91F00CC6C19 /* AccessToken2.json */; };
 		D5C333C52560E91F00CC6C19 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333952560E91F00CC6C19 /* Config.json */; };
 		D5C333C62560E91F00CC6C19 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333962560E91F00CC6C19 /* Config.swift */; };
-		D5C333C72560E91F00CC6C19 /* Config-Live.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333972560E91F00CC6C19 /* Config-Live.json */; };
 		D5C333C82560E91F00CC6C19 /* FRAuthBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333992560E91F00CC6C19 /* FRAuthBaseTest.swift */; };
 		D5C333C92560E91F00CC6C19 /* FRBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C3339A2560E91F00CC6C19 /* FRBaseTestCase.swift */; };
 		D5C333CA2560E91F00CC6C19 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */; };
@@ -76,6 +76,7 @@
 		D5C333E22560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */; };
 		D5C333E32560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */; };
 		D5C333E42560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */; };
+		D5E7B1CC256C60A100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */; };
 		D5F1337B24EDBDAD00737F14 /* FRLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */; };
 		D5F1337F24EDCAB800737F14 /* FRPLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337E24EDCAB800737F14 /* FRPLog.swift */; };
 /* End PBXBuildFile section */
@@ -142,6 +143,7 @@
 		D59FAE81234414DB005D34DA /* FRProximity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRProximity.swift; sourceTree = "<group>"; };
 		D59FAE87234415AF005D34DA /* LocationCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCollector.swift; sourceTree = "<group>"; };
 		D59FAE88234415AF005D34DA /* BluetoothCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothCollector.swift; sourceTree = "<group>"; };
+		D5AFD07F2568D76B005E69FA /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
 		D5B68CE1248CDD7000CD2F5B /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
 		D5C333672560E91F00CC6C19 /* CustomCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5C333692560E91F00CC6C19 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
@@ -183,7 +185,6 @@
 		D5C333932560E91F00CC6C19 /* AccessToken2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken2.json; sourceTree = "<group>"; };
 		D5C333952560E91F00CC6C19 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
 		D5C333962560E91F00CC6C19 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
-		D5C333972560E91F00CC6C19 /* Config-Live.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-Live.json"; sourceTree = "<group>"; };
 		D5C333992560E91F00CC6C19 /* FRAuthBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAuthBaseTest.swift; sourceTree = "<group>"; };
 		D5C3339A2560E91F00CC6C19 /* FRBaseTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRBaseTestCase.swift; sourceTree = "<group>"; };
 		D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
@@ -194,6 +195,7 @@
 		D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeLocationOnly.json; sourceTree = "<group>"; };
 		D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeNone.json; sourceTree = "<group>"; };
 		D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeWithMessage.json; sourceTree = "<group>"; };
+		D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLocationManager.swift; sourceTree = "<group>"; };
 		D5F1337E24EDCAB800737F14 /* FRPLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRPLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -470,9 +472,9 @@
 		D5C333942560E91F00CC6C19 /* TestConfig */ = {
 			isa = PBXGroup;
 			children = (
+				D5AFD07F2568D76B005E69FA /* Config-live-01.json */,
 				D5C333952560E91F00CC6C19 /* Config.json */,
 				D5C333962560E91F00CC6C19 /* Config.swift */,
-				D5C333972560E91F00CC6C19 /* Config-Live.json */,
 			);
 			path = TestConfig;
 			sourceTree = "<group>";
@@ -489,6 +491,7 @@
 		D5C3339B2560E91F00CC6C19 /* TestUtil */ = {
 			isa = PBXGroup;
 			children = (
+				D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */,
 				D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */,
 				D5C3339D2560E91F00CC6C19 /* FRTestUtils.swift */,
 				D5C3339E2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift */,
@@ -656,6 +659,7 @@
 				D5C333AC2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidClient.json in Resources */,
 				D5C333E22560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
 				D5C333BF2560E91F00CC6C19 /* AuthTree_KBACreateNode.json in Resources */,
+				D5AFD0802568D76B005E69FA /* Config-live-01.json in Resources */,
 				D5C333C52560E91F00CC6C19 /* Config.json in Resources */,
 				D5C333B92560E91F00CC6C19 /* AuthTree_AuthTimedOut.json in Resources */,
 				D502100E246A248600A45A51 /* DeviceCollectorNodeTree.png in Resources */,
@@ -668,7 +672,6 @@
 				D5C333BC2560E91F00CC6C19 /* AuthTree_KBAVerificationNode.json in Resources */,
 				D5C333C02560E91F00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
 				D5C333A52560E91F00CC6C19 /* AM_Session_Logout_Success.json in Resources */,
-				D5C333C72560E91F00CC6C19 /* Config-Live.json in Resources */,
 				D5C333A82560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */,
 				D5C333C42560E91F00CC6C19 /* AccessToken2.json in Resources */,
 				D5C333E12560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeAll.json in Resources */,
@@ -723,6 +726,7 @@
 				D5C333C92560E91F00CC6C19 /* FRBaseTestCase.swift in Sources */,
 				D548ECB0246A108E002DE328 /* FRProximityTests.swift in Sources */,
 				D502101C246A304D00A45A51 /* DeviceProfileCallbackTests.swift in Sources */,
+				D5E7B1CC256C60A100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D54B7502246B51C500E6394E /* CustomCollector.swift in Sources */,
 				D5143C22246A191100B5DE80 /* LocationCollectorTests.swift in Sources */,
 			);
