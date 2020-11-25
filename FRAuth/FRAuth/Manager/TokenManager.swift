@@ -53,7 +53,7 @@ struct TokenManager {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 if let ssoToken = self.sessionManager.getSSOToken()?.value, ssoToken != token.sessionToken {
                     FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                    self.revoke { (error) in
+                    self.revokeAndEndSession { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
                         self.refreshUsingSSOToken(completion: completion)
                     }
@@ -102,7 +102,7 @@ struct TokenManager {
             
             if let ssoToken = self.sessionManager.getSSOToken()?.value, token.sessionToken != ssoToken {
                 FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                self.revoke { (error) in
+                self.revokeAndEndSession { (error) in
                 }
                 FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
                 return try self.refreshUsingSSOTokenAsync()
@@ -140,7 +140,7 @@ struct TokenManager {
             if let token = try self.retrieveAccessTokenFromKeychain() {
                 if let ssoToken = self.sessionManager.getSSOToken()?.value, ssoToken != token.sessionToken {
                     FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                    self.revoke { (error) in
+                    self.revokeAndEndSession { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
                         self.refreshUsingSSOToken(completion: completion)
                     }
@@ -180,7 +180,7 @@ struct TokenManager {
             
             if let ssoToken = self.sessionManager.getSSOToken()?.value, token.sessionToken != ssoToken {
                 FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                self.revoke { (error) in
+                self.revokeAndEndSession { (error) in
                 }
                 FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
                 return try self.refreshUsingSSOTokenAsync()
@@ -229,6 +229,32 @@ struct TokenManager {
     ///   - completion: Completion callback to notify the result
     func endSession(idToken: String, completion: @escaping CompletionCallback) {
         self.oAuth2Client.endSession(idToken: idToken, completion: completion)
+    }
+    
+    
+    
+    /// Ends OIDC Session with given id_token and revokes OAuth2 token(s)
+    /// - Parameter completion: Completion callback to notify the result
+    func revokeAndEndSession(completion: @escaping CompletionCallback) {
+        do {
+            if let token = try self.retrieveAccessTokenFromKeychain() {
+                //  End session if id_token exists
+                if let idToken = token.idToken {
+                    self.endSession(idToken: idToken) { (error) in
+                        FRLog.v("Session ended with given id_token (\(idToken)) using OIDC /endSession - Error: \(error?.localizedDescription ?? "")")
+                    }
+                }
+                
+                //  Revoke OAuth2 token(s)
+                self.revoke(completion: completion)
+            }
+            else {
+                completion(TokenError.nullToken)
+            }
+        }
+        catch {
+            completion(error)
+        }
     }
     
     

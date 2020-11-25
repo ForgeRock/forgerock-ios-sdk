@@ -247,11 +247,16 @@ public class Node: NSObject {
                 else if let tokenId = response[OpenAM.tokenId] as? String {
                     let token = Token(tokenId)
                     if let sessionManager = self.sessionManager, let tokenManager = self.tokenManager {
-                        
                         if let currentSessionToken = sessionManager.getSSOToken(), currentSessionToken.value != token.value {
                             FRLog.w("SDK identified existing Session Token (\(currentSessionToken.value)) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
-                            tokenManager.revoke { (error) in
-                                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(String(describing: error))")
+                            tokenManager.revokeAndEndSession { (error) in
+                                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                            }
+                        }
+                        else if let oauthToken = try? tokenManager.retrieveAccessTokenFromKeychain(), oauthToken.sessionToken != token.value {
+                            FRLog.w("SDK identified existing Session (\(oauthToken.sessionToken ?? "")) associated with OAuth2 AccessToken and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
+                            tokenManager.revokeAndEndSession { (error) in
+                                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
                             }
                         }
                         sessionManager.setSSOToken(ssoToken: token)
