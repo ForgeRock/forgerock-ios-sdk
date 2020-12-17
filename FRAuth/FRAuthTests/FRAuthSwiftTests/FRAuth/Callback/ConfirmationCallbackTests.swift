@@ -10,7 +10,7 @@
 
 import XCTest
 
-class ConfirmationCallbackTests: FRBaseTest {
+class ConfirmationCallbackTests: FRAuthBaseTest {
     
     func test_01_CallbackConstruction_Successful() {
         

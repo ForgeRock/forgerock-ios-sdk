@@ -11,7 +11,7 @@
 
 import XCTest
 
-class SecuredKeyTests: FRCoreBaseTest {
+class SecuredKeyTests: FRBaseTestCase {
     
     let applicationTag1 = "application_tag_one"
     let applicationTag2 = "application_tag_two"

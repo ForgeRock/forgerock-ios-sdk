@@ -10,7 +10,7 @@
 
 import XCTest
 
-class ReCaptchaCallbackTests: FRBaseTest {
+class ReCaptchaCallbackTests: FRAuthBaseTest {
 
     func test_01_CallbackConstruction_Successful() {
         

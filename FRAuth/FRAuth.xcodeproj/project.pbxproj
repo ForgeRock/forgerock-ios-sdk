@@ -15,23 +15,11 @@
 		D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D513F17824DA87B10042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D513F17A24DA91630042228B /* AuthApiErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17924DA91630042228B /* AuthApiErrorTests.swift */; };
-		D513F17D24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json in Resources */ = {isa = PBXBuildFile; fileRef = D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */; };
-		D513F17E24DA9B4D0042228B /* AuthTree_AuthTimedOut.json in Resources */ = {isa = PBXBuildFile; fileRef = D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */; };
-		D5167288231EFE28007053EE /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167287231EFE28007053EE /* CustomCallback.swift */; };
 		D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167289231F0408007053EE /* CustomCallbackTests.swift */; };
 		D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516728D231F1E48007053EE /* NodeFlowTests.swift */; };
 		D51672A62321AB21007053EE /* ObjcFRURLProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D51672A52321AB21007053EE /* ObjcFRURLProtocolTests.m */; };
 		D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
-		D52D162823147FE70095905A /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162723147FE70095905A /* FRTestUtils.swift */; };
-		D52D165D231484D60095905A /* SecondFactorFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D162C231484D60095905A /* SecondFactorFlowTests.swift */; };
-		D52D165E231484D60095905A /* SecondFactorFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D52D162D231484D60095905A /* SecondFactorFlow.png */; };
-		D52D165F231484D60095905A /* KBAAuthenticationFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D52D162F231484D60095905A /* KBAAuthenticationFlow.png */; };
-		D52D1660231484D60095905A /* KBAAuthenticationFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1630231484D60095905A /* KBAAuthenticationFlowTests.swift */; };
-		D52D1661231484D60095905A /* UserSignUpFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1632231484D60095905A /* UserSignUpFlowTests.swift */; };
-		D52D1662231484D60095905A /* UserSignUpFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D52D1633231484D60095905A /* UserSignUpFlow.png */; };
-		D52D1663231484D60095905A /* UsernamePasswordFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D52D1635231484D60095905A /* UsernamePasswordFlow.png */; };
-		D52D1664231484D60095905A /* UsernamePasswordFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1636231484D60095905A /* UsernamePasswordFlowTests.swift */; };
 		D52D1665231484D60095905A /* ServerConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1639231484D60095905A /* ServerConfigTests.swift */; };
 		D52D1667231484D60095905A /* AuthServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D163D231484D60095905A /* AuthServiceTests.swift */; };
 		D52D1668231484D60095905A /* NodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D163E231484D60095905A /* NodeTests.swift */; };
@@ -64,37 +52,10 @@
 		D52D169C231493B50095905A /* ObjcSecondFactorFlowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D52D169B231493B50095905A /* ObjcSecondFactorFlowTests.m */; };
 		D52D16A6231499B70095905A /* ObjcServerConfigTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D52D16A5231499B70095905A /* ObjcServerConfigTests.m */; };
 		D52D16A823149D3F0095905A /* ObjcFRUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D52D16A723149D3F0095905A /* ObjcFRUserTests.m */; };
-		D530180D23D651FE0026298B /* AuthTree_SSOToken_Success2.json in Resources */ = {isa = PBXBuildFile; fileRef = D530180C23D651FE0026298B /* AuthTree_SSOToken_Success2.json */; };
-		D53310522301216A00F1F851 /* AM_Session_Logout_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310442301216A00F1F851 /* AM_Session_Logout_Success.json */; };
-		D53310532301216A00F1F851 /* OAuth2_Token_Revoke_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310462301216A00F1F851 /* OAuth2_Token_Revoke_Success.json */; };
-		D53310542301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310472301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json */; };
-		D53310552301216A00F1F851 /* OAuth2_Token_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310482301216A00F1F851 /* OAuth2_Token_Success.json */; };
-		D53310562301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104A2301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json */; };
-		D53310572301216A00F1F851 /* AuthTree_SSOToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104B2301216A00F1F851 /* AuthTree_SSOToken_Success.json */; };
-		D53310582301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104C2301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json */; };
-		D53310592301216A00F1F851 /* AuthTree_SecondFactorChoiceNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104D2301216A00F1F851 /* AuthTree_SecondFactorChoiceNode.json */; };
-		D533105A2301216A00F1F851 /* AuthTree_UsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104E2301216A00F1F851 /* AuthTree_UsernamePasswordNode.json */; };
-		D533105B2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D533104F2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json */; };
-		D533105C2301216A00F1F851 /* AuthTree_KBACreateNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310502301216A00F1F851 /* AuthTree_KBACreateNode.json */; };
-		D533105D2301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D53310512301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json */; };
 		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
 		D533270D24806687002FF207 /* AuthorizationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270C24806687002FF207 /* AuthorizationPolicy.swift */; };
 		D534A2C822FBD880007098D1 /* FRAuth.h in Sources */ = {isa = PBXBuildFile; fileRef = D55462FB22A6DF720096C7A4 /* FRAuth.h */; };
-		D534A2CB22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A2CA22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift */; };
-		D534A2CD22FBE08C007098D1 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A2CC22FBE08C007098D1 /* FRTestStubResponseParser.swift */; };
-		D534A2D422FBF1EB007098D1 /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D534A2D022FBF1EB007098D1 /* 01-cert.cert */; };
-		D534A2D522FBF1EB007098D1 /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D534A2D122FBF1EB007098D1 /* 01-pkey.key */; };
-		D534A2D622FBF1EB007098D1 /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D534A2D222FBF1EB007098D1 /* 02-pkey.pem */; };
-		D534A2D722FBF1EB007098D1 /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D534A2D322FBF1EB007098D1 /* 02-cert.pem */; };
 		D535650022CD6F68003972AB /* FRAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632122A6EDF90096C7A4 /* FRAuth.swift */; };
-		D539587C2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D539587B2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json */; };
-		D539589F23021876009CA2BC /* AccessToken2.json in Resources */ = {isa = PBXBuildFile; fileRef = D539589D23021876009CA2BC /* AccessToken2.json */; };
-		D53958A023021876009CA2BC /* AccessToken.json in Resources */ = {isa = PBXBuildFile; fileRef = D539589E23021876009CA2BC /* AccessToken.json */; };
-		D53958A2230218DA009CA2BC /* AccessTokenNoRefresh.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A1230218DA009CA2BC /* AccessTokenNoRefresh.json */; };
-		D53958A423022C92009CA2BC /* AM_Session_Logout_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A323022C92009CA2BC /* AM_Session_Logout_Failure.json */; };
-		D53958A623022FA4009CA2BC /* OAuth2_UserInfo_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A523022FA4009CA2BC /* OAuth2_UserInfo_Success.json */; };
-		D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A72302318E009CA2BC /* OAuth2_UserInfo_Failure.json */; };
-		D53958AA2302376D009CA2BC /* OAuth2_Token_Refresh_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D53958A92302376C009CA2BC /* OAuth2_Token_Refresh_Success.json */; };
 		D54237BA23358F8F009C868F /* TermsAndConditionsCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4123358EDF007A2194 /* TermsAndConditionsCallback.swift */; };
 		D54237BB23358F8F009C868F /* NameCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4223358EDF007A2194 /* NameCallback.swift */; };
 		D54237BC23358F8F009C868F /* PasswordCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4323358EDF007A2194 /* PasswordCallback.swift */; };
@@ -155,8 +116,6 @@
 		D54237FF23358F8F009C868F /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5E23358EE0007A2194 /* UserInfo.swift */; };
 		D542380023358F8F009C868F /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF5F23358EE0007A2194 /* Address.swift */; };
 		D542380123358F8F009C868F /* FRUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF6023358EE0007A2194 /* FRUser.swift */; };
-		D553B91122FCBAF600FC0734 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D553B91022FCBAF600FC0734 /* Config.swift */; };
-		D553B91322FCBE7C00FC0734 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D553B91222FCBE7C00FC0734 /* Config.json */; };
 		D554630222A6DF720096C7A4 /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D55462F822A6DF720096C7A4 /* FRAuth.framework */; };
 		D554630922A6DF720096C7A4 /* FRAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = D55462FB22A6DF720096C7A4 /* FRAuth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D554632222A6EDF90096C7A4 /* FRAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632122A6EDF90096C7A4 /* FRAuth.swift */; };
@@ -227,6 +186,84 @@
 		D586CFBE23358EE0007A2194 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF7423358EE0007A2194 /* KeychainManager.swift */; };
 		D586CFBF23358EE0007A2194 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF7523358EE0007A2194 /* TokenManager.swift */; };
 		D586CFC023358EE0007A2194 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF7623358EE0007A2194 /* SessionManager.swift */; };
+		D5888C2825664E920041FD94 /* AA_00_RegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C0E25664E920041FD94 /* AA_00_RegistrationTests.swift */; };
+		D5888C2925664E920041FD94 /* Registration.png in Resources */ = {isa = PBXBuildFile; fileRef = D5888C0F25664E920041FD94 /* Registration.png */; };
+		D5888C2A25664E920041FD94 /* AA_03_SecondFactorAuthenticationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1125664E920041FD94 /* AA_03_SecondFactorAuthenticationTests.swift */; };
+		D5888C2B25664E920041FD94 /* SecondFactorFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D5888C1225664E920041FD94 /* SecondFactorFlow.png */; };
+		D5888C2C25664E920041FD94 /* AA_04_PageCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1425664E920041FD94 /* AA_04_PageCallbackTest.swift */; };
+		D5888C2D25664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1525664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift */; };
+		D5888C2E25664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1625664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift */; };
+		D5888C2F25664E920041FD94 /* AA_04_ConfirmationCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1725664E920041FD94 /* AA_04_ConfirmationCallbackTest.swift */; };
+		D5888C3025664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1825664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift */; };
+		D5888C3125664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1925664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift */; };
+		D5888C3225664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1A25664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift */; };
+		D5888C3325664E920041FD94 /* CallbackBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */; };
+		D5888C3425664E920041FD94 /* AA_04_PageCallback65Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1C25664E920041FD94 /* AA_04_PageCallback65Test.swift */; };
+		D5888C3525664E920041FD94 /* AA_04_ChoiceCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1D25664E920041FD94 /* AA_04_ChoiceCallbackTest.swift */; };
+		D5888C3625664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1E25664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift */; };
+		D5888C3725664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C1F25664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift */; };
+		D5888C3825664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C2025664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift */; };
+		D5888C3925664E920041FD94 /* KBAAuthenticationFlow.png in Resources */ = {isa = PBXBuildFile; fileRef = D5888C2225664E920041FD94 /* KBAAuthenticationFlow.png */; };
+		D5888C3A25664E920041FD94 /* AA_02_KBAAuthenticationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C2325664E920041FD94 /* AA_02_KBAAuthenticationTests.swift */; };
+		D5888C3B25664E930041FD94 /* Login.png in Resources */ = {isa = PBXBuildFile; fileRef = D5888C2525664E920041FD94 /* Login.png */; };
+		D5888C3C25664E930041FD94 /* AA_01_LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C2625664E920041FD94 /* AA_01_LoginTests.swift */; };
+		D5888C8825664EDF0041FD94 /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C4425664EDF0041FD94 /* CustomCallback.swift */; };
+		D5888C8925664EDF0041FD94 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C4625664EDF0041FD94 /* NoSessionInterceptor.swift */; };
+		D5888C8A25664EDF0041FD94 /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D5888C4825664EDF0041FD94 /* 01-cert.cert */; };
+		D5888C8B25664EDF0041FD94 /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5888C4925664EDF0041FD94 /* 01-pkey.key */; };
+		D5888C8C25664EDF0041FD94 /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5888C4A25664EDF0041FD94 /* 02-pkey.pem */; };
+		D5888C8D25664EDF0041FD94 /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5888C4B25664EDF0041FD94 /* 02-cert.pem */; };
+		D5888C8E25664EDF0041FD94 /* AM_Session_Logout_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C4E25664EDF0041FD94 /* AM_Session_Logout_Success.json */; };
+		D5888C8F25664EDF0041FD94 /* AM_Session_Logout_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C4F25664EDF0041FD94 /* AM_Session_Logout_Failure.json */; };
+		D5888C9025664EDF0041FD94 /* OAuth2_EndSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5125664EDF0041FD94 /* OAuth2_EndSession_Success.json */; };
+		D5888C9125664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5225664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Failure.json */; };
+		D5888C9225664EDF0041FD94 /* OAuth2_Token_Failure_InvalidGrant.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5325664EDF0041FD94 /* OAuth2_Token_Failure_InvalidGrant.json */; };
+		D5888C9325664EDF0041FD94 /* OAuth2_Token_Revoke_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5425664EDF0041FD94 /* OAuth2_Token_Revoke_Success.json */; };
+		D5888C9425664EDF0041FD94 /* OAuth2_UserInfo_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5525664EDF0041FD94 /* OAuth2_UserInfo_Success.json */; };
+		D5888C9525664EDF0041FD94 /* OAuth2_Token_Failure_InvalidClient.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5625664EDF0041FD94 /* OAuth2_Token_Failure_InvalidClient.json */; };
+		D5888C9625664EDF0041FD94 /* OAuth2_Token_Failure_InvalidScope.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5725664EDF0041FD94 /* OAuth2_Token_Failure_InvalidScope.json */; };
+		D5888C9725664EDF0041FD94 /* OAuth2_UserInfo_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5825664EDF0041FD94 /* OAuth2_UserInfo_Failure.json */; };
+		D5888C9825664EDF0041FD94 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5925664EDF0041FD94 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */; };
+		D5888C9925664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5A25664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Success.json */; };
+		D5888C9A25664EDF0041FD94 /* OAuth2_Token_Refresh_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5B25664EDF0041FD94 /* OAuth2_Token_Refresh_Success.json */; };
+		D5888C9B25664EDF0041FD94 /* OAuth2_EndSession_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5C25664EDF0041FD94 /* OAuth2_EndSession_Failure.json */; };
+		D5888C9C25664EDF0041FD94 /* OAuth2_Token_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5D25664EDF0041FD94 /* OAuth2_Token_Success.json */; };
+		D5888C9D25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeAll.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C5F25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeAll.json */; };
+		D5888C9E25664EDF0041FD94 /* AuthTree_SSOToken_Success2.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6025664EDF0041FD94 /* AuthTree_SSOToken_Success2.json */; };
+		D5888C9F25664EDF0041FD94 /* AuthTree_TermsAndConditionsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6125664EDF0041FD94 /* AuthTree_TermsAndConditionsNode.json */; };
+		D5888CA025664EDF0041FD94 /* AuthTree_SSOToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6225664EDF0041FD94 /* AuthTree_SSOToken_Success.json */; };
+		D5888CA125664EDF0041FD94 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6325664EDF0041FD94 /* AuthTree_NoSession_Success.json */; };
+		D5888CA225664EDF0041FD94 /* AM_Push_Authentication_Fail.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6425664EDF0041FD94 /* AM_Push_Authentication_Fail.json */; };
+		D5888CA325664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6525664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */; };
+		D5888CA425664EDF0041FD94 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6625664EDF0041FD94 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
+		D5888CA525664EDF0041FD94 /* AM_Push_Registration_Successful.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6725664EDF0041FD94 /* AM_Push_Registration_Successful.json */; };
+		D5888CA625664EDF0041FD94 /* AuthTree_AuthTimedOut.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6825664EDF0041FD94 /* AuthTree_AuthTimedOut.json */; };
+		D5888CA725664EDF0041FD94 /* AuthTree_SecondFactorOTPNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6925664EDF0041FD94 /* AuthTree_SecondFactorOTPNode.json */; };
+		D5888CA825664EDF0041FD94 /* AuthTree_SecondFactorChoiceNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6A25664EDF0041FD94 /* AuthTree_SecondFactorChoiceNode.json */; };
+		D5888CA925664EDF0041FD94 /* AuthTree_KBAVerificationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6B25664EDF0041FD94 /* AuthTree_KBAVerificationNode.json */; };
+		D5888CAA25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6C25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json */; };
+		D5888CAB25664EDF0041FD94 /* AuthTree_LoginNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6D25664EDF0041FD94 /* AuthTree_LoginNode.json */; };
+		D5888CAC25664EDF0041FD94 /* AuthTree_UsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6E25664EDF0041FD94 /* AuthTree_UsernamePasswordNode.json */; };
+		D5888CAD25664EDF0041FD94 /* AM_Push_Authentication_Successful.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C6F25664EDF0041FD94 /* AM_Push_Authentication_Successful.json */; };
+		D5888CAE25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7025664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json */; };
+		D5888CAF25664EDF0041FD94 /* AuthTree_RegistrationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7125664EDF0041FD94 /* AuthTree_RegistrationNode.json */; };
+		D5888CB025664EDF0041FD94 /* AuthTree_DeviceCollectorNodeNone.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7225664EDF0041FD94 /* AuthTree_DeviceCollectorNodeNone.json */; };
+		D5888CB125664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7325664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json */; };
+		D5888CB225664EDF0041FD94 /* AuthTree_AttributeCollectorsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7425664EDF0041FD94 /* AuthTree_AttributeCollectorsNode.json */; };
+		D5888CB325664EDF0041FD94 /* AuthTree_KBACreateNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7525664EDF0041FD94 /* AuthTree_KBACreateNode.json */; };
+		D5888CB425664EDF0041FD94 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7625664EDF0041FD94 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */; };
+		D5888CB525664EDF0041FD94 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7725664EDF0041FD94 /* AuthTree_PlatformUsernamePasswordNode.json */; };
+		D5888CB625664EDF0041FD94 /* AuthTree_SuspendedAuthSessionException.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7825664EDF0041FD94 /* AuthTree_SuspendedAuthSessionException.json */; };
+		D5888CB725664EDF0041FD94 /* AccessTokenNoRefresh.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7A25664EDF0041FD94 /* AccessTokenNoRefresh.json */; };
+		D5888CB825664EDF0041FD94 /* AccessToken.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7B25664EDF0041FD94 /* AccessToken.json */; };
+		D5888CB925664EDF0041FD94 /* AccessToken2.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7C25664EDF0041FD94 /* AccessToken2.json */; };
+		D5888CBA25664EDF0041FD94 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D5888C7E25664EDF0041FD94 /* Config.json */; };
+		D5888CBB25664EDF0041FD94 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C7F25664EDF0041FD94 /* Config.swift */; };
+		D5888CBD25664EDF0041FD94 /* FRAuthBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8225664EDF0041FD94 /* FRAuthBaseTest.swift */; };
+		D5888CBE25664EDF0041FD94 /* FRBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8325664EDF0041FD94 /* FRBaseTestCase.swift */; };
+		D5888CBF25664EDF0041FD94 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8525664EDF0041FD94 /* FRTestStubResponseParser.swift */; };
+		D5888CC025664EDF0041FD94 /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8625664EDF0041FD94 /* FRTestUtils.swift */; };
+		D5888CC125664EDF0041FD94 /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5888C8725664EDF0041FD94 /* FRTestNetworkStubProtocol.swift */; };
 		D58A5EF123CFEC84009D9328 /* FRSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BE349423CD2F38005873BB /* FRSession.swift */; };
 		D592481F232865D30027031A /* ReCaptchaCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592481E232865D30027031A /* ReCaptchaCallbackTests.swift */; };
 		D592482123286B3F0027031A /* TextOutputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592482023286B3F0027031A /* TextOutputCallbackTests.swift */; };
@@ -235,6 +272,7 @@
 		D5AF374823FB6F370035FE77 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3923F4C65800557AA8 /* AuthService.swift */; };
 		D5AF374923FB6F370035FE77 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3A23F4C65800557AA8 /* Node.swift */; };
 		D5AF374A23FB6F380035FE77 /* PolicyAdvice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */; };
+		D5AFD0792568D352005E69FA /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D5AFD0782568D352005E69FA /* Config-live-01.json */; };
 		D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */; };
 		D5B2A37E23FC951700764370 /* HiddenValueCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */; };
 		D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */; };
@@ -248,17 +286,26 @@
 		D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */; };
 		D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */; };
 		D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
-		D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */; };
-		D5C64E652489925300CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */; };
 		D5C64E672489B21600CB7EB3 /* CookieValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */; };
+		D5C6DB682509747D00E1A857 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C6DB672509747D00E1A857 /* Browser.swift */; };
+		D5C8641A252E880D00268F06 /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C86419252E880D00268F06 /* OAuth2Error.swift */; };
+		D5C8641E252EE87800268F06 /* OAuth2Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C86419252E880D00268F06 /* OAuth2Error.swift */; };
+		D5C8642C252EEE2900268F06 /* OAuth2ErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C8642B252EEE2900268F06 /* OAuth2ErrorTests.swift */; };
 		D5C87B442491920F000F2F75 /* AuthErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B432491920F000F2F75 /* AuthErrorTests.swift */; };
 		D5C87B4624919969000F2F75 /* ConfigErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */; };
 		D5C87B4824919A0D000F2F75 /* TokenErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */; };
 		D5C87B4B2491A2CF000F2F75 /* FRURLProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C87B4A2491A2CF000F2F75 /* FRURLProtocolTests.swift */; };
-		D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */; };
 		D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BEA2409DF6E005F589F /* FRCore.framework */; };
+		D5CD493225265FF8006DD932 /* BrowserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD493125265FF8006DD932 /* BrowserError.swift */; };
+		D5CD493725266A2C006DD932 /* BrowserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */; };
+		D5CD493A25266A5E006DD932 /* BrowserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD493125265FF8006DD932 /* BrowserError.swift */; };
+		D5CD493B25266A5E006DD932 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C6DB672509747D00E1A857 /* Browser.swift */; };
+		D5CD4942252689E2006DD932 /* BrowserBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD4941252689E2006DD932 /* BrowserBuilderTests.swift */; };
+		D5CD494625268BCD006DD932 /* BrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD494525268BCD006DD932 /* BrowserTests.swift */; };
+		D5CDB7232527CB1800D7BA49 /* FRUserBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */; };
 		D5DE4BB12488AFD000FE2654 /* PolicyAdviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */; };
+		D5E7B1C0256C5F0100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1BF256C5F0100DF2AB6 /* FRTestLogger.swift */; };
 		D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */; };
 		D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */; };
 		D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */; };
@@ -331,22 +378,10 @@
 		D512CD40240DC41E00AF520E /* FRRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRestClient.swift; sourceTree = "<group>"; };
 		D513F17424DA6B490042228B /* AuthApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiError.swift; sourceTree = "<group>"; };
 		D513F17924DA91630042228B /* AuthApiErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApiErrorTests.swift; sourceTree = "<group>"; };
-		D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SuspendedAuthSessionException.json; sourceTree = "<group>"; };
-		D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AuthTimedOut.json; sourceTree = "<group>"; };
-		D5167287231EFE28007053EE /* CustomCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		D5167289231F0408007053EE /* CustomCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCallbackTests.swift; sourceTree = "<group>"; };
 		D516728D231F1E48007053EE /* NodeFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeFlowTests.swift; sourceTree = "<group>"; };
 		D51672A52321AB21007053EE /* ObjcFRURLProtocolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRURLProtocolTests.m; sourceTree = "<group>"; };
 		D52D1626231478D10095905A /* FRObjcTestBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRObjcTestBridgingHeader.h; sourceTree = "<group>"; };
-		D52D162723147FE70095905A /* FRTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestUtils.swift; sourceTree = "<group>"; };
-		D52D162C231484D60095905A /* SecondFactorFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorFlowTests.swift; sourceTree = "<group>"; };
-		D52D162D231484D60095905A /* SecondFactorFlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SecondFactorFlow.png; sourceTree = "<group>"; };
-		D52D162F231484D60095905A /* KBAAuthenticationFlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBAAuthenticationFlow.png; sourceTree = "<group>"; };
-		D52D1630231484D60095905A /* KBAAuthenticationFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KBAAuthenticationFlowTests.swift; sourceTree = "<group>"; };
-		D52D1632231484D60095905A /* UserSignUpFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSignUpFlowTests.swift; sourceTree = "<group>"; };
-		D52D1633231484D60095905A /* UserSignUpFlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UserSignUpFlow.png; sourceTree = "<group>"; };
-		D52D1635231484D60095905A /* UsernamePasswordFlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UsernamePasswordFlow.png; sourceTree = "<group>"; };
-		D52D1636231484D60095905A /* UsernamePasswordFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernamePasswordFlowTests.swift; sourceTree = "<group>"; };
 		D52D1639231484D60095905A /* ServerConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerConfigTests.swift; sourceTree = "<group>"; };
 		D52D163D231484D60095905A /* AuthServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthServiceTests.swift; sourceTree = "<group>"; };
 		D52D163E231484D60095905A /* NodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeTests.swift; sourceTree = "<group>"; };
@@ -380,37 +415,8 @@
 		D52D169B231493B50095905A /* ObjcSecondFactorFlowTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcSecondFactorFlowTests.m; sourceTree = "<group>"; };
 		D52D16A5231499B70095905A /* ObjcServerConfigTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcServerConfigTests.m; sourceTree = "<group>"; };
 		D52D16A723149D3F0095905A /* ObjcFRUserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcFRUserTests.m; sourceTree = "<group>"; };
-		D530180C23D651FE0026298B /* AuthTree_SSOToken_Success2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success2.json; sourceTree = "<group>"; };
-		D53310442301216A00F1F851 /* AM_Session_Logout_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Success.json; sourceTree = "<group>"; };
-		D53310462301216A00F1F851 /* OAuth2_Token_Revoke_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Revoke_Success.json; sourceTree = "<group>"; };
-		D53310472301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Success.json; sourceTree = "<group>"; };
-		D53310482301216A00F1F851 /* OAuth2_Token_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Success.json; sourceTree = "<group>"; };
-		D533104A2301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_TermsAndConditionsNode.json; sourceTree = "<group>"; };
-		D533104B2301216A00F1F851 /* AuthTree_SSOToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success.json; sourceTree = "<group>"; };
-		D533104C2301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorOTPNode.json; sourceTree = "<group>"; };
-		D533104D2301216A00F1F851 /* AuthTree_SecondFactorChoiceNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorChoiceNode.json; sourceTree = "<group>"; };
-		D533104E2301216A00F1F851 /* AuthTree_UsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNode.json; sourceTree = "<group>"; };
-		D533104F2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AttributeCollectorsNode.json; sourceTree = "<group>"; };
-		D53310502301216A00F1F851 /* AuthTree_KBACreateNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBACreateNode.json; sourceTree = "<group>"; };
-		D53310512301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_PlatformUsernamePasswordNode.json; sourceTree = "<group>"; };
 		D533270A24806665002FF207 /* TokenManagementPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicy.swift; sourceTree = "<group>"; };
 		D533270C24806687002FF207 /* AuthorizationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPolicy.swift; sourceTree = "<group>"; };
-		D534A2CA22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
-		D534A2CC22FBE08C007098D1 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
-		D534A2D022FBF1EB007098D1 /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
-		D534A2D122FBF1EB007098D1 /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
-		D534A2D222FBF1EB007098D1 /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
-		D534A2D322FBF1EB007098D1 /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
-		D539587B2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBAVerificationNode.json; sourceTree = "<group>"; };
-		D539589D23021876009CA2BC /* AccessToken2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken2.json; sourceTree = "<group>"; };
-		D539589E23021876009CA2BC /* AccessToken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken.json; sourceTree = "<group>"; };
-		D53958A1230218DA009CA2BC /* AccessTokenNoRefresh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessTokenNoRefresh.json; sourceTree = "<group>"; };
-		D53958A323022C92009CA2BC /* AM_Session_Logout_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Failure.json; sourceTree = "<group>"; };
-		D53958A523022FA4009CA2BC /* OAuth2_UserInfo_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Success.json; sourceTree = "<group>"; };
-		D53958A72302318E009CA2BC /* OAuth2_UserInfo_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Failure.json; sourceTree = "<group>"; };
-		D53958A92302376C009CA2BC /* OAuth2_Token_Refresh_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_Success.json; sourceTree = "<group>"; };
-		D553B91022FCBAF600FC0734 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
-		D553B91222FCBE7C00FC0734 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
 		D55462F822A6DF720096C7A4 /* FRAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55462FB22A6DF720096C7A4 /* FRAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRAuth.h; sourceTree = "<group>"; };
 		D55462FC22A6DF720096C7A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -484,10 +490,89 @@
 		D586CF7423358EE0007A2194 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		D586CF7523358EE0007A2194 /* TokenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		D586CF7623358EE0007A2194 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		D5888C0E25664E920041FD94 /* AA_00_RegistrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_00_RegistrationTests.swift; sourceTree = "<group>"; };
+		D5888C0F25664E920041FD94 /* Registration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Registration.png; sourceTree = "<group>"; };
+		D5888C1125664E920041FD94 /* AA_03_SecondFactorAuthenticationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_03_SecondFactorAuthenticationTests.swift; sourceTree = "<group>"; };
+		D5888C1225664E920041FD94 /* SecondFactorFlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SecondFactorFlow.png; sourceTree = "<group>"; };
+		D5888C1425664E920041FD94 /* AA_04_PageCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_PageCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1525664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_TermsAndConditionCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1625664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_BooleanAttributeInputCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1725664E920041FD94 /* AA_04_ConfirmationCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_ConfirmationCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1825664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_DeviceProfileCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1925664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_StringAttributeInputCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1A25664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_PollingWaitCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackBaseTest.swift; sourceTree = "<group>"; };
+		D5888C1C25664E920041FD94 /* AA_04_PageCallback65Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_PageCallback65Test.swift; sourceTree = "<group>"; };
+		D5888C1D25664E920041FD94 /* AA_04_ChoiceCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_ChoiceCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1E25664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_ReCaptchaCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C1F25664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_KbaCreateCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C2025664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_04_NumberAttributeInputCallbackTest.swift; sourceTree = "<group>"; };
+		D5888C2225664E920041FD94 /* KBAAuthenticationFlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KBAAuthenticationFlow.png; sourceTree = "<group>"; };
+		D5888C2325664E920041FD94 /* AA_02_KBAAuthenticationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_02_KBAAuthenticationTests.swift; sourceTree = "<group>"; };
+		D5888C2525664E920041FD94 /* Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login.png; sourceTree = "<group>"; };
+		D5888C2625664E920041FD94 /* AA_01_LoginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AA_01_LoginTests.swift; sourceTree = "<group>"; };
+		D5888C4425664EDF0041FD94 /* CustomCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
+		D5888C4625664EDF0041FD94 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
+		D5888C4825664EDF0041FD94 /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
+		D5888C4925664EDF0041FD94 /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
+		D5888C4A25664EDF0041FD94 /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
+		D5888C4B25664EDF0041FD94 /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
+		D5888C4E25664EDF0041FD94 /* AM_Session_Logout_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Success.json; sourceTree = "<group>"; };
+		D5888C4F25664EDF0041FD94 /* AM_Session_Logout_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Failure.json; sourceTree = "<group>"; };
+		D5888C5125664EDF0041FD94 /* OAuth2_EndSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Success.json; sourceTree = "<group>"; };
+		D5888C5225664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Failure.json; sourceTree = "<group>"; };
+		D5888C5325664EDF0041FD94 /* OAuth2_Token_Failure_InvalidGrant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidGrant.json; sourceTree = "<group>"; };
+		D5888C5425664EDF0041FD94 /* OAuth2_Token_Revoke_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Revoke_Success.json; sourceTree = "<group>"; };
+		D5888C5525664EDF0041FD94 /* OAuth2_UserInfo_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Success.json; sourceTree = "<group>"; };
+		D5888C5625664EDF0041FD94 /* OAuth2_Token_Failure_InvalidClient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidClient.json; sourceTree = "<group>"; };
+		D5888C5725664EDF0041FD94 /* OAuth2_Token_Failure_InvalidScope.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidScope.json; sourceTree = "<group>"; };
+		D5888C5825664EDF0041FD94 /* OAuth2_UserInfo_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Failure.json; sourceTree = "<group>"; };
+		D5888C5925664EDF0041FD94 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_No_RefreshToken_Success.json; sourceTree = "<group>"; };
+		D5888C5A25664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Success.json; sourceTree = "<group>"; };
+		D5888C5B25664EDF0041FD94 /* OAuth2_Token_Refresh_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_Success.json; sourceTree = "<group>"; };
+		D5888C5C25664EDF0041FD94 /* OAuth2_EndSession_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Failure.json; sourceTree = "<group>"; };
+		D5888C5D25664EDF0041FD94 /* OAuth2_Token_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Success.json; sourceTree = "<group>"; };
+		D5888C5F25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeAll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeAll.json; sourceTree = "<group>"; };
+		D5888C6025664EDF0041FD94 /* AuthTree_SSOToken_Success2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success2.json; sourceTree = "<group>"; };
+		D5888C6125664EDF0041FD94 /* AuthTree_TermsAndConditionsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_TermsAndConditionsNode.json; sourceTree = "<group>"; };
+		D5888C6225664EDF0041FD94 /* AuthTree_SSOToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success.json; sourceTree = "<group>"; };
+		D5888C6325664EDF0041FD94 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
+		D5888C6425664EDF0041FD94 /* AM_Push_Authentication_Fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Authentication_Fail.json; sourceTree = "<group>"; };
+		D5888C6525664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Fail_Invalid_Signed_JWT.json; sourceTree = "<group>"; };
+		D5888C6625664EDF0041FD94 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
+		D5888C6725664EDF0041FD94 /* AM_Push_Registration_Successful.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Successful.json; sourceTree = "<group>"; };
+		D5888C6825664EDF0041FD94 /* AuthTree_AuthTimedOut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AuthTimedOut.json; sourceTree = "<group>"; };
+		D5888C6925664EDF0041FD94 /* AuthTree_SecondFactorOTPNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorOTPNode.json; sourceTree = "<group>"; };
+		D5888C6A25664EDF0041FD94 /* AuthTree_SecondFactorChoiceNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorChoiceNode.json; sourceTree = "<group>"; };
+		D5888C6B25664EDF0041FD94 /* AuthTree_KBAVerificationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBAVerificationNode.json; sourceTree = "<group>"; };
+		D5888C6C25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeLocationOnly.json; sourceTree = "<group>"; };
+		D5888C6D25664EDF0041FD94 /* AuthTree_LoginNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_LoginNode.json; sourceTree = "<group>"; };
+		D5888C6E25664EDF0041FD94 /* AuthTree_UsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNode.json; sourceTree = "<group>"; };
+		D5888C6F25664EDF0041FD94 /* AM_Push_Authentication_Successful.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Authentication_Successful.json; sourceTree = "<group>"; };
+		D5888C7025664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeWithMessage.json; sourceTree = "<group>"; };
+		D5888C7125664EDF0041FD94 /* AuthTree_RegistrationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_RegistrationNode.json; sourceTree = "<group>"; };
+		D5888C7225664EDF0041FD94 /* AuthTree_DeviceCollectorNodeNone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeNone.json; sourceTree = "<group>"; };
+		D5888C7325664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Fail_Invalid_Signed_Challenge.json; sourceTree = "<group>"; };
+		D5888C7425664EDF0041FD94 /* AuthTree_AttributeCollectorsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AttributeCollectorsNode.json; sourceTree = "<group>"; };
+		D5888C7525664EDF0041FD94 /* AuthTree_KBACreateNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBACreateNode.json; sourceTree = "<group>"; };
+		D5888C7625664EDF0041FD94 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeMetadataOnly.json; sourceTree = "<group>"; };
+		D5888C7725664EDF0041FD94 /* AuthTree_PlatformUsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_PlatformUsernamePasswordNode.json; sourceTree = "<group>"; };
+		D5888C7825664EDF0041FD94 /* AuthTree_SuspendedAuthSessionException.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SuspendedAuthSessionException.json; sourceTree = "<group>"; };
+		D5888C7A25664EDF0041FD94 /* AccessTokenNoRefresh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessTokenNoRefresh.json; sourceTree = "<group>"; };
+		D5888C7B25664EDF0041FD94 /* AccessToken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken.json; sourceTree = "<group>"; };
+		D5888C7C25664EDF0041FD94 /* AccessToken2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken2.json; sourceTree = "<group>"; };
+		D5888C7E25664EDF0041FD94 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		D5888C7F25664EDF0041FD94 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		D5888C8225664EDF0041FD94 /* FRAuthBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAuthBaseTest.swift; sourceTree = "<group>"; };
+		D5888C8325664EDF0041FD94 /* FRBaseTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRBaseTestCase.swift; sourceTree = "<group>"; };
+		D5888C8525664EDF0041FD94 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
+		D5888C8625664EDF0041FD94 /* FRTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestUtils.swift; sourceTree = "<group>"; };
+		D5888C8725664EDF0041FD94 /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
 		D592481E232865D30027031A /* ReCaptchaCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReCaptchaCallbackTests.swift; sourceTree = "<group>"; };
 		D592482023286B3F0027031A /* TextOutputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputCallbackTests.swift; sourceTree = "<group>"; };
 		D5924822232871AE0027031A /* PollingWaitCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingWaitCallbackTests.swift; sourceTree = "<group>"; };
 		D59A0CE223AC28C8008D948E /* SessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerTests.swift; sourceTree = "<group>"; };
+		D5AFD0782568D352005E69FA /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
 		D5B2726B232994D900BFB9D6 /* ConfirmationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCallbackTests.swift; sourceTree = "<group>"; };
 		D5B2A37D23FC951700764370 /* HiddenValueCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenValueCallback.swift; sourceTree = "<group>"; };
 		D5B2A37F23FCA9A600764370 /* DeviceProfileCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallback.swift; sourceTree = "<group>"; };
@@ -499,17 +584,23 @@
 		D5BEAB022488CB050057FC2E /* TokenManagementPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManagementPolicyTests.swift; sourceTree = "<group>"; };
 		D5BEAB042488D8890057FC2E /* AuthorizationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPolicyTests.swift; sourceTree = "<group>"; };
 		D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSessionTests.swift; sourceTree = "<group>"; };
-		D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
-		D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
 		D5C64E662489B21600CB7EB3 /* CookieValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieValidationTests.swift; sourceTree = "<group>"; };
+		D5C6DB672509747D00E1A857 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
+		D5C86419252E880D00268F06 /* OAuth2Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Error.swift; sourceTree = "<group>"; };
+		D5C8642B252EEE2900268F06 /* OAuth2ErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B432491920F000F2F75 /* AuthErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenErrorTests.swift; sourceTree = "<group>"; };
 		D5C87B4A2491A2CF000F2F75 /* FRURLProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocolTests.swift; sourceTree = "<group>"; };
-		D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C9675623230D8900DE7321 /* ObjcCustomCallbackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcCustomCallbackTests.m; sourceTree = "<group>"; };
+		D5CD493125265FF8006DD932 /* BrowserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserError.swift; sourceTree = "<group>"; };
+		D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserErrorTests.swift; sourceTree = "<group>"; };
+		D5CD4941252689E2006DD932 /* BrowserBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserBuilderTests.swift; sourceTree = "<group>"; };
+		D5CD494525268BCD006DD932 /* BrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserTests.swift; sourceTree = "<group>"; };
+		D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUserBrowserTests.swift; sourceTree = "<group>"; };
 		D5DE4BB02488AFD000FE2654 /* PolicyAdviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceTests.swift; sourceTree = "<group>"; };
 		D5E75BE42409DF6D005F589F /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
+		D5E7B1BF256C5F0100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLProtocol.swift; sourceTree = "<group>"; };
 		D5EC34EA247B13D60005A50C /* FRRequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorTests.swift; sourceTree = "<group>"; };
 		D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRRequestInterceptorRegistry.swift; sourceTree = "<group>"; };
@@ -552,14 +643,6 @@
 			path = Cookie;
 			sourceTree = "<group>";
 		};
-		D5167286231EFE09007053EE /* CustomCallback */ = {
-			isa = PBXGroup;
-			children = (
-				D5167287231EFE28007053EE /* CustomCallback.swift */,
-			);
-			path = CustomCallback;
-			sourceTree = "<group>";
-		};
 		D51672A42321AB0B007053EE /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,63 +654,18 @@
 		D52D1629231484D60095905A /* FRAuthSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				D52D162A231484D60095905A /* FRAuthFlow */,
+				D5888C0C25664E920041FD94 /* E2ETests */,
+				D5888C2725664E920041FD94 /* UnitTests */,
 				D52D1637231484D60095905A /* FRAuth */,
 				D52D165A231484D60095905A /* FRBaseTest.swift */,
 			);
 			path = FRAuthSwiftTests;
 			sourceTree = "<group>";
 		};
-		D52D162A231484D60095905A /* FRAuthFlow */ = {
-			isa = PBXGroup;
-			children = (
-				D52D162B231484D60095905A /* SecondFactor */,
-				D52D162E231484D60095905A /* KBAAuthentication */,
-				D52D1631231484D60095905A /* UserSignUp */,
-				D52D1634231484D60095905A /* UsernamePassword */,
-			);
-			path = FRAuthFlow;
-			sourceTree = "<group>";
-		};
-		D52D162B231484D60095905A /* SecondFactor */ = {
-			isa = PBXGroup;
-			children = (
-				D52D162D231484D60095905A /* SecondFactorFlow.png */,
-				D52D162C231484D60095905A /* SecondFactorFlowTests.swift */,
-			);
-			path = SecondFactor;
-			sourceTree = "<group>";
-		};
-		D52D162E231484D60095905A /* KBAAuthentication */ = {
-			isa = PBXGroup;
-			children = (
-				D52D162F231484D60095905A /* KBAAuthenticationFlow.png */,
-				D52D1630231484D60095905A /* KBAAuthenticationFlowTests.swift */,
-			);
-			path = KBAAuthentication;
-			sourceTree = "<group>";
-		};
-		D52D1631231484D60095905A /* UserSignUp */ = {
-			isa = PBXGroup;
-			children = (
-				D52D1633231484D60095905A /* UserSignUpFlow.png */,
-				D52D1632231484D60095905A /* UserSignUpFlowTests.swift */,
-			);
-			path = UserSignUp;
-			sourceTree = "<group>";
-		};
-		D52D1634231484D60095905A /* UsernamePassword */ = {
-			isa = PBXGroup;
-			children = (
-				D52D1635231484D60095905A /* UsernamePasswordFlow.png */,
-				D52D1636231484D60095905A /* UsernamePasswordFlowTests.swift */,
-			);
-			path = UsernamePassword;
-			sourceTree = "<group>";
-		};
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				D5CD493E252687D1006DD932 /* Browser */,
 				D5C87B492491A052000F2F75 /* FRURLProtocol */,
 				D5DE4BAF2488AFC100FE2654 /* Authorization */,
 				D5DE4BAE2488AFAA00FE2654 /* Policy */,
@@ -713,6 +751,7 @@
 			isa = PBXGroup;
 			children = (
 				D52D164D231484D60095905A /* FRUserTests.swift */,
+				D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -887,49 +926,6 @@
 			path = Device;
 			sourceTree = "<group>";
 		};
-		D53310432301216A00F1F851 /* AM */ = {
-			isa = PBXGroup;
-			children = (
-				D53958A323022C92009CA2BC /* AM_Session_Logout_Failure.json */,
-				D53310442301216A00F1F851 /* AM_Session_Logout_Success.json */,
-			);
-			path = AM;
-			sourceTree = "<group>";
-		};
-		D53310452301216A00F1F851 /* OAuth2 */ = {
-			isa = PBXGroup;
-			children = (
-				D53958A72302318E009CA2BC /* OAuth2_UserInfo_Failure.json */,
-				D53958A523022FA4009CA2BC /* OAuth2_UserInfo_Success.json */,
-				D53310462301216A00F1F851 /* OAuth2_Token_Revoke_Success.json */,
-				D53310472301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json */,
-				D53310482301216A00F1F851 /* OAuth2_Token_Success.json */,
-				D53958A92302376C009CA2BC /* OAuth2_Token_Refresh_Success.json */,
-			);
-			path = OAuth2;
-			sourceTree = "<group>";
-		};
-		D53310492301216A00F1F851 /* AuthTree */ = {
-			isa = PBXGroup;
-			children = (
-				D513F17C24DA9B4D0042228B /* AuthTree_AuthTimedOut.json */,
-				D513F17B24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json */,
-				D5C64E5F248990DC00CB7EB3 /* AuthTree_NoSession_Success.json */,
-				D5C967542322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
-				D539587B2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json */,
-				D533104A2301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json */,
-				D533104B2301216A00F1F851 /* AuthTree_SSOToken_Success.json */,
-				D530180C23D651FE0026298B /* AuthTree_SSOToken_Success2.json */,
-				D533104C2301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json */,
-				D533104D2301216A00F1F851 /* AuthTree_SecondFactorChoiceNode.json */,
-				D533104E2301216A00F1F851 /* AuthTree_UsernamePasswordNode.json */,
-				D533104F2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json */,
-				D53310502301216A00F1F851 /* AuthTree_KBACreateNode.json */,
-				D53310512301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json */,
-			);
-			path = AuthTree;
-			sourceTree = "<group>";
-		};
 		D533270924806633002FF207 /* Policy */ = {
 			isa = PBXGroup;
 			children = (
@@ -937,56 +933,6 @@
 				D533270C24806687002FF207 /* AuthorizationPolicy.swift */,
 			);
 			path = Policy;
-			sourceTree = "<group>";
-		};
-		D534A2C922FBE056007098D1 /* TestUtil */ = {
-			isa = PBXGroup;
-			children = (
-				D534A2CA22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift */,
-				D534A2CC22FBE08C007098D1 /* FRTestStubResponseParser.swift */,
-				D52D162723147FE70095905A /* FRTestUtils.swift */,
-			);
-			path = TestUtil;
-			sourceTree = "<group>";
-		};
-		D534A2CE22FBF1EB007098D1 /* MockResponseData */ = {
-			isa = PBXGroup;
-			children = (
-				D53310432301216A00F1F851 /* AM */,
-				D53310492301216A00F1F851 /* AuthTree */,
-				D53310452301216A00F1F851 /* OAuth2 */,
-			);
-			path = MockResponseData;
-			sourceTree = "<group>";
-		};
-		D534A2CF22FBF1EB007098D1 /* Certs */ = {
-			isa = PBXGroup;
-			children = (
-				D534A2D022FBF1EB007098D1 /* 01-cert.cert */,
-				D534A2D122FBF1EB007098D1 /* 01-pkey.key */,
-				D534A2D222FBF1EB007098D1 /* 02-pkey.pem */,
-				D534A2D322FBF1EB007098D1 /* 02-cert.pem */,
-			);
-			path = Certs;
-			sourceTree = "<group>";
-		};
-		D539589C23021851009CA2BC /* ModelData */ = {
-			isa = PBXGroup;
-			children = (
-				D53958A1230218DA009CA2BC /* AccessTokenNoRefresh.json */,
-				D539589E23021876009CA2BC /* AccessToken.json */,
-				D539589D23021876009CA2BC /* AccessToken2.json */,
-			);
-			path = ModelData;
-			sourceTree = "<group>";
-		};
-		D553B90F22FCBACE00FC0734 /* TestConfig */ = {
-			isa = PBXGroup;
-			children = (
-				D553B91222FCBE7C00FC0734 /* Config.json */,
-				D553B91022FCBAF600FC0734 /* Config.swift */,
-			);
-			path = TestConfig;
 			sourceTree = "<group>";
 		};
 		D55462EE22A6DF720096C7A4 = {
@@ -1038,11 +984,9 @@
 		D554630522A6DF720096C7A4 /* FRAuthTests */ = {
 			isa = PBXGroup;
 			children = (
+				D5888C4125664EDF0041FD94 /* SharedTestFiles */,
 				D52D165B231484D60095905A /* FRAuthObjcTests */,
 				D52D1629231484D60095905A /* FRAuthSwiftTests */,
-				D553B90F22FCBACE00FC0734 /* TestConfig */,
-				D534A2C922FBE056007098D1 /* TestUtil */,
-				D5582BA522E2DBB500C86ED8 /* TestData */,
 				D554630822A6DF720096C7A4 /* Info.plist */,
 				D52D1626231478D10095905A /* FRObjcTestBridgingHeader.h */,
 			);
@@ -1055,18 +999,6 @@
 				D5554F74235A7259009FC810 /* UIKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D5582BA522E2DBB500C86ED8 /* TestData */ = {
-			isa = PBXGroup;
-			children = (
-				D5C64E632489924300CB7EB3 /* Customization */,
-				D534A2CF22FBF1EB007098D1 /* Certs */,
-				D5167286231EFE09007053EE /* CustomCallback */,
-				D539589C23021851009CA2BC /* ModelData */,
-				D534A2CE22FBF1EB007098D1 /* MockResponseData */,
-			);
-			path = TestData;
 			sourceTree = "<group>";
 		};
 		D5723C3823F4C65800557AA8 /* Authentication */ = {
@@ -1093,6 +1025,8 @@
 				D586CF2223358EDF007A2194 /* ConfigError.swift */,
 				D586CF2423358EDF007A2194 /* TokenError.swift */,
 				D513F17424DA6B490042228B /* AuthApiError.swift */,
+				D5CD493125265FF8006DD932 /* BrowserError.swift */,
+				D5C86419252E880D00268F06 /* OAuth2Error.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1185,6 +1119,7 @@
 				D586CF5E23358EE0007A2194 /* UserInfo.swift */,
 				D586CF5F23358EE0007A2194 /* Address.swift */,
 				D586CF6023358EE0007A2194 /* FRUser.swift */,
+				D5C6DB672509747D00E1A857 /* Browser.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1228,6 +1163,244 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		D5888C0C25664E920041FD94 /* E2ETests */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C0D25664E920041FD94 /* Registration */,
+				D5888C1025664E920041FD94 /* SecondFactor */,
+				D5888C1325664E920041FD94 /* Callback-Live */,
+				D5888C2125664E920041FD94 /* KBAAuthentication */,
+				D5888C2425664E920041FD94 /* Login */,
+			);
+			path = E2ETests;
+			sourceTree = "<group>";
+		};
+		D5888C0D25664E920041FD94 /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C0E25664E920041FD94 /* AA_00_RegistrationTests.swift */,
+				D5888C0F25664E920041FD94 /* Registration.png */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		D5888C1025664E920041FD94 /* SecondFactor */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C1125664E920041FD94 /* AA_03_SecondFactorAuthenticationTests.swift */,
+				D5888C1225664E920041FD94 /* SecondFactorFlow.png */,
+			);
+			path = SecondFactor;
+			sourceTree = "<group>";
+		};
+		D5888C1325664E920041FD94 /* Callback-Live */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C1425664E920041FD94 /* AA_04_PageCallbackTest.swift */,
+				D5888C1525664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift */,
+				D5888C1625664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift */,
+				D5888C1725664E920041FD94 /* AA_04_ConfirmationCallbackTest.swift */,
+				D5888C1825664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift */,
+				D5888C1925664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift */,
+				D5888C1A25664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift */,
+				D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */,
+				D5888C1C25664E920041FD94 /* AA_04_PageCallback65Test.swift */,
+				D5888C1D25664E920041FD94 /* AA_04_ChoiceCallbackTest.swift */,
+				D5888C1E25664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift */,
+				D5888C1F25664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift */,
+				D5888C2025664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift */,
+			);
+			path = "Callback-Live";
+			sourceTree = "<group>";
+		};
+		D5888C2125664E920041FD94 /* KBAAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C2225664E920041FD94 /* KBAAuthenticationFlow.png */,
+				D5888C2325664E920041FD94 /* AA_02_KBAAuthenticationTests.swift */,
+			);
+			path = KBAAuthentication;
+			sourceTree = "<group>";
+		};
+		D5888C2425664E920041FD94 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C2525664E920041FD94 /* Login.png */,
+				D5888C2625664E920041FD94 /* AA_01_LoginTests.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		D5888C2725664E920041FD94 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		D5888C4125664EDF0041FD94 /* SharedTestFiles */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4225664EDF0041FD94 /* TestData */,
+				D5888C7D25664EDF0041FD94 /* TestConfig */,
+				D5888C8125664EDF0041FD94 /* BaseTest */,
+				D5888C8425664EDF0041FD94 /* TestUtil */,
+			);
+			name = SharedTestFiles;
+			path = ../../FRTestHost/FRTestHost/SharedTestFiles;
+			sourceTree = "<group>";
+		};
+		D5888C4225664EDF0041FD94 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4325664EDF0041FD94 /* CustomCallback */,
+				D5888C4525664EDF0041FD94 /* Customization */,
+				D5888C4725664EDF0041FD94 /* Certs */,
+				D5888C4C25664EDF0041FD94 /* MockResponseData */,
+				D5888C7925664EDF0041FD94 /* ModelData */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+		D5888C4325664EDF0041FD94 /* CustomCallback */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4425664EDF0041FD94 /* CustomCallback.swift */,
+			);
+			path = CustomCallback;
+			sourceTree = "<group>";
+		};
+		D5888C4525664EDF0041FD94 /* Customization */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4625664EDF0041FD94 /* NoSessionInterceptor.swift */,
+			);
+			path = Customization;
+			sourceTree = "<group>";
+		};
+		D5888C4725664EDF0041FD94 /* Certs */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4825664EDF0041FD94 /* 01-cert.cert */,
+				D5888C4925664EDF0041FD94 /* 01-pkey.key */,
+				D5888C4A25664EDF0041FD94 /* 02-pkey.pem */,
+				D5888C4B25664EDF0041FD94 /* 02-cert.pem */,
+			);
+			path = Certs;
+			sourceTree = "<group>";
+		};
+		D5888C4C25664EDF0041FD94 /* MockResponseData */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4D25664EDF0041FD94 /* AM */,
+				D5888C5025664EDF0041FD94 /* OAuth2 */,
+				D5888C5E25664EDF0041FD94 /* AuthTree */,
+			);
+			path = MockResponseData;
+			sourceTree = "<group>";
+		};
+		D5888C4D25664EDF0041FD94 /* AM */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C4E25664EDF0041FD94 /* AM_Session_Logout_Success.json */,
+				D5888C4F25664EDF0041FD94 /* AM_Session_Logout_Failure.json */,
+			);
+			path = AM;
+			sourceTree = "<group>";
+		};
+		D5888C5025664EDF0041FD94 /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C5125664EDF0041FD94 /* OAuth2_EndSession_Success.json */,
+				D5888C5225664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Failure.json */,
+				D5888C5325664EDF0041FD94 /* OAuth2_Token_Failure_InvalidGrant.json */,
+				D5888C5425664EDF0041FD94 /* OAuth2_Token_Revoke_Success.json */,
+				D5888C5525664EDF0041FD94 /* OAuth2_UserInfo_Success.json */,
+				D5888C5625664EDF0041FD94 /* OAuth2_Token_Failure_InvalidClient.json */,
+				D5888C5725664EDF0041FD94 /* OAuth2_Token_Failure_InvalidScope.json */,
+				D5888C5825664EDF0041FD94 /* OAuth2_UserInfo_Failure.json */,
+				D5888C5925664EDF0041FD94 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */,
+				D5888C5A25664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Success.json */,
+				D5888C5B25664EDF0041FD94 /* OAuth2_Token_Refresh_Success.json */,
+				D5888C5C25664EDF0041FD94 /* OAuth2_EndSession_Failure.json */,
+				D5888C5D25664EDF0041FD94 /* OAuth2_Token_Success.json */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
+		D5888C5E25664EDF0041FD94 /* AuthTree */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C5F25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeAll.json */,
+				D5888C6025664EDF0041FD94 /* AuthTree_SSOToken_Success2.json */,
+				D5888C6125664EDF0041FD94 /* AuthTree_TermsAndConditionsNode.json */,
+				D5888C6225664EDF0041FD94 /* AuthTree_SSOToken_Success.json */,
+				D5888C6325664EDF0041FD94 /* AuthTree_NoSession_Success.json */,
+				D5888C6425664EDF0041FD94 /* AM_Push_Authentication_Fail.json */,
+				D5888C6525664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */,
+				D5888C6625664EDF0041FD94 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
+				D5888C6725664EDF0041FD94 /* AM_Push_Registration_Successful.json */,
+				D5888C6825664EDF0041FD94 /* AuthTree_AuthTimedOut.json */,
+				D5888C6925664EDF0041FD94 /* AuthTree_SecondFactorOTPNode.json */,
+				D5888C6A25664EDF0041FD94 /* AuthTree_SecondFactorChoiceNode.json */,
+				D5888C6B25664EDF0041FD94 /* AuthTree_KBAVerificationNode.json */,
+				D5888C6C25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json */,
+				D5888C6D25664EDF0041FD94 /* AuthTree_LoginNode.json */,
+				D5888C6E25664EDF0041FD94 /* AuthTree_UsernamePasswordNode.json */,
+				D5888C6F25664EDF0041FD94 /* AM_Push_Authentication_Successful.json */,
+				D5888C7025664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json */,
+				D5888C7125664EDF0041FD94 /* AuthTree_RegistrationNode.json */,
+				D5888C7225664EDF0041FD94 /* AuthTree_DeviceCollectorNodeNone.json */,
+				D5888C7325664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json */,
+				D5888C7425664EDF0041FD94 /* AuthTree_AttributeCollectorsNode.json */,
+				D5888C7525664EDF0041FD94 /* AuthTree_KBACreateNode.json */,
+				D5888C7625664EDF0041FD94 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */,
+				D5888C7725664EDF0041FD94 /* AuthTree_PlatformUsernamePasswordNode.json */,
+				D5888C7825664EDF0041FD94 /* AuthTree_SuspendedAuthSessionException.json */,
+			);
+			path = AuthTree;
+			sourceTree = "<group>";
+		};
+		D5888C7925664EDF0041FD94 /* ModelData */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C7A25664EDF0041FD94 /* AccessTokenNoRefresh.json */,
+				D5888C7B25664EDF0041FD94 /* AccessToken.json */,
+				D5888C7C25664EDF0041FD94 /* AccessToken2.json */,
+			);
+			path = ModelData;
+			sourceTree = "<group>";
+		};
+		D5888C7D25664EDF0041FD94 /* TestConfig */ = {
+			isa = PBXGroup;
+			children = (
+				D5AFD0782568D352005E69FA /* Config-live-01.json */,
+				D5888C7E25664EDF0041FD94 /* Config.json */,
+				D5888C7F25664EDF0041FD94 /* Config.swift */,
+			);
+			path = TestConfig;
+			sourceTree = "<group>";
+		};
+		D5888C8125664EDF0041FD94 /* BaseTest */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C8225664EDF0041FD94 /* FRAuthBaseTest.swift */,
+				D5888C8325664EDF0041FD94 /* FRBaseTestCase.swift */,
+			);
+			path = BaseTest;
+			sourceTree = "<group>";
+		};
+		D5888C8425664EDF0041FD94 /* TestUtil */ = {
+			isa = PBXGroup;
+			children = (
+				D5888C8525664EDF0041FD94 /* FRTestStubResponseParser.swift */,
+				D5888C8625664EDF0041FD94 /* FRTestUtils.swift */,
+				D5888C8725664EDF0041FD94 /* FRTestNetworkStubProtocol.swift */,
+				D5E7B1BF256C5F0100DF2AB6 /* FRTestLogger.swift */,
+			);
+			path = TestUtil;
+			sourceTree = "<group>";
+		};
 		D59A0CE123AC27AD008D948E /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -1268,14 +1441,6 @@
 			path = FRSession;
 			sourceTree = "<group>";
 		};
-		D5C64E632489924300CB7EB3 /* Customization */ = {
-			isa = PBXGroup;
-			children = (
-				D5C64E642489925300CB7EB3 /* NoSessionInterceptor.swift */,
-			);
-			path = Customization;
-			sourceTree = "<group>";
-		};
 		D5C87B41249191EF000F2F75 /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -1283,6 +1448,8 @@
 				D5C87B4524919969000F2F75 /* ConfigErrorTests.swift */,
 				D5C87B4724919A0D000F2F75 /* TokenErrorTests.swift */,
 				D513F17924DA91630042228B /* AuthApiErrorTests.swift */,
+				D5CD493625266A2C006DD932 /* BrowserErrorTests.swift */,
+				D5C8642B252EEE2900268F06 /* OAuth2ErrorTests.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -1293,6 +1460,15 @@
 				D5C87B4A2491A2CF000F2F75 /* FRURLProtocolTests.swift */,
 			);
 			path = FRURLProtocol;
+			sourceTree = "<group>";
+		};
+		D5CD493E252687D1006DD932 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				D5CD4941252689E2006DD932 /* BrowserBuilderTests.swift */,
+				D5CD494525268BCD006DD932 /* BrowserTests.swift */,
+			);
+			path = Browser;
 			sourceTree = "<group>";
 		};
 		D5DE4BAE2488AFAA00FE2654 /* Policy */ = {
@@ -1476,44 +1652,64 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D530180D23D651FE0026298B /* AuthTree_SSOToken_Success2.json in Resources */,
-				D534A2D722FBF1EB007098D1 /* 02-cert.pem in Resources */,
-				D52D1663231484D60095905A /* UsernamePasswordFlow.png in Resources */,
+				D5888C8D25664EDF0041FD94 /* 02-cert.pem in Resources */,
+				D5888CA125664EDF0041FD94 /* AuthTree_NoSession_Success.json in Resources */,
+				D5888C9625664EDF0041FD94 /* OAuth2_Token_Failure_InvalidScope.json in Resources */,
+				D5888CA425664EDF0041FD94 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
+				D5888C9E25664EDF0041FD94 /* AuthTree_SSOToken_Success2.json in Resources */,
+				D5888C9B25664EDF0041FD94 /* OAuth2_EndSession_Failure.json in Resources */,
+				D5888C9725664EDF0041FD94 /* OAuth2_UserInfo_Failure.json in Resources */,
+				D5888CAB25664EDF0041FD94 /* AuthTree_LoginNode.json in Resources */,
+				D5888CA225664EDF0041FD94 /* AM_Push_Authentication_Fail.json in Resources */,
+				D5888C8C25664EDF0041FD94 /* 02-pkey.pem in Resources */,
+				D5888C2B25664E920041FD94 /* SecondFactorFlow.png in Resources */,
+				D5888C9F25664EDF0041FD94 /* AuthTree_TermsAndConditionsNode.json in Resources */,
+				D5888CA825664EDF0041FD94 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
+				D5888CB225664EDF0041FD94 /* AuthTree_AttributeCollectorsNode.json in Resources */,
+				D5888CAE25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */,
+				D5888C9125664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */,
+				D5888C8B25664EDF0041FD94 /* 01-pkey.key in Resources */,
 				D52D16892314853D0095905A /* SecondFactorFlowObjc.png in Resources */,
-				D513F17E24DA9B4D0042228B /* AuthTree_AuthTimedOut.json in Resources */,
-				D53958AA2302376D009CA2BC /* OAuth2_Token_Refresh_Success.json in Resources */,
-				D53958A423022C92009CA2BC /* AM_Session_Logout_Failure.json in Resources */,
-				D553B91322FCBE7C00FC0734 /* Config.json in Resources */,
-				D539589F23021876009CA2BC /* AccessToken2.json in Resources */,
-				D53958A023021876009CA2BC /* AccessToken.json in Resources */,
-				D52D1662231484D60095905A /* UserSignUpFlow.png in Resources */,
-				D52D165F231484D60095905A /* KBAAuthenticationFlow.png in Resources */,
-				D53310562301216A00F1F851 /* AuthTree_TermsAndConditionsNode.json in Resources */,
-				D53310532301216A00F1F851 /* OAuth2_Token_Revoke_Success.json in Resources */,
-				D534A2D422FBF1EB007098D1 /* 01-cert.cert in Resources */,
-				D53958A82302318E009CA2BC /* OAuth2_UserInfo_Failure.json in Resources */,
-				D53310582301216A00F1F851 /* AuthTree_SecondFactorOTPNode.json in Resources */,
+				D5888C9A25664EDF0041FD94 /* OAuth2_Token_Refresh_Success.json in Resources */,
+				D5888CB825664EDF0041FD94 /* AccessToken.json in Resources */,
+				D5888CB125664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json in Resources */,
+				D5888C9525664EDF0041FD94 /* OAuth2_Token_Failure_InvalidClient.json in Resources */,
+				D5888CA725664EDF0041FD94 /* AuthTree_SecondFactorOTPNode.json in Resources */,
+				D5888CB325664EDF0041FD94 /* AuthTree_KBACreateNode.json in Resources */,
+				D5888C9D25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeAll.json in Resources */,
+				D5888C8A25664EDF0041FD94 /* 01-cert.cert in Resources */,
+				D5888CAF25664EDF0041FD94 /* AuthTree_RegistrationNode.json in Resources */,
+				D5888CA525664EDF0041FD94 /* AM_Push_Registration_Successful.json in Resources */,
+				D5888CA025664EDF0041FD94 /* AuthTree_SSOToken_Success.json in Resources */,
 				D52D16882314853D0095905A /* UsernamePasswordFlowObjc.png in Resources */,
-				D513F17D24DA9B4D0042228B /* AuthTree_SuspendedAuthSessionException.json in Resources */,
-				D5C64E62248990DD00CB7EB3 /* AuthTree_NoSession_Success.json in Resources */,
-				D53310542301216A00F1F851 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
-				D53310522301216A00F1F851 /* AM_Session_Logout_Success.json in Resources */,
+				D5888C9425664EDF0041FD94 /* OAuth2_UserInfo_Success.json in Resources */,
+				D5888CA325664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */,
+				D5888C9C25664EDF0041FD94 /* OAuth2_Token_Success.json in Resources */,
+				D5888CAA25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
+				D5888CBA25664EDF0041FD94 /* Config.json in Resources */,
+				D5888C9325664EDF0041FD94 /* OAuth2_Token_Revoke_Success.json in Resources */,
+				D5888C9225664EDF0041FD94 /* OAuth2_Token_Failure_InvalidGrant.json in Resources */,
+				D5888C8F25664EDF0041FD94 /* AM_Session_Logout_Failure.json in Resources */,
+				D5888C3925664E920041FD94 /* KBAAuthenticationFlow.png in Resources */,
+				D5888CB625664EDF0041FD94 /* AuthTree_SuspendedAuthSessionException.json in Resources */,
 				D52D168A2314853D0095905A /* UserSignUpFlowObjc.png in Resources */,
-				D53310592301216A00F1F851 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
-				D5C967552322FD5F00DE7321 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
-				D539587C2301F7B3009CA2BC /* AuthTree_KBAVerificationNode.json in Resources */,
-				D53310572301216A00F1F851 /* AuthTree_SSOToken_Success.json in Resources */,
-				D533105C2301216A00F1F851 /* AuthTree_KBACreateNode.json in Resources */,
-				D53310552301216A00F1F851 /* OAuth2_Token_Success.json in Resources */,
-				D534A2D622FBF1EB007098D1 /* 02-pkey.pem in Resources */,
-				D533105B2301216A00F1F851 /* AuthTree_AttributeCollectorsNode.json in Resources */,
-				D53958A2230218DA009CA2BC /* AccessTokenNoRefresh.json in Resources */,
-				D533105A2301216A00F1F851 /* AuthTree_UsernamePasswordNode.json in Resources */,
-				D52D165E231484D60095905A /* SecondFactorFlow.png in Resources */,
-				D533105D2301216A00F1F851 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
+				D5888CAD25664EDF0041FD94 /* AM_Push_Authentication_Successful.json in Resources */,
+				D5888CB025664EDF0041FD94 /* AuthTree_DeviceCollectorNodeNone.json in Resources */,
+				D5888C9825664EDF0041FD94 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json in Resources */,
+				D5888CB525664EDF0041FD94 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
+				D5888CAC25664EDF0041FD94 /* AuthTree_UsernamePasswordNode.json in Resources */,
+				D5888CB725664EDF0041FD94 /* AccessTokenNoRefresh.json in Resources */,
+				D5888CB925664EDF0041FD94 /* AccessToken2.json in Resources */,
+				D5888C3B25664E930041FD94 /* Login.png in Resources */,
+				D5888C2925664E920041FD94 /* Registration.png in Resources */,
+				D5AFD0792568D352005E69FA /* Config-live-01.json in Resources */,
+				D5888C9925664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
+				D5888CB425664EDF0041FD94 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */,
+				D5888CA925664EDF0041FD94 /* AuthTree_KBAVerificationNode.json in Resources */,
+				D5888C9025664EDF0041FD94 /* OAuth2_EndSession_Success.json in Resources */,
 				D52D168B2314853D0095905A /* KBAAuthenticationFlowObjc.png in Resources */,
-				D53958A623022FA4009CA2BC /* OAuth2_UserInfo_Success.json in Resources */,
-				D534A2D522FBF1EB007098D1 /* 01-pkey.key in Resources */,
+				D5888C8E25664EDF0041FD94 /* AM_Session_Logout_Success.json in Resources */,
+				D5888CA625664EDF0041FD94 /* AuthTree_AuthTimedOut.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1529,6 +1725,7 @@
 				D586CF8523358EE0007A2194 /* JBUtil.c in Sources */,
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
 				D513F17524DA6B490042228B /* AuthApiError.swift in Sources */,
+				D5C8641A252E880D00268F06 /* OAuth2Error.swift in Sources */,
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
 				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,
@@ -1584,6 +1781,8 @@
 				D5723C3D23F4C65800557AA8 /* Node.swift in Sources */,
 				D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */,
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,
+				D5CD493225265FF8006DD932 /* BrowserError.swift in Sources */,
+				D5C6DB682509747D00E1A857 /* Browser.swift in Sources */,
 				D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */,
 				D586CFA323358EE0007A2194 /* KbaCreateCallback.swift in Sources */,
 				D586CF9523358EE0007A2194 /* MultipleValuesCallback.swift in Sources */,
@@ -1610,21 +1809,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5C8641E252EE87800268F06 /* OAuth2Error.swift in Sources */,
+				D5CD493A25266A5E006DD932 /* BrowserError.swift in Sources */,
+				D5CD493B25266A5E006DD932 /* Browser.swift in Sources */,
 				D513F17724DA87B10042228B /* SuspendedTextOutputCallback.swift in Sources */,
 				D513F17824DA87B10042228B /* AuthApiError.swift in Sources */,
 				D527A6FE24BAEA6D00364F60 /* BooleanAttributeInputCallback.swift in Sources */,
 				D527A6FF24BAEA6D00364F60 /* NumberAttributeInputCallback.swift in Sources */,
 				D5C87B4B2491A2CF000F2F75 /* FRURLProtocolTests.swift in Sources */,
 				D5BEAAFD2488BB2F0057FC2E /* FRURLProtocol.swift in Sources */,
+				D5888C2C25664E920041FD94 /* AA_04_PageCallbackTest.swift in Sources */,
+				D5CD494625268BCD006DD932 /* BrowserTests.swift in Sources */,
 				D5BEAAFE2488BB2F0057FC2E /* TokenManagementPolicy.swift in Sources */,
 				D5BEAAFF2488BB300057FC2E /* AuthorizationPolicy.swift in Sources */,
 				D5EC34FE247B33490005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5F01B1E240F1B2900BD48AA /* HiddenValueCallback.swift in Sources */,
+				D5888C3425664E920041FD94 /* AA_04_PageCallback65Test.swift in Sources */,
 				D5F01B1F240F1B2900BD48AA /* DeviceProfileCallback.swift in Sources */,
 				D5F01B20240F1B2900BD48AA /* ActionCallback.swift in Sources */,
+				D5888C3125664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift in Sources */,
+				D5CD4942252689E2006DD932 /* BrowserBuilderTests.swift in Sources */,
 				D5EC34EB247B13D60005A50C /* FRRequestInterceptorTests.swift in Sources */,
+				D5888CBF25664EDF0041FD94 /* FRTestStubResponseParser.swift in Sources */,
 				D5F01B21240F1B2900BD48AA /* ProfileCollector.swift in Sources */,
 				D5F01B22240F1B2900BD48AA /* FRLog.swift in Sources */,
+				D5888C2E25664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift in Sources */,
+				D5888C8825664EDF0041FD94 /* CustomCallback.swift in Sources */,
+				D5888C3C25664E930041FD94 /* AA_01_LoginTests.swift in Sources */,
 				D5F01B23240F1B2900BD48AA /* FRRestClient.swift in Sources */,
 				D5AF374823FB6F370035FE77 /* AuthService.swift in Sources */,
 				D5AF374923FB6F370035FE77 /* Node.swift in Sources */,
@@ -1634,21 +1845,27 @@
 				D5B8B12C23EA404800A68E13 /* KeychainManagerTests.swift in Sources */,
 				D54237BA23358F8F009C868F /* TermsAndConditionsCallback.swift in Sources */,
 				D54237BB23358F8F009C868F /* NameCallback.swift in Sources */,
+				D5888C2D25664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift in Sources */,
 				D54237BC23358F8F009C868F /* PasswordCallback.swift in Sources */,
 				D54237BD23358F8F009C868F /* MultipleValuesCallback.swift in Sources */,
 				D54237BE23358F8F009C868F /* PollingWaitCallback.swift in Sources */,
+				D5888C3825664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift in Sources */,
 				D54237BF23358F8F009C868F /* SingleValueCallback.swift in Sources */,
 				D54237C023358F8F009C868F /* ValidatedCreatePasswordCallback.swift in Sources */,
 				D54237C123358F8F009C868F /* ConfirmationCallback.swift in Sources */,
 				D54237C223358F8F009C868F /* TextOutputCallback.swift in Sources */,
 				D54237C323358F8F009C868F /* ReCaptchaCallback.swift in Sources */,
+				D5888C3A25664E920041FD94 /* AA_02_KBAAuthenticationTests.swift in Sources */,
 				D54237C423358F8F009C868F /* CallbackFactory.swift in Sources */,
+				D5888C3225664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift in Sources */,
 				D54237C523358F8F009C868F /* AbstractValidatedCallback.swift in Sources */,
 				D54237C623358F8F009C868F /* ValidatedCreateUsernameCallback.swift in Sources */,
 				D54237C723358F8F009C868F /* ChoiceCallback.swift in Sources */,
+				D5888C3725664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift in Sources */,
 				D5BEAB052488D8890057FC2E /* AuthorizationPolicyTests.swift in Sources */,
 				D54237C823358F8F009C868F /* AttributeInputCallback.swift in Sources */,
 				D54237C923358F8F009C868F /* Callback.swift in Sources */,
+				D5888C3325664E920041FD94 /* CallbackBaseTest.swift in Sources */,
 				D54237CA23358F8F009C868F /* StringAttributeInputCallback.swift in Sources */,
 				D54237CB23358F8F009C868F /* KbaCreateCallback.swift in Sources */,
 				D54237CC23358F8F009C868F /* OAuth2Client.swift in Sources */,
@@ -1658,6 +1875,7 @@
 				D5C87B442491920F000F2F75 /* AuthErrorTests.swift in Sources */,
 				D54237D023358F8F009C868F /* OIDC.swift in Sources */,
 				D54237D123358F8F009C868F /* Typealias.swift in Sources */,
+				D5888CC025664EDF0041FD94 /* FRTestUtils.swift in Sources */,
 				D54237D223358F8F009C868F /* CallbackConstants.swift in Sources */,
 				D5EC3500247B33A80005A50C /* FRAuthInterceptor.swift in Sources */,
 				D54237D323358F8F009C868F /* PlatformCollector.swift in Sources */,
@@ -1680,10 +1898,12 @@
 				D54237ED23358F8F009C868F /* NetworkReachabilityMonitor.swift in Sources */,
 				D54237EF23358F8F009C868F /* AccessToken.swift in Sources */,
 				D54237F023358F8F009C868F /* PKCE.swift in Sources */,
+				D5888C2A25664E920041FD94 /* AA_03_SecondFactorAuthenticationTests.swift in Sources */,
 				D54237F123358F8F009C868F /* Token.swift in Sources */,
 				D54237F223358F8F009C868F /* CydiaDetector.swift in Sources */,
 				D54237F323358F8F009C868F /* SandboxDetector.swift in Sources */,
 				D54237F423358F8F009C868F /* SymbolicLinkDetector.swift in Sources */,
+				D5888CBD25664EDF0041FD94 /* FRAuthBaseTest.swift in Sources */,
 				D513F17A24DA91630042228B /* AuthApiErrorTests.swift in Sources */,
 				D54237F523358F8F009C868F /* JBUtil.h in Sources */,
 				D5C87B4624919969000F2F75 /* ConfigErrorTests.swift in Sources */,
@@ -1692,25 +1912,27 @@
 				D54237F823358F8F009C868F /* AptDetector.swift in Sources */,
 				D54237F923358F8F009C868F /* SSHDetector.swift in Sources */,
 				D54237FA23358F8F009C868F /* JailbreakDetector.swift in Sources */,
+				D5CDB7232527CB1800D7BA49 /* FRUserBrowserTests.swift in Sources */,
 				D54237FB23358F8F009C868F /* FRJailbreakDetector.swift in Sources */,
 				D54237FC23358F8F009C868F /* JBUtil.c in Sources */,
 				D54237FD23358F8F009C868F /* PrivateFileWritableDetector.swift in Sources */,
 				D54237FE23358F8F009C868F /* BashDetector.swift in Sources */,
 				D59A0CE323AC28C8008D948E /* SessionManagerTests.swift in Sources */,
+				D5888C3525664E920041FD94 /* AA_04_ChoiceCallbackTest.swift in Sources */,
 				D54237FF23358F8F009C868F /* UserInfo.swift in Sources */,
 				D542380023358F8F009C868F /* Address.swift in Sources */,
 				D542380123358F8F009C868F /* FRUser.swift in Sources */,
 				D5B2726C232994D900BFB9D6 /* ConfirmationCallbackTests.swift in Sources */,
-				D52D1661231484D60095905A /* UserSignUpFlowTests.swift in Sources */,
 				D5015FEF24996AE50025FEB6 /* MetadataCallbackTests.swift in Sources */,
 				D52D169A231493940095905A /* ObjcUserSignUpFlowTests.m in Sources */,
-				D5167288231EFE28007053EE /* CustomCallback.swift in Sources */,
 				D52D1674231484D60095905A /* FRDeviceCollectorTests.swift in Sources */,
 				D52D166D231484D60095905A /* JailbreakDetectorTests.swift in Sources */,
 				D52D1668231484D60095905A /* NodeTests.swift in Sources */,
+				D5888CBB25664EDF0041FD94 /* Config.swift in Sources */,
 				D52D166C231484D60095905A /* FRAuthTests.swift in Sources */,
 				D52D1678231484D60095905A /* NameCallbackTests.swift in Sources */,
 				D52D1669231484D60095905A /* NetworkReachabilityMonitorTests.swift in Sources */,
+				D5E7B1C0256C5F0100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5843B562315C64500513932 /* ObjcFRDeviceCollectorTests.m in Sources */,
 				D5094CDA23DF7F850041D5C1 /* CookieTests.swift in Sources */,
 				D5843B542315C56A00513932 /* ObjcFRDeviceTests.m in Sources */,
@@ -1719,11 +1941,13 @@
 				D52D1677231484D60095905A /* PasswordCallbackTests.swift in Sources */,
 				D52D168D231485580095905A /* ObjcUsernamePasswordFlowTests.m in Sources */,
 				D592482123286B3F0027031A /* TextOutputCallbackTests.swift in Sources */,
+				D5888C8925664EDF0041FD94 /* NoSessionInterceptor.swift in Sources */,
 				D52D1665231484D60095905A /* ServerConfigTests.swift in Sources */,
 				D5C64E672489B21600CB7EB3 /* CookieValidationTests.swift in Sources */,
 				D534A2C822FBD880007098D1 /* FRAuth.h in Sources */,
 				D52D1670231484D60095905A /* AccessTokenTests.swift in Sources */,
 				D5C87B4824919A0D000F2F75 /* TokenErrorTests.swift in Sources */,
+				D5888C2F25664E920041FD94 /* AA_04_ConfirmationCallbackTest.swift in Sources */,
 				D51672A62321AB21007053EE /* ObjcFRURLProtocolTests.m in Sources */,
 				D52D16A823149D3F0095905A /* ObjcFRUserTests.m in Sources */,
 				D516728E231F1E48007053EE /* NodeFlowTests.swift in Sources */,
@@ -1732,32 +1956,31 @@
 				D52D166F231484D60095905A /* PKCETests.swift in Sources */,
 				D5FBD8A624B930F00005DD0F /* NumberAttributeInputCallbackTests.swift in Sources */,
 				D5F8F9E924B7CA9800EC9AEB /* FailedPolicyTests.swift in Sources */,
-				D534A2CD22FBE08C007098D1 /* FRTestStubResponseParser.swift in Sources */,
 				D5C9675723230D8900DE7321 /* ObjcCustomCallbackTests.m in Sources */,
-				D553B91122FCBAF600FC0734 /* Config.swift in Sources */,
 				D52D1673231484D60095905A /* FRDeviceIdentifierTests.swift in Sources */,
 				D52D1672231484D60095905A /* FRDeviceTests.swift in Sources */,
+				D5CD493725266A2C006DD932 /* BrowserErrorTests.swift in Sources */,
 				D52D1667231484D60095905A /* AuthServiceTests.swift in Sources */,
 				D5924823232871AE0027031A /* PollingWaitCallbackTests.swift in Sources */,
-				D52D162823147FE70095905A /* FRTestUtils.swift in Sources */,
-				D5C64E652489925300CB7EB3 /* NoSessionInterceptor.swift in Sources */,
 				D52D1679231484D60095905A /* MultipleValuesCallbackTests.swift in Sources */,
-				D52D1660231484D60095905A /* KBAAuthenticationFlowTests.swift in Sources */,
-				D52D1664231484D60095905A /* UsernamePasswordFlowTests.swift in Sources */,
+				D5888C3625664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift in Sources */,
 				D592481F232865D30027031A /* ReCaptchaCallbackTests.swift in Sources */,
 				D52D167B231484D60095905A /* TermsAndConditionsCallbackTests.swift in Sources */,
+				D5888CC125664EDF0041FD94 /* FRTestNetworkStubProtocol.swift in Sources */,
 				D535650022CD6F68003972AB /* FRAuth.swift in Sources */,
+				D5C8642C252EEE2900268F06 /* OAuth2ErrorTests.swift in Sources */,
 				D5054B4E244680C3007FBA92 /* DeviceProfileCallbackTests.swift in Sources */,
 				D516728A231F0408007053EE /* CustomCallbackTests.swift in Sources */,
-				D534A2CB22FBE06B007098D1 /* FRTestNetworkStubProtocol.swift in Sources */,
+				D5888C2825664E920041FD94 /* AA_00_RegistrationTests.swift in Sources */,
 				D52D16A6231499B70095905A /* ObjcServerConfigTests.m in Sources */,
-				D52D165D231484D60095905A /* SecondFactorFlowTests.swift in Sources */,
 				D52D169C231493B50095905A /* ObjcSecondFactorFlowTests.m in Sources */,
 				D5BEAB032488CB050057FC2E /* TokenManagementPolicyTests.swift in Sources */,
 				D52D1676231484D60095905A /* AbstractValidatedCallbackTests.swift in Sources */,
 				D52D167A231484D60095905A /* KbaCreateCallbackTests.swift in Sources */,
+				D5888CBE25664EDF0041FD94 /* FRBaseTestCase.swift in Sources */,
 				D5BF7E7423D64FF800B90BF8 /* FRSessionTests.swift in Sources */,
 				D52D1675231484D60095905A /* ChoiceCallbackTests.swift in Sources */,
+				D5888C3025664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift in Sources */,
 				D52D1698231491E30095905A /* ObjcKBAAuthenticationFlowTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1925,7 +2148,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1957,7 +2180,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

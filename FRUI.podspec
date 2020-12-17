@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRUI'
-  s.version          = '2.1.0'
-  s.summary          = 'ForgeRock Auth Proximity SDK for iOS'
+  s.version          = '2.2.0'
+  s.summary          = 'ForgeRock UI SDK for FRAuth iOS'
   s.description      = <<-DESC
   FRUI is a SDK that allows you easily and quickly develop an application with ForgeRock Platform or ForgeRock Identity Cloud, and FRAuth SDK with pre-built UI components. FRUI SDK demonstrates most of functionalities available in FRAuth SDK which includes user authentication, registration, and identity and access management against ForgeRock solutions.
                        DESC
@@ -30,5 +30,5 @@ Pod::Spec.new do |s|
   base_dir = "FRUI/FRUI"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
   s.resources = [base_dir + '/**/*.{xib, png, xcassets}', base_dir + '/Assets/*.{png, xcassets}']
-  s.ios.dependency 'FRAuth', '~> 2.1.0'
+  s.ios.dependency 'FRAuth', '~> 2.2.0'
 end

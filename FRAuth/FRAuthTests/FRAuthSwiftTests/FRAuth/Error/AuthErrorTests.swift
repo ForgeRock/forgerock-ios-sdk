@@ -11,7 +11,7 @@
 
 import XCTest
 
-class AuthErrorTests: FRBaseTest {
+class AuthErrorTests: FRAuthBaseTest {
     
     func test_01_domain() {
         XCTAssertEqual(AuthError.errorDomain, "com.forgerock.ios.frauth.authentication")
@@ -94,5 +94,23 @@ class AuthErrorTests: FRBaseTest {
         XCTAssertEqual(error.errorCode, 1000030)
         XCTAssertNotNil(error.errorUserInfo)
         XCTAssertEqual(error.localizedDescription, "Authentication is cancelled")
+    }
+    
+    
+    func test_09_invalid_resume_uri() {
+        let error = AuthError.authenticationCancelled
+        XCTAssertEqual(error.code, 1000030)
+        XCTAssertEqual(error.errorCode, 1000030)
+        XCTAssertNotNil(error.errorUserInfo)
+        XCTAssertEqual(error.localizedDescription, "Authentication is cancelled")
+    }
+    
+    
+    func test_10_user_authentication_required() {
+        let error = AuthError.userAuthenticationRequired
+        XCTAssertEqual(error.code, 1000035)
+        XCTAssertEqual(error.errorCode, 1000035)
+        XCTAssertNotNil(error.errorUserInfo)
+        XCTAssertEqual(error.localizedDescription, "All user credentials are expired or invalid; user authentication is required")
     }
 }

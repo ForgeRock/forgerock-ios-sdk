@@ -13,7 +13,7 @@ import XCTest
 import CoreLocation
 import FRCore
 
-class LocationCollectorTests: FRPBaseTest {
+class LocationCollectorTests: FRAuthBaseTest {
     
     func test_01_basic_init() {
 

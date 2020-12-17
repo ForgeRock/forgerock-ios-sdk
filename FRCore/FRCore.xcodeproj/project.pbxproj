@@ -33,11 +33,6 @@
 		D5CBC24C24102BB200F9B6EA /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B02409DF9700DA380A /* Response.swift */; };
 		D5CBC24D24102BB200F9B6EA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B12409DF9700DA380A /* Request.swift */; };
 		D5CBC24E24102BB200F9B6EA /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B22409DF9700DA380A /* RestClient.swift */; };
-		D5CBC25024103D3700F9B6EA /* FRCoreBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CBC24F24103D3700F9B6EA /* FRCoreBaseTest.swift */; };
-		D5CBC25724103E2800F9B6EA /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25324103E2700F9B6EA /* 01-cert.cert */; };
-		D5CBC25824103E2800F9B6EA /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25424103E2700F9B6EA /* 01-pkey.key */; };
-		D5CBC25924103E2800F9B6EA /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25524103E2700F9B6EA /* 02-pkey.pem */; };
-		D5CBC25A24103E2800F9B6EA /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5CBC25624103E2700F9B6EA /* 02-cert.pem */; };
 		D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
 		D5D21498247843C900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
 		D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */; };
@@ -53,8 +48,17 @@
 		D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D214B124786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift */; };
 		D5E75BD42409B8C0005F589F /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E75BCA2409B8C0005F589F /* FRCore.framework */; };
 		D5E75BDB2409B8C0005F589F /* FRCore.h in Headers */ = {isa = PBXBuildFile; fileRef = D5E75BCD2409B8C0005F589F /* FRCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D5E7B1C5256C609200DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1C4256C609200DF2AB6 /* FRTestLogger.swift */; };
 		D5E86BC12481E6D700DFD5E0 /* FRURLUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E86BC02481E6D700DFD5E0 /* FRURLUtil.swift */; };
 		D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */; };
+		D5EE06C9255FA1CC00C2D1BC /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D5EE0694255FA1CC00C2D1BC /* 01-cert.cert */; };
+		D5EE06CA255FA1CC00C2D1BC /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5EE0695255FA1CC00C2D1BC /* 01-pkey.key */; };
+		D5EE06CB255FA1CC00C2D1BC /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5EE0696255FA1CC00C2D1BC /* 02-pkey.pem */; };
+		D5EE06CC255FA1CC00C2D1BC /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5EE0697255FA1CC00C2D1BC /* 02-cert.pem */; };
+		D5EE06F0255FA1CC00C2D1BC /* FRBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EE06C2255FA1CC00C2D1BC /* FRBaseTestCase.swift */; };
+		D5EE06F1255FA1CC00C2D1BC /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EE06C4255FA1CC00C2D1BC /* FRTestStubResponseParser.swift */; };
+		D5EE06F2255FA1CC00C2D1BC /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EE06C5255FA1CC00C2D1BC /* FRTestUtils.swift */; };
+		D5EE06F3255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EE06C6255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift */; };
 		D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B18240EFB1400BD48AA /* NetworkError.swift */; };
 /* End PBXBuildFile section */
 
@@ -99,11 +103,6 @@
 		D5CBC23D24102B8700F9B6EA /* KeychainServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainServiceTests.swift; sourceTree = "<group>"; };
 		D5CBC23F24102B8700F9B6EA /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
 		D5CBC24024102B8700F9B6EA /* RestClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestClientTests.swift; sourceTree = "<group>"; };
-		D5CBC24F24103D3700F9B6EA /* FRCoreBaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRCoreBaseTest.swift; sourceTree = "<group>"; };
-		D5CBC25324103E2700F9B6EA /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
-		D5CBC25424103E2700F9B6EA /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
-		D5CBC25524103E2700F9B6EA /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
-		D5CBC25624103E2700F9B6EA /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
 		D5D21495247843BB00B26403 /* RequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
 		D5D21497247843C900B26403 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorRegistry.swift; sourceTree = "<group>"; };
@@ -118,8 +117,17 @@
 		D5E75BCE2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5E75BD32409B8C0005F589F /* FRCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5E75BDA2409B8C0005F589F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5E7B1C4256C609200DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5E86BC02481E6D700DFD5E0 /* FRURLUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRURLUtil.swift; sourceTree = "<group>"; };
 		D5EC34EC247B2E4B0005A50C /* FRStringUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRStringUtilTests.swift; sourceTree = "<group>"; };
+		D5EE0694255FA1CC00C2D1BC /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
+		D5EE0695255FA1CC00C2D1BC /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
+		D5EE0696255FA1CC00C2D1BC /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
+		D5EE0697255FA1CC00C2D1BC /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
+		D5EE06C2255FA1CC00C2D1BC /* FRBaseTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRBaseTestCase.swift; sourceTree = "<group>"; };
+		D5EE06C4255FA1CC00C2D1BC /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
+		D5EE06C5255FA1CC00C2D1BC /* FRTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestUtils.swift; sourceTree = "<group>"; };
+		D5EE06C6255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
 		D5F01B18240EFB1400BD48AA /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,25 +238,6 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		D5CBC25124103E2700F9B6EA /* TestData */ = {
-			isa = PBXGroup;
-			children = (
-				D5CBC25224103E2700F9B6EA /* Certs */,
-			);
-			path = TestData;
-			sourceTree = "<group>";
-		};
-		D5CBC25224103E2700F9B6EA /* Certs */ = {
-			isa = PBXGroup;
-			children = (
-				D5CBC25324103E2700F9B6EA /* 01-cert.cert */,
-				D5CBC25424103E2700F9B6EA /* 01-pkey.key */,
-				D5CBC25524103E2700F9B6EA /* 02-pkey.pem */,
-				D5CBC25624103E2700F9B6EA /* 02-cert.pem */,
-			);
-			path = Certs;
-			sourceTree = "<group>";
-		};
 		D5D21494247843BB00B26403 /* RequestInterceptor */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,13 +318,61 @@
 		D5E75BD72409B8C0005F589F /* FRCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				D5EE068D255FA1CC00C2D1BC /* SharedTestFiles */,
 				D5D214B024786F8F00B26403 /* TestUtil */,
-				D5CBC25124103E2700F9B6EA /* TestData */,
 				D5CBC23B24102B8700F9B6EA /* FRCore */,
 				D5E75BDA2409B8C0005F589F /* Info.plist */,
-				D5CBC24F24103D3700F9B6EA /* FRCoreBaseTest.swift */,
 			);
 			path = FRCoreTests;
+			sourceTree = "<group>";
+		};
+		D5EE068D255FA1CC00C2D1BC /* SharedTestFiles */ = {
+			isa = PBXGroup;
+			children = (
+				D5EE068E255FA1CC00C2D1BC /* TestData */,
+				D5EE06C1255FA1CC00C2D1BC /* BaseTest */,
+				D5EE06C3255FA1CC00C2D1BC /* TestUtil */,
+			);
+			name = SharedTestFiles;
+			path = ../../FRTestHost/FRTestHost/SharedTestFiles;
+			sourceTree = "<group>";
+		};
+		D5EE068E255FA1CC00C2D1BC /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				D5EE0693255FA1CC00C2D1BC /* Certs */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+		D5EE0693255FA1CC00C2D1BC /* Certs */ = {
+			isa = PBXGroup;
+			children = (
+				D5EE0694255FA1CC00C2D1BC /* 01-cert.cert */,
+				D5EE0695255FA1CC00C2D1BC /* 01-pkey.key */,
+				D5EE0696255FA1CC00C2D1BC /* 02-pkey.pem */,
+				D5EE0697255FA1CC00C2D1BC /* 02-cert.pem */,
+			);
+			path = Certs;
+			sourceTree = "<group>";
+		};
+		D5EE06C1255FA1CC00C2D1BC /* BaseTest */ = {
+			isa = PBXGroup;
+			children = (
+				D5EE06C2255FA1CC00C2D1BC /* FRBaseTestCase.swift */,
+			);
+			path = BaseTest;
+			sourceTree = "<group>";
+		};
+		D5EE06C3255FA1CC00C2D1BC /* TestUtil */ = {
+			isa = PBXGroup;
+			children = (
+				D5E7B1C4256C609200DF2AB6 /* FRTestLogger.swift */,
+				D5EE06C4255FA1CC00C2D1BC /* FRTestStubResponseParser.swift */,
+				D5EE06C5255FA1CC00C2D1BC /* FRTestUtils.swift */,
+				D5EE06C6255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift */,
+			);
+			path = TestUtil;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -454,10 +491,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5CBC25A24103E2800F9B6EA /* 02-cert.pem in Resources */,
-				D5CBC25724103E2800F9B6EA /* 01-cert.cert in Resources */,
-				D5CBC25924103E2800F9B6EA /* 02-pkey.pem in Resources */,
-				D5CBC25824103E2800F9B6EA /* 01-pkey.key in Resources */,
+				D5EE06CC255FA1CC00C2D1BC /* 02-cert.pem in Resources */,
+				D5EE06CB255FA1CC00C2D1BC /* 02-pkey.pem in Resources */,
+				D5EE06C9255FA1CC00C2D1BC /* 01-cert.cert in Resources */,
+				D5EE06CA255FA1CC00C2D1BC /* 01-pkey.key in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,27 +533,31 @@
 				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
 				D5D214A924785BD800B26403 /* LogTests.swift in Sources */,
 				D5D2149F2478575900B26403 /* Action.swift in Sources */,
+				D5E7B1C5256C609200DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5CBC24424102BB100F9B6EA /* FRError.swift in Sources */,
 				D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */,
 				D5CBC24524102BB100F9B6EA /* NetworkError.swift in Sources */,
 				D5CBC24624102BB100F9B6EA /* KeychainService.swift in Sources */,
+				D5EE06F1255FA1CC00C2D1BC /* FRTestStubResponseParser.swift in Sources */,
 				D5CBC24724102BB100F9B6EA /* SecuredKey.swift in Sources */,
 				D5D214A52478581D00B26403 /* NetworkErrorTests.swift in Sources */,
 				D5CBC24824102BB100F9B6EA /* Log.swift in Sources */,
 				D5CBC24924102BB100F9B6EA /* FRConsoleLogger.swift in Sources */,
+				D5EE06F0255FA1CC00C2D1BC /* FRBaseTestCase.swift in Sources */,
 				D5CBC24A24102BB100F9B6EA /* FRLogger.swift in Sources */,
+				D5EE06F3255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift in Sources */,
 				D50115CF2410472F00219761 /* SecuredKeyTests.swift in Sources */,
 				D5CBC24B24102BB100F9B6EA /* Result.swift in Sources */,
 				D5CBC24C24102BB200F9B6EA /* Response.swift in Sources */,
 				D5CBC24D24102BB200F9B6EA /* Request.swift in Sources */,
 				D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */,
 				D5CBC24E24102BB200F9B6EA /* RestClient.swift in Sources */,
-				D5CBC25024103D3700F9B6EA /* FRCoreBaseTest.swift in Sources */,
 				D5CBC24324102B8800F9B6EA /* RestClientTests.swift in Sources */,
 				D5D214AF24786EA800B26403 /* RequestInterceptorTests.swift in Sources */,
 				D5D214AD24786DBE00B26403 /* ActionTests.swift in Sources */,
 				D5CBC24224102B8800F9B6EA /* RequestTests.swift in Sources */,
+				D5EE06F2255FA1CC00C2D1BC /* FRTestUtils.swift in Sources */,
 				D5CBC24124102B8800F9B6EA /* KeychainServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -675,7 +716,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -702,7 +743,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

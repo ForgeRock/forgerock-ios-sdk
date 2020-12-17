@@ -10,7 +10,7 @@
 
 import XCTest
 
-class FRDeviceCollectorTests: FRBaseTest {
+class FRDeviceCollectorTests: FRAuthBaseTest {
     
     let kDeviceInfoCurrentVersion = "1.0"
     

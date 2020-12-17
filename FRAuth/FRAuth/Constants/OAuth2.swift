@@ -2,7 +2,7 @@
 //  OAuth2.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -21,6 +21,7 @@ struct OAuth2 {
     static let grantType = "grant_type"
     static let grantTypeAuthCode = "authorization_code"
     static let token = "token"
+    static let idTokenHint = "id_token_hint"
     static let code = "code"
     static let authorization = "Authorization"
     

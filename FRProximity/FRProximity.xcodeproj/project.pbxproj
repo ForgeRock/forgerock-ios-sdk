@@ -9,36 +9,8 @@
 /* Begin PBXBuildFile section */
 		D5021009246A244200A45A51 /* DeviceCollectorNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5021008246A244200A45A51 /* DeviceCollectorNodeTests.swift */; };
 		D502100E246A248600A45A51 /* DeviceCollectorNodeTree.png in Resources */ = {isa = PBXBuildFile; fileRef = D502100D246A248600A45A51 /* DeviceCollectorNodeTree.png */; };
-		D5021012246A26FD00A45A51 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5021011246A26FD00A45A51 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */; };
-		D5021016246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5021013246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeLocationOnly.json */; };
-		D5021017246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeAll.json in Resources */ = {isa = PBXBuildFile; fileRef = D5021014246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeAll.json */; };
-		D5021018246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeNone.json in Resources */ = {isa = PBXBuildFile; fileRef = D5021015246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeNone.json */; };
-		D502101A246A2F4F00A45A51 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = D5021019246A2F4F00A45A51 /* AuthTree_DeviceCollectorNodeWithMessage.json */; };
 		D502101C246A304D00A45A51 /* DeviceProfileCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D502101B246A304D00A45A51 /* DeviceProfileCallbackTests.swift */; };
 		D5143C22246A191100B5DE80 /* LocationCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5143C21246A191100B5DE80 /* LocationCollectorTests.swift */; };
-		D548EC3D2469CCAB002DE328 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D548EC202469CCAA002DE328 /* FRTestStubResponseParser.swift */; };
-		D548EC3E2469CCAB002DE328 /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D548EC212469CCAA002DE328 /* FRTestNetworkStubProtocol.swift */; };
-		D548EC3F2469CCAB002DE328 /* AM_Session_Logout_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC282469CCAA002DE328 /* AM_Session_Logout_Success.json */; };
-		D548EC402469CCAB002DE328 /* AM_Session_Logout_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC292469CCAA002DE328 /* AM_Session_Logout_Failure.json */; };
-		D548EC412469CCAB002DE328 /* OAuth2_Token_Revoke_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC2B2469CCAA002DE328 /* OAuth2_Token_Revoke_Success.json */; };
-		D548EC422469CCAB002DE328 /* OAuth2_UserInfo_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC2C2469CCAA002DE328 /* OAuth2_UserInfo_Success.json */; };
-		D548EC432469CCAB002DE328 /* OAuth2_UserInfo_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC2D2469CCAA002DE328 /* OAuth2_UserInfo_Failure.json */; };
-		D548EC442469CCAB002DE328 /* OAuth2_AuthorizeRedirect_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC2E2469CCAA002DE328 /* OAuth2_AuthorizeRedirect_Success.json */; };
-		D548EC452469CCAB002DE328 /* OAuth2_Token_Refresh_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC2F2469CCAA002DE328 /* OAuth2_Token_Refresh_Success.json */; };
-		D548EC462469CCAB002DE328 /* OAuth2_Token_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC302469CCAA002DE328 /* OAuth2_Token_Success.json */; };
-		D548EC472469CCAB002DE328 /* AuthTree_SSOToken_Success2.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC322469CCAA002DE328 /* AuthTree_SSOToken_Success2.json */; };
-		D548EC482469CCAB002DE328 /* AuthTree_TermsAndConditionsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC332469CCAA002DE328 /* AuthTree_TermsAndConditionsNode.json */; };
-		D548EC492469CCAB002DE328 /* AuthTree_SSOToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC342469CCAA002DE328 /* AuthTree_SSOToken_Success.json */; };
-		D548EC4A2469CCAB002DE328 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC352469CCAA002DE328 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
-		D548EC4B2469CCAB002DE328 /* AuthTree_SecondFactorOTPNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC362469CCAA002DE328 /* AuthTree_SecondFactorOTPNode.json */; };
-		D548EC4C2469CCAB002DE328 /* AuthTree_SecondFactorChoiceNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC372469CCAA002DE328 /* AuthTree_SecondFactorChoiceNode.json */; };
-		D548EC4D2469CCAB002DE328 /* AuthTree_KBAVerificationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC382469CCAA002DE328 /* AuthTree_KBAVerificationNode.json */; };
-		D548EC4E2469CCAB002DE328 /* AuthTree_UsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC392469CCAA002DE328 /* AuthTree_UsernamePasswordNode.json */; };
-		D548EC4F2469CCAB002DE328 /* AuthTree_AttributeCollectorsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC3A2469CCAA002DE328 /* AuthTree_AttributeCollectorsNode.json */; };
-		D548EC502469CCAB002DE328 /* AuthTree_KBACreateNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC3B2469CCAA002DE328 /* AuthTree_KBACreateNode.json */; };
-		D548EC512469CCAB002DE328 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D548EC3C2469CCAA002DE328 /* AuthTree_PlatformUsernamePasswordNode.json */; };
-		D548EC532469CCCC002DE328 /* FRPTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D548EC522469CCCC002DE328 /* FRPTestUtils.swift */; };
-		D548ECAC246A0FBB002DE328 /* FRPBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D548ECAB246A0FBB002DE328 /* FRPBaseTest.swift */; };
 		D548ECB0246A108E002DE328 /* FRProximityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D548ECAF246A108E002DE328 /* FRProximityTests.swift */; };
 		D548ECB3246A1322002DE328 /* BluetoothCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D548ECB2246A1322002DE328 /* BluetoothCollectorTests.swift */; };
 		D548ECB4246A1359002DE328 /* BluetoothCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE88234415AF005D34DA /* BluetoothCollector.swift */; };
@@ -53,6 +25,58 @@
 		D59FAE89234415AF005D34DA /* LocationCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE87234415AF005D34DA /* LocationCollector.swift */; };
 		D59FAE8A234415AF005D34DA /* BluetoothCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59FAE88234415AF005D34DA /* BluetoothCollector.swift */; };
 		D59FAE9F234418BD005D34DA /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE40234413F3005D34DA /* FRAuth.framework */; };
+		D5AFD0802568D76B005E69FA /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D5AFD07F2568D76B005E69FA /* Config-live-01.json */; };
+		D5C3339F2560E91F00CC6C19 /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333672560E91F00CC6C19 /* CustomCallback.swift */; };
+		D5C333A02560E91F00CC6C19 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333692560E91F00CC6C19 /* NoSessionInterceptor.swift */; };
+		D5C333A12560E91F00CC6C19 /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D5C3336B2560E91F00CC6C19 /* 01-cert.cert */; };
+		D5C333A22560E91F00CC6C19 /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5C3336C2560E91F00CC6C19 /* 01-pkey.key */; };
+		D5C333A32560E91F00CC6C19 /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5C3336D2560E91F00CC6C19 /* 02-pkey.pem */; };
+		D5C333A42560E91F00CC6C19 /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5C3336E2560E91F00CC6C19 /* 02-cert.pem */; };
+		D5C333A52560E91F00CC6C19 /* AM_Session_Logout_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333712560E91F00CC6C19 /* AM_Session_Logout_Success.json */; };
+		D5C333A62560E91F00CC6C19 /* AM_Session_Logout_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333722560E91F00CC6C19 /* AM_Session_Logout_Failure.json */; };
+		D5C333A72560E91F00CC6C19 /* OAuth2_EndSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333742560E91F00CC6C19 /* OAuth2_EndSession_Success.json */; };
+		D5C333A82560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333752560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Failure.json */; };
+		D5C333A92560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidGrant.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333762560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidGrant.json */; };
+		D5C333AA2560E91F00CC6C19 /* OAuth2_Token_Revoke_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333772560E91F00CC6C19 /* OAuth2_Token_Revoke_Success.json */; };
+		D5C333AB2560E91F00CC6C19 /* OAuth2_UserInfo_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333782560E91F00CC6C19 /* OAuth2_UserInfo_Success.json */; };
+		D5C333AC2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidClient.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333792560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidClient.json */; };
+		D5C333AD2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidScope.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3337A2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidScope.json */; };
+		D5C333AE2560E91F00CC6C19 /* OAuth2_UserInfo_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3337B2560E91F00CC6C19 /* OAuth2_UserInfo_Failure.json */; };
+		D5C333AF2560E91F00CC6C19 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3337C2560E91F00CC6C19 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */; };
+		D5C333B02560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3337D2560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Success.json */; };
+		D5C333B12560E91F00CC6C19 /* OAuth2_Token_Refresh_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3337E2560E91F00CC6C19 /* OAuth2_Token_Refresh_Success.json */; };
+		D5C333B22560E91F00CC6C19 /* OAuth2_EndSession_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3337F2560E91F00CC6C19 /* OAuth2_EndSession_Failure.json */; };
+		D5C333B32560E91F00CC6C19 /* OAuth2_Token_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333802560E91F00CC6C19 /* OAuth2_Token_Success.json */; };
+		D5C333B42560E91F00CC6C19 /* AuthTree_SSOToken_Success2.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333822560E91F00CC6C19 /* AuthTree_SSOToken_Success2.json */; };
+		D5C333B52560E91F00CC6C19 /* AuthTree_TermsAndConditionsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333832560E91F00CC6C19 /* AuthTree_TermsAndConditionsNode.json */; };
+		D5C333B62560E91F00CC6C19 /* AuthTree_SSOToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333842560E91F00CC6C19 /* AuthTree_SSOToken_Success.json */; };
+		D5C333B72560E91F00CC6C19 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333852560E91F00CC6C19 /* AuthTree_NoSession_Success.json */; };
+		D5C333B82560E91F00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333862560E91F00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
+		D5C333B92560E91F00CC6C19 /* AuthTree_AuthTimedOut.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333872560E91F00CC6C19 /* AuthTree_AuthTimedOut.json */; };
+		D5C333BA2560E91F00CC6C19 /* AuthTree_SecondFactorOTPNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333882560E91F00CC6C19 /* AuthTree_SecondFactorOTPNode.json */; };
+		D5C333BB2560E91F00CC6C19 /* AuthTree_SecondFactorChoiceNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333892560E91F00CC6C19 /* AuthTree_SecondFactorChoiceNode.json */; };
+		D5C333BC2560E91F00CC6C19 /* AuthTree_KBAVerificationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3338A2560E91F00CC6C19 /* AuthTree_KBAVerificationNode.json */; };
+		D5C333BD2560E91F00CC6C19 /* AuthTree_UsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3338B2560E91F00CC6C19 /* AuthTree_UsernamePasswordNode.json */; };
+		D5C333BE2560E91F00CC6C19 /* AuthTree_AttributeCollectorsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3338C2560E91F00CC6C19 /* AuthTree_AttributeCollectorsNode.json */; };
+		D5C333BF2560E91F00CC6C19 /* AuthTree_KBACreateNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3338D2560E91F00CC6C19 /* AuthTree_KBACreateNode.json */; };
+		D5C333C02560E91F00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3338E2560E91F00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json */; };
+		D5C333C12560E91F00CC6C19 /* AuthTree_SuspendedAuthSessionException.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3338F2560E91F00CC6C19 /* AuthTree_SuspendedAuthSessionException.json */; };
+		D5C333C22560E91F00CC6C19 /* AccessTokenNoRefresh.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333912560E91F00CC6C19 /* AccessTokenNoRefresh.json */; };
+		D5C333C32560E91F00CC6C19 /* AccessToken.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333922560E91F00CC6C19 /* AccessToken.json */; };
+		D5C333C42560E91F00CC6C19 /* AccessToken2.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333932560E91F00CC6C19 /* AccessToken2.json */; };
+		D5C333C52560E91F00CC6C19 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333952560E91F00CC6C19 /* Config.json */; };
+		D5C333C62560E91F00CC6C19 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333962560E91F00CC6C19 /* Config.swift */; };
+		D5C333C82560E91F00CC6C19 /* FRAuthBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C333992560E91F00CC6C19 /* FRAuthBaseTest.swift */; };
+		D5C333C92560E91F00CC6C19 /* FRBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C3339A2560E91F00CC6C19 /* FRBaseTestCase.swift */; };
+		D5C333CA2560E91F00CC6C19 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */; };
+		D5C333CB2560E91F00CC6C19 /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C3339D2560E91F00CC6C19 /* FRTestUtils.swift */; };
+		D5C333CC2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C3339E2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift */; };
+		D5C333E02560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DB2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */; };
+		D5C333E12560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeAll.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DC2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeAll.json */; };
+		D5C333E22560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */; };
+		D5C333E32560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */; };
+		D5C333E42560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */; };
+		D5E7B1CC256C60A100DF2AB6 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */; };
 		D5F1337B24EDBDAD00737F14 /* FRLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */; };
 		D5F1337F24EDCAB800737F14 /* FRPLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F1337E24EDCAB800737F14 /* FRPLog.swift */; };
 /* End PBXBuildFile section */
@@ -105,36 +129,8 @@
 /* Begin PBXFileReference section */
 		D5021008246A244200A45A51 /* DeviceCollectorNodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCollectorNodeTests.swift; sourceTree = "<group>"; };
 		D502100D246A248600A45A51 /* DeviceCollectorNodeTree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DeviceCollectorNodeTree.png; sourceTree = "<group>"; };
-		D5021011246A26FD00A45A51 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeMetadataOnly.json; sourceTree = "<group>"; };
-		D5021013246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeLocationOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeLocationOnly.json; sourceTree = "<group>"; };
-		D5021014246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeAll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeAll.json; sourceTree = "<group>"; };
-		D5021015246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeNone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeNone.json; sourceTree = "<group>"; };
-		D5021019246A2F4F00A45A51 /* AuthTree_DeviceCollectorNodeWithMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeWithMessage.json; sourceTree = "<group>"; };
 		D502101B246A304D00A45A51 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5143C21246A191100B5DE80 /* LocationCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCollectorTests.swift; sourceTree = "<group>"; };
-		D548EC202469CCAA002DE328 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
-		D548EC212469CCAA002DE328 /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
-		D548EC282469CCAA002DE328 /* AM_Session_Logout_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Success.json; sourceTree = "<group>"; };
-		D548EC292469CCAA002DE328 /* AM_Session_Logout_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Failure.json; sourceTree = "<group>"; };
-		D548EC2B2469CCAA002DE328 /* OAuth2_Token_Revoke_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Revoke_Success.json; sourceTree = "<group>"; };
-		D548EC2C2469CCAA002DE328 /* OAuth2_UserInfo_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Success.json; sourceTree = "<group>"; };
-		D548EC2D2469CCAA002DE328 /* OAuth2_UserInfo_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Failure.json; sourceTree = "<group>"; };
-		D548EC2E2469CCAA002DE328 /* OAuth2_AuthorizeRedirect_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Success.json; sourceTree = "<group>"; };
-		D548EC2F2469CCAA002DE328 /* OAuth2_Token_Refresh_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_Success.json; sourceTree = "<group>"; };
-		D548EC302469CCAA002DE328 /* OAuth2_Token_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Success.json; sourceTree = "<group>"; };
-		D548EC322469CCAA002DE328 /* AuthTree_SSOToken_Success2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success2.json; sourceTree = "<group>"; };
-		D548EC332469CCAA002DE328 /* AuthTree_TermsAndConditionsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_TermsAndConditionsNode.json; sourceTree = "<group>"; };
-		D548EC342469CCAA002DE328 /* AuthTree_SSOToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success.json; sourceTree = "<group>"; };
-		D548EC352469CCAA002DE328 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
-		D548EC362469CCAA002DE328 /* AuthTree_SecondFactorOTPNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorOTPNode.json; sourceTree = "<group>"; };
-		D548EC372469CCAA002DE328 /* AuthTree_SecondFactorChoiceNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorChoiceNode.json; sourceTree = "<group>"; };
-		D548EC382469CCAA002DE328 /* AuthTree_KBAVerificationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBAVerificationNode.json; sourceTree = "<group>"; };
-		D548EC392469CCAA002DE328 /* AuthTree_UsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNode.json; sourceTree = "<group>"; };
-		D548EC3A2469CCAA002DE328 /* AuthTree_AttributeCollectorsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AttributeCollectorsNode.json; sourceTree = "<group>"; };
-		D548EC3B2469CCAA002DE328 /* AuthTree_KBACreateNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBACreateNode.json; sourceTree = "<group>"; };
-		D548EC3C2469CCAA002DE328 /* AuthTree_PlatformUsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_PlatformUsernamePasswordNode.json; sourceTree = "<group>"; };
-		D548EC522469CCCC002DE328 /* FRPTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRPTestUtils.swift; sourceTree = "<group>"; };
-		D548ECAB246A0FBB002DE328 /* FRPBaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRPBaseTest.swift; sourceTree = "<group>"; };
 		D548ECAF246A108E002DE328 /* FRProximityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRProximityTests.swift; sourceTree = "<group>"; };
 		D548ECB2246A1322002DE328 /* BluetoothCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothCollectorTests.swift; sourceTree = "<group>"; };
 		D54B7501246B51C500E6394E /* CustomCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollector.swift; sourceTree = "<group>"; };
@@ -147,7 +143,59 @@
 		D59FAE81234414DB005D34DA /* FRProximity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRProximity.swift; sourceTree = "<group>"; };
 		D59FAE87234415AF005D34DA /* LocationCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCollector.swift; sourceTree = "<group>"; };
 		D59FAE88234415AF005D34DA /* BluetoothCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothCollector.swift; sourceTree = "<group>"; };
+		D5AFD07F2568D76B005E69FA /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
 		D5B68CE1248CDD7000CD2F5B /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
+		D5C333672560E91F00CC6C19 /* CustomCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
+		D5C333692560E91F00CC6C19 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
+		D5C3336B2560E91F00CC6C19 /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
+		D5C3336C2560E91F00CC6C19 /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
+		D5C3336D2560E91F00CC6C19 /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
+		D5C3336E2560E91F00CC6C19 /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
+		D5C333712560E91F00CC6C19 /* AM_Session_Logout_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Success.json; sourceTree = "<group>"; };
+		D5C333722560E91F00CC6C19 /* AM_Session_Logout_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Failure.json; sourceTree = "<group>"; };
+		D5C333742560E91F00CC6C19 /* OAuth2_EndSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Success.json; sourceTree = "<group>"; };
+		D5C333752560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Failure.json; sourceTree = "<group>"; };
+		D5C333762560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidGrant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidGrant.json; sourceTree = "<group>"; };
+		D5C333772560E91F00CC6C19 /* OAuth2_Token_Revoke_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Revoke_Success.json; sourceTree = "<group>"; };
+		D5C333782560E91F00CC6C19 /* OAuth2_UserInfo_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Success.json; sourceTree = "<group>"; };
+		D5C333792560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidClient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidClient.json; sourceTree = "<group>"; };
+		D5C3337A2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidScope.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidScope.json; sourceTree = "<group>"; };
+		D5C3337B2560E91F00CC6C19 /* OAuth2_UserInfo_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Failure.json; sourceTree = "<group>"; };
+		D5C3337C2560E91F00CC6C19 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_No_RefreshToken_Success.json; sourceTree = "<group>"; };
+		D5C3337D2560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Success.json; sourceTree = "<group>"; };
+		D5C3337E2560E91F00CC6C19 /* OAuth2_Token_Refresh_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_Success.json; sourceTree = "<group>"; };
+		D5C3337F2560E91F00CC6C19 /* OAuth2_EndSession_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Failure.json; sourceTree = "<group>"; };
+		D5C333802560E91F00CC6C19 /* OAuth2_Token_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Success.json; sourceTree = "<group>"; };
+		D5C333822560E91F00CC6C19 /* AuthTree_SSOToken_Success2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success2.json; sourceTree = "<group>"; };
+		D5C333832560E91F00CC6C19 /* AuthTree_TermsAndConditionsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_TermsAndConditionsNode.json; sourceTree = "<group>"; };
+		D5C333842560E91F00CC6C19 /* AuthTree_SSOToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success.json; sourceTree = "<group>"; };
+		D5C333852560E91F00CC6C19 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
+		D5C333862560E91F00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
+		D5C333872560E91F00CC6C19 /* AuthTree_AuthTimedOut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AuthTimedOut.json; sourceTree = "<group>"; };
+		D5C333882560E91F00CC6C19 /* AuthTree_SecondFactorOTPNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorOTPNode.json; sourceTree = "<group>"; };
+		D5C333892560E91F00CC6C19 /* AuthTree_SecondFactorChoiceNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorChoiceNode.json; sourceTree = "<group>"; };
+		D5C3338A2560E91F00CC6C19 /* AuthTree_KBAVerificationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBAVerificationNode.json; sourceTree = "<group>"; };
+		D5C3338B2560E91F00CC6C19 /* AuthTree_UsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNode.json; sourceTree = "<group>"; };
+		D5C3338C2560E91F00CC6C19 /* AuthTree_AttributeCollectorsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AttributeCollectorsNode.json; sourceTree = "<group>"; };
+		D5C3338D2560E91F00CC6C19 /* AuthTree_KBACreateNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBACreateNode.json; sourceTree = "<group>"; };
+		D5C3338E2560E91F00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_PlatformUsernamePasswordNode.json; sourceTree = "<group>"; };
+		D5C3338F2560E91F00CC6C19 /* AuthTree_SuspendedAuthSessionException.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SuspendedAuthSessionException.json; sourceTree = "<group>"; };
+		D5C333912560E91F00CC6C19 /* AccessTokenNoRefresh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessTokenNoRefresh.json; sourceTree = "<group>"; };
+		D5C333922560E91F00CC6C19 /* AccessToken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken.json; sourceTree = "<group>"; };
+		D5C333932560E91F00CC6C19 /* AccessToken2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken2.json; sourceTree = "<group>"; };
+		D5C333952560E91F00CC6C19 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		D5C333962560E91F00CC6C19 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		D5C333992560E91F00CC6C19 /* FRAuthBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAuthBaseTest.swift; sourceTree = "<group>"; };
+		D5C3339A2560E91F00CC6C19 /* FRBaseTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRBaseTestCase.swift; sourceTree = "<group>"; };
+		D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
+		D5C3339D2560E91F00CC6C19 /* FRTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestUtils.swift; sourceTree = "<group>"; };
+		D5C3339E2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
+		D5C333DB2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeMetadataOnly.json; sourceTree = "<group>"; };
+		D5C333DC2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeAll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeAll.json; sourceTree = "<group>"; };
+		D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeLocationOnly.json; sourceTree = "<group>"; };
+		D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeNone.json; sourceTree = "<group>"; };
+		D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeWithMessage.json; sourceTree = "<group>"; };
+		D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
 		D5F1337A24EDBDAD00737F14 /* FRLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRLocationManager.swift; sourceTree = "<group>"; };
 		D5F1337E24EDCAB800737F14 /* FRPLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRPLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -180,85 +228,12 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
-		D548EC1F2469CCAA002DE328 /* TestUtil */ = {
-			isa = PBXGroup;
-			children = (
-				D548EC202469CCAA002DE328 /* FRTestStubResponseParser.swift */,
-				D548EC212469CCAA002DE328 /* FRTestNetworkStubProtocol.swift */,
-				D548EC522469CCCC002DE328 /* FRPTestUtils.swift */,
-			);
-			path = TestUtil;
-			sourceTree = "<group>";
-		};
 		D548EC252469CCAA002DE328 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
 				D54B74FD246B51AC00E6394E /* Customization */,
-				D548EC262469CCAA002DE328 /* MockResponseData */,
 			);
 			path = TestData;
-			sourceTree = "<group>";
-		};
-		D548EC262469CCAA002DE328 /* MockResponseData */ = {
-			isa = PBXGroup;
-			children = (
-				D548EC272469CCAA002DE328 /* AM */,
-				D548EC2A2469CCAA002DE328 /* OAuth2 */,
-				D548EC312469CCAA002DE328 /* AuthTree */,
-			);
-			path = MockResponseData;
-			sourceTree = "<group>";
-		};
-		D548EC272469CCAA002DE328 /* AM */ = {
-			isa = PBXGroup;
-			children = (
-				D548EC282469CCAA002DE328 /* AM_Session_Logout_Success.json */,
-				D548EC292469CCAA002DE328 /* AM_Session_Logout_Failure.json */,
-			);
-			path = AM;
-			sourceTree = "<group>";
-		};
-		D548EC2A2469CCAA002DE328 /* OAuth2 */ = {
-			isa = PBXGroup;
-			children = (
-				D548EC2B2469CCAA002DE328 /* OAuth2_Token_Revoke_Success.json */,
-				D548EC2C2469CCAA002DE328 /* OAuth2_UserInfo_Success.json */,
-				D548EC2D2469CCAA002DE328 /* OAuth2_UserInfo_Failure.json */,
-				D548EC2E2469CCAA002DE328 /* OAuth2_AuthorizeRedirect_Success.json */,
-				D548EC2F2469CCAA002DE328 /* OAuth2_Token_Refresh_Success.json */,
-				D548EC302469CCAA002DE328 /* OAuth2_Token_Success.json */,
-			);
-			path = OAuth2;
-			sourceTree = "<group>";
-		};
-		D548EC312469CCAA002DE328 /* AuthTree */ = {
-			isa = PBXGroup;
-			children = (
-				D5021019246A2F4F00A45A51 /* AuthTree_DeviceCollectorNodeWithMessage.json */,
-				D5021014246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeAll.json */,
-				D5021013246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeLocationOnly.json */,
-				D5021015246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeNone.json */,
-				D5021011246A26FD00A45A51 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */,
-				D548EC322469CCAA002DE328 /* AuthTree_SSOToken_Success2.json */,
-				D548EC332469CCAA002DE328 /* AuthTree_TermsAndConditionsNode.json */,
-				D548EC342469CCAA002DE328 /* AuthTree_SSOToken_Success.json */,
-				D548EC352469CCAA002DE328 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
-				D548EC362469CCAA002DE328 /* AuthTree_SecondFactorOTPNode.json */,
-				D548EC372469CCAA002DE328 /* AuthTree_SecondFactorChoiceNode.json */,
-				D548EC382469CCAA002DE328 /* AuthTree_KBAVerificationNode.json */,
-				D548EC392469CCAA002DE328 /* AuthTree_UsernamePasswordNode.json */,
-				D548EC3A2469CCAA002DE328 /* AuthTree_AttributeCollectorsNode.json */,
-				D548EC3B2469CCAA002DE328 /* AuthTree_KBACreateNode.json */,
-				D548EC3C2469CCAA002DE328 /* AuthTree_PlatformUsernamePasswordNode.json */,
-			);
-			path = AuthTree;
-			sourceTree = "<group>";
-		};
-		D548EC542469CD0E002DE328 /* TestConfig */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TestConfig;
 			sourceTree = "<group>";
 		};
 		D548ECAD246A106C002DE328 /* E2ETests */ = {
@@ -326,13 +301,11 @@
 		D59FAE2B234413D3005D34DA /* FRProximityTests */ = {
 			isa = PBXGroup;
 			children = (
+				D5C333642560E91F00CC6C19 /* SharedTestFiles */,
 				D548ECAD246A106C002DE328 /* E2ETests */,
 				D548ECAE246A106C002DE328 /* UnitTests */,
-				D548EC542469CD0E002DE328 /* TestConfig */,
 				D548EC252469CCAA002DE328 /* TestData */,
-				D548EC1F2469CCAA002DE328 /* TestUtil */,
 				D59FAE2E234413D3005D34DA /* Info.plist */,
-				D548ECAB246A0FBB002DE328 /* FRPBaseTest.swift */,
 			);
 			path = FRProximityTests;
 			sourceTree = "<group>";
@@ -368,6 +341,162 @@
 				D5B68CE8248CDD7000CD2F5B /* FRTestHost.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D5C333642560E91F00CC6C19 /* SharedTestFiles */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333652560E91F00CC6C19 /* TestData */,
+				D5C333942560E91F00CC6C19 /* TestConfig */,
+				D5C333982560E91F00CC6C19 /* BaseTest */,
+				D5C3339B2560E91F00CC6C19 /* TestUtil */,
+			);
+			name = SharedTestFiles;
+			path = ../../FRTestHost/FRTestHost/SharedTestFiles;
+			sourceTree = "<group>";
+		};
+		D5C333652560E91F00CC6C19 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333662560E91F00CC6C19 /* CustomCallback */,
+				D5C333682560E91F00CC6C19 /* Customization */,
+				D5C3336A2560E91F00CC6C19 /* Certs */,
+				D5C3336F2560E91F00CC6C19 /* MockResponseData */,
+				D5C333902560E91F00CC6C19 /* ModelData */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+		D5C333662560E91F00CC6C19 /* CustomCallback */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333672560E91F00CC6C19 /* CustomCallback.swift */,
+			);
+			path = CustomCallback;
+			sourceTree = "<group>";
+		};
+		D5C333682560E91F00CC6C19 /* Customization */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333692560E91F00CC6C19 /* NoSessionInterceptor.swift */,
+			);
+			path = Customization;
+			sourceTree = "<group>";
+		};
+		D5C3336A2560E91F00CC6C19 /* Certs */ = {
+			isa = PBXGroup;
+			children = (
+				D5C3336B2560E91F00CC6C19 /* 01-cert.cert */,
+				D5C3336C2560E91F00CC6C19 /* 01-pkey.key */,
+				D5C3336D2560E91F00CC6C19 /* 02-pkey.pem */,
+				D5C3336E2560E91F00CC6C19 /* 02-cert.pem */,
+			);
+			path = Certs;
+			sourceTree = "<group>";
+		};
+		D5C3336F2560E91F00CC6C19 /* MockResponseData */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333702560E91F00CC6C19 /* AM */,
+				D5C333732560E91F00CC6C19 /* OAuth2 */,
+				D5C333812560E91F00CC6C19 /* AuthTree */,
+			);
+			path = MockResponseData;
+			sourceTree = "<group>";
+		};
+		D5C333702560E91F00CC6C19 /* AM */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333712560E91F00CC6C19 /* AM_Session_Logout_Success.json */,
+				D5C333722560E91F00CC6C19 /* AM_Session_Logout_Failure.json */,
+			);
+			path = AM;
+			sourceTree = "<group>";
+		};
+		D5C333732560E91F00CC6C19 /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333742560E91F00CC6C19 /* OAuth2_EndSession_Success.json */,
+				D5C333752560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Failure.json */,
+				D5C333762560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidGrant.json */,
+				D5C333772560E91F00CC6C19 /* OAuth2_Token_Revoke_Success.json */,
+				D5C333782560E91F00CC6C19 /* OAuth2_UserInfo_Success.json */,
+				D5C333792560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidClient.json */,
+				D5C3337A2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidScope.json */,
+				D5C3337B2560E91F00CC6C19 /* OAuth2_UserInfo_Failure.json */,
+				D5C3337C2560E91F00CC6C19 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */,
+				D5C3337D2560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Success.json */,
+				D5C3337E2560E91F00CC6C19 /* OAuth2_Token_Refresh_Success.json */,
+				D5C3337F2560E91F00CC6C19 /* OAuth2_EndSession_Failure.json */,
+				D5C333802560E91F00CC6C19 /* OAuth2_Token_Success.json */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
+		D5C333812560E91F00CC6C19 /* AuthTree */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333DC2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeAll.json */,
+				D5C333DD2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json */,
+				D5C333DB2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */,
+				D5C333DE2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json */,
+				D5C333DF2560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json */,
+				D5C333822560E91F00CC6C19 /* AuthTree_SSOToken_Success2.json */,
+				D5C333832560E91F00CC6C19 /* AuthTree_TermsAndConditionsNode.json */,
+				D5C333842560E91F00CC6C19 /* AuthTree_SSOToken_Success.json */,
+				D5C333852560E91F00CC6C19 /* AuthTree_NoSession_Success.json */,
+				D5C333862560E91F00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
+				D5C333872560E91F00CC6C19 /* AuthTree_AuthTimedOut.json */,
+				D5C333882560E91F00CC6C19 /* AuthTree_SecondFactorOTPNode.json */,
+				D5C333892560E91F00CC6C19 /* AuthTree_SecondFactorChoiceNode.json */,
+				D5C3338A2560E91F00CC6C19 /* AuthTree_KBAVerificationNode.json */,
+				D5C3338B2560E91F00CC6C19 /* AuthTree_UsernamePasswordNode.json */,
+				D5C3338C2560E91F00CC6C19 /* AuthTree_AttributeCollectorsNode.json */,
+				D5C3338D2560E91F00CC6C19 /* AuthTree_KBACreateNode.json */,
+				D5C3338E2560E91F00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json */,
+				D5C3338F2560E91F00CC6C19 /* AuthTree_SuspendedAuthSessionException.json */,
+			);
+			path = AuthTree;
+			sourceTree = "<group>";
+		};
+		D5C333902560E91F00CC6C19 /* ModelData */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333912560E91F00CC6C19 /* AccessTokenNoRefresh.json */,
+				D5C333922560E91F00CC6C19 /* AccessToken.json */,
+				D5C333932560E91F00CC6C19 /* AccessToken2.json */,
+			);
+			path = ModelData;
+			sourceTree = "<group>";
+		};
+		D5C333942560E91F00CC6C19 /* TestConfig */ = {
+			isa = PBXGroup;
+			children = (
+				D5AFD07F2568D76B005E69FA /* Config-live-01.json */,
+				D5C333952560E91F00CC6C19 /* Config.json */,
+				D5C333962560E91F00CC6C19 /* Config.swift */,
+			);
+			path = TestConfig;
+			sourceTree = "<group>";
+		};
+		D5C333982560E91F00CC6C19 /* BaseTest */ = {
+			isa = PBXGroup;
+			children = (
+				D5C333992560E91F00CC6C19 /* FRAuthBaseTest.swift */,
+				D5C3339A2560E91F00CC6C19 /* FRBaseTestCase.swift */,
+			);
+			path = BaseTest;
+			sourceTree = "<group>";
+		};
+		D5C3339B2560E91F00CC6C19 /* TestUtil */ = {
+			isa = PBXGroup;
+			children = (
+				D5E7B1CA256C60A100DF2AB6 /* FRTestLogger.swift */,
+				D5C3339C2560E91F00CC6C19 /* FRTestStubResponseParser.swift */,
+				D5C3339D2560E91F00CC6C19 /* FRTestUtils.swift */,
+				D5C3339E2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift */,
+			);
+			path = TestUtil;
 			sourceTree = "<group>";
 		};
 		D5F1337D24EDCAAF00737F14 /* Log */ = {
@@ -514,31 +643,50 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D548EC4F2469CCAB002DE328 /* AuthTree_AttributeCollectorsNode.json in Resources */,
-				D548EC3F2469CCAB002DE328 /* AM_Session_Logout_Success.json in Resources */,
-				D548EC432469CCAB002DE328 /* OAuth2_UserInfo_Failure.json in Resources */,
-				D502101A246A2F4F00A45A51 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */,
-				D548EC442469CCAB002DE328 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
-				D548EC512469CCAB002DE328 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
-				D548EC492469CCAB002DE328 /* AuthTree_SSOToken_Success.json in Resources */,
-				D548EC4E2469CCAB002DE328 /* AuthTree_UsernamePasswordNode.json in Resources */,
-				D548EC422469CCAB002DE328 /* OAuth2_UserInfo_Success.json in Resources */,
-				D548EC4C2469CCAB002DE328 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
-				D5021012246A26FD00A45A51 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */,
-				D548EC472469CCAB002DE328 /* AuthTree_SSOToken_Success2.json in Resources */,
-				D548EC4A2469CCAB002DE328 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
+				D5C333B32560E91F00CC6C19 /* OAuth2_Token_Success.json in Resources */,
+				D5C333A62560E91F00CC6C19 /* AM_Session_Logout_Failure.json in Resources */,
+				D5C333AE2560E91F00CC6C19 /* OAuth2_UserInfo_Failure.json in Resources */,
+				D5C333C32560E91F00CC6C19 /* AccessToken.json in Resources */,
+				D5C333B12560E91F00CC6C19 /* OAuth2_Token_Refresh_Success.json in Resources */,
+				D5C333A12560E91F00CC6C19 /* 01-cert.cert in Resources */,
+				D5C333BB2560E91F00CC6C19 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
+				D5C333A42560E91F00CC6C19 /* 02-cert.pem in Resources */,
+				D5C333A72560E91F00CC6C19 /* OAuth2_EndSession_Success.json in Resources */,
+				D5C333C12560E91F00CC6C19 /* AuthTree_SuspendedAuthSessionException.json in Resources */,
+				D5C333B42560E91F00CC6C19 /* AuthTree_SSOToken_Success2.json in Resources */,
+				D5C333B82560E91F00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
+				D5C333BD2560E91F00CC6C19 /* AuthTree_UsernamePasswordNode.json in Resources */,
+				D5C333AC2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidClient.json in Resources */,
+				D5C333E22560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
+				D5C333BF2560E91F00CC6C19 /* AuthTree_KBACreateNode.json in Resources */,
+				D5AFD0802568D76B005E69FA /* Config-live-01.json in Resources */,
+				D5C333C52560E91F00CC6C19 /* Config.json in Resources */,
+				D5C333B92560E91F00CC6C19 /* AuthTree_AuthTimedOut.json in Resources */,
 				D502100E246A248600A45A51 /* DeviceCollectorNodeTree.png in Resources */,
-				D548EC462469CCAB002DE328 /* OAuth2_Token_Success.json in Resources */,
-				D548EC402469CCAB002DE328 /* AM_Session_Logout_Failure.json in Resources */,
-				D548EC4D2469CCAB002DE328 /* AuthTree_KBAVerificationNode.json in Resources */,
-				D5021017246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeAll.json in Resources */,
-				D5021016246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
-				D548EC482469CCAB002DE328 /* AuthTree_TermsAndConditionsNode.json in Resources */,
-				D5021018246A2A4000A45A51 /* AuthTree_DeviceCollectorNodeNone.json in Resources */,
-				D548EC4B2469CCAB002DE328 /* AuthTree_SecondFactorOTPNode.json in Resources */,
-				D548EC452469CCAB002DE328 /* OAuth2_Token_Refresh_Success.json in Resources */,
-				D548EC502469CCAB002DE328 /* AuthTree_KBACreateNode.json in Resources */,
-				D548EC412469CCAB002DE328 /* OAuth2_Token_Revoke_Success.json in Resources */,
+				D5C333AA2560E91F00CC6C19 /* OAuth2_Token_Revoke_Success.json in Resources */,
+				D5C333B02560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
+				D5C333B62560E91F00CC6C19 /* AuthTree_SSOToken_Success.json in Resources */,
+				D5C333E32560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeNone.json in Resources */,
+				D5C333A22560E91F00CC6C19 /* 01-pkey.key in Resources */,
+				D5C333AD2560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidScope.json in Resources */,
+				D5C333BC2560E91F00CC6C19 /* AuthTree_KBAVerificationNode.json in Resources */,
+				D5C333C02560E91F00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
+				D5C333A52560E91F00CC6C19 /* AM_Session_Logout_Success.json in Resources */,
+				D5C333A82560E91F00CC6C19 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */,
+				D5C333C42560E91F00CC6C19 /* AccessToken2.json in Resources */,
+				D5C333E12560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeAll.json in Resources */,
+				D5C333B72560E91F00CC6C19 /* AuthTree_NoSession_Success.json in Resources */,
+				D5C333E02560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */,
+				D5C333AB2560E91F00CC6C19 /* OAuth2_UserInfo_Success.json in Resources */,
+				D5C333B52560E91F00CC6C19 /* AuthTree_TermsAndConditionsNode.json in Resources */,
+				D5C333AF2560E91F00CC6C19 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json in Resources */,
+				D5C333BA2560E91F00CC6C19 /* AuthTree_SecondFactorOTPNode.json in Resources */,
+				D5C333C22560E91F00CC6C19 /* AccessTokenNoRefresh.json in Resources */,
+				D5C333E42560EAC500CC6C19 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */,
+				D5C333B22560E91F00CC6C19 /* OAuth2_EndSession_Failure.json in Resources */,
+				D5C333A92560E91F00CC6C19 /* OAuth2_Token_Failure_InvalidGrant.json in Resources */,
+				D5C333A32560E91F00CC6C19 /* 02-pkey.pem in Resources */,
+				D5C333BE2560E91F00CC6C19 /* AuthTree_AttributeCollectorsNode.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,18 +710,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5850E0324EE39C8004C9B98 /* FRProximity.swift in Sources */,
+				D5C333A02560E91F00CC6C19 /* NoSessionInterceptor.swift in Sources */,
+				D5C333C62560E91F00CC6C19 /* Config.swift in Sources */,
 				D5850E0024EE39B7004C9B98 /* FRPLog.swift in Sources */,
+				D5C333C82560E91F00CC6C19 /* FRAuthBaseTest.swift in Sources */,
 				D5850E0124EE39B7004C9B98 /* FRLocationManager.swift in Sources */,
 				D548ECB4246A1359002DE328 /* BluetoothCollector.swift in Sources */,
+				D5C333CA2560E91F00CC6C19 /* FRTestStubResponseParser.swift in Sources */,
+				D5C333CC2560E91F00CC6C19 /* FRTestNetworkStubProtocol.swift in Sources */,
 				D548ECB5246A135A002DE328 /* LocationCollector.swift in Sources */,
+				D5C333CB2560E91F00CC6C19 /* FRTestUtils.swift in Sources */,
 				D548ECB3246A1322002DE328 /* BluetoothCollectorTests.swift in Sources */,
+				D5C3339F2560E91F00CC6C19 /* CustomCallback.swift in Sources */,
 				D5021009246A244200A45A51 /* DeviceCollectorNodeTests.swift in Sources */,
-				D548EC3E2469CCAB002DE328 /* FRTestNetworkStubProtocol.swift in Sources */,
-				D548ECAC246A0FBB002DE328 /* FRPBaseTest.swift in Sources */,
+				D5C333C92560E91F00CC6C19 /* FRBaseTestCase.swift in Sources */,
 				D548ECB0246A108E002DE328 /* FRProximityTests.swift in Sources */,
 				D502101C246A304D00A45A51 /* DeviceProfileCallbackTests.swift in Sources */,
-				D548EC532469CCCC002DE328 /* FRPTestUtils.swift in Sources */,
-				D548EC3D2469CCAB002DE328 /* FRTestStubResponseParser.swift in Sources */,
+				D5E7B1CC256C60A100DF2AB6 /* FRTestLogger.swift in Sources */,
 				D54B7502246B51C500E6394E /* CustomCollector.swift in Sources */,
 				D5143C22246A191100B5DE80 /* LocationCollectorTests.swift in Sources */,
 			);
@@ -742,7 +895,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRProximity;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -774,7 +927,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRProximity;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

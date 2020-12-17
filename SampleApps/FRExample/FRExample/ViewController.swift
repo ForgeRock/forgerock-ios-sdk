@@ -132,6 +132,7 @@ class ViewController: UIViewController {
         self.dropDown?.delegate = self
         self.dropDown?.dataSource = [
             "Login with UI (FRUser)",
+            "Login with Browser",
             "Request UserInfo",
             "User Logout",
             "Get FRUser.currentUser",
@@ -515,15 +516,27 @@ class ViewController: UIViewController {
         }
     }
     
+
+    func performCentralizedLogin() {
+        FRUser.browser()?
+            .set(presentingViewController: self)
+            .set(browserType: .authSession)
+            .setCustomParam(key: "custom", value: "value")
+            .build().login { (user, error) in
+                self.displayLog("User: \(String(describing: user)) || Error: \(String(describing: error))")
+        }
+        return
+        
+    }
     
     func getUserInfo() {
-    
+        
         guard let user = FRUser.currentUser else {
             // If no currently authenticated user is found, log error
             self.displayLog("FRUser.currentUser does not exist")
             return
         }
-        
+
         // If FRUser.currentUser exists, perform getUserInfo
         user.getUserInfo { (userInfo, error) in
             if let error = error {
@@ -661,66 +674,69 @@ class ViewController: UIViewController {
             self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
         case 1:
+            self.performCentralizedLogin()
+            break
+        case 2:
             // Request user info
             self.getUserInfo()
             break
-        case 2:
+        case 3:
             // User Logout
             self.logout()
             break
-        case 3:
+        case 4:
             // Display FRUser.currentUser
             self.displayLog(String(describing: FRUser.currentUser))
             break
-        case 4:
+        case 5:
             // Invoke API
             self.invokeAPI()
             break
-        case 5:
+        case 6:
             // Device Information collector
             self.getDeviceInformation()
             break
-        case 6:
+        case 7:
             // Jailbreak detector
             self.performJailbreakDetector()
             break
-        case 7:
+        case 8:
             // Get AccessToken from FRUser.currentUser
             self.getAccessTokenFromUser()
             break
-        case 8:
+        case 9:
             // Login for AccessToken
             self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 9:
+        case 10:
             // FRSession.authenticate with UI (Token)
             self.performSessionAuthenticate(handleWithUI: true)
             break
-        case 10:
+        case 11:
             // FRSession.logout
             FRSession.currentSession?.logout()
             break
-        case 11:
+        case 12:
             // Register a user for FRUser
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: FRUser.self)
             break
-        case 12:
+        case 13:
             // Register a user for AccessToken
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
             break
-        case 13:
+        case 14:
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 14:
+        case 15:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 15:
+        case 16:
             // FRSession.authenticate without UI (Token)
             self.performSessionAuthenticate(handleWithUI: false)
             break
-        case 16:
+        case 17:
             // Display current Configuration
             self.displayCurrentConfig()
             break

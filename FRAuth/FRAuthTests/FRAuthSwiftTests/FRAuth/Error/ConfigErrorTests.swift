@@ -11,7 +11,7 @@
 
 import XCTest
 
-class ConfigErrorTests: FRBaseTest {
+class ConfigErrorTests: FRAuthBaseTest {
 
     
     func test_01_domain() {

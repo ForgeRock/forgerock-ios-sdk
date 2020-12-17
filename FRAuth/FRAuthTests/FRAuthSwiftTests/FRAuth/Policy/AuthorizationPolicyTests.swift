@@ -11,7 +11,7 @@
 
 import XCTest
 
-class AuthorizationPolicyTests: FRBaseTest {
+class AuthorizationPolicyTests: FRAuthBaseTest {
 
     var list: [String] = []
     var onPolicyAdviceReceiveResult: Bool = false

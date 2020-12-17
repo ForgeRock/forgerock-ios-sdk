@@ -12,7 +12,7 @@
 import XCTest
 import FRCore
 
-class FRURLProtocolTests: FRBaseTest {
+class FRURLProtocolTests: FRAuthBaseTest {
 
     var shouldUpdateRequest: Bool = false
     var evaluateTokenRefresh: Bool = false
@@ -48,7 +48,7 @@ class FRURLProtocolTests: FRBaseTest {
         FRURLProtocol.tokenManagementPolicy = nil
         
         //  Perform login
-        self.performUsernamePasswordLogin()
+        self.performLogin()
         
         //  When
         let ex = self.expectation(description: "Making request")
@@ -316,6 +316,10 @@ class FRURLProtocolTests: FRBaseTest {
         
         //  While API keeps returning 401; TokenManagementPolicyDelegate.evaluateTokenRefresh must only be invoked twice due to maximum retry count
         XCTAssertEqual(evaluateTokenRefreshCount, 2)
+    }
+    
+    func test_07_should_manual_cleanup() {
+        self.shouldCleanup = true
     }
 }
 

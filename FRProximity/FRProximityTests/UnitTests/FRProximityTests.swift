@@ -13,7 +13,7 @@ import XCTest
 import CoreLocation
 @testable import FRAuth
 
-class FRProximityTests: FRPBaseTest {
+class FRProximityTests: FRAuthBaseTest {
     
     func test_01_sdk_init() {
         

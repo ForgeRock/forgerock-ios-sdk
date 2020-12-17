@@ -2,7 +2,7 @@
 //  FRUser.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -60,7 +60,7 @@ public class FRUser: NSObject, NSSecureCoding {
                 let sessionToken = frAuth.sessionManager.getSSOToken()
                 if sessionToken?.value != accessToken.sessionToken {
                     FRLog.w("SDK identified current Session Token (\(sessionToken?.value ?? "null")) and Session Token (\(String(describing: accessToken.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                    frAuth.tokenManager?.revoke(completion: { (error) in
+                    frAuth.tokenManager?.revokeAndEndSession(completion: { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(String(describing: error))")
                     })
                     return nil
@@ -143,7 +143,8 @@ public class FRUser: NSObject, NSSecureCoding {
     ///  - FRAuth.start() must be called prior to call register
     ///
     /// - Parameter completion: Completion callback which returns FRUser instance (also accessible through FRUser.currentUser), and/or any error encountered during registration
-    @objc public static func register(completion:@escaping NodeCompletion<FRUser>) {
+    @objc
+    public static func register(completion:@escaping NodeCompletion<FRUser>) {
         
         if let currentUser = FRUser.currentUser {
             var hasAccessToken: Bool = false
@@ -171,16 +172,22 @@ public class FRUser: NSObject, NSSecureCoding {
     
     /// Logs-out currently authenticated user session
     ///
-    /// - NOTE: logout method invokes 2 APIs to invalidate user's session: 1) invokes /sessions/?_action=logout to invalidate Session Token, 2) /token/revoke to invalidate access_token and/or refresh_token (if refresh_token was granted)
+    /// - NOTE: logout method invokes 2 APIs to invalidate user's session: 1) invokes /sessions/?_action=logout to invalidate Session Token, 2) /token/revoke to invalidate access_token and/or refresh_token (if refresh_token was granted), and 3) if id_token exists, it invokes /connect/endSession to invalidate OIDC session
     ///
     @objc
     public func logout() {
-    
-        if let frAuth = FRAuth.shared, let frSession = FRSession.currentSession {
-            
+        
+        var ssoTokenInvalidated = false
+        let tempToken = FRUser.currentUser?.token
+        if let frSession = FRSession.currentSession {
+            FRLog.v("Invaliding SSO Token")
             // Revoke Session Token
             frSession.logout()
-
+            ssoTokenInvalidated = true
+        }
+        
+        if let frAuth = FRAuth.shared, let tokens = tempToken {
+            FRLog.v("Invalidating OAuth2 token(s)")
             // Revoke OAuth2 tokens
             frAuth.tokenManager?.revoke(completion: { (error) in
                 if let error = error {
@@ -192,15 +199,31 @@ public class FRUser: NSObject, NSSecureCoding {
                 else {
                     FRLog.v("Invalidating OAuth2 token(s) successful")
                 }
+                
+                if let idToken = tokens.idToken, ssoTokenInvalidated == false {
+                    FRLog.v("Invalidating session using id_token")
+                    // End Session if id_token exists
+                    frAuth.tokenManager?.endSession(idToken: idToken, completion: { (error) in
+                        
+                        if let error = error {
+                            FRLog.w("Error while invalidating OIDC Session")
+                            if let nsError = error as NSError? {
+                                FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
+                            }
+                        }
+                        else {
+                            FRLog.v("Invalidating OIDC Session successful")
+                        }
+                    })
+                }
             })
-            
-            // Clear user object
-            FRUser._staticUser = nil
             frAuth.sessionManager.setCurrentUser(user: nil)
         }
-        else {
-            FRLog.w("Invalid SDK state")
-        }
+        
+        // Clear user object
+        FRUser._staticUser = nil
+        // Clear Browser instance if there is anything running
+        Browser.currentBrowser = nil
     }
     
     
@@ -266,10 +289,6 @@ public class FRUser: NSObject, NSSecureCoding {
         FRLog.v("Requesting UserInfo")
         
         self.getAccessToken { (user, error) in
-            guard error == nil, let user = user else {
-                completion(nil, error)
-                return
-            }
             
             //  AM 6.5.2 - 7.0.0
             //
@@ -278,7 +297,10 @@ public class FRUser: NSObject, NSSecureCoding {
             
             var header: [String: String] = [:]
             header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
-            header[OAuth2.authorization] = user.buildAuthHeader()
+            
+            if error == nil, let user = user {
+                header[OAuth2.authorization] = user.buildAuthHeader()
+            }
             
             let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
             
@@ -306,6 +328,28 @@ public class FRUser: NSObject, NSSecureCoding {
             return ""
         }
         return token.buildAuthorizationHeader()
+    }
+    
+    
+    //  MARK: - Centralized Login (External User Agent)
+    
+    /// Creates Browser object to perform Centralized Login (an external user-agent /authorize flow)
+    ///
+    /// - Returns: BrowserBuilder object that can progressively construct Browser object with configuration; BrowserBuilder may return nil if there is another Builder instance running in the application.
+    @objc
+    public static func browser() -> BrowserBuilder? {
+        
+        guard let frAuth = FRAuth.shared, let oAuth2Client = frAuth.oAuth2Client else {
+            FRLog.e("Failed to generate Browser() due to invalid SDK state; SDK must be initialized and configured for OAuth2")
+            return nil
+        }
+        
+        guard (Browser.currentBrowser == nil || Browser.currentBrowser?.isInProgress ?? false) else {
+            FRLog.e("There is another Browser instance running; only one instance of Browser can run at the same time.")
+            return nil
+        }
+        
+        return BrowserBuilder(oAuth2Client, frAuth.sessionManager)
     }
     
     
@@ -337,7 +381,7 @@ public class FRUser: NSObject, NSSecureCoding {
     /// Refreshes user's session with refresh_token synchronously regardless of validity of current access_token
     /// - Throws: TokenError
     /// - Returns: FRUser object with newly renewed OAuth2 token
-    func refresSync() throws -> FRUser {
+    func refreshSync() throws -> FRUser {
         if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
             let token = try tokenManager.refreshSync()
             self.token = token

@@ -11,7 +11,7 @@
 
 import XCTest
 
-class ActionTests: FRCoreBaseTest {
+class ActionTests: FRBaseTestCase {
     
     func test_01_action_start_authenticate() {
         let action = Action(type: .START_AUTHENTICATE)
@@ -70,5 +70,11 @@ class ActionTests: FRCoreBaseTest {
     func test_10_action_user_info() {
         let action = Action(type: .USER_INFO)
         XCTAssertEqual(action.type, "USER_INFO")
+    }
+    
+    
+    func test_11_action_end_session() {
+        let action = Action(type: .END_SESSION)
+        XCTAssertEqual(action.type, "END_SESSION")
     }
 }

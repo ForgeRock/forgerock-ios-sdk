@@ -19,8 +19,6 @@
 /* Begin PBXFileReference section */
 		D5087148248CE01600B584D9 /* FRTestHostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestHostTests.swift; sourceTree = "<group>"; };
 		D508714A248CE01600B584D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5087156248CE21400B584D9 /* FRAllTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAllTests.swift; sourceTree = "<group>"; };
-		D5087158248CE21400B584D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5A7A1E5248CD88C00E30CFE /* FRTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A7A1E8248CD88C00E30CFE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5A7A1EC248CD88C00E30CFE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,21 +51,11 @@
 			path = FRTestHostTests;
 			sourceTree = "<group>";
 		};
-		D5087155248CE21400B584D9 /* FRAllTests */ = {
-			isa = PBXGroup;
-			children = (
-				D5087156248CE21400B584D9 /* FRAllTests.swift */,
-				D5087158248CE21400B584D9 /* Info.plist */,
-			);
-			path = FRAllTests;
-			sourceTree = "<group>";
-		};
 		D5A7A1DC248CD88C00E30CFE = {
 			isa = PBXGroup;
 			children = (
 				D5A7A1E7248CD88C00E30CFE /* FRTestHost */,
 				D5087147248CE01600B584D9 /* FRTestHostTests */,
-				D5087155248CE21400B584D9 /* FRAllTests */,
 				D5A7A1E6248CD88C00E30CFE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -317,14 +305,14 @@
 				CODE_SIGN_ENTITLEMENTS = FRTestHost/FRTestHost.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9QSE66762D;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRTestHost/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRTestHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.FRTestHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -339,14 +327,14 @@
 				CODE_SIGN_ENTITLEMENTS = FRTestHost/FRTestHost.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9QSE66762D;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRTestHost/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRTestHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.FRTestHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

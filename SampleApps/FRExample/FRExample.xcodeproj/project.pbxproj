@@ -19,6 +19,8 @@
 		D554633A22A6EF960096C7A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
 		D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; };
 		D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D58071622512BA8200D0935A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; };
+		D58071632512BA8200D0935A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAE772344144A005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; };
 		D59FAE782344144A005D34DA /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F443233AC39500D18DF1 /* FRAuth.framework */; };
@@ -169,6 +171,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D5E6F460233AC3B700D18DF1 /* FRAuth.framework in Embed Frameworks */,
+				D58071632512BA8200D0935A /* FRCore.framework in Embed Frameworks */,
 				D59FAE782344144A005D34DA /* FRProximity.framework in Embed Frameworks */,
 				D5E6F45C233AC3B700D18DF1 /* FRUI.framework in Embed Frameworks */,
 			);
@@ -223,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5E6F45F233AC3B700D18DF1 /* FRAuth.framework in Frameworks */,
+				D58071622512BA8200D0935A /* FRCore.framework in Frameworks */,
 				D59FAE772344144A005D34DA /* FRProximity.framework in Frameworks */,
 				D5E6F45B233AC3B700D18DF1 /* FRUI.framework in Frameworks */,
 			);
@@ -653,14 +657,14 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExampleSSO.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExampleSSO-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sso;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -675,14 +679,14 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExampleSSO.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExampleSSO-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sso;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -813,7 +817,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FRExample",
@@ -824,7 +828,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.frexample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -839,7 +843,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FRExample",
@@ -850,7 +854,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.frexample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

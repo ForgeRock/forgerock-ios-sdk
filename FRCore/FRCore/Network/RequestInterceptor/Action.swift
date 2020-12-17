@@ -29,6 +29,7 @@ import Foundation
         9. PUSH_REGISTER - AM Push registration for Authenticator SDK: '/json/push/sns/message?_action=register'
         10. PUSH_AUTHENTICATE - AM Push authentication for Authenticator SDK: '/json/push/sns/message?_action=authenticate'
         11. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
+        12. END_SESSION - OIDC end session request: '/oauth2/realms/{realm}/connect/endSession'
  */
 public struct Action {
     public let type: String
@@ -53,4 +54,5 @@ public enum ActionType: String {
     case PUSH_REGISTER = "PUSH_REGISTER"
     case PUSH_AUTHENTICATE = "PUSH_AUTHENTICATE"
     case USER_INFO = "USER_INFO"
+    case END_SESSION = "END_SESSION"
 }

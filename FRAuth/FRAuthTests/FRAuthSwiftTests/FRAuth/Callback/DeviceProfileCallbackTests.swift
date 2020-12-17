@@ -11,7 +11,7 @@
 
 import XCTest
 
-class DeviceProfileCallbackTests: FRBaseTest {
+class DeviceProfileCallbackTests: FRAuthBaseTest {
     
     override func setUp() {
         self.configFileName = "Config"

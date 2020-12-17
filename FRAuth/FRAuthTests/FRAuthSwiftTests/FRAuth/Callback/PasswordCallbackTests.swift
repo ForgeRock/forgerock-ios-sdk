@@ -10,7 +10,7 @@
 
 import XCTest
 
-class PasswordCallbackTests: FRBaseTest {
+class PasswordCallbackTests: FRAuthBaseTest {
 
     func testPasswordCallbackWithEmptyJSON() {
         

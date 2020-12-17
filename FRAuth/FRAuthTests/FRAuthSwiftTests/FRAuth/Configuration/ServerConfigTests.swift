@@ -2,7 +2,7 @@
 //  ServerConfigTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -10,7 +10,7 @@
 
 import XCTest
 
-class ServerConfigTests: FRBaseTest {
+class ServerConfigTests: FRAuthBaseTest {
 
     var serverURL = "http://localhost:8080/am"
     var realm = "customRealm"
@@ -27,7 +27,8 @@ class ServerConfigTests: FRBaseTest {
         XCTAssertEqual(serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/root/authorize")
         XCTAssertEqual(serverConfig.userInfoURL, self.serverURL + "/oauth2/realms/root/userinfo")
         XCTAssertEqual(serverConfig.tokenRevokeURL, self.serverURL + "/oauth2/realms/root/token/revoke")
-        XCTAssertEqual(serverConfig.sessionPath, self.serverURL + "/json/realms/root/sessions")
+        XCTAssertEqual(serverConfig.sessionURL, self.serverURL + "/json/realms/root/sessions")
+        XCTAssertEqual(serverConfig.endSessionURL, self.serverURL + "/oauth2/realms/root/connect/endSession")
         XCTAssertEqual(serverConfig.timeout, 60.0)
         XCTAssertEqual(serverConfig.realm, "root")
         XCTAssertEqual(serverConfig.enableCookie, true)
@@ -46,7 +47,8 @@ class ServerConfigTests: FRBaseTest {
         XCTAssertEqual(serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/" + self.realm + "/authorize")
         XCTAssertEqual(serverConfig.userInfoURL, self.serverURL + "/oauth2/realms/" + self.realm + "/userinfo")
         XCTAssertEqual(serverConfig.tokenRevokeURL, self.serverURL + "/oauth2/realms/" + self.realm + "/token/revoke")
-        XCTAssertEqual(serverConfig.sessionPath, self.serverURL + "/json/realms/" + self.realm + "/sessions")
+        XCTAssertEqual(serverConfig.sessionURL, self.serverURL + "/json/realms/" + self.realm + "/sessions")
+        XCTAssertEqual(serverConfig.endSessionURL, self.serverURL + "/oauth2/realms/" + self.realm + "/connect/endSession")
         XCTAssertEqual(serverConfig.timeout, 60.0)
         XCTAssertEqual(serverConfig.realm, self.realm)
         XCTAssertEqual(serverConfig.enableCookie, true)
@@ -98,14 +100,18 @@ class ServerConfigTests: FRBaseTest {
         
         // session path
         serverConfig = builder.set(sessionPath: "/custom/session").build()
-        XCTAssertEqual(serverConfig.sessionPath, self.serverURL + "/custom/session")
+        XCTAssertEqual(serverConfig.sessionURL, self.serverURL + "/custom/session")
+        
+        // endSession path
+        serverConfig = builder.set(endSessionPath: "/custom/endSession").build()
+        XCTAssertEqual(serverConfig.endSessionURL, self.serverURL + "/custom/endSession")
     }
     
     
     func test_06_custom_nested_server_config() {
         
         // Given
-        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!).set(enableCookie: false).set(timeout: 120.0).set(authenticatePath: "/custom/authenticate").set(sessionPath: "/custom/session").set(cookieName: "customCookieName").build()
+        let serverConfig = ServerConfigBuilder(url: URL(string: self.serverURL)!).set(enableCookie: false).set(timeout: 120.0).set(authenticatePath: "/custom/authenticate").set(sessionPath: "/custom/session").set(cookieName: "customCookieName").set(endSessionPath: "/custom/endSession").build()
 
         // Then
         XCTAssertEqual(serverConfig.authenticateURL, self.serverURL + "/custom/authenticate")
@@ -113,7 +119,8 @@ class ServerConfigTests: FRBaseTest {
         XCTAssertEqual(serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/root/authorize")
         XCTAssertEqual(serverConfig.userInfoURL, self.serverURL + "/oauth2/realms/root/userinfo")
         XCTAssertEqual(serverConfig.tokenRevokeURL, self.serverURL + "/oauth2/realms/root/token/revoke")
-        XCTAssertEqual(serverConfig.sessionPath, self.serverURL + "/custom/session")
+        XCTAssertEqual(serverConfig.sessionURL, self.serverURL + "/custom/session")
+        XCTAssertEqual(serverConfig.endSessionURL, self.serverURL + "/custom/endSession")
         XCTAssertEqual(serverConfig.timeout, 120.0)
         XCTAssertEqual(serverConfig.realm, "root")
         XCTAssertEqual(serverConfig.enableCookie, false)
