@@ -18,7 +18,7 @@ public class HardwareCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "hardware"
     
-    /// Initializes BrowserCollector instance
+    /// Initializes HardwareCollector instance
     public init() { }
     
     /// Collects hardware information using ProcessInfo
