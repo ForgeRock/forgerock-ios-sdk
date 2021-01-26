@@ -41,12 +41,14 @@ public class FRJailbreakDetector: NSObject {
     /// Singleton instance of JailbreakDetector
     @objc
     public static let shared = FRJailbreakDetector()
+    
     /// An array of JailbreakDetector to be analyzed
     @objc
     public var detectors: [JailbreakDetector]
     
     /// Private initialization method which initializes default array of JailbreakDetector
-    override init() {
+    @objc
+    public override init() {
         detectors = [CydiaDetector(),
                      CydiaSubstrateDetector(),
                      SSHDetector(),

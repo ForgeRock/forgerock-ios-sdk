@@ -13,6 +13,9 @@ import Foundation
 /// SSHDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class SSHDetector: JailbreakDetector {
     
+    /// Initializes SSHDetector instance
+    public init() { }
+    
     /// Analyzes whether ssh or sshd is accessible or not
     ///
     /// - NOTE: ssh or sshd should not be accessible on non-Jailbroken devices

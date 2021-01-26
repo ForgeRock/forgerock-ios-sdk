@@ -13,6 +13,9 @@ import Foundation
 /// DyldDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class DyldDetector: JailbreakDetector {
     
+    /// Initializes DyldDetector instance
+    public init() { }
+    
     /// Analyzes whether dynamically loaded libraries contain any one of commonly known libraries from Jailbreak process
     ///
     /// - NOTE: MobileSubstrate is commonly used library in Jailbroken device, and by loading all dynamic library, and checking whether the library was loaded or not is used in this validation.

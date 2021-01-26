@@ -19,7 +19,7 @@ public class ProfileCollector: DeviceCollector {
     public var collectors: [DeviceCollector]
     
     /// Private initialization method which initializes default array of ProfileCollector
-    init() {
+    public init() {
         collectors = [
             PlatformCollector(),
             HardwareCollector(),

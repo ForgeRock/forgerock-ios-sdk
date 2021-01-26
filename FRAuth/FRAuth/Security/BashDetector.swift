@@ -13,6 +13,9 @@ import Foundation
 /// BashDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class BashDetector: JailbreakDetector {
     
+    /// Initializes BashDetector instance
+    public init() { }
+    
     /// Analyzes whether bash is accessible or not
     ///
     /// - NOTE: bash should not be accessible on non-Jailbroken device

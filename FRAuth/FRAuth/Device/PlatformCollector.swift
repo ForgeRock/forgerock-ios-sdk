@@ -17,6 +17,9 @@ public class PlatformCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "platform"
     
+    /// Initializes PlatformCollector instance
+    public init() { }
+    
     /// Collects platform information using UIDevice, and system information
     ///
     /// - Parameter completion: completion block

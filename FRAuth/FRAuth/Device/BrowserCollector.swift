@@ -17,6 +17,9 @@ public class BrowserCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "browser"
     
+    /// Initializes BrowserCollector instance
+    public init() { }
+    
     /// Collects browser information
     ///
     /// - Parameter completion: completion block

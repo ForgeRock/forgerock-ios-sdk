@@ -13,6 +13,9 @@ import Foundation
 /// SandboxDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class SandboxDetector: JailbreakDetector {
     
+    /// Initializes SandboxDetector instance
+    public init() { }
+    
     /// Analyzes whether the device has an access to special system method on non-jailbroken devices
     ///
     /// - Returns: returns 1.0 when the device can successfully use fork() and return pid; otherwise returns 0.0
