@@ -18,6 +18,9 @@ public class HardwareCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "hardware"
     
+    /// Initializes HardwareCollector instance
+    public init() { }
+    
     /// Collects hardware information using ProcessInfo
     ///
     /// - Parameter completion: completion block

@@ -13,6 +13,9 @@ import Foundation
 /// SymbolicLinkDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class SymbolicLinkDetector: JailbreakDetector {
     
+    /// Initializes SymbolicLinkDetector instance
+    public init() { }
+    
     /// Analyzes whether "/Applications", "/Library/Ringtones", "/Library/Wallpaper" directory is a symbolic link or not
     ///
     /// - NOTE: As part of Jailbreak process, it is commonly known that Jailbreak process will overwrite the partition, and changes some directories as symbolic link as original file/directory should remain as it was. "/Applications", "/Library/Ringtones", and/or "/Library/Wallpaper" directory is one of them, and the class is checking whether "/Applications", "/Library/Ringtones", "/Library/Wallpaper" directory is found as symbolic link or not

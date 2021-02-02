@@ -24,7 +24,8 @@ public class FRDeviceCollector: NSObject {
     static let FRDeviceCollectorVersion: String = "1.0"
     
     /// Private initialization method which initializes default array of DeviceCollector
-    override init() {
+    @objc
+    public override init() {
         collectors = [
             PlatformCollector(),
             HardwareCollector(),

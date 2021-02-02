@@ -17,6 +17,9 @@ public class TelephonyCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "telephony"
     
+    /// Initializes TelephonyCollector instance
+    public init() { }
+    
     /// Collects telephony information using CTCarrier
     ///
     /// - Parameter completion: completion block

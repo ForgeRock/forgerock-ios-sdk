@@ -13,6 +13,9 @@ import Foundation
 /// PrivateFileWritableDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class PrivateFileWritableDetector: JailbreakDetector {
     
+    /// Initializes PrivateFileWritableDetector instance
+    public init() { }
+    
     /// Analyzes whether the app can write to a private directory
     ///
     /// - NOTE: /private directory is a private access that should only be accessed through iOS system, and the app should not have an access to the location to write/read

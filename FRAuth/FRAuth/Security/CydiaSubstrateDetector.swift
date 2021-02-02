@@ -13,6 +13,9 @@ import Foundation
 /// CydiaSubstrateDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class CydiaSubstrateDetector: JailbreakDetector {
     
+    /// Initializes CydiaSubstrateDetector instance
+    public init() { }
+    
     /// Analyzes whether MobileSubstrate is found or accessible or not
     ///
     /// - NOTE: MobileSubstrate (or Cydia Substrate) is known as the de fecto framework that allows 3rd-party developers to provide run-time patches through MobileSubstrate to system

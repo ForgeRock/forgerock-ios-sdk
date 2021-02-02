@@ -16,6 +16,9 @@ public class NetworkCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "network"
     
+    /// Initializes NetworkCollector instance
+    public init() { }
+    
     /// Collects network information using FRAuth.NetworkReachabilityMonitor
     ///
     /// - Parameter completion: completion block
