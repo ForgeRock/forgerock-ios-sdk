@@ -637,8 +637,21 @@ class ViewController: UIViewController {
             return
         }
         
+        //  Default Cookie Name for SSO Token in AM
+        var cookieName = "iPlanetDirectoryPro"
+        
+        //  If custom cookie name is defined in configuration file, update the cookie name
+        if let path = Bundle.main.path(forResource: FRAuth.configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any], let configCookieName = config["forgerock_cookie_name"] as? String {
+            cookieName = configCookieName
+        }
+        
         var request = URLRequest(url: url)
-        request.setValue("iPlanetDirectoryPro="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        
+        //  TODO: - Change following code as needed for authorization policy, and PEP
+        //  Setting SSO Token in the request cookie is expected for Identity Gateway set-up, and where IG is acting as Policy Enforcement Points (PEP)
+        request.setValue("\(cookieName)="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        //  If custom web application is acting as PEP, and expecting user's authenticated session in other form (such as in URL query param, or request body), set the given SSO Token accordingly
+        //  Below line of code is for an agent expecting SSO Token in the header of request with header name being "SSOToken"
         request.setValue((FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "SSOToken")
         self.urlSession.dataTask(with: request) { (data, response, error) in
             guard let responseData = data, let httpresponse = response as? HTTPURLResponse, error == nil else {
