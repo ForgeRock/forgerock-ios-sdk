@@ -24,12 +24,12 @@ class BrowserBuilderTests: FRAuthBaseTest {
         //  Start SDK
         self.startSDK()
         
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
-        let builder = BrowserBuilder(oAuth2Client, sessionManager)
+        let builder = BrowserBuilder(oAuth2Client, keychainManager)
         XCTAssertNotNil(builder)
     }
     
@@ -39,12 +39,12 @@ class BrowserBuilderTests: FRAuthBaseTest {
         //  Start SDK
         self.startSDK()
         
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
-        let builder = BrowserBuilder(oAuth2Client, sessionManager)
+        let builder = BrowserBuilder(oAuth2Client, keychainManager)
         XCTAssertNotNil(builder)
         
         //  Given

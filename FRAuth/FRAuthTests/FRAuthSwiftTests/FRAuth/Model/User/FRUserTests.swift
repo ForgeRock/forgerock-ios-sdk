@@ -31,13 +31,8 @@ class FRUserTests: FRAuthBaseTest {
             return
         }
         
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        let user = FRUser(token: at, serverConfig: serverConfig)
-        let user2 = FRUser(token: atNoRefresh, serverConfig: serverConfig)
+        let user = FRUser(token: at)
+        let user2 = FRUser(token: atNoRefresh)
         
         XCTAssertNotNil(user)
         XCTAssertNotNil(user2)
@@ -159,12 +154,7 @@ class FRUserTests: FRAuthBaseTest {
             return
         }
         
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         let ex = self.expectation(description: "Get User Info")
         user.getUserInfo { (userInfo, error) in
@@ -340,8 +330,8 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         at1.expiresIn = 0
-        if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+        if let keychainManager = self.config.keychainManager {
+            try? keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -382,8 +372,8 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         at1.expiresIn = 0
-        if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+        if let keychainManager = self.config.keychainManager {
+            try? keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -536,7 +526,7 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         // When set currentUser without SSO Token, nor AccessToken
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         // Then
         user.logout()

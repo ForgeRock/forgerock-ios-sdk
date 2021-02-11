@@ -99,14 +99,14 @@ class Config: NSObject {
                         
                         if let accessGroup = config["forgerock_keychain_access_group"] as? String, let keychainManager = try KeychainManager(baseUrl:url.absoluteString + "/" + realm, accessGroup: accessGroup) {
                             let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
-                            let tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                            let tokenManager = TokenManager(oAuth2Client: oAuth2Client, keychainManager: keychainManager)
                             self.keychainManager = keychainManager
                             self.sessionManager = sessionManager
                             self.tokenManager = tokenManager
                         }
                         else if let keychainManager = try KeychainManager(baseUrl:url.absoluteString + "/" + realm) {
                             let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
-                            let tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                            let tokenManager = TokenManager(oAuth2Client: oAuth2Client, keychainManager: keychainManager)
                             self.keychainManager = keychainManager
                             self.sessionManager = sessionManager
                             self.tokenManager = tokenManager
