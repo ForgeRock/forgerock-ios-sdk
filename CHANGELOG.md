@@ -1,4 +1,14 @@
-# Version 2.2.0
+# Version 2.3.0
+
+## [2.3.0]
+#### Added
+-
+
+#### Changed
+- SDK now persists SSO Token through `FRSession` instance without OAuth2 configuration. [SDKS-873]
+
+#### Deprecated
+-
 
 ## [2.2.0]
 #### Added

@@ -2,7 +2,7 @@
 //  Browser.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -36,8 +36,8 @@ import SafariServices
     var presentingViewController: UIViewController?
     /// OAuth2Client instance to perform token exchange and retrieve OAuth2 client information
     var oAuth2Client: OAuth2Client
-    /// SessionManager instance to manage and persist current session
-    var sessionManager: SessionManager
+    /// KeychainManager instance to manage and persist current session
+    var keychainManager: KeychainManager
     /// Custom URL query parameter for /authorize request
     var customParam: [String: String] = [:]
     /// PKCE instance for /authorize request
@@ -58,15 +58,15 @@ import SafariServices
     /// - Parameters:
     ///   - browserType: BrowserType of /authorize to be invoked
     ///   - oAuth2Client: OAuth2Client instance of current SDK state
-    ///   - sessionManager: SessionManage instance of current SDK state
+    ///   - keychainManager: KeychainManager instance of current SDK state
     ///   - presentingViewController: Presenting ViewController for ASPresentationAnchor
     ///   - customParam: Custom URL Query parameters
-    init(_ browserType: BrowserType, _ oAuth2Client: OAuth2Client, _ sessionManager: SessionManager, _ presentingViewController: UIViewController?, _ customParam: [String: String]? = nil) {
+    init(_ browserType: BrowserType, _ oAuth2Client: OAuth2Client, _ keychainManager: KeychainManager, _ presentingViewController: UIViewController?, _ customParam: [String: String]? = nil) {
         self.browserType = browserType
         self.presentingViewController = presentingViewController
         self.customParam = customParam ?? [:]
         self.pkce = PKCE()
-        self.sessionManager = sessionManager
+        self.keychainManager = keychainManager
         self.oAuth2Client = oAuth2Client
     }
     
@@ -367,9 +367,8 @@ import SafariServices
                 completionCallback?(nil, error)
             }
             else {
-                try? self.sessionManager.setAccessToken(token: token)
-                let user = FRUser(token: token, serverConfig: self.sessionManager.serverConfig)
-                self.sessionManager.setCurrentUser(user: user)
+                try? self.keychainManager.setAccessToken(token: token)
+                let user = FRUser(token: token)
                 completionCallback?(user, nil)
             }
         }
@@ -437,17 +436,17 @@ public class BrowserBuilder: NSObject {
     var browserType: BrowserType = .authSession
     /// Current OAuth2Client for /authorize flow
     var oAuth2Client: OAuth2Client
-    /// Current SessionManager to persist OIDC session
-    var sessionManager: SessionManager
+    /// Current KeychainManager to persist OIDC session
+    var keychainManager: KeychainManager
     
     
     /// Constructs BrowserBuilder object with OAuth2Client, and SessionManager
     /// - Parameters:
     ///   - oAuth2Client: OAuth2Client to be used for constructing /authorize request
-    ///   - sessionManager: SessionManager to be used to persist user's OIDC sessionn
-    init(_ oAuth2Client: OAuth2Client, _ sessionManager: SessionManager) {
+    ///   - sessionManager: KeychainManager to be used to persist user's OIDC sessionn
+    init(_ oAuth2Client: OAuth2Client, _ keychainManager: KeychainManager) {
         self.oAuth2Client = oAuth2Client
-        self.sessionManager = sessionManager
+        self.keychainManager = keychainManager
     }
     
     
@@ -483,7 +482,7 @@ public class BrowserBuilder: NSObject {
     /// Completes progressive building of Browser object, and constructs Browser object based on given values
     /// - Returns: Browser object to start authentication
     @objc public func build() -> Browser {
-        let browser = Browser(self.browserType, self.oAuth2Client, self.sessionManager, self.presentingViewController, customParam)
+        let browser = Browser(self.browserType, self.oAuth2Client, self.keychainManager, self.presentingViewController, customParam)
         Browser.currentBrowser = browser
         return browser
     }    

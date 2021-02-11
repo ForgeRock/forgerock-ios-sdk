@@ -2,7 +2,7 @@
 //  OAuth2Client.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -18,13 +18,13 @@ public class OAuth2Client: NSObject, Codable {
     //  MARK: - Property
     
     /// OAuth2 client_id
-    let clientId:String
+    let clientId: String
     /// OAuth2 scope(s) separated by space
-    let scope:String
+    let scope: String
     /// OAuth2 redirect_uri for the client
-    let redirectUri:URL
+    let redirectUri: URL
     /// ServerConfig which OAuth2 client will communicate to
-    let serverConfig:ServerConfig
+    let serverConfig: ServerConfig
     /// Threshold to refresh access_token in advance
     var threshold: Int
     
@@ -40,7 +40,7 @@ public class OAuth2Client: NSObject, Codable {
     ///   - serverConfig: ServerConfig that OAuth2 Client will communicate to
     ///   - threshold: threshold in seconds to refresh access_token before it actually expires
     @objc
-    public init (clientId:String, scope:String, redirectUri:URL, serverConfig:ServerConfig, threshold: Int = 60) {
+    public init (clientId: String, scope: String, redirectUri: URL, serverConfig: ServerConfig, threshold: Int = 60) {
         
         self.clientId = clientId
         self.redirectUri = redirectUri
@@ -120,7 +120,7 @@ public class OAuth2Client: NSObject, Codable {
             case .success(let response, _ ):
                 if let accessToken = AccessToken(tokenResponse: response) {
                     
-                    try? FRAuth.shared?.sessionManager.setAccessToken(token: accessToken)
+                    try? FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
                     completion(accessToken, nil)
                 }
                 else {
@@ -156,7 +156,7 @@ public class OAuth2Client: NSObject, Codable {
         switch result {
         case .success(let response, _ ):
             if let accessToken = AccessToken(tokenResponse: response) {
-                try? FRAuth.shared?.sessionManager.setAccessToken(token: accessToken)
+                try? FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
                 return accessToken
             }
             else {
