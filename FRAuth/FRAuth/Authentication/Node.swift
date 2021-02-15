@@ -59,7 +59,7 @@ public class Node: NSObject {
     ///   - serviceName: Service name for AuthService (TreeName)
     ///   - authIndexType: authIndexType value in AM (default to 'service')
     ///   - oAuth2Config: (Optional) OAuth2Client object for AuthService/Node communication for abstraction layer
-    ///   - keychainManager: KeychainManager instance to manage and persist authenticated session
+    ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
     ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
     /// - Throws: `AuthError`
     init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ authIndexType: String, _ oAuth2Config: OAuth2Client? = nil, _ keychainManager: KeychainManager? = nil, _ tokenManager: TokenManager? = nil) throws {
@@ -211,7 +211,12 @@ public class Node: NSObject {
                             }
                             else {
                                 if let token = accessToken {
-                                    try? self.keychainManager?.setAccessToken(token: token)
+                                    do {
+                                        try self.keychainManager?.setAccessToken(token: token)
+                                    }
+                                    catch {
+                                        FRLog.e("Unexpected error while storing AccessToken: \(error.localizedDescription)")
+                                    }
                                 }
                                 
                                 // Return AccessToken
@@ -265,7 +270,12 @@ public class Node: NSObject {
                             }
                             else {
                                 FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
-                                try? keychainManager.setAccessToken(token: nil)
+                                do {
+                                    try keychainManager.setAccessToken(token: nil)
+                                }
+                                catch {
+                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                                }
                             }
                         }
                         keychainManager.setSSOToken(ssoToken: token)

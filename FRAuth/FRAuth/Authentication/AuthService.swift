@@ -72,7 +72,7 @@ public class AuthService: NSObject {
     public init(name: String, serverConfig: ServerConfig) {
         FRLog.v("AuthService init - service: \(name), ServerConfig: \(serverConfig)")
         self.serviceName = name
-        self.authIndexType = "service"
+        self.authIndexType = OpenAM.service
         self.serverConfig = serverConfig
         self.authServiceId = UUID().uuidString
     }
@@ -83,7 +83,7 @@ public class AuthService: NSObject {
     ///   - suspendedId: suspendedId to resume Authentication Tree flow
     ///   - serverConfig: ServerConfig object for AuthService server communication
     ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
-    ///   - keychainManager: KeychainManager instance to manage and persist authenticated session
+    ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
     ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
     init(suspendedId: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, keychainManager: KeychainManager? = nil, tokenManager: TokenManager? = nil) {
         FRLog.v("AuthService init - suspendedId: \(suspendedId), ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), KeychainManager: \(String(describing: keychainManager)), TokenManager: \(String(describing: tokenManager))")
@@ -104,8 +104,8 @@ public class AuthService: NSObject {
     ///   - authIndexValue: String value of Authentication Tree name
     ///   - serverConfig: ServerConfig object for AuthService server communication
     ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
-    ///   - keychainManager: KeychainManager instance to manage and persist authenticated session
-    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
+    ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
+    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session   
     ///   - authIndexType: String value of Authentication Tree type   
     init(authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, keychainManager: KeychainManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String = OpenAM.service) {
         FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), KeychainManager: \(String(describing: keychainManager)), TokenManager: \(String(describing: tokenManager))")
@@ -190,7 +190,12 @@ public class AuthService: NSObject {
                             else {
                                 
                                 if let token = accessToken {
-                                    try? self.keychainManager?.setAccessToken(token: token)
+                                    do {
+                                        try self.keychainManager?.setAccessToken(token: token)
+                                    }
+                                    catch {
+                                        FRLog.e("Unexpected error while storing AccessToken: \(error.localizedDescription)")
+                                    }
                                 }
                                 
                                 // Return AccessToken
@@ -254,7 +259,12 @@ public class AuthService: NSObject {
                             }
                             else {
                                 FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
-                                try? keychainManager.setAccessToken(token: nil)
+                                do {
+                                    try keychainManager.setAccessToken(token: nil)
+                                }
+                                catch {
+                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                                }
                             }
                         }
                         keychainManager.setSSOToken(ssoToken: token)

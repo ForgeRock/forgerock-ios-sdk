@@ -119,8 +119,12 @@ public class OAuth2Client: NSObject, Codable {
             switch result {
             case .success(let response, _ ):
                 if let accessToken = AccessToken(tokenResponse: response) {
-                    
-                    try? FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
+                    do {
+                        try FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
+                    }
+                    catch {
+                        FRLog.e("Unexpected error while storing AccessToken: \(error.localizedDescription)")
+                    }
                     completion(accessToken, nil)
                 }
                 else {
@@ -156,7 +160,12 @@ public class OAuth2Client: NSObject, Codable {
         switch result {
         case .success(let response, _ ):
             if let accessToken = AccessToken(tokenResponse: response) {
-                try? FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
+                do {
+                    try FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
+                }
+                catch {
+                    FRLog.e("Unexpected error while storing AccessToken: \(error.localizedDescription)")
+                }
                 return accessToken
             }
             else {

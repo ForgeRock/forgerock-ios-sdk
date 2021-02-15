@@ -367,9 +367,15 @@ import SafariServices
                 completionCallback?(nil, error)
             }
             else {
-                try? self.keychainManager.setAccessToken(token: token)
-                let user = FRUser(token: token)
-                completionCallback?(user, nil)
+                do {
+                    try self.keychainManager.setAccessToken(token: token)
+                    let user = FRUser(token: token)
+                    completionCallback?(user, nil)
+                }
+                catch {
+                    FRLog.e("Unexpected error while stroing AccessToken: \(error.localizedDescription)")
+                    completionCallback?(nil, error)
+                }
             }
         }
     }

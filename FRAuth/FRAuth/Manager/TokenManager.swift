@@ -194,13 +194,14 @@ struct TokenManager {
         do {
             if let token = try self.keychainManager.getAccessToken() {
                 self.oAuth2Client.revoke(accessToken: token, completion: completion)
-                try? self.keychainManager.setAccessToken(token: nil)
+                try self.keychainManager.setAccessToken(token: nil)
             }
             else {
                 completion(TokenError.nullToken)
             }
         }
         catch {
+            FRLog.e("Unexpected error while revoking AccessToken: \(error.localizedDescription)")
             completion(error)
         }
     }
@@ -356,7 +357,7 @@ struct TokenManager {
     /// Clears all credentials locally as there is no more valid credentials to renew user's session
     func clearCredentials() {
         self.keychainManager.cookieStore.deleteAll()
-        try? self.keychainManager.setAccessToken(token: nil)
+        let _ = try? self.keychainManager.setAccessToken(token: nil)
         self.keychainManager.setSSOToken(ssoToken: nil)
         FRSession._staticSession = nil
         FRUser._staticUser = nil
