@@ -14,6 +14,7 @@
 		D5A7A1F5248CD88E00E30CFE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1F3248CD88E00E30CFE /* LaunchScreen.storyboard */; };
 		D5A7A1FE248CDA4900E30CFE /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1FD248CDA4900E30CFE /* FRAuthConfig.plist */; };
 		D5A7A200248CDA7100E30CFE /* FRAuthConfigNonSSO.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1FF248CDA7100E30CFE /* FRAuthConfigNonSSO.plist */; };
+		D5B870C425D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		D5A7A1FC248CD93D00E30CFE /* FRTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRTestHost.entitlements; sourceTree = "<group>"; };
 		D5A7A1FD248CDA4900E30CFE /* FRAuthConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfig.plist; sourceTree = "<group>"; };
 		D5A7A1FF248CDA7100E30CFE /* FRAuthConfigNonSSO.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigNonSSO.plist; sourceTree = "<group>"; };
+		D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigNoOAuth2.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 		D5A7A1E7248CD88C00E30CFE /* FRTestHost */ = {
 			isa = PBXGroup;
 			children = (
+				D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */,
 				D5A7A1FF248CDA7100E30CFE /* FRAuthConfigNonSSO.plist */,
 				D5A7A1FD248CDA4900E30CFE /* FRAuthConfig.plist */,
 				D5A7A1FC248CD93D00E30CFE /* FRTestHost.entitlements */,
@@ -142,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5B870C425D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist in Resources */,
 				D5A7A1FE248CDA4900E30CFE /* FRAuthConfig.plist in Resources */,
 				D5A7A1F5248CD88E00E30CFE /* LaunchScreen.storyboard in Resources */,
 				D5A7A1F2248CD88E00E30CFE /* Assets.xcassets in Resources */,

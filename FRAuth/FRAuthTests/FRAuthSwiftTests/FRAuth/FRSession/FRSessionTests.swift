@@ -454,6 +454,71 @@ class FRSessionTests: FRAuthBaseTest {
             break
         }
     }
+    
+    
+    func test_10_frsession_authenticate_without_oauth2client() {
+        
+        //  Switch to Config without OAuth2 client information
+        let thisConfig = Config()
+        thisConfig.configPlistFileName = "FRAuthConfigNoOAuth2"
+        FRAuth.configPlistFileName = "FRAuthConfigNoOAuth2"
+        self.config = thisConfig
+        self.startSDK()
+        
+        XCTAssertNotNil(FRAuth.shared)
+        XCTAssertNil(FRAuth.shared?.tokenManager)
+        XCTAssertNil(FRAuth.shared?.oAuth2Client)
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
+                                "AuthTree_SSOToken_Success"])
+        
+        var currentNode: Node?
+        
+        var ex = self.expectation(description: "First Node submit")
+        FRSession.authenticate(authIndexValue: "Login") { (token: Token?, node, error) in
+            
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        // Provide input value for callbacks
+        for callback in node.callbacks {
+            if callback is NameCallback, let nameCallback = callback as? NameCallback {
+                nameCallback.setValue(config.username)
+            }
+            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
+                passwordCallback.setValue(config.password)
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Second Node submit")
+        node.next { (token: Token?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken?.value)
+    }
 }
 
 

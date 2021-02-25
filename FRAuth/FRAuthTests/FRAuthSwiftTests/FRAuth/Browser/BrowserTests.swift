@@ -23,13 +23,13 @@ class BrowserTests: FRAuthBaseTest {
         //  Start SDK
         self.startSDK()
         
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
         let vc = UIViewController()
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         
         XCTAssertNil(Browser.currentBrowser)
         XCTAssertNotNil(browser)
@@ -52,14 +52,14 @@ class BrowserTests: FRAuthBaseTest {
         XCTAssertNotNil(FRUser.currentUser?.token)
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
         //  Given with already authenticated session
         let vc = UIViewController()
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         
         //  When
         let ex = self.expectation(description: "Browser Login")
@@ -89,8 +89,8 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
@@ -101,7 +101,7 @@ class BrowserTests: FRAuthBaseTest {
         })
         
         let vc = UIViewController()
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         XCTAssertEqual(firstBrowser, Browser.currentBrowser)
         
         //  When
@@ -136,14 +136,14 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
         //  Given with already login process initiated
         let vc = UIViewController()
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         browser.login { (user, error) in
         }
         
@@ -181,8 +181,8 @@ class BrowserTests: FRAuthBaseTest {
         self.loadMockResponses(["OAuth2_Token_Success"])
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
@@ -199,7 +199,7 @@ class BrowserTests: FRAuthBaseTest {
             return
         }
         
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         Browser.currentBrowser = browser
         
         let ex = self.expectation(description: "Browser Login")
@@ -222,8 +222,8 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
@@ -240,7 +240,7 @@ class BrowserTests: FRAuthBaseTest {
             return
         }
         
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         Browser.currentBrowser = browser
         
         let ex = self.expectation(description: "Browser Login")
@@ -274,8 +274,8 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
@@ -292,7 +292,7 @@ class BrowserTests: FRAuthBaseTest {
             return
         }
         
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, vc)
         Browser.currentBrowser = browser
         
         let ex = self.expectation(description: "Browser Login")
@@ -326,8 +326,8 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
@@ -344,7 +344,7 @@ class BrowserTests: FRAuthBaseTest {
             return
         }
         
-        let browser = Browser(.authSession, oAuth2Client, sessionManager, vc)
+        let browser = Browser(.authSession, oAuth2Client, keychainManager, vc)
         Browser.currentBrowser = browser
         
         let ex = self.expectation(description: "Browser Login")
@@ -419,13 +419,13 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
         //  Given with SFSafariViewController type of Browser object
-        let browser = Browser(.sfViewController, oAuth2Client, sessionManager, UIViewController())
+        let browser = Browser(.sfViewController, oAuth2Client, keychainManager, UIViewController())
         
         //  Try
         browser.cancel()
@@ -462,13 +462,13 @@ class BrowserTests: FRAuthBaseTest {
         self.startSDK()
         
         //  Construct Browser
-        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
             return
         }
         
         //  Givne
-        let browser = BrowserBuilder(oAuth2Client, sessionManager).set(browserType: .authSession).setCustomParam(key: "key1", value: "value1").setCustomParam(key: "prompt", value: "login").build()
+        let browser = BrowserBuilder(oAuth2Client, keychainManager).set(browserType: .authSession).setCustomParam(key: "key1", value: "value1").setCustomParam(key: "prompt", value: "login").build()
         let authorizeURL = browser.buildAuthorizeRequestURL()
         
         //  Then
