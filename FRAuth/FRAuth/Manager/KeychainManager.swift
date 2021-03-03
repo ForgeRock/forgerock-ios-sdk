@@ -14,6 +14,8 @@ import FRCore
 /// KeychainManager is responsible to manage all Keychain Services maintained and controlled by SDK
 struct KeychainManager {
     
+    //  MARK: - Constants
+    
     /// Keychain Service types for all storages in SDK
     enum KeychainStoreType: String {
         case local = ".local"
@@ -21,6 +23,24 @@ struct KeychainManager {
         case cookie = ".cookie"
         case deviceIdentifier = "com.forgerock.ios.deviceIdentifierService"
     }
+    
+    /// Storage key for credentials
+    enum StorageKey: String {
+        case accessToken = "access_token"
+        case ssoToken = "sso_token"
+        case primaryService = "primaryService"
+        case primaryServiceEncrypted = "primaryService-encrypted"
+    }
+    
+    /// String constant for SecuredKey's application tag
+    let securedKeyTag: String = "com.forgerock.ios.securedKey.identifier"
+    /// String constant for default service
+    let defaultService: String = "com.forgerock.ios.keychainservice"
+    /// String constant for default bundle identifier
+    let defaultBundleIdentifier: String = "com.forgerock.ios.sdk"
+    
+    
+    //  MARK: - Properties
     
     /// String value of currently designated server host to create a unique storage identifier
     var currentService: String
@@ -41,13 +61,16 @@ struct KeychainManager {
     /// SecuredKey object that is used for encrypting/decrypting data in Keychain Service
     var securedKey: SecuredKey?
     
+    
+    //  MARK: - Init
+    
     /// Initializes KeychainManager instance
     /// - Parameter baseUrl: Base URL of designated server host to uniquely identify storage identifier
     /// - Parameter accessGroup: AccessGroup as defined in Application Project's Capabilities tab
     public init?(baseUrl: String, accessGroup: String? = nil) throws {
         
         // Define currentService based on primary server
-        let service = "com.forgerock.ios.keychainservice"
+        let service = self.defaultService
         let currentService = baseUrl + "/" + service
         self.primaryServiceStore = KeychainService(service: service)
         var appBundleIdentifier = Bundle.main.bundleIdentifier ?? "com.forgerock.ios.sdk"
@@ -71,29 +94,29 @@ struct KeychainManager {
         
         
         // Create SecuredKey if available
-        if let securedKey = SecuredKey(applicationTag: "com.forgerock.ios.securedKey.identifier", accessGroup: self.accessGroup) {
+        if let securedKey = SecuredKey(applicationTag: self.securedKeyTag, accessGroup: self.accessGroup) {
             self.securedKey = securedKey
         }
         
-        if self.primaryServiceStore.getString("primaryService") == nil {
+        if self.primaryServiceStore.getString(StorageKey.primaryService.rawValue) == nil {
             // If there is no previous primaryService, create one
             FRLog.i("Creating primary keychain service dedicated to \(baseUrl)")
-            self.primaryServiceStore.set(currentService, key: "primaryService")
+            self.primaryServiceStore.set(currentService, key: StorageKey.primaryService.rawValue)
             
             // If SecuredKey exsits, stored encrypted 'currentService' string
             if let securedKey = self.securedKey, let stringData = currentService.data(using: .utf8), let encryptedData = securedKey.encrypt(data: stringData) {
-                self.primaryServiceStore.set(encryptedData, key: "primaryService-encrypted")
+                self.primaryServiceStore.set(encryptedData, key: StorageKey.primaryServiceEncrypted.rawValue)
             }
-        } else if let previousService = self.primaryServiceStore.getString("primaryService"), currentService != previousService {
+        } else if let previousService = self.primaryServiceStore.getString(StorageKey.primaryService.rawValue), currentService != previousService {
             // If primaryService currently stored is different from what's passed through parameter
             FRLog.i("Detected different primary server URL; clearing credentials for previous server")
             KeychainManager.clearAllKeychainStore(service: previousService, accessGroup: accessGroup)
             
             FRLog.i("Updating primary keychain service dedicated to \(baseUrl)")
-            self.primaryServiceStore.set(currentService, key: "primaryService")
+            self.primaryServiceStore.set(currentService, key: StorageKey.primaryService.rawValue)
             // If SecuredKey exsits, stored encrypted 'currentService' string
             if let securedKey = self.securedKey, let stringData = currentService.data(using: .utf8), let encryptedData = securedKey.encrypt(data: stringData) {
-                self.primaryServiceStore.set(encryptedData, key: "primaryService-encrypted")
+                self.primaryServiceStore.set(encryptedData, key: StorageKey.primaryServiceEncrypted.rawValue)
             }
         }
         
@@ -125,23 +148,104 @@ struct KeychainManager {
     }
     
     
+    //  MARK: - SSO Token
+    
+    /// Returns current session's Token object that represents SSO Token
+    func getSSOToken() -> Token? {
+        if let ssoTokenString = self.sharedStore.getString(StorageKey.ssoToken.rawValue) {
+            return Token(ssoTokenString)
+        }
+        else {
+            return nil
+        }
+    }
+    
+    
+    /// Stores SSOToken into designated Keychain Service, or removes SSOToken when nil
+    /// - Parameter ssoToken: Token object
+    /// - Returns: Boolean result of operation
+    @discardableResult func setSSOToken(ssoToken: Token?) -> Bool {
+        if let token = ssoToken {
+            return self.sharedStore.set(token.value, key: StorageKey.ssoToken.rawValue)
+        }
+        else {
+            return self.sharedStore.delete(StorageKey.ssoToken.rawValue)
+        }
+    }
+    
+    
+    //  MARK: - AccessToken
+    
+    /// Stores AccessToken into designated Keychain Service, or removes AccessToken when nil
+    /// - Parameter token: AccessToken object
+    /// - Throws: `TokenError`
+    /// - Returns: Boolean result of operation
+    @discardableResult func setAccessToken(token: AccessToken?) throws -> Bool {
+        if let thisToken = token {
+            do {
+                if #available(iOS 11.0, *) {
+                    let tokenData = try NSKeyedArchiver.archivedData(withRootObject: thisToken, requiringSecureCoding: true)
+                    return self.privateStore.set(tokenData, key: StorageKey.accessToken.rawValue)
+                }
+                else {
+                    let tokenData = NSKeyedArchiver.archivedData(withRootObject: thisToken)
+                    return self.privateStore.set(tokenData, key: StorageKey.accessToken.rawValue)
+                }
+            }
+            catch {
+                throw TokenError.failToParseToken(error.localizedDescription)
+            }
+        }
+        else {
+            return self.privateStore.delete(StorageKey.accessToken.rawValue)
+        }
+    }
+    
+    
+    /// Retrieves AccessToken object from the Keychain Service
+    /// - Throws: `TokenError`
+    /// - Returns: AccessToken object if exists
+    func getAccessToken() throws -> AccessToken? {
+        if let tokenData = self.privateStore.getData(StorageKey.accessToken.rawValue) {
+            do {
+                
+                if #available(iOS 11.0, *) {
+                    let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [AccessToken.self, Token.self], from: tokenData) as? AccessToken
+                    return token
+                }
+                else {
+                    if let token = NSKeyedUnarchiver.unarchiveObject(with: tokenData) as? AccessToken {
+                        return token
+                    }
+                }
+            }
+            catch {
+                throw TokenError.failToParseToken(error.localizedDescription)
+            }
+        }
+        return nil
+    }
+    
+    
+    //  MARK: - Instance helper methods
+    
     /// Validates with current SecuredKey whether or not data can be decrypted as SecuredKey may change by numerous factors
     func validateEncryption() {
         // If SecuredKey is not found, but encrypted data is found, clear all Keychain Service
-        if self.securedKey == nil, self.primaryServiceStore.getData("primaryService-encrypted") != nil {
+        if self.securedKey == nil, self.primaryServiceStore.getData(StorageKey.primaryServiceEncrypted.rawValue) != nil {
             FRLog.w("Secured key was not found with encrypted data; clearing credentials from KeychainServices")
-            self.primaryServiceStore.delete("primaryService-encrypted")
+            self.primaryServiceStore.delete(StorageKey.primaryServiceEncrypted.rawValue)
             KeychainManager.clearAllKeychainStore(service: currentService, accessGroup: accessGroup)
         }
         // If SecuredKey is found, but no encrypted data is found, clear all Keychain Service
-        else if let securedKey = self.securedKey, self.primaryServiceStore.getData("primaryService-encrypted") == nil {
+        else if let securedKey = self.securedKey, self.primaryServiceStore.getData(StorageKey.primaryServiceEncrypted.rawValue) == nil {
             FRLog.w("Secured key was found without encrypted data; clearing credentials from KeychainServices")
             KeychainManager.clearAllKeychainStore(service: currentService, accessGroup: accessGroup)
             let encryptedData = securedKey.encrypt(data: currentService.data(using: .utf8)!)
-            self.primaryServiceStore.set(encryptedData!, key: "primaryService-encrypted")
+            self.primaryServiceStore.set(encryptedData!, key: StorageKey.primaryServiceEncrypted.rawValue)
         }
         // If SecuredKey is found, and encrypted data is found, validate the data with decryption
-        else if let securedKey = self.securedKey, let encryptedData = self.primaryServiceStore.getData("primaryService-encrypted") {
+        else if let securedKey = self.securedKey, let encryptedData = self.primaryServiceStore.getData(StorageKey.primaryServiceEncrypted.rawValue) {
             
             if let decryptedData = securedKey.decrypt(data: encryptedData) {
                 let decryptedString = String(decoding: decryptedData, as: UTF8.self)
@@ -149,18 +253,20 @@ struct KeychainManager {
                     FRLog.w("Failed to decrypt data using current SecuredKey; clearing credentials from KeychainServices")
                     KeychainManager.clearAllKeychainStore(service: currentService, accessGroup: accessGroup)
                     let encryptedData = securedKey.encrypt(data: currentService.data(using: .utf8)!)
-                    self.primaryServiceStore.set(encryptedData!, key: "primaryService-encrypted")
+                    self.primaryServiceStore.set(encryptedData!, key: StorageKey.primaryServiceEncrypted.rawValue)
                 }
             }
             else {
                 FRLog.w("Failed to decrypt data using current SecuredKey; clearing credentials from KeychainServices")
                 KeychainManager.clearAllKeychainStore(service: currentService, accessGroup: accessGroup)
                 let encryptedData = securedKey.encrypt(data: currentService.data(using: .utf8)!)
-                self.primaryServiceStore.set(encryptedData!, key: "primaryService-encrypted")
+                self.primaryServiceStore.set(encryptedData!, key: StorageKey.primaryServiceEncrypted.rawValue)
             }
         }
     }
     
+    
+    //  MARK: - static helper methods
     
     /// Clears All (PrivateStore, SharedStore, and CookieStore) Keychain Services with given service identifier and AccessGroup; PrimaryService, and DeviceIdentifier Stores will never be cleared and will always be persisted within the device.
     /// - Parameter service: Service identifier

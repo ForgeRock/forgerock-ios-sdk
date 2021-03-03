@@ -2,7 +2,7 @@
 //  FRUser.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -36,11 +36,11 @@ public class FRUser: NSObject, NSSecureCoding {
             else if let frAuth = FRAuth.shared {
                 
                 FRLog.v("FRUser retrieved from SessionManager")
-                if let accessToken = try? frAuth.sessionManager.getAccessToken() {
-                    _staticUser = FRUser(token: accessToken, serverConfig: frAuth.serverConfig)
+                if let accessToken = try? frAuth.keychainManager.getAccessToken() {
+                    _staticUser = FRUser(token: accessToken)
                 }
-                else if let _ = frAuth.sessionManager.getSSOToken() {
-                    _staticUser = FRUser(token: nil, serverConfig: frAuth.serverConfig)
+                else if let _ = frAuth.keychainManager.getSSOToken() {
+                    _staticUser = FRUser(token: nil)
                 }
                 
                 return _staticUser
@@ -56,8 +56,8 @@ public class FRUser: NSObject, NSSecureCoding {
     @objc
     public var token: AccessToken? {
         get {
-            if let frAuth = FRAuth.shared, let accessToken = try? frAuth.sessionManager.getAccessToken() {
-                let sessionToken = frAuth.sessionManager.getSSOToken()
+            if let frAuth = FRAuth.shared, let accessToken = try? frAuth.keychainManager.getAccessToken() {
+                let sessionToken = frAuth.keychainManager.getSSOToken()
                 if sessionToken?.value != accessToken.sessionToken {
                     FRLog.w("SDK identified current Session Token (\(sessionToken?.value ?? "null")) and Session Token (\(String(describing: accessToken.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                     frAuth.tokenManager?.revokeAndEndSession(completion: { (error) in
@@ -74,9 +74,6 @@ public class FRUser: NSObject, NSSecureCoding {
         set {
         }
     }
-
-    /// ServerConfig instance of FRUser
-    var serverConfig: ServerConfig
     
     
     //  MARK: - Init
@@ -85,17 +82,15 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameters:
     ///   - token: AccessToken object associated with the user instance
-    ///   - serverConfig: ServerConfig object associated with the user instance
-    init(token: AccessToken?, serverConfig: ServerConfig) {
+    init(token: AccessToken?) {
     
-        self.serverConfig = serverConfig
         super.init()
 
         if let token = token {
             self.token = token
         }
-        else if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
-            self.token = try? tokenManager.retrieveAccessTokenFromKeychain()
+        else if let frAuth = FRAuth.shared {
+            self.token = try? frAuth.keychainManager.getAccessToken()
         }
     }
     
@@ -217,7 +212,6 @@ public class FRUser: NSObject, NSSecureCoding {
                     })
                 }
             })
-            frAuth.sessionManager.setCurrentUser(user: nil)
         }
         
         // Clear user object
@@ -247,7 +241,7 @@ public class FRUser: NSObject, NSSecureCoding {
             }
         }
         else {
-            FRLog.w("Invalid SDK state")
+            FRLog.w("Invalid SDK state; missing TokenManager")
             completion(nil, ConfigError.invalidSDKState)
         }
     }
@@ -288,6 +282,12 @@ public class FRUser: NSObject, NSSecureCoding {
     public func getUserInfo(completion: @escaping UserInfoCallback) {
         FRLog.v("Requesting UserInfo")
         
+        guard let frAuth = FRAuth.shared else {
+            FRLog.e("Invalid SDK state; SDK must be initialized before calling /userinfo endpoint")
+            completion(nil, ConfigError.invalidSDKState)
+            return
+        }
+        
         self.getAccessToken { (user, error) in
             
             //  AM 6.5.2 - 7.0.0
@@ -302,7 +302,7 @@ public class FRUser: NSObject, NSSecureCoding {
                 header[OAuth2.authorization] = user.buildAuthHeader()
             }
             
-            let request = Request(url: self.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
+            let request = Request(url: frAuth.serverConfig.userInfoURL, method: .GET, headers: header, bodyParams: [:], urlParams: [:], requestType: .json, responseType: .json, timeoutInterval: frAuth.serverConfig.timeout)
             
             FRRestClient.invoke(request: request, action: Action(type: .USER_INFO)) { (result) in
                 switch result {
@@ -349,7 +349,7 @@ public class FRUser: NSObject, NSSecureCoding {
             return nil
         }
         
-        return BrowserBuilder(oAuth2Client, frAuth.sessionManager)
+        return BrowserBuilder(oAuth2Client, frAuth.keychainManager)
     }
     
     
@@ -397,10 +397,6 @@ public class FRUser: NSObject, NSSecureCoding {
     
     /// Saves current FRUser instance to Keychain
     func save() {
-        if let frAuth = FRAuth.shared {
-            FRLog.v("Saving FRUser.currentUser")
-            frAuth.sessionManager.setCurrentUser(user: self)
-        }
     }
     
     
@@ -426,13 +422,7 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameter aDecoder: NSCoder
     convenience required public init?(coder aDecoder: NSCoder) {
-        guard let serverConfigData = aDecoder.decodeObject(forKey: "serverConfig") as? Data,
-            let serverConfig = try? JSONDecoder().decode(ServerConfig.self, from: serverConfigData) as ServerConfig else
-        {
-            return nil
-        }
-        
-        self.init(token: nil, serverConfig: serverConfig)
+        self.init(token: nil)
     }
     
     
@@ -440,8 +430,5 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameter aCoder: NSCoder
     public func encode(with aCoder: NSCoder) {
-        if let serverConfigData: Data = try? JSONEncoder().encode(self.serverConfig) {
-            aCoder.encode(serverConfigData, forKey: "serverConfig")
-        }
     }
 }
