@@ -27,33 +27,34 @@ public struct SecuredKey {
     /// Validates whether SecuredKey using Secure Enclave is available on the device or not
     public static func isAvailable() -> Bool {
         
+        #if canImport(CryptoKit)
         if #available(iOS 13.0, *) {
             Log.v("Secure Enclave availability: \(SecureEnclave.isAvailable)")
             return SecureEnclave.isAvailable
         }
-        else {
-            let laContext = LAContext()
-            var error: NSError?
+        #endif
+        
+        let laContext = LAContext()
+        var error: NSError?
+        
+        // Validate if LocalAuthentication can be processed or not; this simply validates whether LA can be processed or not, and not necessarily returning the result of Secure Enclave's availability
+        var canEvaluatePolicy = laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        if canEvaluatePolicy == false, let error = error {
             
-            // Validate if LocalAuthentication can be processed or not; this simply validates whether LA can be processed or not, and not necessarily returning the result of Secure Enclave's availability
-            var canEvaluatePolicy = laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
-            if canEvaluatePolicy == false, let error = error {
-                
-                // Check if an error is whether LocalAuthentication is not available (meaning there is no hardware security module)
-                if #available(iOS 11.0, *) {
-                    canEvaluatePolicy = error.code != LAError.biometryNotAvailable.rawValue
-                }
-                else {
-                    canEvaluatePolicy = error.code != LAError.touchIDNotAvailable.rawValue
-                }
-                
-                if !canEvaluatePolicy {
-                    Log.w("Biometry is not available on the device; SDK continues without storage data encryption")
-                }
+            // Check if an error is whether LocalAuthentication is not available (meaning there is no hardware security module)
+            if #available(iOS 11.0, *) {
+                canEvaluatePolicy = error.code != LAError.biometryNotAvailable.rawValue
+            }
+            else {
+                canEvaluatePolicy = error.code != LAError.touchIDNotAvailable.rawValue
             }
             
-            return canEvaluatePolicy
+            if !canEvaluatePolicy {
+                Log.w("Biometry is not available on the device; SDK continues without storage data encryption")
+            }
         }
+        
+        return canEvaluatePolicy
     }
     
     
