@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double FRAuthenticatorVersionNumber;
 
 //! Project version string for FRAuthenticator.
 FOUNDATION_EXPORT const unsigned char FRAuthenticatorVersionString[];
-
-#import "base32.h"

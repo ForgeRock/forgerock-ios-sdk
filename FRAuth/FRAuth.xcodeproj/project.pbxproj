@@ -96,20 +96,20 @@
 		D5791BE125F87DE8004B487A /* FRUserBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */; };
 		D5791BE225F87DE8004B487A /* NetworkReachabilityMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1640231484D60095905A /* NetworkReachabilityMonitorTests.swift */; };
 		D5791BE325F87DE8004B487A /* FRBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D165A231484D60095905A /* FRBaseTest.swift */; };
+		D5791C1D25F8869C004B487A /* JBUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = D5791C1B25F8869C004B487A /* JBUtil.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D5791C1E25F8869C004B487A /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = D5791C1C25F8869C004B487A /* JBUtil.c */; };
 		D586CF7723358EE0007A2194 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2123358EDF007A2194 /* AuthError.swift */; };
 		D586CF7823358EE0007A2194 /* ConfigError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2223358EDF007A2194 /* ConfigError.swift */; };
 		D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2423358EDF007A2194 /* TokenError.swift */; };
 		D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2623358EDF007A2194 /* CydiaDetector.swift */; };
 		D586CF7C23358EE0007A2194 /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2723358EDF007A2194 /* SandboxDetector.swift */; };
 		D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2823358EDF007A2194 /* SymbolicLinkDetector.swift */; };
-		D586CF7E23358EE0007A2194 /* JBUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = D586CF2923358EDF007A2194 /* JBUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D586CF7F23358EE0007A2194 /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2A23358EDF007A2194 /* CydiaSubstrateDetector.swift */; };
 		D586CF8023358EE0007A2194 /* DyldDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2B23358EDF007A2194 /* DyldDetector.swift */; };
 		D586CF8123358EE0007A2194 /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2C23358EDF007A2194 /* AptDetector.swift */; };
 		D586CF8223358EE0007A2194 /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2D23358EDF007A2194 /* SSHDetector.swift */; };
 		D586CF8323358EE0007A2194 /* JailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2E23358EDF007A2194 /* JailbreakDetector.swift */; };
 		D586CF8423358EE0007A2194 /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2F23358EDF007A2194 /* FRJailbreakDetector.swift */; };
-		D586CF8523358EE0007A2194 /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3023358EDF007A2194 /* JBUtil.c */; };
 		D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */; };
 		D586CF8723358EE0007A2194 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3223358EDF007A2194 /* BashDetector.swift */; };
 		D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */; };
@@ -316,20 +316,21 @@
 		D5723C3923F4C65800557AA8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5723C3A23F4C65800557AA8 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdvice.swift; sourceTree = "<group>"; };
+		D5791C1825F8869C004B487A /* FRAuth.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = FRAuth.modulemap; sourceTree = "<group>"; };
+		D5791C1B25F8869C004B487A /* JBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBUtil.h; sourceTree = "<group>"; };
+		D5791C1C25F8869C004B487A /* JBUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = JBUtil.c; sourceTree = "<group>"; };
 		D586CF2123358EDF007A2194 /* AuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		D586CF2223358EDF007A2194 /* ConfigError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigError.swift; sourceTree = "<group>"; };
 		D586CF2423358EDF007A2194 /* TokenError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenError.swift; sourceTree = "<group>"; };
 		D586CF2623358EDF007A2194 /* CydiaDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaDetector.swift; sourceTree = "<group>"; };
 		D586CF2723358EDF007A2194 /* SandboxDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SandboxDetector.swift; sourceTree = "<group>"; };
 		D586CF2823358EDF007A2194 /* SymbolicLinkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolicLinkDetector.swift; sourceTree = "<group>"; };
-		D586CF2923358EDF007A2194 /* JBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBUtil.h; sourceTree = "<group>"; };
 		D586CF2A23358EDF007A2194 /* CydiaSubstrateDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaSubstrateDetector.swift; sourceTree = "<group>"; };
 		D586CF2B23358EDF007A2194 /* DyldDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DyldDetector.swift; sourceTree = "<group>"; };
 		D586CF2C23358EDF007A2194 /* AptDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AptDetector.swift; sourceTree = "<group>"; };
 		D586CF2D23358EDF007A2194 /* SSHDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHDetector.swift; sourceTree = "<group>"; };
 		D586CF2E23358EDF007A2194 /* JailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetector.swift; sourceTree = "<group>"; };
 		D586CF2F23358EDF007A2194 /* FRJailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRJailbreakDetector.swift; sourceTree = "<group>"; };
-		D586CF3023358EDF007A2194 /* JBUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = JBUtil.c; sourceTree = "<group>"; };
 		D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateFileWritableDetector.swift; sourceTree = "<group>"; };
 		D586CF3223358EDF007A2194 /* BashDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashDetector.swift; sourceTree = "<group>"; };
 		D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityMonitor.swift; sourceTree = "<group>"; };
@@ -700,6 +701,7 @@
 		D55462FA22A6DF720096C7A4 /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				D5791C1725F8869C004B487A /* SharedC */,
 				D5723C3823F4C65800557AA8 /* Authentication */,
 				D5723C3B23F4C65800557AA8 /* Authorization */,
 				D586CF4023358EDF007A2194 /* Callbacks */,
@@ -758,6 +760,32 @@
 			path = Authorization;
 			sourceTree = "<group>";
 		};
+		D5791C1725F8869C004B487A /* SharedC */ = {
+			isa = PBXGroup;
+			children = (
+				D5791C1825F8869C004B487A /* FRAuth.modulemap */,
+				D5791C1925F8869C004B487A /* Sources */,
+			);
+			path = SharedC;
+			sourceTree = "<group>";
+		};
+		D5791C1925F8869C004B487A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D5791C1A25F8869C004B487A /* include */,
+				D5791C1C25F8869C004B487A /* JBUtil.c */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D5791C1A25F8869C004B487A /* include */ = {
+			isa = PBXGroup;
+			children = (
+				D5791C1B25F8869C004B487A /* JBUtil.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
 		D586CF2023358EDF007A2194 /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -777,14 +805,12 @@
 				D586CF2623358EDF007A2194 /* CydiaDetector.swift */,
 				D586CF2723358EDF007A2194 /* SandboxDetector.swift */,
 				D586CF2823358EDF007A2194 /* SymbolicLinkDetector.swift */,
-				D586CF2923358EDF007A2194 /* JBUtil.h */,
 				D586CF2A23358EDF007A2194 /* CydiaSubstrateDetector.swift */,
 				D586CF2B23358EDF007A2194 /* DyldDetector.swift */,
 				D586CF2C23358EDF007A2194 /* AptDetector.swift */,
 				D586CF2D23358EDF007A2194 /* SSHDetector.swift */,
 				D586CF2E23358EDF007A2194 /* JailbreakDetector.swift */,
 				D586CF2F23358EDF007A2194 /* FRJailbreakDetector.swift */,
-				D586CF3023358EDF007A2194 /* JBUtil.c */,
 				D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */,
 				D586CF3223358EDF007A2194 /* BashDetector.swift */,
 			);
@@ -1254,7 +1280,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D586CF7E23358EE0007A2194 /* JBUtil.h in Headers */,
+				D5791C1D25F8869C004B487A /* JBUtil.h in Headers */,
 				D554630922A6DF720096C7A4 /* FRAuth.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1451,7 +1477,6 @@
 			files = (
 				D586CFB723358EE0007A2194 /* BrowserCollector.swift in Sources */,
 				D586CF9223358EE0007A2194 /* TermsAndConditionsCallback.swift in Sources */,
-				D586CF8523358EE0007A2194 /* JBUtil.c in Sources */,
 				D586CFB023358EE0007A2194 /* OIDC.swift in Sources */,
 				D513F17524DA6B490042228B /* AuthApiError.swift in Sources */,
 				D5C8641A252E880D00268F06 /* OAuth2Error.swift in Sources */,
@@ -1525,6 +1550,7 @@
 				D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */,
 				D586CFB323358EE0007A2194 /* PlatformCollector.swift in Sources */,
 				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
+				D5791C1E25F8869C004B487A /* JBUtil.c in Sources */,
 				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */,
@@ -1783,6 +1809,8 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.2.0;
+				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuth/SharedC/FRAuth.modulemap";
+				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1815,6 +1843,8 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.2.0;
+				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuth/SharedC/FRAuth.modulemap";
+				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

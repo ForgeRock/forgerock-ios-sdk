@@ -10,20 +10,14 @@
 
 import FRAuth
 
-@objc
 class CustomCallback: Callback {
     
-    @objc
     public var inputName: String?
-    @objc
     public var prompt: String?
-    @objc
     public var value: Any?
-    @objc
     public var customAttribute: String?
     public var _id: Int?
     
-    @objc
     public required init(json: [String : Any]) throws {
         
         guard let callbackType = json["type"] as? String else {
@@ -65,7 +59,6 @@ class CustomCallback: Callback {
         self.response = json
     }
     
-    @objc
     public override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
         responsePayload["input"] = [["name": self.inputName!, "value": self.value!], ["name": "customAttribute", "value": self.customAttribute!]]

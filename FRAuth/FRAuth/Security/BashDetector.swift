@@ -22,6 +22,7 @@ public class BashDetector: JailbreakDetector {
     ///
     /// - Returns: return 1.0 if bash is accessible; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         let fileManager = FileManager.default
         let charArr: [Character] = ["/","b","i","n","/","b","a","s","h"]
         let searchPath = String(charArr)

@@ -22,13 +22,12 @@ public class DyldDetector: JailbreakDetector {
     ///
     /// - Returns: return 1.0 if MobileSubstrate library was loaded; ohterwise returns 0.0
     public func analyze() -> Double {
-        #if !FRTests
+        FRLog.v("\(self) analyzing")
         let result = validate_dyld()
         if result {
             FRLog.w("Security Warning: \(self) is returning 1.0")
             return 1.0
         }
-        #endif
         return 0.0
     }
 }
