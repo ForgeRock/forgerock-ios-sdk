@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import UIKit
 import FRAuth
 
 public typealias NodeUICompletion<T> = (_ result: T?, _ error:Error?) -> Void
