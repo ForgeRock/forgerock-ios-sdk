@@ -8,9 +8,9 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import UIKit
-import FRCore
+@testable import FRCore
+@testable import FRAuthenticator
 
 class DummyStorageClient: StorageClient {
     var setAccountResult: Bool?
