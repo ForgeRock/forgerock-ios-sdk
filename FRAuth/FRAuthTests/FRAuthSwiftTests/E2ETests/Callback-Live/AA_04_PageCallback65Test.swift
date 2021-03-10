@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRAuth
 
 class AA_04_PageCallback65Test: FRAuthBaseTest {
     

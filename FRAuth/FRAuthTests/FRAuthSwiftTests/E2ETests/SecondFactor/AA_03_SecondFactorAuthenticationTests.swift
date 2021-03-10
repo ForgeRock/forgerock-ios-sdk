@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRAuth
 
 class AA_03_SecondFactorAuthenticationTests: FRAuthBaseTest {
 

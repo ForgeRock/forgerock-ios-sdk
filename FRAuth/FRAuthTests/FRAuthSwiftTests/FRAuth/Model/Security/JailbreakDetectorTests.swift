@@ -9,7 +9,7 @@
 //
 
 import XCTest
-import FRAuth
+@testable import FRAuth
 
 class JailbreakDetectorTests: FRAuthBaseTest {
 
