@@ -10,5 +10,5 @@
 
 framework module FRAuthenticator {
     header "FRAuthenticator.h"
-    header "Base32.h"
+    header "base32.h"
 }
