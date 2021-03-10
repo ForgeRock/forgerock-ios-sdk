@@ -8,8 +8,10 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import Foundation
+#if SWIFT_PACKAGE
+import cFRAuthenticator
+#endif
 
 extension String {
     
