@@ -44,7 +44,6 @@
     "forgerock_url": "http://openam.example.com:8081/openam",
     "forgerock_realm": "root",
     "forgerock_timeout": 60,
-    "forgerock_keychain_access_group": "com.forgerock.ios.shared",
     "forgerock_auth_service_name": "UsernamePassword",
     "forgerock_registration_service_name": "UserSignUp",
     "forgerock_enable_cookie": true
