@@ -60,14 +60,14 @@
     XCTAssertTrue([[platform objectForKey:@"deviceName"] isKindOfClass:[NSString class]]);
     XCTAssertNotNil([platform objectForKey:@"locale"]);
     XCTAssertTrue([[platform objectForKey:@"locale"] isKindOfClass:[NSString class]]);
-    XCTAssertNotNil([platform objectForKey:@"timezone"]);
-    XCTAssertTrue([[platform objectForKey:@"timezone"] isKindOfClass:[NSString class]]);
+    XCTAssertNotNil([platform objectForKey:@"timeZone"]);
+    XCTAssertTrue([[platform objectForKey:@"timeZone"] isKindOfClass:[NSString class]]);
     XCTAssertNotNil([platform objectForKey:@"model"]);
     XCTAssertTrue([[platform objectForKey:@"model"] isKindOfClass:[NSString class]]);
     XCTAssertNotNil([platform objectForKey:@"brand"]);
     XCTAssertTrue([[platform objectForKey:@"brand"] isKindOfClass:[NSString class]]);
-    XCTAssertNotNil([platform objectForKey:@"jailbreakScore"]);
-    XCTAssertTrue([[platform objectForKey:@"jailbreakScore"] isKindOfClass:[NSNumber class]]);
+    XCTAssertNotNil([platform objectForKey:@"jailBreakScore"]);
+    XCTAssertTrue([[platform objectForKey:@"jailBreakScore"] isKindOfClass:[NSNumber class]]);
     
     // Hardware information
     NSDictionary *hardware = [deviceInfo objectForKey:@"hardware"];
