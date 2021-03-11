@@ -35,10 +35,10 @@ public class PlatformCollector: DeviceCollector {
         result["device"] = UIDevice.current.model
         result["model"] = self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine))//parseDeviceIdentifier(identifier: self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine)))
         result["locale"] = Locale.current.languageCode
-        result["timezone"] = TimeZone.current.identifier
+        result["timeZone"] = TimeZone.current.identifier
         result["brand"] = "Apple"
         result["deviceName"] = UIDevice.current.name
-        result["jailbreakScore"] = jailbreakScore
+        result["jailBreakScore"] = jailbreakScore
         
         var posix: [String: Any] = [:]
         posix["sysname"] = self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.sysname))
