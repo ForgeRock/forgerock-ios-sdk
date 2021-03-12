@@ -209,7 +209,7 @@ public final class FRAuth: NSObject {
     ///   - sessionManager: SessionManager instance
     init(authServiceName: String, registerServiceName: String, serverConfig: ServerConfig, oAuth2Client: OAuth2Client?, tokenManager: TokenManager?, keychainManager: KeychainManager, sessionManager: SessionManager) {
         
-        FRLog.i("SDK initializaed", false)
+        FRLog.i("SDK initialized", false)
         
         self.authServiceName = authServiceName
         self.registerServiceName = registerServiceName
