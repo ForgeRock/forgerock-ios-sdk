@@ -22,6 +22,7 @@ public class CydiaSubstrateDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 if MobileSubstrate is found or accessible; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         let fileManager = FileManager.default
         let charArr: [Character] = ["/","L","i","b","r","a","r","y","/","M","o","b","i","l","e","S","u","b","s","t","r","a","t","e","/","M","o","b","i","l","e","S","u","b","s","t","r","a","t","e",".","d","y","l","i","b"]
         let searchPath = String(charArr)

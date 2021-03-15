@@ -9,6 +9,9 @@
 //
 
 import Foundation
+#if SWIFT_PACKAGE
+import cFRAuth
+#endif
 
 /// DyldDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class DyldDetector: JailbreakDetector {
@@ -22,13 +25,12 @@ public class DyldDetector: JailbreakDetector {
     ///
     /// - Returns: return 1.0 if MobileSubstrate library was loaded; ohterwise returns 0.0
     public func analyze() -> Double {
-        #if !FRTests
+        FRLog.v("\(self) analyzing")
         let result = validate_dyld()
         if result {
             FRLog.w("Security Warning: \(self) is returning 1.0")
             return 1.0
         }
-        #endif
         return 0.0
     }
 }

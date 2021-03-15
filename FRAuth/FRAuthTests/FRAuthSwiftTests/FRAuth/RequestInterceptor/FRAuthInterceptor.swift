@@ -8,8 +8,8 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
-import FRCore
+@testable import FRCore
+@testable import FRAuth
 
 class FRAuthInterceptor: RequestInterceptor {
     func intercept(request: Request, action: Action) -> Request {

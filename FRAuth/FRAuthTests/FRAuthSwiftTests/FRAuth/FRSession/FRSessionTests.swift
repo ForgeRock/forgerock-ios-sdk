@@ -8,9 +8,9 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
-import FRCore
+@testable import FRCore
+@testable import FRAuth
 
 class FRSessionTests: FRAuthBaseTest {
 

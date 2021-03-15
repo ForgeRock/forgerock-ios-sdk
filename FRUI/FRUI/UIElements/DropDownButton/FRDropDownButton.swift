@@ -66,7 +66,11 @@ public class FRDropDownButton: UIButton {
     
     fileprivate var _shouldCoverButton: Bool = false
     fileprivate var _themeColor: UIColor = UIColor.clear
+    #if SWIFT_PACKAGE
+    fileprivate var indicatorView: UIImageView = UIImageView(image: UIImage(named: "arrow.png", in: Bundle.module, compatibleWith: nil))
+    #else
     fileprivate var indicatorView: UIImageView = UIImageView(image: UIImage(named: "arrow.png", in: Bundle.init(for: FRDropDownButton.self), compatibleWith: nil))
+    #endif
     fileprivate var dropDownView: FRDropDownView = FRDropDownView(frame: CGRect.zero)
     fileprivate var isVisible: Bool = false
     fileprivate var heightConstraint = NSLayoutConstraint()

@@ -22,6 +22,7 @@ public class PrivateFileWritableDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 if the app has write access to /private directory; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         
         let fileManager = FileManager.default
         var isFileWritable = false

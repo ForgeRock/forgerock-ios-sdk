@@ -72,13 +72,9 @@ public final class FRAuth: NSObject {
         FRLog.v("\(configPlistFileName).plist : \(config)")
         try FRAuth.initPrivate(config: config)
         
-        for bundle in Bundle.allFrameworks {
-            if bundle.bundleIdentifier == "com.forgerock.ios.FRProximity" || bundle.bundleIdentifier == "org.cocoapods.FRProximity" {
-                if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type{
-                    FRLog.i("FRProximity SDK found; starting FRProximity")
-                    c.perform(Selector(("startProximity")))
-                }
-            }
+        if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type{
+            FRLog.i("FRProximity SDK found; starting FRProximity")
+            c.perform(Selector(("startProximity")))
         }
     }
     

@@ -22,6 +22,7 @@ public class SymbolicLinkDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 when "/Applications", "/Library/Ringtones", "/Library/Wallpaper" directory is found as a symbolic link; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         let urls: [String] = ["/Applications", "/Library/Ringtones", "/Library/Wallpaper"]
         
         for urlString in urls {

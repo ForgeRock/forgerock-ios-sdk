@@ -21,6 +21,7 @@ public class CydiaDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 if Cydia.app is found or accessible; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         let fileManager = FileManager.default
         let charArr: [Character] = ["/","A","p","p","l","i","c","a","t","i","o","n","s","/","C","y","d","i","a",".","a","p","p"]
         let searchPath = String(charArr)

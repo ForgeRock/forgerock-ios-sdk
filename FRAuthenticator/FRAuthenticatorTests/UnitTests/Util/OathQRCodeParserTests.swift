@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRAuthenticator
 
 class OathQRCodeParserTests: FRABaseTests {
     

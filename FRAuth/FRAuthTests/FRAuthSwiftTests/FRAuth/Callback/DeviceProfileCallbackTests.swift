@@ -10,6 +10,7 @@
 
 
 import XCTest
+@testable import FRAuth
 
 class DeviceProfileCallbackTests: FRAuthBaseTest {
     

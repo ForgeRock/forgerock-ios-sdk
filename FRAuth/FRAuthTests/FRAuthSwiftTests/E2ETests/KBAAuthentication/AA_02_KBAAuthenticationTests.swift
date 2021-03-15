@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRAuth
 
 class AA_02_KBAAuthenticationTests: FRAuthBaseTest {
 

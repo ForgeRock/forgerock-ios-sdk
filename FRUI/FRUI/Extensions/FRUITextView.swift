@@ -10,6 +10,7 @@
 
 
 import Foundation
+import UIKit
 
 extension UITextView {
     func setHTMLString(_ value: String) {

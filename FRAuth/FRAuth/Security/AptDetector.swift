@@ -20,6 +20,7 @@ public class AptDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 if apt is accessible; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         let fileManager = FileManager.default
         let charArr: [Character] = ["/","e","t","c","/","a","p","t"]
         let searchPath = String(charArr)

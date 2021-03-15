@@ -35,8 +35,6 @@
 		D592480E2328446B0027031A /* ConfirmationCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */; };
 		D592481523285AAF0027031A /* TextOutputCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */; };
 		D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */; };
-		D5962DC0238F47FA0021859F /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = D5962DBE238F47FA0021859F /* arrow.png */; };
-		D5962DC1238F47FA0021859F /* forgerock-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D5962DBF238F47FA0021859F /* forgerock-logo.png */; };
 		D5B27E662318B7710058EFE3 /* FRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E612318B7710058EFE3 /* FRButton.swift */; };
 		D5B27E672318B7710058EFE3 /* FRTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E632318B7710058EFE3 /* FRTextField.swift */; };
 		D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E652318B7710058EFE3 /* FRLoadingView.swift */; };
@@ -115,8 +113,6 @@
 		D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmationCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputCallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextOutputCallbackTableViewCell.xib; sourceTree = "<group>"; };
-		D5962DBE238F47FA0021859F /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
-		D5962DBF238F47FA0021859F /* forgerock-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forgerock-logo.png"; sourceTree = "<group>"; };
 		D5B27E612318B7710058EFE3 /* FRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRButton.swift; sourceTree = "<group>"; };
 		D5B27E632318B7710058EFE3 /* FRTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTextField.swift; sourceTree = "<group>"; };
 		D5B27E652318B7710058EFE3 /* FRLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLoadingView.swift; sourceTree = "<group>"; };
@@ -299,8 +295,6 @@
 		D5CACF8D22B1AA0400656521 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				D5962DBE238F47FA0021859F /* arrow.png */,
-				D5962DBF238F47FA0021859F /* forgerock-logo.png */,
 				D587778F238DB6E200422605 /* Assets.xcassets */,
 			);
 			path = Assets;
@@ -443,7 +437,6 @@
 			files = (
 				D577B26B22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib in Resources */,
 				D592480E2328446B0027031A /* ConfirmationCallbackTableViewCell.xib in Resources */,
-				D5962DC0238F47FA0021859F /* arrow.png in Resources */,
 				D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */,
 				D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */,
 				D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */,
@@ -451,7 +444,6 @@
 				D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */,
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
 				D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */,
-				D5962DC1238F47FA0021859F /* forgerock-logo.png in Resources */,
 				D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */,
 				D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */,
 				D5877790238DB6E200422605 /* Assets.xcassets in Resources */,

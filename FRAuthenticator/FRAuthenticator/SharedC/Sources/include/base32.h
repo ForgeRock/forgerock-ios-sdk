@@ -29,9 +29,9 @@
 #ifndef _BASE32_H_
 #define _BASE32_H_
 #import <stdint.h>
-int __attribute__((visibility("hidden")))
+int __attribute__((visibility("default")))
 base32_decode(const char *encoded, uint8_t *result, int bufSize);
 
-int __attribute__((visibility("hidden")))
+int __attribute__((visibility("default")))
 base32_encode(const uint8_t *data, int length, char *result, int bufSize);
 #endif /* _BASE32_H_ */

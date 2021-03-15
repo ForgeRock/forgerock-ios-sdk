@@ -10,6 +10,7 @@
 
 
 import Foundation
+import UIKit
 import FRAuth
 
 /// UITableViewCell protocol for FRUI's Authentication View Controller customization

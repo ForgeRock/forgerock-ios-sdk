@@ -8,8 +8,8 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
+@testable import FRAuthenticator
 
 class FRAErrorTests: FRABaseTests {
 

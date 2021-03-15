@@ -46,7 +46,11 @@ class AuthStepViewController: UIViewController {
         currentNode = node
         
         // Super init
+        #if SWIFT_PACKAGE
+        super.init(nibName: nibName, bundle: Bundle.module)
+        #else
         super.init(nibName: nibName, bundle: Bundle(for: AuthStepViewController.self))
+        #endif
         
         // set completion block
         if T.self as AnyObject? === AccessToken.self {
@@ -78,7 +82,11 @@ class AuthStepViewController: UIViewController {
                     return
             }
             
+            #if SWIFT_PACKAGE
+            self.tableView?.register(UINib(nibName: callbackTableViewCellNib, bundle: Bundle.module), forCellReuseIdentifier: callbackTableViewCell.cellIdentifier)
+            #else
             self.tableView?.register(UINib(nibName: callbackTableViewCellNib, bundle: Bundle(for: callbackTableViewCell.self)), forCellReuseIdentifier: callbackTableViewCell.cellIdentifier)
+            #endif
         }
         
         self.title = "FRUI"
@@ -388,7 +396,13 @@ extension AuthStepViewController: UITableViewDataSource {
         
         if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type],
             let callbackTableViewCellNib = CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks[callback.type] {
+            
+            #if SWIFT_PACKAGE
+            let cell = Bundle.module.loadNibNamed(callbackTableViewCellNib, owner: self, options: nil)?.first as! FRUICallbackTableViewCell
+            #else
             let cell = Bundle(for: callbackTableViewCell.self).loadNibNamed(callbackTableViewCellNib, owner: self, options: nil)?.first as! FRUICallbackTableViewCell
+            #endif
+            
             cell.updateCellData(callback: callback)
             
             if let confirmationCallbackCell = cell as? ConfirmationCallbackTableViewCell {

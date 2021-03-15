@@ -22,6 +22,7 @@ public class SSHDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 if ssh or sshd is accessible; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         let fileManager = FileManager.default
         let charArr: [Character] = ["/","u","s","r","/","b","i","n","/","s","s","h"]
         let searchPath = String(charArr)

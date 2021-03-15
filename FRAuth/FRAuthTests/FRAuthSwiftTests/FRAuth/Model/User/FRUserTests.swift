@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRAuth
 
 class FRUserTests: FRAuthBaseTest {
     
@@ -331,7 +332,7 @@ class FRUserTests: FRAuthBaseTest {
         
         at1.expiresIn = 0
         if let keychainManager = self.config.keychainManager {
-            try? keychainManager.setAccessToken(token: at1)
+            let _ = try? keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -373,7 +374,7 @@ class FRUserTests: FRAuthBaseTest {
         
         at1.expiresIn = 0
         if let keychainManager = self.config.keychainManager {
-            try? keychainManager.setAccessToken(token: at1)
+            let _ = try? keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
