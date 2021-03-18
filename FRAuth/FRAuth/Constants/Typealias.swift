@@ -33,6 +33,12 @@ public typealias CompletionCallback = (_ error:Error?) -> Void
 public typealias JSONCompletionCallback = (_ result: [String: Any]) -> Void
 
 
+//  MARK: - Social Login
+
+/// Callback definition for completion of Social Login authorization flow against provider
+public typealias SocialLoginCompletionCallback = (_ token: String?, _ tokenType: String?, _ error: Error?) -> Void
+
+
 //  MARK: - OAuth2Client
 
 /// Callback definition for completion of exchanging access_token request

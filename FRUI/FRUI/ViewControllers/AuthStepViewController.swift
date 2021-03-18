@@ -2,7 +2,7 @@
 //  AuthStepViewController.swift
 //  FRUI
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -26,7 +26,9 @@ class AuthStepViewController: UIViewController {
     var type: Any?
     var isKeyboardVisible: Bool = false
     var authCallbacks: [Callback] = []
-    var authCallbackValues: [String:String] = [:]
+    var listItem: [Any] = []
+    var selectIdPCallback: SelectIdPCallback?
+
     
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var headerLabel: UILabel?
@@ -88,6 +90,12 @@ class AuthStepViewController: UIViewController {
             self.tableView?.register(UINib(nibName: callbackTableViewCellNib, bundle: Bundle(for: callbackTableViewCell.self)), forCellReuseIdentifier: callbackTableViewCell.cellIdentifier)
             #endif
         }
+        #if SWIFT_PACKAGE
+        self.tableView?.register(UINib(nibName: "IdPValueTableViewCell", bundle: Bundle.module), forCellReuseIdentifier: IdPValueTableViewCell.cellIdentifier)
+        #else
+        self.tableView?.register(UINib(nibName: "IdPValueTableViewCell", bundle: Bundle(for: IdPValueTableViewCell.self)), forCellReuseIdentifier: IdPValueTableViewCell.cellIdentifier)
+        #endif
+
         
         self.title = "FRUI"
         
@@ -255,6 +263,22 @@ class AuthStepViewController: UIViewController {
             return
         }
         
+        var listItems: [Any] = []
+        for callback in self.authCallbacks {
+            if let idpCallback = callback as? SelectIdPCallback {
+                for provider in idpCallback.providers {
+                    if provider.provider != "localAuthentication" {
+                        listItems.append(provider)
+                    }
+                }
+                self.selectIdPCallback = idpCallback
+            }
+            else {
+                listItems.append(callback)
+            }
+        }
+        self.listItem = listItems
+        
         //  Reload tableView for rendering with callbacks
         self.tableView?.reloadData()
     }
@@ -304,18 +328,6 @@ class AuthStepViewController: UIViewController {
     @IBAction func nextButtonClicked(sender: UIButton?) {
         //  Force to end editing
         self.view.endEditing(true)
-        self.startLoading()
-                
-        for (identifier, value) in self.authCallbackValues {
-            
-            for authCallback: Callback in self.authCallbacks
-            {
-                if authCallback is SingleValueCallback, let callback = authCallback as? SingleValueCallback, callback.inputName == identifier {                    
-                    callback.setValue(value)
-                }
-            }
-        }
-        
         self.startLoading()
         
         if self.type as AnyObject? === AccessToken.self {
@@ -387,23 +399,19 @@ extension AuthStepViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //  deque reusable cell with the custom cell's identifier
         
-        if indexPath.row == self.authCallbacks.count - 1 {
+        if indexPath.row == self.listItem.count - 1 {
             self.stopLoading()
         }
         
-        let callback = self.authCallbacks[indexPath.row]
-        
-        
-        if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type],
-            let callbackTableViewCellNib = CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks[callback.type] {
-            
+        if let callback = self.listItem[indexPath.row] as? Callback,
+           let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type],
+           let callbackTableViewCellNib = CallbackTableViewCellFactory.shared.tableViewCellNibForCallbacks[callback.type] {
+
             #if SWIFT_PACKAGE
             let cell = Bundle.module.loadNibNamed(callbackTableViewCellNib, owner: self, options: nil)?.first as! FRUICallbackTableViewCell
             #else
             let cell = Bundle(for: callbackTableViewCell.self).loadNibNamed(callbackTableViewCellNib, owner: self, options: nil)?.first as! FRUICallbackTableViewCell
             #endif
-            
-            cell.updateCellData(callback: callback)
             
             if let confirmationCallbackCell = cell as? ConfirmationCallbackTableViewCell {
                 confirmationCallbackCell.delegate = self
@@ -414,7 +422,25 @@ extension AuthStepViewController: UITableViewDataSource {
             else if let deviceProfileCallbackCell = cell as? DeviceAttributeTableViewCell {
                 deviceProfileCallbackCell.delegate = self
             }
+            else if let idpCallbackCell = cell as? IdPCallbackTableViewCell {
+                idpCallbackCell.delegate = self
+                idpCallbackCell.presentingViewController = self
+            }
+            cell.selectionStyle = .none
+            cell.updateCellData(callback: callback)
+            return cell
+        }
+        else if let provider = self.listItem[indexPath.row] as? IdPValue, let callback = self.selectIdPCallback {
+            #if SWIFT_PACKAGE
+            let cell = Bundle.module.loadNibNamed("IdPValueTableViewCell", owner: self, options: nil)?.first as! IdPValueTableViewCell
+            #else
+            let cell = Bundle(for: IdPValueTableViewCell.self).loadNibNamed("IdPValueTableViewCell", owner: self, options: nil)?.first as! IdPValueTableViewCell
+            #endif
             
+            cell.updateCellData(callback: callback)
+            cell.updateCellWithProvider(provider: provider)
+            cell.delegate = self
+            cell.selectionStyle = .none
             return cell
         }
         else {
@@ -423,7 +449,7 @@ extension AuthStepViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.authCallbacks.count
+        return self.listItem.count
     }
 }
 
@@ -441,17 +467,22 @@ extension AuthStepViewController: AuthStepProtocol {
 extension AuthStepViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        if let provider = self.listItem[indexPath.row] as? IdPValue, let callback = self.selectIdPCallback {
+            callback.setProvider(provider: provider)
+            self.submitNode()
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let callback = self.authCallbacks[indexPath.row]
-        
         var cellHeight: CGFloat = 0.0
-        
-        if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[callback.type] {
-            cellHeight = callbackTableViewCell.cellHeight
+        if let thisCell = self.listItem[indexPath.row] as? Callback {
+            if let callbackTableViewCell: FRUICallbackTableViewCell.Type = CallbackTableViewCellFactory.shared.talbeViewCellForCallbacks[thisCell.type] {
+                cellHeight = callbackTableViewCell.cellHeight
+            }
+        }
+        else if let _ = self.listItem[indexPath.row] as? IdPValue {
+            cellHeight = IdPValueTableViewCell.cellHeight
         }
         
         return cellHeight
