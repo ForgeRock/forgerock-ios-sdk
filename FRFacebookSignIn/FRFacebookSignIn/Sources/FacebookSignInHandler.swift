@@ -12,11 +12,8 @@ import Foundation
 import UIKit
 import FRAuth
 import FRCore
-#if SWIFT_PACKAGE
-import FacebookLogin
-#else
 import FBSDKLoginKit
-#endif
+
 
 /**
  FacebookSignInHandler is responsible to perform sign-in and authorize a user using Facebook account
