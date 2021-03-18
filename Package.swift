@@ -25,6 +25,6 @@ let package = Package (
         .target(name: "FRProximity", dependencies: [.target(name: "FRAuth")], path: "FRProximity/FRProximity", exclude: ["Info.plist", "FRProximity.h"]),
         .target(name: "FRAuthenticator", dependencies: [.target(name: "FRAuth"), .target(name: "cFRAuthenticator")], path: "FRAuthenticator/FRAuthenticator", exclude: ["Info.plist", "FRAuthenticator.h", "SharedC/Sources/include/base32.h", "SharedC/Sources/base32.c", "SharedC/FRAuthenticator.modulemap"]),
         .target(name: "FRUI", dependencies: [.target(name: "FRAuth")], path: "FRUI/FRUI", exclude: ["Info.plist", "FRUI.h"]),
-        .target(name: "FRFacebookSignIn", dependencies: ["FRAuth", "FBSDKLoginKit"], path: "FRFacebookSignIn/FRFacebookSignIn/Sources")
+        .target(name: "FRFacebookSignIn", dependencies: ["FRAuth", "FacebookLogin"], path: "FRFacebookSignIn/FRFacebookSignIn/Sources")
     ]
 )
