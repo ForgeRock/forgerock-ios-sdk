@@ -15,7 +15,7 @@ let package = Package (
         .library(name: "FRFacebookSignIn", targets: ["FRFacebookSignIn"])
     ],
     dependencies: [
-        .package(url: "https://github.com/facebook/facebook-ios-sdk", .exact("9.1.0"))
+        .package(url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("9.1.0"))
     ],
     targets: [
         .target(name: "cFRAuth", dependencies: [], path: "FRAuth/FRAuth/SharedC/Sources"),
