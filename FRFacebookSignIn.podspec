@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint FRCore.podspec' to ensure this is a
+# Be sure to run `pod lib lint FRAuth.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,11 +7,11 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'FRCore'
+  s.name             = 'FRFacebookSignIn'
   s.version          = '2.2.1-beta2'
-  s.summary          = 'ForgeRock Core SDK for iOS'
+  s.summary          = 'ForgeRock Auth Facebook Sign-in SDK for iOS'
   s.description      = <<-DESC
-  FRCore is a SDK that allows you to consume some of core functionalities and security features built for FRAuth SDK.
+  FRFacebookSignIn is a SDK that allows a user to sign-in through Facebook. FRFacebookSignIn depends on FBSDKLoginKit, and uses Facebook's SDK to perform authorization following Facebook's protocol.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -22,11 +22,13 @@ Pod::Spec.new do |s|
       :tag => s.version.to_s
   }
 
-  s.module_name   = 'FRCore'
+  s.module_name   = 'FRFacebookSignIn'
   s.swift_versions = ['5.0', '5.1']
 
   s.ios.deployment_target = '10.0'
 
-  base_dir = "FRCore/FRCore"
+  base_dir = "FRFacebookSignIn/FRFacebookSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.ios.dependency 'FRAuth', '~> 2.2.1-beta2'
+  s.ios.dependency 'FBSDKLoginKit', '~> 9.1.0'
 end

@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint FRCore.podspec' to ensure this is a
+# Be sure to run `pod lib lint FRAuth.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,11 +7,11 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'FRCore'
-  s.version          = '2.2.1-beta2'
-  s.summary          = 'ForgeRock Core SDK for iOS'
+  s.name             = 'FRGoogleSignIn'
+  s.version          = '2.2.0'
+  s.summary          = 'ForgeRock Auth Google Sign-in SDK for iOS'
   s.description      = <<-DESC
-  FRCore is a SDK that allows you to consume some of core functionalities and security features built for FRAuth SDK.
+  FRGoogleSignIn is a SDK that allows a user to sign-in through Google. FRGoogleSignIn depends on GoogleSignIn, and uses Google's SDK to perform authorization following Google's protocol.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -22,11 +22,13 @@ Pod::Spec.new do |s|
       :tag => s.version.to_s
   }
 
-  s.module_name   = 'FRCore'
+  s.module_name   = 'FRGoogleSignIn'
   s.swift_versions = ['5.0', '5.1']
 
   s.ios.deployment_target = '10.0'
 
-  base_dir = "FRCore/FRCore"
+  base_dir = "FRGoogleSignIn/FRGoogleSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.ios.dependency 'FRAuth', '~> 2.2.1-beta2'
+  s.ios.dependency 'GoogleSignIn', '~> 5.0.2'
 end
