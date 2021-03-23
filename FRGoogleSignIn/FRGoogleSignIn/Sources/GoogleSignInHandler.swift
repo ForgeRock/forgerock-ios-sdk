@@ -55,9 +55,19 @@ public class GoogleSignInHandler: NSObject, IdPHandler {
     /// Generates, and returns `UIView` for `GIDSignInButton` button
     /// - Returns: `GIDSignInButton` button in `UIView`
     public func getProviderButtonView() -> UIView? {
+        return self.getGoogleButtonView()
+    }
+    
+    
+    /// Generates, and returns `UIView` for `GIDSignInButton` button with `GIDSignInButtonSTyle`, and `GIDSignInButtonColorScheme` options
+    /// - Parameters:
+    ///   - style: `GIDSignInButtonStyle` option; default value with `.wide`
+    ///   - colorScheme: `GIDSignInButtonColorScheme` option; default value with `.dark`
+    /// - Returns: `GIDSignInButton` button in `UIView`
+    public func getGoogleButtonView(style: GIDSignInButtonStyle = .wide, colorScheme: GIDSignInButtonColorScheme = .dark) -> UIView? {
         let btn = GIDSignInButton()
-        btn.style = GIDSignInButtonStyle.wide
-        btn.colorScheme = GIDSignInButtonColorScheme.dark
+        btn.style = style
+        btn.colorScheme = colorScheme
         return btn
     }
     

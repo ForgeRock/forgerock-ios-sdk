@@ -65,9 +65,17 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     /// Generates, and returns `UIView` for `FBLoginButton` button
     /// - Returns: `FBLoginButton` button in `UIView`
     public func getProviderButtonView() -> UIView? {
+        return self.getFacebookButtonView()
+    }
+    
+    
+    /// Generates, and returns `UIView` for `FBLoginButton` button with `ColorStyle` option
+    /// - Parameter colorStyle: `FBTooltipView.ColorStyle` option for `FBLoginButton`; default value with `.neutralGray`
+    /// - Returns: `FBLoginButton` button in `UIView`
+    public func getFacebookButtonView(colorStyle: FBTooltipView.ColorStyle = .neutralGray) -> UIView? {
         let btn = FBLoginButton()
         btn.loginTracking = .limited
-        btn.tooltipColorStyle = .neutralGray
+        btn.tooltipColorStyle = colorStyle
         return btn
     }
     

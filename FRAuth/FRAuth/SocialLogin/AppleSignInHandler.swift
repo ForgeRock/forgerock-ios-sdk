@@ -59,12 +59,22 @@ public class AppleSignInHandler: NSObject, IdPHandler {
     /// - Returns: `Sign-in With Apple` button in `UIView`
     public func getProviderButtonView() -> UIView? {
         if #available(iOS 13.0, *) {
-            return ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
+            return self.getAppleButtonView()
         }
         else {
             FRLog.w("Sign-in With Apple is only supported for iOS 13 and above; returning nil for button view")
             return nil
         }
+    }
+    
+    
+    /// Generates, and returns `UIView` for `Sign-in With Apple` button with `ButtonType`, and `Style` options
+    /// - Parameters:
+    ///   - buttonType: `ASAuthorizationAppleIDButton.ButtonType` option; default value with `.signIn`
+    ///   - style: `ASAuthorizationAppleIDButton.Style` option; default value with `.dark`
+    /// - Returns: `Sign-in With Apple` button in `UIView`
+    @available(iOS 13.0, *) public func getAppleButtonView(buttonType: ASAuthorizationAppleIDButton.ButtonType = .signIn, style: ASAuthorizationAppleIDButton.Style = .black) -> UIView? {
+        return ASAuthorizationAppleIDButton(authorizationButtonType: buttonType, authorizationButtonStyle: style)
     }
     
     
