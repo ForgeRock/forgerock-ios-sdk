@@ -36,7 +36,8 @@ class AuthStepViewController: UIViewController {
     @IBOutlet weak var descriptionTextViewHeight: NSLayoutConstraint?
     @IBOutlet weak var cancelButton: FRButton?
     @IBOutlet weak var nextButton: FRButton?
-    @IBOutlet weak var closeButton: FRButton?
+    @IBOutlet weak var extraButton: FRButton?
+    @IBOutlet weak var extraButtonHeight: NSLayoutConstraint?
     @IBOutlet weak var logoImageView: UIImageView?
     
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120.0, height: 120.0), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
@@ -132,8 +133,8 @@ class AuthStepViewController: UIViewController {
         self.nextButton?.titleColor = UIColor.white
         self.cancelButton?.backgroundColor = FRUI.shared.secondaryColor
         self.cancelButton?.titleColor = UIColor.white
-        self.closeButton?.backgroundColor = FRUI.shared.secondaryColor
-        self.closeButton?.titleColor = UIColor.white
+        self.extraButton?.backgroundColor = FRUI.shared.primaryColor
+        self.extraButton?.titleColor = UIColor.white
         
         self.handleNode(nil, self.currentNode, nil)
     }
@@ -172,12 +173,6 @@ class AuthStepViewController: UIViewController {
                         if self.authCallbacks.count > 1 {
                             self.authCallbacks.remove(at: index)
                         }
-                    }
-                    //  SuspendedTextOutputCallback handling
-                    else if let _ = callback as? SuspendedTextOutputCallback {
-                        self.cancelButton?.isHidden = true
-                        self.nextButton?.isHidden = true
-                        self.closeButton?.isHidden = false
                     }
                 }
                 //  If DeviceProfileCallback is found as one of Callbacks, collect data first
@@ -257,6 +252,12 @@ class AuthStepViewController: UIViewController {
     
     func renderAuthStep() {
         
+        //  Set all button states to normal
+        self.extraButtonHeight?.constant = 0
+        self.cancelButton?.isHidden = false
+        self.nextButton?.isHidden = false
+        self.extraButton?.isHidden = true
+        
         //  Make sure auth step is properly set, and callback(s) is returned
         guard self.currentNode == self.currentNode && self.authCallbacks.count > 0 else {
             self.stopLoading()
@@ -264,10 +265,14 @@ class AuthStepViewController: UIViewController {
         }
         
         var listItems: [Any] = []
+        var containsLA: Bool = false
         for callback in self.authCallbacks {
             if let idpCallback = callback as? SelectIdPCallback {
                 for provider in idpCallback.providers {
-                    if provider.provider != "localAuthentication" {
+                    if provider.provider == "localAuthentication" {
+                        containsLA = true
+                    }
+                    else {
                         listItems.append(provider)
                     }
                 }
@@ -278,6 +283,30 @@ class AuthStepViewController: UIViewController {
             }
         }
         self.listItem = listItems
+        
+        let containsIdP = self.listItem.contains(where: { $0 is IdPValue })
+        let containsCallback = self.listItem.contains(where: { $0 is Callback })
+        
+        //  If the array only contains IdPValue, hide Next button
+        if containsIdP && !containsCallback {
+            self.nextButton?.isHidden = true
+        }
+        
+        //  If the array only contains IdPValue, and Local Authentication is allowed, display Sign-in with Username button
+        if containsLA && !containsCallback {
+            self.extraButtonHeight?.constant = 45
+            self.extraButton?.isHidden = false
+            self.extraButton?.setTitle("Sign-in with Username", for: .normal)
+        }
+        
+        //  If an array of Callbacks contains SuspendedTextOutputCallback, display Close button
+        if self.authCallbacks.contains(where: { $0 is SuspendedTextOutputCallback }) {
+            self.cancelButton?.isHidden = true
+            self.nextButton?.isHidden = true
+            self.extraButton?.setTitle("Close", for: .normal)
+            self.extraButtonHeight?.constant = 45.0
+            self.extraButton?.isHidden = false
+        }
         
         //  Reload tableView for rendering with callbacks
         self.tableView?.reloadData()
@@ -324,12 +353,7 @@ class AuthStepViewController: UIViewController {
     }
     
     
-    // MARK: - IBOutlet
-    @IBAction func nextButtonClicked(sender: UIButton?) {
-        //  Force to end editing
-        self.view.endEditing(true)
-        self.startLoading()
-        
+    func submitCurrentNode() {
         if self.type as AnyObject? === AccessToken.self {
             
             currentNode.next(completion: { (token: AccessToken?, node, error) in
@@ -362,6 +386,17 @@ class AuthStepViewController: UIViewController {
         }
     }
     
+    
+    // MARK: - IBOutlet
+    @IBAction func nextButtonClicked(sender: UIButton?) {
+        //  Force to end editing
+        self.view.endEditing(true)
+        self.startLoading()
+        
+        self.submitCurrentNode()
+    }
+    
+    
     @IBAction func cancelButtonClicked(sender: UIButton) {
         
         if let completion = self.atCompletion {
@@ -377,18 +412,38 @@ class AuthStepViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func closeButtonClicked(sender: UIButton) {
-        if let completion = self.atCompletion {
-            completion(nil, nil)
-        } else if let completion = self.tokenCompletion {
-            completion(nil, nil)
-        } else if let completion = self.userCompletion {
-            completion(nil, nil)
-        }
+    
+    @IBAction func extraButtonClicked(sender: UIButton) {
         
-        //  Force to end editing
-        self.view.endEditing(true)
-        self.dismiss(animated: true, completion: nil)
+        var laProvider: IdPValue?
+        if let selectIdPCallback = self.selectIdPCallback {
+            for provider in selectIdPCallback.providers {
+                if provider.provider == "localAuthentication" {
+                    laProvider = provider
+                }
+            }
+        }
+        let containsCallback = self.listItem.contains(where: { $0 is Callback })
+        
+        //  If Local Authentication provider exists, and there is no Callback, then submit the Node with Local Authentication provider
+        if let provider = laProvider, !containsCallback {
+            self.selectIdPCallback?.setProvider(provider: provider)
+            self.submitCurrentNode()
+        }
+        else {
+            //  If not, it's Close button action for SuspendedTextOutputcallback
+            if let completion = self.atCompletion {
+                completion(nil, nil)
+            } else if let completion = self.tokenCompletion {
+                completion(nil, nil)
+            } else if let completion = self.userCompletion {
+                completion(nil, nil)
+            }
+            
+            //  Force to end editing
+            self.view.endEditing(true)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 }
 
