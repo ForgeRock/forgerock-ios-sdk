@@ -31,6 +31,21 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     /// Module name string
     let module: String = "[FRFacebookSignIn]"
     
+    /// `LoginManager` instance for Facebook SDK
+    var manager: LoginManager
+    
+    
+    //  MARK: - Init
+    
+    public override init() {
+        //  Initialize Facebook LoginManager instance
+        self.manager = LoginManager()
+        //  Perform logout to clear previously authenticated session
+        self.manager.logOut()
+        
+        super.init()
+    }
+    
     //  MARK: - Protocol
     
     /// Signs-in a user through `FacebookLogin` SDK
@@ -39,14 +54,9 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     ///   - completion: Completion callback to notify the result
     public func signIn(idpClient: IdPClient, completion: @escaping SocialLoginCompletionCallback) {
         
-        //  Initialize Facebook LoginManager instance
-        let manager = LoginManager()
-        //  Perform logout to clear previously authenticated session
-        manager.logOut()
-        
         Log.v("Provided scope (\(idpClient.scopes ?? [])) will be added to authorization request for Facebook", module: module)
         //  Perform login using Facebook LoginManager
-        manager.logIn(permissions: idpClient.scopes ?? [], from: self.presentingViewController) { (result, error) in
+        self.manager.logIn(permissions: idpClient.scopes ?? [], from: self.presentingViewController) { (result, error) in
             
             //  Facebook SDK does not return an error when the operation is cancelled by user; return a specific error for cancellation
             if let result = result, result.isCancelled {
@@ -74,7 +84,6 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     /// - Returns: `FBLoginButton` button in `UIView`
     public func getFacebookButtonView(colorStyle: FBTooltipView.ColorStyle = .neutralGray) -> UIView? {
         let btn = FBLoginButton()
-        btn.loginTracking = .limited
         btn.tooltipColorStyle = colorStyle
         return btn
     }
