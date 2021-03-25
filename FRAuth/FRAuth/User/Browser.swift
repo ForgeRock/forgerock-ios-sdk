@@ -212,7 +212,7 @@ import SafariServices
     ///
     /// - Parameter url: Returning URL
     /// - Returns: Boolean result of whether or not URL contains authorization_code
-    static public func validateBrowserLogin(url: URL) -> Bool {
+    @objc static public func validateBrowserLogin(url: URL) -> Bool {
         FRLog.v("URL received: \(url)")
         
         if let viewController = Browser.currentBrowser?.currentSession as? SFSafariViewController {
@@ -459,7 +459,7 @@ public class BrowserBuilder: NSObject {
     /// Sets BrowserType (an external user-agent) for Browser object; default to .authSession
     /// - Parameter browserType: An external user-agent type to be used for /authorize flow
     /// - Returns: BrowserBuilder object to progressively build Browser object
-    @discardableResult @objc public func set(browserType: BrowserType) -> BrowserBuilder {
+    @discardableResult @objc(setBrowserType:) public func set(browserType: BrowserType) -> BrowserBuilder {
         self.browserType = browserType
         return self
     }
@@ -468,7 +468,7 @@ public class BrowserBuilder: NSObject {
     /// Sets presenting ViewController which will be used as ASPresentationAnchor for ASWebAuthenticationSession in iOS 13.0 or above
     /// - Parameter presentingViewController: ViewController that will act as ASPresentationAnchor for ASWebAuthenticationSession
     /// - Returns: BrowserBuilder object to progressively build Browser object
-    @discardableResult @objc public func set(presentingViewController: UIViewController) -> BrowserBuilder {
+    @discardableResult @objc(setPresentingViewController:) public func set(presentingViewController: UIViewController) -> BrowserBuilder {
         self.presentingViewController = presentingViewController
         return self
     }
@@ -479,7 +479,7 @@ public class BrowserBuilder: NSObject {
     ///   - key: URL Query parameter key
     ///   - value: URL Query parameter value
     /// - Returns: BrowserBuilder object to progressively build Browser object
-    @discardableResult @objc public func setCustomParam(key: String, value: String) -> BrowserBuilder {
+    @discardableResult @objc(setCustomKey:CustomValue:) public func setCustomParam(key: String, value: String) -> BrowserBuilder {
         customParam[key] = value
         return self
     }
