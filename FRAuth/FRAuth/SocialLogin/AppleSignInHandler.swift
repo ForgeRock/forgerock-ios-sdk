@@ -19,8 +19,8 @@ public class AppleSignInHandler: NSObject, IdPHandler {
     
     //  MARK: - Properties
     
-    /// Token type for Sign-in With Apple; authorization_code
-    public var tokenType: String = "authorization_code"
+    /// Token type for Sign-in With Apple; id_token
+    public var tokenType: String = "id_token"
     /// Currently displayed UIViewController in the application
     public var presentingViewController: UIViewController?
     /// Temporary completion callback to handle the response
@@ -115,12 +115,12 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             FRLog.v("ASAuthorizationAppleIDCredential received: \(appleIDCredential)")
-            guard let codeData = appleIDCredential.authorizationCode, let code = String(data: codeData, encoding: .utf8) else {
-                self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.authorizationCode)"))
+            guard let tokenData = appleIDCredential.identityToken, let idToken = String(data: tokenData, encoding: .utf8) else {
+                self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken)"))
                 return
             }
             
-            self.completionCallback?(code, self.tokenType, nil)
+            self.completionCallback?(idToken, self.tokenType, nil)
             break
         case let passwordCredential as ASPasswordCredential:
             FRLog.v("ASPasswordCredential received: \(passwordCredential)")
