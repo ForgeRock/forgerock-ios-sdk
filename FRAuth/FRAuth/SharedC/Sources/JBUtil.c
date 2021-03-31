@@ -32,11 +32,13 @@ bool validate_sandbox() {
 bool validate_dyld()
 {
     // load and interate all dyld
-    uint32_t count = _dyld_image_count();
-    for(uint32_t i = 0; i < count; i++)
-    {
+    int i=0;
+    while(true) {
         // Validate know substrate lib
-        const char *dyld = _dyld_get_image_name(i);
+        const char *dyld = _dyld_get_image_name(i++);
+        if (dyld == NULL) {
+            break;
+        }
         if(!strstr(dyld, "MobileSubstrate") && !strstr(dyld, "libsubstrate") && !strstr(dyld, "SubstrateInserter")) {
             continue;
         }
