@@ -23,9 +23,9 @@ Pod::Spec.new do |s|
   }
 
   s.pod_target_xcconfig = {
-    "OTHER_LDFLAGS" => '-lObjC $(inherited) -framework "GoogleSignIn",
+    "OTHER_LDFLAGS" => '-lObjC $(inherited) -framework "GoogleSignIn"',
     "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES" => 'YES',
-    "FRAMEWORK_SEARCH_PATHS" => '$(inherited) "${PODS_ROOT}/GoogleSignIn/Frameworks",
+    "FRAMEWORK_SEARCH_PATHS" => '$(inherited) "${PODS_ROOT}/GoogleSignIn/Frameworks"',
   }
 
   s.static_framework = true
