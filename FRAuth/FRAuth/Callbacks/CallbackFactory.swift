@@ -2,7 +2,7 @@
 //  CallbackFactory.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -34,6 +34,8 @@ import Foundation
          15. BooleanAttributeInputCallback
          16. NumberAttributeInputCallback
          17. SuspendedTextOutputCallback
+         18. IdPCallback
+         19. SelectIdPCallback
  */
 @objc(FRCallbackFactory)
 public class CallbackFactory: NSObject {
@@ -70,7 +72,9 @@ public class CallbackFactory: NSObject {
             "MetadataCallback": MetadataCallback.self,
             "BooleanAttributeInputCallback": BooleanAttributeInputCallback.self,
             "NumberAttributeInputCallback": NumberAttributeInputCallback.self,
-            "SuspendedTextOutputCallback": SuspendedTextOutputCallback.self
+            "SuspendedTextOutputCallback": SuspendedTextOutputCallback.self,
+            "IdPCallback": IdPCallback.self,
+            "SelectIdPCallback": SelectIdPCallback.self
         ]
     }
     

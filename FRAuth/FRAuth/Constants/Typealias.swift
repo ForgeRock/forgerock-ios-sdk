@@ -2,7 +2,7 @@
 //  Typealias.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -31,6 +31,12 @@ public typealias CompletionCallback = (_ error:Error?) -> Void
 
 /// Generic typealias for completion with an JSON object
 public typealias JSONCompletionCallback = (_ result: [String: Any]) -> Void
+
+
+//  MARK: - Social Login
+
+/// Callback definition for completion of Social Login authorization flow against provider
+public typealias SocialLoginCompletionCallback = (_ token: String?, _ tokenType: String?, _ error: Error?) -> Void
 
 
 //  MARK: - OAuth2Client

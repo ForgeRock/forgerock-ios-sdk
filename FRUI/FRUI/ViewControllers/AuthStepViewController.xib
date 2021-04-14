@@ -12,9 +12,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AuthStepViewController" customModule="FRUI" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="SoY-Qx-b8g" id="82I-Xt-p5v"/>
-                <outlet property="closeButton" destination="q0u-Fm-XaC" id="fE7-Ft-SFy"/>
                 <outlet property="descriptionTextView" destination="uwS-4n-hHf" id="egJ-7a-oRZ"/>
                 <outlet property="descriptionTextViewHeight" destination="trY-kF-ccM" id="PH4-Zm-zBN"/>
+                <outlet property="extraButton" destination="q0u-Fm-XaC" id="cmo-5W-Qlh"/>
+                <outlet property="extraButtonHeight" destination="VC6-cT-vvS" id="tsO-v0-6Yd"/>
                 <outlet property="headerLabel" destination="Omk-Nm-dZl" id="aPA-0D-utr"/>
                 <outlet property="logoImageView" destination="xZZ-lI-dJU" id="3R5-eE-nZC"/>
                 <outlet property="nextButton" destination="5Jw-g5-Wly" id="b0A-Xa-NLD"/>
@@ -27,7 +28,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ppv-W8-4CG">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ppv-W8-4CG">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                     <viewLayoutGuide key="safeArea" id="gF6-E8-y7j"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -81,7 +82,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Jw-g5-Wly" customClass="FRButton" customModule="FRUI">
-                                <rect key="frame" x="217" y="35" width="162" height="45"/>
+                                <rect key="frame" x="217" y="95" width="162" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="rRF-Hr-alF"/>
                                 </constraints>
@@ -91,7 +92,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-Qx-b8g" customClass="FRButton" customModule="FRUI">
-                                <rect key="frame" x="35" y="35" width="162" height="45"/>
+                                <rect key="frame" x="35" y="95" width="162" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="3Gt-Or-n2F"/>
                                 </constraints>
@@ -100,30 +101,28 @@
                                     <action selector="cancelButtonClickedWithSender:" destination="-1" eventType="touchUpInside" id="fyD-jP-3Cc"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q0u-Fm-XaC" customClass="FRButton" customModule="FRUI">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q0u-Fm-XaC" customClass="FRButton" customModule="FRUI">
                                 <rect key="frame" x="35" y="35" width="344" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="VC6-cT-vvS"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="ch3-t7-i8L"/>
                                 </constraints>
-                                <state key="normal" title="Close"/>
                                 <connections>
-                                    <action selector="closeButtonClickedWithSender:" destination="-1" eventType="touchUpInside" id="6kZ-j3-B3g"/>
+                                    <action selector="extraButtonClickedWithSender:" destination="-1" eventType="touchUpInside" id="5Qz-Sl-L6G"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SYA-xQ-4kH"/>
                         <constraints>
                             <constraint firstItem="SoY-Qx-b8g" firstAttribute="leading" secondItem="8aw-s1-4RY" secondAttribute="leading" constant="35" id="3cz-fR-XZ1"/>
+                            <constraint firstItem="SoY-Qx-b8g" firstAttribute="top" secondItem="q0u-Fm-XaC" secondAttribute="bottom" constant="15" id="DSs-8z-cEy"/>
                             <constraint firstAttribute="trailing" secondItem="5Jw-g5-Wly" secondAttribute="trailing" constant="35" id="F9I-z5-ebt"/>
                             <constraint firstItem="SYA-xQ-4kH" firstAttribute="trailing" secondItem="q0u-Fm-XaC" secondAttribute="trailing" constant="35" id="Oog-yq-xH1"/>
-                            <constraint firstItem="5Jw-g5-Wly" firstAttribute="top" secondItem="SYA-xQ-4kH" secondAttribute="top" constant="35" id="dKO-rl-tpM"/>
                             <constraint firstItem="q0u-Fm-XaC" firstAttribute="leading" secondItem="SYA-xQ-4kH" secondAttribute="leading" constant="35" id="eNG-LT-9CV"/>
+                            <constraint firstItem="5Jw-g5-Wly" firstAttribute="top" secondItem="q0u-Fm-XaC" secondAttribute="bottom" constant="15" id="hko-J6-N1e"/>
                             <constraint firstItem="SoY-Qx-b8g" firstAttribute="width" secondItem="5Jw-g5-Wly" secondAttribute="width" id="hzP-1R-Dmk"/>
                             <constraint firstItem="5Jw-g5-Wly" firstAttribute="leading" secondItem="SoY-Qx-b8g" secondAttribute="trailing" constant="20" id="i4c-uN-VxX"/>
                             <constraint firstItem="5Jw-g5-Wly" firstAttribute="leading" secondItem="SoY-Qx-b8g" secondAttribute="trailing" constant="20" id="kd3-lI-ceC"/>
                             <constraint firstItem="q0u-Fm-XaC" firstAttribute="top" secondItem="SYA-xQ-4kH" secondAttribute="top" constant="35" id="kgB-L1-w2J"/>
-                            <constraint firstItem="SoY-Qx-b8g" firstAttribute="top" secondItem="SYA-xQ-4kH" secondAttribute="top" constant="35" id="uFl-5Y-98T"/>
                         </constraints>
                     </view>
                     <connections>

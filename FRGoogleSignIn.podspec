@@ -7,11 +7,11 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'FRProximity'
-  s.version          = '2.2.1-beta5'
-  s.summary          = 'ForgeRock Auth Proximity SDK for iOS'
+  s.name             = 'FRGoogleSignIn'
+  s.version          = '2.2.1-beta6'
+  s.summary          = 'ForgeRock Auth Google Sign-in SDK for iOS'
   s.description      = <<-DESC
-  FRProximity is a SDK that allows you to additionally collect device information with FRDeviceCollector in FRAuth. FRProximity SDK leverages functionalities in iOS that requires user's consent. You must properly set privacy consent in the application's Info.plist.
+  FRGoogleSignIn is a SDK that allows a user to sign-in through Google. FRGoogleSignIn depends on GoogleSignIn, and uses Google's SDK to perform authorization following Google's protocol.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -22,12 +22,18 @@ Pod::Spec.new do |s|
       :tag => s.version.to_s
   }
 
-  s.module_name   = 'FRProximity'
+  s.static_framework = true
+  s.module_name   = 'FRGoogleSignIn'
   s.swift_versions = ['5.0', '5.1']
 
   s.ios.deployment_target = '10.0'
 
-  base_dir = "FRProximity/FRProximity"
+  base_dir = "FRGoogleSignIn/FRGoogleSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+
   s.ios.dependency 'FRAuth', '~> 2.2.1-beta5'
+  s.ios.dependency 'GoogleSignIn', '~> 5.0.2'
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
+

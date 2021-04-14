@@ -7,11 +7,11 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'FRProximity'
+  s.name             = 'FRFacebookSignIn'
   s.version          = '2.2.1-beta5'
-  s.summary          = 'ForgeRock Auth Proximity SDK for iOS'
+  s.summary          = 'ForgeRock Auth Facebook Sign-in SDK for iOS'
   s.description      = <<-DESC
-  FRProximity is a SDK that allows you to additionally collect device information with FRDeviceCollector in FRAuth. FRProximity SDK leverages functionalities in iOS that requires user's consent. You must properly set privacy consent in the application's Info.plist.
+  FRFacebookSignIn is a SDK that allows a user to sign-in through Facebook. FRFacebookSignIn depends on FBSDKLoginKit, and uses Facebook's SDK to perform authorization following Facebook's protocol.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -22,12 +22,13 @@ Pod::Spec.new do |s|
       :tag => s.version.to_s
   }
 
-  s.module_name   = 'FRProximity'
+  s.module_name   = 'FRFacebookSignIn'
   s.swift_versions = ['5.0', '5.1']
 
   s.ios.deployment_target = '10.0'
 
-  base_dir = "FRProximity/FRProximity"
+  base_dir = "FRFacebookSignIn/FRFacebookSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
   s.ios.dependency 'FRAuth', '~> 2.2.1-beta5'
+  s.ios.dependency 'FBSDKLoginKit', '~> 9.1.0'
 end
