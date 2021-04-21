@@ -2,7 +2,7 @@
 //  QRCodeParser.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -97,8 +97,13 @@ struct OathQRCodeParser {
                         self.period = intVal
                     }
                 }
-                if item.name == "image", let imgUrlEncoded = item.value, let imgUrlDecodedData = imgUrlEncoded.decodeURL(), let imageUrlStr = String(data: imgUrlDecodedData, encoding: .utf8) {
-                    self.image = imageUrlStr
+                if item.name == "image", let imgUrl = item.value {
+                    if let imgUrlDecodedData = imgUrl.decodeURL() {
+                        let imageUrlStr = String(data: imgUrlDecodedData, encoding: .utf8)
+                        self.image = imageUrlStr
+                    } else {
+                        self.image = imgUrl
+                    }
                 }
                 if item.name == "counter", let strVal = item.value, let intVal = Int(strVal) {
                     self.counter = intVal
