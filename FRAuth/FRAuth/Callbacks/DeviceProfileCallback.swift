@@ -2,7 +2,7 @@
 //  DeviceProfileCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -35,18 +35,18 @@ import Foundation
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     required init(json: [String : Any]) throws {
         
-        guard let outputs = json["output"] as? [[String: Any]] else {
+        guard let outputs = json[CBConstants.output] as? [[String: Any]] else {
                 throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for output in outputs {
-            if let outputName = output["name"] as? String, outputName == "location", let outputValue = output["value"] as? Bool {
+            if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.location, let outputValue = output[CBConstants.value] as? Bool {
                 locationRequired = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "metadata", let outputValue = output["value"] as? Bool {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.metadata, let outputValue = output[CBConstants.value] as? Bool {
                 metadataRequired = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "message", let outputValue = output["value"] as? String {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.message, let outputValue = output[CBConstants.value] as? String {
                 message = outputValue
             }
         }
@@ -55,7 +55,7 @@ import Foundation
         
         prepareCollectors()
         
-        type = "DeviceProfileCallback"
+        type = CallbackType.DeviceProfileCallback.rawValue
     }
     
     

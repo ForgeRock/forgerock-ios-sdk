@@ -2,7 +2,7 @@
 //  ConfirmationCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -60,20 +60,20 @@ public class ConfirmationCallback: Callback {
         self.optionType = .unknown
         self.messageType = .unknown
         
-        guard let callbackType = json["type"] as? String else {
+        guard let callbackType = json[CBConstants.type] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
-        if let callbackId = json["_id"] as? Int {
+        if let callbackId = json[CBConstants._id] as? Int {
             self._id = callbackId
         }
         
-        if let inputs = json["input"] as? [[String: Any]] {
+        if let inputs = json[CBConstants.input] as? [[String: Any]] {
             for input in inputs {
-                if let inputName = input["name"] as? String {
+                if let inputName = input[CBConstants.name] as? String {
                     self.inputName = inputName
                 }
-                if let inputValue = input["value"] {
+                if let inputValue = input[CBConstants.value] {
                     self.value = inputValue
                 }
             }
@@ -82,24 +82,24 @@ public class ConfirmationCallback: Callback {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
-        if let outputs = json["output"] as? [[String: Any]] {
+        if let outputs = json[CBConstants.output] as? [[String: Any]] {
             for output in outputs {
-                if let outputName = output["name"] as? String, outputName == "prompt", let prompt = output["value"] as? String {
+                if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.prompt, let prompt = output[CBConstants.value] as? String {
                     self.prompt = prompt
                 }
-                else if let outputName = output["name"] as? String, outputName == "messageType", let messageTypeInt = output["value"] as? Int, let messageType = MessageType(rawValue: messageTypeInt) {
+                else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.messageType, let messageTypeInt = output[CBConstants.value] as? Int, let messageType = MessageType(rawValue: messageTypeInt) {
                     self.messageType = messageType
                 }
-                else if let outputName = output["name"] as? String, outputName == "option", let optionInt = output["value"] as? Int, let option = Option(rawValue: optionInt) {
+                else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.option, let optionInt = output[CBConstants.value] as? Int, let option = Option(rawValue: optionInt) {
                     self.option = option
                 }
-                else if let outputName = output["name"] as? String, outputName == "optionType", let optionTypeInt = output["value"] as? Int, let optionType = OptionType(rawValue: optionTypeInt) {
+                else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.optionType, let optionTypeInt = output[CBConstants.value] as? Int, let optionType = OptionType(rawValue: optionTypeInt) {
                     self.optionType = optionType
                 }
-                else if let outputName = output["name"] as? String, outputName == "options", let options = output["value"] as? [String] {
+                else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.options, let options = output[CBConstants.value] as? [String] {
                     self.options = options
                 }
-                else if let outputName = output["name"] as? String, outputName == "defaultOption", let defaultOption = output["value"] as? Int {
+                else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.defaultOption, let defaultOption = output[CBConstants.value] as? Int {
                     self.defaultOption = defaultOption
                 }
             }
@@ -125,7 +125,7 @@ public class ConfirmationCallback: Callback {
     /// - Returns: JSON request payload for the Callback
     public override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
-        responsePayload["input"] = [["name": self.inputName, "value": self.value]]
+        responsePayload[CBConstants.input] = [[CBConstants.name: self.inputName, CBConstants.value: self.value]]
         return responsePayload
     }
 }

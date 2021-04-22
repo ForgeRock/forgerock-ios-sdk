@@ -2,7 +2,7 @@
 //  FRUserTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -659,5 +659,54 @@ class FRUserTests: FRAuthBaseTest {
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func test_05_01_RevokeAccessTokenSuccess() {
+        
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success"])
+        
+        user.revokeAccessToken { (user, error) in
+            XCTAssertNotNil(user)
+            XCTAssertNil(error)
+            XCTAssertNil(user?.token)
+        }
+        // Should clean up session for next test
+        self.shouldCleanup = true
+        
+    }
+    
+    func test_05_01_RevokeAccessTokenError() {
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        
+        user.revokeAccessToken { (user, error) in
+            XCTAssertNotNil(user)
+            XCTAssertNil(user?.token)
+            XCTAssertNotNil(error)
+        }
+        // Should clean up session for next test
+        self.shouldCleanup = true
+        
     }
 }

@@ -33,16 +33,16 @@ public class SelectIdPCallback: SingleValueCallback {
         var thisProvider: [IdPValue] = []
         
         //  Parse Identity Provider values from given JSON response
-        if let outputs = json["output"] as? [[String: Any]] {
+        if let outputs = json[CBConstants.output] as? [[String: Any]] {
             for output in outputs {
-                if let outputName = output["name"] as? String, outputName == "providers", let providers = output["value"] as? [[String: Any]] {
+                if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.providers, let providers = output[CBConstants.value] as? [[String: Any]] {
                     for provider in providers {
                         
-                        guard let providerId = provider["provider"] as? String else {
+                        guard let providerId = provider[CBConstants.provider] as? String else {
                             throw AuthError.invalidCallbackResponse("Missing provider attribute")
                         }
                         
-                        let uiConfig = provider["uiConfig"] as? [String: String]
+                        let uiConfig = provider[CBConstants.uiConfig] as? [String: String]
                         thisProvider.append(IdPValue(provider: providerId, uiConfig: uiConfig))
                     }
                 }

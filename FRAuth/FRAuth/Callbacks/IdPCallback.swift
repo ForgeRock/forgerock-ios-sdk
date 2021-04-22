@@ -36,11 +36,11 @@ public class IdPCallback: MultipleValuesCallback {
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     public required init(json: [String : Any]) throws {
         
-        guard let callbackType = json["type"] as? String else {
+        guard let callbackType = json[CBConstants.type] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
-        guard let outputs = json["output"] as? [[String: Any]], let inputs = json["input"] as? [[String: Any]] else {
+        guard let outputs = json[CBConstants.output] as? [[String: Any]], let inputs = json[CBConstants.input] as? [[String: Any]] else {
                 throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
@@ -54,28 +54,28 @@ public class IdPCallback: MultipleValuesCallback {
         var requestUriValue: String?
         
         for output in outputs {
-            if let outputName = output["name"] as? String, outputName == "provider", let outputValue = output["value"] as? String {
+            if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.provider, let outputValue = output[CBConstants.value] as? String {
                 providerValue = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "clientId", let outputValue = output["value"] as? String {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.clientId, let outputValue = output[CBConstants.value] as? String {
                 clientIdValue = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "redirectUri", let outputValue = output["value"] as? String {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.redirectUri, let outputValue = output[CBConstants.value] as? String {
                 redirectUriValue = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "nonce", let outputValue = output["value"] as? String {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.nonce, let outputValue = output[CBConstants.value] as? String {
                 nonceValue = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "scopes", let outputValue = output["value"] as? [String] {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.scopes, let outputValue = output[CBConstants.value] as? [String] {
                 scopeValues = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "acrValues", let outputValue = output["value"] as? [String] {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.acrValues, let outputValue = output[CBConstants.value] as? [String] {
                 acrValues = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "request", let outputValue = output["value"] as? String {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.request, let outputValue = output[CBConstants.value] as? String {
                 requestValue = outputValue
             }
-            else if let outputName = output["name"] as? String, outputName == "requestUri", let outputValue = output["value"] as? String {
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.requestUri, let outputValue = output[CBConstants.value] as? String {
                 requestUriValue = outputValue
             }
         }
@@ -94,9 +94,9 @@ public class IdPCallback: MultipleValuesCallback {
         self.tokenKey = ""
         self.tokenTypeKey = ""
         for input in inputs {
-            if let name = input["name"] as? String, name.hasSuffix("token") {
+            if let name = input[CBConstants.name] as? String, name.hasSuffix(CBConstants.token) {
                 self.tokenKey = name
-            } else if let name = input["name"] as? String, name.hasSuffix("token_type") {
+            } else if let name = input[CBConstants.name] as? String, name.hasSuffix(CBConstants.tokenType) {
                 self.tokenTypeKey = name
             }
         }
@@ -118,9 +118,9 @@ public class IdPCallback: MultipleValuesCallback {
         
         var input: [[String: Any]] = []
         for (key, val) in self.inputValues {
-            input.append(["name": key, "value": val])
+            input.append([CBConstants.name: key, CBConstants.value: val])
         }
-        responsePayload["input"] = input
+        responsePayload[CBConstants.input] = input
         return responsePayload
     }
     
@@ -173,15 +173,15 @@ public class IdPCallback: MultipleValuesCallback {
     /// - Returns: `IdPHandler` implementation for the given provider
     func getDefaultIdPHandler(provider: String) -> IdPHandler? {
         var idpHandler: IdPHandler?
-        if provider.lowercased().contains("apple") {
+        if provider.lowercased().contains(CBConstants.apple) {
             idpHandler = AppleSignInHandler()
         }
-        else if provider.lowercased().contains("google") {
+        else if provider.lowercased().contains(CBConstants.google) {
             if let c: NSObject.Type = NSClassFromString("FRGoogleSignIn.GoogleSignInHandler") as? NSObject.Type, let thisHandler = c.init() as? IdPHandler {
                 idpHandler = thisHandler
             }
         }
-        else if provider.lowercased().contains("facebook") {
+        else if provider.lowercased().contains(CBConstants.facebook) {
             if let c: NSObject.Type = NSClassFromString("FRFacebookSignIn.FacebookSignInHandler") as? NSObject.Type, let thisHandler = c.init() as? IdPHandler {
                 idpHandler = thisHandler
             }

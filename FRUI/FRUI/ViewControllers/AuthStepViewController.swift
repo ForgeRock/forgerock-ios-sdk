@@ -481,6 +481,12 @@ extension AuthStepViewController: UITableViewDataSource {
                 idpCallbackCell.delegate = self
                 idpCallbackCell.presentingViewController = self
             }
+            else if let webAuthnCallback = cell as? WebAuthnCallbackTableViewCell {
+                webAuthnCallback.delegate = self
+                webAuthnCallback.viewController = self
+                webAuthnCallback.updateCellWithViewController(callback: callback, node: self.currentNode)
+            }
+            
             cell.selectionStyle = .none
             cell.updateCellData(callback: callback)
             return cell

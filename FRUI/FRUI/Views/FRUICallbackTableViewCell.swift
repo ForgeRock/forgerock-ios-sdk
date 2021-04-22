@@ -22,4 +22,13 @@ public protocol FRUICallbackTableViewCell: UITableViewCell {
     static var cellHeight: CGFloat { get }
     /// A callback method that will be invoked whenever the cell needs to be rendered with Callback object. Callback object is recommended to persist in the class to update the value or render UI.
     func updateCellData(callback: Callback)
+    
+    func updateCellWithViewController(viewController: UIViewController, callback: Callback, node: Node)
+}
+
+
+extension FRUICallbackTableViewCell {
+    public func updateCellWithViewController(viewController: UIViewController, callback: Callback, node: Node) {
+        //  Dummy implementation to make the protocol method optional
+    }
 }

@@ -272,6 +272,30 @@ public class FRUser: NSObject, NSSecureCoding {
         }
     }
     
+    /// Revokes current OAuth2 token using access_token, or refresh_token.
+    ///
+    ///
+    /// - Parameter completion: Completion callback that notifies the result of operation
+    @objc
+    public func revokeAccessToken(completion: @escaping UserCallback) {
+        FRLog.v("Revoke Access Token")
+        
+        guard let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager else {
+            FRLog.e("Invalid SDK state; SDK must be initialized before revoking access tokens")
+            completion(nil, ConfigError.invalidSDKState)
+            return
+        }
+        
+        tokenManager.revoke { (error) in
+            
+            self.token = nil
+            self.save()
+            
+            // Returning updated object and optional error.
+            // Results in local token been removed even if there is a network error.
+            completion(self, error)
+        }
+    }
     
     //  MARK: - UserInfo
     

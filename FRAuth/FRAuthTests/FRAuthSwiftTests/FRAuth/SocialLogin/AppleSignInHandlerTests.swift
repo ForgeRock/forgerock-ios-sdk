@@ -17,7 +17,7 @@ class AppleSignInHandlerTests: FRAuthBaseTest {
     func test_01_basic_init() {
         let handler = AppleSignInHandler()
         XCTAssertNotNil(handler)
-        XCTAssertEqual(handler.tokenType, "authorization_code")
+        XCTAssertEqual(handler.tokenType, "id_token")
         
         if #available(iOS 13.0, *) {
             XCTAssertNotNil(handler.getProviderButtonView())

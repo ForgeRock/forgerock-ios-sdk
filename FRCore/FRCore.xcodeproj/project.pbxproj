@@ -10,6 +10,8 @@
 		D50115CF2410472F00219761 /* SecuredKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50115CE2410472F00219761 /* SecuredKeyTests.swift */; };
 		D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD4A240DCD4F00AF520E /* FRError.swift */; };
 		D52D5C432413002100835035 /* FRStringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C422413002100835035 /* FRStringUtil.swift */; };
+		D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F34125AEE215000A1A88 /* FRDataUtil.swift */; };
+		D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F34525AEE21B000A1A88 /* EC2PrimeRandomKey.swift */; };
 		D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979A82409DF9700DA380A /* KeychainService.swift */; };
 		D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979A92409DF9700DA380A /* SecuredKey.swift */; };
 		D5C979B52409DF9700DA380A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979AB2409DF9700DA380A /* Log.swift */; };
@@ -33,6 +35,7 @@
 		D5CBC24C24102BB200F9B6EA /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B02409DF9700DA380A /* Response.swift */; };
 		D5CBC24D24102BB200F9B6EA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B12409DF9700DA380A /* Request.swift */; };
 		D5CBC24E24102BB200F9B6EA /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979B22409DF9700DA380A /* RestClient.swift */; };
+		D5D1FBF925B1373E00771278 /* SecurityError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D1FBF825B1373E00771278 /* SecurityError.swift */; };
 		D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21495247843BB00B26403 /* RequestInterceptor.swift */; };
 		D5D21498247843C900B26403 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21497247843C900B26403 /* Action.swift */; };
 		D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */; };
@@ -91,6 +94,8 @@
 		D512CD4A240DCD4F00AF520E /* FRError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRError.swift; sourceTree = "<group>"; };
 		D52D5C422413002100835035 /* FRStringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRStringUtil.swift; sourceTree = "<group>"; };
 		D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
+		D5B6F34125AEE215000A1A88 /* FRDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRDataUtil.swift; sourceTree = "<group>"; };
+		D5B6F34525AEE21B000A1A88 /* EC2PrimeRandomKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EC2PrimeRandomKey.swift; sourceTree = "<group>"; };
 		D5C979A82409DF9700DA380A /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		D5C979A92409DF9700DA380A /* SecuredKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredKey.swift; sourceTree = "<group>"; };
 		D5C979AB2409DF9700DA380A /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -103,6 +108,7 @@
 		D5CBC23D24102B8700F9B6EA /* KeychainServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainServiceTests.swift; sourceTree = "<group>"; };
 		D5CBC23F24102B8700F9B6EA /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
 		D5CBC24024102B8700F9B6EA /* RestClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestClientTests.swift; sourceTree = "<group>"; };
+		D5D1FBF825B1373E00771278 /* SecurityError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityError.swift; sourceTree = "<group>"; };
 		D5D21495247843BB00B26403 /* RequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
 		D5D21497247843C900B26403 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		D5D21499247843F100B26403 /* RequestInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorRegistry.swift; sourceTree = "<group>"; };
@@ -155,6 +161,7 @@
 			children = (
 				D512CD4A240DCD4F00AF520E /* FRError.swift */,
 				D5F01B18240EFB1400BD48AA /* NetworkError.swift */,
+				D5D1FBF825B1373E00771278 /* SecurityError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 		D52D5C412413000900835035 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				D5B6F34125AEE215000A1A88 /* FRDataUtil.swift */,
 				D52D5C422413002100835035 /* FRStringUtil.swift */,
 				D5E86BC02481E6D700DFD5E0 /* FRURLUtil.swift */,
 			);
@@ -179,6 +187,7 @@
 		D5C979A72409DF9700DA380A /* Keychain */ = {
 			isa = PBXGroup;
 			children = (
+				D5B6F34525AEE21B000A1A88 /* EC2PrimeRandomKey.swift */,
 				D5C979A82409DF9700DA380A /* KeychainService.swift */,
 				D5C979A92409DF9700DA380A /* SecuredKey.swift */,
 			);
@@ -517,10 +526,13 @@
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
+				D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */,
 				D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */,
 				D5D21498247843C900B26403 /* Action.swift in Sources */,
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
+				D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */,
+				D5D1FBF925B1373E00771278 /* SecurityError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

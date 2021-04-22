@@ -12,6 +12,10 @@
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
 		D521A2102303644300EDD28E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D554633622A6EF960096C7A4 /* Assets.xcassets */; };
 		D521A2122303644300EDD28E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
+		D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D530423A26321BE90079EB3B /* FRCore.framework */; };
+		D530423C26321BE90079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530423A26321BE90079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D530424426321BF00079EB3B /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D530424326321BF00079EB3B /* FRCore.framework */; };
+		D530424526321BF00079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530424326321BF00079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */; };
 		D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D554633522A6EF950096C7A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
@@ -181,6 +185,7 @@
 				D5E6F460233AC3B700D18DF1 /* FRAuth.framework in Embed Frameworks */,
 				D59FAE782344144A005D34DA /* FRProximity.framework in Embed Frameworks */,
 				D5E6F45C233AC3B700D18DF1 /* FRUI.framework in Embed Frameworks */,
+				D530424526321BF00079EB3B /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +200,7 @@
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
 				D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */,
 				D59FAEB6234418EF005D34DA /* FRUI.framework in Embed Frameworks */,
+				D530423C26321BE90079EB3B /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,6 +209,8 @@
 
 /* Begin PBXFileReference section */
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D530424326321BF00079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceAuthInterceptor.swift; sourceTree = "<group>"; };
 		D554632C22A6EF950096C7A4 /* FRExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D554632F22A6EF950096C7A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -238,6 +246,7 @@
 				D5E6F45F233AC3B700D18DF1 /* FRAuth.framework in Frameworks */,
 				D59FAE772344144A005D34DA /* FRProximity.framework in Frameworks */,
 				D5E6F45B233AC3B700D18DF1 /* FRUI.framework in Frameworks */,
+				D530424426321BF00079EB3B /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +258,7 @@
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
+				D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +316,8 @@
 		D5554F6F235A6F78009FC810 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D530424326321BF00079EB3B /* FRCore.framework */,
+				D530423A26321BE90079EB3B /* FRCore.framework */,
 				D5C050EB245A415E00E5A38C /* FRCore.framework */,
 			);
 			name = Frameworks;

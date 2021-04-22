@@ -2,7 +2,7 @@
 //  AbstractValidatedCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -38,20 +38,20 @@ public class AbstractValidatedCallback: SingleValueCallback {
         
         try super.init(json: json)
         
-        guard let outputs = json["output"] as? [[String: Any]] else {
+        guard let outputs = json[CBConstants.output] as? [[String: Any]] else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for output in outputs {
-            if let name = output["name"] as? String, name == "prompt", let prompt = output["value"] as? String {
+            if let name = output[CBConstants.name] as? String, name == CBConstants.prompt, let prompt = output[CBConstants.value] as? String {
                 self.prompt = prompt
-            } else if let name = output["name"] as? String, name == "policies", let policies = output["value"] as? [String: Any] {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.policies, let policies = output[CBConstants.value] as? [String: Any] {
                 self.policies = policies
-            } else if let name = output["name"] as? String, name == "validateOnly", let validateOnly = output["value"] as? Bool {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.validateOnly, let validateOnly = output[CBConstants.value] as? Bool {
                 self.validateOnly = validateOnly
-            } else if let name = output["name"] as? String, name == "value", let theValue = output["value"] {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.value, let theValue = output[CBConstants.value] {
                 self._value = theValue
-            } else if let name = output["name"] as? String, name == "failedPolicies", let failedPolicies = output["value"] as? [String], failedPolicies.count > 0 {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.failedPolicies, let failedPolicies = output[CBConstants.value] as? [String], failedPolicies.count > 0 {
                 self.failedPolicies = []
                 for policy in failedPolicies {
                     if let strData = policy.data(using: .utf8) {
@@ -71,12 +71,12 @@ public class AbstractValidatedCallback: SingleValueCallback {
             }
         }
         
-        guard let inputs = json["input"] as? [[String: Any]] else {
+        guard let inputs = json[CBConstants.input] as? [[String: Any]] else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for input in inputs {
-            if let inputName = input["name"] as? String {
+            if let inputName = input[CBConstants.name] as? String {
                 if inputName.range(of: "IDToken\\d{1,2}validateOnly$", options: .regularExpression, range: nil, locale: nil) != nil {
                     self.idTokenValidateOnlyName = inputName
                 }
@@ -89,8 +89,8 @@ public class AbstractValidatedCallback: SingleValueCallback {
         for (key, value) in responsePayload {
             if key == "input", var inputs = value as? [[String: Any]] {
                 for (index, input) in inputs.enumerated() {
-                    if let inputName = input["name"] as? String, inputName == self.idTokenValidateOnlyName {
-                        inputs[index]["value"] = self.validateOnly
+                    if let inputName = input[CBConstants.name] as? String, inputName == self.idTokenValidateOnlyName {
+                        inputs[index][CBConstants.value] = self.validateOnly
                     }
                 }
                 responsePayload["input"] = inputs
@@ -124,8 +124,8 @@ public class FailedPolicy: NSObject {
     /// - Throws: AuthError.invalidCallbackResponse when 'policyRequirement' attribute is missing on raw JSON response
     init(_ propertyName: String, _ json: [String: Any]) throws {
         self.propertyName = propertyName
-        self.params = json["params"] as? [String: Any]
-        if let policyRequirement = json["policyRequirement"] as? String {
+        self.params = json[CBConstants.params] as? [String: Any]
+        if let policyRequirement = json[CBConstants.policyRequirement] as? String {
             self.policyRequirement = policyRequirement
         }
         else {
