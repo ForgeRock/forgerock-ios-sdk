@@ -26,7 +26,6 @@ class AttestationObject {
     }
 
     func toNone() -> AttestationObject {
-        // TODO copy authData with aaguid=0
         return AttestationObject(
             fmt: WebAuthn.none,
             authData: self.authData,

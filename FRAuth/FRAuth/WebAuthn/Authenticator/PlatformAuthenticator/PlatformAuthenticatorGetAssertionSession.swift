@@ -34,10 +34,10 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
     }
     
     /// Delegation for internal WebAuthnClient's get assertion operations
-    var delegate: AuthenticatorGetAssertionSessionDelegate?
+    weak var delegate: AuthenticatorGetAssertionSessionDelegate?
     
     /// Delegation for PlatformAuthenticator process for generating authentication assertion, and handle user interaction
-    var authenticatorDelegate: PlatformAuthenticatorAuthenticationDelegate?
+    weak var authenticatorDelegate: PlatformAuthenticatorAuthenticationDelegate?
     
     
     //  MARK: - Instance Properties

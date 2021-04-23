@@ -6,6 +6,7 @@
 - ForgeRock iOS SDK now supports Social Login for `Sign in with Apple`, `Google Sign-In`, and `Facebook Login`.  [SDKS-879]
 - New SDK modules, `FRGoogleSignIn` and `FRFacebookSignIn`, are now available to enable Social Login with AM using providers' native SDKs. [SDKS-879]
 - `WebAuthnRegistrationCallback`, and `WebAuthnAuthenticationCallback` are introduced to support AM's `WebAuthn Registration Node` and `WebAuthn Authentication Node`. [SDKS-782]
+- `FRUser.revokeAccessToken()` is introduced to revoke OAuth2 token only, and keep existing SSO token. [SDKS-979]
 
 
 #### Changed

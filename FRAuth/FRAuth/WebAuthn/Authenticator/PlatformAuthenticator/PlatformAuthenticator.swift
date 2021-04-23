@@ -63,9 +63,9 @@ class PlatformAuthenticator: Authenticator {
     //  MARK: - Public Properties
     
     /// Delegate for WebAuthn registration protocols
-    let registrationDelegate: PlatformAuthenticatorRegistrationDelegate?
+    weak var registrationDelegate: PlatformAuthenticatorRegistrationDelegate?
     /// Delegate for WebAuthn authentication protocols
-    let authenticationDelegate: PlatformAuthenticatorAuthenticationDelegate?
+    weak var authenticationDelegate: PlatformAuthenticatorAuthenticationDelegate?
     
     
     //  MARK: - Instance Properties

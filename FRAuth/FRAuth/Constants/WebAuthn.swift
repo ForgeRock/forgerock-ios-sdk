@@ -114,12 +114,12 @@ public enum WAAuthenticatorAttachment: String {
 
 
 //  MARK: - WebAuthn registration/authentication protocols
-public protocol PlatformAuthenticatorRegistrationDelegate {
+public protocol PlatformAuthenticatorRegistrationDelegate: AnyObject {
     func excludeCredentialDescriptorConsent(consentCallback: @escaping WebAuthnUserConsentCallback)
     func createNewCredentialConsent(keyName: String, rpName: String, rpId: String?, userName: String, userDisplayName: String, consentCallback: @escaping WebAuthnUserConsentCallback)
 }
 
 
-public protocol PlatformAuthenticatorAuthenticationDelegate {
+public protocol PlatformAuthenticatorAuthenticationDelegate: AnyObject {
     func selectCredential(keyNames: [String], selectionCallback: @escaping WebAuthnCredentialsSelectionCallback)
 }

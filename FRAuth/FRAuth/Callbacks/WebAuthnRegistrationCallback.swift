@@ -47,7 +47,7 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     /// Authenticator Attachment option value from authenticatorSelection attribute of Callback response
     public var authenticatorAttachment: WAAuthenticatorAttachment
     /// Delegation to perform required user interaction while generating assertion
-    public var delegate: PlatformAuthenticatorRegistrationDelegate?
+    public weak var delegate: PlatformAuthenticatorRegistrationDelegate?
     
     
     //  MARK: - Private properties

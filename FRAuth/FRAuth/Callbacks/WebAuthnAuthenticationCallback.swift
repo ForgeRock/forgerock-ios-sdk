@@ -31,7 +31,7 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     /// Timeout configuration value from Callback response
     public var timeout: Int
     /// Delegation to perform required user interaction while generating assertion
-    public var delegate: PlatformAuthenticatorAuthenticationDelegate?
+    public weak var delegate: PlatformAuthenticatorAuthenticationDelegate?
     
     
     //  MARK: - Private properties

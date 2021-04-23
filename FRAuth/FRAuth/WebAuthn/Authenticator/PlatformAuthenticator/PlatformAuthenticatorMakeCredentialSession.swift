@@ -34,10 +34,10 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
     }
     
     /// Delegation for internal WebAuthnClient's get attestation operations
-    var delegate: AuthenticatorMakeCredentialSessionDelegate?
+    weak var delegate: AuthenticatorMakeCredentialSessionDelegate?
     
     /// Delegation for PlatformAuthenticator process for generating registration attestation, and handle user interaction
-    var authenticatorDelegate: PlatformAuthenticatorRegistrationDelegate?
+    weak var authenticatorDelegate: PlatformAuthenticatorRegistrationDelegate?
     
     
     //  MARK: - Instance Properties
