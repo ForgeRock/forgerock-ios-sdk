@@ -15,7 +15,7 @@ public class HiddenValueCallback: SingleValueCallback {
 
     @objc public var id: String?
     
-    var isWebAuthnOutcome: Bool = false
+    public var isWebAuthnOutcome: Bool = false
     
     //  MARK: - Init
     
