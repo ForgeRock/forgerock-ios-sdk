@@ -87,19 +87,30 @@ public class Node: NSObject {
             for callback in callbacks {
                 
                 // Validate if callback response contains type
-                guard let callbackType = callback["type"] as? String else {
+                guard var callbackType = callback["type"] as? String else {
                     FRLog.e("Invalid response: Callback is missing 'type' \n\t\(callback)")
                     throw AuthError.invalidCallbackResponse(String(describing: callback))
+                }
+                
+                //  Validate if Callback is WebAuthnCallback
+                let webAuthnType = WebAuthnCallback.getWebAuthnType(callback)
+                switch webAuthnType {
+                //  If Callback type is WebAuthnAuthentication/Registration, manually change Callback type
+                case .authentication, .registration:
+                    callbackType = webAuthnType.rawValue
+                    break
+                default:
+                    break
                 }
                 
                 let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback)
                 self.callbacks.append(callbackObj)
                 
                 // Support AM 6.5.2 stage property workaround with MetadataCallback
-                if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response["output"] as? [[String: Any]] {
+                if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response[CBConstants.output] as? [[String: Any]] {
                     for output in outputs {
-                        if let outputName = output["name"] as? String, outputName == "data", let outputValue = output["value"] as? [String: String] {
-                            self.stage = outputValue["stage"]
+                        if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.data, let outputValue = output[CBConstants.value] as? [String: String] {
+                            self.stage = outputValue[CBConstants.stage]
                         }
                     }
                 }

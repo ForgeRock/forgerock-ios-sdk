@@ -2,7 +2,7 @@
 //  MetadataCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class MetadataCallback: Callback {
+open class MetadataCallback: Callback {
     
     public var _id: Int?
     
@@ -24,11 +24,11 @@ public class MetadataCallback: Callback {
     public required init(json: [String : Any]) throws {
         
         
-        guard let callbackType = json["type"] as? String else {
+        guard let callbackType = json[CBConstants.type] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
-        if let callbackId = json["_id"] as? Int {
+        if let callbackId = json[CBConstants._id] as? Int {
             self._id = callbackId
         }
         

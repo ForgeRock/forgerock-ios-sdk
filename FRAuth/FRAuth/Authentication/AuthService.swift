@@ -19,25 +19,7 @@ import FRCore
  
  ## Notes ##
      * Any Callback type returned from AM must be supported within CallbackFactory.shared.supportedCallbacks.
-     * Any custom Callback must be implemented custom Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
-     * FRAuth SDK currently supports following Callback types:
-         1. NameCallback
-         2. PasswordCallback
-         3. ChoiceCallback
-         4. ValidatedCreateUsernameCallback
-         5. ValidatedCreatePasswordCallback
-         6. StringAttributeInputCallback
-         7. TermsAndConditionsCallback
-         8. KbaCreateCallback
-         9. PollingWaitCallback
-         10. ConfirmationCallback
-         11. TextOutputCallback
-         12. ReCaptchaCallback
-         13. MetadataCallback
-         14. DeviceProfileCallback
-         15. BooleanAttributeInputCallback
-         16. NumberAttributeInputCallback
-         17. SuspendedTextOutputCallback
+     * Any custom Callback must be implemented by inheriting Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
  */
 @objc(FRAuthService)
 public class AuthService: NSObject {

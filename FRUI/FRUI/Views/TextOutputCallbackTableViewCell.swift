@@ -31,7 +31,7 @@ class TextOutputCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCel
     public func updateCellData(callback: Callback) {
         self.callback = callback as? TextOutputCallback
         self.textView?.text = self.callback?.message
-        
+                
         var textColor = FRUI.shared.primaryTextColor
         
         if #available(iOS 13.0, *) {

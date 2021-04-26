@@ -56,6 +56,8 @@ public class CallbackTableViewCellFactory: NSObject {
             "BooleanAttributeInputCallback": BooleanAttributeInputCallbackTableViewCell.self,
             "NumberAttributeInputCallback": NameCallbackTableViewCell.self,
             "SuspendedTextOutputCallback": TextOutputCallbackTableViewCell.self,
+            "WebAuthnAuthenticationCallback": WebAuthnCallbackTableViewCell.self,
+            "WebAuthnRegistrationCallback": WebAuthnCallbackTableViewCell.self,
             "IdPCallback": IdPCallbackTableViewCell.self
         ]
         
@@ -75,6 +77,8 @@ public class CallbackTableViewCellFactory: NSObject {
             "BooleanAttributeInputCallback": "BooleanAttributeInputCallbackTableViewCell",
             "NumberAttributeInputCallback": "NameCallbackTableViewCell",
             "SuspendedTextOutputCallback": "TextOutputCallbackTableViewCell",
+            "WebAuthnAuthenticationCallback": "WebAuthnCallbackTableViewCell",
+            "WebAuthnRegistrationCallback": "WebAuthnCallbackTableViewCell",
             "IdPCallback": "IdPCallbackTableViewCell"
         ]
     }

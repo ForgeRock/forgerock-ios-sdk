@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -148,7 +148,8 @@ class ViewController: UIViewController {
             "Login without UI (FRUser)",
             "Login without UI (Accesstoken)",
             "FRSession.authenticate without UI (Token)",
-            "Display Configurations"
+            "Display Configurations",
+            "Revoke Access Token"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -564,6 +565,17 @@ class ViewController: UIViewController {
         self.displayLog("Logout completed")
     }
     
+    func revokeAccessToken() {
+        FRUser.currentUser?.revokeAccessToken(completion: { (user, error) in
+            if let tokenError = error {
+                self.displayLog(tokenError.localizedDescription)
+            } else {
+                self.displayLog("Access token revoked")
+                self.displayLog("\(String(describing: user))")
+            }
+        })
+    }
+    
     
     func performJailbreakDetector() {
         let result = FRJailbreakDetector.shared.analyze()
@@ -752,6 +764,10 @@ class ViewController: UIViewController {
         case 17:
             // Display current Configuration
             self.displayCurrentConfig()
+            break
+        case 18:
+            // Revoke Access Token
+            self.revokeAccessToken()
             break
         default:
             break

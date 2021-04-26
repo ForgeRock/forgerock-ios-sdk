@@ -2,7 +2,7 @@
 //  MultipleValuesCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -41,29 +41,29 @@ open class MultipleValuesCallback: Callback {
     /// - Parameter json: JSON object of MultipleValuesCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     public required init(json: [String : Any]) throws {
-        guard let callbackType = json["type"] as? String else {
+        guard let callbackType = json[CBConstants.type] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         self.inputNames = []
         self.inputValues = [:]
         
-        if let inputs = json["input"] as? [[String: Any]] {
+        if let inputs = json[CBConstants.input] as? [[String: Any]] {
             for input in inputs {
-                if let inputName = input["name"] as? String {
+                if let inputName = input[CBConstants.name] as? String {
                     self.inputNames.append(inputName)
                 }
             }
         }
         
-        if let outputs = json["output"] as? [[String: Any]] {
+        if let outputs = json[CBConstants.output] as? [[String: Any]] {
             for output in outputs {
-                if let outputName = output["name"] as? String, outputName == "prompt", let prompt = output["value"] as? String {
+                if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.output, let prompt = output[CBConstants.value] as? String {
                     self.prompt = prompt
                 }
             }
         }
         
-        if let callbackId = json["_id"] as? Int {
+        if let callbackId = json[CBConstants._id] as? Int {
             self._id = callbackId
         }
         
@@ -86,9 +86,9 @@ open class MultipleValuesCallback: Callback {
         
         var input: [[String: Any]] = []
         for (key, val) in self.inputValues {
-            input.append(["name": key, "value": val])
+            input.append([CBConstants.name: key, CBConstants.value: val])
         }
-        responsePayload["input"] = input
+        responsePayload[CBConstants.input] = input
         return responsePayload
     }
 }

@@ -26,11 +26,26 @@ public typealias NodeCompletion<T> = (_ result: T?, _ node: Node?, _ error: Erro
 
 //  MARK: - Generic
 
-/// Generic typealias for completion with an error occurred
+/// Generic typealias for completion with an optional error occurred
 public typealias CompletionCallback = (_ error:Error?) -> Void
+
+/// Generic typealias for completion with an error object
+public typealias ErrorCallback = (_ error:Error) -> Void
 
 /// Generic typealias for completion with an JSON object
 public typealias JSONCompletionCallback = (_ result: [String: Any]) -> Void
+
+/// Generic typealias for completion with a String value
+public typealias StringCompletionCallback = (_ result: String) -> Void
+
+
+//  MARK: - WebAuthn
+
+/// Completion Callback for user consent result for WebAuthn registration/authentication operations
+public typealias WebAuthnUserConsentCallback = (_ result: WebAuthnUserConsentResult) -> Void
+
+/// Completion Callback for key selection for WebAuthn registration/authentication operations
+public typealias WebAuthnCredentialsSelectionCallback = (_ selectedKeyName: String?) -> Void
 
 
 //  MARK: - Social Login

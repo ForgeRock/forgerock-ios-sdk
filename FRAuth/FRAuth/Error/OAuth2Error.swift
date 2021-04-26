@@ -2,7 +2,7 @@
 //  OAuth2Error.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -37,7 +37,7 @@ public extension OAuth2Error {
         return self.parseErrorCode()
     }
     
-    /// Parses ConfigError value into integer error code
+    /// Parses OAuth2Error value into integer error code
     ///
     /// - Returns: Int value of unique error code
     func parseErrorCode() -> Int {

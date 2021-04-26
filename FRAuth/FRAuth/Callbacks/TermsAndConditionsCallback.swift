@@ -2,7 +2,7 @@
 //  TermsAndConditionsCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -39,16 +39,16 @@ public class TermsAndConditionsCallback: SingleValueCallback {
         
         try super.init(json: json)
         
-        guard let outputs = json["output"] as? [[String: Any]] else {
+        guard let outputs = json[CBConstants.output] as? [[String: Any]] else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for output in outputs {
-            if let name = output["name"] as? String, name == "version", let version = output["value"] as? String {
+            if let name = output[CBConstants.name] as? String, name == CBConstants.version, let version = output[CBConstants.value] as? String {
                 self.version = version
-            } else if let name = output["name"] as? String, name == "createDate", let createDate = output["value"] as? String {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.createDate, let createDate = output[CBConstants.value] as? String {
                 self.createDate = createDate
-            } else if let name = output["name"] as? String, name == "terms", let terms = output["value"] as? String {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.terms, let terms = output[CBConstants.value] as? String {
                 self.terms = terms
             }
         }
