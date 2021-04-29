@@ -2,7 +2,7 @@
 //  Notification.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,7 +13,7 @@ import Foundation
 import FRCore
 
 /// Notification class represents Push Notification message delivered to SDK (application) for registered PushMechanism
-public class PushNotification: NSObject, NSSecureCoding {
+public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Private Properties
     
@@ -260,5 +260,19 @@ public class PushNotification: NSObject, NSSecureCoding {
         let request = Request(url: mechanism.authEndpoint.absoluteString, method: .POST, headers: headers, bodyParams: requestPayload, requestType: .json, responseType: .json)
         
         return request
+    }
+    
+    
+    //  MARK: - Public
+    
+    /// Serializes `PushNotification` object into JSON String
+    /// - Returns: JSON String value of `PushNotification` object
+    public func toJson() -> String? {
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
     }
 }

@@ -2,7 +2,7 @@
 //  PushMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -136,6 +136,30 @@ public class PushMechanism: Mechanism {
 
         self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, authURLStr: authEndpoint, regURLStr: regEndpoint, messageId: messageId, challenge: challenge, loadBalancer: loadBalancer, timeAdded: timeAdded)
     }
+    
+    
+    //  MARK: - Codable
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        authEndpoint = try container.decode(URL.self, forKey: .authEndpoint)
+        regEndpoint = try container.decode(URL.self, forKey: .regEndpoint)
+        messageId = try container.decode(String.self, forKey: .messageId)
+        challenge = try container.decode(String.self, forKey: .challenge)
+        loadBalancer = try container.decode(String.self, forKey: .loadBalancer)
+        try super.init(from: decoder)
+    }
+    
+    
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(authEndpoint, forKey: .authEndpoint)
+        try container.encode(regEndpoint, forKey: .regEndpoint)
+        try container.encode(messageId, forKey: .messageId)
+        try container.encode(challenge, forKey: .challenge)
+        try container.encode(loadBalancer, forKey: .loadBalancer)
+        try super.encode(to: encoder)
+    }
 
     
     //  MARK: - Register
@@ -207,5 +231,30 @@ public class PushMechanism: Mechanism {
         let request = Request(url: self.regEndpoint.absoluteString, method: .POST, headers: headers, bodyParams: requestPayload, requestType: .json, responseType: .json)
         
         return request
+    }
+    
+
+    //  MARK: - Public
+    
+    /// Serializes `PushMechanism` object into JSON String
+    /// - Returns: JSON String value of `PushMechanism` object
+    public func toJson() -> String? {
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
+    }
+}
+
+
+extension PushMechanism {
+    enum CodingKeys: String, CodingKey {
+        case authEndpoint = "authEndpoint"
+        case regEndpoint = "regEndpoint"
+        case messageId = "messageId"
+        case challenge = "challenge"
+        case loadBalancer = "loadBalancer"
     }
 }

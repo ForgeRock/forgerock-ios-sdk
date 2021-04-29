@@ -2,7 +2,7 @@
 //  OathMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -50,6 +50,35 @@ class OathMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
                 XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
             }
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_02_codable_serialization() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30&algorithm=SHA256")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, digits: parser.digits)
+            
+            //  Encode
+            let jsonData = try JSONEncoder().encode(mechanism)
+            
+            //  Decode
+            let decodedMechanism = try JSONDecoder().decode(OathMechanism.self, from: jsonData)
+            
+            XCTAssertEqual(mechanism.mechanismUUID, decodedMechanism.mechanismUUID)
+            XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
+            XCTAssertEqual(mechanism.type, decodedMechanism.type)
+            XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
+            XCTAssertEqual(mechanism.version, decodedMechanism.version)
+            XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
+            XCTAssertEqual(mechanism.algorithm, decodedMechanism.algorithm)
+            XCTAssertEqual(mechanism.digits, decodedMechanism.digits)
+            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
