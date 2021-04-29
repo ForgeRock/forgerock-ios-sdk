@@ -7,7 +7,7 @@
 - New SDK modules, `FRGoogleSignIn` and `FRFacebookSignIn`, are now available to enable Social Login with AM using providers' native SDKs. [SDKS-879]
 - `WebAuthnRegistrationCallback`, and `WebAuthnAuthenticationCallback` are introduced to support AM's `WebAuthn Registration Node` and `WebAuthn Authentication Node`. [SDKS-782]
 - `FRUser.revokeAccessToken()` is introduced to revoke OAuth2 token only, and keep existing SSO token. [SDKS-979]
-
+- `FRAClient.getAllNotifications()` is introduced to retrieve all notifications across all mechanisms. [SDKS-1009]
 
 #### Changed
 - SDK now persists SSO Token through `FRSession` instance without OAuth2 configuration. [SDKS-873]
