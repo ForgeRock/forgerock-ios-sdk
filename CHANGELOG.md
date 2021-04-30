@@ -7,6 +7,7 @@
 - New SDK modules, `FRGoogleSignIn` and `FRFacebookSignIn`, are now available to enable Social Login with AM using providers' native SDKs. [SDKS-879]
 - `WebAuthnRegistrationCallback`, and `WebAuthnAuthenticationCallback` are introduced to support AM's `WebAuthn Registration Node` and `WebAuthn Authentication Node`. [SDKS-782]
 - `FRUser.revokeAccessToken()` is introduced to revoke OAuth2 token only, and keep existing SSO token. [SDKS-979]
+- `Account`, `OathTokenCode`, `PushNotification` and all `Mechanism` classes now conform to `Codable` protocol, and introduce new method `toJson()` to return serialized JSON String value of the object. [SDKS-1004]
 
 
 #### Changed
