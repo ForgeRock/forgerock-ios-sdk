@@ -677,14 +677,14 @@ class FRUserTests: FRAuthBaseTest {
         
         self.loadMockResponses(["OAuth2_Token_Revoke_Success"])
         
+        let ex = self.expectation(description: "Revoke AccessToken success")
         user.revokeAccessToken { (user, error) in
             XCTAssertNotNil(user)
             XCTAssertNil(error)
             XCTAssertNil(user?.token)
+            ex.fulfill()
         }
-        // Should clean up session for next test
-        self.shouldCleanup = true
-        
+        waitForExpectations(timeout: 60, handler: nil)
     }
     
     func test_05_01_RevokeAccessTokenError() {
@@ -700,13 +700,13 @@ class FRUserTests: FRAuthBaseTest {
         XCTAssertNotNil(FRUser.currentUser)
         XCTAssertNotNil(user.token)
         
+        let ex = self.expectation(description: "Revoke AccessToken failure")
         user.revokeAccessToken { (user, error) in
             XCTAssertNotNil(user)
             XCTAssertNil(user?.token)
             XCTAssertNotNil(error)
+            ex.fulfill()
         }
-        // Should clean up session for next test
-        self.shouldCleanup = true
-        
+        waitForExpectations(timeout: 60, handler: nil)
     }
 }
