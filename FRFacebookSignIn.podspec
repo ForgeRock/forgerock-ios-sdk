@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRFacebookSignIn'
-  s.version          = '2.2.1-beta5'
+  s.version          = '3.0.0-beta1'
   s.summary          = 'ForgeRock Auth Facebook Sign-in SDK for iOS'
   s.description      = <<-DESC
   FRFacebookSignIn is a SDK that allows a user to sign-in through Facebook. FRFacebookSignIn depends on FBSDKLoginKit, and uses Facebook's SDK to perform authorization following Facebook's protocol.
@@ -29,6 +29,6 @@ Pod::Spec.new do |s|
 
   base_dir = "FRFacebookSignIn/FRFacebookSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRAuth', '~> 2.2.1-beta5'
+  s.ios.dependency 'FRAuth', '~> 3.0.0-beta1'
   s.ios.dependency 'FBSDKLoginKit', '~> 9.1.0'
 end
