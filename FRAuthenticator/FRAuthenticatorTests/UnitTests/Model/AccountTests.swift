@@ -2,7 +2,7 @@
 //  AccountTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -105,6 +105,62 @@ class AccountTests: FRABaseTests {
         let accountIssuers: [String] = ["issuer1", "issuer2", "issuer3", "issuer4"]
         for (index, account) in accounts.enumerated() {
             XCTAssertEqual(accountIssuers[index], account.issuer)
+        }
+    }
+    
+    
+    func test_05_codable_serialization() {
+        let issuer = "issuer"
+        let accountName = "accountName"
+        let imageUrl = "https://www.forgerock.com"
+        let backgroundColor = "#FFFFFF"
+        let account = Account(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor)
+        
+        do {
+            // Encode
+            let jsonData = try JSONEncoder().encode(account)
+            
+            // Decode
+            let decodedAccount = try JSONDecoder().decode(Account.self, from: jsonData)
+            
+            XCTAssertEqual(account.issuer, decodedAccount.issuer)
+            XCTAssertEqual(account.accountName, decodedAccount.accountName)
+            XCTAssertEqual(account.imageUrl, decodedAccount.imageUrl)
+            XCTAssertEqual(account.backgroundColor, decodedAccount.backgroundColor)
+            XCTAssertEqual(account.timeAdded, decodedAccount.timeAdded)
+            XCTAssertEqual(account.identifier, decodedAccount.identifier)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
+    
+    func test_06_json_string_serialization() {
+        let issuer = "issuer"
+        let accountName = "accountName"
+        let imageUrl = "https://www.forgerock.com"
+        let backgroundColor = "#FFFFFF"
+        let account = Account(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor)
+        
+        
+        guard let jsonString = account.toJson() else {
+            XCTFail("Failed to serialize the object into JSON String value")
+            return
+        }
+        
+        do {
+            let decodedAccount = try JSONDecoder().decode(Account.self, from: jsonString.data(using: .utf8) ?? Data())
+            
+            XCTAssertEqual(account.issuer, decodedAccount.issuer)
+            XCTAssertEqual(account.accountName, decodedAccount.accountName)
+            XCTAssertEqual(account.imageUrl, decodedAccount.imageUrl)
+            XCTAssertEqual(account.backgroundColor, decodedAccount.backgroundColor)
+            XCTAssertEqual(account.timeAdded, decodedAccount.timeAdded)
+            XCTAssertEqual(account.identifier, decodedAccount.identifier)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
         }
     }
 }

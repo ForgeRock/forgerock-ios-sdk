@@ -2,7 +2,7 @@
 //  OathTokenCodeTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -124,6 +124,55 @@ class OathTokenCodeTests: FRABaseTests {
                 }
             }
             waitForExpectations(timeout: 60, handler: nil)
+        }
+    }
+    
+    
+    func test_09_codable_serialization() {
+        let startTime = Date().timeIntervalSince1970
+        let code = OathTokenCode(tokenType: FRAConstants.totp, code: "123123", start: startTime, until: startTime + 10)
+        
+        do {
+            //  Encode
+            let jsonData = try JSONEncoder().encode(code)
+            
+            //  Decode
+            let decodedCode = try JSONDecoder().decode(OathTokenCode.self, from: jsonData)
+      
+            XCTAssertEqual(code.tokenType, decodedCode.tokenType)
+            XCTAssertEqual(code.code, decodedCode.code)
+            XCTAssertEqual(code.start, decodedCode.start)
+            XCTAssertEqual(code.until, decodedCode.until)
+            XCTAssertEqual(code.isValid, decodedCode.isValid)
+        }
+        catch {
+            XCTFail("Failed with an unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_10_json_string_serialization() {
+        let startTime = Date().timeIntervalSince1970
+        let code = OathTokenCode(tokenType: FRAConstants.totp, code: "123123", start: startTime, until: startTime + 10)
+        
+        do {
+
+            guard let jsonStr = code.toJson() else {
+                XCTFail("Failed to serialize the object into JSON String value")
+                return
+            }
+            
+            //  Decode
+            let decodedCode = try JSONDecoder().decode(OathTokenCode.self, from: jsonStr.data(using: .utf8) ?? Data())
+      
+            XCTAssertEqual(code.tokenType, decodedCode.tokenType)
+            XCTAssertEqual(code.code, decodedCode.code)
+            XCTAssertEqual(code.start, decodedCode.start)
+            XCTAssertEqual(code.until, decodedCode.until)
+            XCTAssertEqual(code.isValid, decodedCode.isValid)
+        }
+        catch {
+            XCTFail("Failed with an unexpected error: \(error.localizedDescription)")
         }
     }
 }

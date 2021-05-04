@@ -2,7 +2,7 @@
 //  OathMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -86,5 +86,31 @@ public class OathMechanism: Mechanism {
         let digits = coder.decodeInteger(forKey: "digits")
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
         self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, timeAdded: timeAdded)
+    }
+    
+    
+    //  MARK: - Codable
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        algorithm = try container.decode(OathAlgorithm.self, forKey: .algorithm)
+        digits = try container.decode(Int.self, forKey: .digits)
+        try super.init(from: decoder)
+    }
+    
+    
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(algorithm, forKey: .algorithm)
+        try container.encode(digits, forKey: .digits)
+        try super.encode(to: encoder)
+    }
+}
+
+
+extension OathMechanism {
+    enum CodingKeys: String, CodingKey {
+        case algorithm = "algorithm"
+        case digits = "digits"
     }
 }

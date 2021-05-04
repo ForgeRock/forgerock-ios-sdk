@@ -2,7 +2,7 @@
 //  TOTPMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -82,6 +82,22 @@ public class TOTPMechanism: OathMechanism {
     }
     
     
+    //  MARK: - Codable
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        period = try container.decode(Int.self, forKey: .period)
+        try super.init(from: decoder)
+    }
+
+    
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(period, forKey: .period)
+        try super.encode(to: encoder)
+    }
+    
+    
     //  MARK: - Oath Code
     
     /// Generates OathTokenCode object based on current time, and given secret for Mechanism
@@ -99,4 +115,26 @@ public class TOTPMechanism: OathMechanism {
         
         return OathTokenCode(tokenType: self.type, code: currentCode, start: TimeInterval(startTimeInSeconds), until: TimeInterval(endTimeInSeconds))
     }
+    
+    
+    //  MARK: - Public
+    
+    /// Serializes `TOTPMechanism` object into JSON String
+    /// - Returns: JSON String value of `TOTPMechanism` object
+    public func toJson() -> String? {
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
+    }
 }
+
+
+extension TOTPMechanism {
+    enum CodingKeys: String, CodingKey {
+        case period = "period"
+    }
+}
+

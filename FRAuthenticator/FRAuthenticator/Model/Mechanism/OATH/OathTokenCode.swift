@@ -2,7 +2,7 @@
 //  OathTokenCode.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,7 +12,7 @@
 import Foundation
 
 /// OathTokenCode represents OTP credentials as an object generated with HOTPMechnism, and/or TOTPMechanism
-public class OathTokenCode: NSObject {
+public class OathTokenCode: NSObject, Codable {
     
     //  MARK: - Property
     
@@ -81,5 +81,19 @@ public class OathTokenCode: NSObject {
         self.code = code
         self.start = start
         self.until = until
+    }
+    
+    
+    //  MARK: - Public
+    
+    /// Serializes `OathTokenCode` object into JSON String
+    /// - Returns: JSON String value of `OathTokenCode` object
+    public func toJson() -> String? {
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
     }
 }
