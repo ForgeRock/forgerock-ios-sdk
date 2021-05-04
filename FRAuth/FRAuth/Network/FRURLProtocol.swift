@@ -22,10 +22,7 @@ import Foundation
     /// An array of URL to be validated and analyzed
     @available(*, deprecated, message: "FRURLProtocol.validatedURLs is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
     @objc public static var validatedURLs: [URL] = []
-//    /// FRURLProtocolResponseEvaluationCallback callback to be analyzed and determined for token refresh
-//    @available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
-//    @objc public static var refreshTokenPolicy: FRURLProtocolResponseEvaluationCallback?
-//
+
     
     //  MARK: - Private Property
     
