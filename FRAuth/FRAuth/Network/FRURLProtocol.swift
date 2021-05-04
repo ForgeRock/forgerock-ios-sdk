@@ -19,10 +19,6 @@ import Foundation
     @objc public static var tokenManagementPolicy: TokenManagementPolicy?
     /// AuthorizationPolicy for URLProtocol
     @objc public static var authorizationPolicy: AuthorizationPolicy?
-    /// An array of URL to be validated and analyzed
-    @available(*, deprecated, message: "FRURLProtocol.validatedURLs is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
-    @objc public static var validatedURLs: [URL] = []
-
     
     //  MARK: - Private Property
     
