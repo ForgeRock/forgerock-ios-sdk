@@ -15,6 +15,7 @@
 - `PlatformCollector`'s attribute names were changed from `timezone` and `jailbreakScore` to `timeZone` and `jailBreakScore` respectively to align with AM and Android SDK. [SDKS-908]
 - `Browser.validateBrowserLogin()` is now available in Objective-c as well. [SDKS-975]
 - Jailbreak detection logic was updated to prevent Jailbreak detection bypass. [SDKS-840]
+- Removed previously deprecated methods. [SDKS-910]
 
 #### Deprecated
 -
