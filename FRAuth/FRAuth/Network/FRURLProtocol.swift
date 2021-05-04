@@ -22,10 +22,10 @@ import Foundation
     /// An array of URL to be validated and analyzed
     @available(*, deprecated, message: "FRURLProtocol.validatedURLs is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
     @objc public static var validatedURLs: [URL] = []
-    /// FRURLProtocolResponseEvaluationCallback callback to be analyzed and determined for token refresh
-    @available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
-    @objc public static var refreshTokenPolicy: FRURLProtocolResponseEvaluationCallback?
-    
+//    /// FRURLProtocolResponseEvaluationCallback callback to be analyzed and determined for token refresh
+//    @available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
+//    @objc public static var refreshTokenPolicy: FRURLProtocolResponseEvaluationCallback?
+//
     
     //  MARK: - Private Property
     
@@ -85,15 +85,6 @@ import Foundation
         //  AuthorizationPolicy evaluation
         else if let authPolicy = FRURLProtocol.authorizationPolicy, authPolicy.validateURL(request: request) {
             return true
-        }
-        //  For backward compatibility; if validatedURLs, and refreshTokenPolicy is defined, convert them into TokenManagementPolicy
-        //  MARK: - Deprecated as of 2.0.0 - to be removed
-        else if FRURLProtocol.validatedURLs.count > 0 {
-            let tokenManagementPolicy = TokenManagementPolicy(validatingURL: FRURLProtocol.validatedURLs, evaluationCallback: FRURLProtocol.refreshTokenPolicy)
-            FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
-            if tokenManagementPolicy.validateURL(request: request) {
-                return true
-            }
         }
         
         return false
