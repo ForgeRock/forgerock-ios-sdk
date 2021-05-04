@@ -22,19 +22,11 @@ open class SingleValueCallback: Callback {
     @objc public var inputName: String?
     /// String value of prompt attribute in Callback response; prompt is usually human readable text that can be displayed in UI
     @objc public var prompt: String?
-    /// A value provided from user interaction for this particular callback; the value can be any type
-    @available(*, deprecated, message: "Callback.value propert is deprecated; use Callback.setValue() and Callback.getValue() method to set the input value of the Callback.") // Deprecated as of FRAuth: v2.1.0
-    @objc public var value: Any? {
-        get {
-            return _value
-        }
-        set {
-            _value = newValue
-        }
-    }
-    var _value: Any?
     /// Unique identifier for this particular callback in Node
     public var _id: Int?
+    
+    /// A value provided from user interaction for this particular callback; the value can be any type
+    var _value: Any?
     
     
     //  MARK: - Init
