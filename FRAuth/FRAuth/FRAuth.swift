@@ -248,32 +248,4 @@ public final class FRAuth: NSObject {
             completion(value, node, error)
         }
     }
-    
-    
-    // - MARK: Deprecated
-    
-    /// Initiates Authentication or Registration flow with given flowType and expected result type
-    ///
-    /// - Parameters:
-    ///   - flowType: FlowType whether authentication, or registration
-    ///   - completion: NodeCompletion callback which returns the result of Node submission.
-    @available(*, deprecated, message: "FRAuth.shared.next() has been deprecated; use FRUser.login for authentication or FRSession.authenticat() instead to invoke Authentication Tree.") // Deprecated as of FRAuth: v1.0.2
-    public func next<T>(flowType: FRAuthFlowType, completion: @escaping NodeCompletion<T>) {
-        FRLog.v("Called")
-        
-        var serviceName = ""
-        switch flowType {
-        case .authentication:
-            serviceName = self.authServiceName
-            break
-        case .registration:
-            serviceName = self.registerServiceName
-            break
-        }
-        
-        let authService: AuthService = AuthService(authIndexValue: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, keychainManager: self.keychainManager, tokenManager: self.tokenManager)
-        authService.next { (value: T?, node, error) in
-            completion(value, node, error)
-        }
-    }
 }
