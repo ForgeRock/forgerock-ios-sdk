@@ -2,7 +2,7 @@
 //  FRAuthenticator.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -124,6 +124,14 @@ public class FRAClient: NSObject {
     /// - Returns: An array of PushNotification that given PushMechanism received
     public func getAllNotifications(mechanism: PushMechanism) -> [PushNotification] {
         return self.authenticatorManager.getAllNotifications(mechanism: mechanism)
+    }
+    
+    
+    /// Retrieves an array of PushNotification objects across all PushMechanisms
+    /// - Parameter mechanism: PushMechanism object to retrieve all notifications
+    /// - Returns: An array of PushNotification
+    public func getAllNotifications() -> [PushNotification] {
+        return self.authenticatorManager.getAllNotifications()
     }
     
     

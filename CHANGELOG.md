@@ -8,7 +8,7 @@
 - `WebAuthnRegistrationCallback`, and `WebAuthnAuthenticationCallback` are introduced to support AM's `WebAuthn Registration Node` and `WebAuthn Authentication Node`. [SDKS-782]
 - `FRUser.revokeAccessToken()` is introduced to revoke OAuth2 token only, and keep existing SSO token. [SDKS-979]
 - `Account`, `OathTokenCode`, `PushNotification` and all `Mechanism` classes now conform to `Codable` protocol, and introduce new method `toJson()` to return serialized JSON String value of the object. [SDKS-1004]
-
+- `FRAClient.getAllNotifications()` is introduced to retrieve all notifications across all mechanisms. [SDKS-1009]
 
 #### Changed
 - SDK now persists SSO Token through `FRSession` instance without OAuth2 configuration. [SDKS-873]

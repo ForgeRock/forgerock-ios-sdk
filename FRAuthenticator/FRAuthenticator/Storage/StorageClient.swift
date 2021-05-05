@@ -2,7 +2,7 @@
 //  StorageClient.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -56,6 +56,9 @@ public protocol StorageClient {
     /// Retrieves all Notification objects from Storage Client with given Mechanism object
     /// - Parameter mechanism: Mechanism object that is associated with Notification(s)
     func getAllNotificationsForMechanism(mechanism: Mechanism) -> [PushNotification]
+    
+    /// Retrieves all Notification objects from Storage Client
+    func getAllNotifications() -> [PushNotification]
     
     /// Returns whether or not StorageClient has any data stored
     @discardableResult func isEmpty() -> Bool
