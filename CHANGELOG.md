@@ -17,8 +17,13 @@
 - `Browser.validateBrowserLogin()` is now available in Objective-c as well. [SDKS-975]
 - Jailbreak detection logic was updated to prevent Jailbreak detection bypass. [SDKS-840]
 
+
 #### Deprecated
--
+- Removed public var value from SingleValueCallback [SDKS-910]
+- Removed FRURLProtocolResponseEvaluationCallback [SDKS-910]
+- Removed FRURLProtocol.validatedURLs [SDKS-910]
+- Removed deprecated FRAuth.shared.next() (public func next<T>) method [SDKS-910]
+
 
 ## [2.2.0]
 #### Added

@@ -810,7 +810,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
                 XCTAssertEqual(lat, 49.2827)
                 XCTAssertEqual(long, 123.1207)
                 
-                XCTAssertNotNil(deviceProfileCallback.value)
+                XCTAssertNotNil(deviceProfileCallback.getValue())
                 let requestPayload = self.parseStringToDictionary(deviceProfileCallback.getValue() as! String)
                 XCTAssertEqual(response.keys, requestPayload.keys)
                 ex.fulfill()

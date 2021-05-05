@@ -83,6 +83,3 @@ public typealias DeviceCollectorCallback = (_ result: [String: Any]) -> Void
 /// Callback definition for completion result
 public typealias FRCompletionResultCallback = (_ result: Bool) -> Void
 
-/// Callback definition for FRURLProtocol's refresh token policy; the callback is invoked to validate whether token refresh is required or not with given request result
-@available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
-public typealias FRURLProtocolResponseEvaluationCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> Bool

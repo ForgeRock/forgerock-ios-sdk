@@ -54,25 +54,11 @@ import FRCore
     public var validatingURL: [URL]
     //  Delegation of TokenManagementPolicy evaluation
     public var delegate: TokenManagementPolicyDelegate?
-    //  MARK: - To be deprecated; for backward comaptibility
-    //  Backward compatibility callback for token refresh policy
-    var evaluationCallback: FRURLProtocolResponseEvaluationCallback?
-    
     
     //  MARK: - Init
     
     /// Prevents default init
     private override init() { fatalError("TokenManagementPolicy() is prohibited. Use TokenManagementPolicy(validatingURL:delegate:)") }
-    
-    
-    /// Initializes TokenManagementPolicy with delegate
-    /// - Parameters:
-    ///   - validatingURL: URLs to be validated for TokenManagementPolicy
-    ///   - evaluationCallback: refresh token evaluation callback for backward compatibility
-    init(validatingURL: [URL], evaluationCallback: FRURLProtocolResponseEvaluationCallback? = nil) {
-        self.validatingURL = validatingURL
-        self.evaluationCallback = evaluationCallback
-    }
     
     
     /// Initializes TokenManagementPolicy with delegation
@@ -112,12 +98,6 @@ import FRCore
         FRLog.v("[TokenManagementPolicy] Evaluating Token Refresh Policy started")
         if let delegate = self.delegate, let evaluation = delegate.evaluateTokenRefresh?(responseData: responseData, response: response, error: error) {
             FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.evaluateTokenRefresh found, and refresh policy result received from delegate: \(evaluation)")
-            return evaluation
-        }
-        //  MARK: - To be deprecated
-        else if let callback = self.evaluationCallback {
-            let evaluation = callback(responseData, response, error)
-            FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.evaluationCallback found, and refresh policy result received from callback: \(evaluation)")
             return evaluation
         }
         FRLog.w("[TokenManagementPolicy] No delegation, nor evaluationCallback found; returning false for token refresh evaluation")

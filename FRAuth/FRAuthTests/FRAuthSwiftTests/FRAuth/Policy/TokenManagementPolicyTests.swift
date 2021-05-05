@@ -34,16 +34,6 @@ class TokenManagementPolicyTests: FRAuthBaseTest {
         policy = TokenManagementPolicy(validatingURL: urls, delegate: self)
         XCTAssertNotNil(policy)
         policy = nil
-        
-        policy = TokenManagementPolicy(validatingURL: urls, evaluationCallback: nil)
-        XCTAssertNotNil(policy)
-        policy = nil
-        
-        let evaluationCallback: FRURLProtocolResponseEvaluationCallback = { (responseData, response, error) in
-            return false
-        }
-        policy = TokenManagementPolicy(validatingURL: urls, evaluationCallback: evaluationCallback)
-        XCTAssertNotNil(policy)
     }
     
     
@@ -89,20 +79,7 @@ class TokenManagementPolicyTests: FRAuthBaseTest {
         XCTAssertEqual(self.list.last, "TokenManagementPolicyTests.evaluateTokenRefresh")
     }
     
-    
-    func test_04_evaluation_callback() {
-        
-        let evaluationCallback: FRURLProtocolResponseEvaluationCallback = { (responseData, response, error) in
-            return true
-        }
-        let urls: [URL] = [URL(string: "http://openam.example.com/anything")!]
-        let policy = TokenManagementPolicy(validatingURL: urls, evaluationCallback: evaluationCallback)
-        let result = policy.evalulateRefreshToken(responseData: nil, response: nil, error: nil)
-        XCTAssertTrue(result)
-        XCTAssertEqual(self.list.count, 0)
-    }
-    
-    
+    //test_04 removed due to removed deprecated calls
     func test_05_no_callback_and_delegate() {
         let urls: [URL] = [URL(string: "http://openam.example.com/anything")!]
         let policy = TokenManagementPolicy(validatingURL: urls, delegate: nil)
