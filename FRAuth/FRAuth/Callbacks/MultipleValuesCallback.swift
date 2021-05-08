@@ -57,7 +57,7 @@ open class MultipleValuesCallback: Callback {
         
         if let outputs = json[CBConstants.output] as? [[String: Any]] {
             for output in outputs {
-                if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.output, let prompt = output[CBConstants.value] as? String {
+                if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.prompt, let prompt = output[CBConstants.value] as? String {
                     self.prompt = prompt
                 }
             }
