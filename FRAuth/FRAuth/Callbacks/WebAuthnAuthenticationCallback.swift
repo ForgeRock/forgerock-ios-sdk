@@ -209,9 +209,9 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
         for allowCred in allowCredentials {
             options.addAllowCredential(credentialId: allowCred, transports: [.internal_])
         }
+
+        webAuthnClient.get(options, onSuccess: { (assertion) in
         
-        webAuthnClient.get(options) { (assertion) in
-            
             var result = "\(assertion.response.clientDataJSON)"
             
             let authInt8Arr = assertion.response.authenticatorData.map { Int8(bitPattern: $0) }
@@ -239,8 +239,8 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
             }
             onSuccess(result)
             
-        } onError: { (error) in
-            
+        }) { (error) in
+        
             /// Converts internal WAKError into WebAuthnError
             if let webAuthnError = error as? WAKError {
                 //  Converts the error to public facing error

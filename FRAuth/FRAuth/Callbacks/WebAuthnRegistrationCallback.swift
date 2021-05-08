@@ -340,8 +340,8 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
         options.authenticatorSelection = AuthenticatorSelectionCriteria(requireResidentKey: self.requireResidentKey, userVerification: userVerification)
 
         //  Perfrom credential create operation through WebAuthnClient
-        webAuthnClient.create(options) { (credential) in
-            
+        webAuthnClient.create(options, onSuccess: { (credential) in
+        
             let int8Arr = credential.response.attestationObject.map { Int8(bitPattern: $0) }
             let attObj = self.convertInt8ArrToStr(int8Arr)
             //  Expected AM result for successful attestation
@@ -355,8 +355,8 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             }
             onSuccess(result)
             
-        } onError: { (error) in
-            
+        }) { (error) in
+        
             /// Converts internal WAKError into WebAuthnError
             if let webAuthnError = error as? WAKError {
                 //  Converts the error to public facing error
