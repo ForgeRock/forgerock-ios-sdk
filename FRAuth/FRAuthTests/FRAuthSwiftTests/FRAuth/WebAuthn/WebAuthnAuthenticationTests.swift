@@ -75,11 +75,11 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register { (webAuthnOutcome) in
+            callback.register(onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
@@ -136,10 +136,10 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
@@ -179,10 +179,10 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
@@ -214,11 +214,11 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
@@ -268,10 +268,10 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
@@ -311,10 +311,10 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
@@ -354,10 +354,10 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
@@ -396,11 +396,11 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
@@ -460,10 +460,10 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate { (webAuthnOutcome) in
+            callback.authenticate(onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
-            } onError: { (error) in
+            }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }

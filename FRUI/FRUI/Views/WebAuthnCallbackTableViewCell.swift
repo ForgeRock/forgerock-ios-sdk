@@ -35,15 +35,13 @@ class WebAuthnCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
         if let webAuthnRegistration = callback as? WebAuthnRegistrationCallback {
             self.messageLabel?.text = "WebAuthn Registration Process"
             webAuthnRegistration.delegate = self
-            webAuthnRegistration.register(node: node) { (attestation) in
+            webAuthnRegistration.register(node: node, onSuccess: { (attestation) in
                 DispatchQueue.main.async {
                     self.delegate?.submitNode()
                 }
-            } onError: { (error) in
+            }) { (error) in
                 DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "WebAuthn Error", message: error.localizedDescription, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                    self.viewController?.present(alert, animated: true, completion: nil)
+                    self.delegate?.submitNode()
                 }
                 FRLog.e(error.localizedDescription)
             }
@@ -51,15 +49,13 @@ class WebAuthnCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
         else if let webAuthnAuthentication = callback as? WebAuthnAuthenticationCallback {
             self.messageLabel?.text = "WebAuthn Authentication Process"
             webAuthnAuthentication.delegate = self
-            webAuthnAuthentication.authenticate(node: node) { (assertion) in
+            webAuthnAuthentication.authenticate(node: node, onSuccess: { (assertion) in
                 DispatchQueue.main.async {
                     self.delegate?.submitNode()
                 }
-            } onError: { (error) in
+            }) { (error) in
                 DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "WebAuthn Error", message: error.localizedDescription, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                    self.viewController?.present(alert, animated: true, completion: nil)
+                    self.delegate?.submitNode()
                 }
                 FRLog.e(error.localizedDescription)
             }
