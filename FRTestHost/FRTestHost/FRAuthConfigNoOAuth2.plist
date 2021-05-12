@@ -9,7 +9,7 @@
 	<key>forgerock_timeout</key>
 	<string>60</string>
 	<key>forgerock_keychain_access_group</key>
-	<string>com.forgerock.ios.shared</string>
+	<string>com.bitbar.*</string>
 	<key>forgerock_auth_service_name</key>
 	<string>UsernamePassword</string>
 	<key>forgerock_registration_service_name</key>
