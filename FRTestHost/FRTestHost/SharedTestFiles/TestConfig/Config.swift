@@ -26,6 +26,7 @@ class Config: NSObject {
     
     @objc var authServiceName: String?
     @objc var registrationServiceName: String?
+    @objc var keychainAccessGroup: String?
     
     @objc var configPlistFileName: String?
     
@@ -55,7 +56,7 @@ class Config: NSObject {
         self.userFirstName = ""
         self.userEmail = ""
         
-        if let path = Bundle(for: FRAuthBaseTest.self).path(forResource: configFileName, ofType: "json") {
+        if let path = Bundle(for: FRBaseTestCase.self).path(forResource: configFileName, ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
@@ -103,6 +104,7 @@ class Config: NSObject {
                             self.keychainManager = keychainManager
                             self.sessionManager = sessionManager
                             self.tokenManager = tokenManager
+                            self.keychainAccessGroup = accessGroup
                         }
                         else if let keychainManager = try KeychainManager(baseUrl:url.absoluteString + "/" + realm) {
                             let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)

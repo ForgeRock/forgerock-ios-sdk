@@ -66,6 +66,9 @@
 		D5B55C19243285FC00B49320 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B55C18243285FC00B49320 /* Crypto.swift */; };
 		D5B55C1B2432870600B49320 /* OathError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B55C1A2432870600B49320 /* OathError.swift */; };
 		D5B55C1F24329ABA00B49320 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B55C1E24329ABA00B49320 /* Base32.swift */; };
+		D5BD321E264DE7FA0078D51C /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D5BD321A264DE7FA0078D51C /* Config.json */; };
+		D5BD321F264DE7FA0078D51C /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D5BD321B264DE7FA0078D51C /* Config-live-01.json */; };
+		D5BD3220264DE7FA0078D51C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BD321C264DE7FA0078D51C /* Config.swift */; };
 		D5C334332560EE8B00CC6C19 /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = D5C333F32560EE8B00CC6C19 /* 01-cert.cert */; };
 		D5C334342560EE8B00CC6C19 /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = D5C333F42560EE8B00CC6C19 /* 01-pkey.key */; };
 		D5C334352560EE8B00CC6C19 /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = D5C333F52560EE8B00CC6C19 /* 02-pkey.pem */; };
@@ -214,6 +217,9 @@
 		D5B55C2124329EAB00B49320 /* Base32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32Tests.swift; sourceTree = "<group>"; };
 		D5B55C232432B52800B49320 /* OathAlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OathAlgorithmTests.swift; sourceTree = "<group>"; };
 		D5B68CEB248CDDB200CD2F5B /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
+		D5BD321A264DE7FA0078D51C /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		D5BD321B264DE7FA0078D51C /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
+		D5BD321C264DE7FA0078D51C /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		D5C333F32560EE8B00CC6C19 /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
 		D5C333F42560EE8B00CC6C19 /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
 		D5C333F52560EE8B00CC6C19 /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
@@ -536,9 +542,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D5BD3219264DE7FA0078D51C /* TestConfig */ = {
+			isa = PBXGroup;
+			children = (
+				D5BD321A264DE7FA0078D51C /* Config.json */,
+				D5BD321B264DE7FA0078D51C /* Config-live-01.json */,
+				D5BD321C264DE7FA0078D51C /* Config.swift */,
+			);
+			path = TestConfig;
+			sourceTree = "<group>";
+		};
 		D5C333EC2560EE8B00CC6C19 /* SharedTestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				D5BD3219264DE7FA0078D51C /* TestConfig */,
 				D5C333ED2560EE8B00CC6C19 /* TestData */,
 				D5C3342A2560EE8B00CC6C19 /* BaseTest */,
 				D5C3342D2560EE8B00CC6C19 /* TestUtil */,
@@ -957,6 +974,7 @@
 				D5C3345C2560EE8B00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
 				D5C334582560EE8B00CC6C19 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json in Resources */,
 				D5C3345A2560EE8B00CC6C19 /* AuthTree_KBACreateNode.json in Resources */,
+				D5BD321E264DE7FA0078D51C /* Config.json in Resources */,
 				D5C334472560EE8B00CC6C19 /* AuthTree_SSOToken_Success2.json in Resources */,
 				D5C334462560EE8B00CC6C19 /* AuthTree_DeviceCollectorNodeAll.json in Resources */,
 				D5C334362560EE8B00CC6C19 /* 02-cert.pem in Resources */,
@@ -965,6 +983,7 @@
 				D5C334552560EE8B00CC6C19 /* AM_Push_Authentication_Successful.json in Resources */,
 				D5C3344C2560EE8B00CC6C19 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */,
 				D5C334572560EE8B00CC6C19 /* AuthTree_DeviceCollectorNodeNone.json in Resources */,
+				D5BD321F264DE7FA0078D51C /* Config-live-01.json in Resources */,
 				D5C334332560EE8B00CC6C19 /* 01-cert.cert in Resources */,
 				D5C334592560EE8B00CC6C19 /* AuthTree_AttributeCollectorsNode.json in Resources */,
 				D5C3344A2560EE8B00CC6C19 /* AuthTree_NoSession_Success.json in Resources */,
@@ -1060,6 +1079,7 @@
 				D5791C0725F8829F004B487A /* FRAPushHandlerTests.swift in Sources */,
 				D5791C0825F8829F004B487A /* PushMechanismRegistrationTests.swift in Sources */,
 				D5791C0925F8829F004B487A /* PushNotificationAuthenticationTests.swift in Sources */,
+				D5BD3220264DE7FA0078D51C /* Config.swift in Sources */,
 				D5791C0A25F8829F004B487A /* KeychainServiceStorageClientTests.swift in Sources */,
 				D5791C0B25F8829F004B487A /* OathQRCodeParserTests.swift in Sources */,
 				D5791C0C25F8829F004B487A /* PushQRCodeParserTests.swift in Sources */,

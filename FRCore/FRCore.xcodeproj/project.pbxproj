@@ -12,6 +12,9 @@
 		D52D5C432413002100835035 /* FRStringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C422413002100835035 /* FRStringUtil.swift */; };
 		D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F34125AEE215000A1A88 /* FRDataUtil.swift */; };
 		D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F34525AEE21B000A1A88 /* EC2PrimeRandomKey.swift */; };
+		D5BD3205264DE6D50078D51C /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = D5BD3202264DE6D50078D51C /* Config.json */; };
+		D5BD3206264DE6D50078D51C /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D5BD3203264DE6D50078D51C /* Config-live-01.json */; };
+		D5BD3207264DE6D50078D51C /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BD3204264DE6D50078D51C /* Config.swift */; };
 		D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979A82409DF9700DA380A /* KeychainService.swift */; };
 		D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979A92409DF9700DA380A /* SecuredKey.swift */; };
 		D5C979B52409DF9700DA380A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C979AB2409DF9700DA380A /* Log.swift */; };
@@ -96,6 +99,9 @@
 		D5A7A211248CDB1700E30CFE /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
 		D5B6F34125AEE215000A1A88 /* FRDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRDataUtil.swift; sourceTree = "<group>"; };
 		D5B6F34525AEE21B000A1A88 /* EC2PrimeRandomKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EC2PrimeRandomKey.swift; sourceTree = "<group>"; };
+		D5BD3202264DE6D50078D51C /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		D5BD3203264DE6D50078D51C /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
+		D5BD3204264DE6D50078D51C /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		D5C979A82409DF9700DA380A /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		D5C979A92409DF9700DA380A /* SecuredKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredKey.swift; sourceTree = "<group>"; };
 		D5C979AB2409DF9700DA380A /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -182,6 +188,16 @@
 				D5A7A216248CDB1700E30CFE /* FRTestHost.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D5BD3201264DE6D50078D51C /* TestConfig */ = {
+			isa = PBXGroup;
+			children = (
+				D5BD3202264DE6D50078D51C /* Config.json */,
+				D5BD3203264DE6D50078D51C /* Config-live-01.json */,
+				D5BD3204264DE6D50078D51C /* Config.swift */,
+			);
+			path = TestConfig;
 			sourceTree = "<group>";
 		};
 		D5C979A72409DF9700DA380A /* Keychain */ = {
@@ -338,6 +354,7 @@
 		D5EE068D255FA1CC00C2D1BC /* SharedTestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				D5BD3201264DE6D50078D51C /* TestConfig */,
 				D5EE068E255FA1CC00C2D1BC /* TestData */,
 				D5EE06C1255FA1CC00C2D1BC /* BaseTest */,
 				D5EE06C3255FA1CC00C2D1BC /* TestUtil */,
@@ -500,8 +517,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5BD3206264DE6D50078D51C /* Config-live-01.json in Resources */,
 				D5EE06CC255FA1CC00C2D1BC /* 02-cert.pem in Resources */,
 				D5EE06CB255FA1CC00C2D1BC /* 02-pkey.pem in Resources */,
+				D5BD3205264DE6D50078D51C /* Config.json in Resources */,
 				D5EE06C9255FA1CC00C2D1BC /* 01-cert.cert in Resources */,
 				D5EE06CA255FA1CC00C2D1BC /* 01-pkey.key in Resources */,
 			);
@@ -569,6 +588,7 @@
 				D5D214AF24786EA800B26403 /* RequestInterceptorTests.swift in Sources */,
 				D5D214AD24786DBE00B26403 /* ActionTests.swift in Sources */,
 				D5CBC24224102B8800F9B6EA /* RequestTests.swift in Sources */,
+				D5BD3207264DE6D50078D51C /* Config.swift in Sources */,
 				D5EE06F2255FA1CC00C2D1BC /* FRTestUtils.swift in Sources */,
 				D5CBC24124102B8800F9B6EA /* KeychainServiceTests.swift in Sources */,
 			);

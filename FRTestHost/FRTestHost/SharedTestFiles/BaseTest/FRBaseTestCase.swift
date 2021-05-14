@@ -15,6 +15,9 @@ import XCTest
 class FRBaseTestCase: XCTestCase {
     
     //  MARK: - Properties
+    
+    var config: Config = Config()
+    var configFileName: String = ""
     var shouldCleanup: Bool = true
     
     static var useMockServer: Bool = true
@@ -62,6 +65,16 @@ class FRBaseTestCase: XCTestCase {
 
         //  Enable Log level to all for tests
         Log.setLogLevel(.all)
+        
+        //  Load Config object
+        if self.configFileName.count > 0 {
+            do {
+                self.config = try Config(self.configFileName)
+            }
+            catch {
+                XCTFail("Failed to load test configuration file: \(error)")
+            }
+        }
     }
     
     override func tearDown() {
