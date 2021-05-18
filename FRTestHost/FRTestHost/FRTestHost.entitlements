@@ -6,6 +6,7 @@
 	<array>
 		<string>$(AppIdentifierPrefix)com.forgerock.ios.FRTestHost</string>
 		<string>$(AppIdentifierPrefix)com.forgerock.ios.shared</string>
+		<string>$(AppIdentifierPrefix)com.bitbar.*</string>
 	</array>
 </dict>
 </plist>
