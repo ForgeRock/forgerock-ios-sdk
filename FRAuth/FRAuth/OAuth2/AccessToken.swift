@@ -11,7 +11,7 @@
 import Foundation
 
 /// AccessToken class represents access_token data inheriting from Token class
-@objc public class AccessToken: Token {
+@objc public class AccessToken: Token, Encodable {
     
     //  MARK: - Property
     
