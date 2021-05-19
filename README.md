@@ -27,10 +27,10 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 * ForgeRock Identity Platform
     * Access Management (AM) 6.5.2+
-* iOS 10, 11, 12, 13   
+* iOS 10 and above   
 * Xcode 11.0 or later
 * Swift 5.x or Objective-C
-* CocoaPods dependency manager 
+* CocoaPods or Swift Package Manager (optional)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- INSTALLATION -->
@@ -38,7 +38,7 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 ## Installation
 
 ### Cocoapods
-Use following pods in your `Podfile` to install FR iOS SDK module(s) you want to install the latest version.
+Use the following pods in your `Podfile` to install FR iOS SDK module(s) if you want to install the latest version.
 
 ```
 pod 'FRAuth' // Authentication module for Access Manager
@@ -50,10 +50,11 @@ pod 'FRFacebookSignIn' // Social Login module for Facebook Login
 ```
 
 ### Swift Package Manager
-> The ForgeRock iOS SDK is only available via Swift Package Manager for 3.0.0 and above. Any versions 2.2.0 and below are only available via Cocoapods
+> * The ForgeRock iOS SDK is available via Swift Package Manager from 3.0.0 and above. Any older versions (2.2.0 and below) are only available via Cocoapods.
+> * `FRGoogleSignIn` module is currently not available in Swift Package Manager; use Cocoapods instead to integrate `FRGoogleSignIn` module.
  
 1. In Xcode menus, `File` -> `Swift Packages` -> `Add Package Dependencies...`
-2. Select the projec to integrate the ForgeRock iOS SDK
+2. Select the project to integrate the ForgeRock iOS SDK
 3. Enter the url of the repo: `https://github.com/ForgeRock/forgerock-ios-sdk`
 4. Select module(s) to integrate into the project
 
