@@ -2,7 +2,7 @@
 //  AccessTokenTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -237,11 +237,12 @@ class AccessTokenTests: FRAuthBaseTest {
             let atDictionary = self.convertStringToDictionary(text: jsonAccessToken)
             XCTAssertNotNil(atDictionary)
             
-            if let expires_in = atDictionary?["expiresIn"] as? Int, let scope = atDictionary?["scope"] as? String, let refresh_token = atDictionary?["refreshToken"] as? String, let id_token = atDictionary?["idToken"] as? String {
+            if let expires_in = atDictionary?["expiresIn"] as? Int, let scope = atDictionary?["scope"] as? String, let refresh_token = atDictionary?["refreshToken"] as? String, let id_token = atDictionary?["idToken"] as? String, let accessToken = atDictionary?["value"] as? String {
                 XCTAssertEqual(expires_in, self.expires_in)
                 XCTAssertEqual(scope, self.scope)
                 XCTAssertEqual(refresh_token, self.refresh_token)
                 XCTAssertEqual(id_token, self.id_token)
+                XCTAssertEqual(accessToken, self.access_token)
             } else {
                 XCTFail("Fail to parse AccessToken JSON String correctly with given data \(jsonAccessToken)")
             }
