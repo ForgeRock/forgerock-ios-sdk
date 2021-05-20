@@ -169,13 +169,12 @@ import Foundation
     }
     
     private enum CodingKeys: String, CodingKey {
-            case value, expiresIn, scope, tokenType, refreshToken, idToken, authenticatedTimestamp, sessionToken
+            case expiresIn, scope, tokenType, refreshToken, idToken, authenticatedTimestamp, sessionToken
     }
     
     public override func encode(to encoder: Encoder) throws {
         try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.value, forKey: .value)
         try container.encode(self.expiresIn, forKey: .expiresIn)
         try container.encode(self.scope, forKey: .scope)
         try container.encode(self.tokenType, forKey: .tokenType)

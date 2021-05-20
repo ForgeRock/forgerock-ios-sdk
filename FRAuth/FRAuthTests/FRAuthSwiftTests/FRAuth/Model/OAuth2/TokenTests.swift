@@ -62,4 +62,32 @@ class TokenTests: FRAuthBaseTest {
             
         }
     }
+    
+    func testTokenJSONEncoding() {
+        
+        let token = Token("tokenValue")
+        
+        // Then
+        XCTAssertEqual(token.value, "tokenValue")
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        
+        let data = try? encoder.encode(token)
+        XCTAssertNotNil(data)
+        
+        if let tokenData = data, let jsonToken = String(data: tokenData, encoding: .utf8) {
+            let tokenDictionary = self.parseStringToDictionary(jsonToken)
+            XCTAssertNotNil(tokenDictionary)
+            
+            if let token2Value = tokenDictionary["value"] as? String  {
+                XCTAssertEqual(token2Value, token.value)
+                XCTAssertEqual(token2Value, "tokenValue")
+            } else {
+                XCTFail("Fail to parse AccessToken JSON String correctly with given data \(jsonToken)")
+            }
+        } else {
+            XCTFail("Fail to create AccessToken JSON String with given data")
+        }
+    }
 }

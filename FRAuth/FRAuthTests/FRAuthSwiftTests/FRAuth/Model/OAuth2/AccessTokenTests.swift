@@ -219,7 +219,7 @@ class AccessTokenTests: FRAuthBaseTest {
         XCTAssertEqual(at.buildAuthorizationHeader(), at.tokenType + " " + at.value)
     }
     
-    func testTokenJSONEncoding() {
+    func testAccessTokenJSONEncoding() {
         
         let tokenDict: [String: Any] = ["access_token":self.access_token, "scope":self.scope, "expires_in":self.expires_in, "token_type":self.token_type, "refresh_token": self.refresh_token, "id_token": self.id_token]
         guard let at = AccessToken(tokenResponse: tokenDict) else {
@@ -234,10 +234,10 @@ class AccessTokenTests: FRAuthBaseTest {
         XCTAssertNotNil(data)
         
         if let atData = data, let jsonAccessToken = String(data: atData, encoding: .utf8) {
-            let atDictionary = self.convertStringToDictionary(text: jsonAccessToken)
+            let atDictionary = self.parseStringToDictionary(jsonAccessToken)
             XCTAssertNotNil(atDictionary)
             
-            if let expires_in = atDictionary?["expiresIn"] as? Int, let scope = atDictionary?["scope"] as? String, let refresh_token = atDictionary?["refreshToken"] as? String, let id_token = atDictionary?["idToken"] as? String, let accessToken = atDictionary?["value"] as? String {
+            if let expires_in = atDictionary["expiresIn"] as? Int, let scope = atDictionary["scope"] as? String, let refresh_token = atDictionary["refreshToken"] as? String, let id_token = atDictionary["idToken"] as? String, let accessToken = atDictionary["value"] as? String {
                 XCTAssertEqual(expires_in, self.expires_in)
                 XCTAssertEqual(scope, self.scope)
                 XCTAssertEqual(refresh_token, self.refresh_token)
@@ -249,17 +249,5 @@ class AccessTokenTests: FRAuthBaseTest {
         } else {
             XCTFail("Fail to create AccessToken JSON String with given data")
         }
-    }
-    
-    private func convertStringToDictionary(text: String) -> [String: Any]? {
-        if let data = text.data(using: .utf8) {
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
-                return json
-            } catch {
-                print("Something went wrong")
-            }
-        }
-        return nil
     }
 }
