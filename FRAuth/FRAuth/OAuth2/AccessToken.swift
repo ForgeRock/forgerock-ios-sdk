@@ -2,7 +2,7 @@
 //  AccessToken.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -166,6 +166,22 @@ import Foundation
         aCoder.encode(self.idToken, forKey: "id_token")
         aCoder.encode(self.authenticatedTimestamp.timeIntervalSince1970, forKey: "authenticatedTimestamp")
         aCoder.encode(self.sessionToken, forKey: "session_token")
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+            case expiresIn, scope, tokenType, refreshToken, idToken, authenticatedTimestamp, sessionToken
+    }
+    
+    public override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.expiresIn, forKey: .expiresIn)
+        try container.encode(self.scope, forKey: .scope)
+        try container.encode(self.tokenType, forKey: .tokenType)
+        try container.encode(self.refreshToken, forKey: .refreshToken)
+        try container.encode(self.idToken, forKey: .idToken)
+        try container.encode(self.authenticatedTimestamp, forKey: .authenticatedTimestamp)
+        try container.encode(self.sessionToken, forKey: .sessionToken)
     }
     
     
