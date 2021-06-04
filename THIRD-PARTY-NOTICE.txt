@@ -20,3 +20,10 @@ Google Sign-In iOS SDK
 
 Project: https://developers.google.com/identity/sign-in/ios
 License: https://developers.google.com/terms
+
+Base32
+------
+Base32 encoding and decoding implementation
+
+Project: https://github.com/google/google-authenticator-libpam
+License: https://github.com/google/google-authenticator-libpam/blob/master/LICENSE
