@@ -1,0 +1,22 @@
+This project uses the following third party libraries:
+
+WebAuthnKit-iOS
+---------------
+iOS Swift implementation of W3C Web Authentication API
+
+Project: https://github.com/lyokato/WebAuthnKit-iOS
+License: https://github.com/lyokato/WebAuthnKit-iOS/blob/master/LICENSE
+
+FBSDKLoginKit
+-------------
+Facebook Login iOS SDK 
+
+Project: https://github.com/facebook/facebook-ios-sdk
+License: http://developers.facebook.com/policy
+
+GoogleSignIn
+------------
+Google Sign-In iOS SDK
+
+Project: https://developers.google.com/identity/sign-in/ios
+License: https://developers.google.com/terms
