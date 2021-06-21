@@ -28,7 +28,6 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 * ForgeRock Identity Platform
     * Access Management (AM) 6.5.2+
 * iOS 10 and above   
-* Xcode 11.0 or later
 * Swift 5.x or Objective-C
 * CocoaPods or Swift Package Manager (optional)
 
