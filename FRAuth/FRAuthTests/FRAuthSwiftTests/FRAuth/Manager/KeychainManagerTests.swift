@@ -9,7 +9,8 @@
 //
 
 import XCTest
-import FRCore
+@testable import FRCore
+@testable import FRAuth
 
 class KeychainManagerTests: FRAuthBaseTest {
     
@@ -485,5 +486,97 @@ class KeychainManagerTests: FRAuthBaseTest {
         XCTAssertEqual(keychainManager?.privateStore.getString("test_key_2"), "test_data")
         XCTAssertEqual(keychainManager?.sharedStore.getString("test_key_2"), "test_data")
         XCTAssertEqual(keychainManager?.cookieStore.getString("test_key_2"), "test_data")
+    }
+    
+    
+    func test_10_store_sso_token() {
+        var keychainManager: KeychainManager? = nil
+        guard let serverConfig = self.config.serverConfig, let configJSON = self.config.configJSON, let accessGroup = configJSON["forgerock_keychain_access_group"] as? String else {
+            XCTFail("Failed to read config object")
+            return
+        }
+
+        do {
+            keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2")
+            keychainManager?.validateEncryption()
+            XCTAssertNotNil(keychainManager)
+            XCTAssertNotNil(keychainManager?.privateStore)
+            XCTAssertNotNil(keychainManager?.sharedStore)
+            XCTAssertNotNil(keychainManager?.cookieStore)
+            XCTAssertNotNil(keychainManager?.primaryServiceStore)
+            XCTAssertNotNil(keychainManager?.deviceIdentifierStore)
+        }
+        catch {
+            XCTFail("Failed to construct KeychainManager: \(error.localizedDescription)")
+        }
+        
+        guard let manager = keychainManager else {
+            XCTFail("Failed to read KeychainManager instance")
+            return
+        }
+        let token = Token("SBRihCHYvVVVWrpTIFt6gkm-F9g.*AAJTSQACMDEAAlNLABxmR0tKcllmYjJpOXJ1alN4WWc5RWxvSDNvT289AAR0eXBlAANDVFMAAlMxAAA.*")
+        XCTAssertTrue(manager.setSSOToken(ssoToken: token))
+        
+        let tokenFromStorage = manager.getSSOToken()
+        XCTAssertNotNil(tokenFromStorage)
+        XCTAssertEqual(tokenFromStorage?.value, token.value)
+    }
+    
+    
+    func test_11_store_access_token() {
+        var keychainManager: KeychainManager? = nil
+        guard let serverConfig = self.config.serverConfig, let configJSON = self.config.configJSON, let accessGroup = configJSON["forgerock_keychain_access_group"] as? String else {
+            XCTFail("Failed to read config object")
+            return
+        }
+
+        do {
+            keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2")
+            keychainManager?.validateEncryption()
+            XCTAssertNotNil(keychainManager)
+            XCTAssertNotNil(keychainManager?.privateStore)
+            XCTAssertNotNil(keychainManager?.sharedStore)
+            XCTAssertNotNil(keychainManager?.cookieStore)
+            XCTAssertNotNil(keychainManager?.primaryServiceStore)
+            XCTAssertNotNil(keychainManager?.deviceIdentifierStore)
+        }
+        catch {
+            XCTFail("Failed to construct KeychainManager: \(error.localizedDescription)")
+        }
+        
+        guard let manager = keychainManager else {
+            XCTFail("Failed to read KeychainManager instance")
+            return
+        }
+        
+        guard let tokenJSON = self.readDataFromJSON("AccessToken") else {
+            XCTFail("Failed to read AccessToken.json")
+            return
+        }
+        
+        do {
+            let token = AccessToken(tokenResponse: tokenJSON)
+            token?.sessionToken = "SBRihCHYvVVVWrpTIFt6gkm-F9g.*AAJTSQACMDEAAlNLABxmR0tKcllmYjJpOXJ1alN4WWc5RWxvSDNvT289AAR0eXBlAANDVFMAAlMxAAA.*"
+            XCTAssertNotNil(token)
+            XCTAssertTrue(try manager.setAccessToken(token: token))
+            
+            let tokenFromStorage = try manager.getAccessToken()
+            XCTAssertNotNil(tokenFromStorage)
+            
+            XCTAssertEqual(token?.value, tokenFromStorage?.value)
+            XCTAssertEqual(token?.expiresIn, tokenFromStorage?.expiresIn)
+            XCTAssertEqual(token?.tokenType, tokenFromStorage?.tokenType)
+            XCTAssertEqual(token?.scope, tokenFromStorage?.scope)
+            XCTAssertEqual(token?.refreshToken, tokenFromStorage?.refreshToken)
+            XCTAssertEqual(token?.idToken, tokenFromStorage?.idToken)
+            XCTAssertEqual(token?.authenticatedTimestamp.timeIntervalSince1970, tokenFromStorage?.authenticatedTimestamp.timeIntervalSince1970)
+            XCTAssertEqual(token?.sessionToken, tokenFromStorage?.sessionToken)
+            XCTAssertEqual(token?.expiration.timeIntervalSince1970, tokenFromStorage?.expiration.timeIntervalSince1970)
+        }
+        catch {
+            XCTFail("Fail with unexpected exception: \(error.localizedDescription)")
+        }
     }
 }

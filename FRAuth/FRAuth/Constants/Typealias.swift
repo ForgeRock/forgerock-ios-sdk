@@ -2,7 +2,7 @@
 //  Typealias.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -26,11 +26,32 @@ public typealias NodeCompletion<T> = (_ result: T?, _ node: Node?, _ error: Erro
 
 //  MARK: - Generic
 
-/// Generic typealias for completion with an error occurred
+/// Generic typealias for completion with an optional error occurred
 public typealias CompletionCallback = (_ error:Error?) -> Void
+
+/// Generic typealias for completion with an error object
+public typealias ErrorCallback = (_ error:Error) -> Void
 
 /// Generic typealias for completion with an JSON object
 public typealias JSONCompletionCallback = (_ result: [String: Any]) -> Void
+
+/// Generic typealias for completion with a String value
+public typealias StringCompletionCallback = (_ result: String) -> Void
+
+
+//  MARK: - WebAuthn
+
+/// Completion Callback for user consent result for WebAuthn registration/authentication operations
+public typealias WebAuthnUserConsentCallback = (_ result: WebAuthnUserConsentResult) -> Void
+
+/// Completion Callback for key selection for WebAuthn registration/authentication operations
+public typealias WebAuthnCredentialsSelectionCallback = (_ selectedKeyName: String?) -> Void
+
+
+//  MARK: - Social Login
+
+/// Callback definition for completion of Social Login authorization flow against provider
+public typealias SocialLoginCompletionCallback = (_ token: String?, _ tokenType: String?, _ error: Error?) -> Void
 
 
 //  MARK: - OAuth2Client
@@ -62,6 +83,3 @@ public typealias DeviceCollectorCallback = (_ result: [String: Any]) -> Void
 /// Callback definition for completion result
 public typealias FRCompletionResultCallback = (_ result: Bool) -> Void
 
-/// Callback definition for FRURLProtocol's refresh token policy; the callback is invoked to validate whether token refresh is required or not with given request result
-@available(*, deprecated, message: "FRURLProtocol.refreshTokenPolicy is deprecated; use TokenManagementPolicy(validatingURL:delegate:) to do TokenManagement.") // Deprecated as of FRAuth: v2.0.0
-public typealias FRURLProtocolResponseEvaluationCallback = (_ responseData: Data?, _ response: URLResponse?, _ error: Error?) -> Bool

@@ -2,7 +2,7 @@
 //  FRSession.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -31,7 +31,7 @@ import Foundation
             if let staticSession = _staticSession {
                 return staticSession
             }
-            else if let frAuth = FRAuth.shared, let _ = frAuth.sessionManager.getSSOToken() {
+            else if let frAuth = FRAuth.shared, let _ = frAuth.keychainManager.getSSOToken() {
                 FRLog.v("FRSession retrieved from SessionManager")
                 _staticSession = FRSession()
                 
@@ -49,7 +49,7 @@ import Foundation
     @objc
     public var sessionToken: Token? {
         get {
-            if let frAuth = FRAuth.shared, let sessionToken = frAuth.sessionManager.getSSOToken() {
+            if let frAuth = FRAuth.shared, let sessionToken = frAuth.keychainManager.getSSOToken() {
                 return sessionToken
             }
             

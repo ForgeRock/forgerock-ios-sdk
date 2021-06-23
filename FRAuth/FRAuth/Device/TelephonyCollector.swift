@@ -2,7 +2,7 @@
 //  TelephonyCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -16,6 +16,9 @@ public class TelephonyCollector: DeviceCollector {
     
     /// Name of current collector
     public var name: String = "telephony"
+    
+    /// Initializes TelephonyCollector instance
+    public init() { }
     
     /// Collects telephony information using CTCarrier
     ///

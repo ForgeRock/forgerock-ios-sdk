@@ -8,8 +8,8 @@
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
+@testable import FRAuth
 
 class SessionManagerTests: FRAuthBaseTest {
     
@@ -49,102 +49,7 @@ class SessionManagerTests: FRAuthBaseTest {
     }
     
     
-    func test_03_ManageToken() {
-        
-        // Given
-        guard let sessionManager = constructSessionManager() else {
-            XCTFail("Failed to construct SessionManager")
-            return
-        }
-        let token = Token("tokenValue")
-        
-        sessionManager.setSSOToken(ssoToken: token)
-        
-        // Then
-        XCTAssertNotNil(sessionManager.getSSOToken())
-        XCTAssertEqual(sessionManager.getSSOToken()?.value, token.value)
-        
-        // When
-        sessionManager.setSSOToken(ssoToken: nil)
-        
-        // Then
-        XCTAssertNil(sessionManager.getSSOToken())
-    }
-    
-    
-    func test_04_ManageAccessToken() {
-        
-        // Given
-        guard let sessionManager = constructSessionManager() else {
-            XCTFail("Failed to construct SessionManager")
-            return
-        }
-        
-        guard let tokenData = self.readDataFromJSON("AccessToken"), let at = AccessToken(tokenResponse: tokenData) else {
-            XCTFail("Failed to read 'AccessToken.json' for \(String(describing: self)) testing")
-            return
-        }
-        
-        // Then
-        do {
-            try sessionManager.setAccessToken(token: at)
-            let accessToken = try sessionManager.getAccessToken()
-            XCTAssertNotNil(accessToken)
-            XCTAssertEqual(accessToken, at)
-            XCTAssertEqual(accessToken?.value, at.value)
-        }
-        catch {
-            XCTFail("Failed to store AccessToken into SessionManager")
-        }
-        
-        
-        do {
-            // When
-            try sessionManager.setAccessToken(token: nil)
-            
-            // Then
-            let accessToken = try sessionManager.getAccessToken()
-            XCTAssertNil(accessToken)
-        }
-        catch {
-            XCTFail("Failed to delete AccessToken from SessionManager")
-        }
-    }
-    
-    
-    func test_05_ManageUser() {
-        
-        // Given
-        guard let sessionManager = constructSessionManager() else {
-            XCTFail("Failed to construct SessionManager")
-            return
-        }
-        
-        guard let tokenData = self.readDataFromJSON("AccessToken"), let at = AccessToken(tokenResponse: tokenData) else {
-            XCTFail("Failed to read 'AccessToken.json' for \(String(describing: self)) testing")
-            return
-        }
-        
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        let user = FRUser(token: at, serverConfig: serverConfig)
-        sessionManager.setCurrentUser(user: user)
-        
-        // Then
-        XCTAssertNotNil(sessionManager.getCurrentUser())
-        
-        // When
-        sessionManager.setCurrentUser(user: nil)
-        
-        // Then
-        XCTAssertNil(sessionManager.getCurrentUser())
-    }
-    
-    
-    func test_06_RevokeSSOToken() {
+    func test_03_RevokeSSOToken() {
         
         // Given
         self.startSDK()
@@ -155,13 +60,13 @@ class SessionManagerTests: FRAuthBaseTest {
             XCTFail("Failed to retrieve SessionManager singleton object after SDK initialization")
             return
         }
-        XCTAssertNotNil(sessionManager.getSSOToken())
+        XCTAssertNotNil(sessionManager.keychainManager.getSSOToken())
         
         // When
         sessionManager.revokeSSOToken()
         
         // Should
-        XCTAssertNil(sessionManager.getSSOToken())
+        XCTAssertNil(sessionManager.keychainManager.getSSOToken())
     }
     
     

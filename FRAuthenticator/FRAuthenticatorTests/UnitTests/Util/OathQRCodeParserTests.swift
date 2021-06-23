@@ -2,13 +2,14 @@
 //  OathQRCodeParserTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
 import XCTest
+@testable import FRAuthenticator
 
 class OathQRCodeParserTests: FRABaseTests {
     
@@ -234,6 +235,45 @@ class OathQRCodeParserTests: FRABaseTests {
             XCTAssertNotNil(parser.oathAlgorithm)
             XCTAssertEqual(parser.algorithm, "sha512")
             XCTAssertEqual(parser.oathAlgorithm, .sha512)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_12_parse_qrcode_with_image_base64_encoded() {
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&image=aHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy9lL2U1L0Zvcmdlcm9ja19Mb2dvXzE5MHB4LnBuZw==")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertEqual(parser.image, "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_13_parse_qrcode_with_image_plain_text() {
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&image=https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertEqual(parser.image, "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_14_parse_qrcode_with_image_url_encoded() {
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&image=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fe%2Fe5%2FForgerock_Logo_190px.png")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertEqual(parser.image, "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png")
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

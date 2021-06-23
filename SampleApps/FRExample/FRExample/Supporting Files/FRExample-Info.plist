@@ -35,6 +35,8 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>FRExample app uses BLE to collect device information</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>FaceID is required for biometric authentication</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FRExample app uses geo-location service to collect device information</string>
 	<key>UILaunchStoryboardName</key>

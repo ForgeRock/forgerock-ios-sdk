@@ -2,7 +2,7 @@
 //  TokenManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -15,43 +15,26 @@ import Foundation
 struct TokenManager {
     
     var oAuth2Client: OAuth2Client
-    var sessionManager: SessionManager
+    var keychainManager: KeychainManager
     
     /// Initializes TokenMAnager instance with optional Access Group for shared Keychain Group identifier
     ///
     /// - Parameters:
     ///   - oAuth2Client: OAuth2Client instance for OAuth2 token protocols
     ///   - keychainManager: KeychainManager instance for secure credentials management
-    public init(oAuth2Client: OAuth2Client, sessionManager: SessionManager) {
+    public init(oAuth2Client: OAuth2Client, keychainManager: KeychainManager) {
         self.oAuth2Client = oAuth2Client
-        self.sessionManager = sessionManager
+        self.keychainManager = keychainManager
     }
-    
-    /// Persists AccessToken instance into Keychain Service
-    ///
-    /// - Parameter token: AccessToken instance to persist
-    /// - Throws: TokenError.failToPersistToken when failed to parse AccessToken instance
-    public func persist(token: AccessToken) throws {
-        try self.sessionManager.setAccessToken(token: token)
-    }
-    
-    
-    /// Retrieves AccessToken object from Keychain Service
-    ///
-    /// - Returns: AccessToken object if it was found, and was able to decode object; otherwise nil
-    /// - Throws: TokenError.failToParseToken error when retrieved data from Keychain Service failed to deserialize into AccessToken object
-    func retrieveAccessTokenFromKeychain() throws -> AccessToken? {
-        return try self.sessionManager.getAccessToken()
-    }
-    
+        
     
     /// Retrieves AccessToken; if AccessToken expires within threshold defined in OAuth2Client, it will return a new set of OAuth2 tokens
     ///
     /// - Parameter completion: TokenCompletion block which will return an AccessToken object, or Error
     public func getAccessToken(completion: @escaping TokenCompletionCallback) {
         do {
-            if let token = try self.retrieveAccessTokenFromKeychain() {
-                if let ssoToken = self.sessionManager.getSSOToken()?.value, ssoToken != token.sessionToken {
+            if let token = try self.keychainManager.getAccessToken() {
+                if let ssoToken = self.keychainManager.getSSOToken()?.value, ssoToken != token.sessionToken {
                     FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                     self.revokeAndEndSession { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
@@ -98,9 +81,9 @@ struct TokenManager {
     /// - Returns: AccessToken if it was able to retrieve, or get new set of OAuth2 token
     /// - Throws: AuthError will be thrown when refresh_token request failed, or TokenError
     public func getAccessToken() throws -> AccessToken? {
-        if let token = try self.retrieveAccessTokenFromKeychain() {
+        if let token = try self.keychainManager.getAccessToken() {
             
-            if let ssoToken = self.sessionManager.getSSOToken()?.value, token.sessionToken != ssoToken {
+            if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
                 FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                 self.revokeAndEndSession { (error) in
                 }
@@ -137,8 +120,8 @@ struct TokenManager {
     /// - Parameter completion: TokenCompletion block which will return an AccessToken object, or Error
     func refresh(completion: @escaping TokenCompletionCallback) {
         do {
-            if let token = try self.retrieveAccessTokenFromKeychain() {
-                if let ssoToken = self.sessionManager.getSSOToken()?.value, ssoToken != token.sessionToken {
+            if let token = try self.keychainManager.getAccessToken() {
+                if let ssoToken = self.keychainManager.getSSOToken()?.value, ssoToken != token.sessionToken {
                     FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                     self.revokeAndEndSession { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
@@ -176,9 +159,9 @@ struct TokenManager {
     /// - Throws: TokenError
     /// - Returns: renewed OAuth2 token 
     func refreshSync() throws -> AccessToken? {
-        if let token = try self.retrieveAccessTokenFromKeychain() {
+        if let token = try self.keychainManager.getAccessToken() {
             
-            if let ssoToken = self.sessionManager.getSSOToken()?.value, token.sessionToken != ssoToken {
+            if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
                 FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                 self.revokeAndEndSession { (error) in
                 }
@@ -209,15 +192,16 @@ struct TokenManager {
     /// - Parameter completion: Completion block which will return an Error if there was any error encountered
     func revoke(completion: @escaping CompletionCallback) {
         do {
-            if let token = try self.retrieveAccessTokenFromKeychain() {
+            if let token = try self.keychainManager.getAccessToken() {
                 self.oAuth2Client.revoke(accessToken: token, completion: completion)
-                try? self.sessionManager.setAccessToken(token: nil)
+                try self.keychainManager.setAccessToken(token: nil)
             }
             else {
                 completion(TokenError.nullToken)
             }
         }
         catch {
+            FRLog.e("Unexpected error while revoking AccessToken: \(error.localizedDescription)")
             completion(error)
         }
     }
@@ -237,7 +221,7 @@ struct TokenManager {
     /// - Parameter completion: Completion callback to notify the result
     func revokeAndEndSession(completion: @escaping CompletionCallback) {
         do {
-            if let token = try self.retrieveAccessTokenFromKeychain() {
+            if let token = try self.keychainManager.getAccessToken() {
                 //  End session if id_token exists
                 if let idToken = token.idToken {
                     self.endSession(idToken: idToken) { (error) in
@@ -262,10 +246,10 @@ struct TokenManager {
     /// - Throws: AuthApiError, TokenError
     /// - Returns: AccessToken object containing OAuth 2 token if it was successful
     func refreshUsingSSOTokenAsync() throws -> AccessToken? {
-        if let ssoToken = self.sessionManager.getSSOToken() {
+        if let ssoToken = self.keychainManager.getSSOToken() {
             do {
                 let token = try self.oAuth2Client.exchangeTokenSync(token: ssoToken)
-                try self.sessionManager.setAccessToken(token: token)
+                try self.keychainManager.setAccessToken(token: token)
                 return token
             }
             catch {
@@ -290,7 +274,7 @@ struct TokenManager {
     /// Renews OAuth 2 token(s) with SSO token
     /// - Parameter completion: Completion callback to notify the result
     func refreshUsingSSOToken(completion: @escaping TokenCompletionCallback) {
-        if let ssoToken = self.sessionManager.getSSOToken() {
+        if let ssoToken = self.keychainManager.getSSOToken() {
             self.oAuth2Client.exchangeToken(token: ssoToken) { (token, error) in
                 do {
                     if error is OAuth2Error || error is AuthApiError {
@@ -301,7 +285,7 @@ struct TokenManager {
                     }
                     else {
                         if error == nil {
-                            try self.sessionManager.setAccessToken(token: token)
+                            try self.keychainManager.setAccessToken(token: token)
                         }
                         completion(token, error)
                     }
@@ -331,7 +315,7 @@ struct TokenManager {
                 FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
                 newToken.refreshToken = token.refreshToken
             }
-            try self.sessionManager.setAccessToken(token: newToken)
+            try self.keychainManager.setAccessToken(token: newToken)
             return token
         }
         else {
@@ -355,7 +339,7 @@ struct TokenManager {
                             FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
                             newToken.refreshToken = token.refreshToken
                         }
-                        try self.sessionManager.setAccessToken(token: newToken)
+                        try self.keychainManager.setAccessToken(token: newToken)
                     }
                     completion(newToken, error)
                 }
@@ -372,10 +356,9 @@ struct TokenManager {
     
     /// Clears all credentials locally as there is no more valid credentials to renew user's session
     func clearCredentials() {
-        self.sessionManager.keychainManager.cookieStore.deleteAll()
-        try? self.sessionManager.setAccessToken(token: nil)
-        self.sessionManager.setSSOToken(ssoToken: nil)
-        self.sessionManager.setCurrentUser(user: nil)
+        self.keychainManager.cookieStore.deleteAll()
+        let _ = try? self.keychainManager.setAccessToken(token: nil)
+        self.keychainManager.setSSOToken(ssoToken: nil)
         FRSession._staticSession = nil
         FRUser._staticUser = nil
         Browser.currentBrowser = nil

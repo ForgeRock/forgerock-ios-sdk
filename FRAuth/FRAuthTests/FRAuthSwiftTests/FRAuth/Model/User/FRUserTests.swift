@@ -2,13 +2,14 @@
 //  FRUserTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
 import XCTest
+@testable import FRAuth
 
 class FRUserTests: FRAuthBaseTest {
     
@@ -31,13 +32,8 @@ class FRUserTests: FRAuthBaseTest {
             return
         }
         
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        let user = FRUser(token: at, serverConfig: serverConfig)
-        let user2 = FRUser(token: atNoRefresh, serverConfig: serverConfig)
+        let user = FRUser(token: at)
+        let user2 = FRUser(token: atNoRefresh)
         
         XCTAssertNotNil(user)
         XCTAssertNotNil(user2)
@@ -159,12 +155,7 @@ class FRUserTests: FRAuthBaseTest {
             return
         }
         
-        guard let serverConfig = self.config.serverConfig else {
-            XCTFail("Failed to load Config for ServerConfig")
-            return
-        }
-        
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         let ex = self.expectation(description: "Get User Info")
         user.getUserInfo { (userInfo, error) in
@@ -340,8 +331,8 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         at1.expiresIn = 0
-        if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+        if let keychainManager = self.config.keychainManager {
+            let _ = try? keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -382,8 +373,8 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         at1.expiresIn = 0
-        if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+        if let keychainManager = self.config.keychainManager {
+            let _ = try? keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -536,7 +527,7 @@ class FRUserTests: FRAuthBaseTest {
         }
         
         // When set currentUser without SSO Token, nor AccessToken
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         // Then
         user.logout()
@@ -665,6 +656,55 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(node)
             XCTAssertNil(user)
             XCTAssertNil(error)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func test_05_01_RevokeAccessTokenSuccess() {
+        
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success"])
+        
+        let ex = self.expectation(description: "Revoke AccessToken success")
+        user.revokeAccessToken { (user, error) in
+            XCTAssertNotNil(user)
+            XCTAssertNil(error)
+            XCTAssertNil(user?.token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func test_05_01_RevokeAccessTokenError() {
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        
+        let ex = self.expectation(description: "Revoke AccessToken failure")
+        user.revokeAccessToken { (user, error) in
+            XCTAssertNotNil(user)
+            XCTAssertNil(user?.token)
+            XCTAssertNotNil(error)
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)

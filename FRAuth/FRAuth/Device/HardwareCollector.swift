@@ -2,7 +2,7 @@
 //  HardwareCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -17,6 +17,9 @@ public class HardwareCollector: DeviceCollector {
     
     /// Name of current collector
     public var name: String = "hardware"
+    
+    /// Initializes HardwareCollector instance
+    public init() { }
     
     /// Collects hardware information using ProcessInfo
     ///

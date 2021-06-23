@@ -12,6 +12,10 @@
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
 		D521A2102303644300EDD28E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D554633622A6EF960096C7A4 /* Assets.xcassets */; };
 		D521A2122303644300EDD28E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
+		D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D530423A26321BE90079EB3B /* FRCore.framework */; };
+		D530423C26321BE90079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530423A26321BE90079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D530424426321BF00079EB3B /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D530424326321BF00079EB3B /* FRCore.framework */; };
+		D530424526321BF00079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530424326321BF00079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */; };
 		D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D554633522A6EF950096C7A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
@@ -19,16 +23,16 @@
 		D554633A22A6EF960096C7A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
 		D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; };
 		D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D58071622512BA8200D0935A /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; };
-		D58071632512BA8200D0935A /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; };
+		D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D58BC3E826031C3200254654 /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; };
+		D58BC3E926031C3200254654 /* FRFacebookSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAE772344144A005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; };
 		D59FAE782344144A005D34DA /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F443233AC39500D18DF1 /* FRAuth.framework */; };
 		D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F443233AC39500D18DF1 /* FRAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; };
 		D59FAEB6234418EF005D34DA /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F450233AC39F00D18DF1 /* FRUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D5C050EC245A415E00E5A38C /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; };
-		D5C050ED245A415E00E5A38C /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5C050EB245A415E00E5A38C /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */; };
 		D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
 		D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */; };
@@ -42,6 +46,48 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D58BC3D226031BE500254654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5B2066C26008D0800DABB9B;
+			remoteInfo = FRGoogleSignIn;
+		};
+		D58BC3D426031BE500254654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5B2067526008D0900DABB9B;
+			remoteInfo = FRGoogleSignInTests;
+		};
+		D58BC3DE26031BF100254654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D57F6372260137E900BBA0B6;
+			remoteInfo = FRFacebookSignIn;
+		};
+		D58BC3E026031BF100254654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D57F637B260137EA00BBA0B6;
+			remoteInfo = FRFacebookSignInTests;
+		};
+		D58BC3E226031C0D00254654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D57F6371260137E900BBA0B6;
+			remoteInfo = FRFacebookSignIn;
+		};
+		D58BC3E626031C2B00254654 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D57F6371260137E900BBA0B6;
+			remoteInfo = FRFacebookSignIn;
+		};
 		D59FAE552344141A005D34DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */;
@@ -63,13 +109,6 @@
 			remoteGlobalIDString = D59FAE1D234413D3005D34DA;
 			remoteInfo = FRProximity;
 		};
-		D59FAE792344144A005D34DA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D59FAE1D234413D3005D34DA;
-			remoteInfo = FRProximity;
-		};
 		D59FAEA2234418D3005D34DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
@@ -78,20 +117,6 @@
 			remoteInfo = FRAuth;
 		};
 		D59FAEAA234418D3005D34DA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5E6F448233AC39E00D18DF1 /* FRUI.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D53A91E022B1815B003DF94E;
-			remoteInfo = FRUI;
-		};
-		D59FAEAF234418EF005D34DA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D55462F722A6DF720096C7A4;
-			remoteInfo = FRAuth;
-		};
-		D59FAEB7234418EF005D34DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5E6F448233AC39E00D18DF1 /* FRUI.xcodeproj */;
 			proxyType = 1;
@@ -133,13 +158,6 @@
 			remoteGlobalIDString = D53A91EA22B1815B003DF94E;
 			remoteInfo = FRUITests;
 		};
-		D5E6F457233AC3AF00D18DF1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5E6F448233AC39E00D18DF1 /* FRUI.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D53A91E022B1815B003DF94E;
-			remoteInfo = FRUI;
-		};
 		D5E6F459233AC3AF00D18DF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
@@ -154,13 +172,6 @@
 			remoteGlobalIDString = D53A91E022B1815B003DF94E;
 			remoteInfo = FRUI;
 		};
-		D5E6F461233AC3B700D18DF1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D55462F722A6DF720096C7A4;
-			remoteInfo = FRAuth;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -170,10 +181,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D58BC3E926031C3200254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				D5E6F460233AC3B700D18DF1 /* FRAuth.framework in Embed Frameworks */,
-				D58071632512BA8200D0935A /* FRCore.framework in Embed Frameworks */,
 				D59FAE782344144A005D34DA /* FRProximity.framework in Embed Frameworks */,
 				D5E6F45C233AC3B700D18DF1 /* FRUI.framework in Embed Frameworks */,
+				D530424526321BF00079EB3B /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,10 +196,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
-				D5C050ED245A415E00E5A38C /* FRCore.framework in Embed Frameworks */,
 				D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */,
 				D59FAEB6234418EF005D34DA /* FRUI.framework in Embed Frameworks */,
+				D530423C26321BE90079EB3B /* FRCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -196,6 +209,8 @@
 
 /* Begin PBXFileReference section */
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D530424326321BF00079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceAuthInterceptor.swift; sourceTree = "<group>"; };
 		D554632C22A6EF950096C7A4 /* FRExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D554632F22A6EF950096C7A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -203,6 +218,8 @@
 		D554633422A6EF950096C7A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D554633622A6EF960096C7A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D554633922A6EF960096C7A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRGoogleSignIn.xcodeproj; path = ../../FRGoogleSignIn/FRGoogleSignIn.xcodeproj; sourceTree = "<group>"; };
+		D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRFacebookSignIn.xcodeproj; path = ../../FRFacebookSignIn/FRFacebookSignIn.xcodeproj; sourceTree = "<group>"; };
 		D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRProximity.xcodeproj; path = ../../FRProximity/FRProximity.xcodeproj; sourceTree = "<group>"; };
 		D5C050EB245A415E00E5A38C /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5C64E552489808600CB7EB3 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
@@ -225,10 +242,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D58BC3E826031C3200254654 /* FRFacebookSignIn.framework in Frameworks */,
 				D5E6F45F233AC3B700D18DF1 /* FRAuth.framework in Frameworks */,
-				D58071622512BA8200D0935A /* FRCore.framework in Frameworks */,
 				D59FAE772344144A005D34DA /* FRProximity.framework in Frameworks */,
 				D5E6F45B233AC3B700D18DF1 /* FRUI.framework in Frameworks */,
+				D530424426321BF00079EB3B /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,10 +254,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */,
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
-				D5C050EC245A415E00E5A38C /* FRCore.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
+				D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +277,8 @@
 		D554632322A6EF950096C7A4 = {
 			isa = PBXGroup;
 			children = (
+				D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */,
+				D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */,
 				D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */,
 				D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */,
 				D5E6F448233AC39E00D18DF1 /* FRUI.xcodeproj */,
@@ -295,9 +316,29 @@
 		D5554F6F235A6F78009FC810 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D530424326321BF00079EB3B /* FRCore.framework */,
+				D530423A26321BE90079EB3B /* FRCore.framework */,
 				D5C050EB245A415E00E5A38C /* FRCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D58BC3CC26031BE500254654 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */,
+				D58BC3D526031BE500254654 /* FRGoogleSignInTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D58BC3D926031BF100254654 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */,
+				D58BC3E126031BF100254654 /* FRFacebookSignInTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D59FAE4D2344141A005D34DA /* Products */ = {
@@ -373,12 +414,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				D58BC3E726031C2B00254654 /* PBXTargetDependency */,
 				D59FAE7623441445005D34DA /* PBXTargetDependency */,
-				D5E6F458233AC3AF00D18DF1 /* PBXTargetDependency */,
 				D5E6F45A233AC3AF00D18DF1 /* PBXTargetDependency */,
 				D5E6F45E233AC3B700D18DF1 /* PBXTargetDependency */,
-				D5E6F462233AC3B700D18DF1 /* PBXTargetDependency */,
-				D59FAE7A2344144A005D34DA /* PBXTargetDependency */,
 			);
 			name = FRExampleSSO;
 			productName = FRExample;
@@ -397,10 +436,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				D58BC3E326031C0D00254654 /* PBXTargetDependency */,
 				D59FAEA3234418D3005D34DA /* PBXTargetDependency */,
 				D59FAEAB234418D3005D34DA /* PBXTargetDependency */,
-				D59FAEB0234418EF005D34DA /* PBXTargetDependency */,
-				D59FAEB8234418EF005D34DA /* PBXTargetDependency */,
 				D59FAEBF23441B7E005D34DA /* PBXTargetDependency */,
 			);
 			name = FRExample;
@@ -461,6 +499,14 @@
 					ProjectRef = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
 				},
 				{
+					ProductGroup = D58BC3D926031BF100254654 /* Products */;
+					ProjectRef = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
+				},
+				{
+					ProductGroup = D58BC3CC26031BE500254654 /* Products */;
+					ProjectRef = D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */;
+				},
+				{
 					ProductGroup = D59FAE4D2344141A005D34DA /* Products */;
 					ProjectRef = D59FAE4C2344141A005D34DA /* FRProximity.xcodeproj */;
 				},
@@ -478,6 +524,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRGoogleSignIn.framework;
+			remoteRef = D58BC3D226031BE500254654 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D58BC3D526031BE500254654 /* FRGoogleSignInTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRGoogleSignInTests.xctest;
+			remoteRef = D58BC3D426031BE500254654 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRFacebookSignIn.framework;
+			remoteRef = D58BC3DE26031BF100254654 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D58BC3E126031BF100254654 /* FRFacebookSignInTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRFacebookSignInTests.xctest;
+			remoteRef = D58BC3E026031BF100254654 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D59FAE562344141A005D34DA /* FRProximity.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -573,15 +647,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D58BC3E326031C0D00254654 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRFacebookSignIn;
+			targetProxy = D58BC3E226031C0D00254654 /* PBXContainerItemProxy */;
+		};
+		D58BC3E726031C2B00254654 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRFacebookSignIn;
+			targetProxy = D58BC3E626031C2B00254654 /* PBXContainerItemProxy */;
+		};
 		D59FAE7623441445005D34DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FRProximity;
 			targetProxy = D59FAE7523441445005D34DA /* PBXContainerItemProxy */;
-		};
-		D59FAE7A2344144A005D34DA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRProximity;
-			targetProxy = D59FAE792344144A005D34DA /* PBXContainerItemProxy */;
 		};
 		D59FAEA3234418D3005D34DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -593,25 +672,10 @@
 			name = FRUI;
 			targetProxy = D59FAEAA234418D3005D34DA /* PBXContainerItemProxy */;
 		};
-		D59FAEB0234418EF005D34DA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRAuth;
-			targetProxy = D59FAEAF234418EF005D34DA /* PBXContainerItemProxy */;
-		};
-		D59FAEB8234418EF005D34DA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRUI;
-			targetProxy = D59FAEB7234418EF005D34DA /* PBXContainerItemProxy */;
-		};
 		D59FAEBF23441B7E005D34DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FRProximity;
 			targetProxy = D59FAEBE23441B7E005D34DA /* PBXContainerItemProxy */;
-		};
-		D5E6F458233AC3AF00D18DF1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRUI;
-			targetProxy = D5E6F457233AC3AF00D18DF1 /* PBXContainerItemProxy */;
 		};
 		D5E6F45A233AC3AF00D18DF1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -622,11 +686,6 @@
 			isa = PBXTargetDependency;
 			name = FRUI;
 			targetProxy = D5E6F45D233AC3B700D18DF1 /* PBXContainerItemProxy */;
-		};
-		D5E6F462233AC3B700D18DF1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRAuth;
-			targetProxy = D5E6F461233AC3B700D18DF1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

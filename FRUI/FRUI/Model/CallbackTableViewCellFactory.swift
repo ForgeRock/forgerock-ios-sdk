@@ -2,14 +2,14 @@
 //  CallbackTableViewCellFactory.swift
 //  FRUI
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import Foundation
+import UIKit
 import FRAuth
 
 
@@ -55,7 +55,10 @@ public class CallbackTableViewCellFactory: NSObject {
             "DeviceProfileCallback": DeviceAttributeTableViewCell.self,
             "BooleanAttributeInputCallback": BooleanAttributeInputCallbackTableViewCell.self,
             "NumberAttributeInputCallback": NameCallbackTableViewCell.self,
-            "SuspendedTextOutputCallback": TextOutputCallbackTableViewCell.self
+            "SuspendedTextOutputCallback": TextOutputCallbackTableViewCell.self,
+            "WebAuthnAuthenticationCallback": WebAuthnCallbackTableViewCell.self,
+            "WebAuthnRegistrationCallback": WebAuthnCallbackTableViewCell.self,
+            "IdPCallback": IdPCallbackTableViewCell.self
         ]
         
         self.tableViewCellNibForCallbacks = [
@@ -73,7 +76,10 @@ public class CallbackTableViewCellFactory: NSObject {
             "DeviceProfileCallback": "DeviceAttributeTableViewCell",
             "BooleanAttributeInputCallback": "BooleanAttributeInputCallbackTableViewCell",
             "NumberAttributeInputCallback": "NameCallbackTableViewCell",
-            "SuspendedTextOutputCallback": "TextOutputCallbackTableViewCell"
+            "SuspendedTextOutputCallback": "TextOutputCallbackTableViewCell",
+            "WebAuthnAuthenticationCallback": "WebAuthnCallbackTableViewCell",
+            "WebAuthnRegistrationCallback": "WebAuthnCallbackTableViewCell",
+            "IdPCallback": "IdPCallbackTableViewCell"
         ]
     }
     

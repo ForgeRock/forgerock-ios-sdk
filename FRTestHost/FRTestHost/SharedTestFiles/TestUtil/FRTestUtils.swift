@@ -24,9 +24,9 @@ class FRTestUtils: XCTest {
         
         var json: [String: Any]?
         
-        if let data = str.data(using: String.Encoding.utf8) {
+        if let data = str.data(using: .utf8) {
             do {
-                json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:Any]
+                json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
             } catch {
                 XCTFail("Fail to parse JSON payload")
             }

@@ -2,7 +2,7 @@
 //  CallbackFactory.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -34,6 +34,10 @@ import Foundation
          15. BooleanAttributeInputCallback
          16. NumberAttributeInputCallback
          17. SuspendedTextOutputCallback
+         18. WebAuthnRegistrationCallback
+         19. WebAuthnAuthenticationCallback
+         20. IdPCallback
+         21. SelectIdPCallback
  */
 @objc(FRCallbackFactory)
 public class CallbackFactory: NSObject {
@@ -53,24 +57,28 @@ public class CallbackFactory: NSObject {
     override init() {
         
         self.supportedCallbacks = [
-            "ChoiceCallback": ChoiceCallback.self,
-            "NameCallback": NameCallback.self,
-            "PasswordCallback": PasswordCallback.self,
-            "ValidatedCreateUsernameCallback": ValidatedCreateUsernameCallback.self,
-            "ValidatedCreatePasswordCallback": ValidatedCreatePasswordCallback.self,
-            "StringAttributeInputCallback": StringAttributeInputCallback.self,
-            "TermsAndConditionsCallback": TermsAndConditionsCallback.self,
-            "KbaCreateCallback": KbaCreateCallback.self,
-            "PollingWaitCallback": PollingWaitCallback.self,
-            "ConfirmationCallback": ConfirmationCallback.self,
-            "TextOutputCallback": TextOutputCallback.self,
-            "ReCaptchaCallback": ReCaptchaCallback.self,
-            "HiddenValueCallback": HiddenValueCallback.self,
-            "DeviceProfileCallback": DeviceProfileCallback.self,
-            "MetadataCallback": MetadataCallback.self,
-            "BooleanAttributeInputCallback": BooleanAttributeInputCallback.self,
-            "NumberAttributeInputCallback": NumberAttributeInputCallback.self,
-            "SuspendedTextOutputCallback": SuspendedTextOutputCallback.self
+            CallbackType.ChoiceCallback.rawValue: ChoiceCallback.self,
+            CallbackType.NameCallback.rawValue: NameCallback.self,
+            CallbackType.PasswordCallback.rawValue: PasswordCallback.self,
+            CallbackType.ValidatedCreateUsernameCallback.rawValue: ValidatedCreateUsernameCallback.self,
+            CallbackType.ValidatedCreatePasswordCallback.rawValue: ValidatedCreatePasswordCallback.self,
+            CallbackType.StringAttributeInputCallback.rawValue: StringAttributeInputCallback.self,
+            CallbackType.TermsAndConditionsCallback.rawValue: TermsAndConditionsCallback.self,
+            CallbackType.KbaCreateCallback.rawValue: KbaCreateCallback.self,
+            CallbackType.PollingWaitCallback.rawValue: PollingWaitCallback.self,
+            CallbackType.ConfirmationCallback.rawValue: ConfirmationCallback.self,
+            CallbackType.TextOutputCallback.rawValue: TextOutputCallback.self,
+            CallbackType.ReCaptchaCallback.rawValue: ReCaptchaCallback.self,
+            CallbackType.HiddenValueCallback.rawValue: HiddenValueCallback.self,
+            CallbackType.DeviceProfileCallback.rawValue: DeviceProfileCallback.self,
+            CallbackType.MetadataCallback.rawValue: MetadataCallback.self,
+            CallbackType.BooleanAttributeInputCallback.rawValue: BooleanAttributeInputCallback.self,
+            CallbackType.NumberAttributeInputCallback.rawValue: NumberAttributeInputCallback.self,
+            CallbackType.SuspendedTextOutputCallback.rawValue: SuspendedTextOutputCallback.self,
+            CallbackType.WebAuthnAuthenticationCallback.rawValue: WebAuthnAuthenticationCallback.self,
+            CallbackType.WebAuthnRegistrationCallback.rawValue: WebAuthnRegistrationCallback.self,
+            CallbackType.IdPCallback.rawValue: IdPCallback.self,
+            CallbackType.SelectIdPCallback.rawValue: SelectIdPCallback.self
         ]
     }
     

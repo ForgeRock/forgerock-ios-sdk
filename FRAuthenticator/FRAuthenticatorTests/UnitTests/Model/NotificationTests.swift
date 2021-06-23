@@ -2,14 +2,14 @@
 //  NotificationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
+@testable import FRAuthenticator
 
 class NotificationTests: FRABaseTests {
 
@@ -199,6 +199,58 @@ class NotificationTests: FRABaseTests {
                 XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
                 XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
             }
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_11_codable_serialization() {
+        do {
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertNotNil(notification)
+            
+            //  Encode
+            let encodedData = try JSONEncoder().encode(notification)
+            
+            //  Decode
+            let decodedNotification = try JSONDecoder().decode(PushNotification.self, from: encodedData)
+            
+            //  Then
+            XCTAssertEqual(notification.messageId, decodedNotification.messageId)
+            XCTAssertEqual(notification.challenge, decodedNotification.challenge)
+            XCTAssertEqual(notification.loadBalanceKey, decodedNotification.loadBalanceKey)
+            XCTAssertEqual(notification.ttl, decodedNotification.ttl)
+            XCTAssertEqual(notification.mechanismUUID, decodedNotification.mechanismUUID)
+            XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, decodedNotification.timeAdded.timeIntervalSince1970)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_12_json_string_serialization() {
+        do {
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertNotNil(notification)
+            
+            guard let jsonString = notification.toJson() else {
+                XCTFail("Failed to serialize the object into JSON String value")
+                return
+            }
+            
+            //  Decode
+            let decodedNotification = try JSONDecoder().decode(PushNotification.self, from: jsonString.data(using: .utf8) ?? Data())
+            
+            //  Then
+            XCTAssertEqual(notification.messageId, decodedNotification.messageId)
+            XCTAssertEqual(notification.challenge, decodedNotification.challenge)
+            XCTAssertEqual(notification.loadBalanceKey, decodedNotification.loadBalanceKey)
+            XCTAssertEqual(notification.ttl, decodedNotification.ttl)
+            XCTAssertEqual(notification.mechanismUUID, decodedNotification.mechanismUUID)
+            XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, decodedNotification.timeAdded.timeIntervalSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

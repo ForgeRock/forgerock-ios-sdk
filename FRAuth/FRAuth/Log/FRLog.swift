@@ -2,7 +2,7 @@
 //  FRLog.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -40,20 +40,36 @@ By default, FRLog uses OSLog to display the log entry in the debug console, and 
         Log.setLogLevel(logLevel)
     }
     
-    public static func v(_ message: String, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
-        Log.v(message, includeCallStack, module: ModuleName, file: file, line: line, function: function)
+    public static func v(_ message: String, subModule: String? = nil, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
+        var newMessage = message
+        if let subModule = subModule {
+            newMessage = subModule + " " + message
+        }
+        Log.v(newMessage, includeCallStack, module: ModuleName, file: file, line: line, function: function)
     }
     
-    public static func i(_ message: String, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
-        Log.i(message, includeCallStack, module: ModuleName, file: file, line: line, function: function)
+    public static func i(_ message: String, subModule: String? = nil, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
+        var newMessage = message
+        if let subModule = subModule {
+            newMessage = subModule + " " + message
+        }
+        Log.i(newMessage, includeCallStack, module: ModuleName, file: file, line: line, function: function)
     }
     
     
-    public static func w(_ message: String, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
-        Log.w(message, includeCallStack, module: ModuleName, file: file, line: line, function: function)
+    public static func w(_ message: String, subModule: String? = nil, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
+        var newMessage = message
+        if let subModule = subModule {
+            newMessage = subModule + " " + message
+        }
+        Log.w(newMessage, includeCallStack, module: ModuleName, file: file, line: line, function: function)
     }
     
-    public static func e(_ message: String, file: String = #file, line: Int = #line, function: String = #function) {
-        Log.e(message, module: ModuleName, file: file, line: line, function: function)
+    public static func e(_ message: String, subModule: String? = nil, file: String = #file, line: Int = #line, function: String = #function) {
+        var newMessage = message
+        if let subModule = subModule {
+            newMessage = subModule + " " + message
+        }
+        Log.e(newMessage, module: ModuleName, file: file, line: line, function: function)
     }
 }

@@ -2,7 +2,7 @@
 //  AuthenticatorManager.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -319,6 +319,13 @@ struct AuthenticatorManager {
     /// - Returns: An array of PushNotification object
     func getAllNotifications(mechanism: PushMechanism) -> [PushNotification] {
         return self.storageClient.getAllNotificationsForMechanism(mechanism: mechanism)
+    }
+    
+    
+    /// Retrieves All PushNotification across all mechanisms
+    /// - Returns: An array of PushNotification object
+    func getAllNotifications() -> [PushNotification] {
+        return self.storageClient.getAllNotifications()
     }
     
     

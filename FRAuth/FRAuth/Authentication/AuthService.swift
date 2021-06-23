@@ -2,7 +2,7 @@
 //  AuthService.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -19,25 +19,7 @@ import FRCore
  
  ## Notes ##
      * Any Callback type returned from AM must be supported within CallbackFactory.shared.supportedCallbacks.
-     * Any custom Callback must be implemented custom Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
-     * FRAuth SDK currently supports following Callback types:
-         1. NameCallback
-         2. PasswordCallback
-         3. ChoiceCallback
-         4. ValidatedCreateUsernameCallback
-         5. ValidatedCreatePasswordCallback
-         6. StringAttributeInputCallback
-         7. TermsAndConditionsCallback
-         8. KbaCreateCallback
-         9. PollingWaitCallback
-         10. ConfirmationCallback
-         11. TextOutputCallback
-         12. ReCaptchaCallback
-         13. MetadataCallback
-         14. DeviceProfileCallback
-         15. BooleanAttributeInputCallback
-         16. NumberAttributeInputCallback
-         17. SuspendedTextOutputCallback
+     * Any custom Callback must be implemented by inheriting Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
  */
 @objc(FRAuthService)
 public class AuthService: NSObject {
@@ -55,10 +37,10 @@ public class AuthService: NSObject {
     var serverConfig: ServerConfig
     /// OAuth2CLient that contains OpenAM's OAuth2 client information
     var oAuth2Config: OAuth2Client?
-    /// SessionManager instance to manage, and persist authenticated session
-    var sessionManager: SessionManager?
     /// TokenManager instance to manage, and persist authenticated session
     var tokenManager: TokenManager?
+    /// KeychainManager instance to persist, and retrieve credentials from storage
+    var keychainManager: KeychainManager?
     
     
     //  MARK: - Init
@@ -69,10 +51,10 @@ public class AuthService: NSObject {
     ///   - name: String value of AuthService name
     ///   - serverConfig: ServerConfig object for AuthService server communication
     @objc
-    public init(name: String, serverConfig:ServerConfig) {
+    public init(name: String, serverConfig: ServerConfig) {
         FRLog.v("AuthService init - service: \(name), ServerConfig: \(serverConfig)")
         self.serviceName = name
-        self.authIndexType = "service"
+        self.authIndexType = OpenAM.service
         self.serverConfig = serverConfig
         self.authServiceId = UUID().uuidString
     }
@@ -83,15 +65,15 @@ public class AuthService: NSObject {
     ///   - suspendedId: suspendedId to resume Authentication Tree flow
     ///   - serverConfig: ServerConfig object for AuthService server communication
     ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
-    ///   - sessionManager: SessionManager instance to manage and persist authenticated session
+    ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
     ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
-    init(suspendedId: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil) {
-        FRLog.v("AuthService init - suspendedId: \(suspendedId), ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
+    init(suspendedId: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, keychainManager: KeychainManager? = nil, tokenManager: TokenManager? = nil) {
+        FRLog.v("AuthService init - suspendedId: \(suspendedId), ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), KeychainManager: \(String(describing: keychainManager)), TokenManager: \(String(describing: tokenManager))")
         self.serviceName = suspendedId
         self.authIndexType = OpenAM.suspendedId
         self.serverConfig = serverConfig
         self.oAuth2Config = oAuth2Config
-        self.sessionManager = sessionManager
+        self.keychainManager = keychainManager
         self.tokenManager = tokenManager
         self.authServiceId = UUID().uuidString
     }
@@ -104,16 +86,16 @@ public class AuthService: NSObject {
     ///   - authIndexValue: String value of Authentication Tree name
     ///   - serverConfig: ServerConfig object for AuthService server communication
     ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
-    ///   - sessionManager: SessionManager instance to manage and persist authenticated session
-    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
+    ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
+    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session   
     ///   - authIndexType: String value of Authentication Tree type   
-    init (authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, sessionManager: SessionManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String = OpenAM.service) {
-        FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), SessionManager: \(String(describing: sessionManager)), TokenManager: \(String(describing: tokenManager))")
+    init(authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, keychainManager: KeychainManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String = OpenAM.service) {
+        FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), KeychainManager: \(String(describing: keychainManager)), TokenManager: \(String(describing: tokenManager))")
         self.serviceName = authIndexValue
         self.authIndexType = authIndexType
         self.serverConfig = serverConfig
         self.oAuth2Config = oAuth2Config
-        self.sessionManager = sessionManager
+        self.keychainManager = keychainManager
         self.tokenManager = tokenManager
         self.authServiceId = UUID().uuidString
     }
@@ -124,7 +106,7 @@ public class AuthService: NSObject {
     /// Submits current Node object with Callback(s) and its given value(s) to OpenAM to proceed on authentication flow.
     ///
     /// - Parameter completion: NodeCompletion callback which returns the result of Node submission.
-    public func next<T>(completion:@escaping NodeCompletion<T>) {
+    public func next<T>(completion: @escaping NodeCompletion<T>) {
         
         if T.self as AnyObject? === Token.self {
             next { (token: Token?, node, error) in
@@ -149,7 +131,7 @@ public class AuthService: NSObject {
     
     // MARK: Private/internal methods to handle different expected type of result
     
-    fileprivate func next(completion:@escaping NodeCompletion<FRUser>) {
+    fileprivate func next(completion: @escaping NodeCompletion<FRUser>) {
         if let currentUser = FRUser.currentUser, currentUser.token != nil {
             FRLog.i("FRUser.currentUser retrieved from SessionManager; ignoring AuthService submit")
             completion(currentUser, nil, nil)
@@ -157,8 +139,7 @@ public class AuthService: NSObject {
         else {
             self.next { (accessToken: AccessToken?, node, error) in
                 if let token = accessToken {
-                    let user = FRUser(token: token, serverConfig: self.serverConfig)
-                    self.sessionManager?.setCurrentUser(user: user)
+                    let user = FRUser(token: token)
                     
                     completion(user, nil, nil)
                 }
@@ -170,9 +151,9 @@ public class AuthService: NSObject {
     }
     
     
-    fileprivate func next(completion:@escaping NodeCompletion<AccessToken>) {
+    fileprivate func next(completion: @escaping NodeCompletion<AccessToken>) {
     
-        if let accessToken = try? self.sessionManager?.getAccessToken() {
+        if let accessToken = try? self.keychainManager?.getAccessToken() {
             FRLog.i("access_token retrieved from SessionManager; ignoring AuthService submit")
             completion(accessToken, nil, nil)
         }
@@ -191,7 +172,12 @@ public class AuthService: NSObject {
                             else {
                                 
                                 if let token = accessToken {
-                                    try? self.sessionManager?.setAccessToken(token: token)
+                                    do {
+                                        try self.keychainManager?.setAccessToken(token: token)
+                                    }
+                                    catch {
+                                        FRLog.e("Unexpected error while storing AccessToken: \(error.localizedDescription)")
+                                    }
                                 }
                                 
                                 // Return AccessToken
@@ -211,7 +197,7 @@ public class AuthService: NSObject {
     }
     
     
-    fileprivate func next(completion:@escaping NodeCompletion<Token>) {
+    fileprivate func next(completion: @escaping NodeCompletion<Token>) {
         
         // Construct Request object for AuthService flow with given serviceName
         let request = self.buildAuthServiceRequest()
@@ -234,7 +220,7 @@ public class AuthService: NSObject {
                 // If authId received
                 if let _ = response[OpenAM.authId] {
                     do {
-                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.sessionManager, self.tokenManager)
+                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.keychainManager, self.tokenManager)
                         completion(nil, node, nil)
                     } catch let authError as AuthError {
                         completion(nil, nil, authError)
@@ -244,15 +230,26 @@ public class AuthService: NSObject {
                 }
                 else if let tokenId = response[OpenAM.tokenId] as? String {
                     let token = Token(tokenId)
-                    if let sessionManager = self.sessionManager, let tokenManager = self.tokenManager {
-                        let currentSessionToken = sessionManager.getSSOToken()
-                        if let _ = try? tokenManager.retrieveAccessTokenFromKeychain(), token.value != currentSessionToken?.value {
+                    if let keychainManager = self.keychainManager {
+                        let currentSessionToken = keychainManager.getSSOToken()
+                        if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
                             FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
-                            tokenManager.revokeAndEndSession { (error) in
-                                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                            if let tokenManager = self.tokenManager {
+                                tokenManager.revokeAndEndSession { (error) in
+                                    FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                                }
+                            }
+                            else {
+                                FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
+                                do {
+                                    try keychainManager.setAccessToken(token: nil)
+                                }
+                                catch {
+                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                                }
                             }
                         }
-                        sessionManager.setSSOToken(ssoToken: token)
+                        keychainManager.setSSOToken(ssoToken: token)
                     }
                     
                     completion(token, nil, nil)
@@ -303,21 +300,21 @@ public class AuthService: NSObject {
     
     @objc(nextWithUserCompletion:)
     @available(swift, obsoleted: 1.0)
-    public func nextWithUserCompletion(completion:@escaping NodeCompletion<FRUser>) {
+    public func nextWithUserCompletion(completion: @escaping NodeCompletion<FRUser>) {
         self.next(completion: completion)
     }
     
     
     @objc(nextWithAccessTokenCompletion:)
     @available(swift, obsoleted: 1.0)
-    public func nextWithAccessTokenCompletion(completion:@escaping NodeCompletion<AccessToken>) {
+    public func nextWithAccessTokenCompletion(completion: @escaping NodeCompletion<AccessToken>) {
         self.next(completion: completion)
     }
     
     
     @objc(nextWithTokenCompletion:)
     @available(swift, obsoleted: 1.0)
-    public func nextWithTokenCompletion(completion:@escaping NodeCompletion<Token>) {
+    public func nextWithTokenCompletion(completion: @escaping NodeCompletion<Token>) {
         self.next(completion: completion)
     }
 }

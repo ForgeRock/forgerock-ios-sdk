@@ -2,15 +2,15 @@
 //  OathAlgorithmTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
 import CommonCrypto
+@testable import FRAuthenticator
 
 class OathAlgorithmTests: FRABaseTests {
 
@@ -48,7 +48,7 @@ class OathAlgorithmTests: FRABaseTests {
     }
     
     
-    func test_2_md5() {
+    func test_02_md5() {
         guard let algorithm = OathAlgorithm(algorithm: "md5") else {
             XCTFail("Failed to generate OathAlgorithm with 'md5'")
             return
@@ -76,7 +76,7 @@ class OathAlgorithmTests: FRABaseTests {
     }
     
     
-    func test_3_sha256() {
+    func test_03_sha256() {
         guard let algorithm = OathAlgorithm(algorithm: "sha256") else {
             XCTFail("Failed to generate OathAlgorithm with 'sha256'")
             return
@@ -104,7 +104,7 @@ class OathAlgorithmTests: FRABaseTests {
     }
     
     
-    func test_3_sha512() {
+    func test_04_sha512() {
         
         guard let algorithm = OathAlgorithm(algorithm: "sha512") else {
             XCTFail("Failed to generate OathAlgorithm with 'sha512'")
@@ -130,5 +130,45 @@ class OathAlgorithmTests: FRABaseTests {
         XCTAssertEqual(algorithm3, OathAlgorithm.sha512)
         XCTAssertEqual(algorithm3.getAlgorithm(), kCCHmacAlgSHA512)
         XCTAssertEqual(algorithm3.getDigestLength(), CC_SHA512_DIGEST_LENGTH)
+    }
+    
+    
+    func test_05_codable_serialization() {
+        guard let sha512 = OathAlgorithm(algorithm: "sha512") else {
+            XCTFail("Failed to generate OathAlgorithm with 'sha512'")
+            return
+        }
+        
+        guard let sha1 = OathAlgorithm(algorithm: "sha1") else {
+            XCTFail("Failed to generate OathAlgorithm with 'sha1'")
+            return
+        }
+        
+        guard let md5 = OathAlgorithm(algorithm: "md5") else {
+            XCTFail("Failed to generate OathAlgorithm with 'md5'")
+            return
+        }
+        
+        do {
+            //  Encode
+            let sha512Encoded = try JSONEncoder().encode(sha512)
+            let sha1Encoded = try JSONEncoder().encode(sha1)
+            let md5Encoded = try JSONEncoder().encode(md5)
+            
+            //  Deocde
+            let sha512Decoded = try JSONDecoder().decode(OathAlgorithm.self, from: sha512Encoded)
+            let sha1Decoded = try JSONDecoder().decode(OathAlgorithm.self, from: sha1Encoded)
+            let md5Decoded = try JSONDecoder().decode(OathAlgorithm.self, from: md5Encoded)
+            
+            XCTAssertEqual(sha512.getAlgorithm(), sha512Decoded.getAlgorithm())
+            XCTAssertEqual(sha512.getDigestLength(), sha512Decoded.getDigestLength())
+            XCTAssertEqual(sha1.getAlgorithm(), sha1Decoded.getAlgorithm())
+            XCTAssertEqual(sha1.getDigestLength(), sha1Decoded.getDigestLength())
+            XCTAssertEqual(md5.getAlgorithm(), md5Decoded.getAlgorithm())
+            XCTAssertEqual(md5.getDigestLength(), md5Decoded.getDigestLength())
+        }
+        catch {
+            XCTFail("Failed with an unexpected error: \(error.localizedDescription)")
+        }
     }
 }

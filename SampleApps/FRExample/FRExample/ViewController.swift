@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -148,7 +148,8 @@ class ViewController: UIViewController {
             "Login without UI (FRUser)",
             "Login without UI (Accesstoken)",
             "FRSession.authenticate without UI (Token)",
-            "Display Configurations"
+            "Display Configurations",
+            "Revoke Access Token"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -564,6 +565,17 @@ class ViewController: UIViewController {
         self.displayLog("Logout completed")
     }
     
+    func revokeAccessToken() {
+        FRUser.currentUser?.revokeAccessToken(completion: { (user, error) in
+            if let tokenError = error {
+                self.displayLog(tokenError.localizedDescription)
+            } else {
+                self.displayLog("Access token revoked")
+                self.displayLog("\(String(describing: user))")
+            }
+        })
+    }
+    
     
     func performJailbreakDetector() {
         let result = FRJailbreakDetector.shared.analyze()
@@ -637,8 +649,21 @@ class ViewController: UIViewController {
             return
         }
         
+        //  Default Cookie Name for SSO Token in AM
+        var cookieName = "iPlanetDirectoryPro"
+        
+        //  If custom cookie name is defined in configuration file, update the cookie name
+        if let path = Bundle.main.path(forResource: FRAuth.configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any], let configCookieName = config["forgerock_cookie_name"] as? String {
+            cookieName = configCookieName
+        }
+        
         var request = URLRequest(url: url)
-        request.setValue("iPlanetDirectoryPro="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        
+        //  TODO: - Change following code as needed for authorization policy, and PEP
+        //  Setting SSO Token in the request cookie is expected for Identity Gateway set-up, and where IG is acting as Policy Enforcement Points (PEP)
+        request.setValue("\(cookieName)="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
+        //  If custom web application is acting as PEP, and expecting user's authenticated session in other form (such as in URL query param, or request body), set the given SSO Token accordingly
+        //  Below line of code is for an agent expecting SSO Token in the header of request with header name being "SSOToken"
         request.setValue((FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "SSOToken")
         self.urlSession.dataTask(with: request) { (data, response, error) in
             guard let responseData = data, let httpresponse = response as? HTTPURLResponse, error == nil else {
@@ -739,6 +764,10 @@ class ViewController: UIViewController {
         case 17:
             // Display current Configuration
             self.displayCurrentConfig()
+            break
+        case 18:
+            // Revoke Access Token
+            self.revokeAccessToken()
             break
         default:
             break

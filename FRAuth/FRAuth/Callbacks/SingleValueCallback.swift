@@ -2,7 +2,7 @@
 //  SingleStringValueCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,19 +22,11 @@ open class SingleValueCallback: Callback {
     @objc public var inputName: String?
     /// String value of prompt attribute in Callback response; prompt is usually human readable text that can be displayed in UI
     @objc public var prompt: String?
-    /// A value provided from user interaction for this particular callback; the value can be any type
-    @available(*, deprecated, message: "Callback.value propert is deprecated; use Callback.setValue() and Callback.getValue() method to set the input value of the Callback.") // Deprecated as of FRAuth: v2.1.0
-    @objc public var value: Any? {
-        get {
-            return _value
-        }
-        set {
-            _value = newValue
-        }
-    }
-    var _value: Any?
     /// Unique identifier for this particular callback in Node
     public var _id: Int?
+    
+    /// A value provided from user interaction for this particular callback; the value can be any type
+    var _value: Any?
     
     
     //  MARK: - Init
@@ -48,16 +40,16 @@ open class SingleValueCallback: Callback {
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     public required init(json: [String : Any]) throws {
         
-        guard let callbackType = json["type"] as? String else {
+        guard let callbackType = json[CBConstants.type] as? String else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
-        if let inputs = json["input"] as? [[String: Any]] {
+        if let inputs = json[CBConstants.input] as? [[String: Any]] {
             for input in inputs {
-                if let inputName = input["name"] as? String {
+                if let inputName = input[CBConstants.name] as? String {
                     if inputName.range(of: "IDToken\\d{1,2}$", options: .regularExpression, range: nil, locale: nil) != nil {
                         self.inputName = inputName
-                        if let inputValue = input["value"] as? String {
+                        if let inputValue = input[CBConstants.value] as? String {
                             self._value = inputValue
                         }
                     }
@@ -65,15 +57,15 @@ open class SingleValueCallback: Callback {
             }
         }
         
-        if let outputs = json["output"] as? [[String: Any]] {
+        if let outputs = json[CBConstants.output] as? [[String: Any]] {
             for output in outputs {
-                if let outputName = output["name"] as? String, outputName == "prompt", let prompt = output["value"] as? String {
+                if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.prompt, let prompt = output[CBConstants.value] as? String {
                     self.prompt = prompt
                 }
             }
         }
         
-        if let callbackId = json["_id"] as? Int {
+        if let callbackId = json[CBConstants._id] as? Int {
             self._id = callbackId
         }
         
@@ -116,13 +108,13 @@ open class SingleValueCallback: Callback {
     open override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
         for (key, value) in responsePayload {
-            if key == "input", var inputs = value as? [[String: Any]] {
+            if key == CBConstants.input, var inputs = value as? [[String: Any]] {
                 for (index, input) in inputs.enumerated() {
-                    if let inputName = input["name"] as? String, inputName == self.inputName {
-                        inputs[index]["value"] = self._value
+                    if let inputName = input[CBConstants.name] as? String, inputName == self.inputName {
+                        inputs[index][CBConstants.value] = self._value
                     }
                 }
-                responsePayload["input"] = inputs
+                responsePayload[CBConstants.input] = inputs
             }
         }
         return responsePayload

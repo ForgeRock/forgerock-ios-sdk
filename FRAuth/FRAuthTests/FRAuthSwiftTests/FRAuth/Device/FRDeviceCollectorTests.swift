@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRAuth
 
 class FRDeviceCollectorTests: FRAuthBaseTest {
     
@@ -55,10 +56,10 @@ class FRDeviceCollectorTests: FRAuthBaseTest {
         XCTAssertNotNil((platform["device"] as? String))
         XCTAssertNotNil((platform["deviceName"] as? String))
         XCTAssertNotNil((platform["locale"] as? String))
-        XCTAssertNotNil((platform["timezone"] as? String))
+        XCTAssertNotNil((platform["timeZone"] as? String))
         XCTAssertNotNil((platform["model"] as? String))
         XCTAssertNotNil((platform["brand"] as? String))
-        XCTAssertNotNil((platform["jailbreakScore"] as? Double))
+        XCTAssertNotNil((platform["jailBreakScore"] as? Double))
         
 //        // Then, validate POSIX info from platform section
 //        guard let posix = platform["systemInfo"] as? [String: String] else {

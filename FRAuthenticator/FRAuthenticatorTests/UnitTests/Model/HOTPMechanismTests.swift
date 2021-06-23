@@ -2,14 +2,14 @@
 //  HOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
+@testable import FRAuthenticator
 
 class HOTPMechanismTests: FRABaseTests {
 
@@ -215,6 +215,67 @@ class HOTPMechanismTests: FRABaseTests {
             if let storageClient = FRAClient.storage as? DummyStorageClient {
                 storageClient.setMechanismResult = nil
             }
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_09_codable_serialization() {
+        
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=0&algorithm=SHA256")!
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            
+            //  Encode
+            let jsonData = try JSONEncoder().encode(mechanism)
+            
+            //  Decode
+            let decodedMechanism = try JSONDecoder().decode(HOTPMechanism.self, from: jsonData)
+            
+            XCTAssertEqual(mechanism.mechanismUUID, decodedMechanism.mechanismUUID)
+            XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
+            XCTAssertEqual(mechanism.type, decodedMechanism.type)
+            XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
+            XCTAssertEqual(mechanism.version, decodedMechanism.version)
+            XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
+            XCTAssertEqual(mechanism.algorithm, decodedMechanism.algorithm)
+            XCTAssertEqual(mechanism.digits, decodedMechanism.digits)
+            XCTAssertEqual(mechanism.counter, decodedMechanism.counter)
+            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_10_json_string_serialization() {
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=0&algorithm=SHA256")!
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            
+            guard let jsonString = mechanism.toJson() else {
+                XCTFail("Failed to serialize the object into JSON String value")
+                return
+            }
+            
+            //  Decode
+            let decodedMechanism = try JSONDecoder().decode(HOTPMechanism.self, from: jsonString.data(using: .utf8) ?? Data())
+            
+            XCTAssertEqual(mechanism.mechanismUUID, decodedMechanism.mechanismUUID)
+            XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
+            XCTAssertEqual(mechanism.type, decodedMechanism.type)
+            XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
+            XCTAssertEqual(mechanism.version, decodedMechanism.version)
+            XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
+            XCTAssertEqual(mechanism.algorithm, decodedMechanism.algorithm)
+            XCTAssertEqual(mechanism.digits, decodedMechanism.digits)
+            XCTAssertEqual(mechanism.counter, decodedMechanism.counter)
+            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

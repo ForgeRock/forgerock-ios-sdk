@@ -2,7 +2,7 @@
 //  Node.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -42,17 +42,16 @@ public class Node: NSObject {
     var serverConfig: ServerConfig
     /// OAuth2Client information for AuthService/Node API communication
     var oAuth2Config: OAuth2Client?
-    /// Optional SessionManager for SDK's abstraction layer
-    var sessionManager: SessionManager?
     /// TokenManager instance to manage, and persist authenticated session
     var tokenManager: TokenManager?
+    /// KeychainManager instance to persist, and retrieve credentials from storage
+    var keychainManager: KeychainManager?
     
     
     
     //  MARK: - Init
     
     /// Designated initialization method for Node; AuthService process will initialize Node with given response from OpenAM
-    ///
     /// - Parameters:
     ///   - authServiceId: Unique UUID for current AuthService flow
     ///   - authServiceResponse: JSON response object of AuthService in OpenAM
@@ -60,8 +59,10 @@ public class Node: NSObject {
     ///   - serviceName: Service name for AuthService (TreeName)
     ///   - authIndexType: authIndexType value in AM (default to 'service')
     ///   - oAuth2Config: (Optional) OAuth2Client object for AuthService/Node communication for abstraction layer
-    /// - Throws: AuthError error may be thrown from parsing AuthService response, and parsing Callback(s)
-    init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ authIndexType: String, _ oAuth2Config: OAuth2Client? = nil, _ sessionManager: SessionManager? = nil, _ tokenManager: TokenManager? = nil) throws {
+    ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
+    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
+    /// - Throws: `AuthError`
+    init?(_ authServiceId: String, _ authServiceResponse: [String: Any], _ serverConfig: ServerConfig, _ serviceName: String, _ authIndexType: String, _ oAuth2Config: OAuth2Client? = nil, _ keychainManager: KeychainManager? = nil, _ tokenManager: TokenManager? = nil) throws {
         
         guard let authId = authServiceResponse[OpenAM.authId] as? String else {
             FRLog.e("Invalid response: missing 'authId'")
@@ -78,7 +79,7 @@ public class Node: NSObject {
         self.oAuth2Config = oAuth2Config
         self.authId = authId
         
-        self.sessionManager = sessionManager
+        self.keychainManager = keychainManager
         self.tokenManager = tokenManager
         
         if let callbacks = authServiceResponse[OpenAM.callbacks] as? [[String: Any]] {
@@ -86,19 +87,30 @@ public class Node: NSObject {
             for callback in callbacks {
                 
                 // Validate if callback response contains type
-                guard let callbackType = callback["type"] as? String else {
+                guard var callbackType = callback["type"] as? String else {
                     FRLog.e("Invalid response: Callback is missing 'type' \n\t\(callback)")
                     throw AuthError.invalidCallbackResponse(String(describing: callback))
+                }
+                
+                //  Validate if Callback is WebAuthnCallback
+                let webAuthnType = WebAuthnCallback.getWebAuthnType(callback)
+                switch webAuthnType {
+                //  If Callback type is WebAuthnAuthentication/Registration, manually change Callback type
+                case .authentication, .registration:
+                    callbackType = webAuthnType.rawValue
+                    break
+                default:
+                    break
                 }
                 
                 let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback)
                 self.callbacks.append(callbackObj)
                 
                 // Support AM 6.5.2 stage property workaround with MetadataCallback
-                if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response["output"] as? [[String: Any]] {
+                if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response[CBConstants.output] as? [[String: Any]] {
                     for output in outputs {
-                        if let outputName = output["name"] as? String, outputName == "data", let outputValue = output["value"] as? [String: String] {
-                            self.stage = outputValue["stage"]
+                        if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.data, let outputValue = output[CBConstants.value] as? [String: String] {
+                            self.stage = outputValue[CBConstants.stage]
                         }
                     }
                 }
@@ -111,6 +123,14 @@ public class Node: NSObject {
     }
 
     
+    //  MARK: - Static helper method
+    
+    /// Converts given JSON into Callback object
+    /// - Parameters:
+    ///   - callbackType: String value of Callback type
+    ///   - json: JSON response of Callback
+    /// - Throws: `AuthError`
+    /// - Returns: Callback object
     static func transformCallback(callbackType: String, json: [String: Any]) throws -> Callback {
 
         // Validate if given callback type is supported
@@ -167,8 +187,7 @@ public class Node: NSObject {
         else {
             self.next { (accessToken: AccessToken?, node, error) in
                 if let token = accessToken {
-                    let user = FRUser(token: token, serverConfig: self.serverConfig)
-                    self.sessionManager?.setCurrentUser(user: user)
+                    let user = FRUser(token: token)
                     
                     completion(user, nil, nil)
                 }
@@ -185,7 +204,7 @@ public class Node: NSObject {
     /// - Parameter completion: NodeCompletion<AccessToken> callback that returns AccessToken upon completion
     fileprivate func next(completion:@escaping NodeCompletion<AccessToken>) {
         FRLog.v("Called")
-        if let accessToken = try? self.sessionManager?.getAccessToken() {
+        if let accessToken = try? self.keychainManager?.getAccessToken() {
             FRLog.i("access_token retrieved from SessionManager; ignoring Node submit")
             completion(accessToken, nil, nil)
         }
@@ -203,7 +222,12 @@ public class Node: NSObject {
                             }
                             else {
                                 if let token = accessToken {
-                                    try? self.sessionManager?.setAccessToken(token: token)
+                                    do {
+                                        try self.keychainManager?.setAccessToken(token: token)
+                                    }
+                                    catch {
+                                        FRLog.e("Unexpected error while storing AccessToken: \(error.localizedDescription)")
+                                    }
                                 }
                                 
                                 // Return AccessToken
@@ -236,7 +260,7 @@ public class Node: NSObject {
                 // If authId received
                 if let _ = response[OpenAM.authId] {
                     do {
-                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.sessionManager, self.tokenManager)
+                        let node = try Node(self.authServiceId, response, self.serverConfig, self.serviceName, self.authIndexType, self.oAuth2Config, self.keychainManager, self.tokenManager)
                         completion(nil, node, nil)
                     } catch let authError as AuthError {
                         completion(nil, nil, authError)
@@ -246,15 +270,26 @@ public class Node: NSObject {
                 }
                 else if let tokenId = response[OpenAM.tokenId] as? String {
                     let token = Token(tokenId)
-                    if let sessionManager = self.sessionManager, let tokenManager = self.tokenManager {
-                        let currentSessionToken = sessionManager.getSSOToken()
-                        if let _ = try? tokenManager.retrieveAccessTokenFromKeychain(), token.value != currentSessionToken?.value {
+                    if let keychainManager = self.keychainManager {
+                        let currentSessionToken = keychainManager.getSSOToken()
+                        if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
                             FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
-                            tokenManager.revokeAndEndSession { (error) in
-                                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                            if let tokenManager = self.tokenManager {
+                                tokenManager.revokeAndEndSession { (error) in
+                                    FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                                }
+                            }
+                            else {
+                                FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
+                                do {
+                                    try keychainManager.setAccessToken(token: nil)
+                                }
+                                catch {
+                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                                }
                             }
                         }
-                        sessionManager.setSSOToken(ssoToken: token)
+                        keychainManager.setSSOToken(ssoToken: token)
                     }
                     
                     completion(token, nil, nil)

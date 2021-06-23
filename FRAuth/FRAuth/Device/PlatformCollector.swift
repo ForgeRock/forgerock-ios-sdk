@@ -2,7 +2,7 @@
 //  PlatformCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -16,6 +16,9 @@ public class PlatformCollector: DeviceCollector {
     
     /// Name of current collector
     public var name: String = "platform"
+    
+    /// Initializes PlatformCollector instance
+    public init() { }
     
     /// Collects platform information using UIDevice, and system information
     ///
@@ -32,10 +35,10 @@ public class PlatformCollector: DeviceCollector {
         result["device"] = UIDevice.current.model
         result["model"] = self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine))//parseDeviceIdentifier(identifier: self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine)))
         result["locale"] = Locale.current.languageCode
-        result["timezone"] = TimeZone.current.identifier
+        result["timeZone"] = TimeZone.current.identifier
         result["brand"] = "Apple"
         result["deviceName"] = UIDevice.current.name
-        result["jailbreakScore"] = jailbreakScore
+        result["jailBreakScore"] = jailbreakScore
         
         var posix: [String: Any] = [:]
         posix["sysname"] = self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.sysname))

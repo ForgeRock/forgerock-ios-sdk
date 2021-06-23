@@ -2,13 +2,14 @@
 //  AccessTokenTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
 import XCTest
+@testable import FRAuth
 
 class AccessTokenTests: FRAuthBaseTest {
 
@@ -216,5 +217,37 @@ class AccessTokenTests: FRAuthBaseTest {
         
         // Then
         XCTAssertEqual(at.buildAuthorizationHeader(), at.tokenType + " " + at.value)
+    }
+    
+    func testAccessTokenJSONEncoding() {
+        
+        let tokenDict: [String: Any] = ["access_token":self.access_token, "scope":self.scope, "expires_in":self.expires_in, "token_type":self.token_type, "refresh_token": self.refresh_token, "id_token": self.id_token]
+        guard let at = AccessToken(tokenResponse: tokenDict) else {
+            XCTFail("Fail to create AccessToken object with given token dictionary: \(tokenDict)")
+            return
+        }
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        
+        let data = try? encoder.encode(at)
+        XCTAssertNotNil(data)
+        
+        if let atData = data, let jsonAccessToken = String(data: atData, encoding: .utf8) {
+            let atDictionary = self.parseStringToDictionary(jsonAccessToken)
+            XCTAssertNotNil(atDictionary)
+            
+            if let expires_in = atDictionary["expiresIn"] as? Int, let scope = atDictionary["scope"] as? String, let refresh_token = atDictionary["refreshToken"] as? String, let id_token = atDictionary["idToken"] as? String, let accessToken = atDictionary["value"] as? String {
+                XCTAssertEqual(expires_in, self.expires_in)
+                XCTAssertEqual(scope, self.scope)
+                XCTAssertEqual(refresh_token, self.refresh_token)
+                XCTAssertEqual(id_token, self.id_token)
+                XCTAssertEqual(accessToken, self.access_token)
+            } else {
+                XCTFail("Fail to parse AccessToken JSON String correctly with given data \(jsonAccessToken)")
+            }
+        } else {
+            XCTFail("Fail to create AccessToken JSON String with given data")
+        }
     }
 }

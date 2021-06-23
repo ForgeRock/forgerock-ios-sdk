@@ -2,7 +2,7 @@
 //  FRAuth.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -72,13 +72,9 @@ public final class FRAuth: NSObject {
         FRLog.v("\(configPlistFileName).plist : \(config)")
         try FRAuth.initPrivate(config: config)
         
-        for bundle in Bundle.allFrameworks {
-            if bundle.bundleIdentifier == "com.forgerock.ios.FRProximity" || bundle.bundleIdentifier == "org.cocoapods.FRProximity" {
-                if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type{
-                    FRLog.i("FRProximity SDK found; starting FRProximity")
-                    c.perform(Selector(("startProximity")))
-                }
-            }
+        if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type{
+            FRLog.i("FRProximity SDK found; starting FRProximity")
+            c.perform(Selector(("startProximity")))
         }
     }
     
@@ -182,7 +178,7 @@ public final class FRAuth: NSObject {
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?
                 if let oAuth2Client = oAuth2Client {
-                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, keychainManager: keychainManager)
                 }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
@@ -193,7 +189,7 @@ public final class FRAuth: NSObject {
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
                 var tokenManager: TokenManager?
                 if let oAuth2Client = oAuth2Client {
-                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, sessionManager: sessionManager)
+                    tokenManager = TokenManager(oAuth2Client: oAuth2Client, keychainManager: keychainManager)
                 }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
@@ -213,7 +209,7 @@ public final class FRAuth: NSObject {
     ///   - sessionManager: SessionManager instance
     init(authServiceName: String, registerServiceName: String, serverConfig: ServerConfig, oAuth2Client: OAuth2Client?, tokenManager: TokenManager?, keychainManager: KeychainManager, sessionManager: SessionManager) {
         
-        FRLog.i("SDK initializaed", false)
+        FRLog.i("SDK initialized", false)
         
         self.authServiceName = authServiceName
         self.registerServiceName = registerServiceName
@@ -234,7 +230,7 @@ public final class FRAuth: NSObject {
     ///   - suspendedId: suspendedId contained in resumeURI contained in Email received from `Email Suspend Node` in AM
     ///   - completion: NodeCompletion callback which returns the result of Node submission
     func next<T>(suspendedId: String, completion: @escaping NodeCompletion<T>) {
-        let authService: AuthService = AuthService(suspendedId: suspendedId, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
+        let authService: AuthService = AuthService(suspendedId: suspendedId, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, keychainManager: self.keychainManager, tokenManager: self.tokenManager)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
         }
@@ -247,35 +243,7 @@ public final class FRAuth: NSObject {
     /// - Parameter completion:NodeCompletion callback which returns the result of Node submission
     func next<T>(authIndexValue: String, authIndexType: String, completion: @escaping NodeCompletion<T>) {
         
-        let authService: AuthService = AuthService(authIndexValue: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager, authIndexType: authIndexType)
-        authService.next { (value: T?, node, error) in
-            completion(value, node, error)
-        }
-    }
-    
-    
-    // - MARK: Deprecated
-    
-    /// Initiates Authentication or Registration flow with given flowType and expected result type
-    ///
-    /// - Parameters:
-    ///   - flowType: FlowType whether authentication, or registration
-    ///   - completion: NodeCompletion callback which returns the result of Node submission.
-    @available(*, deprecated, message: "FRAuth.shared.next() has been deprecated; use FRUser.login for authentication or FRSession.authenticat() instead to invoke Authentication Tree.") // Deprecated as of FRAuth: v1.0.2
-    public func next<T>(flowType: FRAuthFlowType, completion: @escaping NodeCompletion<T>) {
-        FRLog.v("Called")
-        
-        var serviceName = ""
-        switch flowType {
-        case .authentication:
-            serviceName = self.authServiceName
-            break
-        case .registration:
-            serviceName = self.registerServiceName
-            break
-        }
-        
-        let authService: AuthService = AuthService(authIndexValue: serviceName, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, sessionManager: self.sessionManager, tokenManager: self.tokenManager)
+        let authService: AuthService = AuthService(authIndexValue: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, keychainManager: self.keychainManager, tokenManager: self.tokenManager, authIndexType: authIndexType)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
         }

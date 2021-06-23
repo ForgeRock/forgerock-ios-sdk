@@ -2,7 +2,7 @@
 //  PrivateFileWritableDetector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,12 +13,16 @@ import Foundation
 /// PrivateFileWritableDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class PrivateFileWritableDetector: JailbreakDetector {
     
+    /// Initializes PrivateFileWritableDetector instance
+    public init() { }
+    
     /// Analyzes whether the app can write to a private directory
     ///
     /// - NOTE: /private directory is a private access that should only be accessed through iOS system, and the app should not have an access to the location to write/read
     ///
     /// - Returns: returns 1.0 if the app has write access to /private directory; otherwise returns 0.0
     public func analyze() -> Double {
+        FRLog.v("\(self) analyzing")
         
         let fileManager = FileManager.default
         var isFileWritable = false

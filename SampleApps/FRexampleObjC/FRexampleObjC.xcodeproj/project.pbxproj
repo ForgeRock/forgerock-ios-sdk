@@ -13,6 +13,10 @@
 		D5119C8A230F4E4900B9B512 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5ABD2FF230DF1B900A3CC90 /* LaunchScreen.storyboard */; };
 		D5119C8B230F4E4900B9B512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5ABD2FD230DF1B900A3CC90 /* Assets.xcassets */; };
 		D5119C8C230F4E4900B9B512 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5ABD2FA230DF1B900A3CC90 /* Main.storyboard */; };
+		D530424826321C090079EB3B /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D530424726321C090079EB3B /* FRCore.framework */; };
+		D530424926321C090079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530424726321C090079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D530424E26321C110079EB3B /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D530424D26321C110079EB3B /* FRCore.framework */; };
+		D530424F26321C110079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530424D26321C110079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAE6D23441437005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE6423441424005D34DA /* FRProximity.framework */; };
 		D59FAE6E23441437005D34DA /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE6423441424005D34DA /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAE712344143C005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE6423441424005D34DA /* FRProximity.framework */; };
@@ -144,6 +148,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D5FE5E582319091A00E04658 /* FRUI.framework in Embed Frameworks */,
+				D530424F26321C110079EB3B /* FRCore.framework in Embed Frameworks */,
 				D59FAE6E23441437005D34DA /* FRProximity.framework in Embed Frameworks */,
 				D5FE5E542319091A00E04658 /* FRAuth.framework in Embed Frameworks */,
 			);
@@ -157,6 +162,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D5FE5E502319091500E04658 /* FRUI.framework in Embed Frameworks */,
+				D530424926321C090079EB3B /* FRCore.framework in Embed Frameworks */,
 				D59FAE722344143C005D34DA /* FRProximity.framework in Embed Frameworks */,
 				D5FE5E4C2319091500E04658 /* FRAuth.framework in Embed Frameworks */,
 			);
@@ -167,6 +173,8 @@
 
 /* Begin PBXFileReference section */
 		D5119C93230F4E4900B9B512 /* FRexampleSSOObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRexampleSSOObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D530424726321C090079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D530424D26321C110079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D59FAE5B23441424005D34DA /* FRProximity.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRProximity.xcodeproj; path = ../../FRProximity/FRProximity.xcodeproj; sourceTree = "<group>"; };
 		D5ABD2F1230DF1B900A3CC90 /* FRexampleObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRexampleObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5ABD2F4230DF1B900A3CC90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -193,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5FE5E572319091A00E04658 /* FRUI.framework in Frameworks */,
+				D530424E26321C110079EB3B /* FRCore.framework in Frameworks */,
 				D59FAE6D23441437005D34DA /* FRProximity.framework in Frameworks */,
 				D5FE5E532319091A00E04658 /* FRAuth.framework in Frameworks */,
 			);
@@ -203,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5FE5E4F2319091500E04658 /* FRUI.framework in Frameworks */,
+				D530424826321C090079EB3B /* FRCore.framework in Frameworks */,
 				D59FAE712344143C005D34DA /* FRProximity.framework in Frameworks */,
 				D5FE5E4B2319091500E04658 /* FRAuth.framework in Frameworks */,
 			);
@@ -211,6 +221,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D530424626321C090079EB3B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D530424D26321C110079EB3B /* FRCore.framework */,
+				D530424726321C090079EB3B /* FRCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D59FAE5C23441424005D34DA /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +247,7 @@
 				D5FE5E26231908C900E04658 /* FRUI.xcodeproj */,
 				D5ABD2F3230DF1B900A3CC90 /* FRexampleObjC */,
 				D5ABD2F2230DF1B900A3CC90 /* Products */,
+				D530424626321C090079EB3B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

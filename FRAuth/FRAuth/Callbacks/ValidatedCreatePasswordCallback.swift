@@ -2,7 +2,7 @@
 //  ValidatedCreatePasswordCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -28,12 +28,12 @@ public class ValidatedCreatePasswordCallback: AbstractValidatedCallback {
     required init(json: [String : Any]) throws {
         try super.init(json: json)
         
-        guard let outputs = json["output"] as? [[String: Any]] else {
+        guard let outputs = json[CBConstants.output] as? [[String: Any]] else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for output in outputs {
-            if let name = output["name"] as? String, name == "echoOn", let echoOn = output["value"] as? Bool {
+            if let name = output[CBConstants.name] as? String, name == CBConstants.echoOn, let echoOn = output[CBConstants.value] as? Bool {
                 self.echoOn = echoOn
             }
         }

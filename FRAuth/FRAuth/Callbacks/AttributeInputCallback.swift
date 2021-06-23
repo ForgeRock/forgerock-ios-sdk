@@ -2,7 +2,7 @@
 //  AttributeInputCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -41,11 +41,11 @@ public class AttributeInputCallback: AbstractValidatedCallback {
         }
         
         for output in outputs {
-            if let name = output["name"] as? String, name == "prompt", let prompt = output["value"] as? String {
+            if let name = output[CBConstants.name] as? String, name == CBConstants.prompt, let prompt = output[CBConstants.value] as? String {
                 self.prompt = prompt
-            } else if let name = output["name"] as? String, name == "name", let nameValue = output["value"] as? String {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.name, let nameValue = output[CBConstants.value] as? String {
                 self.name = nameValue
-            } else if let name = output["name"] as? String, name == "required", let required = output["value"] as? Bool {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.required, let required = output[CBConstants.value] as? Bool {
                 self.required = required
             }
         }

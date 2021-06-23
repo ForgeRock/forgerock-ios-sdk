@@ -2,7 +2,7 @@
 //  KeychainServiceStorageClient.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -175,6 +175,21 @@ struct KeychainServiceClient: StorageClient {
                if let notificationData = item.value as? Data,
                 let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification,
                 notification.mechanismUUID == mechanism.mechanismUUID {
+                   notifications.append(notification)
+               }
+           }
+        }
+        return notifications.sorted { (lhs, rhs) -> Bool in
+            return lhs.timeAdded.timeIntervalSince1970 < rhs.timeAdded.timeIntervalSince1970
+        }
+    }
+    
+    
+    func getAllNotifications() -> [PushNotification] {
+        var notifications: [PushNotification] = []
+        if let items = self.notificationStorage.allItems() {
+           for item in items {
+               if let notificationData = item.value as? Data, let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification {
                    notifications.append(notification)
                }
            }

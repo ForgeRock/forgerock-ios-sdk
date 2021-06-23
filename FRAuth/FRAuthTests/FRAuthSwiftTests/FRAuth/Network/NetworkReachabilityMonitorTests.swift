@@ -10,6 +10,7 @@
 
 import XCTest
 import SystemConfiguration
+@testable import FRAuth
 
 class NetworkReachabilityMonitorTests: FRAuthBaseTest {
 

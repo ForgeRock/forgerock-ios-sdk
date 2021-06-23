@@ -2,7 +2,7 @@
 //  JailbreakDetector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -41,12 +41,14 @@ public class FRJailbreakDetector: NSObject {
     /// Singleton instance of JailbreakDetector
     @objc
     public static let shared = FRJailbreakDetector()
+    
     /// An array of JailbreakDetector to be analyzed
     @objc
     public var detectors: [JailbreakDetector]
     
     /// Private initialization method which initializes default array of JailbreakDetector
-    override init() {
+    @objc
+    public override init() {
         detectors = [CydiaDetector(),
                      CydiaSubstrateDetector(),
                      SSHDetector(),

@@ -2,14 +2,14 @@
 //  MechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
+@testable import FRAuthenticator
 
 class MechanismTests: FRABaseTests {
 
@@ -68,6 +68,31 @@ class MechanismTests: FRABaseTests {
         let mechanismTypes: [String] = ["totp", "hotp", "push"]
         for (index, mechanism) in account.mechanisms.enumerated() {
             XCTAssertEqual(mechanismTypes[index], mechanism.type)
+        }
+    }
+    
+    
+    func test_03_codable_serialization() {
+        
+        let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB")
+        
+        do {
+            //  Encode
+            let jsonData = try JSONEncoder().encode(mechanism)
+            
+            //  Decode
+            let decodedMechanism = try JSONDecoder().decode(Mechanism.self, from: jsonData)
+            
+            XCTAssertEqual(mechanism.mechanismUUID, decodedMechanism.mechanismUUID)
+            XCTAssertEqual(mechanism.type, decodedMechanism.type)
+            XCTAssertEqual(mechanism.version, decodedMechanism.version)
+            XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
+            XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
+            XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
+            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+        }
+        catch {
+            XCTFail("Failed with an unexpected error: \(error.localizedDescription)")
         }
     }
 }

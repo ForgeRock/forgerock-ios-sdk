@@ -2,7 +2,7 @@
 //  ReCaptchaCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -41,23 +41,23 @@ public class ReCaptchaCallback: Callback {
         
         recaptchaSiteKey = ""
         
-        guard let callbackType = json["type"] as? String,
-            let outputs = json["output"] as? [[String: Any]],
-            let inputs = json["input"] as? [[String: Any]] else {
+        guard let callbackType = json[CBConstants.type] as? String,
+              let outputs = json[CBConstants.output] as? [[String: Any]],
+              let inputs = json[CBConstants.input] as? [[String: Any]] else {
                 throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for input in inputs {
-            if let inputName = input["name"] as? String {
+            if let inputName = input[CBConstants.name] as? String {
                 self.inputName = inputName
             }
-            if let inputValue = input["value"] as? String {
+            if let inputValue = input[CBConstants.value] as? String {
                 self.value = inputValue
             }
         }
         
         for output in outputs {
-            if let outputName = output["name"] as? String, outputName == "recaptchaSiteKey", let outputValue = output["value"] as? String {
+            if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.recaptchaSiteKey, let outputValue = output[CBConstants.value] as? String {
                 recaptchaSiteKey = outputValue
             }
         }
@@ -81,7 +81,7 @@ public class ReCaptchaCallback: Callback {
     @objc
     public override func buildResponse() -> [String : Any] {
         var responsePayload = self.response
-        responsePayload["input"] = [["name": self.inputName, "value": self.value]]
+        responsePayload[CBConstants.input] = [[CBConstants.name: self.inputName, CBConstants.value: self.value]]
         return responsePayload
     }
 }

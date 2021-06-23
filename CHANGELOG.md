@@ -1,4 +1,29 @@
-# Version 2.2.0
+# Version 3.0.0
+
+## [3.0.0]
+#### Added
+- ForgeRock iOS SDK now supports and available through Swift Package Manager. [SDKS-912]
+- ForgeRock iOS SDK now supports Social Login for `Sign in with Apple`, `Google Sign-In`, and `Facebook Login`.  [SDKS-879]
+- New SDK modules, `FRGoogleSignIn` and `FRFacebookSignIn`, are now available to enable Social Login with AM using providers' native SDKs. [SDKS-879]
+- `WebAuthnRegistrationCallback`, and `WebAuthnAuthenticationCallback` are introduced to support AM's `WebAuthn Registration Node` and `WebAuthn Authentication Node`. [SDKS-782]
+- `FRUser.revokeAccessToken()` is introduced to revoke OAuth2 token only, and keep existing SSO token. [SDKS-979]
+- `Account`, `OathTokenCode`, `PushNotification` and all `Mechanism` classes now conform to `Codable` protocol, and introduce new method `toJson()` to return serialized JSON String value of the object. [SDKS-1004]
+- `FRAClient.getAllNotifications()` is introduced to retrieve all notifications across all mechanisms. [SDKS-1009]
+
+#### Changed
+- SDK now persists SSO Token through `FRSession` instance without OAuth2 configuration. [SDKS-873]
+- All `JailbreakDetector` and `DeviceCollector`'s initialization methods are now exposed as public methods to help developers more easily customize and utilize existing implementation. [SDKS-836]
+- `PlatformCollector`'s attribute names were changed from `timezone` and `jailbreakScore` to `timeZone` and `jailBreakScore` respectively to align with AM and Android SDK. [SDKS-908]
+- `Browser.validateBrowserLogin()` is now available in Objective-c as well. [SDKS-975]
+- Jailbreak detection logic was updated to prevent Jailbreak detection bypass. [SDKS-840]
+
+
+#### Deprecated
+- Removed public var value from SingleValueCallback [SDKS-910]
+- Removed FRURLProtocolResponseEvaluationCallback [SDKS-910]
+- Removed FRURLProtocol.validatedURLs [SDKS-910]
+- Removed deprecated FRAuth.shared.next() (public func next<T>) method [SDKS-910]
+
 
 ## [2.2.0]
 #### Added

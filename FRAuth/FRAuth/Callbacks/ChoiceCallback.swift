@@ -2,7 +2,7 @@
 //  FRChoiceCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -39,14 +39,14 @@ public class ChoiceCallback: SingleValueCallback {
         
         try super.init(json: json)
         
-        guard let outputs = json["output"] as? [[String: Any]] else {
+        guard let outputs = json[CBConstants.output] as? [[String: Any]] else {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
         for output in outputs {
-            if let name = output["name"] as? String, name == "choices", let choices = output["value"] as? [String] {
+            if let name = output[CBConstants.name] as? String, name == CBConstants.choices, let choices = output[CBConstants.value] as? [String] {
                 self.choices = choices
-            } else if let name = output["name"] as? String, name == "defaultChoice", let defaultChoice = output["value"] as? Int {
+            } else if let name = output[CBConstants.name] as? String, name == CBConstants.defaultChoice, let defaultChoice = output[CBConstants.value] as? Int {
                 self.defaultChoice = defaultChoice
             }
         }

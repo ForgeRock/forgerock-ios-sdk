@@ -9,7 +9,8 @@
 //
 
 import XCTest
-import FRCore
+@testable import FRCore
+@testable import FRAuth
 
 class FRDeviceIdentifierTests: FRAuthBaseTest {
 

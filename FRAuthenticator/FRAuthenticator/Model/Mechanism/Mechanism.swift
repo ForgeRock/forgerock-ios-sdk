@@ -2,7 +2,7 @@
 //  Mechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,7 +12,7 @@
 import Foundation
 
 /// Mechanism class represents generic auth type, and is base class of all Mechanism (authentication type) in FRAuthenticator SDK
-public class Mechanism: NSObject, NSSecureCoding {
+public class Mechanism: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Properties
     

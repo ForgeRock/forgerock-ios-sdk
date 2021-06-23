@@ -2,7 +2,7 @@
 //  FRDeviceCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -24,7 +24,8 @@ public class FRDeviceCollector: NSObject {
     static let FRDeviceCollectorVersion: String = "1.0"
     
     /// Private initialization method which initializes default array of DeviceCollector
-    override init() {
+    @objc
+    public override init() {
         collectors = [
             PlatformCollector(),
             HardwareCollector(),

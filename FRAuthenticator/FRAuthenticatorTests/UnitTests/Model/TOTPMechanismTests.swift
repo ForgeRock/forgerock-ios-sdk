@@ -2,14 +2,14 @@
 //  TOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
-
 import XCTest
+@testable import FRAuthenticator
 
 class TOTPMechanismTests: FRABaseTests {
 
@@ -215,6 +215,68 @@ class TOTPMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanismFromData?.digits, 8)
                 XCTAssertEqual(mechanismFromData?.period, 45)
             }
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_08_codable_serialization() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            
+            //  Encode
+            let jsonData = try JSONEncoder().encode(mechanism)
+            
+            //  Decode
+            let deocdedMechanism = try JSONDecoder().decode(TOTPMechanism.self, from: jsonData)
+            
+            XCTAssertEqual(mechanism.mechanismUUID, deocdedMechanism.mechanismUUID)
+            XCTAssertEqual(mechanism.issuer, deocdedMechanism.issuer)
+            XCTAssertEqual(mechanism.type, deocdedMechanism.type)
+            XCTAssertEqual(mechanism.secret, deocdedMechanism.secret)
+            XCTAssertEqual(mechanism.version, deocdedMechanism.version)
+            XCTAssertEqual(mechanism.accountName, deocdedMechanism.accountName)
+            XCTAssertEqual(mechanism.algorithm, deocdedMechanism.algorithm)
+            XCTAssertEqual(mechanism.digits, deocdedMechanism.digits)
+            XCTAssertEqual(mechanism.period, deocdedMechanism.period)
+            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, deocdedMechanism.timeAdded.timeIntervalSince1970)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_09_json_string_serialization() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            
+            guard let jsonStr = mechanism.toJson() else {
+                XCTFail("Failed to serialize the object into JSON String value")
+                return
+            }
+            
+            //  Decode
+            let deocdedMechanism = try JSONDecoder().decode(TOTPMechanism.self, from: jsonStr.data(using: .utf8) ?? Data())
+            
+            XCTAssertEqual(mechanism.mechanismUUID, deocdedMechanism.mechanismUUID)
+            XCTAssertEqual(mechanism.issuer, deocdedMechanism.issuer)
+            XCTAssertEqual(mechanism.type, deocdedMechanism.type)
+            XCTAssertEqual(mechanism.secret, deocdedMechanism.secret)
+            XCTAssertEqual(mechanism.version, deocdedMechanism.version)
+            XCTAssertEqual(mechanism.accountName, deocdedMechanism.accountName)
+            XCTAssertEqual(mechanism.algorithm, deocdedMechanism.algorithm)
+            XCTAssertEqual(mechanism.digits, deocdedMechanism.digits)
+            XCTAssertEqual(mechanism.period, deocdedMechanism.period)
+            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, deocdedMechanism.timeAdded.timeIntervalSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

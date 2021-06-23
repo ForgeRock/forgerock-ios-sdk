@@ -2,7 +2,7 @@
 //  Account.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,7 +12,7 @@
 import Foundation
 
 /// Account represents an account information of authentication methods
-public class Account: NSObject, NSSecureCoding {
+public class Account: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Properties
     
@@ -104,6 +104,20 @@ public class Account: NSObject, NSSecureCoding {
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
         
         self.init(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor, timeAdded: timeAdded)
+    }
+    
+    
+    //  MARK: - Public
+    
+    /// Serializes `Account` object into JSON String
+    /// - Returns: JSON String value of `Account` object
+    public func toJson() -> String? {
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
     }
 }
 

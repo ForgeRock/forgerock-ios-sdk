@@ -35,8 +35,10 @@
 		D592480E2328446B0027031A /* ConfirmationCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */; };
 		D592481523285AAF0027031A /* TextOutputCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */; };
 		D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */; };
-		D5962DC0238F47FA0021859F /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = D5962DBE238F47FA0021859F /* arrow.png */; };
-		D5962DC1238F47FA0021859F /* forgerock-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D5962DBF238F47FA0021859F /* forgerock-logo.png */; };
+		D5B2062A2600164900DABB9B /* IdPValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B206282600164900DABB9B /* IdPValueTableViewCell.swift */; };
+		D5B2062B2600164900DABB9B /* IdPValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B206292600164900DABB9B /* IdPValueTableViewCell.xib */; };
+		D5B206302600449F00DABB9B /* IdPCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2062E2600449F00DABB9B /* IdPCallbackTableViewCell.swift */; };
+		D5B206312600449F00DABB9B /* IdPCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B2062F2600449F00DABB9B /* IdPCallbackTableViewCell.xib */; };
 		D5B27E662318B7710058EFE3 /* FRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E612318B7710058EFE3 /* FRButton.swift */; };
 		D5B27E672318B7710058EFE3 /* FRTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E632318B7710058EFE3 /* FRTextField.swift */; };
 		D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E652318B7710058EFE3 /* FRLoadingView.swift */; };
@@ -44,6 +46,8 @@
 		D5B27E6C2318B79D0058EFE3 /* FRDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */; };
 		D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */; };
 		D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */; };
+		D5B6F35425AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F35125AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.swift */; };
+		D5B6F35525AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B6F35325AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.xib */; };
 		D5CACF8A22B1A6E800656521 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8922B1A6E800656521 /* AuthService.swift */; };
 		D5CACF8C22B1A87700656521 /* FRUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CACF8B22B1A87700656521 /* FRUI.swift */; };
 		D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */; };
@@ -115,8 +119,10 @@
 		D592480C2328446B0027031A /* ConfirmationCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmationCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D592481323285AAF0027031A /* TextOutputCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputCallbackTableViewCell.swift; sourceTree = "<group>"; };
 		D592481423285AAF0027031A /* TextOutputCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextOutputCallbackTableViewCell.xib; sourceTree = "<group>"; };
-		D5962DBE238F47FA0021859F /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
-		D5962DBF238F47FA0021859F /* forgerock-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forgerock-logo.png"; sourceTree = "<group>"; };
+		D5B206282600164900DABB9B /* IdPValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdPValueTableViewCell.swift; sourceTree = "<group>"; };
+		D5B206292600164900DABB9B /* IdPValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdPValueTableViewCell.xib; sourceTree = "<group>"; };
+		D5B2062E2600449F00DABB9B /* IdPCallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdPCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D5B2062F2600449F00DABB9B /* IdPCallbackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdPCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D5B27E612318B7710058EFE3 /* FRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRButton.swift; sourceTree = "<group>"; };
 		D5B27E632318B7710058EFE3 /* FRTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTextField.swift; sourceTree = "<group>"; };
 		D5B27E652318B7710058EFE3 /* FRLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRLoadingView.swift; sourceTree = "<group>"; };
@@ -124,6 +130,8 @@
 		D5B27E6B2318B79D0058EFE3 /* FRDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDropDownView.swift; sourceTree = "<group>"; };
 		D5B2A38123FCABD400764370 /* DeviceAttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAttributeTableViewCell.swift; sourceTree = "<group>"; };
 		D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceAttributeTableViewCell.xib; sourceTree = "<group>"; };
+		D5B6F35125AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebAuthnCallbackTableViewCell.swift; sourceTree = "<group>"; };
+		D5B6F35325AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebAuthnCallbackTableViewCell.xib; sourceTree = "<group>"; };
 		D5CACF8922B1A6E800656521 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5CACF8B22B1A87700656521 /* FRUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUI.swift; sourceTree = "<group>"; };
 		D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUICallbackTableViewCell.swift; sourceTree = "<group>"; };
@@ -216,6 +224,8 @@
 		D53A921C22B1869C003DF94E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D5B6F35125AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.swift */,
+				D5B6F35325AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.xib */,
 				D5CC1E0123DA3957006C7EAA /* FRUICallbackTableViewCell.swift */,
 				D53A921D22B1869C003DF94E /* PasswordCallbackTableViewCell.swift */,
 				D53A922022B1869C003DF94E /* PasswordCallbackTableViewCell.xib */,
@@ -237,6 +247,10 @@
 				D5B2A38223FCABD400764370 /* DeviceAttributeTableViewCell.xib */,
 				D5F8F9F124B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift */,
 				D5F8F9F224B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib */,
+				D5B206282600164900DABB9B /* IdPValueTableViewCell.swift */,
+				D5B206292600164900DABB9B /* IdPValueTableViewCell.xib */,
+				D5B2062E2600449F00DABB9B /* IdPCallbackTableViewCell.swift */,
+				D5B2062F2600449F00DABB9B /* IdPCallbackTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -299,8 +313,6 @@
 		D5CACF8D22B1AA0400656521 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				D5962DBE238F47FA0021859F /* arrow.png */,
-				D5962DBF238F47FA0021859F /* forgerock-logo.png */,
 				D587778F238DB6E200422605 /* Assets.xcassets */,
 			);
 			path = Assets;
@@ -443,7 +455,7 @@
 			files = (
 				D577B26B22DFCEC60065BA21 /* KbaCreateCallbackTableViewCell.xib in Resources */,
 				D592480E2328446B0027031A /* ConfirmationCallbackTableViewCell.xib in Resources */,
-				D5962DC0238F47FA0021859F /* arrow.png in Resources */,
+				D5B206312600449F00DABB9B /* IdPCallbackTableViewCell.xib in Resources */,
 				D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */,
 				D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */,
 				D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */,
@@ -451,9 +463,10 @@
 				D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */,
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,
 				D592480823283E830027031A /* PollingWaitCallbackTableViewCell.xib in Resources */,
-				D5962DC1238F47FA0021859F /* forgerock-logo.png in Resources */,
 				D5B2A38423FCABD400764370 /* DeviceAttributeTableViewCell.xib in Resources */,
+				D5B2062B2600164900DABB9B /* IdPValueTableViewCell.xib in Resources */,
 				D53A922A22B1869C003DF94E /* ChoiceCallbackTableViewCell.xib in Resources */,
+				D5B6F35525AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.xib in Resources */,
 				D5877790238DB6E200422605 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,7 +499,9 @@
 				D5B2A38323FCABD400764370 /* DeviceAttributeTableViewCell.swift in Sources */,
 				D592480723283E830027031A /* PollingWaitCallbackTableViewCell.swift in Sources */,
 				D5B27E6A2318B77F0058EFE3 /* FRDropDownButton.swift in Sources */,
+				D5B6F35425AEE3C9000A1A88 /* WebAuthnCallbackTableViewCell.swift in Sources */,
 				D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */,
+				D5B206302600449F00DABB9B /* IdPCallbackTableViewCell.swift in Sources */,
 				D592480D2328446B0027031A /* ConfirmationCallbackTableViewCell.swift in Sources */,
 				D5CC1E0223DA3957006C7EAA /* FRUICallbackTableViewCell.swift in Sources */,
 				D5CC1E5923DA4432006C7EAA /* CallbackTableViewCellFactory.swift in Sources */,
@@ -497,6 +512,7 @@
 				D5B27E682318B7710058EFE3 /* FRLoadingView.swift in Sources */,
 				D5877797238DC3A500422605 /* FRActionSheetButton.swift in Sources */,
 				D5F8F9F324B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.swift in Sources */,
+				D5B2062A2600164900DABB9B /* IdPValueTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,7 +684,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -702,7 +718,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
