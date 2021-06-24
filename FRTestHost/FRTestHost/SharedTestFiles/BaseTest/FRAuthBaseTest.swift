@@ -98,13 +98,7 @@ class FRAuthBaseTest: FRBaseTestCase {
 
         // Start SDK
         self.config.authServiceName = "Login"
-        
-        if self.shouldLoadMockResponses == false, FRAuthBaseTest.randomeUser == nil {
-            self.performRegistration()
-        }
-        else {
-            self.startSDK()
-        }
+        self.startSDK()
 
         // Set mock responses
         self.loadMockResponses(["AuthTree_LoginNode",

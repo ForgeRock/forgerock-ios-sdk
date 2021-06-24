@@ -36,6 +36,7 @@ class Config: NSObject {
     var keychainManager: KeychainManager?
     var sessionManager: SessionManager?
     var tokenManager: TokenManager?
+    var baseUrl: String = ""
     
     @objc var configJSON: [String: Any]?
     
@@ -88,12 +89,14 @@ class Config: NSObject {
                     }
                     else if let urlString = config["forgerock_url"] as? String, let url = URL(string: urlString), let timeout = config["forgerock_timeout"] as? Double, let authServiceName = config["forgerock_auth_service_name"] as? String, let registrationServiceName = config["forgerock_registration_service_name"] as? String, let oauthClientId = config["forgerock_oauth_client_id"] as? String, let redirectUriStr = config["forgerock_oauth_redirect_uri"] as? String, let redirectUri = URL(string: redirectUriStr), let scope = config["forgerock_oauth_scope"] as? String, let threshold = config["forgerock_oauth_threshold"] as? Int, let realm = config["forgerock_realm"] as? String {
                         
+                        self.baseUrl = urlString
                         self.authServiceName = authServiceName
                         self.registrationServiceName = registrationServiceName
                         
                         let enableCookie = config["forgerock_enable_cookie"] as? Bool ?? true
-
-                        let serverConfig = ServerConfigBuilder(url: url, realm: realm).set(timeout: timeout).set(enableCookie: enableCookie).build()
+                        let cookieName = config["forgerock_cookie_name"] as? String ?? "iPlanetDirectoryPro"
+                        
+                        let serverConfig = ServerConfigBuilder(url: url, realm: realm).set(timeout: timeout).set(enableCookie: enableCookie).set(cookieName: cookieName).build()
                         let oAuth2Client = OAuth2Client(clientId: oauthClientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
                         self.serverConfig = serverConfig
                         self.oAuth2Client = oAuth2Client

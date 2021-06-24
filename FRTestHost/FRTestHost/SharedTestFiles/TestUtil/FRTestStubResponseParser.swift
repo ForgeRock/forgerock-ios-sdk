@@ -20,7 +20,7 @@ class FRTestStubResponseParser: NSObject {
     @objc public var error: Error?
     @objc public var redirectRequest: URLRequest?
     
-    @objc init? ( _ fileName: String) {
+    @objc init? ( _ fileName: String, _ baseUrl: String? = nil) {
         guard let json = FRTestStubResponseParser.readResponseJSON(fileName: fileName) else {
             return nil
         }
@@ -38,7 +38,13 @@ class FRTestStubResponseParser: NSObject {
             let url = URL(string: urlString),
             let headerFields = responseJSON["headerFields"] as? [String: String],
             let httpVersion = responseJSON["httpVersion"] as? String {
-            self.response = HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: httpVersion, headerFields: headerFields)
+            
+            if let baseUrl = baseUrl, let configBaseUrl = URL(string: baseUrl), let originalHost = url.host, let configHost = configBaseUrl.host, let newUrl = URL(string: urlString.replacingOccurrences(of: originalHost, with: configHost)) {
+                self.response = HTTPURLResponse(url: newUrl, statusCode: statusCode, httpVersion: httpVersion, headerFields: FRTestStubResponseParser.swapCookieDomain(cookieHeaders: headerFields, newUrl: configHost, originalUrl: originalHost))
+            }
+            else {
+                self.response = HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: httpVersion, headerFields: headerFields)
+            }
         }
         
         if let redirectRequest = self.jsonContent["redirectRequest"] as? [String: Any],
@@ -69,5 +75,13 @@ class FRTestStubResponseParser: NSObject {
         else {
             return nil
         }
+    }
+    
+    static func swapCookieDomain(cookieHeaders: [String: String], newUrl: String, originalUrl: String) -> [String: String] {
+        var cookieHeaders = cookieHeaders
+        if let setCookie = cookieHeaders["Set-Cookie"] {
+            cookieHeaders["Set-Cookie"] = setCookie.replacingOccurrences(of: originalUrl, with: newUrl)
+        }
+        return cookieHeaders
     }
 }

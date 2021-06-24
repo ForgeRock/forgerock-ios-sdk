@@ -41,10 +41,10 @@ class FRTestUtils: XCTest {
     }
     
     
-    @objc static func loadMockResponses(_ responseFileNames: [String]) {
+    @objc static func loadMockResponses(_ responseFileNames: [String], _ config: Config? = nil) {
         
         for fileName in responseFileNames {
-            if let response = FRTestStubResponseParser(fileName) {
+            if let response = FRTestStubResponseParser(fileName, config?.baseUrl) {
                 FRTestNetworkStubProtocol.mockedResponses.append(response)
             }
             else {

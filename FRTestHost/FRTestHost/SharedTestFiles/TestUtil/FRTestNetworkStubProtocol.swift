@@ -36,6 +36,7 @@ class FRTestNetworkStubProtocol: URLProtocol {
     }
     
     public override class func canInit(with request: URLRequest) -> Bool {
+        FRTestNetworkStubProtocol.requestHistory.append(request)
         if FRTestNetworkStubProtocol.property(forKey: TestConstants.FRTestURLProtocolHandled, in: request) != nil {
             return false
         }
@@ -55,7 +56,6 @@ class FRTestNetworkStubProtocol: URLProtocol {
     public override func startLoading() {
         print("[FRAuthTest] session started with index \(FRTestNetworkStubProtocol.requestIndex)")
         let mutableRequest = ((request as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
-        FRTestNetworkStubProtocol.requestHistory.append(request)
         
         FRTestNetworkStubProtocol.setProperty(true, forKey: TestConstants.FRTestURLProtocolHandled, in: mutableRequest)
         
