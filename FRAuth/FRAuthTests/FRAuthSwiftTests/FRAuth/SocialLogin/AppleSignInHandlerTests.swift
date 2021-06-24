@@ -110,39 +110,48 @@ class AppleSignInHandlerTests: FRAuthBaseTest {
     }
     
     
-    @available(iOS 13.0, *)
     func test_03_authorization_request_nonce() {
-        let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: ["email", "name"], nonce: "h2goqta9144lf0cvnapf5uviydbzb7m32", acrValues: nil, request: nil, requestUri: nil)
-        let handler = AppleSignInHandler()
-        
-        let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
-        XCTAssertEqual(asRequest.requestedScopes?.count, 2)
-        XCTAssertEqual(asRequest.nonce, "h2goqta9144lf0cvnapf5uviydbzb7m32")
+    
+        //  Execute the test only for iOS 13 and above
+        if #available(iOS 13.0, *) {
+            let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: ["email", "name"], nonce: "h2goqta9144lf0cvnapf5uviydbzb7m32", acrValues: nil, request: nil, requestUri: nil)
+            let handler = AppleSignInHandler()
+            
+            let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
+            XCTAssertEqual(asRequest.requestedScopes?.count, 2)
+            XCTAssertEqual(asRequest.nonce, "h2goqta9144lf0cvnapf5uviydbzb7m32")
+        }
     }
     
     
-    @available(iOS 13.0, *)
     func test_04_authorization_request_nil_nonce() {
-        let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: ["email", "name", "fullName"], nonce: nil, acrValues: nil, request: nil, requestUri: nil)
-        let handler = AppleSignInHandler()
         
-        let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
-        XCTAssertEqual(asRequest.requestedScopes?.count, 3)
-        XCTAssertNil(asRequest.nonce)
-        XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "name")) ?? false)
-        XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "email")) ?? false)
-        XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "fullName")) ?? false)
+        //  Execute the test only for iOS 13 and above
+        if #available(iOS 13.0, *) {
+            let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: ["email", "name", "fullName"], nonce: nil, acrValues: nil, request: nil, requestUri: nil)
+            let handler = AppleSignInHandler()
+            
+            let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
+            XCTAssertEqual(asRequest.requestedScopes?.count, 3)
+            XCTAssertNil(asRequest.nonce)
+            XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "name")) ?? false)
+            XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "email")) ?? false)
+            XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "fullName")) ?? false)
+        }
     }
     
     
-    @available(iOS 13.0, *)
     func test_05_authorization_request_emtpy_scope() {
-        let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: nil, nonce: nil, acrValues: nil, request: nil, requestUri: nil)
-        let handler = AppleSignInHandler()
         
-        let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
-        XCTAssertEqual(asRequest.requestedScopes?.count, 0)
-        XCTAssertNil(asRequest.nonce)
-        XCTAssertEqual(asRequest.requestedScopes, [])
+        //  Execute the test only for iOS 13 and above
+        if #available(iOS 13.0, *) {
+            let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: nil, nonce: nil, acrValues: nil, request: nil, requestUri: nil)
+            let handler = AppleSignInHandler()
+            
+            let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
+            XCTAssertEqual(asRequest.requestedScopes?.count, 0)
+            XCTAssertNil(asRequest.nonce)
+            XCTAssertEqual(asRequest.requestedScopes, [])
+        }
     }
 }
