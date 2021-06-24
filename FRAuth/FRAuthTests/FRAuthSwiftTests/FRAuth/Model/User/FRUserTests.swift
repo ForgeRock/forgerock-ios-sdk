@@ -679,10 +679,10 @@ class FRUserTests: FRAuthBaseTest {
         self.loadMockResponses(["OAuth2_Token_Revoke_Success"])
         
         let ex = self.expectation(description: "Revoke AccessToken success")
-        user.revokeAccessToken { (user, error) in
-            XCTAssertNotNil(user)
+        user.revokeAccessToken { (updatedUser, error) in
+            XCTAssertNotNil(updatedUser)
             XCTAssertNil(error)
-            XCTAssertNil(user?.token)
+            XCTAssertNil(updatedUser?.token)
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
@@ -702,9 +702,9 @@ class FRUserTests: FRAuthBaseTest {
         XCTAssertNotNil(user.token)
         
         let ex = self.expectation(description: "Revoke AccessToken failure")
-        user.revokeAccessToken { (user, error) in
-            XCTAssertNotNil(user)
-            XCTAssertNil(user?.token)
+        user.revokeAccessToken { (updatedUser, error) in
+            XCTAssertNotNil(updatedUser)
+            XCTAssertNil(updatedUser?.token)
             XCTAssertNotNil(error)
             ex.fulfill()
         }
