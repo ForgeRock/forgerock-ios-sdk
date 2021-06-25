@@ -193,8 +193,10 @@ struct TokenManager {
     func revoke(completion: @escaping CompletionCallback) {
         do {
             if let token = try self.keychainManager.getAccessToken() {
-                self.oAuth2Client.revoke(accessToken: token, completion: completion)
                 try self.keychainManager.setAccessToken(token: nil)
+                self.oAuth2Client.revoke(accessToken: token) { (error) in
+                    completion(error)
+                }
             }
             else {
                 completion(TokenError.nullToken)
