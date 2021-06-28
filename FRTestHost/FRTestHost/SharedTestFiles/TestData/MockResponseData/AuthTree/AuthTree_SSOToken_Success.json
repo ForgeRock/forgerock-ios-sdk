@@ -15,7 +15,7 @@
 			"Date": "Thu, 08 Aug 2019 06:12:31 GMT",
 			"X-Frame-Options": "SAMEORIGIN",
             "X-Content-Type-Options": "nosniff",
-            "Set-Cookie": "iPlanetDirectoryPro=asvt5KqoxGAZlGXSaw2T1XQZjF0.*AAJTSQACMDEAAlNLABwzazgvK0JjYnlkd3J2bDYwYkNTZ0FBUjAveUU9AAR0eXBlAANDVFMAAlMxAAA.*; Path=/; Domain=openam.example.com"
+            "Set-Cookie": "iPlanetDirectoryPro=asvt5KqoxGAZlGXSaw2T1XQZjF0.*AAJTSQACMDEAAlNLABwzazgvK0JjYnlkd3J2bDYwYkNTZ0FBUjAveUU9AAR0eXBlAANDVFMAAlMxAAA.*; Path=/; Domain=localhost"
 		}
 	}
 }

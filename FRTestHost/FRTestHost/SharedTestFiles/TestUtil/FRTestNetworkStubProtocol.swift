@@ -2,7 +2,7 @@
 //  FRTestNetworkStubProtocol.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -36,6 +36,7 @@ class FRTestNetworkStubProtocol: URLProtocol {
     }
     
     public override class func canInit(with request: URLRequest) -> Bool {
+        FRTestNetworkStubProtocol.requestHistory.append(request)
         if FRTestNetworkStubProtocol.property(forKey: TestConstants.FRTestURLProtocolHandled, in: request) != nil {
             return false
         }
@@ -55,7 +56,6 @@ class FRTestNetworkStubProtocol: URLProtocol {
     public override func startLoading() {
         print("[FRAuthTest] session started with index \(FRTestNetworkStubProtocol.requestIndex)")
         let mutableRequest = ((request as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
-        FRTestNetworkStubProtocol.requestHistory.append(request)
         
         FRTestNetworkStubProtocol.setProperty(true, forKey: TestConstants.FRTestURLProtocolHandled, in: mutableRequest)
         
