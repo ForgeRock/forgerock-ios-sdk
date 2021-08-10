@@ -62,6 +62,10 @@ public class FRUser: NSObject, NSSecureCoding {
                     FRLog.w("SDK identified current Session Token (\(sessionToken?.value ?? "null")) and Session Token (\(String(describing: accessToken.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
                     frAuth.tokenManager?.revokeAndEndSession(completion: { (error) in
                         FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(String(describing: error))")
+                        // Clear user object
+                        FRUser._staticUser = nil
+                        // Clear Browser instance if there is anything running
+                        Browser.currentBrowser = nil
                     })
                     return nil
                 }
