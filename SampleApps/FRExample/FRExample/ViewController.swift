@@ -182,6 +182,9 @@ class ViewController: UIViewController {
         do {
             try FRAuth.start()
             self.displayLog("FRAuth SDK started using \(FRAuth.configPlistFileName).plist.")
+            if FRUser.currentUser?.token == nil {
+                FRUser.currentUser?.logout()
+            }
         }
         catch {
             self.displayLog(String(describing: error))
