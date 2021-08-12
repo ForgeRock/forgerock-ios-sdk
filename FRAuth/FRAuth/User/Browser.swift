@@ -247,7 +247,7 @@ import SafariServices
     /// - Returns: Boolean indicator whether or not launching external user-agent was successful
     @available(iOS 12.0, *)
     func loginWithASWebSession(url: URL, completion: @escaping UserCallback) -> Bool {
-        let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
+        let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.scheme) { (url, error) in
 
             if let error = error {
                 FRLog.e("Failed to complete authorization using ASWebAuthenticationSession: \(error.localizedDescription)")
