@@ -264,19 +264,19 @@ class TOTPMechanismTests: FRABaseTests {
                 return
             }
             
-            //  Decode
-            let deocdedMechanism = try JSONDecoder().decode(TOTPMechanism.self, from: jsonStr.data(using: .utf8) ?? Data())
-            
-            XCTAssertEqual(mechanism.mechanismUUID, deocdedMechanism.mechanismUUID)
-            XCTAssertEqual(mechanism.issuer, deocdedMechanism.issuer)
-            XCTAssertEqual(mechanism.type, deocdedMechanism.type)
-            XCTAssertEqual(mechanism.secret, deocdedMechanism.secret)
-            XCTAssertEqual(mechanism.version, deocdedMechanism.version)
-            XCTAssertEqual(mechanism.accountName, deocdedMechanism.accountName)
-            XCTAssertEqual(mechanism.algorithm, deocdedMechanism.algorithm)
-            XCTAssertEqual(mechanism.digits, deocdedMechanism.digits)
-            XCTAssertEqual(mechanism.period, deocdedMechanism.period)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, deocdedMechanism.timeAdded.timeIntervalSince1970)
+            //  Covert jsonString to Dictionary
+            let jsonDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: jsonStr)
+                
+            //  Then
+            XCTAssertEqual(mechanism.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
+            XCTAssertEqual(mechanism.issuer, jsonDictionary?["issuer"] as! String)
+            XCTAssertEqual(mechanism.type, jsonDictionary?["oathType"] as! String)
+            XCTAssertEqual("REMOVED", jsonDictionary?["secret"] as! String)
+            XCTAssertEqual(FRAConstants.oathAuth, jsonDictionary?["type"] as! String)
+            XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
+            XCTAssertEqual(mechanism.digits, jsonDictionary?["digits"] as! Int)
+            XCTAssertEqual(mechanism.period, jsonDictionary?["period"] as! Int)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

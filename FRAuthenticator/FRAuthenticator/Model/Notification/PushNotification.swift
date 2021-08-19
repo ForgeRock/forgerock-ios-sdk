@@ -20,7 +20,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     /// Message Identifier for Push
     var messageId: String
     /// MechanismUUID of PushMechanism that Notification belongs to
-    var mechanismUUID: String
+    public var mechanismUUID: String
     /// Load balance key for Push
     var loadBalanceKey: String?
     /// Time to live for push
@@ -40,7 +40,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     /// Unique identifier for Notification object associated with PushMechanism
     public var identifier: String {
         get {
-            return self.mechanismUUID + "-" + "\(self.timeAdded.timeIntervalSince1970)"
+            return self.mechanismUUID + "-" + "\(self.timeAdded.millisecondsSince1970)"
         }
     }
     
@@ -265,14 +265,20 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Public
     
-    /// Serializes `PushNotification` object into JSON String
+    /// Serializes `PushNotification` object into JSON String. Sensitive information are not exposed.
     /// - Returns: JSON String value of `PushNotification` object
     public func toJson() -> String? {
-        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
-            return serializedStr
-        }
-        else {
-            return nil
-        }
+        return """
+           {"id":"\(self.identifier)",
+           "mechanismUID":"\(self.mechanismUUID)",
+           "messageId":"\(self.messageId)",
+           "challenge":"REMOVED",
+           "loadBalanceKey":"REMOVED",
+           "timeAdded":\(self.timeAdded.millisecondsSince1970),
+           "timeExpired":\(self.timeAdded.millisecondsSince1970 + Int64(self.ttl * 1000)),
+           "ttl":\(self.ttl),
+           "approved":\(self.approved),
+           "pending":\(self.pending)}
+           """
     }
 }

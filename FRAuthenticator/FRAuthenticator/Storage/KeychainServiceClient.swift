@@ -13,7 +13,7 @@ import Foundation
 import FRCore
 
 struct KeychainServiceClient: StorageClient {
-    
+
     
     /// Keychain Service types for all storages in SDK
     enum KeychainStoreType: String {
@@ -143,6 +143,17 @@ struct KeychainServiceClient: StorageClient {
             }
         }
         return nil
+    }
+    
+    
+    func getNotification(notificationIdentifier: String) -> PushNotification? {
+        if let notificationData = self.notificationStorage.getData(notificationIdentifier),
+            let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification {
+            return notification
+        }
+        else {
+            return nil
+        }
     }
     
     

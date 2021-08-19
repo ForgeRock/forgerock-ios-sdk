@@ -281,6 +281,14 @@ struct AuthenticatorManager {
     //  MARK: - Mechanism
     
     
+    /// Retrieves Mechanism object with given Mechanism UUID
+    /// - Parameter uuid: UUID of Mechanism
+    /// - Returns: Mechanism object that is associated with given UUID
+    func getMechanismForUUID(uuid: String) -> Mechanism? {
+        return self.storageClient.getMechanismForUUID(uuid: uuid)
+    }
+    
+    
     /// Retrieves PushMechanism object with given PushNotification object
     /// - Parameter notification: PushNotification object to obtain associated PushMechanism
     /// - Returns: PushMechanism object that is associated with given PushNotification object
@@ -326,6 +334,14 @@ struct AuthenticatorManager {
     /// - Returns: An array of PushNotification object
     func getAllNotifications() -> [PushNotification] {
         return self.storageClient.getAllNotifications()
+    }
+    
+    
+    /// Retrieves PushNotification object with given PushNotification Identifier; Identifier of PushNotification object is "<mechanismUUID>-<timeAdded>"
+    /// - Parameter identifier: String value of PushNotification object's identifier as in "<mechanismUUID>-<timeAdded>"
+    /// - Returns: PushNotification object with given identifier
+    func getNotification(identifier: String) -> PushNotification? {
+        return self.storageClient.getNotification(notificationIdentifier: identifier)
     }
     
     

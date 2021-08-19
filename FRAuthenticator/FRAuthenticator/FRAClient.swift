@@ -98,6 +98,14 @@ public class FRAClient: NSObject {
     
     //  MARK: - Mechanism
     
+    /// Retrieves Mechanism object with given Mechanism UUID
+    /// - Parameter uuid: UUID of Mechanism
+    /// - Returns: Mechanism object that is associated with given UUID
+    func getMechanismForUUID(uuid: String) -> Mechanism? {
+        return self.authenticatorManager.getMechanismForUUID(uuid: uuid)
+    }
+    
+    
     /// Retrieves a PushMechanism object with given PushNotification object
     ///
     /// **Note:** This getMechanism with PushNotification object does not retrieve all PushNotification object associated with PushMechanism. This only returns PushMechanism object without the array.
@@ -132,6 +140,14 @@ public class FRAClient: NSObject {
     /// - Returns: An array of PushNotification
     public func getAllNotifications() -> [PushNotification] {
         return self.authenticatorManager.getAllNotifications()
+    }
+    
+    
+    /// Retrieves PushNotification object with given PushNotification Identifier; Identifier of PushNotification object is **"<mechanismUUID>-<timeAdded>"**
+    /// - Parameter identifier: String value of PushNotification object's identifier as in **"<mechanismUUID>-<timeAdded>"**
+    /// - Returns: PushNotification object with given identifier
+    public func getNotification(identifier: String) -> PushNotification? {
+        return self.authenticatorManager.getNotification(identifier: identifier)
     }
     
     

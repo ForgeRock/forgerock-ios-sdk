@@ -119,18 +119,24 @@ public class TOTPMechanism: OathMechanism {
     
     //  MARK: - Public
     
-    /// Serializes `TOTPMechanism` object into JSON String
+    /// Serializes `TOTPMechanism` object into JSON String. Sensitive information are not exposed.
     /// - Returns: JSON String value of `TOTPMechanism` object
     public func toJson() -> String? {
-        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
-            return serializedStr
-        }
-        else {
-            return nil
-        }
+        return """
+           {"id":"\(self.identifier)",
+           "issuer":"\(self.issuer)",
+           "accountName":"\(self.accountName)",
+           "mechanismUID":"\(self.mechanismUUID)",
+           "secret":"REMOVED",
+           "type":"\(FRAConstants.oathAuth)",
+           "oathType":"\(self.type)",
+           "algorithm":"\(self.algorithm)",
+           "digits":\(self.digits),
+           "period":\(self.period),
+           "timeAdded":\(self.timeAdded.millisecondsSince1970)}
+           """
     }
 }
-
 
 extension TOTPMechanism {
     enum CodingKeys: String, CodingKey {

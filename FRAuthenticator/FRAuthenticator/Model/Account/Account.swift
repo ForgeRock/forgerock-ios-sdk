@@ -109,15 +109,17 @@ public class Account: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Public
     
-    /// Serializes `Account` object into JSON String
+    /// Serializes `Account` object into JSON String. Sensitive information are not exposed.
     /// - Returns: JSON String value of `Account` object
     public func toJson() -> String? {
-        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
-            return serializedStr
-        }
-        else {
-            return nil
-        }
+        return """
+           {"id":"\(self.identifier)",
+           "issuer":"\(self.issuer)",
+           "accountName":"\(self.accountName)",
+           "imageURL":"\(self.imageUrl ?? "")",
+           "backgroundColor":"\(self.backgroundColor ?? "")",
+           "timeAdded":\(self.timeAdded.millisecondsSince1970)}
+           """
     }
 }
 

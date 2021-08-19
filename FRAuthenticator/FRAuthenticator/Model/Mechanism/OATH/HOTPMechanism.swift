@@ -123,12 +123,19 @@ public class HOTPMechanism: OathMechanism {
     /// Serializes `HOTPMechanism` object into JSON String
     /// - Returns: JSON String value of `HOTPMechanism` object
     public func toJson() -> String? {
-        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
-            return serializedStr
-        }
-        else {
-            return nil
-        }
+        return """
+           {"id":"\(self.identifier)",
+           "issuer":"\(self.issuer)",
+           "accountName":"\(self.accountName)",
+           "mechanismUID":"\(self.mechanismUUID)",
+           "secret":"REMOVED",
+           "type":"\(FRAConstants.oathAuth)",
+           "oathType":"\(self.type)",
+           "algorithm":"\(self.algorithm)",
+           "digits":\(self.digits),
+           "counter":\(self.counter),
+           "timeAdded":\(self.timeAdded.millisecondsSince1970)}
+           """
     }
 }
 

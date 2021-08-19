@@ -236,15 +236,20 @@ public class PushMechanism: Mechanism {
 
     //  MARK: - Public
     
-    /// Serializes `PushMechanism` object into JSON String
+    /// Serializes `PushMechanism` object into JSON String. Sensitive information are not exposed.
     /// - Returns: JSON String value of `PushMechanism` object
     public func toJson() -> String? {
-        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
-            return serializedStr
-        }
-        else {
-            return nil
-        }
+        return """
+           {"id":"\(self.identifier)",
+           "issuer":"\(self.issuer)",
+           "accountName":"\(self.accountName)",
+           "mechanismUID":"\(self.mechanismUUID)",
+           "secret":"REMOVED",
+           "type":"\(FRAConstants.pushAuth)",
+           "registrationEndpoint":"\(self.regEndpoint.absoluteString)",
+           "authenticationEndpoint":"\(self.authEndpoint.absoluteString)",
+           "timeAdded":\(self.timeAdded.millisecondsSince1970)}
+           """
     }
 }
 

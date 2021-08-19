@@ -17,7 +17,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     //  MARK: - Properties
     
     /// uniquely identifiable UUID for current mechanism
-    var mechanismUUID: String
+    public var mechanismUUID: String
     /// type of auth
     public var type: String
     /// version of auth

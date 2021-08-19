@@ -149,18 +149,16 @@ class AccountTests: FRABaseTests {
             return
         }
         
-        do {
-            let decodedAccount = try JSONDecoder().decode(Account.self, from: jsonString.data(using: .utf8) ?? Data())
+        //  Covert jsonString to Dictionary
+        let jsonDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: jsonString)
             
-            XCTAssertEqual(account.issuer, decodedAccount.issuer)
-            XCTAssertEqual(account.accountName, decodedAccount.accountName)
-            XCTAssertEqual(account.imageUrl, decodedAccount.imageUrl)
-            XCTAssertEqual(account.backgroundColor, decodedAccount.backgroundColor)
-            XCTAssertEqual(account.timeAdded, decodedAccount.timeAdded)
-            XCTAssertEqual(account.identifier, decodedAccount.identifier)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
+        //  Then
+        XCTAssertEqual(account.issuer, jsonDictionary?["issuer"] as! String)
+        XCTAssertEqual(account.accountName, jsonDictionary?["accountName"] as! String)
+        XCTAssertEqual(account.imageUrl, (jsonDictionary?["imageURL"] as! String))
+        XCTAssertEqual(account.backgroundColor, (jsonDictionary?["backgroundColor"] as! String))
+        XCTAssertEqual(account.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
+        XCTAssertEqual(account.identifier, jsonDictionary?["id"] as! String)
     }
+    
 }

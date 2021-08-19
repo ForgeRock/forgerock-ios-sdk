@@ -209,6 +209,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
             let messageId2 = "AUTHENTICATE:e84233f8-9ecf-4456-91ad-2649c4103bc01562382721826"
 
             let notification1 = try PushNotification(messageId: messageId1, payload: payload1)
+            sleep(1) // Waiting 1s to avoid have two PushNotifications with same id
             let notification2 = try PushNotification(messageId: messageId2, payload: payload2)
             
             storage.setNotification(notification: notification1)
@@ -254,6 +255,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
             let messageId2 = "AUTHENTICATE:e84233f8-9ecf-4456-91ad-2649c4103bc01562382721826"
 
             let notification1 = try PushNotification(messageId: messageId1, payload: payload1)
+            sleep(1) // Waiting 1s to avoid have two PushNotifications with same id
             let notification2 = try PushNotification(messageId: messageId2, payload: payload2)
             storage.setNotification(notification: notification1)
             storage.setNotification(notification: notification2)
