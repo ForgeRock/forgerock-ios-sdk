@@ -273,7 +273,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
            "mechanismUID":"\(self.mechanismUUID)",
            "messageId":"\(self.messageId)",
            "challenge":"REMOVED",
-           "loadBalanceKey":"REMOVED",
+           "amlbCookie":"REMOVED",
            "timeAdded":\(self.timeAdded.millisecondsSince1970),
            "timeExpired":\(self.timeAdded.millisecondsSince1970 + Int64(self.ttl * 1000)),
            "ttl":\(self.ttl),

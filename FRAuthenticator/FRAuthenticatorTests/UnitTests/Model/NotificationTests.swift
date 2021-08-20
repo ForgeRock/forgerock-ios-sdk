@@ -248,7 +248,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertEqual(notification.identifier, jsonDictionary?["id"] as! String)
             XCTAssertEqual(notification.messageId, jsonDictionary?["messageId"] as! String)
             XCTAssertEqual("REMOVED", jsonDictionary?["challenge"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["loadBalanceKey"] as! String)
+            XCTAssertEqual("REMOVED", jsonDictionary?["amlbCookie"] as! String)
             XCTAssertEqual(notification.ttl, jsonDictionary?["ttl"] as! Double)
             XCTAssertEqual(notification.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
             XCTAssertEqual(notification.approved, jsonDictionary?["approved"] as! Bool)

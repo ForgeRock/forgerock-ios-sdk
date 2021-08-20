@@ -151,8 +151,8 @@ class PushMechanismTests: FRABaseTests {
             XCTAssertEqual("REMOVED", jsonDictionary?["secret"] as! String)
             XCTAssertEqual(FRAConstants.pushAuth, jsonDictionary?["type"] as! String)
             XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
-            XCTAssertEqual(mechanism.regEndpoint.absoluteString, jsonDictionary?["registrationEndpoint"] as! String)
-            XCTAssertEqual(mechanism.authEndpoint.absoluteString, jsonDictionary?["authenticationEndpoint"] as! String)
+            XCTAssertEqual("REMOVED", jsonDictionary?["registrationEndpoint"] as! String)
+            XCTAssertEqual("REMOVED", jsonDictionary?["authenticationEndpoint"] as! String)
             XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
         }
         catch {

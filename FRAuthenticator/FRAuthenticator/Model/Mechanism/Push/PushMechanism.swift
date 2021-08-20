@@ -246,8 +246,8 @@ public class PushMechanism: Mechanism {
            "mechanismUID":"\(self.mechanismUUID)",
            "secret":"REMOVED",
            "type":"\(FRAConstants.pushAuth)",
-           "registrationEndpoint":"\(self.regEndpoint.absoluteString)",
-           "authenticationEndpoint":"\(self.authEndpoint.absoluteString)",
+           "registrationEndpoint":"REMOVED",
+           "authenticationEndpoint":"REMOVED",
            "timeAdded":\(self.timeAdded.millisecondsSince1970)}
            """
     }
