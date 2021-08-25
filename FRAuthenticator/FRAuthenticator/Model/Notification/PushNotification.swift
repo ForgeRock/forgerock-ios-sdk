@@ -276,7 +276,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
            "amlbCookie":"REMOVED",
            "timeAdded":\(self.timeAdded.millisecondsSince1970),
            "timeExpired":\(self.timeAdded.millisecondsSince1970 + Int64(self.ttl * 1000)),
-           "ttl":\(self.ttl),
+           "ttl":\(Int(self.ttl)),
            "approved":\(self.approved),
            "pending":\(self.pending)}
            """
