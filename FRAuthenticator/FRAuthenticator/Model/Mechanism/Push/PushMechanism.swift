@@ -54,8 +54,6 @@ public class PushMechanism: Mechanism {
         case messageId
         case challenge
         case loadBalancer
-        case type
-        case version
     }
     
     
@@ -161,8 +159,6 @@ public class PushMechanism: Mechanism {
         try container.encode(messageId, forKey: .messageId)
         try container.encode(challenge, forKey: .challenge)
         try container.encode(loadBalancer, forKey: .loadBalancer)
-        try container.encode(type, forKey: .type)
-        try container.encode(version, forKey: .version)
         try super.encode(to: encoder)
     }
 

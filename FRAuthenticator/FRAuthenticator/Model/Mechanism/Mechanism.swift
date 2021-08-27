@@ -49,8 +49,8 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         case accountName
         case secret
         case timeAdded
-        case oathAuth = "type"
-        case type = "oathType"
+        case oathType
+        case type
     }
     
     
@@ -129,8 +129,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         let issuer = coder.decodeObject(of: NSString.self, forKey: "issuer") as String?
         let secret = coder.decodeObject(of: NSString.self, forKey: "secret") as String?
         let accountName = coder.decodeObject(of: NSString.self, forKey: "accountName") as String?
-        let milliseconds = coder.decodeDouble(forKey: "timeAdded")
-        let timeAdded = milliseconds / 1000
+        let timeAdded = coder.decodeDouble(forKey: "timeAdded")
         
         self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
     }
@@ -146,7 +145,12 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         try container.encode(accountName, forKey: .accountName)
         try container.encode(secret, forKey: .secret)
         try container.encode(type, forKey: .type)
-        try container.encode(FRAConstants.oathAuth, forKey: .oathAuth)
+        if (type == FRAConstants.push) {
+            try container.encode(FRAConstants.pushAuth, forKey: .type)
+        } else {
+            try container.encode(type, forKey: .oathType)
+            try container.encode(FRAConstants.oathAuth, forKey: .type)
+        }
         try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
     }
     
@@ -157,7 +161,13 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         secret = try container.decode(String.self, forKey: .secret)
         issuer = try container.decode(String.self, forKey: .issuer)
         accountName = try container.decode(String.self, forKey: .accountName)
-        type = try container.decode(String.self, forKey: .type)
+        
+        let type_value = try container.decode(String.self, forKey: .type)
+        if(type_value == FRAConstants.pushAuth) {
+            type = FRAConstants.push
+        } else {
+            type = try container.decode(String.self, forKey: .oathType)
+        }
         
         let milliseconds = try container.decode(Double.self, forKey: .timeAdded)
         timeAdded = Date(timeIntervalSince1970: Double(milliseconds / 1000))

@@ -89,7 +89,7 @@ class MechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
             XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
             XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, decodedMechanism.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with an unexpected error: \(error.localizedDescription)")

@@ -149,7 +149,7 @@ class PushMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
             XCTAssertEqual(mechanism.issuer, jsonDictionary?["issuer"] as! String)
             XCTAssertEqual(mechanism.secret, jsonDictionary?["secret"] as! String)
-            XCTAssertEqual(mechanism.type, jsonDictionary?["type"] as! String)
+            XCTAssertEqual(FRAConstants.pushAuth, jsonDictionary?["type"] as! String)
             XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
             XCTAssertEqual(mechanism.regEndpoint.absoluteString, jsonDictionary?["registrationEndpoint"] as! String)
             XCTAssertEqual(mechanism.authEndpoint.absoluteString, jsonDictionary?["authenticationEndpoint"] as! String)
