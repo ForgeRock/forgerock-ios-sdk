@@ -38,6 +38,21 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         }
     }
     
+    
+    // MARK: - Coding Keys
+
+    /// CodingKeys customize the keys when this object is encoded and decoded
+    enum CodingKeys: String, CodingKey {
+        case mechanismUUID = "mechanismUID"
+        case issuer
+        case accountName
+        case secret
+        case timeAdded
+        case type
+        case version
+    }
+    
+    
     //  MARK: - Init
     
     /// Prevents init
@@ -114,8 +129,37 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         let issuer = coder.decodeObject(of: NSString.self, forKey: "issuer") as String?
         let secret = coder.decodeObject(of: NSString.self, forKey: "secret") as String?
         let accountName = coder.decodeObject(of: NSString.self, forKey: "accountName") as String?
-        let timeAdded = coder.decodeDouble(forKey: "timeAdded")
+        let milliseconds = coder.decodeDouble(forKey: "timeAdded")
+        let timeAdded = milliseconds / 1000
         
         self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
     }
+    
+    
+    //  MARK: - Codable
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(mechanismUUID, forKey: .mechanismUUID)
+        try container.encode(issuer, forKey: .issuer)
+        try container.encode(accountName, forKey: .accountName)
+        try container.encode(secret, forKey: .secret)
+        try container.encode(type, forKey: .type)
+        try container.encode(version, forKey: .version)
+        try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
+    }
+    
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        mechanismUUID = try container.decode(String.self, forKey: .mechanismUUID)
+        secret = try container.decode(String.self, forKey: .secret)
+        issuer = try container.decode(String.self, forKey: .issuer)
+        accountName = try container.decode(String.self, forKey: .accountName)
+        type = try container.decode(String.self, forKey: .type)
+        version = try container.decode(Int.self, forKey: .version)
+        let milliseconds = try container.decode(Double.self, forKey: .timeAdded)
+        timeAdded = Date(timeIntervalSince1970: Double(milliseconds / 1000))
+    }
+    
 }

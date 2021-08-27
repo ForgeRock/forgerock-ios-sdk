@@ -223,7 +223,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertEqual(notification.loadBalanceKey, decodedNotification.loadBalanceKey)
             XCTAssertEqual(notification.ttl, decodedNotification.ttl)
             XCTAssertEqual(notification.mechanismUUID, decodedNotification.mechanismUUID)
-            XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, decodedNotification.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(notification.timeAdded.millisecondsSince1970, decodedNotification.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -247,8 +247,8 @@ class NotificationTests: FRABaseTests {
             //  Then
             XCTAssertEqual(notification.identifier, jsonDictionary?["id"] as! String)
             XCTAssertEqual(notification.messageId, jsonDictionary?["messageId"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["challenge"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["amlbCookie"] as! String)
+            XCTAssertEqual(notification.challenge, jsonDictionary?["challenge"] as! String)
+            XCTAssertEqual(notification.loadBalanceKey, jsonDictionary?["amlbCookie"] as? String)
             XCTAssertEqual(notification.ttl, jsonDictionary?["ttl"] as! Double)
             XCTAssertEqual(notification.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
             XCTAssertEqual(notification.approved, jsonDictionary?["approved"] as! Bool)

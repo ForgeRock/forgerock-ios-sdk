@@ -122,12 +122,12 @@ class AccountTests: FRABaseTests {
             
             // Decode
             let decodedAccount = try JSONDecoder().decode(Account.self, from: jsonData)
-            
+
             XCTAssertEqual(account.issuer, decodedAccount.issuer)
             XCTAssertEqual(account.accountName, decodedAccount.accountName)
             XCTAssertEqual(account.imageUrl, decodedAccount.imageUrl)
             XCTAssertEqual(account.backgroundColor, decodedAccount.backgroundColor)
-            XCTAssertEqual(account.timeAdded, decodedAccount.timeAdded)
+            XCTAssertEqual(account.timeAdded.millisecondsSince1970, decodedAccount.timeAdded.millisecondsSince1970)
             XCTAssertEqual(account.identifier, decodedAccount.identifier)
         }
         catch {

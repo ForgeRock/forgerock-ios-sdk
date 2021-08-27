@@ -36,6 +36,19 @@ public class Account: NSObject, NSSecureCoding, Codable {
     }
     
     
+    // MARK: - Coding Keys
+    
+    /// CodingKeys customize the keys when this object is encoded and decoded
+    enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case issuer
+        case accountName
+        case imageUrl = "imageURL"
+        case backgroundColor
+        case timeAdded
+    }
+
+    
     //  MARK: - Init
     
     /// Prevents init
@@ -85,7 +98,6 @@ public class Account: NSObject, NSSecureCoding, Codable {
     
     public class var supportsSecureCoding: Bool { return true }
     
-    
     public func encode(with coder: NSCoder) {
         coder.encode(self.issuer, forKey: "issuer")
         coder.encode(self.accountName, forKey: "accountName")
@@ -107,19 +119,46 @@ public class Account: NSObject, NSSecureCoding, Codable {
     }
     
     
+    //  MARK: - Codable
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.identifier, forKey: .identifier)
+        try container.encode(self.issuer, forKey: .issuer)
+        try container.encode(self.accountName, forKey: .accountName)
+        try container.encode(self.imageUrl, forKey: .imageUrl)
+        try container.encode(self.backgroundColor, forKey: .backgroundColor)
+        try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
+    }
+
+    
+    public required convenience init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let issuer = try values.decode(String.self, forKey: .issuer)
+        let accountName = try values.decode(String.self, forKey: .accountName)
+        let imageUrl = try values.decode(String.self, forKey: .imageUrl)
+        let backgroundColor = try values.decode(String.self, forKey: .backgroundColor)
+        let milliseconds = try values.decode(Double.self, forKey: .timeAdded)
+        let timeAdded = milliseconds / 1000
+
+        self.init(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor, timeAdded: timeAdded)!
+    }
+    
+    
     //  MARK: - Public
     
     /// Serializes `Account` object into JSON String. Sensitive information are not exposed.
     /// - Returns: JSON String value of `Account` object
     public func toJson() -> String? {
-        return """
-           {"id":"\(self.identifier)",
-           "issuer":"\(self.issuer)",
-           "accountName":"\(self.accountName)",
-           "imageURL":"\(self.imageUrl ?? "")",
-           "backgroundColor":"\(self.backgroundColor ?? "")",
-           "timeAdded":\(self.timeAdded.millisecondsSince1970)}
-           """
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
     }
+    
+    
 }
 

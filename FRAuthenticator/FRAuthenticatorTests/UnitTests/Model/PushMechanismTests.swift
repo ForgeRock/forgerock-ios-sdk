@@ -122,7 +122,7 @@ class PushMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
             XCTAssertEqual(mechanism.regEndpoint, decodedMechanism.regEndpoint)
             XCTAssertEqual(mechanism.authEndpoint, decodedMechanism.authEndpoint)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, decodedMechanism.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -148,11 +148,11 @@ class PushMechanismTests: FRABaseTests {
             //  Then
             XCTAssertEqual(mechanism.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
             XCTAssertEqual(mechanism.issuer, jsonDictionary?["issuer"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["secret"] as! String)
-            XCTAssertEqual(FRAConstants.pushAuth, jsonDictionary?["type"] as! String)
+            XCTAssertEqual(mechanism.secret, jsonDictionary?["secret"] as! String)
+            XCTAssertEqual(mechanism.type, jsonDictionary?["type"] as! String)
             XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["registrationEndpoint"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["authenticationEndpoint"] as! String)
+            XCTAssertEqual(mechanism.regEndpoint.absoluteString, jsonDictionary?["registrationEndpoint"] as! String)
+            XCTAssertEqual(mechanism.authEndpoint.absoluteString, jsonDictionary?["authenticationEndpoint"] as! String)
             XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
         }
         catch {

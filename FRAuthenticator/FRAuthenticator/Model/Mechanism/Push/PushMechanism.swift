@@ -45,6 +45,20 @@ public class PushMechanism: Mechanism {
     }
     
     
+    // MARK: - Coding Keys
+
+    /// CodingKeys customize the keys when this object is encoded and decoded
+    enum CodingKeys: String, CodingKey {
+        case authEndpoint = "authenticationEndpoint"
+        case regEndpoint = "registrationEndpoint"
+        case messageId
+        case challenge
+        case loadBalancer
+        case type
+        case version
+    }
+    
+    
     //  MARK: - Init    
     
     /// Initializes PushMechanism with given data
@@ -139,7 +153,19 @@ public class PushMechanism: Mechanism {
     
     
     //  MARK: - Codable
-    
+
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(authEndpoint, forKey: .authEndpoint)
+        try container.encode(regEndpoint, forKey: .regEndpoint)
+        try container.encode(messageId, forKey: .messageId)
+        try container.encode(challenge, forKey: .challenge)
+        try container.encode(loadBalancer, forKey: .loadBalancer)
+        try container.encode(type, forKey: .type)
+        try container.encode(version, forKey: .version)
+        try super.encode(to: encoder)
+    }
+
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         authEndpoint = try container.decode(URL.self, forKey: .authEndpoint)
@@ -150,17 +176,6 @@ public class PushMechanism: Mechanism {
         try super.init(from: decoder)
     }
     
-    
-    public override func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(authEndpoint, forKey: .authEndpoint)
-        try container.encode(regEndpoint, forKey: .regEndpoint)
-        try container.encode(messageId, forKey: .messageId)
-        try container.encode(challenge, forKey: .challenge)
-        try container.encode(loadBalancer, forKey: .loadBalancer)
-        try super.encode(to: encoder)
-    }
-
     
     //  MARK: - Register
     
@@ -239,27 +254,12 @@ public class PushMechanism: Mechanism {
     /// Serializes `PushMechanism` object into JSON String. Sensitive information are not exposed.
     /// - Returns: JSON String value of `PushMechanism` object
     public func toJson() -> String? {
-        return """
-           {"id":"\(self.identifier)",
-           "issuer":"\(self.issuer)",
-           "accountName":"\(self.accountName)",
-           "mechanismUID":"\(self.mechanismUUID)",
-           "secret":"REMOVED",
-           "type":"\(FRAConstants.pushAuth)",
-           "registrationEndpoint":"REMOVED",
-           "authenticationEndpoint":"REMOVED",
-           "timeAdded":\(self.timeAdded.millisecondsSince1970)}
-           """
+        if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
+            return serializedStr
+        }
+        else {
+            return nil
+        }
     }
 }
 
-
-extension PushMechanism {
-    enum CodingKeys: String, CodingKey {
-        case authEndpoint = "authEndpoint"
-        case regEndpoint = "regEndpoint"
-        case messageId = "messageId"
-        case challenge = "challenge"
-        case loadBalancer = "loadBalancer"
-    }
-}
