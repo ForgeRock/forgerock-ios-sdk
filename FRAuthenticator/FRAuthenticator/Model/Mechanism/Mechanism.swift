@@ -21,7 +21,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     /// type of auth
     public var type: String
     /// version of auth
-    var version: Int
+    var version: Int = 1
     /// issuer of auth
     public var issuer: String
     /// shared secret of auth
@@ -43,13 +43,14 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
 
     /// CodingKeys customize the keys when this object is encoded and decoded
     enum CodingKeys: String, CodingKey {
+        case identifier = "id"
         case mechanismUUID = "mechanismUID"
         case issuer
         case accountName
         case secret
         case timeAdded
-        case type
-        case version
+        case oathAuth = "type"
+        case type = "oathType"
     }
     
     
@@ -70,7 +71,6 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     init(type: String, issuer: String, accountName: String, secret: String) {
         
         self.mechanismUUID = UUID().uuidString
-        self.version = 1
         
         self.type = type
         self.issuer = issuer
@@ -140,12 +140,13 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.identifier, forKey: .identifier)
         try container.encode(mechanismUUID, forKey: .mechanismUUID)
         try container.encode(issuer, forKey: .issuer)
         try container.encode(accountName, forKey: .accountName)
         try container.encode(secret, forKey: .secret)
         try container.encode(type, forKey: .type)
-        try container.encode(version, forKey: .version)
+        try container.encode(FRAConstants.oathAuth, forKey: .oathAuth)
         try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
     }
     
@@ -157,7 +158,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         issuer = try container.decode(String.self, forKey: .issuer)
         accountName = try container.decode(String.self, forKey: .accountName)
         type = try container.decode(String.self, forKey: .type)
-        version = try container.decode(Int.self, forKey: .version)
+        
         let milliseconds = try container.decode(Double.self, forKey: .timeAdded)
         timeAdded = Date(timeIntervalSince1970: Double(milliseconds / 1000))
     }

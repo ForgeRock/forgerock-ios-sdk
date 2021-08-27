@@ -244,7 +244,7 @@ class TOTPMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.algorithm, deocdedMechanism.algorithm)
             XCTAssertEqual(mechanism.digits, deocdedMechanism.digits)
             XCTAssertEqual(mechanism.period, deocdedMechanism.period)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, deocdedMechanism.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, deocdedMechanism.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -268,10 +268,14 @@ class TOTPMechanismTests: FRABaseTests {
             let jsonDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: jsonStr)
                 
             //  Then
+            
+            
             XCTAssertEqual(mechanism.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
+            XCTAssertEqual(mechanism.identifier, jsonDictionary?["id"] as! String)
+            XCTAssertEqual(mechanism.algorithm.rawValue, jsonDictionary?["algorithm"] as! String)
             XCTAssertEqual(mechanism.issuer, jsonDictionary?["issuer"] as! String)
             XCTAssertEqual(mechanism.type, jsonDictionary?["oathType"] as! String)
-            XCTAssertEqual("REMOVED", jsonDictionary?["secret"] as! String)
+            XCTAssertEqual(mechanism.secret, jsonDictionary?["secret"] as! String)
             XCTAssertEqual(FRAConstants.oathAuth, jsonDictionary?["type"] as! String)
             XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
             XCTAssertEqual(mechanism.digits, jsonDictionary?["digits"] as! Int)
