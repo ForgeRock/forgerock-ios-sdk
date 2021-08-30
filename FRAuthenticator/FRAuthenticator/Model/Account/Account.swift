@@ -137,8 +137,8 @@ public class Account: NSObject, NSSecureCoding, Codable {
         
         let issuer = try values.decode(String.self, forKey: .issuer)
         let accountName = try values.decode(String.self, forKey: .accountName)
-        let imageUrl = try values.decode(String.self, forKey: .imageUrl)
-        let backgroundColor = try values.decode(String.self, forKey: .backgroundColor)
+        let imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
+        let backgroundColor = try values.decodeIfPresent(String.self, forKey: .backgroundColor)
         let milliseconds = try values.decode(Double.self, forKey: .timeAdded)
         let timeAdded = milliseconds / 1000
 
