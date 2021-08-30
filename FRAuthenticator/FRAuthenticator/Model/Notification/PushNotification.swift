@@ -316,7 +316,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Public
     
-    /// Serializes `PushNotification` object into JSON String. Sensitive information are not exposed.
+    /// Serializes `PushNotification` object into JSON String.
     /// - Returns: JSON String value of `PushNotification` object
     public func toJson() -> String? {
         if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {

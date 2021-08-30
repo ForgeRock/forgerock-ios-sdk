@@ -247,7 +247,7 @@ public class PushMechanism: Mechanism {
 
     //  MARK: - Public
     
-    /// Serializes `PushMechanism` object into JSON String. Sensitive information are not exposed.
+    /// Serializes `PushMechanism` object into JSON String.
     /// - Returns: JSON String value of `PushMechanism` object
     public func toJson() -> String? {
         if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
