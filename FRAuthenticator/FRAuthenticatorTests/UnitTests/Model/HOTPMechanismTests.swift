@@ -244,7 +244,7 @@ class HOTPMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.algorithm, decodedMechanism.algorithm)
             XCTAssertEqual(mechanism.digits, decodedMechanism.digits)
             XCTAssertEqual(mechanism.counter, decodedMechanism.counter)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, decodedMechanism.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -263,19 +263,20 @@ class HOTPMechanismTests: FRABaseTests {
                 return
             }
             
-            //  Decode
-            let decodedMechanism = try JSONDecoder().decode(HOTPMechanism.self, from: jsonString.data(using: .utf8) ?? Data())
-            
-            XCTAssertEqual(mechanism.mechanismUUID, decodedMechanism.mechanismUUID)
-            XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
-            XCTAssertEqual(mechanism.type, decodedMechanism.type)
-            XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
-            XCTAssertEqual(mechanism.version, decodedMechanism.version)
-            XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
-            XCTAssertEqual(mechanism.algorithm, decodedMechanism.algorithm)
-            XCTAssertEqual(mechanism.digits, decodedMechanism.digits)
-            XCTAssertEqual(mechanism.counter, decodedMechanism.counter)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            //  Covert jsonString to Dictionary
+            let jsonDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: jsonString)
+                
+            //  Then
+            XCTAssertEqual(mechanism.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
+            XCTAssertEqual(mechanism.identifier, jsonDictionary?["id"] as! String)
+            XCTAssertEqual(mechanism.algorithm.rawValue, jsonDictionary?["algorithm"] as! String)
+            XCTAssertEqual(mechanism.issuer, jsonDictionary?["issuer"] as! String)
+            XCTAssertEqual(mechanism.type, jsonDictionary?["oathType"] as! String)
+            XCTAssertEqual(mechanism.secret, jsonDictionary?["secret"] as! String)
+            XCTAssertEqual(FRAConstants.oathAuth, jsonDictionary?["type"] as! String)
+            XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
+            XCTAssertEqual(mechanism.digits, jsonDictionary?["digits"] as! Int)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

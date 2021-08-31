@@ -33,4 +33,7 @@ struct FRAConstants {
     static let hotp = "hotp"
     static let totp = "totp"
     static let push = "push"
+    
+    static let oathAuth = "otpauth"
+    static let pushAuth = "pushauth"
 }

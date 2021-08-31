@@ -13,6 +13,7 @@ import UIKit
 @testable import FRAuthenticator
 
 class DummyStorageClient: StorageClient {
+
     var setAccountResult: Bool?
     var removeAccountResult: Bool?
     var shouldMockGetAccountResult: Bool = false
@@ -23,6 +24,8 @@ class DummyStorageClient: StorageClient {
     var getMechanismsForAccountResult: [Mechanism]?
     var shouldMockGetMechanismsForUUIDResult: Bool = false
     var getMechanismForUUIDResult: Mechanism?
+    var shouldMockGetNotificationResult: Bool = false
+    var getNotificationResult: PushNotification?
     var setNotificationResult: Bool?
     var removeNotificationResult: Bool?
     var getAllNotificationsForMechanismResult: [PushNotification]?
@@ -98,6 +101,14 @@ class DummyStorageClient: StorageClient {
             return self.getMechanismForUUIDResult
         }
         return self.defaultStorageClient.getMechanismForUUID(uuid: uuid)
+    }
+    
+    
+    func getNotification(notificationIdentifier: String) -> PushNotification? {
+        if self.shouldMockGetNotificationResult {
+            return self.getNotificationResult
+        }
+        return self.defaultStorageClient.getNotification(notificationIdentifier: notificationIdentifier)
     }
     
     

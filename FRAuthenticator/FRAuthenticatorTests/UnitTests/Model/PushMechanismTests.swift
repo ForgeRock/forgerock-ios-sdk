@@ -122,7 +122,7 @@ class PushMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
             XCTAssertEqual(mechanism.regEndpoint, decodedMechanism.regEndpoint)
             XCTAssertEqual(mechanism.authEndpoint, decodedMechanism.authEndpoint)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, decodedMechanism.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -142,18 +142,18 @@ class PushMechanismTests: FRABaseTests {
                 return
             }
             
-            //  Decode
-            let decodedMechanism = try JSONDecoder().decode(PushMechanism.self, from: jsonStr.data(using: .utf8) ?? Data())
-            
-            XCTAssertEqual(mechanism.mechanismUUID, decodedMechanism.mechanismUUID)
-            XCTAssertEqual(mechanism.issuer, decodedMechanism.issuer)
-            XCTAssertEqual(mechanism.type, decodedMechanism.type)
-            XCTAssertEqual(mechanism.secret, decodedMechanism.secret)
-            XCTAssertEqual(mechanism.version, decodedMechanism.version)
-            XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
-            XCTAssertEqual(mechanism.regEndpoint, decodedMechanism.regEndpoint)
-            XCTAssertEqual(mechanism.authEndpoint, decodedMechanism.authEndpoint)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            //  Covert jsonString to Dictionary
+            let jsonDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: jsonStr)
+                
+            //  Then
+            XCTAssertEqual(mechanism.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
+            XCTAssertEqual(mechanism.issuer, jsonDictionary?["issuer"] as! String)
+            XCTAssertEqual(mechanism.secret, jsonDictionary?["secret"] as! String)
+            XCTAssertEqual(FRAConstants.pushAuth, jsonDictionary?["type"] as! String)
+            XCTAssertEqual(mechanism.accountName, jsonDictionary?["accountName"] as! String)
+            XCTAssertEqual(mechanism.regEndpoint.absoluteString, jsonDictionary?["registrationEndpoint"] as! String)
+            XCTAssertEqual(mechanism.authEndpoint.absoluteString, jsonDictionary?["authenticationEndpoint"] as! String)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

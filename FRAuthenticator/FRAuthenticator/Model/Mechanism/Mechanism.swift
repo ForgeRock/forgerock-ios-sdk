@@ -17,11 +17,11 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     //  MARK: - Properties
     
     /// uniquely identifiable UUID for current mechanism
-    var mechanismUUID: String
+    public var mechanismUUID: String
     /// type of auth
     public var type: String
     /// version of auth
-    var version: Int
+    var version: Int = 1
     /// issuer of auth
     public var issuer: String
     /// shared secret of auth
@@ -37,6 +37,22 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
             return self.issuer + "-" + self.accountName + "-" + self.type
         }
     }
+    
+    
+    // MARK: - Coding Keys
+
+    /// CodingKeys customize the keys when this object is encoded and decoded
+    enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case mechanismUUID = "mechanismUID"
+        case issuer
+        case accountName
+        case secret
+        case timeAdded
+        case oathType
+        case type
+    }
+    
     
     //  MARK: - Init
     
@@ -55,7 +71,6 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     init(type: String, issuer: String, accountName: String, secret: String) {
         
         self.mechanismUUID = UUID().uuidString
-        self.version = 1
         
         self.type = type
         self.issuer = issuer
@@ -118,4 +133,44 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         
         self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
     }
+    
+    
+    //  MARK: - Codable
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.identifier, forKey: .identifier)
+        try container.encode(mechanismUUID, forKey: .mechanismUUID)
+        try container.encode(issuer, forKey: .issuer)
+        try container.encode(accountName, forKey: .accountName)
+        try container.encode(secret, forKey: .secret)
+        try container.encode(type, forKey: .type)
+        if (type == FRAConstants.push) {
+            try container.encode(FRAConstants.pushAuth, forKey: .type)
+        } else {
+            try container.encode(type, forKey: .oathType)
+            try container.encode(FRAConstants.oathAuth, forKey: .type)
+        }
+        try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
+    }
+    
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        mechanismUUID = try container.decode(String.self, forKey: .mechanismUUID)
+        secret = try container.decode(String.self, forKey: .secret)
+        issuer = try container.decode(String.self, forKey: .issuer)
+        accountName = try container.decode(String.self, forKey: .accountName)
+        
+        let type_value = try container.decode(String.self, forKey: .type)
+        if(type_value == FRAConstants.pushAuth) {
+            type = FRAConstants.push
+        } else {
+            type = try container.decode(String.self, forKey: .oathType)
+        }
+        
+        let milliseconds = try container.decode(Double.self, forKey: .timeAdded)
+        timeAdded = Date(timeIntervalSince1970: Double(milliseconds / 1000))
+    }
+    
 }
