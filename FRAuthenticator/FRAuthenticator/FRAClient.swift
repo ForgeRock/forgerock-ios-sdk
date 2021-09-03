@@ -88,6 +88,14 @@ public class FRAClient: NSObject {
     }
     
     
+    /// Update given Account object on the StorageClient
+    /// - Parameter account: Account object to be updated
+    /// - Returns: Boolean result of deleting operation
+    @discardableResult public func updateAccount(account: Account) -> Bool {
+        return self.authenticatorManager.updateAccount(account: account)
+    }
+    
+    
     /// Removes given Account object from given StorageClient
     /// - Parameter account: Account object to be removed
     /// - Returns: Boolean result of deleting operation
