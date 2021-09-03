@@ -20,7 +20,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     /// Message Identifier for Push
     var messageId: String
     /// MechanismUUID of PushMechanism that Notification belongs to
-    public var mechanismUUID: String
+    public internal(set) var mechanismUUID: String
     /// Load balance key for Push
     var loadBalanceKey: String?
     /// Time to live for push

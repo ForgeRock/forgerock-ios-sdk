@@ -23,6 +23,8 @@ class AccountTests: FRABaseTests {
         
         XCTAssertEqual(account.issuer, issuer)
         XCTAssertEqual(account.accountName, accountName)
+        XCTAssertEqual(account.displayIssuer, issuer)
+        XCTAssertEqual(account.displayAccountName, accountName)
         XCTAssertEqual(account.identifier, issuer + "-" + accountName)
         XCTAssertNotNil(account.timeAdded)
     }
@@ -31,6 +33,8 @@ class AccountTests: FRABaseTests {
     func test_02_account_init_with_optional_params_success() {
         let issuer = "issuer"
         let accountName = "accountName"
+        let other_issuer = "other_issuer"
+        let other_accountName = "other_accountName"
         let imageUrl = "https://www.forgerock.com"
         let backgroundColor = "#FFFFFF"
         
@@ -43,6 +47,12 @@ class AccountTests: FRABaseTests {
         XCTAssertEqual(account.imageUrl, imageUrl)
         XCTAssertEqual(account.backgroundColor, backgroundColor)
         XCTAssertNotNil(account.timeAdded)
+        
+        account.displayIssuer = other_issuer
+        account.displayAccountName = other_accountName
+        
+        XCTAssertEqual(account.displayIssuer, other_issuer)
+        XCTAssertEqual(account.displayAccountName, other_accountName)
     }
     
     

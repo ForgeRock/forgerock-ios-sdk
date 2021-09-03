@@ -17,19 +17,19 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     //  MARK: - Properties
     
     /// uniquely identifiable UUID for current mechanism
-    public var mechanismUUID: String
+    public internal(set) var mechanismUUID: String
     /// type of auth
-    public var type: String
+    public internal(set) var type: String
     /// version of auth
     var version: Int = 1
     /// issuer of auth
-    public var issuer: String
+    public internal(set) var issuer: String
     /// shared secret of auth
     var secret: String
     /// accountName or username of auth
-    public var accountName: String
+    public internal(set) var accountName: String
     /// Time added for push
-    public var timeAdded: Date
+    public internal(set) var timeAdded: Date
     
     /// Unique identifier for current auth associated with Account information
     public var identifier: String {
