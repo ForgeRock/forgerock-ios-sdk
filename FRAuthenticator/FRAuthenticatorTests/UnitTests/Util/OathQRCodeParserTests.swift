@@ -279,4 +279,45 @@ class OathQRCodeParserTests: FRABaseTests {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    func test_15_qrcode_no_identity() {
+        let qrCode = URL(string: "otpauth://totp/?period=30&b=032b75&digits=6&secret=X6KUBOXCEZXMBR6IWB5MES5BPQ======")!
+        
+        do {
+            let _ = try OathQRCodeParser(url: qrCode)
+            XCTFail("Parsing success while expecting failure for invalid identity")
+        }
+        catch MechanismError.missingInformation {
+            
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_16_totp_no_identity_with_issuer() {
+        let qrCode = URL(string: "otpauth://totp/?period=30&b=032b75&digits=6&secret=X6KUBOXCEZXMBR6IWB5MES5BPQ======&issuer=ForgeRock")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertEqual(parser.issuer, "ForgeRock")
+            XCTAssertEqual(parser.label, "Untitled")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_17_totp_single_identity() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock?period=30&b=032b75&digits=6&secret=X6KUBOXCEZXMBR6IWB5MES5BPQ======")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertEqual(parser.issuer, "ForgeRock")
+            XCTAssertEqual(parser.label, "ForgeRock")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
 }
