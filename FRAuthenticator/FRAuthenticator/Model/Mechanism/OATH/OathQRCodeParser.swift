@@ -155,5 +155,11 @@ struct OathQRCodeParser {
         if self.issuer.count == 0 {
             self.issuer = self.label
         }
+        
+        if self.issuer == "" && self.label == "" {
+            throw MechanismError.missingInformation("no identity is associated with this MFA account. Missing account name and issuer.")
+        } else if self.label == "" {
+            self.label = "Untitled"
+        }
     }
 }
