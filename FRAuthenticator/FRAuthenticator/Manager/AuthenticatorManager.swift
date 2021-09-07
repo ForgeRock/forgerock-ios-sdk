@@ -250,6 +250,26 @@ struct AuthenticatorManager {
     }
     
     
+    /// Update given Account object on the StorageClient
+    /// - Parameter account: Account object to be updated
+    /// - Returns: Boolean result of the operation
+    @discardableResult func updateAccount(account: Account) -> Bool {
+        
+        if (self.storageClient.getAccount(accountIdentifier: account.identifier)) != nil {
+            if !self.storageClient.setAccount(account: account) {
+                FRALog.w("Account object (\(account.identifier) cannot be updated; it failed on StorageClient")
+                return false
+            }
+
+            FRALog.v("Account object (\(account.identifier) was updated")
+            return true
+        } else {
+            FRALog.w("Account object (\(account.identifier) was not found on StorageClient")
+            return false
+        }
+    }
+    
+    
     /// Removes given Account object from StorageClient
     /// - Parameter account: Account object to be removed
     /// - Returns: Boolean result of the operation

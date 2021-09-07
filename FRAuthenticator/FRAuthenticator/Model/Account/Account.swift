@@ -17,17 +17,18 @@ public class Account: NSObject, NSSecureCoding, Codable {
     //  MARK: - Properties
     
     /// Issuer of the account
-    public var issuer: String
+    public internal(set) var issuer: String
     /// AccountName, or Username of the account for the issuer
-    public var accountName: String
+    public internal(set) var accountName: String
     /// URL of Account's logo image
-    public var imageUrl: String?
+    public internal(set) var imageUrl: String?
     /// HEX Color code in String for Account
-    public var backgroundColor: String?
+    public internal(set) var backgroundColor: String?
     /// Time added for Account
-    public var timeAdded: Date
+    public internal(set) var timeAdded: Date
     /// An array of Mechanism associated with current Account
-    public var mechanisms: [Mechanism]
+    public internal(set) var mechanisms: [Mechanism]
+    
     /// Unique identifier of Account
     public var identifier: String {
         get {
@@ -35,6 +36,29 @@ public class Account: NSObject, NSSecureCoding, Codable {
         }
     }
     
+    internal var _displayIssuer: String? = nil
+    
+    /// Alternative Issuer of the account. Returns original issuer if displayIssuer is not set.
+    public var displayIssuer: String? {
+        get {
+            return self._displayIssuer ?? self.issuer
+        }
+        set {
+            self._displayIssuer = newValue
+        }
+    }
+    
+    internal var _displayAccountName: String? = nil
+    
+    /// Alternative AccountName of the account. Returns original accountName if displayAccountName is not set.
+    public var displayAccountName: String? {
+        get {
+            return self._displayAccountName ?? self.accountName
+        }
+        set {
+            self._displayAccountName = newValue
+        }
+    }
     
     // MARK: - Coding Keys
     
@@ -42,7 +66,9 @@ public class Account: NSObject, NSSecureCoding, Codable {
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case issuer
+        case displayIssuer
         case accountName
+        case displayAccountName
         case imageUrl = "imageURL"
         case backgroundColor
         case timeAdded
@@ -59,13 +85,17 @@ public class Account: NSObject, NSSecureCoding, Codable {
     
     /// Initializes Account object with given information
     /// - Parameter issuer: String value of issuer
+    /// - Parameter displayIssuer: String value of the alternative issuer
     /// - Parameter accountName: String value of accountName or username
+    /// - Parameter displayAccountName: String value of the alternative accountName
     /// - Parameter imageUrl: String of account's logo image (optional)
     /// - Parameter backgroundColor: String HEX code of account's background color (optional)
-    init(issuer: String, accountName: String, imageUrl: String? = nil, backgroundColor: String? = nil) {
+    init(issuer: String, displayIssuer: String? = nil, accountName: String, displayAccountName: String? = nil, imageUrl: String? = nil, backgroundColor: String? = nil) {
 
         self.issuer = issuer
+        self._displayIssuer = displayIssuer
         self.accountName = accountName
+        self._displayAccountName = displayAccountName
         self.imageUrl = imageUrl
         self.backgroundColor = backgroundColor
         self.mechanisms = []
@@ -75,18 +105,22 @@ public class Account: NSObject, NSSecureCoding, Codable {
     
     /// Initializes Account object with given information (used for serialization/deserialization of object)
     /// - Parameter issuer: String value of issuer
+    /// - Parameter displayIssuer: String value of the alternative issuer
     /// - Parameter accountName: String value of accountName or username
+    /// - Parameter displayAccountName: String value of the alternative accountName
     /// - Parameter imageUrl: URL of account's logo image (optional)
     /// - Parameter backgroundColor: String HEX code of account's background color (optional)
     /// - Parameter timeAdded: Date timestamp for creation of Account object
-    init?(issuer: String?, accountName: String?, imageUrl: String?, backgroundColor: String?, timeAdded: Double) {
+    init?(issuer: String?, displayIssuer: String?, accountName: String?, displayAccountName: String?, imageUrl: String?, backgroundColor: String?, timeAdded: Double) {
         
         guard let issuer = issuer, let accountName = accountName else {
             return nil
         }
         
         self.issuer = issuer
+        self._displayIssuer = displayIssuer
         self.accountName = accountName
+        self._displayAccountName = displayAccountName
         self.imageUrl = imageUrl
         self.backgroundColor = backgroundColor
         self.mechanisms = []
@@ -100,7 +134,9 @@ public class Account: NSObject, NSSecureCoding, Codable {
     
     public func encode(with coder: NSCoder) {
         coder.encode(self.issuer, forKey: "issuer")
+        coder.encode(self._displayIssuer, forKey: "displayIssuer")
         coder.encode(self.accountName, forKey: "accountName")
+        coder.encode(self._displayAccountName, forKey: "displayAccountName")
         coder.encode(self.imageUrl, forKey: "imageUrl")
         coder.encode(self.backgroundColor, forKey: "backgroundColor")
         coder.encode(self.timeAdded.timeIntervalSince1970, forKey: "timeAdded")
@@ -110,12 +146,14 @@ public class Account: NSObject, NSSecureCoding, Codable {
     public required convenience init?(coder: NSCoder) {
         
         let issuer = coder.decodeObject(of: NSString.self, forKey: "issuer") as String?
+        let alternativeIssuer = coder.decodeObject(of: NSString.self, forKey: "displayIssuer") as String?
         let accountName = coder.decodeObject(of: NSString.self, forKey: "accountName") as String?
+        let alternativeAccountName = coder.decodeObject(of: NSString.self, forKey: "displayAccountName") as String?
         let imageUrl = coder.decodeObject(of: NSString.self, forKey: "imageUrl") as String?
         let backgroundColor = coder.decodeObject(of: NSString.self, forKey: "backgroundColor") as String?
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
         
-        self.init(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor, timeAdded: timeAdded)
+        self.init(issuer: issuer, displayIssuer: alternativeIssuer, accountName: accountName, displayAccountName: alternativeAccountName, imageUrl: imageUrl, backgroundColor: backgroundColor, timeAdded: timeAdded)
     }
     
     
@@ -125,7 +163,9 @@ public class Account: NSObject, NSSecureCoding, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.identifier, forKey: .identifier)
         try container.encode(self.issuer, forKey: .issuer)
+        try container.encode(self._displayIssuer, forKey: .displayIssuer)
         try container.encode(self.accountName, forKey: .accountName)
+        try container.encode(self._displayAccountName, forKey: .displayAccountName)
         try container.encode(self.imageUrl, forKey: .imageUrl)
         try container.encode(self.backgroundColor, forKey: .backgroundColor)
         try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
@@ -136,13 +176,15 @@ public class Account: NSObject, NSSecureCoding, Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         let issuer = try values.decode(String.self, forKey: .issuer)
+        let displayIssuer = try values.decodeIfPresent(String.self, forKey: .displayIssuer)
         let accountName = try values.decode(String.self, forKey: .accountName)
+        let displayAccountName = try values.decodeIfPresent(String.self, forKey: .displayAccountName)
         let imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
         let backgroundColor = try values.decodeIfPresent(String.self, forKey: .backgroundColor)
         let milliseconds = try values.decode(Double.self, forKey: .timeAdded)
         let timeAdded = milliseconds / 1000
 
-        self.init(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor, timeAdded: timeAdded)!
+        self.init(issuer: issuer, displayIssuer: displayIssuer, accountName: accountName, displayAccountName: displayAccountName, imageUrl: imageUrl, backgroundColor: backgroundColor, timeAdded: timeAdded)!
     }
     
     
