@@ -119,7 +119,7 @@ public class TOTPMechanism: OathMechanism {
     
     //  MARK: - Public
     
-    /// Serializes `TOTPMechanism` object into JSON String
+    /// Serializes `TOTPMechanism` object into JSON String.
     /// - Returns: JSON String value of `TOTPMechanism` object
     public func toJson() -> String? {
         if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {
@@ -130,7 +130,6 @@ public class TOTPMechanism: OathMechanism {
         }
     }
 }
-
 
 extension TOTPMechanism {
     enum CodingKeys: String, CodingKey {

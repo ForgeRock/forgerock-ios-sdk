@@ -223,7 +223,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertEqual(notification.loadBalanceKey, decodedNotification.loadBalanceKey)
             XCTAssertEqual(notification.ttl, decodedNotification.ttl)
             XCTAssertEqual(notification.mechanismUUID, decodedNotification.mechanismUUID)
-            XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, decodedNotification.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(notification.timeAdded.millisecondsSince1970, decodedNotification.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -241,16 +241,20 @@ class NotificationTests: FRABaseTests {
                 return
             }
             
-            //  Decode
-            let decodedNotification = try JSONDecoder().decode(PushNotification.self, from: jsonString.data(using: .utf8) ?? Data())
+            //  Covert jsonString to Dictionary
+            let jsonDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: jsonString)
             
             //  Then
-            XCTAssertEqual(notification.messageId, decodedNotification.messageId)
-            XCTAssertEqual(notification.challenge, decodedNotification.challenge)
-            XCTAssertEqual(notification.loadBalanceKey, decodedNotification.loadBalanceKey)
-            XCTAssertEqual(notification.ttl, decodedNotification.ttl)
-            XCTAssertEqual(notification.mechanismUUID, decodedNotification.mechanismUUID)
-            XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, decodedNotification.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(notification.identifier, jsonDictionary?["id"] as! String)
+            XCTAssertEqual(notification.messageId, jsonDictionary?["messageId"] as! String)
+            XCTAssertEqual(notification.challenge, jsonDictionary?["challenge"] as! String)
+            XCTAssertEqual(notification.loadBalanceKey, jsonDictionary?["amlbCookie"] as? String)
+            XCTAssertEqual(notification.ttl, jsonDictionary?["ttl"] as! Double)
+            XCTAssertEqual(notification.mechanismUUID, jsonDictionary?["mechanismUID"] as! String)
+            XCTAssertEqual(notification.approved, jsonDictionary?["approved"] as! Bool)
+            XCTAssertEqual(notification.pending, jsonDictionary?["pending"] as! Bool)
+            XCTAssertEqual(notification.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
+            XCTAssertEqual(notification.timeAdded.millisecondsSince1970 + Int64(notification.ttl * 1000), jsonDictionary?["timeExpired"] as! Int64)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

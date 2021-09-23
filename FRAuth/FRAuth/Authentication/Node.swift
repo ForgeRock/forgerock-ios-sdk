@@ -106,11 +106,13 @@ public class Node: NSObject {
                 let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback)
                 self.callbacks.append(callbackObj)
                 
-                // Support AM 6.5.2 stage property workaround with MetadataCallback
-                if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response[CBConstants.output] as? [[String: Any]] {
-                    for output in outputs {
-                        if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.data, let outputValue = output[CBConstants.value] as? [String: String] {
-                            self.stage = outputValue[CBConstants.stage]
+                if self.stage == nil { //Fix for SDKS-1209
+                    // Support AM 6.5.2 stage property workaround with MetadataCallback
+                    if let metadataCallback = callbackObj as? MetadataCallback, let outputs = metadataCallback.response[CBConstants.output] as? [[String: Any]] {
+                        for output in outputs {
+                            if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.data, let outputValue = output[CBConstants.value] as? [String: String] {
+                                self.stage = outputValue[CBConstants.stage]
+                            }
                         }
                     }
                 }

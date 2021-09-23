@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B4236BB26CDA3A3009AF58F /* FRDateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */; };
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
 		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
 		D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -178,6 +179,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDateUtil.swift; sourceTree = "<group>"; };
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
 		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D52D5C372412ECA800835035 /* MechanismError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MechanismError.swift; sourceTree = "<group>"; };
@@ -824,6 +826,7 @@
 				D5FFA057245FB319003680C1 /* CodableValue.swift */,
 				D5FFA058245FB319003680C1 /* FRJSONEncoder.swift */,
 				D5A9EC30246387F6002009E2 /* URLUtil.swift */,
+				1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1020,6 +1023,7 @@
 				D52D5C5C241324AE00835035 /* FRAClient.swift in Sources */,
 				D5FFA05B245FB319003680C1 /* FRJSONEncoder.swift in Sources */,
 				D5FC33F92458CC1F00C77A52 /* FRAPushHandler.swift in Sources */,
+				1B4236BB26CDA3A3009AF58F /* FRDateUtil.swift in Sources */,
 				D52D5C642413305400835035 /* NotificationError.swift in Sources */,
 				D5C354A32412EC0600695A84 /* Mechanism.swift in Sources */,
 				D52D5C5A24131B3700835035 /* TOTPMechanism.swift in Sources */,

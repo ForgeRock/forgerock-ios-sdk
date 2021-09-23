@@ -21,6 +21,15 @@ public class OathMechanism: Mechanism {
     public var digits: Int
 
     
+    // MARK: - Coding Keys
+
+    /// CodingKeys customize the keys when this object is encoded and decoded
+    enum CodingKeys: String, CodingKey {
+        case algorithm
+        case digits
+    }
+    
+    
     //  MARK: - Init
     
     /// Initializes OathMechanism with given data
@@ -91,13 +100,6 @@ public class OathMechanism: Mechanism {
     
     //  MARK: - Codable
     
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        algorithm = try container.decode(OathAlgorithm.self, forKey: .algorithm)
-        digits = try container.decode(Int.self, forKey: .digits)
-        try super.init(from: decoder)
-    }
-    
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -105,12 +107,14 @@ public class OathMechanism: Mechanism {
         try container.encode(digits, forKey: .digits)
         try super.encode(to: encoder)
     }
-}
-
-
-extension OathMechanism {
-    enum CodingKeys: String, CodingKey {
-        case algorithm = "algorithm"
-        case digits = "digits"
+    
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        algorithm = try container.decode(OathAlgorithm.self, forKey: .algorithm)
+        digits = try container.decode(Int.self, forKey: .digits)
+        try super.init(from: decoder)
     }
+    
 }
+

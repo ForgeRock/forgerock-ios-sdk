@@ -45,6 +45,10 @@ public protocol StorageClient {
     /// - Parameter uuid: UUID of Mechanism
     func getMechanismForUUID(uuid: String) -> Mechanism?
     
+    /// Retrieves PushNotification object with its unique identifier
+    /// - Parameter notificationIdentifier: String value of PushNotification's unique identifier
+    func getNotification(notificationIdentifier: String) -> PushNotification?
+    
     /// Stores PushNotification object into Storage Client, and returns discardable Boolean result of operation
     /// - Parameter notification: PushNotification object to be stored
     @discardableResult func setNotification(notification: PushNotification) -> Bool

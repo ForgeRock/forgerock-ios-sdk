@@ -2,7 +2,7 @@
 //  FRTestUtils.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -41,10 +41,10 @@ class FRTestUtils: XCTest {
     }
     
     
-    @objc static func loadMockResponses(_ responseFileNames: [String]) {
+    @objc static func loadMockResponses(_ responseFileNames: [String], _ config: Config? = nil) {
         
         for fileName in responseFileNames {
-            if let response = FRTestStubResponseParser(fileName) {
+            if let response = FRTestStubResponseParser(fileName, config?.baseUrl) {
                 FRTestNetworkStubProtocol.mockedResponses.append(response)
             }
             else {

@@ -20,7 +20,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     /// Message Identifier for Push
     var messageId: String
     /// MechanismUUID of PushMechanism that Notification belongs to
-    var mechanismUUID: String
+    public internal(set) var mechanismUUID: String
     /// Load balance key for Push
     var loadBalanceKey: String?
     /// Time to live for push
@@ -40,7 +40,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     /// Unique identifier for Notification object associated with PushMechanism
     public var identifier: String {
         get {
-            return self.mechanismUUID + "-" + "\(self.timeAdded.timeIntervalSince1970)"
+            return self.mechanismUUID + "-" + "\(self.timeAdded.millisecondsSince1970)"
         }
     }
     
@@ -70,6 +70,23 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         get {
             return !self.pending && !self.approved
         }
+    }
+    
+    
+    // MARK: - Coding Keys
+    
+    /// CodingKeys customize the keys when this object is encoded and decoded
+    enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case messageId
+        case mechanismUUID = "mechanismUID"
+        case loadBalanceKey = "amlbCookie"
+        case ttl
+        case timeAdded
+        case timeExpired
+        case challenge
+        case pending
+        case approved
     }
     
     
@@ -159,6 +176,40 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         let approved = coder.decodeBool(forKey: "approved") as Bool
         
         self.init(messageId: messageId, challenge: challenge, loadBalanceKey: loadBalanceKey, ttl: ttl, mechanismUUID: mechanismUUID, timeAdded: timeAdded, pending: pending, approved: approved)
+    }
+    
+    
+    //  MARK: - Codable
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.messageId, forKey: .messageId)
+        try container.encode(self.challenge, forKey: .challenge)
+        try container.encode(self.loadBalanceKey, forKey: .loadBalanceKey)
+        try container.encode(self.ttl, forKey: .ttl)
+        try container.encode(self.mechanismUUID, forKey: .mechanismUUID)
+        try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
+        try container.encode(self.timeAdded.millisecondsSince1970 + Int64(self.ttl * 1000), forKey: .timeExpired)
+        try container.encode(self.pending, forKey: .pending)
+        try container.encode(self.approved, forKey: .approved)
+        try container.encode(self.identifier, forKey: .identifier)
+    }
+
+    
+    public required convenience init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let messageId = try values.decode(String.self, forKey: .messageId)
+        let challenge = try values.decode(String.self, forKey: .challenge)
+        let loadBalanceKey = try values.decode(String.self, forKey: .loadBalanceKey)
+        let mechanismUUID = try values.decode(String.self, forKey: .mechanismUUID)
+        let ttl = try values.decode(Double.self, forKey: .ttl)
+        let pending = try values.decode(Bool.self, forKey: .pending)
+        let approved = try values.decode(Bool.self, forKey: .approved)
+        let milliseconds = try values.decode(Double.self, forKey: .timeAdded)
+        let timeAdded = milliseconds / 1000
+
+        self.init(messageId: messageId, challenge: challenge, loadBalanceKey: loadBalanceKey, ttl: ttl, mechanismUUID: mechanismUUID, timeAdded: timeAdded, pending: pending, approved: approved)!
     }
     
     
@@ -265,7 +316,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - Public
     
-    /// Serializes `PushNotification` object into JSON String
+    /// Serializes `PushNotification` object into JSON String.
     /// - Returns: JSON String value of `PushNotification` object
     public func toJson() -> String? {
         if let objData = try? JSONEncoder().encode(self), let serializedStr = String(data: objData, encoding: .utf8) {

@@ -250,6 +250,26 @@ struct AuthenticatorManager {
     }
     
     
+    /// Update given Account object on the StorageClient
+    /// - Parameter account: Account object to be updated
+    /// - Returns: Boolean result of the operation
+    @discardableResult func updateAccount(account: Account) -> Bool {
+        
+        if (self.storageClient.getAccount(accountIdentifier: account.identifier)) != nil {
+            if !self.storageClient.setAccount(account: account) {
+                FRALog.w("Account object (\(account.identifier) cannot be updated; it failed on StorageClient")
+                return false
+            }
+
+            FRALog.v("Account object (\(account.identifier) was updated")
+            return true
+        } else {
+            FRALog.w("Account object (\(account.identifier) was not found on StorageClient")
+            return false
+        }
+    }
+    
+    
     /// Removes given Account object from StorageClient
     /// - Parameter account: Account object to be removed
     /// - Returns: Boolean result of the operation
@@ -279,6 +299,14 @@ struct AuthenticatorManager {
     
     
     //  MARK: - Mechanism
+    
+    
+    /// Retrieves Mechanism object with given Mechanism UUID
+    /// - Parameter uuid: UUID of Mechanism
+    /// - Returns: Mechanism object that is associated with given UUID
+    func getMechanismForUUID(uuid: String) -> Mechanism? {
+        return self.storageClient.getMechanismForUUID(uuid: uuid)
+    }
     
     
     /// Retrieves PushMechanism object with given PushNotification object
@@ -326,6 +354,14 @@ struct AuthenticatorManager {
     /// - Returns: An array of PushNotification object
     func getAllNotifications() -> [PushNotification] {
         return self.storageClient.getAllNotifications()
+    }
+    
+    
+    /// Retrieves PushNotification object with given PushNotification Identifier; Identifier of PushNotification object is "<mechanismUUID>-<timeAdded>"
+    /// - Parameter identifier: String value of PushNotification object's identifier as in "<mechanismUUID>-<timeAdded>"
+    /// - Returns: PushNotification object with given identifier
+    func getNotification(identifier: String) -> PushNotification? {
+        return self.storageClient.getNotification(notificationIdentifier: identifier)
     }
     
     

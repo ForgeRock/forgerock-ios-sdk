@@ -113,7 +113,7 @@ class FRBaseTestCase: XCTestCase {
     }
     
     func loadMockResponses(_ responseFileNames: [String]) {
-        FRTestUtils.loadMockResponses(responseFileNames)
+        FRTestUtils.loadMockResponses(responseFileNames, self.config)
     }
     
     func readDataFromJSON(_ fileName: String) -> [String: Any]? {

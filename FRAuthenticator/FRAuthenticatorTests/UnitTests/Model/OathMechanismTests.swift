@@ -78,7 +78,7 @@ class OathMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.accountName, decodedMechanism.accountName)
             XCTAssertEqual(mechanism.algorithm, decodedMechanism.algorithm)
             XCTAssertEqual(mechanism.digits, decodedMechanism.digits)
-            XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, decodedMechanism.timeAdded.timeIntervalSince1970)
+            XCTAssertEqual(mechanism.timeAdded.millisecondsSince1970, decodedMechanism.timeAdded.millisecondsSince1970)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
