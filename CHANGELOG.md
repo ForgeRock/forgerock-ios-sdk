@@ -1,4 +1,10 @@
-# Version 3.0.0
+# Version 3.1.0
+
+## [3.1.0]
+#### Changed
+- Fixed an issue where the `MetadataCallback` was overriding the stage property of a node [SDKS-1209]
+- Fixed an issue which was affecting the Centralized Login feature [SDKS-1157]
+- Various bug-fixes and enhancements for the Authenticator SDK [SDKS-1186], [SDKS-1238], [SDKS-1241]
 
 ## [3.0.0]
 #### Added
