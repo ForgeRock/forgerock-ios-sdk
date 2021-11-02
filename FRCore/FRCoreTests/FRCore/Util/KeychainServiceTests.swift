@@ -15,7 +15,7 @@ class KeychainServiceTests: FRBaseTestCase {
     var kc: KeychainService?
     
     override func setUp() {
-        self.configFileName = "Config-live-01"
+        self.configFileName = "Config"
         super.setUp()
     }
     
