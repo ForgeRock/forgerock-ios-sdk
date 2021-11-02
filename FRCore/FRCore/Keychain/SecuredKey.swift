@@ -24,8 +24,6 @@ public struct SecuredKey {
     /// Algorithm to be used for encryption/decryption using SecuredKey
     fileprivate let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
     
-    public var kSecAttrAccessibleFlag: KeychainAccessibility = .afterFirstUnlock
-    
     /// Validates whether SecuredKey using Secure Enclave is available on the device or not
     public static func isAvailable() -> Bool {
         
