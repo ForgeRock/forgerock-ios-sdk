@@ -1,4 +1,8 @@
-# Version 3.1.0
+# Version 3.1.1
+## [3.1.1]
+#### Changed
+- SecuredKey initializer supports passing a Keychain accessibility flag
+- SecuredKey now has the same default Keychain accessibility flag as the KeychainService ".afterFirstUnlock"
 
 ## [3.1.0]
 #### Changed

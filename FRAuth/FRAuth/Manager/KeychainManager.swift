@@ -94,7 +94,7 @@ struct KeychainManager {
         
         
         // Create SecuredKey if available
-        if let securedKey = SecuredKey(applicationTag: self.securedKeyTag, accessGroup: self.accessGroup) {
+        if let securedKey = SecuredKey(applicationTag: self.securedKeyTag, accessGroup: self.accessGroup, accessibility: self.primaryServiceStore.options.accessibility) {
             self.securedKey = securedKey
         }
         

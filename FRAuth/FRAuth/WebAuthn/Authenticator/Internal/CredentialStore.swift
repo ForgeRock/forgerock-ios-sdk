@@ -36,7 +36,7 @@ struct WebAuthnKeychainStore {
         }
         //  Create SecuredKey if possible
         var securedKey: SecuredKey? = nil
-        if let thisSecuredKey = SecuredKey(applicationTag: self.securedKeyLabel, accessGroup: accessGroup) {
+        if let thisSecuredKey = SecuredKey(applicationTag: self.securedKeyLabel, accessGroup: accessGroup, accessibility: .afterFirstUnlock) {
             securedKey = thisSecuredKey
         }
         
