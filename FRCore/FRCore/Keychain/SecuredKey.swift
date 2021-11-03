@@ -60,7 +60,7 @@ public struct SecuredKey {
     
     /// Initializes SecuredKey object with designated service; SecuredKey may return nil if it failed to generate keypair
     /// - Parameter applicationTag: Unique identifier for SecuredKey in Keychain Service
-    public init?(applicationTag: String, accessGroup: String? = nil, kSecAttrAccessibleFlag: KeychainAccessibility) {
+    public init?(applicationTag: String, accessGroup: String? = nil, accessibility: KeychainAccessibility = .afterFirstUnlock) {
         
         guard SecuredKey.isAvailable() else {
             return nil
@@ -73,7 +73,7 @@ public struct SecuredKey {
         else {
             // Otherwise, generate new keypair
             do {
-                self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag, accessGroup: accessGroup, kSecAttrAccessibleFlag: kSecAttrAccessibleFlag)
+                self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag, accessGroup: accessGroup, accessibility: accessibility)
             }
             catch {
                 return nil
@@ -114,7 +114,7 @@ public struct SecuredKey {
     
     /// Generates private key with given 'ApplicationTag'
     /// - Parameter applicationTag: Application Tag string value for private key
-    static func generateKey(applicationTag: String, accessGroup: String? = nil, kSecAttrAccessibleFlag: KeychainAccessibility) throws -> SecKey {
+    static func generateKey(applicationTag: String, accessGroup: String? = nil, accessibility: KeychainAccessibility) throws -> SecKey {
         var query = [String: Any]()
         
         query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeEC)

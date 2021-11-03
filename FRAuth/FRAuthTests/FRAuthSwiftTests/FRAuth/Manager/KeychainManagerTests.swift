@@ -314,7 +314,7 @@ class KeychainManagerTests: FRAuthBaseTest {
         do {
             keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
             let accessibility = keychainManager?.primaryServiceStore.options.accessibility ?? .afterFirstUnlock
-            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey", kSecAttrAccessibleFlag: accessibility)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey", accessibility: accessibility)
             keychainManager?.validateEncryption()
             XCTAssertNotNil(keychainManager)
             XCTAssertNotNil(keychainManager?.privateStore)
@@ -429,7 +429,7 @@ class KeychainManagerTests: FRAuthBaseTest {
         do {
             keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
             let accessibility = keychainManager?.primaryServiceStore.options.accessibility ?? .afterFirstUnlock
-            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2", kSecAttrAccessibleFlag: accessibility)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2", accessibility: accessibility)
             keychainManager?.validateEncryption()
             XCTAssertNotNil(keychainManager)
             XCTAssertNotNil(keychainManager?.privateStore)
@@ -457,7 +457,7 @@ class KeychainManagerTests: FRAuthBaseTest {
         do {
             keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
             let accessibility = keychainManager?.primaryServiceStore.options.accessibility ?? .afterFirstUnlock
-            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey", kSecAttrAccessibleFlag: accessibility)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey", accessibility: accessibility)
             keychainManager?.validateEncryption()
             XCTAssertNotNil(keychainManager)
             XCTAssertNotNil(keychainManager?.privateStore)
@@ -502,7 +502,7 @@ class KeychainManagerTests: FRAuthBaseTest {
         do {
             keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
             let accessibility = keychainManager?.primaryServiceStore.options.accessibility ?? .afterFirstUnlock
-            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2", kSecAttrAccessibleFlag: accessibility)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2", accessibility: accessibility)
             keychainManager?.validateEncryption()
             XCTAssertNotNil(keychainManager)
             XCTAssertNotNil(keychainManager?.privateStore)
@@ -538,7 +538,7 @@ class KeychainManagerTests: FRAuthBaseTest {
         do {
             keychainManager = try KeychainManager(baseUrl: serverConfig.baseURL.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup)
             let accessibility = keychainManager?.primaryServiceStore.options.accessibility ?? .afterFirstUnlock
-            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2", kSecAttrAccessibleFlag: accessibility)
+            keychainManager?.securedKey = SecuredKey(applicationTag: "com.forgerock.ios.test.securedKey2", accessibility: accessibility)
             keychainManager?.validateEncryption()
             XCTAssertNotNil(keychainManager)
             XCTAssertNotNil(keychainManager?.privateStore)

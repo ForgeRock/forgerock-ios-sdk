@@ -33,7 +33,7 @@ struct KeychainServiceClient: StorageClient {
     init() {
         
         // Create SecuredKey if available
-        if let securedKey = SecuredKey(applicationTag: "com.forgerock.ios.authenticator.securedKey.identifier", kSecAttrAccessibleFlag: .afterFirstUnlock) {
+        if let securedKey = SecuredKey(applicationTag: "com.forgerock.ios.authenticator.securedKey.identifier") {
             self.securedKey = securedKey
         }
         
