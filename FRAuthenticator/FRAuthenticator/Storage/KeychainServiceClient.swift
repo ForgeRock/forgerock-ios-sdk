@@ -66,12 +66,22 @@ struct KeychainServiceClient: StorageClient {
     
     
     func getAccount(accountIdentifier: String) -> Account? {
-        if let accountData = self.accountStorage.getData(accountIdentifier),
-            let account = NSKeyedUnarchiver.unarchiveObject(with: accountData) as? Account {
-            return account
+        guard let accountData = self.accountStorage.getData(accountIdentifier) else { return nil }
+        if #available(iOS 11.0, *) {
+            if let account = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Account.self, from: accountData) {
+                return account
+            }
+            else {
+                return nil
+            }
         }
         else {
-            return nil
+            if let account = NSKeyedUnarchiver.unarchiveObject(with: accountData) as? Account {
+                return account
+            }
+            else {
+                return nil
+            }
         }
     }
     
@@ -80,8 +90,14 @@ struct KeychainServiceClient: StorageClient {
         var accounts: [Account] = []
         if let items = self.accountStorage.allItems() {
             for item in items {
-                if let accountData = item.value as? Data, let account = NSKeyedUnarchiver.unarchiveObject(with: accountData) as? Account {
-                    accounts.append(account)
+                if #available(iOS 11.0, *) {
+                    if let accountData = item.value as? Data, let account = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Account.self, from: accountData) {
+                        accounts.append(account)
+                    }
+                } else {
+                    if let accountData = item.value as? Data, let account = NSKeyedUnarchiver.unarchiveObject(with: accountData) as? Account {
+                        accounts.append(account)
+                    }
                 }
             }
         }
@@ -117,10 +133,19 @@ struct KeychainServiceClient: StorageClient {
         var mechanisms: [Mechanism] = []
         if let items = self.mechanismStorage.allItems() {
             for item in items {
-                if let mechanismData = item.value as? Data,
-                let mechanism = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism {
-                    if mechanism.issuer == account.issuer && mechanism.accountName == account.accountName {
-                        mechanisms.append(mechanism)
+                if #available(iOS 11.0, *) {
+                    if let mechanismData = item.value as? Data,
+                       let mechanism = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Mechanism.self, from: mechanismData) {
+                        if mechanism.issuer == account.issuer && mechanism.accountName == account.accountName {
+                            mechanisms.append(mechanism)
+                        }
+                    }
+                } else {
+                    if let mechanismData = item.value as? Data,
+                    let mechanism = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism {
+                        if mechanism.issuer == account.issuer && mechanism.accountName == account.accountName {
+                            mechanisms.append(mechanism)
+                        }
                     }
                 }
             }
@@ -134,10 +159,19 @@ struct KeychainServiceClient: StorageClient {
     func getMechanismForUUID(uuid: String) -> Mechanism? {
         if let items = self.mechanismStorage.allItems() {
             for item in items {
-                if let mechanismData = item.value as? Data,
-                let mechanism = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism {
-                    if mechanism.mechanismUUID == uuid {
-                        return mechanism
+                if #available(iOS 11.0, *) {
+                    if let mechanismData = item.value as? Data,
+                       let mechanism = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Mechanism.self, from: mechanismData) {
+                        if mechanism.mechanismUUID == uuid {
+                            return mechanism
+                        }
+                    }
+                } else {
+                    if let mechanismData = item.value as? Data,
+                    let mechanism = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism {
+                        if mechanism.mechanismUUID == uuid {
+                            return mechanism
+                        }
                     }
                 }
             }
@@ -147,12 +181,21 @@ struct KeychainServiceClient: StorageClient {
     
     
     func getNotification(notificationIdentifier: String) -> PushNotification? {
-        if let notificationData = self.notificationStorage.getData(notificationIdentifier),
-            let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification {
-            return notification
-        }
-        else {
-            return nil
+        guard let notificationData = self.notificationStorage.getData(notificationIdentifier) else { return nil }
+        if #available(iOS 11.0, *) {
+            if let notification = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushNotification.self, from: notificationData) {
+                return notification
+            }
+            else {
+                return nil
+            }
+        } else {
+            if let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification {
+                return notification
+            }
+            else {
+                return nil
+            }
         }
     }
     
@@ -183,11 +226,19 @@ struct KeychainServiceClient: StorageClient {
         var notifications: [PushNotification] = []
         if let items = self.notificationStorage.allItems() {
            for item in items {
-               if let notificationData = item.value as? Data,
-                let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification,
-                notification.mechanismUUID == mechanism.mechanismUUID {
-                   notifications.append(notification)
-               }
+            if #available(iOS 11.0, *) {
+                if let notificationData = item.value as? Data,
+                 let notification = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushNotification.self, from: notificationData),
+                 notification.mechanismUUID == mechanism.mechanismUUID {
+                    notifications.append(notification)
+                }
+            } else {
+                if let notificationData = item.value as? Data,
+                 let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification,
+                 notification.mechanismUUID == mechanism.mechanismUUID {
+                    notifications.append(notification)
+                }
+            }
            }
         }
         return notifications.sorted { (lhs, rhs) -> Bool in
@@ -200,9 +251,15 @@ struct KeychainServiceClient: StorageClient {
         var notifications: [PushNotification] = []
         if let items = self.notificationStorage.allItems() {
            for item in items {
-               if let notificationData = item.value as? Data, let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification {
-                   notifications.append(notification)
-               }
+            if #available(iOS 11.0, *) {
+                if let notificationData = item.value as? Data, let notification = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushNotification.self, from: notificationData) {
+                    notifications.append(notification)
+                }
+            } else {
+                if let notificationData = item.value as? Data, let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification {
+                    notifications.append(notification)
+                }
+            }
            }
         }
         return notifications.sorted { (lhs, rhs) -> Bool in
