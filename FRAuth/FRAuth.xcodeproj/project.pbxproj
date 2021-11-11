@@ -275,6 +275,7 @@
 		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
+		EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -598,6 +599,7 @@
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
+		EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRHTTPCookie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1022,6 +1024,7 @@
 				D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */,
 				D512CD40240DC41E00AF520E /* FRRestClient.swift */,
 				D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */,
+				EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */,
 				D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */,
 			);
 			path = Network;
@@ -1739,6 +1742,7 @@
 				D5F01B1D240F0B9F00BD48AA /* FRLog.swift in Sources */,
 				D586CFAD23358EE0007A2194 /* FRUser.swift in Sources */,
 				D586CF8423358EE0007A2194 /* FRJailbreakDetector.swift in Sources */,
+				EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */,
 				D586CFB823358EE0007A2194 /* HardwareCollector.swift in Sources */,
 				D586CFAA23358EE0007A2194 /* ServerConfig.swift in Sources */,
 				D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */,
