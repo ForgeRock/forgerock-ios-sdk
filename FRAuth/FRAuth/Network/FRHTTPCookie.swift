@@ -11,6 +11,7 @@
 
 import Foundation
 
+@available(iOS 11, *)
 class FRHTTPCookie: HTTPCookie, NSSecureCoding {
     required init?(coder: NSCoder) {
         var properties = [HTTPCookiePropertyKey: Any]()
