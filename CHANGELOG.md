@@ -1,4 +1,9 @@
-# Version 3.1.1
+# Version 3.2.0
+## [3.2.0]
+#### Changed
+- Added custom implementation for HTTPCookie, for iOS 11+ devices in order to support NSSecureCoding for storing cookies
+- Changed all instances of Archiving/Unarchiving to use NSSecureCoding
+
 ## [3.1.1]
 #### Changed
 - SecuredKey initializer supports passing a Keychain accessibility flag

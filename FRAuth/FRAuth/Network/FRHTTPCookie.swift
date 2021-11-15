@@ -31,7 +31,7 @@ class FRHTTPCookie: HTTPCookie, NSSecureCoding {
         if #available(iOS 14.0, *) {
             portList = coder.decodeArrayOfObjects(ofClass: NSNumber.self, forKey: "portList")
         } else {
-            portList = coder.decodeObject(of: [NSNumber.self], forKey: "portList") as? [NSNumber]
+            portList = coder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "portList") as? [NSNumber]
         }
         
         let sameSitePolicy = coder.decodeObject(of: NSString.self, forKey: "sameSitePolicy") as String?
@@ -41,14 +41,14 @@ class FRHTTPCookie: HTTPCookie, NSSecureCoding {
         properties[HTTPCookiePropertyKey.value] = value
         properties[HTTPCookiePropertyKey.domain] = domain
         properties[HTTPCookiePropertyKey.path] = path
-        properties[HTTPCookiePropertyKey.secure] = isSecure
+        properties[HTTPCookiePropertyKey.secure] = isSecure ? "TRUE" : nil
         properties[HTTPCookiePropertyKey.expires] = expiresDate
         properties[HTTPCookiePropertyKey.comment] = comment
         properties[HTTPCookiePropertyKey.commentURL] = commentURL
-        properties[HTTPCookiePropertyKey.discard] = isSessionOnly
+        properties[HTTPCookiePropertyKey.discard] = isSessionOnly ? "TRUE" : nil
         properties[HTTPCookiePropertyKey.maximumAge] = expiresDate
         properties[HTTPCookiePropertyKey.port] = portList
-        properties[HTTPCookiePropertyKey("HttpOnly")] = isHTTPOnly
+        properties[HTTPCookiePropertyKey("HttpOnly")] = isHTTPOnly ? "TRUE" : nil
         if #available(iOS 13.0, *) {
             if let sameSitePolicyValue = sameSitePolicy {
                 properties[HTTPCookiePropertyKey.sameSitePolicy] = HTTPCookieStringPolicy(rawValue: sameSitePolicyValue)
