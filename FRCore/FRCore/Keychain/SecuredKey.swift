@@ -132,7 +132,7 @@ public struct SecuredKey {
         // If the device supports Secure Enclave, create a keypair using Secure Enclave TokenID
         if SecuredKey.isAvailable() {
             query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
-            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleFlag.rawValue as CFString, .privateKeyUsage, nil)!
+            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, accessibility.rawValue as CFString, .privateKeyUsage, nil)!
             keyAttr[String(kSecAttrAccessControl)] = accessControl
         }
         #endif
