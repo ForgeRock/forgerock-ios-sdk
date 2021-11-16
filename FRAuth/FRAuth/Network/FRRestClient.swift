@@ -2,7 +2,7 @@
 //  FRRestClient.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -112,9 +112,16 @@ class FRRestClient: NSObject {
                     FRLog.v("[Cookies] Delete - Cookie Name: \(cookie.name)")
                 }
                 else {
-                    let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookie)
-                    frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
-                    FRLog.v("[Cookies] Update - Cookie Name: \(cookie.name) | Cookie Value: \(cookie.value)")
+                    if #available(iOS 11.0, *) {
+                        if let properties = cookie.properties, let frHTTPCookie = FRHTTPCookie(with: properties), let cookieData = try? NSKeyedArchiver.archivedData(withRootObject: frHTTPCookie, requiringSecureCoding: true) {
+                            frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
+                            FRLog.v("[Cookies] Update - Cookie Name: \(cookie.name) | Cookie Value: \(cookie.value)")
+                        }
+                    } else {
+                        let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookie)
+                        frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
+                        FRLog.v("[Cookies] Update - Cookie Name: \(cookie.name) | Cookie Value: \(cookie.value)")
+                    }
                 }
             }
         }
@@ -129,25 +136,40 @@ class FRRestClient: NSObject {
             
             var cookieList: [HTTPCookie] = []
             
-            // Iterate Cookie List and validate
-            for cookieObj in cookieItems {
-                if let cookieData = cookieObj.value as? Data, let cookie = NSKeyedUnarchiver.unarchiveObject(with: cookieData) as? HTTPCookie {
-                    // When Cookie is expired, remove it from the Cookie Store
-                    if cookie.isExpired {
-                        frAuth.keychainManager.cookieStore.delete(cookie.name + "-" + cookie.domain)
-                        FRLog.v("[Cookies] Delete - Expired - Cookie Name: \(cookie.name)")
+            func checkCookie(_ cookie: HTTPCookie) {
+                // When Cookie is expired, remove it from the Cookie Store
+                if cookie.isExpired {
+                    frAuth.keychainManager.cookieStore.delete(cookie.name + "-" + cookie.domain)
+                    FRLog.v("[Cookies] Delete - Expired - Cookie Name: \(cookie.name)")
+                }
+                else {
+                    if !cookie.validateIsSecure(url) {
+                        FRLog.v("[Cookies] Ignore - isSecure validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
+                    }
+                    else if !cookie.validateURL(url) {
+                        FRLog.v("[Cookies] Ignore - Domain validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
                     }
                     else {
-                        if !cookie.validateIsSecure(url) {
-                            FRLog.v("[Cookies] Ignore - isSecure validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
-                        }
-                        else if !cookie.validateURL(url) {
-                            FRLog.v("[Cookies] Ignore - Domain validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
-                        }
-                        else {
-                            FRLog.v("[Cookies] Injected for the request - Cookie Name: \(cookie.name) | Cookie Value \(cookie.value)")
-                            cookieList.append(cookie)
-                        }
+                        FRLog.v("[Cookies] Injected for the request - Cookie Name: \(cookie.name) | Cookie Value \(cookie.value)")
+                        cookieList.append(cookie)
+                    }
+                }
+            }
+            
+            // Iterate Cookie List and validate
+            for cookieObj in cookieItems {
+                if #available(iOS 11.0, *) {
+                    do {
+                    if let cookieData = cookieObj.value as? Data, let cookie = try NSKeyedUnarchiver.unarchivedObject(ofClass: FRHTTPCookie.self, from: cookieData) {
+                        checkCookie(cookie)
+                    }
+                    } catch {
+                        FRLog.e("[Cookies] unarchiving failed with error: \(error.localizedDescription)")
+                    }
+                }
+                else {
+                    if let cookieData = cookieObj.value as? Data, let cookie = NSKeyedUnarchiver.unarchiveObject(with: cookieData) as? HTTPCookie {
+                        checkCookie(cookie)
                     }
                 }
             }
