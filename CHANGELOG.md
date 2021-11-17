@@ -1,13 +1,11 @@
-# Version 3.2.0
-## [3.2.0]
-#### Changed
-- Added custom implementation for HTTPCookie, for iOS 11+ devices in order to support NSSecureCoding for storing cookies
-- Changed all instances of Archiving/Unarchiving to use NSSecureCoding
+# Version 3.1.1
 
 ## [3.1.1]
 #### Changed
-- SecuredKey initializer supports passing a Keychain accessibility flag
-- SecuredKey now has the same default Keychain accessibility flag as the KeychainService ".afterFirstUnlock"
+- Added custom implementation for `HTTPCookie` for iOS 11+ devices, in order to support NSSecureCoding for storing cookies. [SDKS-1366]
+- Changed all instances of Archiving/Unarchiving to use NSSecureCoding. [SDKS-1366]
+- `SecuredKey` initializer supports passing a Keychain accessibility flag. [SDKS-1334]
+- `SecuredKey` now has the same default Keychain accessibility flag as the KeychainService ".afterFirstUnlock". [SDKS-1334]
 
 ## [3.1.0]
 #### Changed
