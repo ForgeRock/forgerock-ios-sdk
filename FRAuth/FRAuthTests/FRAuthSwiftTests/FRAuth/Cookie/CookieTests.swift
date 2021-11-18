@@ -212,4 +212,82 @@ class CookieTests: FRAuthBaseTest {
         }
         XCTAssertEqual(count, 0)
     }
+    
+    func test_07_validate_cookie_is_stored_and_unarchived_Correctly() {
+        self.startSDK()
+
+        self.performLogin()
+        let url = URL(string: "https://openam.example.com")!
+        
+        let setCookie: [String: String] = ["Set-Cookie":"iPlanetDirectoryPro=token; Expires=Wed, 21 Oct 2022 01:00:00 GMT; Domain=openam.example.com"]
+        let cookies = HTTPCookie.cookies(withResponseHeaderFields: setCookie, for: url)
+        
+        guard let cookie = cookies.first, let frAuth = FRAuth.shared else {
+            XCTFail("Failed to parse Cookies from response header")
+            return
+        }
+        
+        if #available(iOS 11.0, *) {
+            if let properties = cookie.properties, let frHTTPCookie = FRHTTPCookie(with: properties), let cookieData = try? NSKeyedArchiver.archivedData(withRootObject: frHTTPCookie, requiringSecureCoding: true) {
+                XCTAssertNotNil(cookieData)
+                frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
+            }
+        } else {
+            let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookie)
+            XCTAssertNotNil(cookieData)
+            frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
+        }
+        
+        guard let cookieItems = frAuth.keychainManager.cookieStore.allItems() else {
+            XCTFail("Failed to retrieve Cookies")
+            return
+        }
+        
+        for cookieObj in cookieItems {
+            if #available(iOS 11.0, *) {
+                do {
+                if let cookieData = cookieObj.value as? Data, let unArchivedcookie = try NSKeyedUnarchiver.unarchivedObject(ofClass: FRHTTPCookie.self, from: cookieData) {
+                    XCTAssertEqual(cookie.expiresDate, unArchivedcookie.expiresDate)
+                    XCTAssertEqual(cookie.comment, unArchivedcookie.comment)
+                    XCTAssertEqual(cookie.commentURL, unArchivedcookie.commentURL)
+                    XCTAssertEqual(cookie.name, unArchivedcookie.name)
+                    XCTAssertEqual(cookie.value, unArchivedcookie.value)
+                    XCTAssertEqual(cookie.path, unArchivedcookie.path)
+                    XCTAssertEqual(cookie.domain, unArchivedcookie.domain)
+                    XCTAssertEqual(cookie.isSecure, unArchivedcookie.isSecure)
+                    XCTAssertEqual(cookie.isSessionOnly, unArchivedcookie.isSessionOnly)
+                    XCTAssertEqual(cookie.isHTTPOnly, unArchivedcookie.isHTTPOnly)
+                    checkCookie(unArchivedcookie)
+                }
+                } catch {
+                    FRLog.e("[Cookies] unarchiving failed with error: \(error.localizedDescription)")
+                }
+            }
+            else {
+                if let cookieData = cookieObj.value as? Data, let cookie = NSKeyedUnarchiver.unarchiveObject(with: cookieData) as? HTTPCookie {
+                    checkCookie(cookie)
+                }
+            }
+        }
+        
+        func checkCookie(_ cookie: HTTPCookie) {
+            // When Cookie is expired, remove it from the Cookie Store
+            if cookie.isExpired {
+                frAuth.keychainManager.cookieStore.delete(cookie.name + "-" + cookie.domain)
+                XCTFail("[Cookies] Delete - Expired - Cookie Name: \(cookie.name)")
+            }
+            else {
+                if !cookie.validateIsSecure(url) {
+                    XCTFail("[Cookies] Ignore - isSecure validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
+                }
+                else if !cookie.validateURL(url) {
+                    XCTFail("[Cookies] Ignore - Domain validation failed - Domain: \(url)\n\nCookie: \(cookie.name)")
+                }
+                else {
+                    print("[Cookies] To be Injected for the request - Cookie Name: \(cookie.name) | Cookie Value \(cookie.value)")
+                }
+            }
+        }
+        
+    }
 }

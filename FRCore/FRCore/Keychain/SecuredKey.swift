@@ -2,7 +2,7 @@
 //  SecuredKey.swift
 //  FRCore
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2021 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -60,7 +60,7 @@ public struct SecuredKey {
     
     /// Initializes SecuredKey object with designated service; SecuredKey may return nil if it failed to generate keypair
     /// - Parameter applicationTag: Unique identifier for SecuredKey in Keychain Service
-    public init?(applicationTag: String, accessGroup: String? = nil) {
+    public init?(applicationTag: String, accessGroup: String? = nil, accessibility: KeychainAccessibility = .afterFirstUnlock) {
         
         guard SecuredKey.isAvailable() else {
             return nil
@@ -73,7 +73,7 @@ public struct SecuredKey {
         else {
             // Otherwise, generate new keypair
             do {
-                self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag, accessGroup: accessGroup)
+                self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag, accessGroup: accessGroup, accessibility: accessibility)
             }
             catch {
                 return nil
@@ -114,7 +114,7 @@ public struct SecuredKey {
     
     /// Generates private key with given 'ApplicationTag'
     /// - Parameter applicationTag: Application Tag string value for private key
-    static func generateKey(applicationTag: String, accessGroup: String? = nil) throws -> SecKey {
+    static func generateKey(applicationTag: String, accessGroup: String? = nil, accessibility: KeychainAccessibility) throws -> SecKey {
         var query = [String: Any]()
         
         query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeEC)
@@ -132,7 +132,7 @@ public struct SecuredKey {
         // If the device supports Secure Enclave, create a keypair using Secure Enclave TokenID
         if SecuredKey.isAvailable() {
             query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
-            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,kSecAttrAccessibleWhenUnlockedThisDeviceOnly, .privateKeyUsage, nil)!
+            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, accessibility.rawValue as CFString, .privateKeyUsage, nil)!
             keyAttr[String(kSecAttrAccessControl)] = accessControl
         }
         #endif
