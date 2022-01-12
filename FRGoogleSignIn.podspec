@@ -32,8 +32,7 @@ Pod::Spec.new do |s|
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
 
   s.ios.dependency 'FRAuth', '~> 3.1.1'
-  s.ios.dependency 'GoogleSignIn', '~> 5.0.2'
+  s.ios.dependency 'GoogleSignIn', '~> 6.1.0'
   s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
-
