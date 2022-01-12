@@ -41,16 +41,19 @@ public class GoogleSignInHandler: NSObject, IdPHandler {
     ///   - completion: Completion callback to notify the result
     public func signIn(idpClient: IdPClient, completion: @escaping SocialLoginCompletionCallback) {
         Log.v("Start GIDSignIn sign-in flow", module: module)
-        GIDSignIn.sharedInstance()?.signOut()
+        GIDSignIn.sharedInstance.signOut()
         self.completionCallback = completion
         if let viewController = self.presentingViewController {
-            GIDSignIn.sharedInstance()?.presentingViewController = viewController
+            GIDSignIn.sharedInstance.signIn(with: GIDConfiguration(clientID: idpClient.clientId), presenting: viewController) { user, error in
+                Log.v("GIDSignIn completed with result", module: self.module)
+                if let error = error {
+                    Log.e("An error ocurred during the authentication: \(error.localizedDescription)", module: self.module)
+                }
+                self.completionCallback?(user?.authentication.idToken, self.tokenType, error)
+            }
         }
-        GIDSignIn.sharedInstance()?.clientID = idpClient.clientId
-        GIDSignIn.sharedInstance()?.delegate = self
-        GIDSignIn.sharedInstance()?.signIn()
     }
-    
+        
     
     /// Generates, and returns `UIView` for `GIDSignInButton` button
     /// - Returns: `GIDSignInButton` button in `UIView`
@@ -84,20 +87,6 @@ public class GoogleSignInHandler: NSObject, IdPHandler {
     ///   - options: UIApplication.OpenURLOptions
     /// - Returns: Boolean result whether or not the URL is designated for Google Sign-in
     public static func handle(_ application: UIApplication, _ url: URL, _ options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        if let result = GIDSignIn.sharedInstance()?.handle(url) {
-            return result
-        }
-        return false
-    }
-}
-
-
-extension GoogleSignInHandler: GIDSignInDelegate {
-    public func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
-        Log.v("GIDSignIn completed with result", module: self.module)
-        if let error = error {
-            Log.e("An error ocurred during the authentication: \(error.localizedDescription)", module: module)
-        }
-        self.completionCallback?(user?.authentication.idToken, self.tokenType, error)
+        return GIDSignIn.sharedInstance.handle(url)
     }
 }
