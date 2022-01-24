@@ -74,7 +74,7 @@ class IdPValueTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
         buttonView.isUserInteractionEnabled = false
         buttonView.frame = containerView.bounds
         containerView.addSubview(buttonView)
-        self.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         buttonView.widthAnchor.constraint(equalToConstant: containerView.frame.size.width).isActive = true
         buttonView.heightAnchor.constraint(equalToConstant: containerView.frame.size.height).isActive = true
         buttonView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
