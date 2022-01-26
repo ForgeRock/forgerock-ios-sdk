@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>forgerock_oauth_client_id</key>
+	<string>ForgeRockSDKClient</string>
+	<key>forgerock_oauth_redirect_uri</key>
+	<string>https://sdkapp.example.com:8443/callback</string>
+	<key>forgerock_oauth_scope</key>
+	<string>openid profile email address</string>
+	<key>forgerock_oauth_threshold</key>
+	<string>60</string>
+	<key>forgerock_url</key>
+	<string>https://openam.example.com:8443/openam</string>
+	<key>forgerock_cookie_name</key>
+	<string>iPlanetDirectoryPro</string>
+	<key>forgerock_realm</key>
+	<string>root</string>
+	<key>forgerock_timeout</key>
+	<string>60</string>
+	<key>forgerock_auth_service_name</key>
+	<string>Login</string>
+	<key>forgerock_registration_service_name</key>
+	<string>Registration</string>
+</dict>
+</plist>
