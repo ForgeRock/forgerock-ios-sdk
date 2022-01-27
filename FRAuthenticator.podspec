@@ -29,5 +29,5 @@ Pod::Spec.new do |s|
 
   base_dir = "FRAuthenticator/FRAuthenticator"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRCore', '~> 3.1.1'
+  s.ios.dependency 'FRCore', '~> 3.2.0'
 end
