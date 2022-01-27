@@ -30,5 +30,5 @@ Pod::Spec.new do |s|
   base_dir = "FRUI/FRUI"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
   s.resources = [base_dir + '/**/*.xib', base_dir + '/Assets/*']
-  s.ios.dependency 'FRAuth', '~> 3.1.1'
+  s.ios.dependency 'FRAuth', '~> 3.2.0'
 end

@@ -29,5 +29,5 @@ Pod::Spec.new do |s|
 
   base_dir = "FRProximity/FRProximity"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRAuth', '~> 3.1.1'
+  s.ios.dependency 'FRAuth', '~> 3.2.0'
 end
