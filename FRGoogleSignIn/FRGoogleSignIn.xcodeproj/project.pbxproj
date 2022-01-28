@@ -3,18 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		D58BC3B52603112A00254654 /* GoogleSignInHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BC3B42603112A00254654 /* GoogleSignInHandlerTests.swift */; };
 		D5B2067626008D0900DABB9B /* FRGoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2066C26008D0800DABB9B /* FRGoogleSignIn.framework */; };
 		D5B2067D26008D0900DABB9B /* FRGoogleSignIn.h in Headers */ = {isa = PBXBuildFile; fileRef = D5B2066F26008D0800DABB9B /* FRGoogleSignIn.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D5B206CB26008EF300DABB9B /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D5B206C826008EF200DABB9B /* GoogleSignIn.bundle */; };
-		D5B206CC26008EF300DABB9B /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B206C926008EF200DABB9B /* GoogleSignIn.framework */; };
-		D5B206CD26008EF300DABB9B /* GoogleSignInDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B206CA26008EF200DABB9B /* GoogleSignInDependencies.framework */; };
-		D5B206DD26008F4C00DABB9B /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B206D726008F3F00DABB9B /* FRAuth.framework */; };
 		D5B206E226008F6F00DABB9B /* GoogleSignInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B206E126008F6F00DABB9B /* GoogleSignInHandler.swift */; };
+		EC72548E278EEA4000A62056 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EC72548D278EEA4000A62056 /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,9 +52,6 @@
 		D5B2067026008D0800DABB9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B2067526008D0900DABB9B /* FRGoogleSignInTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRGoogleSignInTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B2067C26008D0900DABB9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5B206C826008EF200DABB9B /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleSignIn.bundle; sourceTree = "<group>"; };
-		D5B206C926008EF200DABB9B /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSignIn.framework; sourceTree = "<group>"; };
-		D5B206CA26008EF200DABB9B /* GoogleSignInDependencies.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSignInDependencies.framework; sourceTree = "<group>"; };
 		D5B206D126008F3F00DABB9B /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
 		D5B206E126008F6F00DABB9B /* GoogleSignInHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,9 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5B206DD26008F4C00DABB9B /* FRAuth.framework in Frameworks */,
-				D5B206CD26008EF300DABB9B /* GoogleSignInDependencies.framework in Frameworks */,
-				D5B206CC26008EF300DABB9B /* GoogleSignIn.framework in Frameworks */,
+				EC72548E278EEA4000A62056 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				D5B206D026008F2E00DABB9B /* Sources */,
-				D5B2069A26008DDD00DABB9B /* framework */,
 				D5B2066F26008D0800DABB9B /* FRGoogleSignIn.h */,
 				D5B2067026008D0800DABB9B /* Info.plist */,
 			);
@@ -122,16 +113,6 @@
 				D5B2067C26008D0900DABB9B /* Info.plist */,
 			);
 			path = FRGoogleSignInTests;
-			sourceTree = "<group>";
-		};
-		D5B2069A26008DDD00DABB9B /* framework */ = {
-			isa = PBXGroup;
-			children = (
-				D5B206C826008EF200DABB9B /* GoogleSignIn.bundle */,
-				D5B206C926008EF200DABB9B /* GoogleSignIn.framework */,
-				D5B206CA26008EF200DABB9B /* GoogleSignInDependencies.framework */,
-			);
-			path = framework;
 			sourceTree = "<group>";
 		};
 		D5B206D026008F2E00DABB9B /* Sources */ = {
@@ -187,6 +168,9 @@
 				D5B206DB26008F4700DABB9B /* PBXTargetDependency */,
 			);
 			name = FRGoogleSignIn;
+			packageProductDependencies = (
+				EC72548D278EEA4000A62056 /* GoogleSignIn */,
+			);
 			productName = FRGoogleSignIn;
 			productReference = D5B2066C26008D0800DABB9B /* FRGoogleSignIn.framework */;
 			productType = "com.apple.product-type.framework";
@@ -236,6 +220,9 @@
 				Base,
 			);
 			mainGroup = D5B2066226008D0800DABB9B;
+			packageReferences = (
+				EC72548C278EEA4000A62056 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			productRefGroup = D5B2066D26008D0800DABB9B /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -274,7 +261,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5B206CB26008EF300DABB9B /* GoogleSignIn.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,7 +449,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 3.2.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -496,8 +483,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.0;
-				ONLY_ACTIVE_ARCH = YES;
+				MARKETING_VERSION = 3.2.0;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -577,6 +564,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EC72548C278EEA4000A62056 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = exactVersion;
+				version = 6.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EC72548D278EEA4000A62056 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EC72548C278EEA4000A62056 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D5B2066326008D0800DABB9B /* Project object */;
 }

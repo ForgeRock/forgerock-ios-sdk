@@ -1,4 +1,8 @@
-# Version 3.1.1
+# Version 3.2.0
+## [3.2.0]
+#### Changed
+- Updated GoogleSignIn library to the latest version '6.1.0'
+- Made FRGoogleSignIn available through SPM
 
 ## [3.1.1]
 #### Changed
@@ -49,11 +53,11 @@
 - `AuthorizationPolicy`'s `validatingURL` and `delegate` properties are now public properties. [SDKS-696]
 - Fix the issue that `refresh_token` is not persisted when refresh_token grant type does not return new `refresh_token`. [SDKS-648]
 - Change `FRUser.getAccessToken` to clear OAuth2 tokens and handle error more percisely to reflect the user authentication status. If `refresh_token` grant returns `invalid_grant`, SDK will resume with `/authorize` flow with SSO Token (other errors with `refresh_token` grant will throw an exception), and if the `/authorize` request fails with current SSO Token, SDK will clear all credentials and states assuming that there is no more valid credentials. [SDKS-700]
-- `FRUser.currentUser.getAccessToken` method will now validate SSO Token associated with `AccessToken`, and make sure that it is same as current `FRSession.currentSession.sessionToken` value. If two values are different, SDK will invalidate OAuth2 token, and try to authorize new OAuth2 token(s) with current SSO Token. [SDKS-700] 
+- `FRUser.currentUser.getAccessToken` method will now validate SSO Token associated with `AccessToken`, and make sure that it is same as current `FRSession.currentSession.sessionToken` value. If two values are different, SDK will invalidate OAuth2 token, and try to authorize new OAuth2 token(s) with current SSO Token. [SDKS-700]
 - `FRUser.currentUser.getUserInfo` no longer thorws an exception for session renewal failure; instead SDK now invokes API without `Authorization` header if token renewal failed. [SDKS-644]
 
 #### Deprecated
-- 
+-
 
 ## [2.1.0]
 #### Added
@@ -80,7 +84,7 @@
 - `FRAuth` now supports `Device Profile Node` in AM 7.0.0. [SDKS-294]
 - `FRCore` introduces an ability to customize internal SDK requests through `RequestInterceptor`. Use `FRCore.RequestInterceptor` to implement the interceptor, and `FRAuth.FRRequestInterceptorRegistry`to register interceptors. [SDKS-250]
 - `FRAuth` now supports customizable cookie name to align with AM. Use `.plist` config file, or `ServerConfigBuilder` to change `cookieName`. [SDKS-382]
-- `FRAuthenticator` SDK is now available; use `FRAuthenticator` to implement OATH, and Push Authentication with AM in the application. 
+- `FRAuthenticator` SDK is now available; use `FRAuthenticator` to implement OATH, and Push Authentication with AM in the application.
 
 
 #### Changed
@@ -98,7 +102,7 @@
 - `FRSession` is now added to replace `SessionManager`. Use `FRSession` to authenticate against Authentication Tree in AM, persist and manage Session Token. [SDKS-174]
 - `FRSession.authenticate` retrieves Session Token, and creates `FRUser.currentUser` without OAuth2 token set. Use `FRUser.currentUser.getAccessToken` to obtain OAuth2 token set if needed. [SDKS-174]
 - `forgerock_enable_cookie` option is now available; you can set Boolean value to indicate whether or not SDK to persist and manage Cookies from AM. [SDKS-183]
-- FRAuth iOS SDK adds security layer on Keychain Service to encrypt all stored data with `SecuredKey` (using Secure Enclave when available). [SDKS-192] 
+- FRAuth iOS SDK adds security layer on Keychain Service to encrypt all stored data with `SecuredKey` (using Secure Enclave when available). [SDKS-192]
 
 #### Changed
 - `FRUser.login` now returns `AuthError.userAlreadyAuthenticated` when there is already authenticated user session. [SDKS-174]
@@ -138,4 +142,4 @@
 - Initial release for FRAuth SDK
 - Initial release for FRUI SDK
 - Initial release for FRProximity SDK
-- Initial Cocoapods deployment for beta version 
+- Initial Cocoapods deployment for beta version

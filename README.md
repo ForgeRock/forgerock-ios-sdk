@@ -70,9 +70,9 @@ To try out the ForgeRock iOS SDK sample, perform these steps:
     ```
     git clone https://github.com/ForgeRock/forgerock-ios-sdk.git
     ```
-3. Open the `/SampleApps/FRExample.xcworkspace` file in [Xcode](https://developer.apple.com/xcode/).
-4. Open `/FRExample/FRExample/Configs/FRAuthConfig.plist` and edit the values to match your AM instance.
-5. Ensure the active scheme is "_FRExample-Swift_", and then click the **Run** button.
+3. Open the `SampleApps/QuickstartExample/Quickstart.xcodeproj` file in [Xcode](https://developer.apple.com/xcode/).
+4. Open `/Quickstart/FRAuthConfig.plist` and edit the values to match your AM instance.
+5. Ensure the active scheme is "_Quickstart_", and then click the **Run** button.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
