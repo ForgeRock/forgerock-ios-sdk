@@ -173,7 +173,7 @@ public class RestClient: NSObject {
     /// - Parameter config: custom URLSessionConfiguration object
     /// - Parameter handler: custom URLSessionDelegate object
     @objc
-    public func setURLSessionConfiguration(config: URLSessionConfiguration?, handler: URLSessionDelegate?) {
+    public func setURLSessionConfiguration(config: URLSessionConfiguration?, handler: FRPinningHandlerProtocol?) {
         Log.v("Custom URLSessionConfiguration set \(config.debugDescription), custom delegate handler: \(handler.debugDescription)")
         let session = URLSession(configuration: config ?? RestClient.defaultURLSessionConfiguration, delegate: handler ?? RedirectHandler(), delegateQueue: nil)
         self.session = session

@@ -11,8 +11,17 @@
 
 import Foundation
 
+@objc
+public protocol FRPinningHandlerProtocol: URLSessionTaskDelegate {
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
+    
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+}
+
 /// This class implements URLSessionTaskDelegate protocol to handle HTTP redirect and SSL Pinning
-open class FRPinningHandler: NSObject, URLSessionTaskDelegate {
+open class FRPinningHandler: NSObject, FRPinningHandlerProtocol {
     
     private let frSecurityConfiguration: FRSecurityConfiguration
     
