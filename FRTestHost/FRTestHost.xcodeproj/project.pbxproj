@@ -14,6 +14,7 @@
 		D5A7A1F5248CD88E00E30CFE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1F3248CD88E00E30CFE /* LaunchScreen.storyboard */; };
 		D5A7A1FE248CDA4900E30CFE /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1FD248CDA4900E30CFE /* FRAuthConfig.plist */; };
 		D5A7A200248CDA7100E30CFE /* FRAuthConfigNonSSO.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1FF248CDA7100E30CFE /* FRAuthConfigNonSSO.plist */; };
+		D5B870C425D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */; };
 		D5D5DC0B25E76C8100A8AF0E /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */; };
 		D5D5DC0C25E76C8100A8AF0E /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D5D5DC0D25E76C8100A8AF0E /* FRAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */; };
@@ -24,7 +25,6 @@
 		D5D5DC1225E76C8100A8AF0E /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0925E76C8100A8AF0E /* FRProximity.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D5D5DC1325E76C8100A8AF0E /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0A25E76C8100A8AF0E /* FRUI.framework */; };
 		D5D5DC1425E76C8100A8AF0E /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0A25E76C8100A8AF0E /* FRUI.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		D5B870C425D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,12 +58,12 @@
 		D5A7A1FC248CD93D00E30CFE /* FRTestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FRTestHost.entitlements; sourceTree = "<group>"; };
 		D5A7A1FD248CDA4900E30CFE /* FRAuthConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfig.plist; sourceTree = "<group>"; };
 		D5A7A1FF248CDA7100E30CFE /* FRAuthConfigNonSSO.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigNonSSO.plist; sourceTree = "<group>"; };
+		D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigNoOAuth2.plist; sourceTree = "<group>"; };
 		D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D5DC0825E76C8100A8AF0E /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D5DC0925E76C8100A8AF0E /* FRProximity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRProximity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D5DC0A25E76C8100A8AF0E /* FRUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigNoOAuth2.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,7 +363,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRTestHost/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -385,7 +385,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRTestHost/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

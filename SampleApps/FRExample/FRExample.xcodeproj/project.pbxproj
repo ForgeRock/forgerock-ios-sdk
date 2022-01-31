@@ -43,8 +43,6 @@
 		D5E6F460233AC3B700D18DF1 /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5E6F443233AC39500D18DF1 /* FRAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5FE5E6823190A7700E04658 /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5FE5E5D23190A0000E04658 /* FRAuthConfig.plist */; };
 		D5FE5E6923190A7B00E04658 /* FRAuthConfigSSO.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5FE5E5C23190A0000E04658 /* FRAuthConfigSSO.plist */; };
-		EC7254CA278EF83B00A62056 /* FRGoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */; };
-		EC7254D1278EF9A400A62056 /* FRGoogleSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -198,7 +196,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EC7254D1278EF9A400A62056 /* FRGoogleSignIn.framework in Embed Frameworks */,
 				D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
 				D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */,
@@ -257,7 +254,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC7254CA278EF83B00A62056 /* FRGoogleSignIn.framework in Frameworks */,
 				D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */,
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
@@ -886,7 +882,7 @@
 					"$(PROJECT_DIR)/FRExample",
 				);
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -912,7 +908,7 @@
 					"$(PROJECT_DIR)/FRExample",
 				);
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

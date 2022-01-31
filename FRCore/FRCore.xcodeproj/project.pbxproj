@@ -66,6 +66,8 @@
 		D5EE06F2255FA1CC00C2D1BC /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EE06C5255FA1CC00C2D1BC /* FRTestUtils.swift */; };
 		D5EE06F3255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EE06C6255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift */; };
 		D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F01B18240EFB1400BD48AA /* NetworkError.swift */; };
+		EC5F792527A8091F0004A982 /* FRSecurityConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792327A8090F0004A982 /* FRSecurityConfiguration.swift */; };
+		EC5F792627A8091F0004A982 /* FRPinningHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792427A8091F0004A982 /* FRPinningHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +143,8 @@
 		D5EE06C5255FA1CC00C2D1BC /* FRTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestUtils.swift; sourceTree = "<group>"; };
 		D5EE06C6255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
 		D5F01B18240EFB1400BD48AA /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		EC5F792327A8090F0004A982 /* FRSecurityConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRSecurityConfiguration.swift; sourceTree = "<group>"; };
+		EC5F792427A8091F0004A982 /* FRPinningHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRPinningHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +227,8 @@
 		D5C979AE2409DF9700DA380A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				EC5F792427A8091F0004A982 /* FRPinningHandler.swift */,
+				EC5F792327A8090F0004A982 /* FRSecurityConfiguration.swift */,
 				D5D21494247843BB00B26403 /* RequestInterceptor */,
 				D5C979AF2409DF9700DA380A /* Result.swift */,
 				D5C979B02409DF9700DA380A /* Response.swift */,
@@ -537,6 +543,7 @@
 				D5C979BA2409DF9700DA380A /* Request.swift in Sources */,
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
 				D5E86BC12481E6D700DFD5E0 /* FRURLUtil.swift in Sources */,
+				EC5F792627A8091F0004A982 /* FRPinningHandler.swift in Sources */,
 				D5C979B72409DF9700DA380A /* FRLogger.swift in Sources */,
 				D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */,
 				D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */,
@@ -549,6 +556,7 @@
 				D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */,
 				D5D21498247843C900B26403 /* Action.swift in Sources */,
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
+				EC5F792527A8091F0004A982 /* FRSecurityConfiguration.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
 				D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */,
 				D5D1FBF925B1373E00771278 /* SecurityError.swift in Sources */,
@@ -742,7 +750,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = FRCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -769,7 +777,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = FRCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -27,6 +27,16 @@ public class RestClient: NSObject {
     /// An array of RequestInterceptor
     var interceptors: [RequestInterceptor]?
     
+    static var defaultURLSessionConfiguration: URLSessionConfiguration {
+        get {
+            let config = URLSessionConfiguration.default
+            config.httpCookieStorage = nil
+            config.httpCookieAcceptPolicy = .never
+            config.httpShouldSetCookies = false
+            return config
+        }
+    }
+    
     /// URLSession instance variable for `RestClient`
     fileprivate var session: URLSession {
         get {
@@ -34,11 +44,7 @@ public class RestClient: NSObject {
                 return urlSession
             }
             else {
-                let config = URLSessionConfiguration.default
-                config.httpCookieStorage = nil
-                config.httpCookieAcceptPolicy = .never
-                config.httpShouldSetCookies = false
-                let urlSession = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
+                let urlSession = URLSession(configuration: RestClient.defaultURLSessionConfiguration, delegate: RedirectHandler(), delegateQueue: nil)
                 _urlSession = urlSession
                 Log.v("Default URLSession created")
                 
@@ -159,6 +165,17 @@ public class RestClient: NSObject {
     public func setURLSessionConfiguration(config: URLSessionConfiguration) {
         Log.v("Custom URLSessionConfiguration set \(config.debugDescription)")
         let session = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
+        self.session = session
+    }
+    
+    /// Sets custom URLSessionConfiguration and delegate Handler for RestClient's URLSession object. This can be used to set SSL Pinning handling
+    ///
+    /// - Parameter config: custom URLSessionConfiguration object
+    /// - Parameter handler: custom URLSessionDelegate object
+    @objc
+    public func setURLSessionConfiguration(config: URLSessionConfiguration?, handler: URLSessionDelegate?) {
+        Log.v("Custom URLSessionConfiguration set \(config.debugDescription), custom delegate handler: \(handler.debugDescription)")
+        let session = URLSession(configuration: config ?? RestClient.defaultURLSessionConfiguration, delegate: handler ?? RedirectHandler(), delegateQueue: nil)
         self.session = session
     }
     
