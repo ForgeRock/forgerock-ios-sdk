@@ -204,7 +204,7 @@ public final class FRAuth: NSObject {
         // RestClient setURLSessionConfiguration(config: URLSessionConfiguration?, handler: URLSessionDelegate?) method.
         if let forgerock_pins = config["forgerock_pins"] as? [String] {
             let frSecurityConfiguration = FRSecurityConfiguration(hashes: forgerock_pins)
-            let pinningHanlder = FRPinningHandler(frSecurityConfiguration: frSecurityConfiguration)
+            let pinningHanlder = FRURLSessionHandler(frSecurityConfiguration: frSecurityConfiguration)
             RestClient.shared.setURLSessionConfiguration(config: nil, handler: pinningHanlder)
         }
     }

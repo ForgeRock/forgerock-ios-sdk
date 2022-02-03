@@ -44,7 +44,7 @@ public class RestClient: NSObject {
                 return urlSession
             }
             else {
-                let urlSession = URLSession(configuration: RestClient.defaultURLSessionConfiguration, delegate: RedirectHandler(), delegateQueue: nil)
+                let urlSession = URLSession(configuration: RestClient.defaultURLSessionConfiguration, delegate: DefaultURLSessionHandler(frSecurityConfiguration: nil), delegateQueue: nil)
                 _urlSession = urlSession
                 Log.v("Default URLSession created")
                 
@@ -164,18 +164,17 @@ public class RestClient: NSObject {
     @objc
     public func setURLSessionConfiguration(config: URLSessionConfiguration) {
         Log.v("Custom URLSessionConfiguration set \(config.debugDescription)")
-        let session = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
+        let session = URLSession(configuration: config, delegate: DefaultURLSessionHandler(frSecurityConfiguration: nil), delegateQueue: nil)
         self.session = session
     }
     
     /// Sets custom URLSessionConfiguration and delegate Handler for RestClient's URLSession object. This can be used to set SSL Pinning handling
     ///
     /// - Parameter config: custom URLSessionConfiguration object
-    /// - Parameter handler: custom URLSessionDelegate object
-    @objc
-    public func setURLSessionConfiguration(config: URLSessionConfiguration?, handler: FRPinningHandlerProtocol?) {
+    /// - Parameter handler: custom FRURLSessionHandler object
+    public func setURLSessionConfiguration(config: URLSessionConfiguration?, handler: FRURLSessionHandler?) {
         Log.v("Custom URLSessionConfiguration set \(config.debugDescription), custom delegate handler: \(handler.debugDescription)")
-        let session = URLSession(configuration: config ?? RestClient.defaultURLSessionConfiguration, delegate: handler ?? RedirectHandler(), delegateQueue: nil)
+        let session = URLSession(configuration: config ?? RestClient.defaultURLSessionConfiguration, delegate: handler ?? DefaultURLSessionHandler(frSecurityConfiguration: nil), delegateQueue: nil)
         self.session = session
     }
     
@@ -214,19 +213,13 @@ extension URLSession {
     }
 }
 
-/// This class implements URLSessionTaskDelegate protocol to handle HTTP redirect
-class RedirectHandler:NSObject, URLSessionTaskDelegate {
+/// This class implements FRURLSessionHandlerProtocol protocol to handle HTTP redirect (default implementation) and perform no SSL Pinning
+class DefaultURLSessionHandler: FRURLSessionHandler {
+    override func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.performDefaultHandling, nil)
+    }
     
-    /// Handles HTTP redirection within NSURLSession
-    ///
-    /// - Parameters:
-    ///   - session: URLSession
-    ///   - task: Current URLSessionTask
-    ///   - response: Response of current task which may explain reason for redirection
-    ///   - request: Newly constructed URLRequest object
-    ///   - completionHandler: Completion callback
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        Log.i("HTTP Request re-directed: \n\tSession: \(session.debugDescription)\n\tTask: \(task.debugDescription)\n\tResponse: \(response.debugDescription)\n\tNew Request: \(request.debugDescription)")
-        completionHandler(nil)
+    override func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.performDefaultHandling, nil)
     }
 }
