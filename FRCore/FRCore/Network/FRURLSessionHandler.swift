@@ -20,16 +20,8 @@ public protocol FRURLSessionHandlerProtocol: URLSessionTaskDelegate {
     @objc optional func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 }
 
-/// This class implements URLSessionTaskDelegate protocol to handle HTTP redirect and SSL Pinning
-open class FRURLSessionHandler: NSObject, FRURLSessionHandlerProtocol {
-    
-    private let frSecurityConfiguration: FRSecurityConfiguration?
-    
-    public init(frSecurityConfiguration: FRSecurityConfiguration?) {
-        self.frSecurityConfiguration = frSecurityConfiguration
-        super.init()
-    }
-    
+/// This class implements FRURLSessionHandlerProtocol protocol to handle HTTP redirect (default implementation) and perform no SSL Pinning
+open class FRURLSessionHandler: NSObject, FRURLSessionHandlerProtocol  {
     /// Handles HTTP redirection within NSURLSession
     ///
     /// - Parameters:
@@ -43,13 +35,35 @@ open class FRURLSessionHandler: NSObject, FRURLSessionHandlerProtocol {
         completionHandler(nil)
     }
     
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.performDefaultHandling, nil)
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        completionHandler(.performDefaultHandling, nil)
+    }
+}
+
+
+/// This class implements URLSessionTaskDelegate protocol to handle HTTP redirect and SSL Pinning
+open class FRURLSessionSSLPinningHandler: FRURLSessionHandler {
+    
+    private let frSecurityConfiguration: FRSecurityConfiguration?
+    
+    public init(frSecurityConfiguration: FRSecurityConfiguration?) {
+        self.frSecurityConfiguration = frSecurityConfiguration
+        super.init()
+    }
+    
+    
+    
     /// URLSessionDelegate method for Authentication Challenge
     ///
     /// - Parameters:
     ///   - session: URLSession
     ///   - challenge: URLAuthenticationChallenge
     ///   - completionHandler: Completion callback
-    open func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    open override func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         self.frSecurityConfiguration?.validateSessionAuthChallenge(session: session, challenge: challenge, completionHandler: completionHandler)
     }
     
@@ -60,7 +74,7 @@ open class FRURLSessionHandler: NSObject, FRURLSessionHandlerProtocol {
     ///   - task: URLSessionTask
     ///   - challenge: URLAuthenticationChallenge
     ///   - completionHandler: Completion callback
-    open func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    open override func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         self.frSecurityConfiguration?.validateTaskAuthChallenge(session: session, task: task, challenge: challenge, completionHandler: completionHandler)
     }
 }

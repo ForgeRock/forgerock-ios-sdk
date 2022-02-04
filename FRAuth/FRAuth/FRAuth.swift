@@ -197,14 +197,14 @@ public final class FRAuth: NSObject {
         
         //Look for provided SSL Pinning key hashes. If present, enable default SSL pinning for the FRCore RestClient.
         // Step 1: create a FRSecurityConfiguration with the provided hashes
-        // Step 2: create a FRPinningHandler with the FRSecurityConfiguration
-        // Step 3: pass the FRPinningHandler to the FRCore RestClient. This will be used for all communication via the SDK
+        // Step 2: create a FRURLSessionSSLPinningHandler with the FRSecurityConfiguration
+        // Step 3: pass the FRURLSessionSSLPinningHandler to the FRCore RestClient. This will be used for all communication via the SDK
         // Customization: If developers want to customise the default implementation the would need to override
-        // the FRPinningHandler class and provide their own implementation. The new handler would need to be set in the
+        // the FRURLSessionHandler class and provide their own implementation. The new handler would need to be set in the
         // RestClient setURLSessionConfiguration(config: URLSessionConfiguration?, handler: URLSessionDelegate?) method.
         if let forgerock_pins = config["forgerock_pins"] as? [String] {
             let frSecurityConfiguration = FRSecurityConfiguration(hashes: forgerock_pins)
-            let pinningHanlder = FRURLSessionHandler(frSecurityConfiguration: frSecurityConfiguration)
+            let pinningHanlder = FRURLSessionSSLPinningHandler(frSecurityConfiguration: frSecurityConfiguration)
             RestClient.shared.setURLSessionConfiguration(config: nil, handler: pinningHanlder)
         }
     }
