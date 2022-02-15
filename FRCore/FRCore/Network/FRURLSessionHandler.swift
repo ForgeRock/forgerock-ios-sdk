@@ -35,18 +35,18 @@ open class FRURLSessionHandler: NSObject, FRURLSessionHandlerProtocol  {
         completionHandler(nil)
     }
     
-    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    open func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         completionHandler(.performDefaultHandling, nil)
     }
     
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    open func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         completionHandler(.performDefaultHandling, nil)
     }
 }
 
 
 /// This class implements URLSessionTaskDelegate protocol to handle HTTP redirect and SSL Pinning
-open class FRURLSessionSSLPinningHandler: FRURLSessionHandler {
+public class FRURLSessionSSLPinningHandler: FRURLSessionHandler {
     
     private let frSecurityConfiguration: FRSecurityConfiguration?
     
@@ -63,7 +63,7 @@ open class FRURLSessionSSLPinningHandler: FRURLSessionHandler {
     ///   - session: URLSession
     ///   - challenge: URLAuthenticationChallenge
     ///   - completionHandler: Completion callback
-    open override func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    public override func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         self.frSecurityConfiguration?.validateSessionAuthChallenge(session: session, challenge: challenge, completionHandler: completionHandler)
     }
     
@@ -74,7 +74,7 @@ open class FRURLSessionSSLPinningHandler: FRURLSessionHandler {
     ///   - task: URLSessionTask
     ///   - challenge: URLAuthenticationChallenge
     ///   - completionHandler: Completion callback
-    open override func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    public override func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         self.frSecurityConfiguration?.validateTaskAuthChallenge(session: session, task: task, challenge: challenge, completionHandler: completionHandler)
     }
 }
