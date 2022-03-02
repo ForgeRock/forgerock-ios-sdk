@@ -138,9 +138,18 @@ public class Log: NSObject {
     static var DefaultModuleName: String {
         get {
             var versionStr = ""
+            
+            #if SWIFT_PACKAGE
+            if let version = Bundle(for: RestClient.self).infoDictionary?["FR-SDK-Version"] as? String {
+                versionStr = "[\(version)]"
+            }
+            #else
             if let version = Bundle(for: RestClient.self).infoDictionary?["CFBundleShortVersionString"] as? String {
                 versionStr = "[\(version)]"
             }
+            #endif
+            
+            
             return "[FRCore]" + versionStr
         }
     }
