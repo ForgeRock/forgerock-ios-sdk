@@ -23,11 +23,7 @@ public struct FRALog {
     /// Module name of FRLog
     static var ModuleName: String {
         get {
-            var versionStr = ""
-            if let version = Bundle(for: FRAClient.self).infoDictionary?["CFBundleShortVersionString"] as? String {
-                versionStr = "[\(version)]"
-            }
-            return "[FRAuthenticator]" + versionStr
+            return "[FRAuthenticator]" + "[\(FRCore.Log.sdkVersion)]"
         }
     }
     

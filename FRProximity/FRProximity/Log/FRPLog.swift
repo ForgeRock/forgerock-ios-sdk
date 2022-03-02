@@ -22,11 +22,7 @@ public struct FRPLog {
     /// Module name of FRLog
     static var ModuleName: String {
         get {
-            var versionStr = ""
-            if let version = Bundle(for: FRProximity.self).infoDictionary?["CFBundleShortVersionString"] as? String {
-                versionStr = "[\(version)]"
-            }
-            return "[FRProximity]" + versionStr
+            return "[FRProximity]" + "[\(FRCore.Log.sdkVersion)]"
         }
     }
     
