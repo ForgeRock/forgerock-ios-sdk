@@ -128,6 +128,8 @@ public class Log: NSObject {
     
     //  MARK: - Property
     
+    /// Current SDK version. We hard code it here as currently there is no other way to get it dinamically when used with SPM
+    public static let sdkVersion = "3.2.0"
     /// Current LogLevel
     static var logLevel: LogLevel = .none
     /// Current Loggers to handle log entries
@@ -137,11 +139,7 @@ public class Log: NSObject {
     /// Defuault module name of Log
     static var DefaultModuleName: String {
         get {
-            var versionStr = ""
-            if let version = Bundle(for: RestClient.self).infoDictionary?["CFBundleShortVersionString"] as? String {
-                versionStr = "[\(version)]"
-            }
-            return "[FRCore]" + versionStr
+            return "[FRCore]" + "[\(sdkVersion)]"
         }
     }
     
