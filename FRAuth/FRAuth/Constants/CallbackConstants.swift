@@ -127,6 +127,7 @@ extension CBConstants {
     static let acrValues: String = "acrValues"
     static let request: String = "request"
     static let requestUri: String = "requestUri"
+    static let acceptsJSON: String = "acceptsJSON"
     static let token: String = "token"
     static let tokenType: String = "token_type"
     static let apple: String = "apple"

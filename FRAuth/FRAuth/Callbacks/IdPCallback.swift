@@ -52,6 +52,7 @@ public class IdPCallback: MultipleValuesCallback {
         var acrValues: [String]?
         var requestValue: String?
         var requestUriValue: String?
+        var acceptsJSON: Bool?
         
         for output in outputs {
             if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.provider, let outputValue = output[CBConstants.value] as? String {
@@ -78,6 +79,9 @@ public class IdPCallback: MultipleValuesCallback {
             else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.requestUri, let outputValue = output[CBConstants.value] as? String {
                 requestUriValue = outputValue
             }
+            else if let outputName = output[CBConstants.name] as? String, outputName == CBConstants.acceptsJSON, let outputValue = output[CBConstants.value] as? Bool {
+                acceptsJSON = outputValue
+            }
         }
 
         guard let provider = providerValue else {
@@ -101,7 +105,7 @@ public class IdPCallback: MultipleValuesCallback {
             }
         }
 
-        self.idpClient = IdPClient(provider: provider, clientId: clientId, redirectUri: redirect_uri, scopes: scopeValues, nonce: nonceValue, acrValues: acrValues, request: requestValue, requestUri: requestUriValue)
+        self.idpClient = IdPClient(provider: provider, clientId: clientId, redirectUri: redirect_uri, scopes: scopeValues, nonce: nonceValue, acrValues: acrValues, request: requestValue, requestUri: requestUriValue, acceptsJSON: acceptsJSON ?? false)
         
         try super.init(json: json)
         self.type = callbackType

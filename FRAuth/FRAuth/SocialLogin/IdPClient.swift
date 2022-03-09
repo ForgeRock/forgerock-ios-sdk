@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 /**
@@ -31,4 +32,6 @@ public struct IdPClient {
     public let request: String?
     /// Request URI value for selected Social Identity Provider from AM
     public let requestUri: String?
+    /// Accepts new JSON format for Sign In with Apple. New versions of AM will send that as 'true' for Sign in With Apple and false for all other IDPs. Old versions of AM will not send this output and the default 'false' value will be assumed.
+    public let acceptsJSON: Bool
 }

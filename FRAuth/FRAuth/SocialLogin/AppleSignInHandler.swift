@@ -20,12 +20,13 @@ public class AppleSignInHandler: NSObject, IdPHandler {
     //  MARK: - Properties
     
     /// Token type for Sign-in With Apple; id_token
-    public var tokenType: String = "JSON"
+    public var tokenType: String = "id_token"
     /// Currently displayed UIViewController in the application
     public var presentingViewController: UIViewController?
     /// Temporary completion callback to handle the response
     var completionCallback: SocialLoginCompletionCallback?
     
+    private var acceptsJSON = false
     
     //  MARK: - Protocol
     
@@ -47,6 +48,11 @@ public class AppleSignInHandler: NSObject, IdPHandler {
             authorizationController.delegate = self
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
+            
+            self.acceptsJSON = idpClient.acceptsJSON
+            if self.acceptsJSON {
+                self.tokenType = "JSON"
+            }
         }
         else {
             FRLog.e("Sign-in With Apple is not supported for the current iOS version: \(UIDevice.current.systemVersion) | \(UIDevice.current.model)")
@@ -121,12 +127,17 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
             FRLog.v("ASAuthorizationAppleIDCredential received: \(appleIDCredential)")
                       
             let appleSignInResponse = AppleSignInResponse(appleIDCredential)
-            guard let _ = appleSignInResponse.id_token, let IDToken1tokenJSON = try? JSONEncoder().encode(appleSignInResponse), let IDToken1token = String(data: IDToken1tokenJSON, encoding: .utf8) else {
+            guard let authorization_code = appleSignInResponse.code, let id_token = appleSignInResponse.id_token, let IDToken1tokenJSON = try? JSONEncoder().encode(appleSignInResponse), let IDToken1token = String(data: IDToken1tokenJSON, encoding: .utf8) else {
                 self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken)"))
                 return
             }
             
-            self.completionCallback?(IDToken1token, self.tokenType, nil)
+            if self.acceptsJSON == true {
+                self.completionCallback?(IDToken1token, self.tokenType, nil)
+            } else {
+                self.completionCallback?(id_token, self.tokenType, nil)
+            }
+            
             break
         case let passwordCredential as ASPasswordCredential:
             FRLog.v("ASPasswordCredential received: \(passwordCredential)")
