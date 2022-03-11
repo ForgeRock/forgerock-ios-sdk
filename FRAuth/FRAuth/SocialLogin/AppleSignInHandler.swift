@@ -104,7 +104,7 @@ public class AppleSignInHandler: NSObject, IdPHandler {
             if (scope == "email") {
                 requestedScopes.append(.email)
             }
-            
+            FRLog.v("Provided scope (\(scope))")
         }
         request.requestedScopes = requestedScopes
         
@@ -125,16 +125,20 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             FRLog.v("ASAuthorizationAppleIDCredential received: \(appleIDCredential)")
-                      
-            let appleSignInResponse = AppleSignInResponse(appleIDCredential)
-            guard let authorization_code = appleSignInResponse.code, let id_token = appleSignInResponse.id_token, let IDToken1tokenJSON = try? JSONEncoder().encode(appleSignInResponse), let IDToken1token = String(data: IDToken1tokenJSON, encoding: .utf8) else {
-                self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken)"))
-                return
-            }
             
             if self.acceptsJSON == true {
+                let appleSignInResponse = AppleSignInResponse(appleIDCredential)
+                guard let IDToken1tokenJSON = try? JSONEncoder().encode(appleSignInResponse), let IDToken1token = String(data: IDToken1tokenJSON, encoding: .utf8) else {
+                    self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken)"))
+                    return
+                }
                 self.completionCallback?(IDToken1token, self.tokenType, nil)
             } else {
+                let appleSignInResponse = AppleSignInResponse(appleIDCredential)
+                guard let id_token = appleSignInResponse.id_token else {
+                    self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken and ASAuthorizationAppleIDCredential.fullName)"))
+                    return
+                }
                 self.completionCallback?(id_token, self.tokenType, nil)
             }
             
