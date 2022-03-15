@@ -128,15 +128,14 @@ class AppleSignInHandlerTests: FRAuthBaseTest {
         
         //  Execute the test only for iOS 13 and above
         if #available(iOS 13.0, *) {
-            let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: ["email", "name", "fullName"], nonce: nil, acrValues: nil, request: nil, requestUri: nil)
+            let idpClient = IdPClient(provider: "apple", clientId: "com.forgerock.ios.signinwithapple", redirectUri: "frauthtest://", scopes: ["email", "name"], nonce: nil, acrValues: nil, request: nil, requestUri: nil)
             let handler = AppleSignInHandler()
             
             let asRequest = handler.createASAuthorizationRequest(idpClient: idpClient)
-            XCTAssertEqual(asRequest.requestedScopes?.count, 3)
+            XCTAssertEqual(asRequest.requestedScopes?.count, 2)
             XCTAssertNil(asRequest.nonce)
-            XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "name")) ?? false)
             XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "email")) ?? false)
-            XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "fullName")) ?? false)
+            XCTAssertTrue(asRequest.requestedScopes?.contains(ASAuthorization.Scope(rawValue: "full_name")) ?? false)
         }
     }
     
