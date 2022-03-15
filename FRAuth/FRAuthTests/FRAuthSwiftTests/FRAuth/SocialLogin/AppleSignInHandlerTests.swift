@@ -154,4 +154,183 @@ class AppleSignInHandlerTests: FRAuthBaseTest {
             XCTAssertEqual(asRequest.requestedScopes, [])
         }
     }
+    
+    func test_06_test_acceptJSON_true_updated_handler() {
+        let jsonStr = """
+        {
+            "type": "IdPCallback",
+            "output": [
+                {
+                    "name": "provider",
+                    "value": "apple_ios"
+                },
+                {
+                    "name": "clientId",
+                    "value": "com.forgerock.ios.sdk.example"
+                },
+                {
+                    "name": "redirectUri",
+                    "value": "https://localhost:8443/openam"
+                },
+                {
+                    "name": "scopes",
+                    "value": [
+                        "name",
+                        "email"
+                    ]
+                },
+                {
+                    "name": "nonce",
+                    "value": "h2goqta9144lf0cvnapf5uviydbzb7m"
+                },
+                {
+                    "name": "acrValues",
+                    "value": []
+                },
+                {
+                    "name": "request",
+                    "value": ""
+                },
+                {
+                    "name": "requestUri",
+                    "value": ""
+                },
+                {
+                    "name": "acceptsJSON",
+                    "value": true
+                }
+            ],
+            "input": [
+                {
+                    "name": "IDToken1token",
+                    "value": ""
+                },
+                {
+                    "name": "IDToken1token_type",
+                    "value": ""
+                }
+            ]
+        }
+        """
+        
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        // When
+        do {
+            let callback = try IdPCallback(json: callbackResponse)
+            let googleHandler = callback.getDefaultIdPHandler(provider: "google")
+            let facebookHandler = callback.getDefaultIdPHandler(provider: "facebook")
+            let appleHandler = callback.getDefaultIdPHandler(provider: "apple") as? AppleSignInHandler
+            let appleHandler2 = callback.getDefaultIdPHandler(provider: "apple-ios") as? AppleSignInHandler
+            let appleHandler3 = callback.getDefaultIdPHandler(provider: "ios-apple") as? AppleSignInHandler
+            let appleHandler4 = callback.getDefaultIdPHandler(provider: "Apple") as? AppleSignInHandler
+            let appleHandler5 = callback.getDefaultIdPHandler(provider: "iosappleclient") as? AppleSignInHandler
+            
+            XCTAssertNil(googleHandler)
+            XCTAssertNil(facebookHandler)
+            XCTAssertNotNil(appleHandler)
+            XCTAssertNotNil(appleHandler2)
+            XCTAssertNotNil(appleHandler3)
+            XCTAssertNotNil(appleHandler4)
+            XCTAssertNotNil(appleHandler5)
+            XCTAssertTrue(appleHandler?.tokenType == "id_token")
+            if #available(iOS 13.0, *) {
+                let _ = appleHandler?.createASAuthorizationRequest(idpClient: callback.idpClient)
+                XCTAssertTrue(appleHandler?.tokenType == "JSON")
+            }
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    func test_06_test_acceptJSON_false_updated_handler() {
+        let jsonStr = """
+        {
+            "type": "IdPCallback",
+            "output": [
+                {
+                    "name": "provider",
+                    "value": "apple_ios"
+                },
+                {
+                    "name": "clientId",
+                    "value": "com.forgerock.ios.sdk.example"
+                },
+                {
+                    "name": "redirectUri",
+                    "value": "https://localhost:8443/openam"
+                },
+                {
+                    "name": "scopes",
+                    "value": [
+                        "name",
+                        "email"
+                    ]
+                },
+                {
+                    "name": "nonce",
+                    "value": "h2goqta9144lf0cvnapf5uviydbzb7m"
+                },
+                {
+                    "name": "acrValues",
+                    "value": []
+                },
+                {
+                    "name": "request",
+                    "value": ""
+                },
+                {
+                    "name": "requestUri",
+                    "value": ""
+                },
+                {
+                    "name": "acceptsJSON",
+                    "value": false
+                }
+            ],
+            "input": [
+                {
+                    "name": "IDToken1token",
+                    "value": ""
+                },
+                {
+                    "name": "IDToken1token_type",
+                    "value": ""
+                }
+            ]
+        }
+        """
+        
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        // When
+        do {
+            let callback = try IdPCallback(json: callbackResponse)
+            let googleHandler = callback.getDefaultIdPHandler(provider: "google")
+            let facebookHandler = callback.getDefaultIdPHandler(provider: "facebook")
+            let appleHandler = callback.getDefaultIdPHandler(provider: "apple") as? AppleSignInHandler
+            let appleHandler2 = callback.getDefaultIdPHandler(provider: "apple-ios") as? AppleSignInHandler
+            let appleHandler3 = callback.getDefaultIdPHandler(provider: "ios-apple") as? AppleSignInHandler
+            let appleHandler4 = callback.getDefaultIdPHandler(provider: "Apple") as? AppleSignInHandler
+            let appleHandler5 = callback.getDefaultIdPHandler(provider: "iosappleclient") as? AppleSignInHandler
+            
+            XCTAssertNil(googleHandler)
+            XCTAssertNil(facebookHandler)
+            XCTAssertNotNil(appleHandler)
+            XCTAssertNotNil(appleHandler2)
+            XCTAssertNotNil(appleHandler3)
+            XCTAssertNotNil(appleHandler4)
+            XCTAssertNotNil(appleHandler5)
+            XCTAssertTrue(appleHandler?.tokenType == "id_token")
+            if #available(iOS 13.0, *) {
+                let _ = appleHandler?.createASAuthorizationRequest(idpClient: callback.idpClient)
+                XCTAssertTrue(appleHandler?.tokenType == "id_token")
+            }
+            
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
 }

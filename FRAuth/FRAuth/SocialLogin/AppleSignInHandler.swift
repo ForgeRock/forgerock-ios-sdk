@@ -49,10 +49,6 @@ public class AppleSignInHandler: NSObject, IdPHandler {
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
             
-            self.acceptsJSON = idpClient.acceptsJSON
-            if self.acceptsJSON {
-                self.tokenType = "JSON"
-            }
         }
         else {
             FRLog.e("Sign-in With Apple is not supported for the current iOS version: \(UIDevice.current.systemVersion) | \(UIDevice.current.model)")
@@ -112,6 +108,11 @@ public class AppleSignInHandler: NSObject, IdPHandler {
         if let nonce = idpClient.nonce {
             FRLog.v("nonce is received in `IdPClient`, injecting nonce for authorization request")
             request.nonce = nonce
+        }
+        
+        self.acceptsJSON = idpClient.acceptsJSON
+        if self.acceptsJSON {
+            self.tokenType = "JSON"
         }
         
         return request
