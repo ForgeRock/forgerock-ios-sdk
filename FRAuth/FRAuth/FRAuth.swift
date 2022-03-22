@@ -199,7 +199,7 @@ public final class FRAuth: NSObject {
         // Step 1: create a FRSecurityConfiguration with the provided hashes
         // Step 2: create a FRURLSessionSSLPinningHandler with the FRSecurityConfiguration
         // Step 3: pass the FRURLSessionSSLPinningHandler to the FRCore RestClient. This will be used for all communication via the SDK
-        // Customization: If developers want to customise the default implementation the would need to override
+        // Customization: If developers want to customise the default implementation they would need to override
         // the FRURLSessionHandler class and provide their own implementation. The new handler would need to be set in the
         // RestClient setURLSessionConfiguration(config: URLSessionConfiguration?, handler: URLSessionDelegate?) method.
         if let forgerockPKHashes = config["forgerock_ssl_pinning_public_key_hashes"] as? [String] {
