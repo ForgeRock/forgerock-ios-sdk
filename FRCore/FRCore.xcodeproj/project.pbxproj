@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5950A1C27E9497800EDEFE4 /* FRURLSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792427A8091F0004A982 /* FRURLSessionHandler.swift */; };
+		A5950A1D27E9497A00EDEFE4 /* FRSecurityConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792327A8090F0004A982 /* FRSecurityConfiguration.swift */; };
 		D50115CF2410472F00219761 /* SecuredKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50115CE2410472F00219761 /* SecuredKeyTests.swift */; };
 		D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD4A240DCD4F00AF520E /* FRError.swift */; };
 		D52D5C432413002100835035 /* FRStringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D5C422413002100835035 /* FRStringUtil.swift */; };
@@ -577,6 +579,7 @@
 				D5CBC24424102BB100F9B6EA /* FRError.swift in Sources */,
 				D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */,
 				D5CBC24524102BB100F9B6EA /* NetworkError.swift in Sources */,
+				A5950A1D27E9497A00EDEFE4 /* FRSecurityConfiguration.swift in Sources */,
 				D5CBC24624102BB100F9B6EA /* KeychainService.swift in Sources */,
 				D5EE06F1255FA1CC00C2D1BC /* FRTestStubResponseParser.swift in Sources */,
 				D5CBC24724102BB100F9B6EA /* SecuredKey.swift in Sources */,
@@ -597,6 +600,7 @@
 				D5D214AD24786DBE00B26403 /* ActionTests.swift in Sources */,
 				D5CBC24224102B8800F9B6EA /* RequestTests.swift in Sources */,
 				D5BD3207264DE6D50078D51C /* Config.swift in Sources */,
+				A5950A1C27E9497800EDEFE4 /* FRURLSessionHandler.swift in Sources */,
 				D5EE06F2255FA1CC00C2D1BC /* FRTestUtils.swift in Sources */,
 				D5CBC24124102B8800F9B6EA /* KeychainServiceTests.swift in Sources */,
 			);
@@ -799,7 +803,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRCoreTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -822,7 +826,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRCoreTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
