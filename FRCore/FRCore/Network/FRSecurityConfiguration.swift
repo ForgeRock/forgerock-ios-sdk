@@ -69,7 +69,7 @@ public class FRSecurityConfiguration: NSObject {
     /// Validates an object used to evaluate trust's certificate by comparing their's public key hashes to the known, trused key hashes stored in the app
     /// Configuration.
     /// - Parameter serverTrust: The object used to evaluate trust.
-    private func validate(serverTrust: SecTrust, domain: String?) -> Bool {
+    internal func validate(serverTrust: SecTrust, domain: String?) -> Bool {
         // Set SSL policies for domain name check, if needed
         if let domain = domain {
             let policies = NSMutableArray()

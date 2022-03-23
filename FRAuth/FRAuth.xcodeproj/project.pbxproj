@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
@@ -324,6 +325,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
@@ -622,6 +624,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A5950A2827EA200200EDEFE4 /* SSL Pinning */ = {
+			isa = PBXGroup;
+			children = (
+				A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */,
+			);
+			path = "SSL Pinning";
+			sourceTree = "<group>";
+		};
 		D5094CD823DF7F590041D5C1 /* Cookie */ = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +655,7 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				A5950A2827EA200200EDEFE4 /* SSL Pinning */,
 				D53A806126278A410093B1CA /* WebAuthn */,
 				D58BC39D2602FB6A00254654 /* SocialLogin */,
 				D5CD493E252687D1006DD932 /* Browser */,
@@ -1851,6 +1862,7 @@
 				D5791BA025F87DE7004B487A /* AA_04_TermsAndConditionCallbackTest.swift in Sources */,
 				D5791BA125F87DE7004B487A /* AA_04_BooleanAttributeInputCallbackTest.swift in Sources */,
 				D5791BA225F87DE7004B487A /* AA_04_ConfirmationCallbackTest.swift in Sources */,
+				A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */,
 				D5791BA325F87DE7004B487A /* AA_04_DeviceProfileCallbackTest.swift in Sources */,
 				D5791BA425F87DE7004B487A /* AA_04_StringAttributeInputCallbackTest.swift in Sources */,
 				D5791BA525F87DE7004B487A /* AA_04_PollingWaitCallbackTest.swift in Sources */,
@@ -2147,7 +2159,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRAuthTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2174,7 +2186,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRAuthTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
