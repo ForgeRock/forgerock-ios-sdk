@@ -15,6 +15,10 @@ import FRCore
 
 class SSLPinningTests: FRAuthBaseTest {
     
+    override func setUp() {
+        //leave empty
+    }
+    
     ///Test SSL Pinning with no public key hashes in the config file
     func testSSLPinningWithNoPublicKeyHashes() {
         self.config.configPlistFileName = "FRAuthConfig"
@@ -54,8 +58,8 @@ class SSLPinningTests: FRAuthBaseTest {
         self.startSDK()
         
         let request = Request(url: "https://httpbin.org/anything", method: .GET)
-        var requestSucceeded = false
         let ex = self.expectation(description: "Request submit")
+        var requestSucceeded = false
         
         RestClient.shared.invoke(request: request, action: nil) { (result) in
             
@@ -84,8 +88,8 @@ class SSLPinningTests: FRAuthBaseTest {
         self.startSDK()
         
         let request = Request(url: "https://apple.com", method: .GET)
-        var requestSucceeded = true
         let ex = self.expectation(description: "Request submit")
+        var requestSucceeded = true
         
         RestClient.shared.invoke(request: request, action: nil) { (result) in
             
@@ -114,8 +118,8 @@ class SSLPinningTests: FRAuthBaseTest {
         self.startSDK()
         
         let request = Request(url: "https://httpbin.org/anything", method: .GET)
-        var requestSucceeded = true
         let ex = self.expectation(description: "Request submit")
+        var requestSucceeded = false
         
         RestClient.shared.invoke(request: request, action: nil) { (result) in
             switch result {
@@ -130,7 +134,7 @@ class SSLPinningTests: FRAuthBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        XCTAssertFalse(requestSucceeded, "Request succeeded with an empty public key hashes array")
+        XCTAssertTrue(requestSucceeded, "Request succeeded with an empty public key hashes array")
     }
     
 }
