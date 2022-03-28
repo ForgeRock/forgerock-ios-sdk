@@ -87,7 +87,7 @@ public class FRSecurityConfiguration: NSObject {
         for index in 0..<SecTrustGetCertificateCount(serverTrust) {
             // Get the public key data for the certificate at the current index of the loop.
             guard let certificate = SecTrustGetCertificateAtIndex(serverTrust, index),
-                  let publicKey = SecCertificateCopyPublicKey(certificate),
+                  let publicKey = publicKey(for: certificate),
                   let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) else {
                       return false
                   }
@@ -102,6 +102,22 @@ public class FRSecurityConfiguration: NSObject {
         
         // If none of the calculated hashes match any of our stored hashes, the connection we tried to establish is untrusted.
         return false
+    }
+    
+    /// Extracts public key from the certificate
+    private func publicKey(for certificate: SecCertificate) -> SecKey? {
+        if #available(iOS 12.0, *) {
+            return SecCertificateCopyKey(certificate)
+        } else if #available(iOS 10.3, *) {
+            return SecCertificateCopyPublicKey(certificate)
+        } else {
+            var possibleTrust: SecTrust?
+            SecTrustCreateWithCertificates(certificate, SecPolicyCreateBasicX509(), &possibleTrust)
+            guard let trust = possibleTrust else { return nil }
+            var result: SecTrustResultType = .unspecified
+            SecTrustEvaluate(trust, &result)
+            return SecTrustCopyPublicKey(trust)
+        }
     }
     
     /// Creates a hash from the received data using the `sha256` algorithm.
