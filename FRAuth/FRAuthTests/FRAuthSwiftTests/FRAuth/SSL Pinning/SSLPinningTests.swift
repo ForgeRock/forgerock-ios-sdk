@@ -87,7 +87,7 @@ class SSLPinningTests: FRAuthBaseTest {
         //  Init SDK
         self.startSDK()
         
-        let request = Request(url: "https://apple.com", method: .GET)
+        let request = Request(url: "https://webhook.site/309b8710-635b-40d6-9d90-dfbabeef954e", method: .GET)
         let ex = self.expectation(description: "Request submit")
         var requestSucceeded = true
         
