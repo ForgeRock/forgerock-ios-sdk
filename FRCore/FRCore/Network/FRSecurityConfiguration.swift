@@ -108,15 +108,8 @@ public class FRSecurityConfiguration: NSObject {
     private func publicKey(for certificate: SecCertificate) -> SecKey? {
         if #available(iOS 12.0, *) {
             return SecCertificateCopyKey(certificate)
-        } else if #available(iOS 10.3, *) {
-            return SecCertificateCopyPublicKey(certificate)
         } else {
-            var possibleTrust: SecTrust?
-            SecTrustCreateWithCertificates(certificate, SecPolicyCreateBasicX509(), &possibleTrust)
-            guard let trust = possibleTrust else { return nil }
-            var result: SecTrustResultType = .unspecified
-            SecTrustEvaluate(trust, &result)
-            return SecTrustCopyPublicKey(trust)
+            return SecCertificateCopyPublicKey(certificate)
         }
     }
     
