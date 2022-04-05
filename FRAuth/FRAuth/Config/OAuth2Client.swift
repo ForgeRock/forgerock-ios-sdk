@@ -362,7 +362,6 @@ public class OAuth2Client: NSObject, Codable {
         //  Construct parameter for the request
         var parameter: [String: String] = [:]
         parameter[OAuth2.responseType] = OAuth2.code
-        parameter[self.serverConfig.cookieName] = ssoToken
         parameter[OAuth2.clientId] = self.clientId
         parameter[OAuth2.scope] = self.scope
         parameter[OAuth2.redirecUri] = self.redirectUri.absoluteString
@@ -377,6 +376,7 @@ public class OAuth2Client: NSObject, Codable {
         
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+        header[self.serverConfig.cookieName] = ssoToken
         
         return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
     }
