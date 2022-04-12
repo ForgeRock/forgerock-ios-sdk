@@ -27,6 +27,16 @@ public class RestClient: NSObject {
     /// An array of RequestInterceptor
     var interceptors: [RequestInterceptor]?
     
+    static var defaultURLSessionConfiguration: URLSessionConfiguration {
+        get {
+            let config = URLSessionConfiguration.default
+            config.httpCookieStorage = nil
+            config.httpCookieAcceptPolicy = .never
+            config.httpShouldSetCookies = false
+            return config
+        }
+    }
+    
     /// URLSession instance variable for `RestClient`
     fileprivate var session: URLSession {
         get {
@@ -34,11 +44,7 @@ public class RestClient: NSObject {
                 return urlSession
             }
             else {
-                let config = URLSessionConfiguration.default
-                config.httpCookieStorage = nil
-                config.httpCookieAcceptPolicy = .never
-                config.httpShouldSetCookies = false
-                let urlSession = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
+                let urlSession = URLSession(configuration: RestClient.defaultURLSessionConfiguration, delegate: FRURLSessionHandler(), delegateQueue: nil)
                 _urlSession = urlSession
                 Log.v("Default URLSession created")
                 
@@ -158,7 +164,17 @@ public class RestClient: NSObject {
     @objc
     public func setURLSessionConfiguration(config: URLSessionConfiguration) {
         Log.v("Custom URLSessionConfiguration set \(config.debugDescription)")
-        let session = URLSession(configuration: config, delegate: RedirectHandler(), delegateQueue: nil)
+        let session = URLSession(configuration: config, delegate: FRURLSessionHandler(), delegateQueue: nil)
+        self.session = session
+    }
+    
+    /// Sets custom URLSessionConfiguration and delegate Handler for RestClient's URLSession object. This can be used to set SSL Pinning handling
+    ///
+    /// - Parameter config: custom URLSessionConfiguration object
+    /// - Parameter handler: custom FRURLSessionHandler object
+    public func setURLSessionConfiguration(config: URLSessionConfiguration?, handler: FRURLSessionHandler?) {
+        Log.v("Custom URLSessionConfiguration set \(config.debugDescription), custom delegate handler: \(handler.debugDescription)")
+        let session = URLSession(configuration: config ?? RestClient.defaultURLSessionConfiguration, delegate: handler ?? FRURLSessionHandler(), delegateQueue: nil)
         self.session = session
     }
     
@@ -197,19 +213,3 @@ extension URLSession {
     }
 }
 
-/// This class implements URLSessionTaskDelegate protocol to handle HTTP redirect
-class RedirectHandler:NSObject, URLSessionTaskDelegate {
-    
-    /// Handles HTTP redirection within NSURLSession
-    ///
-    /// - Parameters:
-    ///   - session: URLSession
-    ///   - task: Current URLSessionTask
-    ///   - response: Response of current task which may explain reason for redirection
-    ///   - request: Newly constructed URLRequest object
-    ///   - completionHandler: Completion callback
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        Log.i("HTTP Request re-directed: \n\tSession: \(session.debugDescription)\n\tTask: \(task.debugDescription)\n\tResponse: \(response.debugDescription)\n\tNew Request: \(request.debugDescription)")
-        completionHandler(nil)
-    }
-}

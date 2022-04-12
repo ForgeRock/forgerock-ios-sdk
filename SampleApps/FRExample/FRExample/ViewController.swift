@@ -10,6 +10,7 @@
 
 import UIKit
 import FRAuth
+import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
@@ -176,7 +177,22 @@ class ViewController: UIViewController {
         //  - MARK: RequestInterceptor example
         
         //  By commenting out below code, it registers 'ForceAuthIntercetpr' class into FRCore and FRAuth's RequestInterceptor which then allows developers to customize requests being made by ForgeRock SDK, and modify as needed
-//        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [ForceAuthInterceptor()])
+        // FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [ForceAuthInterceptor()])
+        
+        /*
+        //  - MARK: URLSessionConfiguration && SSL Pinning example
+         // Create URLSessionConfiguration & Subclass the FRURLSessionHandler class
+         // override func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+         // override func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+         // And provide your custom pinning implementation
+         // set the Configuration and the Handler using the
+         // RestClient.shared.setURLSessionConfiguration(config: URLSessionConfiguration?, handler: FRURLSessionHandlerProtocol?) method.
+        let customConfig = URLSessionConfiguration()
+        customConfig.timeoutIntervalForRequest = 90
+        let customPinner = CustomPin(frSecurityConfiguration: FRSecurityConfiguration(hashes: [Public Key Hashes]))
+        RestClient.shared.setURLSessionConfiguration(config: customConfig, handler: customPinner)
+         
+        */
         
         // Start SDK
         do {
