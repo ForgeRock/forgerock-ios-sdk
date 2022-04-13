@@ -378,7 +378,7 @@ public class OAuth2Client: NSObject, Codable {
         var header: [String: String] = [:]
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         
-        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: nil, timeoutInterval: self.serverConfig.timeout)
     }
     
     

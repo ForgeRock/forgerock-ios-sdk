@@ -53,7 +53,7 @@ public struct Request {
     /// URL parameters as dictionary
     public let urlParams: [String: String]
     /// Response type as `ContentType`; "Accept" header will be automatically added
-    public let responseType: ContentType
+    public let responseType: ContentType?
     /// Request type as `ContentType`; "Content-type" header will be automatically added
     public let requestType: ContentType
     /// Request timeout interval in second
@@ -73,7 +73,7 @@ public struct Request {
     ///   - requestType: ContentType of request content; enumeration value of `ContentType`
     ///   - responseType: ContentType of expected response content; enumeration value of `ContentType`
     ///   - timeoutInterval: Timeout interval in second for the request
-    public init(url: String, method: HTTPMethod, headers: [String: String] = [:], bodyParams: [String: Any] = [:], urlParams: [String: String] = [:], requestType: ContentType = .json, responseType: ContentType = .json, timeoutInterval: Double = 60) {
+    public init(url: String, method: HTTPMethod, headers: [String: String] = [:], bodyParams: [String: Any] = [:], urlParams: [String: String] = [:], requestType: ContentType = .json, responseType: ContentType? = .json, timeoutInterval: Double = 60) {
         self.url = url
         self.method = method
         self.headers = headers
@@ -123,8 +123,9 @@ public struct Request {
                
         //  Set Content-Type, and Accept headers based on request/response types
         thisRequest.setValue(self.requestType.rawValue, forHTTPHeaderField: "Content-Type")
-        thisRequest.setValue(self.responseType.rawValue, forHTTPHeaderField: "Accept")
-        
+        if let responseType = self.responseType {
+            thisRequest.setValue(responseType.rawValue, forHTTPHeaderField: "Accept")
+        }
         //  Add additional headers
         self.headers.forEach{ thisRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
         //  Build http body content
@@ -162,7 +163,7 @@ public struct Request {
     /// Generates debug description string of `Request` instance
     var debugDescription: String {
         var desc = "Request: \(self.url) | \(self.method.rawValue) \r\n"
-        desc += "   Request Type: \(self.requestType.rawValue) | Response Type: \(self.responseType.rawValue) \r\n"
+        desc += "   Request Type: \(self.requestType.rawValue) | Response Type: \(self.responseType?.rawValue ?? "not set") \r\n"
         if self.urlParams.count > 0 {
             desc += "   URL Parameters: \r\n"
             self.urlParams.forEach{ desc += "       \($0.key): \($0.value) \r\n"}

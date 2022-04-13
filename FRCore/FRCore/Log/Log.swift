@@ -321,7 +321,7 @@ public class Log: NSObject {
         }
         
         var log = "Request | [\(request.method.rawValue)] " + request.url
-        log += "\n\tRequest Type: \(request.requestType.rawValue) | Response Type: \(request.responseType.rawValue) | Timeout Interval: \(request.timeoutInterval)"
+        log += "\n\tRequest Type: \(request.requestType.rawValue) | Response Type: \(request.responseType?.rawValue ?? "not set") | Timeout Interval: \(request.timeoutInterval)"
         
         if request.headers.keys.count > 0 {
             log += "\n\tAdditional Headers: \(request.headers)"
