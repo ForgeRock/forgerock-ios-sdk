@@ -378,7 +378,7 @@ public class OAuth2Client: NSObject, Codable {
         header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
         header[self.serverConfig.cookieName] = ssoToken
         
-        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
+        return Request(url: self.serverConfig.authorizeURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: nil, timeoutInterval: self.serverConfig.timeout)
     }
     
     
