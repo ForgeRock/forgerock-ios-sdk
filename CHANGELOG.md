@@ -3,6 +3,10 @@ Added
 Apple Sign In enhancements to get user profile info [SDKS-1632]
 
 # Version 3.2.0
+## [Unreleased]
+#### Added
+- SSL Pinning Support [SDKS-1627]
+
 ## [3.2.0]
 #### Changed
 - Updated GoogleSignIn library to the latest version '6.1.0'

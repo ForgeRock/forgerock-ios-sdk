@@ -54,13 +54,6 @@
 			remoteGlobalIDString = D5C354892412EBF900695A84;
 			remoteInfo = FRAuthenticatorTests;
 		};
-		D5A65817248CD0000062209B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5A6580C248CD0000062209B /* FRAuthenticator.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D542AA682417099A00ECBFC1;
-			remoteInfo = FRAuthenticatorTestHost;
-		};
 		D5A65819248CD0070062209B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5A6580C248CD0000062209B /* FRAuthenticator.xcodeproj */;
@@ -229,7 +222,6 @@
 			children = (
 				D5A65814248CD0000062209B /* FRAuthenticator.framework */,
 				D5A65816248CD0000062209B /* FRAuthenticatorTests.xctest */,
-				D5A65818248CD0000062209B /* FRAuthenticatorTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -317,13 +309,6 @@
 			fileType = wrapper.cfbundle;
 			path = FRAuthenticatorTests.xctest;
 			remoteRef = D5A65815248CD0000062209B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D5A65818248CD0000062209B /* FRAuthenticatorTestHost.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = FRAuthenticatorTestHost.app;
-			remoteRef = D5A65817248CD0000062209B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -525,7 +510,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRAuthenticatorExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -547,7 +532,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FRAuthenticatorExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

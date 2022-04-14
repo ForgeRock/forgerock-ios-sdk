@@ -10,8 +10,9 @@
 		D58BC3B52603112A00254654 /* GoogleSignInHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BC3B42603112A00254654 /* GoogleSignInHandlerTests.swift */; };
 		D5B2067626008D0900DABB9B /* FRGoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2066C26008D0800DABB9B /* FRGoogleSignIn.framework */; };
 		D5B2067D26008D0900DABB9B /* FRGoogleSignIn.h in Headers */ = {isa = PBXBuildFile; fileRef = D5B2066F26008D0800DABB9B /* FRGoogleSignIn.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D5B206DD26008F4C00DABB9B /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B206D726008F3F00DABB9B /* FRAuth.framework */; };
 		D5B206E226008F6F00DABB9B /* GoogleSignInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B206E126008F6F00DABB9B /* GoogleSignInHandler.swift */; };
-		EC72548E278EEA4000A62056 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EC72548D278EEA4000A62056 /* GoogleSignIn */; };
+		ECE1756127A80A9800F5B3A0 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = ECE1756027A80A9800F5B3A0 /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC72548E278EEA4000A62056 /* GoogleSignIn in Frameworks */,
+				D5B206DD26008F4C00DABB9B /* FRAuth.framework in Frameworks */,
+				ECE1756127A80A9800F5B3A0 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +171,7 @@
 			);
 			name = FRGoogleSignIn;
 			packageProductDependencies = (
-				EC72548D278EEA4000A62056 /* GoogleSignIn */,
+				ECE1756027A80A9800F5B3A0 /* GoogleSignIn */,
 			);
 			productName = FRGoogleSignIn;
 			productReference = D5B2066C26008D0800DABB9B /* FRGoogleSignIn.framework */;
@@ -221,7 +223,7 @@
 			);
 			mainGroup = D5B2066226008D0800DABB9B;
 			packageReferences = (
-				EC72548C278EEA4000A62056 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				ECE1755F27A80A9800F5B3A0 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = D5B2066D26008D0800DABB9B /* Products */;
 			projectDirPath = "";
@@ -443,14 +445,13 @@
 				);
 				INFOPLIST_FILE = FRGoogleSignIn/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.2.0;
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -477,14 +478,14 @@
 				);
 				INFOPLIST_FILE = FRGoogleSignIn/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.2.0;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -501,7 +502,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FRGoogleSignInTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -520,7 +521,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FRGoogleSignInTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,7 +567,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		EC72548C278EEA4000A62056 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+		ECE1755F27A80A9800F5B3A0 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
 			requirement = {
@@ -577,9 +578,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EC72548D278EEA4000A62056 /* GoogleSignIn */ = {
+		ECE1756027A80A9800F5B3A0 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EC72548C278EEA4000A62056 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			package = ECE1755F27A80A9800F5B3A0 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */

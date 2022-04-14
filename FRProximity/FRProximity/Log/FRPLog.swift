@@ -2,7 +2,7 @@
 //  FRPLog.swift
 //  FRProximity
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,11 +22,7 @@ public struct FRPLog {
     /// Module name of FRLog
     static var ModuleName: String {
         get {
-            var versionStr = ""
-            if let version = Bundle(for: FRProximity.self).infoDictionary?["CFBundleShortVersionString"] as? String {
-                versionStr = "[\(version)]"
-            }
-            return "[FRProximity]" + versionStr
+            return "[FRProximity]" + "[\(FRCore.Log.sdkVersion)]"
         }
     }
     
