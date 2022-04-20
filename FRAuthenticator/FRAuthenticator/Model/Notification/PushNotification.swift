@@ -2,7 +2,7 @@
 //  Notification.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -220,7 +220,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
     public func accept(onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
-        self.handleNotification(result: true, onSuccess: onSuccess, onError: onError)
+        self.handleNotification(approved: true, onSuccess: onSuccess, onError: onError)
     }
     
     
@@ -229,7 +229,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
     public func deny(onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
-        self.handleNotification(result: false, onSuccess: onSuccess, onError: onError)
+        self.handleNotification(approved: false, onSuccess: onSuccess, onError: onError)
     }
     
     
@@ -240,15 +240,12 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     ///   - result: Boolean indicator whether or not PushNotification authentication is approved or denied
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
-    func handleNotification(result: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
+    func handleNotification(approved: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
         
         if !self.isPending {
             onError(PushNotificationError.notificationInvalidStatus)
             return
         }
-        
-        self.approved = result
-        self.pending = false
         
         if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: self.mechanismUUID) as? PushMechanism {
             if FRAClient.storage.setNotification(notification: self) {
@@ -259,21 +256,23 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
             }
             
             do {
-                let request = try buildPushAuthenticationRequest(result: result, mechanism: mechanism)
+                let request = try buildPushAuthenticationRequest(approved: approved, mechanism: mechanism)
                 RestClient.shared.invoke(request: request) { (result) in
-                          switch result {
-                          case .success(_, _):
-                          Log.i("PushNotification authentication was successful")
-                          onSuccess()
-                              break
-                          case .failure(let error):
-                            self.approved = false
-                            self.pending = true
-                            Log.i("PushNotification authentication failed with following error: \(error.localizedDescription)")
-                            onError(error)
-                                break
-                          }
-                      }
+                    switch result {
+                    case .success(_, _):
+                        self.approved = approved
+                        self.pending = false
+                        Log.i("PushNotification authentication was successful")
+                        onSuccess()
+                        break
+                    case .failure(let error):
+                        self.approved = false
+                        self.pending = true
+                        Log.i("PushNotification authentication failed with following error: \(error.localizedDescription)")
+                        onError(error)
+                        break
+                    }
+                }
             }
             catch {
                 onError(error)
@@ -286,10 +285,10 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     }
     
     
-    func buildPushAuthenticationRequest(result: Bool, mechanism: PushMechanism) throws -> Request {
+    func buildPushAuthenticationRequest(approved: Bool, mechanism: PushMechanism) throws -> Request {
         var payload: [String: CodableValue] = [:]
         payload[FRAConstants.response] = try CodableValue(Crypto.generatePushChallengeResponse(challenge: self.challenge, secret: mechanism.secret))
-        if !result {
+        if !approved {
             payload["deny"] = CodableValue(true)
         }
         FRALog.v("Push authentication JWT payload prepared: \(payload)")
