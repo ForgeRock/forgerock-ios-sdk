@@ -93,9 +93,16 @@ struct OathQRCodeParser {
                     digitsValue = intVal
                 }
                 if item.name == "period" {
-                    if let strVal = item.value, let intVal = Int(strVal) {
-                        self.period = intVal
-                    }
+                    if let strVal = item.value {
+                        if let intVal = Int(strVal) {
+                            if intVal <= 0 {
+                                throw MechanismError.invalidInformation("refresh period was not a positive number")
+                            }
+                            self.period = intVal
+                        } else {
+                            throw MechanismError.invalidInformation("refresh period was not a number: \(strVal)")
+                        }
+                    } 
                 }
                 if item.name == "image", let imgUrl = item.value {
                     if let imgUrlDecodedData = imgUrl.decodeURL() {
