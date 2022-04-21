@@ -2,7 +2,7 @@
 //  CallbackConstants.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -127,6 +127,7 @@ extension CBConstants {
     static let acrValues: String = "acrValues"
     static let request: String = "request"
     static let requestUri: String = "requestUri"
+    static let acceptsJSON: String = "acceptsJSON"
     static let token: String = "token"
     static let tokenType: String = "token_type"
     static let apple: String = "apple"

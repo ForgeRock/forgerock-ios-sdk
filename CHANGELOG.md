@@ -1,3 +1,7 @@
+[Unreleased]
+Added
+Apple Sign In enhancements to get user profile info [SDKS-1632]
+
 # Version 3.2.0
 ## [Unreleased]
 #### Added
