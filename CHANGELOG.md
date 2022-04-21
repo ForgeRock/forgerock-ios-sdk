@@ -8,6 +8,7 @@ Apple Sign In enhancements to get user profile info [SDKS-1632]
 - SSL Pinning Support [SDKS-1627]
 #### Changed
 - Remove "Accept: application/x-www-form-urlencoded" header from /authorize endpoint for GET requests [SDKS-1729]
+- Fix Issues with registering TOTP accounts with invalid period [SDKS-1405]
 
 ## [3.2.0]
 #### Changed
