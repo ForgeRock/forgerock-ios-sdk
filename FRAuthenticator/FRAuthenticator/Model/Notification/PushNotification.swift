@@ -237,7 +237,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     /// Handles PushNotification authentication process with given decision
     /// - Parameters:
-    ///   - result: Boolean indicator whether or not PushNotification authentication is approved or denied
+    ///   - approved: Boolean indicator whether or not PushNotification authentication is approved or denied
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
     func handleNotification(approved: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
