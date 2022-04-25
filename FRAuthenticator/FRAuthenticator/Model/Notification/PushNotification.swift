@@ -248,12 +248,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         }
         
         if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: self.mechanismUUID) as? PushMechanism {
-            if FRAClient.storage.setNotification(notification: self) {
-                FRALog.v("New PushNotification object is stored into StorageClient")
-            }
-            else {
-                FRALog.e("Failed to save PushNotification object into StorageClient")
-            }
+            
             
             do {
                 let request = try buildPushAuthenticationRequest(approved: approved, mechanism: mechanism)
@@ -263,6 +258,12 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
                         self.approved = approved
                         self.pending = false
                         Log.i("PushNotification authentication was successful")
+                        if FRAClient.storage.setNotification(notification: self) {
+                            FRALog.v("New PushNotification object is stored into StorageClient")
+                        }
+                        else {
+                            FRALog.e("Failed to save PushNotification object into StorageClient")
+                        }
                         onSuccess()
                         break
                     case .failure(let error):
