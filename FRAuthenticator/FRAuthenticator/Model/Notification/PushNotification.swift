@@ -117,7 +117,11 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         self.ttl = ttlDouble
         self.mechanismUUID = mechanismUUID
         
-        self.timeAdded = Date()
+        if let intervalString = payload["i"] as? String, let interval = Int64(intervalString) {
+            self.timeAdded = Date(milliseconds: interval)
+        } else {
+            self.timeAdded = Date()
+        }
     }
     
     
