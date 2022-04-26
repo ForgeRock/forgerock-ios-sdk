@@ -2,7 +2,7 @@
 //  PushNotificationAuthenticationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -119,7 +119,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
             
             let notification = try PushNotification(messageId: notificationMessageId, payload: notificationPayload)
 
-            let request = try notification.buildPushAuthenticationRequest(result: true, mechanism: mechanism)
+            let request = try notification.buildPushAuthenticationRequest(approved: true, mechanism: mechanism)
             
             let bodyPayload = request.bodyParams
             let messageId = bodyPayload["messageId"] as? String
@@ -171,7 +171,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
             
             let notification = try PushNotification(messageId: notificationMessageId, payload: notificationPayload)
 
-            let request = try notification.buildPushAuthenticationRequest(result: false, mechanism: mechanism)
+            let request = try notification.buildPushAuthenticationRequest(approved: false, mechanism: mechanism)
             
             let bodyPayload = request.bodyParams
             let messageId = bodyPayload["messageId"] as? String
