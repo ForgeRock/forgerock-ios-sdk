@@ -2,13 +2,14 @@
 //  IdPClient.swift
 //  FRAuth
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
 import Foundation
+import UIKit
 
 
 /**
@@ -31,4 +32,6 @@ public struct IdPClient {
     public let request: String?
     /// Request URI value for selected Social Identity Provider from AM
     public let requestUri: String?
+    /// Accepts new JSON format for Sign In with Apple. New versions of AM will send that as 'true' for Sign in With Apple and false for all other IDPs. Old versions of AM will not send this output and the default 'false' value will be assumed.
+    public var acceptsJSON: Bool = false
 }

@@ -2,7 +2,7 @@
 //  OathQRCodeParserTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -318,6 +318,53 @@ class OathQRCodeParserTests: FRABaseTests {
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_18_invalid_period() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=invalid")!
+        
+        do {
+            let _ = try OathQRCodeParser(url: qrCode)
+            XCTFail("Parsing success while expecting failure for invalid period")
+        }
+        catch MechanismError.invalidInformation {
+            
+        }
+        catch {
+            XCTFail("Failed to parse with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+  
+    
+    func test_18_negative_period() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=-10")!
+        
+        do {
+            let _ = try OathQRCodeParser(url: qrCode)
+            XCTFail("Parsing success while expecting failure for negative period")
+        }
+        catch MechanismError.invalidInformation {
+            
+        }
+        catch {
+            XCTFail("Failed to parse with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_19_zero_period() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=0")!
+        
+        do {
+            let _ = try OathQRCodeParser(url: qrCode)
+            XCTFail("Parsing success while expecting failure for zero period")
+        }
+        catch MechanismError.invalidInformation {
+            
+        }
+        catch {
+            XCTFail("Failed to parse with unexpected error: \(error.localizedDescription)")
         }
     }
 }

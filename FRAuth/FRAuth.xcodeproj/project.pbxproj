@@ -276,6 +276,7 @@
 		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
+		EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */; };
 		EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */; };
 /* End PBXBuildFile section */
 
@@ -601,6 +602,7 @@
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
+		EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUserStructs.swift; sourceTree = "<group>"; };
 		EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRHTTPCookie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1415,6 +1417,7 @@
 				D5B2060B25FFDDC800DABB9B /* IdPValue.swift */,
 				D5B2060F25FFDDD200DABB9B /* IdPClient.swift */,
 				D5B2061B260004E500DABB9B /* AppleSignInHandler.swift */,
+				EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */,
 			);
 			path = SocialLogin;
 			sourceTree = "<group>";
@@ -1743,6 +1746,7 @@
 				D53A804A262789BD0093B1CA /* AuthenticatorData.swift in Sources */,
 				D53A803E262789BD0093B1CA /* Bytes.swift in Sources */,
 				D53A8044262789BD0093B1CA /* PlatformAuthenticatorConfig.swift in Sources */,
+				EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */,
 				D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */,
 				D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */,
 				D586CF9D23358EE0007A2194 /* AbstractValidatedCallback.swift in Sources */,

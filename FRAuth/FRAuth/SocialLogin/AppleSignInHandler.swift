@@ -2,7 +2,7 @@
 //  AppleSignInHandler.swift
 //  FRAuth
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -26,6 +26,7 @@ public class AppleSignInHandler: NSObject, IdPHandler {
     /// Temporary completion callback to handle the response
     var completionCallback: SocialLoginCompletionCallback?
     
+    private var acceptsJSON = false
     
     //  MARK: - Protocol
     
@@ -47,6 +48,7 @@ public class AppleSignInHandler: NSObject, IdPHandler {
             authorizationController.delegate = self
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
+            
         }
         else {
             FRLog.e("Sign-in With Apple is not supported for the current iOS version: \(UIDevice.current.systemVersion) | \(UIDevice.current.model)")
@@ -92,9 +94,13 @@ public class AppleSignInHandler: NSObject, IdPHandler {
         //  Parse array of scope strings into ASAuthorization.Scope array
         var requestedScopes: [ASAuthorization.Scope] = []
         for scope in idpClient.scopes ?? [] {
-            let asaScope = ASAuthorization.Scope(rawValue: scope)
-            FRLog.v("Provided scope (\(scope)) is added as: \(asaScope)")
-            requestedScopes.append(asaScope)
+            if (scope == "name" || scope == "fullName") {
+                requestedScopes.append(.fullName)
+            }
+            if (scope == "email") {
+                requestedScopes.append(.email)
+            }
+            FRLog.v("Provided scope (\(scope))")
         }
         request.requestedScopes = requestedScopes
         
@@ -102,6 +108,11 @@ public class AppleSignInHandler: NSObject, IdPHandler {
         if let nonce = idpClient.nonce {
             FRLog.v("nonce is received in `IdPClient`, injecting nonce for authorization request")
             request.nonce = nonce
+        }
+        
+        self.acceptsJSON = idpClient.acceptsJSON
+        if self.acceptsJSON {
+            self.tokenType = "JSON"
         }
         
         return request
@@ -115,12 +126,23 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             FRLog.v("ASAuthorizationAppleIDCredential received: \(appleIDCredential)")
-            guard let tokenData = appleIDCredential.identityToken, let idToken = String(data: tokenData, encoding: .utf8) else {
-                self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken)"))
-                return
+            
+            if self.acceptsJSON == true {
+                let appleSignInResponse = AppleSignInResponse(appleIDCredential)
+                guard let IDToken1tokenJSON = try? JSONEncoder().encode(appleSignInResponse), let IDToken1token = String(data: IDToken1tokenJSON, encoding: .utf8) else {
+                    self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken)"))
+                    return
+                }
+                self.completionCallback?(IDToken1token, self.tokenType, nil)
+            } else {
+                let appleSignInResponse = AppleSignInResponse(appleIDCredential)
+                guard let id_token = appleSignInResponse.id_token else {
+                    self.completionCallback?(nil, nil, SocialLoginError.unsupportedCredentials("Failed to parse received credentials data (ASAuthorizationAppleIDCredential.identityToken and ASAuthorizationAppleIDCredential.fullName)"))
+                    return
+                }
+                self.completionCallback?(id_token, self.tokenType, nil)
             }
             
-            self.completionCallback?(idToken, self.tokenType, nil)
             break
         case let passwordCredential as ASPasswordCredential:
             FRLog.v("ASPasswordCredential received: \(passwordCredential)")
@@ -130,6 +152,7 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
             break
         }
     }
+    
     
     @available(iOS 13.0, *)
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
