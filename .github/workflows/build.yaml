@@ -1,0 +1,61 @@
+name: Build and Test
+
+# Trigger on push or pull request
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+    branches:
+      - master
+      - develop
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      # Clone the repo
+      - name: Clone the repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          fetch-depth: 0
+
+      # Setup config file for e2e tests
+      - name: Setup config file for e2e tests
+        env:
+          CONFIG_E2E_CLOUD: ${{ secrets.CONFIG_E2E_CLOUD }}
+        run: echo $CONFIG_E2E_CLOUD > FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json
+
+      # Set target Xcode version. For more details and options see: 
+      # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_13.1.app && /usr/bin/xcodebuild -version
+
+      # Run all tests
+      - name: Run tests
+        run: xcodebuild test -scheme FRTestHost -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
+      
+      # Publish test results
+      - name: Publish test results
+        uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: TestResults.xcresult
+          show-passed-tests: false
+        if: success() || failure()
+
+      # Send slack notification with result status
+      - uses: 8398a7/action-slack@v3
+        with:
+          mention: 'stoyan.petrov'
+          if_mention: 'failure,cancelled'
+          fields: repo,author,eventName,message,job,pullRequest,took
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
