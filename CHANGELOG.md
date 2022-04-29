@@ -6,6 +6,7 @@ Apple Sign In enhancements to get user profile info [SDKS-1632]
 ## [Unreleased]
 #### Added
 - SSL Pinning Support [SDKS-1627]
+- Obtain timestamp from new Push Notification payload [SDKS-1665]
 #### Changed
 - Remove "Accept: application/x-www-form-urlencoded" header from /authorize endpoint for GET requests [SDKS-1729]
 - Fix issue when expired push notification displayed as "Approved" in the notification history list [SDKS-1491]

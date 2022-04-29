@@ -2,7 +2,7 @@
 //  NotificationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,12 +13,13 @@ import XCTest
 
 class NotificationTests: FRABaseTests {
 
-    var payload: [String: String] = ["c": "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE=", "l": "YW1sYmNvb2tpZT0wMQ", "t": "120", "u": "026BE51C-3B14-456D-A0DF-DD460BB8B100"]
+    var payload: [String: String] = ["c": "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE=", "l": "YW1sYmNvb2tpZT0wMQ", "t": "120", "u": "026BE51C-3B14-456D-A0DF-DD460BB8B100", "i": "1629261902660"]
     let messageId = "AUTHENTICATE:e84233f8-9ecf-4456-91ad-2649c4103bc01569980570407"
     let c: String = "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE="
     let l: String = "YW1sYmNvb2tpZT0wMQ"
     let t: Double = 120
     let u: String = "026BE51C-3B14-456D-A0DF-DD460BB8B100"
+    let i: Int64 = 1629261902660
     
     func test_01_notification_init_success() {
         do {
@@ -28,6 +29,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertEqual(notification.loadBalanceKey, "amlbcookie=01")
             XCTAssertEqual(notification.ttl, t)
             XCTAssertEqual(notification.mechanismUUID, u)
+            XCTAssertEqual(notification.timeAdded, Date(milliseconds: i))
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -110,10 +112,24 @@ class NotificationTests: FRABaseTests {
     }
     
     
-    func test_07_notification_is_pending() {
+    func test_07_notification_is_pending_without_interval() {
         do {
+            payload.removeValue(forKey: "i")
             let notification = try PushNotification(messageId: messageId, payload: payload)
             XCTAssertTrue(notification.isPending)
+            XCTAssertFalse(notification.isDenied)
+            XCTAssertFalse(notification.isApproved)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_07_1_notification_is_pending_with_interval() {
+        do {
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertFalse(notification.isPending)
             XCTAssertFalse(notification.isDenied)
             XCTAssertFalse(notification.isApproved)
         }
@@ -155,10 +171,26 @@ class NotificationTests: FRABaseTests {
     }
     
     
-    func test_09_notification_is_expired() {
+    func test_09_notification_is_expired_without_interval() {
         do {
+            payload.removeValue(forKey: "i")
             let notification = try PushNotification(messageId: messageId, payload: payload)
             XCTAssertFalse(notification.isExpired)
+            let calendar = Calendar.current
+            let past = calendar.date(byAdding: .minute, value: -5, to: Date())
+            notification.timeAdded = past!
+            XCTAssertTrue(notification.isExpired)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_09_1_notification_is_expired_with_interval() {
+        do {
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertTrue(notification.isExpired)
             let calendar = Calendar.current
             let past = calendar.date(byAdding: .minute, value: -5, to: Date())
             notification.timeAdded = past!
@@ -255,6 +287,36 @@ class NotificationTests: FRABaseTests {
             XCTAssertEqual(notification.pending, jsonDictionary?["pending"] as! Bool)
             XCTAssertEqual(notification.timeAdded.millisecondsSince1970, jsonDictionary?["timeAdded"] as! Int64)
             XCTAssertEqual(notification.timeAdded.millisecondsSince1970 + Int64(notification.ttl * 1000), jsonDictionary?["timeExpired"] as! Int64)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test13_notification_init_missing_interval() {
+        do {
+            payload.removeValue(forKey: "i")
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertNotNil(notification)
+            XCTAssertNotEqual(notification.timeAdded, Date(milliseconds: i))
+            XCTAssertNotNil(notification.timeAdded)
+            XCTAssertGreaterThan(notification.timeAdded, Date() - 10)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_14_notification_init_invalid_interval() {
+        do {
+            payload["i"] = "string"
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertNotNil(notification)
+            XCTAssertNotEqual(notification.timeAdded, Date(milliseconds: i))
+            XCTAssertNotNil(notification.timeAdded)
+            XCTAssertGreaterThan(notification.timeAdded, Date() - 10)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
