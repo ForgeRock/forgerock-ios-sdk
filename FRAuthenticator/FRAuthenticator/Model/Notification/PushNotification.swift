@@ -292,7 +292,26 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
     public func accept(onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
-        self.handleNotification(approved: true, onSuccess: onSuccess, onError: onError)
+        if self.pushType == .default {
+             self.handleNotification(approved: true, onSuccess: onSuccess, onError: onError)
+         } else {
+             onError(MechanismError.invalidInformation("Error processing the Push  Authentication request. This method cannot be used to process notification of type: \(self.pushType)"))
+         }
+     }
+     
+     
+     /// Accepts the push notification request with the challenge response. Use this method to handle
+     ///  notification of type PushType.challenge
+     /// - Parameters:
+     ///   - challengeResponse: the response for the Push Challenge
+     ///   - onSuccess: successful completion callback
+     ///   - onError: failure error callback
+     public func accept(challengeResponse: String, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
+         if self.pushType == .challenge {
+             self.handleNotification(challengeResponse: challengeResponse, approved: true, onSuccess: onSuccess, onError: onError)
+         } else {
+             onError(MechanismError.invalidInformation("Error processing the Push  Authentication request. This method cannot be used to process notification of type: \(self.pushType)"))
+         }
     }
     
     
@@ -309,10 +328,11 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     /// Handles PushNotification authentication process with given decision
     /// - Parameters:
+    ///   - challengeResponse: the response for the Push Challenge
     ///   - approved: Boolean indicator whether or not PushNotification authentication is approved or denied
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
-    func handleNotification(approved: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
+    func handleNotification(challengeResponse: String? = nil, approved: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
         
         if !self.isPending {
             onError(PushNotificationError.notificationInvalidStatus)
@@ -323,7 +343,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
             
             
             do {
-                let request = try buildPushAuthenticationRequest(approved: approved, mechanism: mechanism)
+                let request = try buildPushAuthenticationRequest(challengeResponse: challengeResponse, approved: approved, mechanism: mechanism)
                 RestClient.shared.invoke(request: request) { (result) in
                     switch result {
                     case .success(_, _):
@@ -358,12 +378,15 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     }
     
     
-    func buildPushAuthenticationRequest(approved: Bool, mechanism: PushMechanism) throws -> Request {
+    func buildPushAuthenticationRequest(challengeResponse: String? = nil, approved: Bool, mechanism: PushMechanism) throws -> Request {
         var payload: [String: CodableValue] = [:]
         payload[FRAConstants.response] = try CodableValue(Crypto.generatePushChallengeResponse(challenge: self.challenge, secret: mechanism.secret))
-        if !approved {
+        if self.pushType == .default && !approved {
             payload["deny"] = CodableValue(true)
+        } else if self.pushType == .challenge {
+            payload["challengeResponse"] = CodableValue(challengeResponse)
         }
+        
         FRALog.v("Push authentication JWT payload prepared: \(payload)")
         
         let jwt = try FRCompactJWT(algorithm: .hs256, secret: mechanism.secret, payload: payload).sign()
