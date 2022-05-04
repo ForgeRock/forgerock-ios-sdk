@@ -82,6 +82,14 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         }
     }
     
+    ///numbers used for push challenge as int array
+    public var numbersChallengeArray: [Int]? {
+        guard numbersChallenge != nil else {
+            return nil
+        }
+        return numbersChallenge!.components(separatedBy: ",").compactMap { Int($0) }
+    }
+    
     
     // MARK: - Coding Keys
     
@@ -145,7 +153,9 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         } else {
             self.pushType = PushType.default
         }
-        self.numbersChallenge = payload["n"] as? String
+        if self.pushType == .challenge {
+            self.numbersChallenge = payload["n"] as? String
+        }
         self.contextInfo = payload["x"] as? String
     }
     
