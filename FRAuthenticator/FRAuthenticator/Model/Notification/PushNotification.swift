@@ -381,9 +381,11 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     func buildPushAuthenticationRequest(challengeResponse: String? = nil, approved: Bool, mechanism: PushMechanism) throws -> Request {
         var payload: [String: CodableValue] = [:]
         payload[FRAConstants.response] = try CodableValue(Crypto.generatePushChallengeResponse(challenge: self.challenge, secret: mechanism.secret))
-        if self.pushType == .default && !approved {
+        if !approved {
             payload["deny"] = CodableValue(true)
-        } else if self.pushType == .challenge {
+        }
+        
+        if self.pushType == .challenge {
             payload["challengeResponse"] = CodableValue(challengeResponse)
         }
         
