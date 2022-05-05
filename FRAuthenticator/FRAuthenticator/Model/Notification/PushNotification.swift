@@ -275,11 +275,11 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         let approved = try values.decode(Bool.self, forKey: .approved)
         let milliseconds = try values.decode(Double.self, forKey: .timeAdded)
         let timeAdded = milliseconds / 1000
-        let customPayload = try values.decode(String.self, forKey: .customPayload)
-        let message = try values.decode(String.self, forKey: .message)
-        let pushType = try values.decode(PushType.self, forKey: .pushType)
-        let numbersChallenge = try values.decode(String.self, forKey: .numbersChallenge)
-        let contextInfo = try values.decode(String.self, forKey: .contextInfo)
+        let customPayload = try? values.decode(String.self, forKey: .customPayload)
+        let message = try? values.decode(String.self, forKey: .message)
+        let pushType = (try? values.decode(PushType.self, forKey: .pushType)) ?? .default
+        let numbersChallenge = try? values.decode(String.self, forKey: .numbersChallenge)
+        let contextInfo = try? values.decode(String.self, forKey: .contextInfo)
 
         self.init(messageId: messageId, challenge: challenge, loadBalanceKey: loadBalanceKey, ttl: ttl, mechanismUUID: mechanismUUID, timeAdded: timeAdded, pending: pending, approved: approved, customPayload: customPayload, message: message, pushType: pushType, numbersChallenge: numbersChallenge, contextInfo: contextInfo)!
     }
