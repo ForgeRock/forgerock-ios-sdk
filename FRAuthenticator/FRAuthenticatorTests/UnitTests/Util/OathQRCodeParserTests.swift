@@ -367,4 +367,18 @@ class OathQRCodeParserTests: FRABaseTests {
             XCTFail("Failed to parse with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    func test_20_totp_identity_with_issuer() {
+        let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?period=30&b=032b75&digits=6&secret=X6KUBOXCEZXMBR6IWB5MES5BPQ======&issuer=ACME")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertEqual(parser.issuer, "ACME")
+            XCTAssertEqual(parser.label, "demo")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
 }

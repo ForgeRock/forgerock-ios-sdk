@@ -118,7 +118,7 @@ struct OathQRCodeParser {
                 if item.name == "b" {
                     self.backgroundColor = item.value
                 }
-                if item.name == "issuer", let strVal = item.value, self.issuer.count == 0 {
+                if item.name == "issuer", let strVal = item.value {
                     self.issuer = strVal
                 }
             }

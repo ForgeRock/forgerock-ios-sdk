@@ -2,7 +2,7 @@
 //  AuthenticatorManager.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -272,7 +272,7 @@ class AuthenticatorManagerTests: FRABaseTests {
         do {
             let mechanism = try authenticatorManager.storeOathQRCode(uri: qrCode)
             XCTAssertNotNil(mechanism)
-            let accountFromStorage = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            let accountFromStorage = authenticatorManager.getAccount(identifier: "ForgeRock-demo")
             XCTAssertNotNil(accountFromStorage)
             XCTAssertNotNil(accountFromStorage?.mechanisms)
             XCTAssertEqual(accountFromStorage?.mechanisms.count, 1)
@@ -315,7 +315,7 @@ class AuthenticatorManagerTests: FRABaseTests {
         do {
             let mechanism = try authenticatorManager.storeOathQRCode(uri: qrCode)
             XCTAssertNotNil(mechanism)
-            let accountFromStorage = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            let accountFromStorage = authenticatorManager.getAccount(identifier: "ForgeRock-demo")
             XCTAssertNotNil(accountFromStorage)
             XCTAssertNotNil(accountFromStorage?.mechanisms)
             XCTAssertEqual(accountFromStorage?.mechanisms.count, 1)
@@ -325,7 +325,7 @@ class AuthenticatorManagerTests: FRABaseTests {
             XCTFail("AuthenticatorManager.storeOathQRCode with duplicated Mechanism was expected to fail; but somehow passed")
         }
         catch MechanismError.alreadyExists(let message) {
-            XCTAssertEqual(message, "Forgerock-demo-totp")
+            XCTAssertEqual(message, "ForgeRock-demo-totp")
         }
         catch {
             XCTFail("AuthenticatorManager.storeOathQRCode with TOTP QR Code failed with unexpected reason")

@@ -2,7 +2,7 @@
 //  FRAClientTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -51,7 +51,7 @@ class FRAClientTests: FRABaseTests {
         self.shouldCleanup = false
         
         // Given
-        let hotp = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!
+        let hotp = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=ForgeRock&counter=4&algorithm=SHA256")!
         let totp = URL(string: "otpauth://totp/Forgerock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
         
         do {
@@ -69,8 +69,8 @@ class FRAClientTests: FRABaseTests {
             waitForExpectations(timeout: 60, handler: nil)
             
             XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
-            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "Forgerock-demo"))
-            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "Forgerock-demo")?.mechanisms.count, 1)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo")?.mechanisms.count, 1)
             
             //  Store second Mechanism under same Account
             ex = self.expectation(description: "FRAClient.createMechanismFromUri")
@@ -83,8 +83,8 @@ class FRAClientTests: FRABaseTests {
             waitForExpectations(timeout: 60, handler: nil)
             
             XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
-            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "Forgerock-demo"))
-            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "Forgerock-demo")?.mechanisms.count, 2)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo")?.mechanisms.count, 2)
             
             
             //  Store same TOTPMechanism under same Account
@@ -96,7 +96,7 @@ class FRAClientTests: FRABaseTests {
             }, onError: { (error) in
                 switch error {
                 case MechanismError.alreadyExists(let message):
-                    XCTAssertEqual(message, "Forgerock-demo-totp")
+                    XCTAssertEqual(message, "ForgeRock-demo-totp")
                     break
                 default:
                     XCTFail("FRAClient.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
@@ -108,7 +108,7 @@ class FRAClientTests: FRABaseTests {
             
             
             //  Store same HOTPMechanism under same Account
-            let hotp2 = URL(string: "otpauth://hotp/Forgerock:demo?secret=T7SIIEPTZJQQDSCB&issuer=Forgerock&counter=4&algorithm=SHA256")!
+            let hotp2 = URL(string: "otpauth://hotp/Forgerock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&counter=4&algorithm=SHA256")!
             ex = self.expectation(description: "FRAClient.createMechanismFromUri")
             FRAClient.shared?.createMechanismFromUri(uri: hotp2, onSuccess: { (mechanism) in
                 XCTFail("FRAClient.createMechanismFromUri was expected to fail for duplication; but somehow passed")
@@ -116,7 +116,7 @@ class FRAClientTests: FRABaseTests {
             }, onError: { (error) in
                 switch error {
                 case MechanismError.alreadyExists(let message):
-                    XCTAssertEqual(message, "Forgerock-demo-hotp")
+                    XCTAssertEqual(message, "ForgeRock-demo-hotp")
                     break
                 default:
                     XCTFail("FRAClient.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
@@ -127,12 +127,12 @@ class FRAClientTests: FRABaseTests {
             waitForExpectations(timeout: 60, handler: nil)
             
             XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
-            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "Forgerock-demo"))
-            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "Forgerock-demo")?.mechanisms.count, 2)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo")?.mechanisms.count, 2)
             
             
             //  Store another Mechanism under different Account
-            let diff = URL(string: "otpauth://totp/ForgeRockSandbox:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
+            let diff = URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRockSandbox&digits=6&period=30")!
             ex = self.expectation(description: "FRAClient.createMechanismFromUri")
             FRAClient.shared?.createMechanismFromUri(uri: diff, onSuccess: { (mechanism) in
                 ex.fulfill()
@@ -143,8 +143,8 @@ class FRAClientTests: FRABaseTests {
             waitForExpectations(timeout: 60, handler: nil)
                         
             XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 2)
-            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "Forgerock-demo"))
-            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "Forgerock-demo")?.mechanisms.count, 2)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo")?.mechanisms.count, 2)
             XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRockSandbox-demo"))
             XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRockSandbox-demo")?.mechanisms.count, 1)
         }
@@ -164,8 +164,8 @@ class FRAClientTests: FRABaseTests {
         
         //  Make sure all results were persisted from previous test
         XCTAssertEqual(fraClient.getAllAccounts().count, 2)
-        XCTAssertNotNil(fraClient.getAccount(identifier: "Forgerock-demo"))
-        XCTAssertEqual(fraClient.getAccount(identifier: "Forgerock-demo")?.mechanisms.count, 2)
+        XCTAssertNotNil(fraClient.getAccount(identifier: "ForgeRock-demo"))
+        XCTAssertEqual(fraClient.getAccount(identifier: "ForgeRock-demo")?.mechanisms.count, 2)
         XCTAssertNotNil(fraClient.getAccount(identifier: "ForgeRockSandbox-demo"))
         XCTAssertEqual(fraClient.getAccount(identifier: "ForgeRockSandbox-demo")?.mechanisms.count, 1)
         
@@ -177,20 +177,20 @@ class FRAClientTests: FRABaseTests {
         XCTAssertTrue(fraClient.removeAccount(account: account1))
         //  Then
         XCTAssertEqual(fraClient.getAllAccounts().count, 1)
-        XCTAssertNotNil(fraClient.getAccount(identifier: "Forgerock-demo"))
-        XCTAssertEqual(fraClient.getAccount(identifier: "Forgerock-demo")?.mechanisms.count, 2)
+        XCTAssertNotNil(fraClient.getAccount(identifier: "ForgeRock-demo"))
+        XCTAssertEqual(fraClient.getAccount(identifier: "ForgeRock-demo")?.mechanisms.count, 2)
         XCTAssertNil(fraClient.getAccount(identifier: "ForgeRockSandbox-demo"))
         XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)
         XCTAssertEqual(storageClient.defaultStorageClient.mechanismStorage.allItems()?.count, 2)
         
         //  When
-        guard let account2 = fraClient.getAccount(identifier: "Forgerock-demo") else {
+        guard let account2 = fraClient.getAccount(identifier: "ForgeRock-demo") else {
             XCTFail("Failed to retrieve already stored Account object")
             return
         }
         XCTAssertTrue(fraClient.removeAccount(account: account2))
         XCTAssertNil(fraClient.getAccount(identifier: "ForgeRockSandbox-demo"))
-        XCTAssertNil(fraClient.getAccount(identifier: "Forgerock-demo"))
+        XCTAssertNil(fraClient.getAccount(identifier: "ForgeRock-demo"))
         XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 0)
         XCTAssertEqual(storageClient.defaultStorageClient.mechanismStorage.allItems()?.count, 0)
     }
