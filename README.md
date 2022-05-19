@@ -1,4 +1,5 @@
 [![Cocoapods](https://img.shields.io/cocoapods/v/FRAuth?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
+[![Build and Test](https://github.com/ForgeRock/forgerock-ios-sdk/actions/workflows/build.yaml/badge.svg)](https://github.com/ForgeRock/forgerock-ios-sdk/actions/workflows/build.yaml)
 
 
 <p align="center">
@@ -27,7 +28,7 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 * ForgeRock Identity Platform
     * Access Management (AM) 6.5.2+
-* iOS 10 and above   
+* iOS 11 and above   
 * Xcode
 * Swift 5.x or Objective-C
 * CocoaPods or Swift Package Manager (optional)
