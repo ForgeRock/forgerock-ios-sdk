@@ -530,4 +530,28 @@ class FRAuthTests: FRAuthBaseTest {
         // It should
         XCTAssertNotNil(FRAuth.shared)
     }
+    
+    func testOAuth2ClientAuthorizeCallDoesntContainAcceptHeader() {
+        
+        // Given
+        FRAuth.configPlistFileName = "FRAuthConfig"
+        
+        // Then
+        do {
+            try FRAuth.start()
+        }
+        catch {
+            XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+        }
+        
+        guard let frAuth = FRAuth.shared else {
+            XCTFail("FRAuth shared instance is returned nil")
+            return
+        }
+        XCTAssertNotNil(frAuth.oAuth2Client, "OAuth2Client should not be nil")
+        let request = frAuth.oAuth2Client?.buildAuthorizeRequest(ssoToken: "ssO_Token", pkce: PKCE()).build()
+        XCTAssertNotNil(request, "Request should not be nil")
+        XCTAssertNil(request?.value(forHTTPHeaderField:"Accept"), "Request should not contain Accept header")
+        
+    }
 }

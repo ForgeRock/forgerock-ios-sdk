@@ -2,33 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>forgerock_ssl_pinning_public_key_hashes</key>
-	<array/>
-	<key>forgerock_cookie_name</key>
-	<string>iPlanetDirectoryPro</string>
-	<key>forgerock_enable_cookie</key>
-	<true/>
 	<key>forgerock_oauth_client_id</key>
-	<string>testclient</string>
+	<string>iosclient</string>
 	<key>forgerock_oauth_redirect_uri</key>
-	<string>http://www.example.com</string>
+	<string>http://localhost:8081</string>
 	<key>forgerock_oauth_scope</key>
 	<string>openid profile email address</string>
 	<key>forgerock_oauth_url</key>
-	<string>https://default.iam.example.com/am</string>
+	<string>http://openam.example.com:8081/openam</string>
 	<key>forgerock_oauth_threshold</key>
 	<string>60</string>
 	<key>forgerock_url</key>
-	<string>https://default.iam.example.com/am</string>
+	<string>http://openam.example.com:8081/openam</string>
 	<key>forgerock_realm</key>
 	<string>root</string>
 	<key>forgerock_timeout</key>
 	<string>60</string>
 	<key>forgerock_keychain_access_group</key>
-	<string>com.forgerock.sso</string>
+	<string>com.bitbar.*</string>
 	<key>forgerock_auth_service_name</key>
-	<string>Login</string>
+	<string>UsernamePassword</string>
 	<key>forgerock_registration_service_name</key>
-	<string>Registration</string>
+	<string>signUp</string>
+	<key>forgerock_ssl_pinning_public_key_hashes</key>
+	<array/>
 </dict>
 </plist>

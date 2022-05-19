@@ -2,7 +2,7 @@
 //  QRCodeParser.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -93,9 +93,16 @@ struct OathQRCodeParser {
                     digitsValue = intVal
                 }
                 if item.name == "period" {
-                    if let strVal = item.value, let intVal = Int(strVal) {
-                        self.period = intVal
-                    }
+                    if let strVal = item.value {
+                        if let intVal = Int(strVal) {
+                            if intVal <= 0 {
+                                throw MechanismError.invalidInformation("refresh period was not a positive number")
+                            }
+                            self.period = intVal
+                        } else {
+                            throw MechanismError.invalidInformation("refresh period was not a number: \(strVal)")
+                        }
+                    } 
                 }
                 if item.name == "image", let imgUrl = item.value {
                     if let imgUrlDecodedData = imgUrl.decodeURL() {
@@ -111,7 +118,7 @@ struct OathQRCodeParser {
                 if item.name == "b" {
                     self.backgroundColor = item.value
                 }
-                if item.name == "issuer", let strVal = item.value, self.issuer.count == 0 {
+                if item.name == "issuer", let strVal = item.value {
                     self.issuer = strVal
                 }
             }

@@ -2,7 +2,7 @@
 //  Log.swift
 //  FRCore
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -128,6 +128,8 @@ public class Log: NSObject {
     
     //  MARK: - Property
     
+    /// Current SDK version. We hard code it here as currently there is no other way to get it dinamically when used with SPM
+    public static let sdkVersion = "3.3.0"
     /// Current LogLevel
     static var logLevel: LogLevel = .none
     /// Current Loggers to handle log entries
@@ -137,11 +139,7 @@ public class Log: NSObject {
     /// Defuault module name of Log
     static var DefaultModuleName: String {
         get {
-            var versionStr = ""
-            if let version = Bundle(for: RestClient.self).infoDictionary?["CFBundleShortVersionString"] as? String {
-                versionStr = "[\(version)]"
-            }
-            return "[FRCore]" + versionStr
+            return "[FRCore]" + "[\(sdkVersion)]"
         }
     }
     
@@ -323,7 +321,7 @@ public class Log: NSObject {
         }
         
         var log = "Request | [\(request.method.rawValue)] " + request.url
-        log += "\n\tRequest Type: \(request.requestType.rawValue) | Response Type: \(request.responseType.rawValue) | Timeout Interval: \(request.timeoutInterval)"
+        log += "\n\tRequest Type: \(request.requestType.rawValue) | Response Type: \(request.responseType?.rawValue ?? "not set") | Timeout Interval: \(request.timeoutInterval)"
         
         if request.headers.keys.count > 0 {
             log += "\n\tAdditional Headers: \(request.headers)"
