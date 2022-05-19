@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B4236BB26CDA3A3009AF58F /* FRDateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */; };
+		A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */; };
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
 		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
 		D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -180,6 +181,7 @@
 
 /* Begin PBXFileReference section */
 		1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDateUtil.swift; sourceTree = "<group>"; };
+		A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthentication.swift; sourceTree = "<group>"; };
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
 		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D52D5C372412ECA800835035 /* MechanismError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MechanismError.swift; sourceTree = "<group>"; };
@@ -316,6 +318,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A5EAD7D428367D12000637F0 /* Biometric */ = {
+			isa = PBXGroup;
+			children = (
+				A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */,
+			);
+			path = Biometric;
+			sourceTree = "<group>";
+		};
 		D525BDF72567650B0012CE33 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -725,6 +735,7 @@
 			isa = PBXGroup;
 			children = (
 				D5C354A02412EC0600695A84 /* PushNotification.swift */,
+				A5EAD7D428367D12000637F0 /* Biometric */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -1041,6 +1052,7 @@
 				D5FFA03B245F52E8003680C1 /* PushNotificationError.swift in Sources */,
 				D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */,
 				D5C354A52412EC0600695A84 /* PushNotification.swift in Sources */,
+				A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */,
 				D54E88EE241749BE00E8ACB1 /* FRAError.swift in Sources */,
 				D52D5C5824131B2D00835035 /* HOTPMechanism.swift in Sources */,
 				D52D5C51241318F000835035 /* OathQRCodeParser.swift in Sources */,
