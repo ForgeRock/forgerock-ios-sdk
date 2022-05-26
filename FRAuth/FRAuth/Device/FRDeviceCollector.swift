@@ -41,25 +41,55 @@ public class FRDeviceCollector: NSObject {
     @objc
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
-        var result: [String: Any] = [:]
-        
+        let dispatchGroup = DispatchGroup()
+        let concurrentQueue = DispatchQueue(label: "com.forgerock.deviceconcurrency")
+        let threadSafe = SerialAtomic(queue: concurrentQueue, dispatchGroup: dispatchGroup)
+
+        for collector in self.collectors {
+            dispatchGroup.enter()
+            
+            concurrentQueue.async(group: dispatchGroup) {
+                collector.collect { (collectedData) in
+                    threadSafe.collectAndDispatch(key: collector.name, value: collectedData)
+                }
+            }
+        }
+        dispatchGroup.notify(queue: .main) {
+            completion(threadSafe.get())
+        }
+    }
+}
+
+class SerialAtomic {
+    
+    let isolationQueue: DispatchQueue
+    let dispatchGroup: DispatchGroup
+    
+    var result: [String: Any] = [:]
+    
+     init(queue: DispatchQueue,
+         dispatchGroup: DispatchGroup) {
+        self.isolationQueue = queue
+        self.dispatchGroup = dispatchGroup
+        result = [:]
         result["version"] = FRDeviceCollector.FRDeviceCollectorVersion
         if let device = FRDevice.currentDevice {
             result["identifier"] = device.identifier.getIdentifier()
         }
-        
-        let dispatchGroup = DispatchGroup()
-        for collector in self.collectors {
-            dispatchGroup.enter()
-            collector.collect { (collectedData) in
-                if collectedData.keys.count > 0 {
-                    result[collector.name] = collectedData
-                }
-                dispatchGroup.leave()
+    }
+    
+    func collectAndDispatch(key: String, value: [String: Any]) {
+        isolationQueue.async(group: dispatchGroup) { [weak self] in
+            if value.keys.count > 0 {
+                self?.result[key] = value
             }
+            self?.dispatchGroup.leave()
         }
-        dispatchGroup.notify(queue: .main) {
-            completion(result)
+    }
+
+    func get() -> [String: Any] {
+        isolationQueue.sync {[weak self] in
+            return self?.result ?? [:]
         }
     }
 }
