@@ -42,17 +42,13 @@ public class FRDeviceCollector: NSObject {
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
         let dispatchGroup = DispatchGroup()
-        let concurrentQueue = DispatchQueue(label: "com.forgerock.deviceconcurrency")
-        let threadSafe = SerialAtomic(queue: concurrentQueue, dispatchGroup: dispatchGroup)
-
+        let threadSafe = SerialAtomic(dispatchGroup: dispatchGroup)
         for collector in self.collectors {
             dispatchGroup.enter()
-            
-            concurrentQueue.async(group: dispatchGroup) {
                 collector.collect { (collectedData) in
                     threadSafe.collectAndDispatch(key: collector.name, value: collectedData)
+                    dispatchGroup.leave()
                 }
-            }
         }
         dispatchGroup.notify(queue: .main) {
             completion(threadSafe.get())
@@ -62,16 +58,11 @@ public class FRDeviceCollector: NSObject {
 
 class SerialAtomic {
     
-    let isolationQueue: DispatchQueue
-    let dispatchGroup: DispatchGroup
+    let isolationQueue: DispatchQueue = DispatchQueue(label: "com.forgerock.serial")
     
     var result: [String: Any] = [:]
     
-     init(queue: DispatchQueue,
-         dispatchGroup: DispatchGroup) {
-        self.isolationQueue = queue
-        self.dispatchGroup = dispatchGroup
-        result = [:]
+     init(dispatchGroup: DispatchGroup? = nil) {
         result["version"] = FRDeviceCollector.FRDeviceCollectorVersion
         if let device = FRDevice.currentDevice {
             result["identifier"] = device.identifier.getIdentifier()
@@ -79,16 +70,15 @@ class SerialAtomic {
     }
     
     func collectAndDispatch(key: String, value: [String: Any]) {
-        isolationQueue.async(group: dispatchGroup) { [weak self] in
+        isolationQueue.sync { [weak self] in
             if value.keys.count > 0 {
                 self?.result[key] = value
             }
-            self?.dispatchGroup.leave()
         }
     }
 
     func get() -> [String: Any] {
-        isolationQueue.sync {[weak self] in
+        isolationQueue.sync { [weak self] in
             return self?.result ?? [:]
         }
     }

@@ -36,13 +36,16 @@ public class ProfileCollector: DeviceCollector {
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
         let dispatchGroup = DispatchGroup()
-        let concurrentQueue = DispatchQueue(label: "com.forgerock.isolationQueue", attributes: .concurrent)
-        let threadSafe = ConcurrentAtomic(queue: concurrentQueue, dispatchGroup: dispatchGroup)
+        let concurrentQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", attributes: .concurrent)
+        let threadSafe = ConcurrentAtomic(dispatchGroup: dispatchGroup)
+        threadSafe.completion = {
+            dispatchGroup.leave()
+        }
         for collector in self.collectors {
             dispatchGroup.enter()
             concurrentQueue.async(group: dispatchGroup) {
                 collector.collect { (collectedData) in
-                    threadSafe.collectAndDispatch(key: collector.name, value: collectedData)
+                    threadSafe.collectAndDispatch(key: collector.name, value: collectedData, forceDispatch: true)
                 }
             }
         }
@@ -56,22 +59,25 @@ public class ProfileCollector: DeviceCollector {
 class ConcurrentAtomic {
     
     let isolationQueue: DispatchQueue
-    let dispatchGroup: DispatchGroup
+    let dispatchGroup: DispatchGroup?
+    var completion: (() -> Void)? = nil
     
     var profile: [String: Any] = [:]
     
      init(queue: DispatchQueue = DispatchQueue(label: "com.forgerock.isolationQueue", attributes: .concurrent),
-         dispatchGroup: DispatchGroup = DispatchGroup()) {
+         dispatchGroup: DispatchGroup? = nil) {
         self.isolationQueue = queue
         self.dispatchGroup = dispatchGroup
     }
     
-    func collectAndDispatch(key: String, value: [String: Any]) {
+    func collectAndDispatch(key: String, value: [String: Any], forceDispatch: Bool = false) {
         isolationQueue.async(group: dispatchGroup, flags: .barrier) { [weak self] in
             if value.keys.count > 0 {
                 self?.profile[key] = value
             }
-            self?.dispatchGroup.leave()
+            if let comp = self?.completion {
+                comp()
+            }
         }
     }
 
