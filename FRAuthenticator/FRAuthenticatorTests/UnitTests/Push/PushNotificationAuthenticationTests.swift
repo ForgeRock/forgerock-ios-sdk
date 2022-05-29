@@ -329,4 +329,63 @@ class PushNotificationAuthenticationTests: FRABaseTests {
             XCTFail("Push authentication failed to prepare auth request")
         }
     }
+
+
+func test_08_push_authentication_accept_successful_type_challenge() {
+    
+    self.loadMockResponses(["AM_Push_Authentication_Successful"])
+    
+    let qrCode = URL(string: "pushauth://push/forgerock:pushdemouser1?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=O9JHEGfOsaZqc5JT0DHM5hYFA8jofohw5vAP0EpG4JU&c=75OQ3FXmzV99TPf0ihevFfB0s43XsxQ747sY6BopgME&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:fe6311ab-013e-4599-9c0e-4c4e2525199b1588721418483&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+    
+    do {
+        let parser = try PushQRCodeParser(url: qrCode)
+        let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+        mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+        FRAClient.storage.setMechanism(mechanism: mechanism)
+        
+        let messageId = "AUTHENTICATE:8af40ee6-8fa0-4bdd-949c-1dd29d5e55931588721432364"
+        var notificationPayload: [String: String] = [:]
+        notificationPayload["c"] = "6ggPLysKJ6wSwBsQFtPclHQKebpOTMNwHP53kZxIGE4="
+        notificationPayload["t"] = "120"
+        notificationPayload["u"] = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+        notificationPayload["l"] = "YW1sYmNvb2tpZT0wMQ=="
+        //notificationPayload["i"] = "1629261902660"
+        notificationPayload["p"] = "{\"ipAddress\": \"9.9.9.9\"}"
+        notificationPayload["x"] =  "{\"location\":{\"latitude\":49.2208569,\"longitude\":-123.1174431},\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36\",\"platform\":\"MacIntel\"}"
+        notificationPayload["m"] = "Login attempt at ForgeRock"
+        notificationPayload["k"] = "challenge"
+        notificationPayload["n"] =  "34,56,82"
+        
+        let ex = self.expectation(description: "PushNotification Authentication")
+        let notification = try PushNotification(messageId: messageId, payload: notificationPayload)
+        notification.accept(challengeResponse: "34", onSuccess: {
+            // Expected to be successful
+            ex.fulfill()
+        }) { (error) in
+            XCTFail("Push authentication failed while expecting to be successful")
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertEqual(notification.isApproved, true)
+        XCTAssertEqual(notification.isPending, false)
+        XCTAssertEqual(notification.isDenied, false)
+        
+        let notifications = FRAClient.storage.getAllNotificationsForMechanism(mechanism: mechanism)
+        XCTAssertEqual(notifications.count, 1)
+        let notificationFromStorage = notifications.first
+        guard let pushNotification = notificationFromStorage else {
+            XCTFail("Failed to parse notifications from storage")
+            return
+        }
+        XCTAssertEqual(pushNotification.isApproved, true)
+        XCTAssertEqual(pushNotification.isPending, false)
+        XCTAssertEqual(pushNotification.isDenied, false)
+    }
+    catch {
+        XCTFail("Push authentication failed to prepare auth request")
+    }
 }
+}
+
+
