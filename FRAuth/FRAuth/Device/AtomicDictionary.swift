@@ -13,15 +13,17 @@ import Foundation
 
 class AtomicDictionary {
     
-    let isolationQueue: DispatchQueue = DispatchQueue(label: "com.forgerock.serialqueue")
+    let isolationQueue: DispatchQueue = DispatchQueue(label: "com.forgerock.isolationQueue", attributes: .concurrent)
     
     var result: [String: Any] = [:]
-    
    
-    func set(key: String, value: [String: Any]) {
-        isolationQueue.sync { [weak self] in
+    func set(key: String, value: [String: Any], completion: (() -> (Void))? = nil) {
+        isolationQueue.async(flags: .barrier) { [weak self] in
             if value.keys.count > 0 {
                 self?.result[key] = value
+            }
+            if let completionBlock = completion {
+                completionBlock()
             }
         }
     }

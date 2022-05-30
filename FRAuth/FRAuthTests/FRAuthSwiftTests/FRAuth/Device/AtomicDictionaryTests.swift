@@ -13,26 +13,39 @@ import XCTest
 @testable import FRAuth
 
 class AtomicDictionaryTests: XCTestCase {
-
+    
     func testAtomicStorage() {
-       let storage = AtomicDictionary()
+        let storage = AtomicDictionary()
         DispatchQueue.concurrentPerform(iterations: 2) { (index) in
             storage.set(key: "\(index)", value: ["key":  "value"])
         }
-    
+        
         XCTAssertEqual(storage.get()["0"] as! [String : String], ["key":  "value"])
         XCTAssertEqual(storage.get()["1"] as! [String : String], ["key":  "value"])
     }
     
-    func testAtomicStorageWithEmptyDictinary() {
-       let storage = AtomicDictionary()
+    func testAtomicStorageWithEmptyDictionary() {
+        let storage = AtomicDictionary()
         DispatchQueue.concurrentPerform(iterations: 2) { (index) in
             storage.set(key: "\(index)", value: [:])
         }
-    
+        
         XCTAssertEqual(storage.get() as! [String : String], [:])
     }
-
-
+    
+    func testAtomicStorageWithOptionalCompletionBlock() {
+        let storage = AtomicDictionary()
+        var completedCount = 0
+        DispatchQueue.concurrentPerform(iterations: 2) { (index) in
+            storage.set(key: "\(index)", value: ["key":  "value"]) {
+                completedCount += 1
+            }
+        }
+        
+        XCTAssertEqual(storage.get()["0"] as! [String : String], ["key":  "value"])
+        XCTAssertEqual(storage.get()["1"] as! [String : String], ["key":  "value"])
+        XCTAssertEqual(completedCount, 2)
+    }
+    
 }
 

@@ -40,8 +40,9 @@ public class ProfileCollector: DeviceCollector {
         for collector in self.collectors {
             dispatchGroup.enter()
                 collector.collect { (collectedData) in
-                    atomicDictionary.set(key: collector.name, value: collectedData)
-                    dispatchGroup.leave()
+                    atomicDictionary.set(key: collector.name, value: collectedData) {
+                        dispatchGroup.leave()
+                    }
                 }
         }
         dispatchGroup.notify(queue: .main) {
