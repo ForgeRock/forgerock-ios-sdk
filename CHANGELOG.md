@@ -1,16 +1,18 @@
-[Unreleased]
-Added
-Apple Sign In enhancements to get user profile info [SDKS-1632]
-
-# Version 3.2.0
+# Version 3.3.0
 ## [Unreleased]
+#### Added
+- Add new payload attributes in the Push Notification - Part 2 [SDKS-1865]
+
+## [3.3.0]
 #### Added
 - SSL Pinning Support [SDKS-1627]
 - Obtain timestamp from new Push Notification payload [SDKS-1665]
 - Add new payload attributes in the Push Notification [SDKS-1775]
-- Add new payload attributes in the Push Notification - Part 2 [SDKS-1865]
+- Apple Sign In enhancements to get user profile info [SDKS-1632]
+
 #### Changed
 - Remove "Accept: application/x-www-form-urlencoded" header from /authorize endpoint for GET requests [SDKS-1729]
+- Remove iPlanetDirectoryPro (or session cookie name) from the query parameter and inject it to the header instead [SDKS-1708]
 - Fix issue when expired push notification displayed as "Approved" in the notification history list [SDKS-1491]
 - Fix Issues with registering TOTP accounts with invalid period [SDKS-1405]
 
