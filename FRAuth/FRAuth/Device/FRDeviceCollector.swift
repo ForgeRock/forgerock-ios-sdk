@@ -42,44 +42,22 @@ public class FRDeviceCollector: NSObject {
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
         let dispatchGroup = DispatchGroup()
-        let threadSafe = SerialAtomic(dispatchGroup: dispatchGroup)
-        for collector in self.collectors {
-            dispatchGroup.enter()
-                collector.collect { (collectedData) in
-                    threadSafe.collectAndDispatch(key: collector.name, value: collectedData)
-                    dispatchGroup.leave()
-                }
-        }
-        dispatchGroup.notify(queue: .main) {
-            completion(threadSafe.get())
-        }
-    }
-}
-
-class SerialAtomic {
-    
-    let isolationQueue: DispatchQueue = DispatchQueue(label: "com.forgerock.serial")
-    
-    var result: [String: Any] = [:]
-    
-     init(dispatchGroup: DispatchGroup? = nil) {
+        var result: [String: Any] = [:]
         result["version"] = FRDeviceCollector.FRDeviceCollectorVersion
         if let device = FRDevice.currentDevice {
             result["identifier"] = device.identifier.getIdentifier()
         }
-    }
-    
-    func collectAndDispatch(key: String, value: [String: Any]) {
-        isolationQueue.sync { [weak self] in
-            if value.keys.count > 0 {
-                self?.result[key] = value
-            }
+        let atomicDictionary = AtomicDictionary()
+        for collector in self.collectors {
+            dispatchGroup.enter()
+                collector.collect { (collectedData) in
+                    atomicDictionary.set(key: collector.name, value: collectedData)
+                    dispatchGroup.leave()
+                }
         }
-    }
-
-    func get() -> [String: Any] {
-        isolationQueue.sync { [weak self] in
-            return self?.result ?? [:]
+        dispatchGroup.notify(queue: .main) {
+            let merged = result.merging(atomicDictionary.get(), uniquingKeysWith: { $1 })
+            completion(merged)
         }
     }
 }

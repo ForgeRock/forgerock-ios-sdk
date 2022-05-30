@@ -36,54 +36,16 @@ public class ProfileCollector: DeviceCollector {
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
         let dispatchGroup = DispatchGroup()
-        let concurrentQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", attributes: .concurrent)
-        let threadSafe = ConcurrentAtomic(dispatchGroup: dispatchGroup)
-        threadSafe.completion = {
-            dispatchGroup.leave()
-        }
+        let atomicDictionary = AtomicDictionary()
         for collector in self.collectors {
             dispatchGroup.enter()
-            concurrentQueue.async(group: dispatchGroup) {
                 collector.collect { (collectedData) in
-                    threadSafe.collectAndDispatch(key: collector.name, value: collectedData, forceDispatch: true)
+                    atomicDictionary.set(key: collector.name, value: collectedData)
+                    dispatchGroup.leave()
                 }
-            }
         }
         dispatchGroup.notify(queue: .main) {
-            completion(threadSafe.get())
-        }
-    }
-}
-
-
-class ConcurrentAtomic {
-    
-    let isolationQueue: DispatchQueue
-    let dispatchGroup: DispatchGroup?
-    var completion: (() -> Void)? = nil
-    
-    var profile: [String: Any] = [:]
-    
-     init(queue: DispatchQueue = DispatchQueue(label: "com.forgerock.isolationQueue", attributes: .concurrent),
-         dispatchGroup: DispatchGroup? = nil) {
-        self.isolationQueue = queue
-        self.dispatchGroup = dispatchGroup
-    }
-    
-    func collectAndDispatch(key: String, value: [String: Any], forceDispatch: Bool = false) {
-        isolationQueue.async(group: dispatchGroup, flags: .barrier) { [weak self] in
-            if value.keys.count > 0 {
-                self?.profile[key] = value
-            }
-            if let comp = self?.completion {
-                comp()
-            }
-        }
-    }
-
-    func get() -> [String: Any] {
-        isolationQueue.sync {[weak self] in
-            return self?.profile ?? [:]
+            completion(atomicDictionary.get())
         }
     }
 }
