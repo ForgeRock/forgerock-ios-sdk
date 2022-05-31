@@ -18,7 +18,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     //  MARK: - Private Properties
     
     /// Message Identifier for Push
-    var messageId: String
+    public internal(set) var messageId: String
     /// MechanismUUID of PushMechanism that Notification belongs to
     public internal(set) var mechanismUUID: String
     /// Load balance key for Push

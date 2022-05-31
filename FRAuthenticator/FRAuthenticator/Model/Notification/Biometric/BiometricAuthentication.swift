@@ -23,9 +23,9 @@ struct BiometricAuthentication {
     static func authenticate(title: String, allowDeviceCredentials: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
         
         if allowDeviceCredentials {
-            deviceOwnerAuthentication(title: title, onSuccess: onSuccess, onError: onError)
+            deviceOwnerAuthentication(title: title, policy: .deviceOwnerAuthentication, onSuccess: onSuccess, onError: onError)
         } else {
-            deviceOwnerAuthenticationWithBiometrics(title: title, onSuccess: onSuccess, onError: onError)
+            deviceOwnerAuthentication(title: title, policy: .deviceOwnerAuthenticationWithBiometrics, onSuccess: onSuccess, onError: onError)
         }
     }
     
@@ -33,15 +33,16 @@ struct BiometricAuthentication {
     /// Authenticate with biometric ONLY. Doesn't allow fallback to passcode
     /// - Parameters:
     ///   - title: the title to be displayed on the prompt.
+    ///   - policy: The policy to evaluate. For possible values, see LAPolicy.
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
-    private static func deviceOwnerAuthenticationWithBiometrics(title: String, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
+    private static func deviceOwnerAuthentication(title: String, policy: LAPolicy, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
         
         let localAuthenticationContext = LAContext()
         var authError: NSError?
         
-        if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
-            localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: title) { success, evaluateError in
+        if localAuthenticationContext.canEvaluatePolicy(policy, error: &authError) {
+            localAuthenticationContext.evaluatePolicy(policy, localizedReason: title) { success, evaluateError in
                 
                 if success {
                     onSuccess()
@@ -66,43 +67,7 @@ struct BiometricAuthentication {
             onError(error)
         }
     }
-    
-    
-    /// Authenticate with biometric or passcode if biometric is not avaialble/fails. Allows fallback to passcode
-    /// - Parameters:
-    ///   - title: the title to be displayed on the prompt.
-    ///   - onSuccess: successful completion callback
-    ///   - onError: failure error callback
-    private static func deviceOwnerAuthentication(title: String, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
-        let localAuthenticationContext = LAContext()
-        var authError: NSError?
-        
-        if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
-            localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: title) { success, evaluateError in
-                
-                if success {
-                    onSuccess()
-                } else {
-                    guard let error = evaluateError else {
-                        FRALog.e("Biometric Authentication failed")
-                        onError(MechanismError.invalidInformation("Biometric Authentication failed"))
-                        return
-                    }
-                    FRALog.e(evaluateAuthenticationPolicyMessageForLA(errorCode: error._code))
-                    onError(error)
-                }
-            }
-        } else {
-            
-            guard let error = authError else {
-                FRALog.e("Biometric Authentication failed")
-                onError(MechanismError.invalidInformation("Biometric Authentication failed: can't evaluate policy"))
-                return
-            }
-            FRALog.e(evaluateAuthenticationPolicyMessageForLA(errorCode: error.code))
-            onError(error)
-        }
-    }
+
     
     private static func evaluatePolicyFailErrorMessageForLA(errorCode: Int) -> String {
         var message = ""

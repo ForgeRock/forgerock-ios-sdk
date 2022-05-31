@@ -1,7 +1,7 @@
 # Version 3.3.0
 ## [Unreleased]
 #### Added
-- Add new payload attributes in the Push Notification - Part 2 [SDKS-1865]
+- Add PushType.biometric support and BiometricAuthentication class for biometric authentication. Update sample app to handle new Push types [SDKS-1865]
 
 ## [3.3.0]
 #### Added
