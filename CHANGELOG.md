@@ -1,4 +1,8 @@
 # Version 3.3.0
+## [Unreleased]
+#### Changed
+- Fixed the bug when refreshing the access token we return the old token [SDKS-1824]
+
 ## [3.3.0]
 #### Added
 - SSL Pinning Support [SDKS-1627]
