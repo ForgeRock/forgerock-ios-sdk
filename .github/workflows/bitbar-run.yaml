@@ -1,0 +1,115 @@
+name: Run tests in BitBar Cloud
+on:
+  workflow_call:
+    inputs:
+      bitbar-project-id:
+        description: BitBar project id
+        type: string
+        default: 207050144
+
+      bitbar-device-group-id:
+        description: The device group id to run tests against
+        type: string
+        default: 45011
+
+      bitbar-os-type: 
+        description: OS Type
+        type: string
+        default: IOS
+
+      bitbar-framework-id:
+        description: The framework id
+        type: string
+        default: 590
+
+    outputs:
+      bitbar-run-id:
+        description: The newly created run id in BitBar
+        value: ${{ jobs.bitbar-run.outputs.bitbar_run_id }}
+        
+    secrets:
+      # To obtain a new API key: https://cloud.bitbar.com/#user/security-center
+      BITBAR_API_KEY:
+        description: BitBar API Key
+        required: true
+
+      SLACK_WEBHOOK_URL:
+        description: 'Slack Notifier Incoming Webhook URL'
+        required: true
+jobs:
+  bitbar-run:
+    runs-on: ubuntu-latest
+    outputs:
+      bitbar_run_id: ${{ steps.bitbar_run_id.outputs.bitbar_run_id }}
+
+    steps:
+      # Get the test artifacts prepared in previous step
+      - name: Get FRTestHost.ipa BitBar artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: FRTestHost.ipa
+
+      - name: Get the FRAuthTests.xctest.zip BitBar artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: FRAuthTests.xctest.zip
+
+      - name: Unzip FRTestHost.ipa and FRAuthTests.xctest.zip
+        run: |
+          unzip -o FRTestHost.ipa
+          unzip -o FRAuthTests.xctest.zip
+
+      - name: Upload FRTestHost.ipa to BitBar
+        run: |
+          echo "BITBAR_APP_FILE_ID=$(curl -X POST -u ${{ secrets.BITBAR_API_KEY }}: https://cloud.bitbar.com/api/me/files -F "file=@FRTestHost.ipa" | jq '.id')" >> $GITHUB_ENV
+
+      - name: Upload FRAuthTests.xctest.zip to BitBar
+        run: |
+          echo "BITBAR_TEST_FILE_ID=$(curl -X POST -u ${{ secrets.BITBAR_API_KEY }}: https://cloud.bitbar.com/api/me/files -F "file=@FRAuthTests.xctest.zip" | jq '.id')"  >> $GITHUB_ENV
+
+      - name: Prepare BitBar run configuration file
+        run: |
+          (
+            echo "{"
+            echo "\"osType\":\"${{ inputs.bitbar-os-type }}\","
+            echo "\"projectId\":${{ inputs.bitbar-project-id }},"
+            echo "\"frameworkId\":${{ inputs.bitbar-framework-id }},"
+            echo "\"deviceGroupId\":${{ inputs.bitbar-device-group-id }},"
+            echo "\"files\":["
+            echo "    {\"id\":${{ env.BITBAR_APP_FILE_ID }}, \"action\": \"INSTALL\"},"
+            echo "    {\"id\":${{ env.BITBAR_TEST_FILE_ID }}, \"action\": \"RUN_TEST\"}"
+            echo "]"
+            echo "}"
+          ) > bitbar-run-configuration.txt
+
+      - name: Display bitbar-run-configuration.txt
+        run: |
+          cat bitbar-run-configuration.txt
+
+      # Start the test run
+      - name: Start a test run
+        run: |
+          echo "BITBAR_TEST_RUN_ID=$(curl -H 'Content-Type: application/json' -u ${{ secrets.BITBAR_API_KEY }}: https://cloud.bitbar.com/api/me/runs --data-binary @bitbar-run-configuration.txt | jq '.id')"  >> $GITHUB_ENV
+
+      # Set bitbar_run_id as output of the workflow. This is needed for the next workflow to continue
+      - name: Set the bitbar_run_id output
+        id: bitbar_run_id
+        run: echo "::set-output name=bitbar_run_id::${{ env.BITBAR_TEST_RUN_ID }}"
+
+      # Send slack notification ONLY if any of the steps above fail
+      - name: Send slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: all
+          custom_payload: |
+            {
+              attachments: [{
+                title: ':no_entry: Failed to start BitBar test run!',
+                color: 'danger',
+                text: `\nWorkflow: ${process.env.AS_WORKFLOW} -> ${process.env.AS_JOB}\nPull request: ${process.env.AS_PULL_REQUEST}\nCommit: ${process.env.AS_COMMIT} by ${process.env.AS_AUTHOR}`, 
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
