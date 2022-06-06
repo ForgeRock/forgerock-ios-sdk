@@ -18,7 +18,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     //  MARK: - Private Properties
     
     /// Message Identifier for Push
-    var messageId: String
+    public internal(set) var messageId: String
     /// MechanismUUID of PushMechanism that Notification belongs to
     public internal(set) var mechanismUUID: String
     /// Load balance key for Push
@@ -312,6 +312,26 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
          } else {
              onError(MechanismError.invalidInformation("Error processing the Push  Authentication request. This method cannot be used to process notification of type: \(self.pushType)"))
          }
+    }
+    
+    
+    /// Accepts the push notification request with the Biometric Authentication. Use this method to handle
+    /// notification of type PushType.biometric
+    /// - Parameters:
+    ///   - title: the title to be displayed on the prompt.
+    ///   - allowDeviceCredentials:  if true, accepts device PIN, pattern, or password to process notification.
+    ///   - onSuccess: successful completion callback
+    ///   - onError: failure error callback
+    public func accept(title: String, allowDeviceCredentials: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
+        if self.pushType == .biometric {
+            BiometricAuthentication.authenticate(title: title, allowDeviceCredentials: allowDeviceCredentials) {
+                self.handleNotification(approved: true, onSuccess: onSuccess, onError: onError)
+            } onError: { error in
+                onError(MechanismError.invalidInformation(error.localizedDescription))
+            }
+        } else {
+            onError(MechanismError.invalidInformation("Error processing the Push  Authentication request. This method cannot be used to process notification of type: \(self.pushType)"))
+        }
     }
     
     

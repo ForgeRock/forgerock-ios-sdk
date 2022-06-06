@@ -1,4 +1,8 @@
 # Version 3.3.0
+## [Unreleased]
+#### Added
+- Add PushType.biometric support and BiometricAuthentication class for biometric authentication. Update sample app to handle new Push types [SDKS-1865]
+
 ## [3.3.0]
 #### Added
 - SSL Pinning Support [SDKS-1627]
