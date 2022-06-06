@@ -164,6 +164,14 @@ public class Log: NSObject {
         Log.logLevel = logLevel
     }
     
+    /// Sets Custom Logger
+    ///
+    /// - Parameter logger: Set logger will reset the logger to Custom Logger, Default Logger will be inactive
+    @objc
+    public static func setCustomLogger(_ logger: FRLogger) {
+        self.loggers = [logger]
+    }
+    
     
     /// Generates date and time prefix with pre-defined dateFormatter
     ///
@@ -398,5 +406,3 @@ public class Log: NSObject {
         }
     }
 }
-
-
