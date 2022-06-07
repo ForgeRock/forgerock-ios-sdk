@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  FRAuthenticatorExample
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -63,6 +63,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             while let presentedController = currentController.presentedViewController {
                 currentController = presentedController
             }
+            
+            //prevent from showing the same NotificationRequestViewController twice when opened from tapping a push notification
+            if currentController.isKind(of: NotificationRequestViewController.self), let newCurrentController = currentController.presentingViewController {
+                currentController.dismiss(animated: false)
+                currentController = newCurrentController
+            }
+            
             currentController.present(viewController, animated: true)
         }
     }

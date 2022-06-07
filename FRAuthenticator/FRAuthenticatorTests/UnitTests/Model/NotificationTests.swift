@@ -517,4 +517,30 @@ class NotificationTests: FRABaseTests {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    func test_18_init_with_challenge_pushtype() {
+        do {
+            newPayload["k"] = "challenge"
+            let notification = try PushNotification(messageId: messageId, payload: newPayload)
+            XCTAssertNotNil(notification)
+            XCTAssertEqual(notification.pushType, PushType.challenge)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_18_init_with_biometric_pushtype() {
+        do {
+            newPayload["k"] = "biometric"
+            let notification = try PushNotification(messageId: messageId, payload: newPayload)
+            XCTAssertNotNil(notification)
+            XCTAssertEqual(notification.pushType, PushType.biometric)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+   
 }
