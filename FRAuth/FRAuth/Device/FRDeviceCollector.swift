@@ -41,25 +41,24 @@ public class FRDeviceCollector: NSObject {
     @objc
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
+        let dispatchGroup = DispatchGroup()
+        let atomicDictionary = AtomicDictionary()
         var result: [String: Any] = [:]
-        
         result["version"] = FRDeviceCollector.FRDeviceCollectorVersion
         if let device = FRDevice.currentDevice {
             result["identifier"] = device.identifier.getIdentifier()
         }
-        
-        let dispatchGroup = DispatchGroup()
         for collector in self.collectors {
             dispatchGroup.enter()
             collector.collect { (collectedData) in
-                if collectedData.keys.count > 0 {
-                    result[collector.name] = collectedData
+                atomicDictionary.set(key: collector.name, value: collectedData) {
+                    dispatchGroup.leave()
                 }
-                dispatchGroup.leave()
             }
         }
         dispatchGroup.notify(queue: .main) {
-            completion(result)
+            let merged = result.merging(atomicDictionary.get(), uniquingKeysWith: { $1 })
+            completion(merged)
         }
     }
 }

@@ -35,18 +35,19 @@ public class ProfileCollector: DeviceCollector {
     @objc
     public func collect(completion: @escaping DeviceCollectorCallback) {
         
-        var profile: [String: Any] = [:]
-        
         let dispatchGroup = DispatchGroup()
+        let atomicDictionary = AtomicDictionary()
         for collector in self.collectors {
             dispatchGroup.enter()
-            collector.collect { (collectedData) in
-                profile[collector.name] = collectedData
-                dispatchGroup.leave()
-            }
+                collector.collect { (collectedData) in
+                    atomicDictionary.set(key: collector.name, value: collectedData) {
+                        dispatchGroup.leave()
+                    }
+                }
         }
         dispatchGroup.notify(queue: .main) {
-            completion(profile)
+            completion(atomicDictionary.get())
         }
     }
 }
+
