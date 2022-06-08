@@ -1,10 +1,11 @@
-# Version 3.3.0
-## [Unreleased]
+# Version 3.3.1
+## [3.3.1]
 #### Added
-- Add PushType.biometric support and BiometricAuthentication class for biometric authentication. Update sample app to handle new Push types [SDKS-1865]
+- Add PushType.biometric support and BiometricAuthentication class for biometric authentication. Updated sample app to handle new Push types [SDKS-1865]
 
 #### Changed
 - Fixed the bug when refreshing the access token we return the old token [SDKS-1824]
+- Fixed bug when multiple threads are trying to access the same resource in the deviceCollector and ProfileCollector [SDKS-1912]
 
 ## [3.3.0]
 #### Added
