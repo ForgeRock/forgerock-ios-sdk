@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
+		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
@@ -326,6 +328,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
+		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -757,6 +761,7 @@
 				D52D164F231484D60095905A /* FRDeviceTests.swift */,
 				D52D1650231484D60095905A /* FRDeviceIdentifierTests.swift */,
 				D52D1651231484D60095905A /* FRDeviceCollectorTests.swift */,
+				3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -1136,6 +1141,7 @@
 				D586CF7023358EE0007A2194 /* NetworkCollector.swift */,
 				D586CF7223358EE0007A2194 /* FRDeviceIdentifier.swift */,
 				D5B2A38A23FCC19E00764370 /* ProfileCollector.swift */,
+				3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -1779,6 +1785,7 @@
 				D53A8048262789BD0093B1CA /* Authenticator.swift in Sources */,
 				D586CF9123358EE0007A2194 /* Token.swift in Sources */,
 				D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */,
+				3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
 				D586CFB523358EE0007A2194 /* FRDevice.swift in Sources */,
 				D586CFBE23358EE0007A2194 /* KeychainManager.swift in Sources */,
@@ -1919,6 +1926,7 @@
 				D5791BCD25F87DE8004B487A /* CookieTests.swift in Sources */,
 				D5791BCE25F87DE8004B487A /* CookieValidationTests.swift in Sources */,
 				D53A807126278A5C0093B1CA /* WebAuthnCallbackTests.swift in Sources */,
+				3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */,
 				D5791BCF25F87DE8004B487A /* FRDeviceTests.swift in Sources */,
 				D5791BD025F87DE8004B487A /* FRDeviceIdentifierTests.swift in Sources */,
 				D5791BD125F87DE8004B487A /* FRDeviceCollectorTests.swift in Sources */,
@@ -2108,7 +2116,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3.0;
+				MARKETING_VERSION = 3.3.1;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuth/SharedC/FRAuth.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
@@ -2142,7 +2150,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3.0;
+				MARKETING_VERSION = 3.3.1;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuth/SharedC/FRAuth.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;

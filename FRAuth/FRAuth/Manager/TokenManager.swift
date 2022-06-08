@@ -2,7 +2,7 @@
 //  TokenManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -318,7 +318,7 @@ struct TokenManager {
                 newToken.refreshToken = token.refreshToken
             }
             try self.keychainManager.setAccessToken(token: newToken)
-            return token
+            return newToken
         }
         else {
             throw TokenError.nullRefreshToken

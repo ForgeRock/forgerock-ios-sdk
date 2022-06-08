@@ -2,7 +2,7 @@
 //  NotificationListTableViewController.swift
 //  FRAuthenticatorExample
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -38,7 +38,7 @@ class NotificationListTableViewController: BaseTableViewController {
         self.pendingNotifications = []
         self.notifications = []
         self.startLoading()
-        let notifications = FRAClient.shared?.getAllNotifications(mechanism: pushMechanism) ?? []
+        let notifications = FRAClient.shared?.getAllNotifications(mechanism: pushMechanism).sorted(by: {$0.timeAdded > $1.timeAdded}) ?? []
         for notification in notifications {
             if notification.isPending {
                 self.pendingNotifications.append(notification)
