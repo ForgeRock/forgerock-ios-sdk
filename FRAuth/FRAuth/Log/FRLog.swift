@@ -36,6 +36,15 @@ By default, FRLog uses OSLog to display the log entry in the debug console, and 
         Log.setLogLevel(logLevel)
     }
     
+    //  MARK: - Method
+    
+    /// Sets CustomLogger
+    ///
+    /// - Parameter logger: Set logger will reset the logger to Custom Logger, Default Logger will be inactive
+    @objc public static func setCustomLogger(_ logger: FRLogger) {
+        Log.setCustomLogger(logger)
+    }
+    
     public static func v(_ message: String, subModule: String? = nil, _ includeCallStack: Bool? = true, file: String = #file, line: Int = #line, function: String = #function) {
         var newMessage = message
         if let subModule = subModule {
