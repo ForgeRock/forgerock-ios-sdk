@@ -1,4 +1,7 @@
 # Version 3.3.1
+## [Unrelease]
+#### Changed
+- Fixed memory leak in NetworkCollector [SDKS-1931]
 ## [3.3.1]
 #### Added
 - Add PushType.biometric support and BiometricAuthentication class for biometric authentication. Updated sample app to handle new Push types [SDKS-1865]
