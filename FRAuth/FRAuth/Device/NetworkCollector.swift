@@ -28,9 +28,9 @@ public class NetworkCollector: DeviceCollector {
         if let reachabilityMonitor = NetworkReachabilityMonitor() {
             reachabilityMonitor.startMonitoring()
             
-            reachabilityMonitor.monitoringCallback = { (status) in
-                result["connected"] = reachabilityMonitor.isReachable
-                reachabilityMonitor.stopMonitoring()
+            reachabilityMonitor.monitoringCallback = { [weak reachabilityMonitor] (status) in
+                result["connected"] = reachabilityMonitor?.isReachable
+                reachabilityMonitor?.stopMonitoring()
                 completion(result)
             }
         }
