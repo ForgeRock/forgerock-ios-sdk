@@ -1,5 +1,5 @@
 # Version 3.3.1
-## [Unrelease]
+## [Unreleased]
 #### Changed
 - Fixed memory leak in NetworkCollector [SDKS-1931]
 ## [3.3.1]
