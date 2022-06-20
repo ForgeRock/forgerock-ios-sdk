@@ -63,16 +63,24 @@ public final class FRAuth: NSObject {
     /// Initializes SDK using .plist configuration file
     ///
     /// - Throws: ConfigError when invalid or missing value in .plist configuration file
-    @objc static public func start() throws {
-        guard let path = Bundle.main.path(forResource: configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
-            FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist")
-            throw ConfigError.emptyConfiguration
+    @objc static public func start(options: FROptions? = nil) throws {
+        if let frOptions = options {
+            let config = try frOptions.asDictionary()
+            FRLog.i("SDK is initializing with FROptions")
+            FRLog.v("FROptions: \(config)")
+            try FRAuth.initPrivate(config: config)
+            
+        } else {
+            guard let path = Bundle.main.path(forResource: configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
+                FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist")
+                throw ConfigError.emptyConfiguration
+            }
+            FRLog.i("SDK is initializing: \(configPlistFileName).plist")
+            FRLog.v("\(configPlistFileName).plist : \(config)")
+            try FRAuth.initPrivate(config: config)
         }
-        FRLog.i("SDK is initializing: \(configPlistFileName).plist")
-        FRLog.v("\(configPlistFileName).plist : \(config)")
-        try FRAuth.initPrivate(config: config)
         
-        if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type{
+        if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type {
             FRLog.i("FRProximity SDK found; starting FRProximity")
             c.perform(Selector(("startProximity")))
         }

@@ -278,6 +278,7 @@
 		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
+		EC0BA2E7285B8F8F00F8326E /* FROptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2E6285B8F8F00F8326E /* FROptions.swift */; };
 		EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */; };
 		EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */; };
 /* End PBXBuildFile section */
@@ -606,6 +607,7 @@
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
+		EC0BA2E6285B8F8F00F8326E /* FROptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptions.swift; sourceTree = "<group>"; };
 		EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUserStructs.swift; sourceTree = "<group>"; };
 		EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRHTTPCookie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1100,6 +1102,7 @@
 			children = (
 				D586CF5B23358EE0007A2194 /* OAuth2Client.swift */,
 				D586CF5C23358EE0007A2194 /* ServerConfig.swift */,
+				EC0BA2E6285B8F8F00F8326E /* FROptions.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1808,6 +1811,7 @@
 				D586CF9423358EE0007A2194 /* PasswordCallback.swift in Sources */,
 				D586CFBF23358EE0007A2194 /* TokenManager.swift in Sources */,
 				D586CFA923358EE0007A2194 /* OAuth2Client.swift in Sources */,
+				EC0BA2E7285B8F8F00F8326E /* FROptions.swift in Sources */,
 				D5B2060C25FFDDC800DABB9B /* IdPValue.swift in Sources */,
 				D586CFAF23358EE0007A2194 /* OAuth2.swift in Sources */,
 				D586CF9E23358EE0007A2194 /* ValidatedCreateUsernameCallback.swift in Sources */,
