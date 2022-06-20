@@ -129,7 +129,7 @@ public class Log: NSObject {
     //  MARK: - Property
     
     /// Current SDK version. We hard code it here as currently there is no other way to get it dinamically when used with SPM
-    public static let sdkVersion = "3.3.1"
+    public static let sdkVersion = "3.3.2"
     /// Current LogLevel
     static var logLevel: LogLevel = .none
     /// Current Loggers to handle log entries
@@ -162,6 +162,14 @@ public class Log: NSObject {
     @objc
     public static func setLogLevel(_ logLevel: LogLevel) {
         Log.logLevel = logLevel
+    }
+    
+    /// Sets Custom Logger
+    ///
+    /// - Parameter logger: Set logger will reset the logger to Custom Logger, Default Logger will be inactive
+    @objc
+    public static func setCustomLogger(_ logger: FRLogger) {
+        self.loggers = [logger]
     }
     
     
@@ -398,5 +406,3 @@ public class Log: NSObject {
         }
     }
 }
-
-

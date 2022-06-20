@@ -38,7 +38,7 @@ class AA_04_NumberAttributeInputCallbackTest: CallbackBaseTest {
         for callback in currentNode.callbacks {
             if callback is NumberAttributeInputCallback, let numberCallback = callback as? NumberAttributeInputCallback {
                 XCTAssertEqual(numberCallback.prompt, "How old are you?")
-                XCTAssertEqual(numberCallback.name, "age")
+                XCTAssertTrue(numberCallback.name!.contains("age"))
                 XCTAssertTrue(numberCallback.required)
                 XCTAssertFalse(numberCallback.validateOnly)
                 XCTAssertNil(numberCallback.failedPolicies)

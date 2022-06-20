@@ -2,7 +2,7 @@
 //  NetworkReachabilityMonitorTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -148,4 +148,32 @@ class NetworkReachabilityMonitorTests: FRAuthBaseTest {
         XCTAssertFalse(monitor.isReachable)
         XCTAssertEqual(monitor.currentStatus, FRNetworkReachabilityStatus.unknown)
     }
+
+
+    func testNetworkReachabilityMonitorCallbackForMemoryLeak() {
+        // Given
+        guard let monitor = NetworkReachabilityMonitor() else {
+            XCTFail("Failed to create Reachability Monitor object without any parameter")
+            return
+        }
+        
+        // When start monitoring
+        let ex = self.expectation(description: "Network Reachability Monitoring block")
+        
+        monitor.monitoringCallback = { [weak monitor] (status) in
+            monitor?.stopMonitoring()
+            ex.fulfill()
+        }
+        monitor.startMonitoring()
+        
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        // Then
+        addTeardownBlock { [weak monitor] in
+            XCTAssertNil(monitor, "`monitor` should have been deallocated. Potential memory leak!")
+            
+        }
+    }
+    
 }
+

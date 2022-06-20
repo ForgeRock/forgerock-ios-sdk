@@ -1,5 +1,5 @@
 [![Cocoapods](https://img.shields.io/cocoapods/v/FRAuth?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
-[![Build and Test](https://github.com/ForgeRock/forgerock-ios-sdk/actions/workflows/build.yaml/badge.svg)](https://github.com/ForgeRock/forgerock-ios-sdk/actions/workflows/build.yaml)
+[![Build and Test](https://github.com/ForgeRock/forgerock-ios-sdk/actions/workflows/ci.yaml/badge.svg)](https://github.com/ForgeRock/forgerock-ios-sdk/actions/workflows/ci.yaml)
 
 
 <p align="center">
