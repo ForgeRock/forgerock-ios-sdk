@@ -279,6 +279,7 @@
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
 		EC0BA2E7285B8F8F00F8326E /* FROptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2E6285B8F8F00F8326E /* FROptions.swift */; };
+		EC0BA2FA2863325B00F8326E /* FROptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2F92863325B00F8326E /* FROptionsTests.swift */; };
 		EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */; };
 		EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */; };
 /* End PBXBuildFile section */
@@ -608,6 +609,7 @@
 		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		EC0BA2E6285B8F8F00F8326E /* FROptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptions.swift; sourceTree = "<group>"; };
+		EC0BA2F92863325B00F8326E /* FROptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptionsTests.swift; sourceTree = "<group>"; };
 		EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUserStructs.swift; sourceTree = "<group>"; };
 		EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRHTTPCookie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -663,6 +665,7 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				EC0BA2F72863323A00F8326E /* FROptions */,
 				A5950A2827EA200200EDEFE4 /* SSL Pinning */,
 				D53A806126278A410093B1CA /* WebAuthn */,
 				D58BC39D2602FB6A00254654 /* SocialLogin */,
@@ -1529,6 +1532,14 @@
 			path = Log;
 			sourceTree = "<group>";
 		};
+		EC0BA2F72863323A00F8326E /* FROptions */ = {
+			isa = PBXGroup;
+			children = (
+				EC0BA2F92863325B00F8326E /* FROptionsTests.swift */,
+			);
+			path = FROptions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1878,6 +1889,7 @@
 				D5791BA125F87DE7004B487A /* AA_04_BooleanAttributeInputCallbackTest.swift in Sources */,
 				D5791BA225F87DE7004B487A /* AA_04_ConfirmationCallbackTest.swift in Sources */,
 				A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */,
+				EC0BA2FA2863325B00F8326E /* FROptionsTests.swift in Sources */,
 				D5791BA325F87DE7004B487A /* AA_04_DeviceProfileCallbackTest.swift in Sources */,
 				D5791BA425F87DE7004B487A /* AA_04_StringAttributeInputCallbackTest.swift in Sources */,
 				D5791BA525F87DE7004B487A /* AA_04_PollingWaitCallbackTest.swift in Sources */,

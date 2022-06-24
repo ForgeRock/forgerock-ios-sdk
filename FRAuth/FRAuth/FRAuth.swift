@@ -39,6 +39,8 @@ public final class FRAuth: NSObject {
     /// Shared instance of FRAuth
     @objc
     public static var shared: FRAuth? = nil
+    
+    public var options: FROptions? = nil
     /// AuthServiceName; AuthTree name for user authentication
     var authServiceName: String
     /// RegisterServiceNAme; AuthTree name for user registration
@@ -65,12 +67,14 @@ public final class FRAuth: NSObject {
     /// - Throws: ConfigError when invalid or missing value in .plist configuration file
     @objc static public func start(options: FROptions? = nil) throws {
         if let frOptions = options {
+            FRAuth.shared?.options = options
             let config = try frOptions.asDictionary()
             FRLog.i("SDK is initializing with FROptions")
             FRLog.v("FROptions: \(config)")
             try FRAuth.initPrivate(config: config)
             
         } else {
+            FRAuth.shared?.options = nil
             guard let path = Bundle.main.path(forResource: configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
                 FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist")
                 throw ConfigError.emptyConfiguration
@@ -93,6 +97,22 @@ public final class FRAuth: NSObject {
     /// - Parameter config: Dictionary object of configuration
     /// - Throws: ConfigError
     static func initPrivate(config: [String: Any]) throws {
+        //Check if there is an existing session and destroy it
+        if let currentUser = FRUser.currentUser {
+            if let _ = FRAuth.shared?.oAuth2Client {
+                let semaphore = DispatchSemaphore(value: 1)
+                //Revoke the Access Token
+                currentUser.revokeAccessToken { _, _ in
+                    semaphore.signal()
+                }
+                semaphore.wait()
+            }
+        }
+        
+        //If the session manager exists already revoke the Session Token.
+        if let sessionManager = FRAuth.shared?.sessionManager {
+            sessionManager.revokeSSOToken()
+        }
         
         // Validate server config
         guard let server = config["forgerock_url"] as? String,
@@ -187,6 +207,8 @@ public final class FRAuth: NSObject {
                 var tokenManager: TokenManager?
                 if let oAuth2Client = oAuth2Client {
                     tokenManager = TokenManager(oAuth2Client: oAuth2Client, keychainManager: keychainManager)
+                } else {
+                    let _ = try? keychainManager.setAccessToken(token: nil)
                 }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }
@@ -198,6 +220,8 @@ public final class FRAuth: NSObject {
                 var tokenManager: TokenManager?
                 if let oAuth2Client = oAuth2Client {
                     tokenManager = TokenManager(oAuth2Client: oAuth2Client, keychainManager: keychainManager)
+                } else {
+                    let _ = try? keychainManager.setAccessToken(token: nil)
                 }
                 FRAuth.shared = FRAuth(authServiceName: authServiceName, registerServiceName: registrationServiceName, serverConfig: serverConfig, oAuth2Client: oAuth2Client, tokenManager: tokenManager, keychainManager: keychainManager, sessionManager: sessionManager)
             }

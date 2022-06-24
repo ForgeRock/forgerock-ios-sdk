@@ -16,7 +16,7 @@ public class FROptions: NSObject, Codable {
     public var forgerock_realm: String
     public var forgerock_enable_cookie: Bool
     public var forgerock_cookie_name: String
-    public var forgerock_timeout: Int
+    public var forgerock_timeout: String
     
     public var forgerock_authenticate_endpoint: String?
     public var forgerock_authorize_endpoint: String?
@@ -28,7 +28,7 @@ public class FROptions: NSObject, Codable {
     public var forgerock_auth_service_name: String
     public var forgerock_registration_service_name: String
     
-    public var forgerock_oauth_threshold: Int?
+    public var forgerock_oauth_threshold: String?
     public var forgerock_oauth_client_id: String?
     public var forgerock_oauth_redirect_uri: String?
     public var forgerock_oauth_scope: String?
@@ -59,23 +59,23 @@ public class FROptions: NSObject, Codable {
     
     public init(forgerock_url: String,
                 forgerock_realm: String,
-                forgerock_enable_cookie: Bool,
-                forgerock_cookie_name: String?,
-                forgerock_timeout: Int,
-                forgerock_authenticate_endpoint: String?,
-                forgerock_authorize_endpoint: String?,
-                forgerock_token_endpoint: String?,
-                forgerock_revoke_endpoint: String?,
-                forgerock_userinfo_endpoint: String?,
-                forgerock_session_endpoint: String?,
-                forgerock_auth_service_name: String,
-                forgerock_registration_service_name: String,
-                forgerock_oauth_client_id: String?,
-                forgerock_oauth_threshold: Int?,
-                forgerock_oauth_redirect_uri: String?,
-                forgerock_oauth_scope: String?,
-                forgerock_keychain_access_group: String?,
-                forgerock_ssl_pinning_public_key_hashes: [String]?) {
+                forgerock_enable_cookie: Bool = true,
+                forgerock_cookie_name: String? = nil,
+                forgerock_timeout: String = "60",
+                forgerock_authenticate_endpoint: String? = nil,
+                forgerock_authorize_endpoint: String? = nil,
+                forgerock_token_endpoint: String? = nil,
+                forgerock_revoke_endpoint: String? = nil,
+                forgerock_userinfo_endpoint: String? = nil,
+                forgerock_session_endpoint: String? = nil,
+                forgerock_auth_service_name: String = "Login",
+                forgerock_registration_service_name: String = "Registration",
+                forgerock_oauth_client_id: String? = nil,
+                forgerock_oauth_threshold: String? = nil,
+                forgerock_oauth_redirect_uri: String? = nil,
+                forgerock_oauth_scope: String? = nil,
+                forgerock_keychain_access_group: String? = nil,
+                forgerock_ssl_pinning_public_key_hashes: [String]? = nil) {
         self.forgerock_url = forgerock_url
         self.forgerock_realm = forgerock_realm
         self.forgerock_enable_cookie = forgerock_enable_cookie
