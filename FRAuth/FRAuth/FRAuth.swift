@@ -67,12 +67,11 @@ public final class FRAuth: NSObject {
     /// - Throws: ConfigError when invalid or missing value in .plist configuration file
     @objc static public func start(options: FROptions? = nil) throws {
         if let frOptions = options {
-            FRAuth.shared?.options = options
             let config = try frOptions.asDictionary()
             FRLog.i("SDK is initializing with FROptions")
             FRLog.v("FROptions: \(config)")
             try FRAuth.initPrivate(config: config)
-            
+            FRAuth.shared?.options = options
         } else {
             FRAuth.shared?.options = nil
             guard let path = Bundle.main.path(forResource: configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {

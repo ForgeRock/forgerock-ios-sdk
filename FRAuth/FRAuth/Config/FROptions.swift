@@ -12,91 +12,95 @@ import Foundation
 
 @objc
 public class FROptions: NSObject, Codable {
-    public var forgerock_url: String
-    public var forgerock_realm: String
-    public var forgerock_enable_cookie: Bool
-    public var forgerock_cookie_name: String
-    public var forgerock_timeout: String
+    public var url: String
+    public var realm: String
+    public var enableCookie: Bool
+    public var cookieName: String
+    public var timeout: String
     
-    public var forgerock_authenticate_endpoint: String?
-    public var forgerock_authorize_endpoint: String?
-    public var forgerock_token_endpoint: String?
-    public var forgerock_revoke_endpoint: String?
-    public var forgerock_userinfo_endpoint: String?
-    public var forgerock_session_endpoint: String?
+    public var authenticateEndpoint: String?
+    public var authorizeEndpoint: String?
+    public var tokenEndpoint: String?
+    public var revokeEndpoint: String?
+    public var userinfoEndpoint: String?
+    public var sessionEndpoint: String?
     
-    public var forgerock_auth_service_name: String
-    public var forgerock_registration_service_name: String
+    public var authServiceName: String
+    public var registrationServiceName: String
     
-    public var forgerock_oauth_threshold: String?
-    public var forgerock_oauth_client_id: String?
-    public var forgerock_oauth_redirect_uri: String?
-    public var forgerock_oauth_scope: String?
-    public var forgerock_keychain_access_group: String?
-    public var forgerock_ssl_pinning_public_key_hashes: [String]?
+    public var oauthThreshold: String?
+    public var oauthClientId: String?
+    public var oauthRedirectUri: String?
+    public var oauthScope: String?
+    public var keychainAccessGroup: String?
+    public var sslPinningPublicKeyHashes: [String]?
     
     enum CodingKeys: String, CodingKey {
-        case forgerock_url
-        case forgerock_realm
-        case forgerock_enable_cookie
-        case forgerock_cookie_name
-        case forgerock_timeout
-        case forgerock_authenticate_endpoint
-        case forgerock_authorize_endpoint
-        case forgerock_token_endpoint
-        case forgerock_revoke_endpoint
-        case forgerock_userinfo_endpoint
-        case forgerock_session_endpoint
-        case forgerock_auth_service_name
-        case forgerock_registration_service_name
-        case forgerock_oauth_threshold
-        case forgerock_oauth_client_id
-        case forgerock_oauth_redirect_uri
-        case forgerock_oauth_scope
-        case forgerock_keychain_access_group
-        case forgerock_ssl_pinning_public_key_hashes
+        case url = "forgerock_url"
+        case realm = "forgerock_realm"
+        case enableCookie = "forgerock_enable_cookie"
+        case cookieName = "forgerock_cookie_name"
+        case timeout = "forgerock_timeout"
+        case authenticateEndpoint = "forgerock_authenticate_endpoint"
+        case authorizeEndpoint = "forgerock_authorize_endpoint"
+        case tokenEndpoint = "forgerock_token_endpoint"
+        case revokeEndpoint = "forgerock_revoke_endpoint"
+        case userinfoEndpoint = "forgerock_userinfo_endpoint"
+        case sessionEndpoint = "forgerock_session_endpoint"
+        case authServiceName = "forgerock_auth_service_name"
+        case registrationServiceName = "forgerock_registration_service_name"
+        case oauthThreshold = "forgerock_oauth_threshold"
+        case oauthClientId = "forgerock_oauth_client_id"
+        case oauthRedirectUri = "forgerock_oauth_redirect_uri"
+        case oauthScope = "forgerock_oauth_scope"
+        case keychainAccessGroup = "forgerock_keychain_access_group"
+        case sslPinningPublicKeyHashes = "forgerock_ssl_pinning_public_key_hashes"
     }
     
-    public init(forgerock_url: String,
-                forgerock_realm: String,
-                forgerock_enable_cookie: Bool = true,
-                forgerock_cookie_name: String? = nil,
-                forgerock_timeout: String = "60",
-                forgerock_authenticate_endpoint: String? = nil,
-                forgerock_authorize_endpoint: String? = nil,
-                forgerock_token_endpoint: String? = nil,
-                forgerock_revoke_endpoint: String? = nil,
-                forgerock_userinfo_endpoint: String? = nil,
-                forgerock_session_endpoint: String? = nil,
-                forgerock_auth_service_name: String = "Login",
-                forgerock_registration_service_name: String = "Registration",
-                forgerock_oauth_client_id: String? = nil,
-                forgerock_oauth_threshold: String? = nil,
-                forgerock_oauth_redirect_uri: String? = nil,
-                forgerock_oauth_scope: String? = nil,
-                forgerock_keychain_access_group: String? = nil,
-                forgerock_ssl_pinning_public_key_hashes: [String]? = nil) {
-        self.forgerock_url = forgerock_url
-        self.forgerock_realm = forgerock_realm
-        self.forgerock_enable_cookie = forgerock_enable_cookie
-        self.forgerock_cookie_name = forgerock_cookie_name ?? "iPlanetDirectoryPro"
-        self.forgerock_timeout = forgerock_timeout
-        self.forgerock_authenticate_endpoint = forgerock_authenticate_endpoint
-        self.forgerock_authorize_endpoint = forgerock_authorize_endpoint
-        self.forgerock_token_endpoint = forgerock_token_endpoint
-        self.forgerock_revoke_endpoint = forgerock_revoke_endpoint
-        self.forgerock_userinfo_endpoint = forgerock_userinfo_endpoint
-        self.forgerock_session_endpoint = forgerock_session_endpoint
-        self.forgerock_auth_service_name = forgerock_auth_service_name
-        self.forgerock_registration_service_name = forgerock_registration_service_name
-        self.forgerock_oauth_threshold = forgerock_oauth_threshold
-        self.forgerock_oauth_client_id = forgerock_oauth_client_id
-        self.forgerock_oauth_redirect_uri = forgerock_oauth_redirect_uri
-        self.forgerock_oauth_scope = forgerock_oauth_scope
-        self.forgerock_keychain_access_group = forgerock_keychain_access_group
-        self.forgerock_ssl_pinning_public_key_hashes = forgerock_ssl_pinning_public_key_hashes
+    public init(url: String,
+                realm: String,
+                enableCookie: Bool = true,
+                cookieName: String? = nil,
+                timeout: String = "60",
+                authenticateEndpoint: String? = nil,
+                authorizeEndpoint: String? = nil,
+                tokenEndpoint: String? = nil,
+                revokeEndpoint: String? = nil,
+                userinfoEndpoint: String? = nil,
+                sessionEndpoint: String? = nil,
+                authServiceName: String = "Login",
+                registrationServiceName: String = "Registration",
+                oauthThreshold: String? = nil,
+                oauthClientId: String? = nil,
+                oauthRedirectUri: String? = nil,
+                oauthScope: String? = nil,
+                keychainAccessGroup: String? = nil,
+                sslPinningPublicKeyHashes: [String]? = nil) {
+        self.url = url
+        self.realm = realm
+        self.enableCookie = enableCookie
+        self.cookieName = cookieName ?? "iPlanetDirectoryPro"
+        self.timeout = timeout
+        self.authenticateEndpoint = authenticateEndpoint
+        self.authorizeEndpoint = authorizeEndpoint
+        self.tokenEndpoint = tokenEndpoint
+        self.revokeEndpoint = revokeEndpoint
+        self.userinfoEndpoint = userinfoEndpoint
+        self.sessionEndpoint = sessionEndpoint
+        self.authServiceName = authServiceName
+        self.registrationServiceName = registrationServiceName
+        self.oauthClientId = oauthClientId
+        self.oauthThreshold = oauthThreshold
+        self.oauthRedirectUri = oauthRedirectUri
+        self.oauthScope = oauthScope
+        self.keychainAccessGroup = keychainAccessGroup
+        self.sslPinningPublicKeyHashes = sslPinningPublicKeyHashes
         
         super.init()
+    }
+    
+    public func optionsDictionary() -> [String: Any]? {
+        return try? self.asDictionary()
     }
 }
 
