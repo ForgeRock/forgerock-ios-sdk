@@ -226,6 +226,31 @@ struct KeychainManager {
         return nil
     }
     
+    //  MARK: - FROptions
+    
+    /// Returns current session's Token object that represents SSO Token
+    func getFROptions() -> Data? {
+        if let frOptionsData = self.sharedStore.getData("FROptions") {
+            return frOptionsData
+        }
+        else {
+            return nil
+        }
+    }
+    
+    
+    /// Stores SSOToken into designated Keychain Service, or removes SSOToken when nil
+    /// - Parameter ssoToken: Token object
+    /// - Returns: Boolean result of operation
+    @discardableResult func setFROptions(frOptionsData: Data?) -> Bool {
+        if let frOptions = frOptionsData {
+            return self.sharedStore.set(frOptions, key: "FROptions")
+        }
+        else {
+            return self.sharedStore.delete(StorageKey.ssoToken.rawValue)
+        }
+    }
+    
     
     //  MARK: - Instance helper methods
     

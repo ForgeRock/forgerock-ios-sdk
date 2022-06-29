@@ -99,8 +99,54 @@ public class FROptions: NSObject, Codable {
         super.init()
     }
     
+    public init(config: [String: Any]) {
+        self.url = config["forgerock_url"] as? String ?? ""
+        self.realm = config["forgerock_realm"] as? String ?? ""
+        self.enableCookie = config["forgerock_enable_cookie"] as? Bool ?? true
+        self.cookieName = config["forgerock_cookie_name"] as? String ?? "iPlanetDirectoryPro"
+        self.timeout = config["forgerock_timeout"] as? String ?? "60"
+        self.authenticateEndpoint = config["forgerock_authenticate_endpoint"] as? String
+        self.authorizeEndpoint = config["forgerock_authorize_endpoint"] as? String
+        self.tokenEndpoint = config["forgerock_token_endpoint"] as? String
+        self.revokeEndpoint = config["forgerock_revoke_endpoint"] as? String
+        self.userinfoEndpoint = config["forgerock_userinfo_endpoint"] as? String
+        self.sessionEndpoint = config["forgerock_session_endpoint"] as? String
+        self.authServiceName = config["forgerock_auth_service_name"] as? String ?? "Login"
+        self.registrationServiceName = config["forgerock_registration_service_name"] as? String ?? "Registration"
+        self.oauthClientId = config["forgerock_oauth_client_id"] as? String
+        self.oauthThreshold = config["forgerock_oauth_threshold"] as? String
+        self.oauthRedirectUri = config["forgerock_oauth_redirect_uri"] as? String
+        self.oauthScope = config["forgerock_oauth_scope"] as? String
+        self.keychainAccessGroup = config["forgerock_keychain_access_group"] as? String
+        self.sslPinningPublicKeyHashes = config["forgerock_ssl_pinning_public_key_hashes"] as? [String]
+        
+        super.init()
+    }
+    
     public func optionsDictionary() -> [String: Any]? {
         return try? self.asDictionary()
+    }
+    
+    static func == (lhs: FROptions, rhs: FROptions) -> Bool {
+        return (lhs.url == rhs.url &&
+        lhs.realm == rhs.realm &&
+        lhs.enableCookie == rhs.enableCookie &&
+        lhs.cookieName == rhs.cookieName &&
+        lhs.timeout == rhs.timeout &&
+        lhs.authenticateEndpoint == rhs.authenticateEndpoint &&
+        lhs.authorizeEndpoint == rhs.authorizeEndpoint &&
+        lhs.tokenEndpoint == rhs.tokenEndpoint &&
+        lhs.revokeEndpoint == rhs.revokeEndpoint &&
+        lhs.userinfoEndpoint == rhs.userinfoEndpoint &&
+        lhs.sessionEndpoint == rhs.sessionEndpoint &&
+        lhs.authServiceName == rhs.authServiceName &&
+        lhs.registrationServiceName == rhs.registrationServiceName &&
+        lhs.oauthClientId == rhs.oauthClientId &&
+        lhs.oauthThreshold == rhs.oauthThreshold &&
+        lhs.oauthRedirectUri == rhs.oauthRedirectUri &&
+        lhs.oauthScope == rhs.oauthScope &&
+        lhs.keychainAccessGroup == rhs.keychainAccessGroup &&
+        lhs.sslPinningPublicKeyHashes == rhs.sslPinningPublicKeyHashes)
     }
 }
 

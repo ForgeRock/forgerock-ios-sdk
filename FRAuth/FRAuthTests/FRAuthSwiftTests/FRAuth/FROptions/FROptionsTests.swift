@@ -161,6 +161,45 @@ class FROptionsTests: FRAuthBaseTest {
         }
     }
     
+    func testFROptionsComparisons() {
+        let optionsA = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "alpha",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "iosClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address")
+        
+        let optionsB = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "alpha",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "iosClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address")
+        
+        let optionsC = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.forgerock.ios.FRTestHost", sslPinningPublicKeyHashes: ["hash1", "hash2"])
+        
+        XCTAssertTrue(optionsA == optionsB)
+        XCTAssertFalse(optionsA == optionsC)
+        XCTAssertFalse(optionsB == optionsC)
+    }
+    
+    func testInitWithConfig() {
+        let optionsA = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "alpha",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "iosClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address")
+        
+        let config = try? optionsA.asDictionary()
+        XCTAssertNotNil(config)
+        let optionsB = FROptions(config: config!)
+        XCTAssertTrue(optionsA == optionsB)
+    }
+    
     //Helper Methods
     private func dictionaryMatches(options: FROptions) {
         let optionsDict = options.optionsDictionary()

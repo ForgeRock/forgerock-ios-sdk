@@ -96,21 +96,12 @@ public final class FRAuth: NSObject {
     /// - Parameter config: Dictionary object of configuration
     /// - Throws: ConfigError
     static func initPrivate(config: [String: Any]) throws {
-        //Check if there is an existing session and destroy it
-        if let currentUser = FRUser.currentUser {
-            if let _ = FRAuth.shared?.oAuth2Client {
-                let semaphore = DispatchSemaphore(value: 1)
-                //Revoke the Access Token
-                currentUser.revokeAccessToken { _, _ in
-                    semaphore.signal()
-                }
-                semaphore.wait()
-            }
-        }
         
-        //If the session manager exists already revoke the Session Token.
-        if let sessionManager = FRAuth.shared?.sessionManager {
-            sessionManager.revokeSSOToken()
+        // Check if there is an existing session and destroy it, do a clean up as this would only happen at this point
+        // if the SDK has been previously initialized and a succesfull authentication has happened. Given that the SDK gets
+        // re-initiallised, possibly with a different configuration we need to do some clean up.
+        if let _ = FRUser.currentUser {
+            FRAuth.cleanUp()
         }
         
         // Validate server config
@@ -238,6 +229,24 @@ public final class FRAuth: NSObject {
             let pinningHanlder = FRURLSessionSSLPinningHandler(frSecurityConfiguration: frSecurityConfiguration)
             RestClient.shared.setURLSessionConfiguration(config: nil, handler: pinningHanlder)
         }
+        
+        if let optionData = FRAuth.shared?.keychainManager.getFROptions() {
+            let decoder = JSONDecoder()
+            let currentOptions = FROptions(config: config)
+            if let options = try? decoder.decode(FROptions.self, from: optionData) {
+                if !(currentOptions == options)  {
+                    //New configuration does not match the old config used. Clean up the keychain and revoke the tokens if possible.
+                    FRAuth.cleanUp()
+                }
+            }
+        }
+        
+        //Save the configuration used.
+        let encoder = JSONEncoder()
+        let options = FROptions(config: config)
+        if let optionsData = try? encoder.encode(options) {
+            FRAuth.shared?.keychainManager.setFROptions(frOptionsData: optionsData)
+        }
     }
     
     
@@ -290,6 +299,17 @@ public final class FRAuth: NSObject {
         let authService: AuthService = AuthService(authIndexValue: authIndexValue, serverConfig: self.serverConfig, oAuth2Config: self.oAuth2Client, keychainManager: self.keychainManager, tokenManager: self.tokenManager, authIndexType: authIndexType)
         authService.next { (value: T?, node, error) in
             completion(value, node, error)
+        }
+    }
+    
+    static func cleanUp() {
+        if let currentUser = FRUser.currentUser {
+            currentUser.logout()
+        } else {
+            //If the session manager exists already revoke the Session Token.
+            if let sessionManager = FRAuth.shared?.sessionManager {
+                sessionManager.revokeSSOToken()
+            }
         }
     }
 }
