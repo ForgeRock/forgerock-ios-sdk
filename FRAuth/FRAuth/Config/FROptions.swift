@@ -130,23 +130,8 @@ public class FROptions: NSObject, Codable {
     static func == (lhs: FROptions, rhs: FROptions) -> Bool {
         return (lhs.url == rhs.url &&
         lhs.realm == rhs.realm &&
-        lhs.enableCookie == rhs.enableCookie &&
         lhs.cookieName == rhs.cookieName &&
-        lhs.timeout == rhs.timeout &&
-        lhs.authenticateEndpoint == rhs.authenticateEndpoint &&
-        lhs.authorizeEndpoint == rhs.authorizeEndpoint &&
-        lhs.tokenEndpoint == rhs.tokenEndpoint &&
-        lhs.revokeEndpoint == rhs.revokeEndpoint &&
-        lhs.userinfoEndpoint == rhs.userinfoEndpoint &&
-        lhs.sessionEndpoint == rhs.sessionEndpoint &&
-        lhs.authServiceName == rhs.authServiceName &&
-        lhs.registrationServiceName == rhs.registrationServiceName &&
-        lhs.oauthClientId == rhs.oauthClientId &&
-        lhs.oauthThreshold == rhs.oauthThreshold &&
-        lhs.oauthRedirectUri == rhs.oauthRedirectUri &&
-        lhs.oauthScope == rhs.oauthScope &&
-        lhs.keychainAccessGroup == rhs.keychainAccessGroup &&
-        lhs.sslPinningPublicKeyHashes == rhs.sslPinningPublicKeyHashes)
+        lhs.oauthClientId == rhs.oauthClientId)
     }
 }
 

@@ -230,7 +230,7 @@ struct KeychainManager {
     
     /// Returns current session's Token object that represents SSO Token
     func getFROptions() -> Data? {
-        if let frOptionsData = self.sharedStore.getData("FROptions") {
+        if let frOptionsData = self.privateStore.getData("FROptions") {
             return frOptionsData
         }
         else {
@@ -244,10 +244,10 @@ struct KeychainManager {
     /// - Returns: Boolean result of operation
     @discardableResult func setFROptions(frOptionsData: Data?) -> Bool {
         if let frOptions = frOptionsData {
-            return self.sharedStore.set(frOptions, key: "FROptions")
+            return self.privateStore.set(frOptions, key: "FROptions")
         }
         else {
-            return self.sharedStore.delete(StorageKey.ssoToken.rawValue)
+            return self.privateStore.delete("FROptions")
         }
     }
     

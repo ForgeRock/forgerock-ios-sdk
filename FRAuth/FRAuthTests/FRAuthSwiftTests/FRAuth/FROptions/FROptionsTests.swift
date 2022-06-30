@@ -180,9 +180,27 @@ class FROptionsTests: FRAuthBaseTest {
         
         let optionsC = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.forgerock.ios.FRTestHost", sslPinningPublicKeyHashes: ["hash1", "hash2"])
         
+        let optionsD = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "bravo",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "iosClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address")
+        
+        let optionsE = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "alpha",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "jsClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address")
+        
         XCTAssertTrue(optionsA == optionsB)
         XCTAssertFalse(optionsA == optionsC)
         XCTAssertFalse(optionsB == optionsC)
+        XCTAssertFalse(optionsA == optionsD)
+        XCTAssertFalse(optionsA == optionsE)
     }
     
     func testInitWithConfig() {
