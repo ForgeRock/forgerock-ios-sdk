@@ -464,7 +464,7 @@ class FRSessionTests: FRAuthBaseTest {
         FRAuth.configPlistFileName = "FRAuthConfigNoOAuth2"
         self.config = thisConfig
         self.startSDK()
-        
+        super.setUp()
         XCTAssertNotNil(FRAuth.shared)
         XCTAssertNil(FRAuth.shared?.tokenManager)
         XCTAssertNil(FRAuth.shared?.oAuth2Client)
