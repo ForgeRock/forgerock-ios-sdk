@@ -228,6 +228,9 @@ public final class FRAuth: NSObject {
             let frSecurityConfiguration = FRSecurityConfiguration(hashes: forgerockPKHashes)
             let pinningHanlder = FRURLSessionSSLPinningHandler(frSecurityConfiguration: frSecurityConfiguration)
             RestClient.shared.setURLSessionConfiguration(config: nil, handler: pinningHanlder)
+        } else {
+            // This will set the default SDK configuration for the RestClient
+            RestClient.shared.setURLSessionConfiguration(config: nil, handler: nil)
         }
         
         if let optionData = FRAuth.shared?.keychainManager.getFROptions() {
