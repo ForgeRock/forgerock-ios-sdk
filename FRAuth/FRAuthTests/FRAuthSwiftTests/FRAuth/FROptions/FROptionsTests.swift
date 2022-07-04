@@ -85,7 +85,7 @@ class FROptionsTests: FRAuthBaseTest {
     
     func testDynamicConfigComplete() {
         do {
-            let options = FROptions(url: "https://openam-forgerock-sdks/", realm: "alpha", enableCookie: true, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios.frexample", oauthScope: "openid profile email address", keychainAccessGroup: "com.forgerock.ios.FRTestHost", sslPinningPublicKeyHashes: ["hash1", "hash2"])
+            let options = FROptions(url: "https://openam-forgerock-sdks/", realm: "alpha", enableCookie: true, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios.frexample", oauthScope: "openid profile email address", keychainAccessGroup: "com.bitbar.*", sslPinningPublicKeyHashes: ["hash1", "hash2"])
             
             
             self.dictionaryMatches(options: options)
@@ -110,7 +110,7 @@ class FROptionsTests: FRAuthBaseTest {
             XCTAssertTrue(options.oauthClientId == "iOSClient")
             XCTAssertTrue(options.oauthRedirectUri == "frauth://com.forgerock.ios.frexample")
             XCTAssertTrue(options.oauthScope == "openid profile email address")
-            XCTAssertTrue(options.keychainAccessGroup == "com.forgerock.ios.FRTestHost")
+            XCTAssertTrue(options.keychainAccessGroup == "com.bitbar.*")
             XCTAssertTrue(options.sslPinningPublicKeyHashes?[0] == "hash1")
             XCTAssertTrue(options.sslPinningPublicKeyHashes?[1] == "hash2")
             
@@ -145,7 +145,7 @@ class FROptionsTests: FRAuthBaseTest {
             self.dictionaryMatches(options: frAuth!.options!)
             self.frAuthInternalValuesCheck(updatedOptions: options)
             
-            let updatedOptions = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.forgerock.ios.FRTestHost", sslPinningPublicKeyHashes: ["hash1", "hash2"])
+            let updatedOptions = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.bitbar.*", sslPinningPublicKeyHashes: ["hash1", "hash2"])
             
             self.dictionaryMatches(options: updatedOptions)
             try FRAuth.start(options: updatedOptions)
@@ -178,7 +178,7 @@ class FROptionsTests: FRAuthBaseTest {
                                 oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
                                 oauthScope: "openid profile email address")
         
-        let optionsC = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.forgerock.ios.FRTestHost", sslPinningPublicKeyHashes: ["hash1", "hash2"])
+        let optionsC = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.bitbar.*", sslPinningPublicKeyHashes: ["hash1", "hash2"])
         
         let optionsD = FROptions(url: "https://openam-forgerock-sdks/am",
                                 realm: "bravo",
