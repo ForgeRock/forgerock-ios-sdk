@@ -100,25 +100,25 @@ public class FROptions: NSObject, Codable {
     }
     
     public init(config: [String: Any]) {
-        self.url = config["forgerock_url"] as? String ?? ""
-        self.realm = config["forgerock_realm"] as? String ?? ""
-        self.enableCookie = config["forgerock_enable_cookie"] as? Bool ?? true
-        self.cookieName = config["forgerock_cookie_name"] as? String ?? "iPlanetDirectoryPro"
-        self.timeout = config["forgerock_timeout"] as? String ?? "60"
-        self.authenticateEndpoint = config["forgerock_authenticate_endpoint"] as? String
-        self.authorizeEndpoint = config["forgerock_authorize_endpoint"] as? String
-        self.tokenEndpoint = config["forgerock_token_endpoint"] as? String
-        self.revokeEndpoint = config["forgerock_revoke_endpoint"] as? String
-        self.userinfoEndpoint = config["forgerock_userinfo_endpoint"] as? String
-        self.sessionEndpoint = config["forgerock_session_endpoint"] as? String
-        self.authServiceName = config["forgerock_auth_service_name"] as? String ?? "Login"
-        self.registrationServiceName = config["forgerock_registration_service_name"] as? String ?? "Registration"
-        self.oauthClientId = config["forgerock_oauth_client_id"] as? String
-        self.oauthThreshold = config["forgerock_oauth_threshold"] as? String
-        self.oauthRedirectUri = config["forgerock_oauth_redirect_uri"] as? String
-        self.oauthScope = config["forgerock_oauth_scope"] as? String
-        self.keychainAccessGroup = config["forgerock_keychain_access_group"] as? String
-        self.sslPinningPublicKeyHashes = config["forgerock_ssl_pinning_public_key_hashes"] as? [String]
+        self.url = config[FROptions.CodingKeys.url.rawValue] as? String ?? ""
+        self.realm = config[FROptions.CodingKeys.realm.rawValue] as? String ?? ""
+        self.enableCookie = config[FROptions.CodingKeys.enableCookie.rawValue] as? Bool ?? true
+        self.cookieName = config[FROptions.CodingKeys.cookieName.rawValue] as? String ?? "iPlanetDirectoryPro"
+        self.timeout = config[FROptions.CodingKeys.timeout.rawValue] as? String ?? "60"
+        self.authenticateEndpoint = config[FROptions.CodingKeys.authenticateEndpoint.rawValue] as? String
+        self.authorizeEndpoint = config[FROptions.CodingKeys.authorizeEndpoint.rawValue] as? String
+        self.tokenEndpoint = config[FROptions.CodingKeys.tokenEndpoint.rawValue] as? String
+        self.revokeEndpoint = config[FROptions.CodingKeys.revokeEndpoint.rawValue] as? String
+        self.userinfoEndpoint = config[FROptions.CodingKeys.userinfoEndpoint.rawValue] as? String
+        self.sessionEndpoint = config[FROptions.CodingKeys.sessionEndpoint.rawValue] as? String
+        self.authServiceName = config[FROptions.CodingKeys.authServiceName.rawValue] as? String ?? "Login"
+        self.registrationServiceName = config[FROptions.CodingKeys.registrationServiceName.rawValue] as? String ?? "Registration"
+        self.oauthClientId = config[FROptions.CodingKeys.oauthClientId.rawValue] as? String
+        self.oauthThreshold = config[FROptions.CodingKeys.oauthThreshold.rawValue] as? String
+        self.oauthRedirectUri = config[FROptions.CodingKeys.oauthRedirectUri.rawValue] as? String
+        self.oauthScope = config[FROptions.CodingKeys.oauthScope.rawValue] as? String
+        self.keychainAccessGroup = config[FROptions.CodingKeys.keychainAccessGroup.rawValue] as? String
+        self.sslPinningPublicKeyHashes = config[FROptions.CodingKeys.sslPinningPublicKeyHashes.rawValue] as? [String]
         
         super.init()
     }

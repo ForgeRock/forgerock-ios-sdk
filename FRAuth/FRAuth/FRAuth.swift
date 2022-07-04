@@ -105,7 +105,7 @@ public final class FRAuth: NSObject {
         }
         
         // Validate server config
-        guard let server = config["forgerock_url"] as? String,
+        guard let server = config[FROptions.CodingKeys.url.rawValue] as? String,
             let serverUrl = URL(string: server),
             serverUrl.absoluteString.isValidUrl else {
                 let errorMsg = "server config (forgerock_url) is empty"
@@ -115,7 +115,7 @@ public final class FRAuth: NSObject {
         
         // Check if realm value is in config
         var realm = "root"
-        if let realmConfig = config["forgerock_realm"] as? String {
+        if let realmConfig = config[FROptions.CodingKeys.realm.rawValue] as? String {
             realm = realmConfig
         }
         
@@ -123,53 +123,53 @@ public final class FRAuth: NSObject {
         let configBuilder = ServerConfigBuilder(url: serverUrl, realm: realm)
         
         // ServerConfig building with config values
-        if let enableCookieConfig = config["forgerock_enable_cookie"] as? Bool {
+        if let enableCookieConfig = config[FROptions.CodingKeys.enableCookie.rawValue] as? Bool {
             configBuilder.set(enableCookie: enableCookieConfig)
         }
         
-        if let cookieName = config["forgerock_cookie_name"] as? String {
+        if let cookieName = config[FROptions.CodingKeys.cookieName.rawValue] as? String {
             configBuilder.set(cookieName: cookieName)
         }
         
-        if let timeOutConfigStr = config["forgerock_timeout"] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
+        if let timeOutConfigStr = config[FROptions.CodingKeys.timeout.rawValue] as? String, let timeOutConfigDouble = Double(timeOutConfigStr) {
             configBuilder.set(timeout: timeOutConfigDouble)
         }
         
-        if let authenticatePath = config["forgerock_authenticate_endpoint"] as? String {
+        if let authenticatePath = config[FROptions.CodingKeys.authenticateEndpoint.rawValue] as? String {
             configBuilder.set(authenticatePath: authenticatePath)
         }
         
-        if let authorizePath = config["forgerock_authorize_endpoint"] as? String {
+        if let authorizePath = config[FROptions.CodingKeys.authorizeEndpoint.rawValue] as? String {
             configBuilder.set(authorizePath: authorizePath)
         }
         
-        if let tokenPath = config["forgerock_token_endpoint"] as? String {
+        if let tokenPath = config[FROptions.CodingKeys.tokenEndpoint.rawValue] as? String {
             configBuilder.set(tokenPath: tokenPath)
         }
         
-        if let revokePath = config["forgerock_revoke_endpoint"] as? String {
+        if let revokePath = config[FROptions.CodingKeys.revokeEndpoint.rawValue] as? String {
             configBuilder.set(revokePath: revokePath)
         }
         
-        if let userInfoPath = config["forgerock_userinfo_endpoint"] as? String {
+        if let userInfoPath = config[FROptions.CodingKeys.userinfoEndpoint.rawValue] as? String {
             configBuilder.set(userInfoPath: userInfoPath)
         }
         
-        if let sessionPath = config["forgerock_session_endpoint"] as? String {
+        if let sessionPath = config[FROptions.CodingKeys.sessionEndpoint.rawValue] as? String {
             configBuilder.set(sessionPath: sessionPath)
         }
         
         // Validate Auth/Registration Service
-        guard let authServiceName = config["forgerock_auth_service_name"] as? String else {
+        guard let authServiceName = config[FROptions.CodingKeys.authServiceName.rawValue] as? String else {
             let errorMsg = "forgerock_auth_service_name is empty"
             FRLog.e("Failed to load configuration file; abort SDK initialization: \(configPlistFileName).plist. \(errorMsg)")
             throw ConfigError.invalidConfiguration(errorMsg)
         }
         
-        let registrationServiceName = config["forgerock_registration_service_name"] as? String ?? ""
+        let registrationServiceName = config[FROptions.CodingKeys.registrationServiceName.rawValue] as? String ?? ""
         
         var threshold = 60
-        if let thresholdConfigStr = config["forgerock_oauth_threshold"] as? String, let timeOutConfigInt = Int(thresholdConfigStr) {
+        if let thresholdConfigStr = config[FROptions.CodingKeys.oauthThreshold.rawValue] as? String, let timeOutConfigInt = Int(thresholdConfigStr) {
             threshold = timeOutConfigInt
         }
         
@@ -177,11 +177,11 @@ public final class FRAuth: NSObject {
         FRLog.v("ServerConfig created: \(serverConfig)")
         var oAuth2Client: OAuth2Client?
         
-        if let clientId = config["forgerock_oauth_client_id"] as? String,
-        let redirectUriAsString = config["forgerock_oauth_redirect_uri"] as? String,
+        if let clientId = config[FROptions.CodingKeys.oauthClientId.rawValue] as? String,
+        let redirectUriAsString = config[FROptions.CodingKeys.oauthRedirectUri.rawValue] as? String,
         let redirectUri = URL(string: redirectUriAsString),
         redirectUri.absoluteString.isValidUrl,
-        let scope = config["forgerock_oauth_scope"] as? String
+        let scope = config[FROptions.CodingKeys.oauthScope.rawValue] as? String
         {
             oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
             FRLog.v("OAuth2Client created: \(String(describing: oAuth2Client))")
@@ -190,7 +190,7 @@ public final class FRAuth: NSObject {
             FRLog.w("Failed to load OAuth2 configuration; continue on SDK initialization without OAuth2 module.")
         }
                 
-        if let accessGroup = config["forgerock_keychain_access_group"] as? String {
+        if let accessGroup = config[FROptions.CodingKeys.keychainAccessGroup.rawValue] as? String {
             if let keychainManager = try KeychainManager(baseUrl: serverUrl.absoluteString + "/" + serverConfig.realm, accessGroup: accessGroup) {
                 keychainManager.validateEncryption()
                 let sessionManager = SessionManager(keychainManager: keychainManager, serverConfig: serverConfig)
@@ -224,7 +224,7 @@ public final class FRAuth: NSObject {
         // Customization: If developers want to customise the default implementation they would need to override
         // the FRURLSessionHandler class and provide their own implementation. The new handler would need to be set in the
         // RestClient setURLSessionConfiguration(config: URLSessionConfiguration?, handler: URLSessionDelegate?) method.
-        if let forgerockPKHashes = config["forgerock_ssl_pinning_public_key_hashes"] as? [String], !forgerockPKHashes.isEmpty {
+        if let forgerockPKHashes = config[FROptions.CodingKeys.sslPinningPublicKeyHashes.rawValue] as? [String], !forgerockPKHashes.isEmpty {
             let frSecurityConfiguration = FRSecurityConfiguration(hashes: forgerockPKHashes)
             let pinningHanlder = FRURLSessionSSLPinningHandler(frSecurityConfiguration: frSecurityConfiguration)
             RestClient.shared.setURLSessionConfiguration(config: nil, handler: pinningHanlder)

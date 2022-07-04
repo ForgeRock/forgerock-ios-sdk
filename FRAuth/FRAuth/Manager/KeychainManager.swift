@@ -38,6 +38,8 @@ struct KeychainManager {
     let defaultService: String = "com.forgerock.ios.keychainservice"
     /// String constant for default bundle identifier
     let defaultBundleIdentifier: String = "com.forgerock.ios.sdk"
+    /// String constant for FROptions storage key
+    let frOptionsStorageKey: String = "FROptions"
     
     
     //  MARK: - Properties
@@ -230,7 +232,7 @@ struct KeychainManager {
     
     /// Returns current session's Token object that represents SSO Token
     func getFROptions() -> Data? {
-        if let frOptionsData = self.privateStore.getData("FROptions") {
+        if let frOptionsData = self.privateStore.getData(self.frOptionsStorageKey) {
             return frOptionsData
         }
         else {
@@ -244,10 +246,10 @@ struct KeychainManager {
     /// - Returns: Boolean result of operation
     @discardableResult func setFROptions(frOptionsData: Data?) -> Bool {
         if let frOptions = frOptionsData {
-            return self.privateStore.set(frOptions, key: "FROptions")
+            return self.privateStore.set(frOptions, key: self.frOptionsStorageKey)
         }
         else {
-            return self.privateStore.delete("FROptions")
+            return self.privateStore.delete(self.frOptionsStorageKey)
         }
     }
     
