@@ -19,6 +19,10 @@ class FROptionsTests: FRAuthBaseTest {
         //leave empty
     }
     
+    override func tearDown() {
+        super.tearDown()
+    }
+    
     func testDynamicConfigSessionOnly() {
         do {
             let options = FROptions(url: "https://openam-forgerock-sdks/am",
@@ -153,7 +157,7 @@ class FROptionsTests: FRAuthBaseTest {
             XCTAssertNotNil(frAuth)
             self.dictionaryMatches(options: frAuth!.options!)
             self.frAuthInternalValuesCheck(updatedOptions: updatedOptions)
-            
+            self.shouldCleanup = true
         }
         catch {
             print(error)
