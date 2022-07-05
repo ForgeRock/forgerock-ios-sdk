@@ -2,7 +2,7 @@
 //  FRAuth.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -26,7 +26,7 @@ import FRCore
  
  ## Note ##
     * In order to use abstraction layer of FRAuth SDK, you **must** initiate SDK using *FRAuth.start()*. Upon completion of SDK initialization, object models (FRDevice and/or FRUser) become available.
-    * For SDK initialization, you must have proper configuration file as in .plist; default .plist that FRAuth SDK looks for is 'FRAuthConfig.plist', and the config file name can be changed through *FRAuth.configPlistFileName* property.
+    * For SDK initialization, you must have proper configuration file as in .plist; default .plist that FRAuth SDK looks for is 'FRAuthConfig.plist', and the config file name can be changed through *FRAuth.configPlistFileName* property, or create an FROptions object and pass it in the *FRAuth.start(options: FROptions? = nil)* "options" parameter.
  */
 @objc
 public final class FRAuth: NSObject {
@@ -63,7 +63,7 @@ public final class FRAuth: NSObject {
     //  MARK: - Init
     
     /// Initializes SDK using .plist configuration file
-    ///
+    /// - Parameter options: Optional FROptions object. This will contain the configuration if programmatically initialised. The default value in nil to ensure backwards compatibility. If an FROptions object is passed the configuration plist will be ignored
     /// - Throws: ConfigError when invalid or missing value in .plist configuration file
     @objc static public func start(options: FROptions? = nil) throws {
         if let frOptions = options {
@@ -157,6 +157,10 @@ public final class FRAuth: NSObject {
         
         if let sessionPath = config[FROptions.CodingKeys.sessionEndpoint.rawValue] as? String {
             configBuilder.set(sessionPath: sessionPath)
+        }
+        
+        if let endSessionPath = config[FROptions.CodingKeys.endSessionEndpoint.rawValue] as? String {
+            configBuilder.set(endSessionPath: endSessionPath)
         }
         
         // Validate Auth/Registration Service

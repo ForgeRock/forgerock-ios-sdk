@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -230,7 +230,7 @@ struct KeychainManager {
     
     //  MARK: - FROptions
     
-    /// Returns current session's Token object that represents SSO Token
+    /// Returns saved FROptions previously used configuration
     func getFROptions() -> Data? {
         if let frOptionsData = self.privateStore.getData(self.frOptionsStorageKey) {
             return frOptionsData
@@ -241,8 +241,8 @@ struct KeychainManager {
     }
     
     
-    /// Stores SSOToken into designated Keychain Service, or removes SSOToken when nil
-    /// - Parameter ssoToken: Token object
+    /// Stores FROptions configuration, for retrieving on FRAuth.start() and comparing with newly passed configuration. Passing nil, deletes the saved object
+    /// - Parameter frOptionsData: FROptions object
     /// - Returns: Boolean result of operation
     @discardableResult func setFROptions(frOptionsData: Data?) -> Bool {
         if let frOptions = frOptionsData {

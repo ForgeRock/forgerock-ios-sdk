@@ -10,6 +10,8 @@
 
 import Foundation
 
+/// FROptions represents a configuration object for the SDK. It can be used for passing configuration options in the FRAuth.start() method.
+///
 @objc
 public class FROptions: NSObject, Codable {
     public var url: String
@@ -24,6 +26,7 @@ public class FROptions: NSObject, Codable {
     public var revokeEndpoint: String?
     public var userinfoEndpoint: String?
     public var sessionEndpoint: String?
+    public var endSessionEndpoint: String?
     
     public var authServiceName: String
     public var registrationServiceName: String
@@ -47,6 +50,7 @@ public class FROptions: NSObject, Codable {
         case revokeEndpoint = "forgerock_revoke_endpoint"
         case userinfoEndpoint = "forgerock_userinfo_endpoint"
         case sessionEndpoint = "forgerock_session_endpoint"
+        case endSessionEndpoint = "forgerock_endsession_endpoint"
         case authServiceName = "forgerock_auth_service_name"
         case registrationServiceName = "forgerock_registration_service_name"
         case oauthThreshold = "forgerock_oauth_threshold"
@@ -57,6 +61,30 @@ public class FROptions: NSObject, Codable {
         case sslPinningPublicKeyHashes = "forgerock_ssl_pinning_public_key_hashes"
     }
     
+    //  MARK: - Init
+    
+    /// Initializes the FROptions object
+    /// - Parameters:
+    ///   - url: The AM URL
+    ///   - realm: The AM realm used for authentication
+    ///   - enableCookie: Boolean value to enable cookie usage
+    ///   - timeout: Timeout value in String format
+    ///   - authenticateEndpoint: AM /authenticate endpoint. Optionaly used for custom endpoints.
+    ///   - authorizeEndpoint: AM /authorize endpoint. Optionaly used for custom endpoints.
+    ///   - tokenEndpoint: AM /token endpoint. Optionaly used for custom endpoints.
+    ///   - revokeEndpoint: AM /revoke endpoint. Optionaly used for custom endpoints.
+    ///   - userinfoEndpoint: AM /userinfo endpoint. Optionaly used for custom endpoints.
+    ///   - sessionEndpoint: AM /session endpoint. Optionaly used for custom endpoints.
+    ///   - endSessionEndpoint: AM /endSession endpoint. Optionaly used for custom endpoints.
+    ///   - authServiceName: AM Tree/Journey used for authentication. Default tree to be used with FRUser.login
+    ///   - registrationServiceName: AM Tree/Journey used for registration. Default tree to be used with FRUser.register
+    ///   - oauthThreshold: OAuth Client timeout threshold
+    ///   - oauthClientId: OAuth Client name
+    ///   - oauthRedirectUri: OAuth Client redirectURI
+    ///   - oauthScope: OAuth Client scopes
+    ///   - keychainAccessGroup: Keychain access group for shared keychain
+    ///   - sslPinningPublicKeyHashes: SSL Pinning hashes
+    ///
     public init(url: String,
                 realm: String,
                 enableCookie: Bool = true,
@@ -68,6 +96,7 @@ public class FROptions: NSObject, Codable {
                 revokeEndpoint: String? = nil,
                 userinfoEndpoint: String? = nil,
                 sessionEndpoint: String? = nil,
+                endSessionEndpoint: String? = nil,
                 authServiceName: String = "Login",
                 registrationServiceName: String = "Registration",
                 oauthThreshold: String? = nil,
@@ -87,6 +116,7 @@ public class FROptions: NSObject, Codable {
         self.revokeEndpoint = revokeEndpoint
         self.userinfoEndpoint = userinfoEndpoint
         self.sessionEndpoint = sessionEndpoint
+        self.endSessionEndpoint = endSessionEndpoint
         self.authServiceName = authServiceName
         self.registrationServiceName = registrationServiceName
         self.oauthClientId = oauthClientId
@@ -99,6 +129,10 @@ public class FROptions: NSObject, Codable {
         super.init()
     }
     
+    /// Initializes the FROptions object
+    /// - Parameters:
+    ///   - config: Configuration dictionary [String: Any], providing properties either from a Serialized FROption object or a configuration plist
+    ///
     public init(config: [String: Any]) {
         self.url = config[FROptions.CodingKeys.url.rawValue] as? String ?? ""
         self.realm = config[FROptions.CodingKeys.realm.rawValue] as? String ?? ""
@@ -111,6 +145,7 @@ public class FROptions: NSObject, Codable {
         self.revokeEndpoint = config[FROptions.CodingKeys.revokeEndpoint.rawValue] as? String
         self.userinfoEndpoint = config[FROptions.CodingKeys.userinfoEndpoint.rawValue] as? String
         self.sessionEndpoint = config[FROptions.CodingKeys.sessionEndpoint.rawValue] as? String
+        self.endSessionEndpoint = config[FROptions.CodingKeys.endSessionEndpoint.rawValue] as? String
         self.authServiceName = config[FROptions.CodingKeys.authServiceName.rawValue] as? String ?? "Login"
         self.registrationServiceName = config[FROptions.CodingKeys.registrationServiceName.rawValue] as? String ?? "Registration"
         self.oauthClientId = config[FROptions.CodingKeys.oauthClientId.rawValue] as? String
@@ -123,10 +158,16 @@ public class FROptions: NSObject, Codable {
         super.init()
     }
     
+    // - MARK: Public
+    
+    /// Returns the FROptions oject in a [String: Any]? Dictionary format
     public func optionsDictionary() -> [String: Any]? {
         return try? self.asDictionary()
     }
     
+    // - MARK: Private
+    
+    /// Equatable comparison method. Comparing the realm, cookie and oauthClientId values
     static func == (lhs: FROptions, rhs: FROptions) -> Bool {
         return (lhs.url == rhs.url &&
         lhs.realm == rhs.realm &&
