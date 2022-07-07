@@ -2,7 +2,7 @@
 //  DeviceCollectorNodeTests.swift
 //  FRProximityTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -25,6 +25,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
@@ -128,6 +129,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
@@ -256,6 +258,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
@@ -374,6 +377,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
@@ -502,6 +506,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
@@ -621,6 +626,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
@@ -718,6 +724,7 @@ class DeviceCollectorNodeTests: FRAuthBaseTest {
         do {
             // Init SDK
             try FRAuth.start()
+            super.setUp()
             // Store Node object
             var currentNode: Node?
 
