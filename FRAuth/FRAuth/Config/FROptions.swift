@@ -170,18 +170,20 @@ public class FROptions: NSObject, Codable {
     /// Equatable comparison method. Comparing the realm, cookie and oauthClientId values
     static func == (lhs: FROptions, rhs: FROptions) -> Bool {
         return (lhs.url == rhs.url &&
-        lhs.realm == rhs.realm &&
-        lhs.cookieName == rhs.cookieName &&
-        lhs.oauthClientId == rhs.oauthClientId)
+                lhs.realm == rhs.realm &&
+                lhs.cookieName == rhs.cookieName &&
+                lhs.oauthClientId == rhs.oauthClientId &&
+                lhs.oauthScope == rhs.oauthScope &&
+                lhs.oauthRedirectUri == rhs.oauthRedirectUri)
     }
 }
 
 extension Encodable {
-  func asDictionary() throws -> [String: Any] {
-    let data = try JSONEncoder().encode(self)
-    guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-      throw NSError()
+    func asDictionary() throws -> [String: Any] {
+        let data = try JSONEncoder().encode(self)
+        guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+            throw NSError()
+        }
+        return dictionary
     }
-    return dictionary
-  }
 }
