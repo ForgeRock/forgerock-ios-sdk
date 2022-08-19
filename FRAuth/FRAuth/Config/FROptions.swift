@@ -20,13 +20,13 @@ public class FROptions: NSObject, Codable {
     public var cookieName: String
     public var timeout: String
     
-    public var authenticateEndpoint: String?
-    public var authorizeEndpoint: String?
-    public var tokenEndpoint: String?
-    public var revokeEndpoint: String?
-    public var userinfoEndpoint: String?
-    public var sessionEndpoint: String?
-    public var endSessionEndpoint: String?
+    internal var authenticateEndpoint: String?
+    internal var authorizeEndpoint: String?
+    internal var tokenEndpoint: String?
+    internal var revokeEndpoint: String?
+    internal var userinfoEndpoint: String?
+    internal var sessionEndpoint: String?
+    internal var endSessionEndpoint: String?
     
     public var authServiceName: String
     public var registrationServiceName: String
@@ -163,6 +163,34 @@ public class FROptions: NSObject, Codable {
     /// Returns the FROptions oject in a [String: Any]? Dictionary format
     public func optionsDictionary() -> [String: Any]? {
         return try? self.asDictionary()
+    }
+    
+    public func getAuthenticateEndpoint() -> String {
+        return self.authenticateEndpoint ?? "/json/realms/\(self.realm)/authenticate"
+    }
+    
+    public func getAuthorizeEndpoint() -> String {
+        return self.authorizeEndpoint ?? "/oauth2/realms/\(self.realm)/authorize"
+    }
+    
+    public func getTokenEndpoint() -> String {
+        return self.tokenEndpoint ?? "/oauth2/realms/\(self.realm)/access_token"
+    }
+    
+    public func getRevokeEndpoint() -> String {
+        return self.revokeEndpoint ?? "/oauth2/realms/\(self.realm)/token/revoke"
+    }
+    
+    public func getUserinfoEndpoint() -> String {
+        return self.userinfoEndpoint ?? "/oauth2/realms/\(self.realm)/userinfo"
+    }
+    
+    public func getSessionEndpoint() -> String {
+        return self.sessionEndpoint ?? "/json/realms/\(self.realm)/sessions"
+    }
+    
+    public func getEndSessionEndpoint() -> String {
+        return self.endSessionEndpoint ?? "/oauth2/realms/\(self.realm)/connect/endSession"
     }
     
     // - MARK: Private

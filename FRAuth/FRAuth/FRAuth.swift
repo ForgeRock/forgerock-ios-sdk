@@ -81,6 +81,7 @@ public final class FRAuth: NSObject {
             FRLog.i("SDK is initializing: \(configPlistFileName).plist")
             FRLog.v("\(configPlistFileName).plist : \(config)")
             try FRAuth.initPrivate(config: config)
+            FRAuth.shared?.options = FROptions(config: config)
         }
         
         if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type {
