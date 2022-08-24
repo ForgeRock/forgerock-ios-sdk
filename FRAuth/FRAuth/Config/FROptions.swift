@@ -202,7 +202,8 @@ public class FROptions: NSObject, Codable {
                 lhs.cookieName == rhs.cookieName &&
                 lhs.oauthClientId == rhs.oauthClientId &&
                 lhs.oauthScope == rhs.oauthScope &&
-                lhs.oauthRedirectUri == rhs.oauthRedirectUri)
+                lhs.oauthRedirectUri == rhs.oauthRedirectUri &&
+                lhs.keychainAccessGroup == rhs.keychainAccessGroup)
     }
 }
 

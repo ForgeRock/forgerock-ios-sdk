@@ -152,8 +152,9 @@ class FROptionsTests: FRAuthBaseTest {
             let updatedOptions = FROptions(url: "https://sdkapp.example.com/", realm: "alpha", enableCookie: false, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios", oauthScope: "openid email address", keychainAccessGroup: "com.bitbar.*", sslPinningPublicKeyHashes: ["hash1", "hash2"])
             
             self.dictionaryMatches(options: updatedOptions)
+            XCTAssertFalse(options == updatedOptions)
             try FRAuth.start(options: updatedOptions)
-    
+            
             XCTAssertNotNil(frAuth)
             self.dictionaryMatches(options: frAuth!.options!)
             self.frAuthInternalValuesCheck(updatedOptions: updatedOptions)
@@ -200,11 +201,30 @@ class FROptionsTests: FRAuthBaseTest {
                                 oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
                                 oauthScope: "openid profile email address")
         
+        let optionsF = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "alpha",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "jsClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address",
+                                keychainAccessGroup: "com.bitbar.*")
+        
+        let optionsG = FROptions(url: "https://openam-forgerock-sdks/am",
+                                realm: "alpha",
+                                authServiceName: "Login",
+                                registrationServiceName: "Register",
+                                oauthClientId: "jsClient",
+                                oauthRedirectUri: "frauth://com.forgerock.ios.frexample",
+                                oauthScope: "openid profile email address",
+                                keychainAccessGroup: "com.bitbar.example")
+        
         XCTAssertTrue(optionsA == optionsB)
         XCTAssertFalse(optionsA == optionsC)
         XCTAssertFalse(optionsB == optionsC)
         XCTAssertFalse(optionsA == optionsD)
         XCTAssertFalse(optionsA == optionsE)
+        XCTAssertFalse(optionsF == optionsG)
     }
     
     func testInitWithConfig() {

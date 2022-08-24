@@ -97,10 +97,14 @@ public final class FRAuth: NSObject {
     /// - Parameter config: Dictionary object of configuration
     /// - Throws: ConfigError
     static func initPrivate(config: [String: Any]) throws {
+        // Check if there is an existing configuration and compare it with the new one.
+        // If the SDK has been previously initialized and a succesfull authentication has happened there will be a user object.
+        // If this configuration is different a clean up will be attempted. Restarting the SDK with the same configuration in the same session will do nothing
+        let currentOptions = FROptions(config: config)
+        if let activeOptions = FRAuth.shared?.options, activeOptions == currentOptions {
+            return
+        }
         
-        // Check if there is an existing session and destroy it, do a clean up as this would only happen at this point
-        // if the SDK has been previously initialized and a succesfull authentication has happened. Given that the SDK gets
-        // re-initiallised, possibly with a different configuration we need to do some clean up.
         if let _ = FRUser.currentUser {
             FRAuth.cleanUp()
         }
@@ -240,7 +244,6 @@ public final class FRAuth: NSObject {
         
         if let optionData = FRAuth.shared?.keychainManager.getFROptions() {
             let decoder = JSONDecoder()
-            let currentOptions = FROptions(config: config)
             if let options = try? decoder.decode(FROptions.self, from: optionData) {
                 if !(currentOptions == options)  {
                     //New configuration does not match the old config used. Clean up the keychain and revoke the tokens if possible.
