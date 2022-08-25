@@ -70,8 +70,7 @@ public final class FRAuth: NSObject {
             let config = try frOptions.asDictionary()
             FRLog.i("SDK is initializing with FROptions")
             FRLog.v("FROptions: \(config)")
-            try FRAuth.initPrivate(config: config)
-            FRAuth.shared?.options = options
+            try FRAuth.initWithOptions(options: frOptions)
         } else {
             FRAuth.shared?.options = nil
             guard let path = Bundle.main.path(forResource: configPlistFileName, ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] else {
@@ -80,8 +79,8 @@ public final class FRAuth: NSObject {
             }
             FRLog.i("SDK is initializing: \(configPlistFileName).plist")
             FRLog.v("\(configPlistFileName).plist : \(config)")
-            try FRAuth.initPrivate(config: config)
-            FRAuth.shared?.options = FROptions(config: config)
+            let configOptions = FROptions(config: config)
+            try FRAuth.initWithOptions(options: configOptions)
         }
         
         if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type {
@@ -92,22 +91,50 @@ public final class FRAuth: NSObject {
     
     //  MARK: - Private Init
     
-    /// Initializes FRAuth shared instance with Configuration values as Dictionary
+    /// Initializes FRAuth shared instance with Configuration values as FROptions object. Several checks are performed in order to define if this is an old configuration and a clean up is needed.
     ///
-    /// - Parameter config: Dictionary object of configuration
+    /// - Parameter options: FROptions object
     /// - Throws: ConfigError
-    static func initPrivate(config: [String: Any]) throws {
+    static func initWithOptions(options: FROptions) throws {
         // Check if there is an existing configuration and compare it with the new one.
         // If the SDK has been previously initialized and a succesfull authentication has happened there will be a user object.
         // If this configuration is different a clean up will be attempted. Restarting the SDK with the same configuration in the same session will do nothing
-        let currentOptions = FROptions(config: config)
-        if let activeOptions = FRAuth.shared?.options, activeOptions == currentOptions {
+        if let activeOptions = FRAuth.shared?.options, activeOptions == options {
             return
         }
         
         if let _ = FRUser.currentUser {
             FRAuth.cleanUp()
+        } else {
+            let decoder = JSONDecoder()
+            if let optionData = UserDefaults.standard.value(forKey: FROptions.frOptionsStorageKey) as? Data, let savedOptions = try? decoder.decode(FROptions.self, from: optionData), !(options == savedOptions) {
+                //New configuration does not match the old config used. Start with the old options, clean up the keychain and revoke the tokens if possible and then continue to the SDK initialization
+                let savedConfig = try savedOptions.asDictionary()
+                FRLog.i("SDK is initializing with old FROptions for Clean up")
+                FRLog.v("FROptions: \(savedConfig)")
+                try FRAuth.initPrivate(config: savedConfig)
+                FRAuth.cleanUp()
+            }
         }
+        
+        let config = try options.asDictionary()
+        try FRAuth.initPrivate(config: config)
+        FRAuth.shared?.options = options
+        
+        //Save the configuration used.
+        let encoder = JSONEncoder()
+        if let optionsData = try? encoder.encode(options) {
+            UserDefaults.standard.setValue(optionsData, forKey: FROptions.frOptionsStorageKey)
+        }
+    }
+    
+    //  MARK: - Private Init
+    
+    /// Initializes FRAuth shared instance with Configuration values as Dictionary
+    ///
+    /// - Parameter config: Dictionary object of configuration
+    /// - Throws: ConfigError
+    static func initPrivate(config: [String: Any]) throws {
         
         // Validate server config
         guard let server = config[FROptions.CodingKeys.url.rawValue] as? String,
@@ -242,22 +269,7 @@ public final class FRAuth: NSObject {
             RestClient.shared.setURLSessionConfiguration(config: nil, handler: nil)
         }
         
-        if let optionData = FRAuth.shared?.keychainManager.getFROptions() {
-            let decoder = JSONDecoder()
-            if let options = try? decoder.decode(FROptions.self, from: optionData) {
-                if !(currentOptions == options)  {
-                    //New configuration does not match the old config used. Clean up the keychain and revoke the tokens if possible.
-                    FRAuth.cleanUp()
-                }
-            }
-        }
         
-        //Save the configuration used.
-        let encoder = JSONEncoder()
-        let options = FROptions(config: config)
-        if let optionsData = try? encoder.encode(options) {
-            FRAuth.shared?.keychainManager.setFROptions(frOptionsData: optionsData)
-        }
     }
     
     
