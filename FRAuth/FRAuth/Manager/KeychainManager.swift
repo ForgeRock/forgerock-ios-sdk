@@ -38,8 +38,6 @@ struct KeychainManager {
     let defaultService: String = "com.forgerock.ios.keychainservice"
     /// String constant for default bundle identifier
     let defaultBundleIdentifier: String = "com.forgerock.ios.sdk"
-    /// String constant for FROptions storage key
-    let frOptionsStorageKey: String = "FROptions"
     
     
     //  MARK: - Properties
@@ -227,32 +225,6 @@ struct KeychainManager {
         }
         return nil
     }
-    
-    //  MARK: - FROptions
-    
-    /// Returns saved FROptions previously used configuration
-    func getFROptions() -> Data? {
-        if let frOptionsData = self.privateStore.getData(self.frOptionsStorageKey) {
-            return frOptionsData
-        }
-        else {
-            return nil
-        }
-    }
-    
-    
-    /// Stores FROptions configuration, for retrieving on FRAuth.start() and comparing with newly passed configuration. Passing nil, deletes the saved object
-    /// - Parameter frOptionsData: FROptions object
-    /// - Returns: Boolean result of operation
-    @discardableResult func setFROptions(frOptionsData: Data?) -> Bool {
-        if let frOptions = frOptionsData {
-            return self.privateStore.set(frOptions, key: self.frOptionsStorageKey)
-        }
-        else {
-            return self.privateStore.delete(self.frOptionsStorageKey)
-        }
-    }
-    
     
     //  MARK: - Instance helper methods
     

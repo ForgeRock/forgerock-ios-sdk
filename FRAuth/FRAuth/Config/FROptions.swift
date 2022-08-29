@@ -14,6 +14,9 @@ import Foundation
 ///
 @objc
 public class FROptions: NSObject, Codable {
+    /// String constant for FROptions storage key
+    internal static let frOptionsStorageKey: String = "FROptions"
+    
     public var url: String
     public var realm: String
     public var enableCookie: Bool
