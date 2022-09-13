@@ -1,0 +1,70 @@
+name: Run Live Tests
+on:
+  workflow_dispatch:
+    inputs:
+      am-url:
+        description: The AM url to run live test cases against
+        type: string
+        required: true
+        default: https://openam-forgerrock-sdksteanant.forgeblocks.com/am
+      realm:
+        description: The AM realm to use
+        type: string
+        required: true
+        default: alpha
+      cookie-name:
+        description: The AM session cookie name
+        type: string
+        required: true
+        default: iPlanetDirectoryPro
+  
+jobs:
+  run-live-tests:
+    runs-on: macos-12
+
+    steps:
+      # Clone the repo
+      - name: Clone the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Replace forgerock_url, forgerock_realm, and forgerock_cookie_name values in config-live-01.json
+      - name: Setup values in config-live-01.json
+        run: |
+          amURL=$(echo ${{ inputs.am-url }} | sed 's/\//\\\//g')
+          echo $amURL
+          sed -i -r "s/\(\"forgerock_url\":\).*/\1 \"$amURL\",/" "FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json"
+          sed -i -r "s/\(\"forgerock_oauth_url\":\).*/\1 \"$amURL\",/" "FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json"
+          sed -i -r "s/\(\"forgerock_cookie_name\":\).*/\1 \"${{ inputs.cookie-name }}\",/" "FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json"
+          sed -i -r "s/\(\"forgerock_realm\":\).*/\1 \"${{ inputs.realm }}\",/" "FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json"
+          sed -i -r "s/\(\"password\":\).*/\1 \"${{ secrets.SDKUSER_PASSWORD }}\",/" "FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json"
+          rm -rf FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json-r
+
+      # Set target Xcode version. For more details and options see: 
+      # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_13.3.1.app && /usr/bin/xcodebuild -version
+
+      # Run all e2e tests
+      - name: Run e2e tests
+        run: xcodebuild test -scheme FRTestHostE2E -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.4' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResultsE2E | xcpretty && exit ${PIPESTATUS[0]}
+
+      # Publish test results
+      - name: Publish test results
+        uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: TestResultsE2E.xcresult
+          show-passed-tests: true
+        if: success() || failure()
+
+      # Send slack notification with result status
+      - uses: 8398a7/action-slack@v3
+        with:
+          mention: 'stoyan.petrov'
+          if_mention: 'failure,cancelled'
+          fields: repo,author,eventName,message,job,took
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
