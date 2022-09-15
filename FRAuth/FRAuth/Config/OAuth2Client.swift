@@ -207,8 +207,12 @@ public class OAuth2Client: NSObject, Codable {
                     
                     let redirectURL = URL(string: redirectURLAsString)
                     
+                    // Verify that the response state value is the same
+                    if let state = redirectURL?.valueOf("state"), state != pkce.state {
+                        completion(nil, OAuth2Error.invalidPKCEState)
+                    }
                     //  If authorization_code was included in the redirecting request, extract the code, and continue with token endpoint
-                    if let authCode = redirectURL?.valueOf("code") {
+                    else if let authCode = redirectURL?.valueOf("code") {
                         
                         let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
                         FRRestClient.invoke(request: request, action: Action(type: .EXCHANGE_TOKEN), completion: { (result) in
@@ -291,8 +295,12 @@ public class OAuth2Client: NSObject, Codable {
                 
                 let redirectURL = URL(string: redirectURLAsString)
                 
+                // Verify that the response state value is the same
+                if let state = redirectURL?.valueOf("state"), state != pkce.state {
+                    throw OAuth2Error.invalidPKCEState
+                }
                 //  If authorization_code was included in the redirecting request, extract the code, and continue with token endpoint
-                if let authCode = redirectURL?.valueOf("code") {
+                else if let authCode = redirectURL?.valueOf("code") {
                     
                     let request = self.buildTokenWithCodeRequest(code: authCode, pkce: pkce)
                     let result = FRRestClient.invokeSync(request: request, action: Action(type: .EXCHANGE_TOKEN))
