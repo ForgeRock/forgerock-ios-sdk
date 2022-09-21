@@ -150,7 +150,10 @@ class ViewController: UIViewController {
             "Login without UI (Accesstoken)",
             "FRSession.authenticate without UI (Token)",
             "Display Configurations",
-            "Revoke Access Token"
+            "Revoke Access Token",
+            "Load Custom Config1",
+            "Load Custom Config2",
+            "Display current config"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -785,6 +788,18 @@ class ViewController: UIViewController {
             // Revoke Access Token
             self.revokeAccessToken()
             break
+        case 19:
+            // Load Custom Config1
+            self.loadCustomConfig1()
+            break
+        case 20:
+            // Load Custom Config2
+            self.loadCustomConfig2()
+            break
+        case 21:
+            // Display current config
+            self.displayConfig()
+            break
         default:
             break
         }
@@ -869,4 +884,98 @@ extension ViewController: AuthorizationPolicyDelegate {
 //        mutableRequest.setValue(txId, forHTTPHeaderField: "transactionId")
 //        return mutableRequest as URLRequest
 //    }
+    
+    func loadCustomConfig1() {
+        do {
+            let options = FROptions(url: "https://openam-forgerrock-sdksteanant.forgeblocks.com/am",
+                                    realm: "alpha",
+                                    enableCookie: true,
+                                    cookieName: "43d72fc37bdde8c",
+                                    timeout: "180",
+                                    authenticateEndpoint: "/json/authenticate",
+                                    authorizeEndpoint: "/oauth2/authorize",
+                                    tokenEndpoint: "/oauth2/access_token",
+                                    revokeEndpoint: "/oauth2/token/revoke",
+                                    userinfoEndpoint: "/oauth2/userinfo",
+                                    endSessionEndpoint: "/oauth2/connect/endSession",
+                                    authServiceName: "Login",
+                                    oauthThreshold: "60",
+                                    oauthClientId: "iosclient",
+                                    oauthRedirectUri: "frauth://oauth2redirect",
+                                    oauthScope: "openid profile email address",
+                                    keychainAccessGroup: "com.forgerock.sso"
+                                    )
+
+        try FRAuth.start(options: options)
+            self.displayLog("FRAuth SDK started using config1.")
+
+        }
+        catch {
+            print(error)
+        }
+    }
+    
+    func loadCustomConfig2() {
+        do {
+            let options = FROptions(url: "https://openam-forgerrock-sdksteanant.forgeblocks.com/am",
+                                    realm: "alpha",
+                                    enableCookie: true,
+                                    cookieName: "43d72fc37bdde8c",
+                                    timeout: "180",
+                                    authenticateEndpoint: "/json/authenticate",
+                                    authorizeEndpoint: "/oauth2/authorize",
+                                    tokenEndpoint: "/oauth2/access_token",
+                                    revokeEndpoint: "/oauth2/token/revoke",
+                                    userinfoEndpoint: "/oauth2/userinfo",
+                                    endSessionEndpoint: "/oauth2/connect/endSession",
+                                    authServiceName: "Login",
+                                    oauthThreshold: "60",
+                                    oauthClientId: "iosclient",
+                                    oauthRedirectUri: "frauth://oauth2redirect",
+                                    oauthScope: "openid profile email",
+                                    keychainAccessGroup: "com.forgerock.sso"
+                                    )
+
+        try FRAuth.start(options: options)
+        self.displayLog("FRAuth SDK started using config2.")
+
+        }
+        catch {
+            print(error)
+        }
+    }
+
+    func displayConfig() {
+        // Server
+        self.displayLog("forgerock_url: " + (FRAuth.shared?.options?.url ?? "nil"))
+        self.displayLog("forgerock_realm: " + (FRAuth.shared?.options?.realm ?? "nil"))
+        self.displayLog("forgerock_timeout: " + (FRAuth.shared?.options?.timeout ?? "nil"))
+        self.displayLog("forgerock_cookie_name: " + (FRAuth.shared?.options?.cookieName ?? "nil"))
+        self.displayLog("forgerock_enable_cookie: " + (FRAuth.shared?.options?.enableCookie.description ?? "nil"))
+        self.displayLog("forgerock_ssl_pinning_public_key_hashes: " + (FRAuth.shared?.options?.sslPinningPublicKeyHashes?.description ?? "nil"))
+
+        // OAuth
+        self.displayLog("forgerock_oauth_client_id: " + (FRAuth.shared?.options?.oauthClientId ?? "nil"))
+        self.displayLog("forgerock_oauth_redirect_uri: " + (FRAuth.shared?.options?.oauthRedirectUri ?? "nil"))
+        self.displayLog("forgerock_oauth_scope: " + (FRAuth.shared?.options?.oauthScope ?? "nil"))
+        self.displayLog("forgerock_oauth_threshold: " + (FRAuth.shared?.options?.oauthThreshold ?? "nil"))
+
+        // Service
+        self.displayLog("forgerock_auth_service: " + (FRAuth.shared?.options?.authServiceName ?? "nil"))
+        self.displayLog("forgerock_registration_service: " + (FRAuth.shared?.options?.registrationServiceName ?? "nil"))
+
+        // Path
+        self.displayLog("forgerock_authenticate_endpoint: " + (FRAuth.shared?.options?.getAuthenticateEndpoint() ?? "nil"))
+        self.displayLog("forgerock_authorize_endpoint: " + (FRAuth.shared?.options?.getAuthorizeEndpoint() ?? "nil"))
+        self.displayLog("forgerock_token_endpoint: " + (FRAuth.shared?.options?.getTokenEndpoint() ?? "nil"))
+        self.displayLog("forgerock_revoke_endpoint: " + (FRAuth.shared?.options?.getRevokeEndpoint() ?? "nil"))
+        self.displayLog("forgerock_userinfo_endpoint: " + (FRAuth.shared?.options?.getUserinfoEndpoint() ?? "nil"))
+        self.displayLog("forgerock_logout_endpoint: " + (FRAuth.shared?.options?.getSessionEndpoint() ?? "nil"))
+        self.displayLog("forgerock_endsession_endpoint: " + (FRAuth.shared?.options?.getEndSessionEndpoint() ?? "nil"))
+
+        // Other
+        self.displayLog("keychainAccessGroup: " + (FRAuth.shared?.options?.keychainAccessGroup ?? "nil"))
+    }
 }
+
+
