@@ -1,4 +1,4 @@
-# Version 3.3.2
+# Version 3.4.0
 ## [3.4.0]
 #### Added
 - Dynamic SDK Configuration [SDKS-1760]
