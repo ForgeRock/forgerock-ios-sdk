@@ -18,7 +18,7 @@ green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
 blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
 alpha:1.0]
 
-@interface ViewController () <FRDropDownViewProtocol>
+@interface ViewController () <FRDropDownViewProtocol, AuthorizationPolicyDelegate, FRTokenManagementPolicyDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextView *loggingView;
 @property (nonatomic, weak) IBOutlet FRButton *performActionBtn;
@@ -78,30 +78,23 @@ alpha:1.0]
     self.navigationController.navigationBar.barTintColor = primaryColor;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
-    // - MARK: Token Management - Example starts
+//    // - MARK: Token Management - Example starts
+    FRTokenManagementPolicy *policy = [[FRTokenManagementPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"https://httpbin.org/status/401"], [NSURL URLWithString:@"https://httpbin.org/anything"]] delegate:self];
     self.invoke401 = NO;
     [NSURLProtocol registerClass:[FRURLProtocol class]];
-    [FRURLProtocol setValidatedURLs:@[[NSURL URLWithString:@"https://httpbin.org/status/401"], [NSURL URLWithString:@"https://httpbin.org/anything"]]];
+    [FRURLProtocol setTokenManagementPolicy:policy];
     
-    [FRURLProtocol setRefreshTokenPolicy:^BOOL(NSData *responseData, NSURLResponse *response, NSError *error) {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        // Refresh token when 401 received
-        if (httpResponse.statusCode == 401) {
-            return YES;
-        }
-        else {
-            return NO;
-        }
-    }];
-    
+    AuthorizationPolicy *authPolicy = [[AuthorizationPolicy alloc] initWithValidatingURL:@[[NSURL URLWithString:@"http://localhost:9888/policy/transfer"]] delegate:self];
+    [FRURLProtocol setAuthorizationPolicy:authPolicy];
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     [config setProtocolClasses:@[[FRURLProtocol class]]];
     self.session = [NSURLSession sessionWithConfiguration:config];
-    // - MARK: Token Management - Example ends
+//    // - MARK: Token Management - Example ends
     
     // Initialize SDK
     NSError *initError = nil;
-    BOOL result = [FRAuth startAndReturnError:&initError];
+    BOOL result = [FRAuth startWithOptions:nil error:&initError];
+    
     
     if (!result || initError != nil) {
         [self displayLog:[NSString stringWithFormat:@"FRAuth SDK init failed: %@", [initError debugDescription]]];
@@ -439,6 +432,12 @@ alpha:1.0]
     else if (error != nil) {
         [self displayLog:[error debugDescription]];
     }
+}
+
+# pragma mark - AuthorizationPolicyDelegate
+
+- (void)onPolicyAdviseReceivedWithPolicyAdvice:(PolicyAdvice * _Nonnull)policyAdvice completion:(void (^ _Nonnull)(BOOL))completion {
+    // Hanlde Authentication policy
 }
 
 @end

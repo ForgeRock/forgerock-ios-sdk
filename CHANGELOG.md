@@ -1,3 +1,13 @@
+# Version 3.4.0
+## [3.4.0]
+#### Added
+- Dynamic SDK Configuration [SDKS-1760]
+- iOS 16 Support [SDKS-1932]
+
+#### Changed
+- Fixed build errors on Xcode 14 [SDKS-2073]
+- Fixed bug where the `state` parameter value was not verified upon calling the `Authorize` endpoint [SDKS-2077]
+
 # Version 3.3.2
 ## [3.3.2]
 #### Added

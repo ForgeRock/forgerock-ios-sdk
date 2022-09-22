@@ -110,9 +110,23 @@ extension FRTestNetworkStubProtocol: URLSessionDataDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         // Ignore the error on redirected request for server not reachable, and return the response instead
         let policy = URLCache.StoragePolicy(rawValue: request.cachePolicy.rawValue) ?? .notAllowed
-        client?.urlProtocol(self, didReceive: self.currentResponseParser!.response!, cacheStoragePolicy: policy)
-        client?.urlProtocolDidFinishLoading(self)
-    }
+        
+        //if hard coded state value exists, update it to the one from request to avoid invalidPKCEState error
+        if let state = task.currentRequest?.url?.valueOf("state"),
+           let origResponse = self.currentResponseParser?.response as? HTTPURLResponse,
+           let urlString = origResponse.url?.absoluteString.replacingOccurrences(of: "state=abc123", with: "state=\(state)"),
+           var headers = origResponse.allHeaderFields as? [String: String],
+           var location = origResponse.allHeaderFields["Location"] as? String,
+           let url = URL(string: urlString) {
+            location = location.replacingOccurrences(of: "state=abc123", with: "state=\(state)")
+            headers["Location"] = location
+            let newResponse = HTTPURLResponse(url: url, statusCode: origResponse.statusCode, httpVersion: nil, headerFields: headers)
+            client?.urlProtocol(self, didReceive: newResponse!, cacheStoragePolicy: policy)
+        } else {
+            client?.urlProtocol(self, didReceive: self.currentResponseParser!.response!, cacheStoragePolicy: policy)
+        }
+            client?.urlProtocolDidFinishLoading(self)
+        }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
         client?.urlProtocol(self, wasRedirectedTo: self.currentResponseParser!.redirectRequest!, redirectResponse: self.currentResponseParser!.response!)

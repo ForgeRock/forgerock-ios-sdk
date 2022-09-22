@@ -207,6 +207,11 @@ public class OAuth2Client: NSObject, Codable {
                     
                     let redirectURL = URL(string: redirectURLAsString)
                     
+                    // Verify that the response state value is the same
+                    guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
+                        completion(nil, OAuth2Error.invalidPKCEState)
+                        return
+                    }
                     //  If authorization_code was included in the redirecting request, extract the code, and continue with token endpoint
                     if let authCode = redirectURL?.valueOf("code") {
                         
@@ -291,6 +296,10 @@ public class OAuth2Client: NSObject, Codable {
                 
                 let redirectURL = URL(string: redirectURLAsString)
                 
+                // Verify that the response state value is the same
+                guard let state = redirectURL?.valueOf("state"), state == pkce.state else {
+                    throw OAuth2Error.invalidPKCEState
+                }
                 //  If authorization_code was included in the redirecting request, extract the code, and continue with token endpoint
                 if let authCode = redirectURL?.valueOf("code") {
                     
