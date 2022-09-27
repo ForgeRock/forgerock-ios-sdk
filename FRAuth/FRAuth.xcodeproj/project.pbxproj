@@ -282,6 +282,7 @@
 		EC0BA2FA2863325B00F8326E /* FROptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2F92863325B00F8326E /* FROptionsTests.swift */; };
 		EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */; };
 		EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */; };
+		ECBB7F1428E31CD50082EA59 /* WebAuthnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB7F1328E31CD50082EA59 /* WebAuthnManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -612,6 +613,7 @@
 		EC0BA2F92863325B00F8326E /* FROptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptionsTests.swift; sourceTree = "<group>"; };
 		EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUserStructs.swift; sourceTree = "<group>"; };
 		EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRHTTPCookie.swift; sourceTree = "<group>"; };
+		ECBB7F1328E31CD50082EA59 /* WebAuthnManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebAuthnManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -813,6 +815,7 @@
 		D53A801C262789BD0093B1CA /* WebAuthn */ = {
 			isa = PBXGroup;
 			children = (
+				ECBB7F1128E31CC70082EA59 /* iOS16 */,
 				D53A801D262789BD0093B1CA /* Format */,
 				D53A8024262789BD0093B1CA /* WAKLogger.swift */,
 				D53A8025262789BD0093B1CA /* Authenticator */,
@@ -1540,6 +1543,14 @@
 			path = FROptions;
 			sourceTree = "<group>";
 		};
+		ECBB7F1128E31CC70082EA59 /* iOS16 */ = {
+			isa = PBXGroup;
+			children = (
+				ECBB7F1328E31CD50082EA59 /* WebAuthnManager.swift */,
+			);
+			path = iOS16;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1786,6 +1797,7 @@
 				D53A8039262789BD0093B1CA /* COSE.swift in Sources */,
 				D5B2061025FFDDD200DABB9B /* IdPClient.swift in Sources */,
 				D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */,
+				ECBB7F1428E31CD50082EA59 /* WebAuthnManager.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
 				D5B2061C260004E500DABB9B /* AppleSignInHandler.swift in Sources */,
 				D53A805C262789FC0093B1CA /* WebAuthnError.swift in Sources */,

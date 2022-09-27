@@ -47,7 +47,7 @@ class WebAuthnClient: ClientOperationDelegate {
         self.authenticator = authenticator
     }
 
-    
+    //Regsiter
     func create(_ options: PublicKeyCredentialCreationOptions, onSuccess: @escaping CreateResponseCompletion, onError: @escaping ErrorCallback) {
         WAKLogger.debug("<WebAuthnClient> create")
         
@@ -58,6 +58,7 @@ class WebAuthnClient: ClientOperationDelegate {
         op.start(onSuccess: onSuccess, onError: onError)
     }
     
+    //Authenticate
     func get(_ options: PublicKeyCredentialRequestOptions, onSuccess: @escaping GetResponseCompletion, onError: @escaping ErrorCallback) {
         WAKLogger.debug("<WebAuthnClient> get")
         
