@@ -36,8 +36,7 @@ class SecuredKeyTests: FRBaseTestCase {
         
         let testString = "decrypted_text_for_testing".data(using: .utf8)!
         let encryptedUsingSecuredKey = key1?.encrypt(data: testString)
-        
-        let decryptedStringData = self.decrypt(data: encryptedUsingSecuredKey!, privateKey: privateKey, algorithm: .eciesEncryptionCofactorX963SHA256AESGCM)
+        let decryptedStringData = key1?.decrypt(data: encryptedUsingSecuredKey!)
         XCTAssertNotNil(decryptedStringData)
         let decryptedString = String(decoding: decryptedStringData!, as: UTF8.self)
         XCTAssertEqual(decryptedString, "decrypted_text_for_testing")
@@ -63,19 +62,37 @@ class SecuredKeyTests: FRBaseTestCase {
         SecuredKey.deleteKey(applicationTag: applicationTag2)
     }
     
+    func test_04_test_decrypt_with_legacy_algorithm_default() {
+        
+        let key = SecuredKey(applicationTag: applicationTag1)!
+        let testString = "testing"
+        
+        let encrypted = key.encrypt(data: testString.data(using: .utf8)!, secAlgorithm: .eciesEncryptionCofactorX963SHA256AESGCM)!
+        let decrypted = key.decrypt(data: encrypted)!
+        
+        let decryptedString = String(decoding: decrypted, as: UTF8.self)
+        
+        XCTAssertNotNil(decryptedString)
+        XCTAssertEqual(decryptedString, testString)
+        
+        SecuredKey.deleteKey(applicationTag: applicationTag1)
+        SecuredKey.deleteKey(applicationTag: applicationTag2)
+    }
     
-    public func decrypt(data: Data, privateKey: SecKey, algorithm: SecKeyAlgorithm) -> Data? {
+    func test_05_test_decrypt_with_legacy_algorithm_manual() {
         
-        guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, algorithm) else {
-            XCTFail("\(algorithm) is not supported on the device.")
-            return nil
-        }
+        let key = SecuredKey(applicationTag: applicationTag1)!
+        let testString = "testing"
         
-        var error: Unmanaged<CFError>?
-        let decryptedData = SecKeyCreateDecryptedData(privateKey, algorithm, data as CFData, &error) as Data?
-        if let error = error {
-            XCTFail("Failed to decrypt data: \(error)")
-        }
-        return decryptedData
+        let encrypted = key.encrypt(data: testString.data(using: .utf8)!, secAlgorithm: .eciesEncryptionCofactorX963SHA256AESGCM)!
+        let decrypted = key.decrypt(data: encrypted, secAlgorithm: .eciesEncryptionCofactorX963SHA256AESGCM)!
+        
+        let decryptedString = String(decoding: decrypted, as: UTF8.self)
+        
+        XCTAssertNotNil(decryptedString)
+        XCTAssertEqual(decryptedString, testString)
+        
+        SecuredKey.deleteKey(applicationTag: applicationTag1)
+        SecuredKey.deleteKey(applicationTag: applicationTag2)
     }
 }

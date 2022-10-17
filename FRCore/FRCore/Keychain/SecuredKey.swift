@@ -22,7 +22,7 @@ public struct SecuredKey {
     /// Public Key of SecuredKey
     fileprivate var publicKey: SecKey
     /// Algorithm to be used for encryption/decryption using SecuredKey
-    fileprivate let oldAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM//.eciesEncryptionCofactorVariableIVX963SHA256AESGCM
+    fileprivate let oldAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
     
     /// Validates whether SecuredKey using Secure Enclave is available on the device or not
     public static func isAvailable() -> Bool {
@@ -190,7 +190,7 @@ public struct SecuredKey {
         var error: Unmanaged<CFError>?
         let decryptedData = SecKeyCreateDecryptedData(privateKey, secAlgorithm, data as CFData, &error) as Data?
         if let error = error {
-            Log.e("Failed to decrypt data: \(error)")
+            Log.e("Failed to decrypt data -  attempting Legacy Algorithm: \(error)")
             var decryptError: Unmanaged<CFError>?
             let decryptedData = SecKeyCreateDecryptedData(privateKey, oldAlgorithm, data as CFData, &decryptError) as Data?
             if let decryptError = decryptError {
