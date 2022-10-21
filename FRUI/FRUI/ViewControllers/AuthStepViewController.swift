@@ -183,6 +183,40 @@ class AuthStepViewController: UIViewController {
                         self.renderAuthStep()
                     }
                 }
+                
+                var deviceBindingCallback: DeviceBindingCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceBindingCallback handling
+                    if let thisCallback = callback as? DeviceBindingCallback {
+                        deviceBindingCallback = thisCallback
+                    }
+                }
+                
+                //  If DeviceBindingCallback is found as one of Callbacks, bind the device and show the authentication result
+                if let deviceBindingCallback = deviceBindingCallback {
+                    self.startLoading()
+                    deviceBindingCallback.execute(authInterface: nil, deviceId: nil, { result in
+                        DispatchQueue.main.async {
+                            self.stopLoading()
+                            var bindingResult = ""
+                            switch result {
+                            case .success:
+                                bindingResult = "Success"
+                            case .failure(let error):
+                                bindingResult = error.errorMessage
+                            }
+                            
+                            let alert = UIAlertController(title: "Binding Result", message: bindingResult, preferredStyle: .alert)
+                            let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+                                self.renderAuthStep()
+                                
+                            })
+                            alert.addAction(action)
+                            self.present(alert, animated: true)
+                        }
+                    })
+                }
+                
                 else {
                     //  Otherwise, just render as usual
                     self.renderAuthStep()

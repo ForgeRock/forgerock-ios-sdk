@@ -91,6 +91,7 @@ enum CallbackType: String {
     case WebAuthnRegistrationCallback = "WebAuthnRegistrationCallback"
     case IdPCallback = "IdPCallback"
     case SelectIdPCallback = "SelectIdPCallback"
+    case DeviceBindingCallback = "DeviceBindingCallback"
 }
 
 /// CBConstants is mainly responsible to maintain all constant values related to Callback implementation
@@ -228,4 +229,17 @@ extension CBConstants {
     static let _pubKeyCredParams: String = "_pubKeyCredParams"
     static let public_key: String = "public-key"
     static let alg: String = "alg"
+}
+
+//  MARK: - DeviceBindingCallback
+
+extension CBConstants {
+    static let authenticationType: String = "authenticationType"
+    static let title: String = "title"
+    static let subtitle: String = "subtitle"
+    static let description: String = "description"
+    static let jws: String = "jws"
+    static let deviceName: String = "deviceName"
+    static let deviceId: String = "deviceId"
+    static let clientError: String = "clientError"
 }

@@ -1,4 +1,8 @@
 # Version 3.4.0
+
+## Unreleased
+#### Added
+- Device Binding callback implementation
 ## [3.4.0]
 #### Added
 - Dynamic SDK Configuration [SDKS-1760]
