@@ -164,7 +164,7 @@ public struct SecuredKey {
     public func encrypt(data: Data, secAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorVariableIVX963SHA256AESGCM) -> Data? {
         
         guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, secAlgorithm) else {
-            Log.e("\(oldAlgorithm) is not supported on the device.")
+            Log.e("\(secAlgorithm) is not supported on the device.")
             return nil
         }
         
@@ -183,7 +183,7 @@ public struct SecuredKey {
     public func decrypt(data: Data, secAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorVariableIVX963SHA256AESGCM) -> Data? {
         
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, secAlgorithm) else {
-            Log.e("\(oldAlgorithm) is not supported on the device.")
+            Log.e("\(secAlgorithm) is not supported on the device.")
             return nil
         }
         
