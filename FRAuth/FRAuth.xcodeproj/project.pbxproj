@@ -3,12 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
+		A54874A028EF336400FF9B99 /* DeviceBindingCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */; };
+		A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */; };
+		A54874A728F74F5500FF9B99 /* JOSESwift in Frameworks */ = {isa = PBXBuildFile; productRef = A54874A628F74F5500FF9B99 /* JOSESwift */; };
+		A54874A928F8609900FF9B99 /* KeyAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A828F8609900FF9B99 /* KeyAware.swift */; };
+		A54874AB28F860F900FF9B99 /* BiometricBindingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874AA28F860F900FF9B99 /* BiometricBindingHandler.swift */; };
+		A54874AD28FE158D00FF9B99 /* DeviceBindingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
@@ -332,6 +338,11 @@
 /* Begin PBXFileReference section */
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
+		A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
+		A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingAuthenticators.swift; sourceTree = "<group>"; };
+		A54874A828F8609900FF9B99 /* KeyAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAware.swift; sourceTree = "<group>"; };
+		A54874AA28F860F900FF9B99 /* BiometricBindingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricBindingHandler.swift; sourceTree = "<group>"; };
+		A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingStatus.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -620,6 +631,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */,
+				A54874A728F74F5500FF9B99 /* JOSESwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,6 +646,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A54874A228F70B1B00FF9B99 /* DeviceBinding */ = {
+			isa = PBXGroup;
+			children = (
+				A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */,
+				A54874A828F8609900FF9B99 /* KeyAware.swift */,
+				A54874AA28F860F900FF9B99 /* BiometricBindingHandler.swift */,
+				A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */,
+			);
+			path = DeviceBinding;
+			sourceTree = "<group>";
+		};
 		A5950A2827EA200200EDEFE4 /* SSL Pinning */ = {
 			isa = PBXGroup;
 			children = (
@@ -939,6 +962,7 @@
 				D5B205E825FFDD4600DABB9B /* SocialLogin */,
 				D586CF5D23358EE0007A2194 /* User */,
 				D53A801C262789BD0093B1CA /* WebAuthn */,
+				A54874A228F70B1B00FF9B99 /* DeviceBinding */,
 				D554632122A6EDF90096C7A4 /* FRAuth.swift */,
 				D55462FB22A6DF720096C7A4 /* FRAuth.h */,
 				D55462FC22A6DF720096C7A4 /* Info.plist */,
@@ -1096,6 +1120,7 @@
 				D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */,
 				D5B2061325FFE0E500DABB9B /* SelectIdPCallback.swift */,
 				D5B2061725FFE0F300DABB9B /* IdPCallback.swift */,
+				A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1570,6 +1595,9 @@
 				D5C979BD2409E8DA00DA380A /* PBXTargetDependency */,
 			);
 			name = FRAuth;
+			packageProductDependencies = (
+				A54874A628F74F5500FF9B99 /* JOSESwift */,
+			);
 			productName = FRAuth;
 			productReference = D55462F822A6DF720096C7A4 /* FRAuth.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1622,6 +1650,9 @@
 				Base,
 			);
 			mainGroup = D55462EE22A6DF720096C7A4;
+			packageReferences = (
+				A54874A528F74F5500FF9B99 /* XCRemoteSwiftPackageReference "JOSESwift" */,
+			);
 			productRefGroup = D55462F922A6DF720096C7A4 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -1794,6 +1825,7 @@
 				D533270D24806687002FF207 /* AuthorizationPolicy.swift in Sources */,
 				D586CFAC23358EE0007A2194 /* Address.swift in Sources */,
 				D586CF9C23358EE0007A2194 /* CallbackFactory.swift in Sources */,
+				A54874A928F8609900FF9B99 /* KeyAware.swift in Sources */,
 				D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */,
 				D53A8048262789BD0093B1CA /* Authenticator.swift in Sources */,
@@ -1802,6 +1834,7 @@
 				3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
 				D586CFB523358EE0007A2194 /* FRDevice.swift in Sources */,
+				A54874A028EF336400FF9B99 /* DeviceBindingCallback.swift in Sources */,
 				D586CFBE23358EE0007A2194 /* KeychainManager.swift in Sources */,
 				D53A803D262789BD0093B1CA /* Base64.swift in Sources */,
 				D586CF9623358EE0007A2194 /* PollingWaitCallback.swift in Sources */,
@@ -1829,6 +1862,7 @@
 				D586CFBA23358EE0007A2194 /* TelephonyCollector.swift in Sources */,
 				D586CFB223358EE0007A2194 /* CallbackConstants.swift in Sources */,
 				D586CF9023358EE0007A2194 /* PKCE.swift in Sources */,
+				A54874AB28F860F900FF9B99 /* BiometricBindingHandler.swift in Sources */,
 				D586CFBB23358EE0007A2194 /* NetworkCollector.swift in Sources */,
 				D53A803F262789BD0093B1CA /* WAKLogger.swift in Sources */,
 				D53A8046262789BD0093B1CA /* CredentialStore.swift in Sources */,
@@ -1854,6 +1888,7 @@
 				D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */,
 				D586CFB323358EE0007A2194 /* PlatformCollector.swift in Sources */,
 				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
+				A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */,
 				D5791C1E25F8869C004B487A /* JBUtil.c in Sources */,
 				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
 				D53A803C262789BD0093B1CA /* JSON.swift in Sources */,
@@ -1863,6 +1898,7 @@
 				D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */,
 				D586CF9323358EE0007A2194 /* NameCallback.swift in Sources */,
 				D586CF8123358EE0007A2194 /* AptDetector.swift in Sources */,
+				A54874AD28FE158D00FF9B99 /* DeviceBindingStatus.swift in Sources */,
 				D586CF9F23358EE0007A2194 /* ChoiceCallback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2264,6 +2300,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A54874A528F74F5500FF9B99 /* XCRemoteSwiftPackageReference "JOSESwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airsidemobile/JOSESwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A54874A628F74F5500FF9B99 /* JOSESwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A54874A528F74F5500FF9B99 /* XCRemoteSwiftPackageReference "JOSESwift" */;
+			productName = JOSESwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D55462EF22A6DF720096C7A4 /* Project object */;
 }
