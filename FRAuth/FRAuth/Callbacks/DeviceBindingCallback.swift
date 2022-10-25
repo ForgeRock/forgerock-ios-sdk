@@ -19,30 +19,30 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     //  MARK: - Properties
     
     /// The userId received from server
-    public var userId: String!
+    public var userId: String
     /// The userName received from server
-    public var userName: String!
+    public var userName: String
     /// The challenge received from server
-    public var challenge: String!
+    public var challenge: String
     /// The authentication type of the journey
-    public var deviceBindingAuthenticationType: DeviceBindingAuthenticationType!
+    public var deviceBindingAuthenticationType: DeviceBindingAuthenticationType
     // The title to be displayed in biometric prompt
-    public var title: String!
+    public var title: String
     // The subtitle to be displayed in biometric prompt
-    public var subtitle: String!
+    public var subtitle: String
     // The description to be displayed in biometric prompt
-    public var promptDescription: String!
+    public var promptDescription: String
     // The timeout to be to expire the biometric authentication
     public var timeout: Int?
     
     /// Jws input key in callback response
-    private var jwsKey: String!
+    private var jwsKey: String
     /// Device name input key in callback response
-    private var deviceNameKey: String!
+    private var deviceNameKey: String
     /// Device id input key in callback response
-    private var deviceIdKey: String!
+    private var deviceIdKey: String
     /// Client Error input key in callback response
-    private var clientErrorKey: String!
+    private var clientErrorKey: String
     
     //  MARK: - Init
     
@@ -59,64 +59,80 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             throw AuthError.invalidCallbackResponse(String(describing: json))
         }
         
+        // parse outputs
+        var outputDictionary = [String: Any]()
         for output in outputs {
-            if let outputName = output[CBConstants.name] as? String {
-                if let outputValue = output[CBConstants.value] as? String {
-                    switch outputName {
-                    case CBConstants.userId:
-                        userId = outputValue
-                    case CBConstants.username:
-                        userName = outputValue
-                    case CBConstants.authenticationType:
-                        if let outputEnumValue = DeviceBindingAuthenticationType(rawValue: outputValue) {
-                            deviceBindingAuthenticationType = outputEnumValue
-                        }
-                    case CBConstants.challenge:
-                        challenge = outputValue
-                    case CBConstants.title:
-                        title = outputValue
-                    case CBConstants.subtitle:
-                        subtitle = outputValue
-                    case CBConstants.description:
-                        promptDescription = outputValue
-                    default:
-                        break
-                    }
-                } else if let outputValue = output[CBConstants.value] as? Int {
-                    switch outputName {
-                    case CBConstants.timeout:
-                        timeout = outputValue
-                    default:
-                        break
-                    }
-                }
+            guard let outputName = output[CBConstants.name] as? String, let outputValue = output[CBConstants.value] else {
+                throw AuthError.invalidCallbackResponse("Failed to parse output")
             }
+            outputDictionary[outputName] = outputValue
         }
         
-        guard userId != nil, userName != nil, challenge != nil, deviceBindingAuthenticationType != nil, title != nil, subtitle != nil, promptDescription != nil else {
-            throw AuthError.invalidCallbackResponse("Missing an output value")
+        guard let userId = outputDictionary[CBConstants.userId] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing userId")
         }
+        self.userId = userId
         
+        guard let userName = outputDictionary[CBConstants.username] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing username")
+        }
+        self.userName = userName
+        
+        guard let outputValue = outputDictionary[CBConstants.authenticationType] as? String, let deviceBindingAuthenticationType = DeviceBindingAuthenticationType(rawValue: outputValue) else {
+            throw AuthError.invalidCallbackResponse("Missing authenticationType")
+        }
+        self.deviceBindingAuthenticationType = deviceBindingAuthenticationType
+        
+        guard let challenge = outputDictionary[CBConstants.challenge] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing challenge")
+        }
+        self.challenge = challenge
+        
+        guard let title = outputDictionary[CBConstants.title] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing title")
+        }
+        self.title = title
+        
+        guard let subtitle = outputDictionary[CBConstants.subtitle] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing subtitle")
+        }
+        self.subtitle = subtitle
+        
+        guard let promptDescription = outputDictionary[CBConstants.description] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing description")
+        }
+        self.promptDescription = promptDescription
+        
+        self.timeout = outputDictionary[CBConstants.timeout] as? Int
+        
+        //parse inputs
+        var inputNames = [String]()
         for input in inputs {
-            if let name = input[CBConstants.name] as? String {
-                switch name {
-                case let name where name.contains(CBConstants.jws):
-                    jwsKey = name
-                case let name where name.contains(CBConstants.deviceName):
-                    deviceNameKey = name
-                case let name where name.contains(CBConstants.deviceId):
-                    deviceIdKey = name
-                case let name where name.contains(CBConstants.clientError):
-                    clientErrorKey = name
-                default:
-                    break
-                }
+            guard let inputName = input[CBConstants.name] as? String else {
+                throw AuthError.invalidCallbackResponse("Failed to parse input")
             }
+            inputNames.append(inputName)
         }
         
-        guard jwsKey != nil, deviceNameKey != nil, deviceIdKey != nil, clientErrorKey != nil else {
-            throw AuthError.invalidCallbackResponse("Missing an input value")
+        guard let jwsKey = inputNames.filter({ $0.contains(CBConstants.jws) }).first else {
+            throw AuthError.invalidCallbackResponse("Missing jwsKey")
         }
+        self.jwsKey = jwsKey
+        
+        guard let deviceNameKey = inputNames.filter({ $0.contains(CBConstants.deviceName) }).first else {
+            throw AuthError.invalidCallbackResponse("Missing deviceNameKey")
+        }
+        self.deviceNameKey = deviceNameKey
+        
+        guard let deviceIdKey = inputNames.filter({ $0.contains(CBConstants.deviceId) }).first else {
+            throw AuthError.invalidCallbackResponse("Missing deviceIdKey")
+        }
+        self.deviceIdKey = deviceIdKey
+        
+        guard let clientErrorKey = inputNames.filter({ $0.contains(CBConstants.clientError) }).first else {
+            throw AuthError.invalidCallbackResponse("Missing clientErrorKey")
+        }
+        self.clientErrorKey = clientErrorKey
         
         try super.init(json: json)
         type = callbackType
