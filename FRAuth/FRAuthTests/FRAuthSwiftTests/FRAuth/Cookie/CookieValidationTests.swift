@@ -2,7 +2,7 @@
 //  CookieValidationTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -202,7 +202,7 @@ class CookieValidationTests: FRAuthBaseTest {
     
     
     func test_10_cookie_is_expired_validation_not_expired() {
-        let setCookie: [String: String] = ["Set-Cookie":"iPlanetDirectoryPro=token; Expires=Wed, 21 Oct 2022 01:00:00 GMT; Domain=openam.example.com"]
+        let setCookie: [String: String] = ["Set-Cookie":"iPlanetDirectoryPro=token; Expires=Wed, 21 Oct 2032 01:00:00 GMT; Domain=openam.example.com"]
         let cookies = HTTPCookie.cookies(withResponseHeaderFields: setCookie, for: URL(string: "https://openam.example.com")!)
         guard let cookie = cookies.first else {
             XCTFail("Failed to parse Cookies from response header")
