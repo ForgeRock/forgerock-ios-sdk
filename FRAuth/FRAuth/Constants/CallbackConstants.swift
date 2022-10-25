@@ -234,6 +234,7 @@ extension CBConstants {
 //  MARK: - DeviceBindingCallback
 
 extension CBConstants {
+    static let username: String = "username"
     static let authenticationType: String = "authenticationType"
     static let title: String = "title"
     static let subtitle: String = "subtitle"

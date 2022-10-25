@@ -15,15 +15,14 @@ import FRCore
 
 ///Helper struct to generate and sign the keys
 struct KeyAware {
-    
     var userId: String
     var timeout = 60
-    private var keySize = 2048
-    private var keyType = kSecAttrKeyTypeRSA
+    private var keySize = 256
+    private var keyType = kSecAttrKeyTypeECSECPrimeRandom
     private var key: String
     
     
-    /// Initizialier for KeyAware
+    /// Initializes KeyAware with given userId String
     /// - Parameter userId: user id for which key pair is to be generated
     init(userId: String) {
         self.userId = userId
@@ -41,8 +40,11 @@ struct KeyAware {
         var keyAttr = [String: Any]()
         keyAttr[String(kSecAttrIsPermanent)] = true
         keyAttr[String(kSecAttrApplicationTag)] = key
-        
         query[String(kSecPrivateKeyAttrs)] = keyAttr
+        
+        if SecuredKey.isAvailable() {
+            query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
+        }
         
         return query
     }
@@ -51,7 +53,7 @@ struct KeyAware {
     /// Creates Keypair for the given builder query attributes
     /// - Parameter builderQuery: query attributes dictionary for generating key pair
     /// - Throws: error during private/public key generation
-    func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair  {
+    func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair {
         
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(builderQuery as CFDictionary, &error) else {
@@ -89,11 +91,10 @@ struct KeyAware {
     private static func getKeyAlias(keyName: String) -> String {
         let digest = NSMutableData(length: Int(CC_SHA256_DIGEST_LENGTH))!
         if let data = keyName.data(using: String.Encoding.utf8) {
-            let value =  data as NSData
+            let value = data as NSData
             let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: digest.length)
             CC_SHA256(value.bytes, CC_LONG(data.count), uint8Pointer)
         }
         return digest.base64EncodedString(options: NSData.Base64EncodingOptions([]))
     }
-    
 }

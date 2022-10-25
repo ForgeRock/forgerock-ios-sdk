@@ -20,7 +20,7 @@ protocol BiometricHandler {
     /// - Returns: Boolean status for policy support
     func isSupported(policy: LAPolicy) -> Bool
     
-    /// Display biometric prompt  for Biometric and device credential if needed
+    /// Display biometric prompt for Biometric and device credential if needed
     /// - Parameter timeout: Timeout for the biometric prompt
     /// - Parameter completion: Completion block for Device binding result callback
     func authenticate(timeout: Int, completion: @escaping DeviceBindingResultCallback)
@@ -50,17 +50,15 @@ internal struct BiometricBindingHandler: BiometricHandler {
     }
     
     
-    /// Display biometric prompt  for Biometric and device credential if needed
+    /// Display biometric prompt for Biometric and device credential if needed
     /// - Parameter timeout: Timeout for the biometric prompt
     /// - Parameter completion: Completion block for Device binding result callback
     func authenticate(timeout: Int, completion: @escaping DeviceBindingResultCallback) {
-        
         let localAuthenticationContext = LAContext()
         var authError: NSError?
         let startTime = Date()
         if localAuthenticationContext.canEvaluatePolicy(policy, error: &authError) {
             localAuthenticationContext.evaluatePolicy(policy, localizedReason: promptDescription) { success, evaluateError in
-                
                 if success {
                     let delta = Date().timeIntervalSince(startTime)
                     if(delta > Double(timeout)) {
@@ -73,28 +71,24 @@ internal struct BiometricBindingHandler: BiometricHandler {
                 }
             }
         } else {
-            
             guard let error = authError else {
                 completion(.failure(.unsupported(errorMessage: nil)))
                 return
             }
             completion(.failure(.unsupported(errorMessage: error.localizedDescription)))
         }
-        
     }
     
     
-    /// initializer for BiometricBindingHandler
+    /// Initializes BiometricBindingHandler with given title, subtitle, promptDescription
     /// - Parameter title: title for authentication promp if applicable
     /// - Parameter subtitle: subtitile for authentication promp if applicable
     /// - Parameter promptDescription: prompt description for authentication promp if applicable
     /// - Parameter policy: local authentication policy for authentication
     init(title: String, subtitle: String, description: String, policy: LAPolicy) {
-        
         self.title = title
         self.subtitle = subtitle
         self.promptDescription = description
         self.policy = policy
     }
-    
 }
