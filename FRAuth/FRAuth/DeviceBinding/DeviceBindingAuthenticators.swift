@@ -53,7 +53,7 @@ extension DeviceAuthenticator {
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
     func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
-        let jwk = try RSAPublicKey(publicKey: keyPair.publicKey, additionalParameters: ["use": "sig", "alg": "ES256"])
+        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: ["use": "sig", "alg": "ES256"])
         let jwkWithKeyId = try jwk.withThumbprintAsKeyId()
         let algorithm = SignatureAlgorithm.ES256
         
@@ -123,7 +123,7 @@ internal struct BiometricOnly: DeviceAuthenticator {
     /// Access Control for the authetication type
     func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, SecAccessControlCreateFlags.biometryCurrentSet, nil)!
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, SecuredKey.isAvailable() ? [.biometryCurrentSet, .privateKeyUsage] : [.biometryCurrentSet], nil)!
 #else
         return nil
 #endif
@@ -174,7 +174,7 @@ internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
     /// Access Control for the authetication type
     func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, SecAccessControlCreateFlags.userPresence, nil)!
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, SecuredKey.isAvailable() ? [.userPresence, .privateKeyUsage] : [.userPresence], nil)!
 #else
         return nil
 #endif
