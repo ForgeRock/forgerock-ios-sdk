@@ -264,7 +264,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, true)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 1)
             XCTAssertEqual(pushMechanism?.pendingNotifications.count, 1)
             
@@ -286,7 +285,7 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, false)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, true)
-            XCTAssertEqual(notification?.isExpired, false)
+
             XCTAssertEqual(pushMechanism?.notifications.count, 1)
             
             XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)
@@ -316,7 +315,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, true)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 2)
             XCTAssertEqual(pushMechanism?.pendingNotifications.count, 1)
             
@@ -338,7 +336,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, false)
             XCTAssertEqual(notification?.isDenied, true)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 2)
             
             XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)
@@ -369,7 +366,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, true)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 3)
             XCTAssertEqual(pushMechanism?.pendingNotifications.count, 1)
             
@@ -391,7 +387,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, false)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, true)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 3)
             
             XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)
@@ -491,7 +486,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, true)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 1)
             
             ex = self.expectation(description: "PushNotification.accept - #1")
@@ -511,7 +505,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, false)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, true)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 1)
             
             XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)
@@ -541,7 +534,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, true)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 2)
             
             ex = self.expectation(description: "PushNotification.accept - #2")
@@ -561,7 +553,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, false)
             XCTAssertEqual(notification?.isDenied, true)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 2)
             
             XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)
@@ -592,7 +583,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, true)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, false)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 3)
             
             ex = self.expectation(description: "PushNotification.accept - #2")
@@ -612,7 +602,6 @@ class FRAClientTests: FRABaseTests {
             XCTAssertEqual(notification?.isPending, false)
             XCTAssertEqual(notification?.isDenied, false)
             XCTAssertEqual(notification?.isApproved, true)
-            XCTAssertEqual(notification?.isExpired, false)
             XCTAssertEqual(pushMechanism?.notifications.count, 3)
             
             XCTAssertEqual(storageClient.defaultStorageClient.accountStorage.allItems()?.count, 1)

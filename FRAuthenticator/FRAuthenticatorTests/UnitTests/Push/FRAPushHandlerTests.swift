@@ -74,7 +74,6 @@ class FRAPushHandlerTests: FRABaseTests {
             XCTAssertEqual(notification.loadBalanceKey, "amlbcookie=01")
             XCTAssertEqual(notification.ttl, 120.0)
             XCTAssertTrue(notification.isPending)
-            XCTAssertFalse(notification.isExpired)
             XCTAssertFalse(notification.isApproved)
             XCTAssertFalse(notification.isDenied)
         }
