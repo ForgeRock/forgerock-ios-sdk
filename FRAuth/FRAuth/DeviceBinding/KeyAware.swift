@@ -42,9 +42,11 @@ struct KeyAware {
         keyAttr[String(kSecAttrApplicationTag)] = key
         query[String(kSecPrivateKeyAttrs)] = keyAttr
         
+#if !targetEnvironment(simulator)
         if SecuredKey.isAvailable() {
             query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
         }
+#endif
         
         return query
     }
