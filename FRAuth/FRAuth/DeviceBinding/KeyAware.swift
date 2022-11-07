@@ -12,6 +12,7 @@
 import Foundation
 import CommonCrypto
 import FRCore
+import CryptoKit
 
 ///Helper struct to generate and sign the keys
 struct KeyAware {
@@ -73,9 +74,12 @@ struct KeyAware {
     /// Get the private key from the Keychain for given key alias
     /// - Parameter keyAlias: key alias for which to retrive the private key
     /// - Returns: private key for the given key alias
-    mutating func getSecureKey(keyAlias: String) -> SecKey? {
+    static func getSecureKey(keyAlias: String) -> SecKey? {
         
-        var query = keyBuilderQuery()
+        var query = [String: Any]()
+        query[String(kSecClass)] = kSecClassKey
+        query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeEC)
+        query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = keyAlias
         
         var item: CFTypeRef?
@@ -87,16 +91,24 @@ struct KeyAware {
     }
     
     
+    /// Remove the private key from the Keychain for given key alias
+    /// - Parameter keyAlias: key alias for which to retrive the private key
+    static func deleteKey(keyAlias: String) {
+        var query = [String: Any]()
+        query[String(kSecClass)] = String(kSecClassKey)
+        query[String(kSecAttrApplicationTag)] = keyAlias
+        SecItemDelete(query as CFDictionary)
+    }
+    
     /// Get hash for the given key name (user id)
     /// - Parameter keyName: key names to be hashed
     /// - Returns: the hash for the given key name
-    private static func getKeyAlias(keyName: String) -> String {
-        let digest = NSMutableData(length: Int(CC_SHA256_DIGEST_LENGTH))!
-        if let data = keyName.data(using: String.Encoding.utf8) {
-            let value = data as NSData
-            let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: digest.length)
-            CC_SHA256(value.bytes, CC_LONG(data.count), uint8Pointer)
+    static func getKeyAlias(keyName: String) -> String {
+        let data = keyName.data(using: .utf8)!
+        if #available(iOS 13, *) {
+            return Data(SHA256.hash(data: data)).base64EncodedString()
+        } else {
+            return data.sha256.base64EncodedString(options: NSData.Base64EncodingOptions([]))
         }
-        return digest.base64EncodedString(options: NSData.Base64EncodingOptions([]))
     }
 }

@@ -177,6 +177,7 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
                 self.handleException(status: .timeout, completion: completion)
+                return
             }
             
             // If no errors, set the input values and complete with success
@@ -197,6 +198,9 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     /// - Parameter status: Device binding status
     /// - Parameter completion: Completion block Device binding result callback
     open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceBindingResultCallback) {
+        // Remove the private key if already generated
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))
