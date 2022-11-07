@@ -179,7 +179,7 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
-                completion(.failure(.timeout))
+                self.handleException(status: .timeout, completion: completion)
             } else {
                 completion(.success)
             }
