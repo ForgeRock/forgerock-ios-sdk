@@ -10,6 +10,7 @@
 
 
 import Foundation
+import JOSESwift
 
 /**
  * Callback to collect the device binding information
@@ -151,9 +152,9 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     /// - Parameter authInterface: Interface to find the Authentication Type - provide nil to default to getDeviceBindingAuthenticator()
     /// - Parameter deviceId: Interface to find the Authentication Type - provide nil to default to FRDevice.currentDevice?.identifier.getIdentifier()
     /// - Parameter completion: completion Completion block for Device binding result callback
-    open func execute(authInterface: DeviceAuthenticator?,
-                      deviceId: String?,
-                      _ completion: @escaping DeviceBindingResultCallback) {
+    internal func execute(authInterface: DeviceAuthenticator?,
+                          deviceId: String?,
+                          _ completion: @escaping DeviceBindingResultCallback) {
         let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator()
         let newDeviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
         
@@ -162,29 +163,30 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             return
         }
         
-        newAuthInterface.authenticate(timeout: timeout ?? 60) { [weak self] result in
-            guard let self = self else {
-                return
+        let startTime = Date()
+        let timeout = timeout ?? 60
+        
+        do {
+            let kid = UUID().uuidString
+            let keyPair = try newAuthInterface.generateKeys()
+            // Authentication will be triggered during signing if necessary
+            let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: self.userId, challenge: self.challenge, expiration: self.getExpiration())
+            self.setJws(jws)
+            
+            if let newDeviceId = newDeviceId {
+                self.setDeviceId(newDeviceId)
             }
-            do {
-                switch result {
-                case .success:
-                    let kid = UUID().uuidString
-                    let keyPair = try newAuthInterface.generateKeys()
-                    let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: self.userId, challenge: self.challenge, expiration: self.getExpiration())
-                    self.setJws(jws)
-                    
-                    if let newDeviceId = newDeviceId {
-                        self.setDeviceId(newDeviceId)
-                    }
-                    
-                    completion(.success)
-                case .failure(let status):
-                    self.handleException(status: status, completion: completion)
-                }
-            } catch {
-                self.handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
+            
+            let delta = Date().timeIntervalSince(startTime)
+            if(delta > Double(timeout)) {
+                completion(.failure(.timeout))
+            } else {
+                completion(.success)
             }
+        } catch JOSESwiftError.localAuthenticationFailed {
+            self.handleException(status: .abort, completion: completion)
+        } catch let error {
+            self.handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
         }
     }
     

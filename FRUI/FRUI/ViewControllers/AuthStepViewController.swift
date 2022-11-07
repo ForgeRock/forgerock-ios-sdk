@@ -195,7 +195,7 @@ class AuthStepViewController: UIViewController {
                 //  If DeviceBindingCallback is found as one of Callbacks, bind the device and show the authentication result
                 if let deviceBindingCallback = deviceBindingCallback {
                     self.startLoading()
-                    deviceBindingCallback.execute(authInterface: nil, deviceId: nil, { result in
+                    deviceBindingCallback.bind { result in
                         DispatchQueue.main.async {
                             self.stopLoading()
                             var bindingResult = ""
@@ -214,7 +214,7 @@ class AuthStepViewController: UIViewController {
                             alert.addAction(action)
                             self.present(alert, animated: true)
                         }
-                    })
+                    }
                 }
                 
                 else {

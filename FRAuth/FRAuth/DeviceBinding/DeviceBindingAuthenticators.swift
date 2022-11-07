@@ -12,6 +12,7 @@ import Security
 import Foundation
 import FRCore
 import JOSESwift
+import LocalAuthentication
 
 
 /// Protocol to override keypair generation, authentication, signing and access control
@@ -19,11 +20,6 @@ public protocol DeviceAuthenticator {
     
     /// Generate public and private key pair
     func generateKeys() throws -> KeyPair
-    
-    /// Display authentication prompt for authentication type if needed
-    /// - Parameter timeout: Timeout for the authentication prompt
-    /// - Parameter completion: Completion block for Device binding result callback
-    func authenticate(timeout: Int, completion: @escaping DeviceBindingResultCallback)
     
     /// Sign the challenge sent from the server and generate signed JWT
     /// - Parameter keyPair: Public and private key pair
@@ -78,14 +74,16 @@ extension DeviceAuthenticator {
         
         return jws.compactSerializedString
     }
+    
 }
 
 
 /// DeviceAuthenticator adoption for biometric only authentication
 internal struct BiometricOnly: DeviceAuthenticator {
-    
-    /// biometric handler for authentication
-    var biometricInterface: BiometricHandler
+    /// prompt description for authentication promp if applicable
+    var promptDescription: String
+    /// local authentication policy for authentication
+    var policy: LAPolicy
     /// keyAware for key pair generation
     var keyAware: KeyAware
     
@@ -93,9 +91,10 @@ internal struct BiometricOnly: DeviceAuthenticator {
     /// Initializes BiometricOnly with given BiometricHandler and KeyAware
     /// - Parameter biometricInterface: biometric handler for authentication
     /// - Parameter keyAware: keyAware for key pair generation
-    init(biometricInterface: BiometricHandler, keyAware: KeyAware) {
-        self.biometricInterface = biometricInterface
+    init(description: String, keyAware: KeyAware) {
+        self.promptDescription = description
         self.keyAware = keyAware
+        policy = .deviceOwnerAuthenticationWithBiometrics
     }
     
     
@@ -103,22 +102,22 @@ internal struct BiometricOnly: DeviceAuthenticator {
     func generateKeys() throws -> KeyPair {
         var keyBuilderQuery = keyAware.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery) 
-    }
-    
-    
-    /// Display authentication prompt for authentication type if needed
-    /// - Parameter timeout: Timeout for the authentication prompt
-    /// - Parameter completion: Completion block for Device binding result callback
-    func authenticate(timeout: Int, completion: @escaping DeviceBindingResultCallback) {
-        biometricInterface.authenticate(timeout: timeout, completion: completion)
+        
+        let context = LAContext()
+        context.localizedReason = promptDescription
+        keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+        
+        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
     }
     
     
     /// Check if authentication is supported
     func isSupported() -> Bool {
-        biometricInterface.isSupported(policy: .deviceOwnerAuthenticationWithBiometrics)
+        let laContext = LAContext()
+        var evalError: NSError?
+        return laContext.canEvaluatePolicy(policy, error: &evalError)
     }
+    
     
     /// Access Control for the authetication type
     func accessControl() -> SecAccessControl? {
@@ -133,9 +132,10 @@ internal struct BiometricOnly: DeviceAuthenticator {
 
 /// DeviceAuthenticator adoption for biometric and Device Credential authentication
 internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
-    
-    /// biometric handler for authentication
-    var biometricInterface: BiometricHandler
+    /// prompt description for authentication promp if applicable
+    var promptDescription: String
+    /// local authentication policy for authentication
+    var policy: LAPolicy
     /// keyAware for key pair generation
     var keyAware: KeyAware
     
@@ -143,31 +143,31 @@ internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
     /// Initializes BiometricOnly with given BiometricHandler and KeyAware
     /// - Parameter biometricInterface: biometric handler for authentication
     /// - Parameter keyAware: keyAware for key pair generation
-    init(biometricInterface: BiometricHandler, keyAware: KeyAware) {
-        self.biometricInterface = biometricInterface
+    init(description: String, keyAware: KeyAware) {
+        self.promptDescription = description
         self.keyAware = keyAware
+        policy = .deviceOwnerAuthentication
     }
-
+    
     
     /// Generate public and private key pair
     func generateKeys() throws -> KeyPair {
         var keyBuilderQuery = keyAware.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
+        
+        let context = LAContext()
+        context.localizedReason = promptDescription
+        keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+        
         return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
-    }
-    
-    
-    /// Display authentication prompt for authentication type if needed
-    /// - Parameter timeout: Timeout for the authentication prompt
-    /// - Parameter completion: Completion block for Device binding result callback
-    func authenticate(timeout: Int, completion: @escaping DeviceBindingResultCallback) {
-        biometricInterface.authenticate(timeout: timeout, completion: completion)
     }
     
     
     /// Check if authentication is supported
     func isSupported() -> Bool {
-        biometricInterface.isSupported(policy: .deviceOwnerAuthentication)
+        let laContext = LAContext()
+        var evalError: NSError?
+        return laContext.canEvaluatePolicy(policy, error: &evalError)
     }
     
     
@@ -202,14 +202,6 @@ internal struct None: DeviceAuthenticator {
     }
     
     
-    /// Display authentication prompt for authentication type if needed
-    /// - Parameter timeout: Timeout for the authentication prompt
-    /// - Parameter completion: Completion block for Device binding result callback
-    func authenticate(timeout: Int, completion : @escaping DeviceBindingResultCallback) {
-        completion(.success)
-    }
-    
-    
     /// Check if authentication is supported
     func isSupported() -> Bool {
         return true
@@ -239,26 +231,20 @@ internal struct AuthenticatorFactory {
     
     /// Static method to create and return the correct type of authenticator
     static func getAuthenticator(userId: String,
-                        authentication: DeviceBindingAuthenticationType,
-                        title: String,
-                        subtitle: String,
-                        description: String,
-                        keyAware: KeyAware?) -> DeviceAuthenticator {
+                                 authentication: DeviceBindingAuthenticationType,
+                                 title: String,
+                                 subtitle: String,
+                                 description: String,
+                                 keyAware: KeyAware?) -> DeviceAuthenticator {
         let newKeyAware = keyAware ?? KeyAware(userId: userId)
         switch authentication {
         case .biometricOnly:
-            return BiometricOnly(biometricInterface: BiometricBindingHandler(title: title, subtitle: subtitle, description: description, policy: .deviceOwnerAuthenticationWithBiometrics), keyAware: newKeyAware)
+            return BiometricOnly(description: description, keyAware: newKeyAware)
         case .biometricAllowFallback:
-            return BiometricAndDeviceCredential(biometricInterface: BiometricBindingHandler(title: title, subtitle: subtitle, description: description, policy: .deviceOwnerAuthentication), keyAware: newKeyAware)
+            return BiometricAndDeviceCredential(description: description, keyAware: newKeyAware)
         case .none:
             return None(keyAware: newKeyAware)
             
         }
     }
 }
-
-
-
-
-
-

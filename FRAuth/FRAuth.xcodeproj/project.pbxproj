@@ -14,7 +14,6 @@
 		A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */; };
 		A54874A728F74F5500FF9B99 /* JOSESwift in Frameworks */ = {isa = PBXBuildFile; productRef = A54874A628F74F5500FF9B99 /* JOSESwift */; };
 		A54874A928F8609900FF9B99 /* KeyAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A828F8609900FF9B99 /* KeyAware.swift */; };
-		A54874AB28F860F900FF9B99 /* BiometricBindingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874AA28F860F900FF9B99 /* BiometricBindingHandler.swift */; };
 		A54874AD28FE158D00FF9B99 /* DeviceBindingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
@@ -343,7 +342,6 @@
 		A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
 		A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingAuthenticators.swift; sourceTree = "<group>"; };
 		A54874A828F8609900FF9B99 /* KeyAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAware.swift; sourceTree = "<group>"; };
-		A54874AA28F860F900FF9B99 /* BiometricBindingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricBindingHandler.swift; sourceTree = "<group>"; };
 		A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingStatus.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
@@ -653,7 +651,6 @@
 			children = (
 				A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */,
 				A54874A828F8609900FF9B99 /* KeyAware.swift */,
-				A54874AA28F860F900FF9B99 /* BiometricBindingHandler.swift */,
 				A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */,
 			);
 			path = DeviceBinding;
@@ -1865,7 +1862,6 @@
 				D586CFBA23358EE0007A2194 /* TelephonyCollector.swift in Sources */,
 				D586CFB223358EE0007A2194 /* CallbackConstants.swift in Sources */,
 				D586CF9023358EE0007A2194 /* PKCE.swift in Sources */,
-				A54874AB28F860F900FF9B99 /* BiometricBindingHandler.swift in Sources */,
 				D586CFBB23358EE0007A2194 /* NetworkCollector.swift in Sources */,
 				D53A803F262789BD0093B1CA /* WAKLogger.swift in Sources */,
 				D53A8046262789BD0093B1CA /* CredentialStore.swift in Sources */,
