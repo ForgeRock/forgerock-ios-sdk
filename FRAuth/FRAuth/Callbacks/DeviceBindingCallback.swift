@@ -169,20 +169,22 @@ open class DeviceBindingCallback: MultipleValuesCallback {
         do {
             let kid = UUID().uuidString
             let keyPair = try newAuthInterface.generateKeys()
+            
             // Authentication will be triggered during signing if necessary
             let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: self.userId, challenge: self.challenge, expiration: self.getExpiration())
-            self.setJws(jws)
             
-            if let newDeviceId = newDeviceId {
-                self.setDeviceId(newDeviceId)
-            }
-            
+            // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
                 self.handleException(status: .timeout, completion: completion)
-            } else {
-                completion(.success)
             }
+            
+            // If no errors, set the input values and complete with success
+            self.setJws(jws)
+            if let newDeviceId = newDeviceId {
+                self.setDeviceId(newDeviceId)
+            }
+            completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
             self.handleException(status: .abort, completion: completion)
         } catch let error {
