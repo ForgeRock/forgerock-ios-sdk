@@ -16,7 +16,7 @@ import CryptoKit
 
 ///Helper struct to generate and sign the keys
 struct KeyAware {
-    var userId: String
+    private var userId: String
     var timeout = 60
     private var keySize = 256
     private var keyType = kSecAttrKeyTypeECSECPrimeRandom

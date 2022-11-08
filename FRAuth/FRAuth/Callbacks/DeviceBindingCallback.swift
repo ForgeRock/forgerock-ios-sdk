@@ -20,21 +20,21 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     //  MARK: - Properties
     
     /// The userId received from server
-    public var userId: String
+    public private(set) var userId: String
     /// The userName received from server
-    public var userName: String
+    public private(set) var userName: String
     /// The challenge received from server
-    public var challenge: String
+    public private(set) var challenge: String
     /// The authentication type of the journey
-    public var deviceBindingAuthenticationType: DeviceBindingAuthenticationType
+    public private(set) var deviceBindingAuthenticationType: DeviceBindingAuthenticationType
     // The title to be displayed in biometric prompt
-    public var title: String
+    public private(set) var title: String
     // The subtitle to be displayed in biometric prompt
-    public var subtitle: String
+    public private(set) var subtitle: String
     // The description to be displayed in biometric prompt
-    public var promptDescription: String
+    public private(set) var promptDescription: String
     // The timeout to be to expire the biometric authentication
-    public var timeout: Int?
+    public private(set) var timeout: Int?
     
     /// Jws input key in callback response
     private var jwsKey: String
