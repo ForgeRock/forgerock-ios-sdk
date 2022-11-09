@@ -44,9 +44,7 @@ struct KeyAware {
         query[String(kSecPrivateKeyAttrs)] = keyAttr
         
 #if !targetEnvironment(simulator)
-        if SecuredKey.isAvailable() {
             query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
-        }
 #endif
         
         return query
@@ -60,7 +58,7 @@ struct KeyAware {
         
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(builderQuery as CFDictionary, &error) else {
-            throw error!.takeRetainedValue() as Error
+            throw error?.takeRetainedValue() as? Error ?? NSError()
         }
         
         guard let publicKey: SecKey = SecKeyCopyPublicKey(privateKey) else {
@@ -104,7 +102,7 @@ struct KeyAware {
     /// - Parameter keyName: key names to be hashed
     /// - Returns: the hash for the given key name
     static func getKeyAlias(keyName: String) -> String {
-        let data = keyName.data(using: .utf8)!
+        let data = Data(keyName.utf8)
         if #available(iOS 13, *) {
             return Data(SHA256.hash(data: data)).base64EncodedString()
         } else {

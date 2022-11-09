@@ -122,9 +122,9 @@ internal struct BiometricOnly: DeviceAuthenticator {
     /// Access Control for the authetication type
     func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, SecuredKey.isAvailable() ? [.biometryCurrentSet, .privateKeyUsage] : [.biometryCurrentSet], nil)!
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .privateKeyUsage], nil)
 #else
-        return nil
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet], nil)
 #endif
     }
 }
@@ -174,9 +174,9 @@ internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
     /// Access Control for the authetication type
     func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, SecuredKey.isAvailable() ? [.userPresence, .privateKeyUsage] : [.userPresence], nil)!
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence, .privateKeyUsage], nil)
 #else
-        return nil
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence], nil)
 #endif
     }
 }
