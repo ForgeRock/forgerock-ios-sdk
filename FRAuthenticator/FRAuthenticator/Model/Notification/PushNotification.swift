@@ -61,6 +61,13 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         }
     }
         
+    /// Boolean property indicating whether or not current Notification is expired
+    public var isExpired: Bool {
+        get {
+            return ((Date().timeIntervalSince1970 - (self.timeAdded.timeIntervalSince1970 + self.ttl)) > 0)
+        }
+    }
+        
     /// Boolean property indicating whether or not current Notification is approved
     public var isApproved: Bool {
         get {

@@ -36,6 +36,9 @@ class NotificationTableViewCell: BaseTableViewCell {
         else if notification.isApproved {
             self.iconImageView?.image = UIImage(named: "ApprovedIcon")
         }
+        else if notification.isExpired {
+            self.iconImageView?.image = UIImage(named: "DeniedIcon")
+        }
         else if notification.isDenied {
             self.iconImageView?.image = UIImage(named: "DeniedIcon")
         }

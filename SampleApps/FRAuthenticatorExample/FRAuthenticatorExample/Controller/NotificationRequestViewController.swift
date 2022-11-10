@@ -61,14 +61,14 @@ class NotificationRequestViewController: BaseViewController {
             else if notification.isDenied {
                 status = "had already been denied"
             }
-            else if notification.isPending {
+            else if notification.isExpired {
                 status = "was expired"
             }
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let timestamp = dateFormatter.string(from: notification.timeAdded)
-            self.topDescriptionLabel.text = "This PushNotification \(status) \("\n @ " + timestamp)"
+            self.topDescriptionLabel.text = "This PushNotification \(status) \(notification.isExpired ? "" : "\n @ " + timestamp)"
             self.descriptionLabel.text = "This PushNotification \(status)."
         } else {
             
