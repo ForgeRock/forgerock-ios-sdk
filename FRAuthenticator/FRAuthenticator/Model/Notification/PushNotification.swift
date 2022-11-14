@@ -57,14 +57,14 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     /// Boolean property indicating whether or not current Notification is still pending for approval
     public var isPending: Bool {
         get {
-            return self.pending && !self.isExpired
+            return self.pending
         }
     }
         
     /// Boolean property indicating whether or not current Notification is expired
     public var isExpired: Bool {
         get {
-            return pending && ((Date().timeIntervalSince1970 - (self.timeAdded.timeIntervalSince1970 + self.ttl)) > 0)
+            return ((Date().timeIntervalSince1970 - (self.timeAdded.timeIntervalSince1970 + self.ttl)) > 0)
         }
     }
         

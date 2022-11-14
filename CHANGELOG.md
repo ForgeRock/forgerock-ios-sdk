@@ -1,3 +1,9 @@
+# Version 3.4.1
+## [3.4.1]
+#### Changed
+- Updated Legacy encryption algorithm for iOS SE [SDKS-1994]
+- PushNotification Timeout should be validated by AM [SDKS-2164]
+
 # Version 3.4.0
 ## [3.4.0]
 #### Added
