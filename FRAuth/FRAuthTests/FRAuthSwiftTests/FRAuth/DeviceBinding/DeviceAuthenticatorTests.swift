@@ -63,6 +63,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
     }
     
     
@@ -80,10 +81,10 @@ class DeviceAuthenticatorTests: XCTestCase {
             
             let privateKey = KeyAware.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
-            KeyAware.deleteKey(keyAlias: key)
         } catch {
             XCTFail("Failed to generate keys")
         }
+        KeyAware.deleteKey(keyAlias: key)
     }
     
     
@@ -120,6 +121,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
     }
     
     
@@ -141,10 +143,10 @@ class DeviceAuthenticatorTests: XCTestCase {
             
             let privateKey = KeyAware.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
-            KeyAware.deleteKey(keyAlias: key)
         } catch {
             XCTFail("Failed to generate keys")
         }
+        KeyAware.deleteKey(keyAlias: key)
     }
     
     
@@ -181,6 +183,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
     }
     
     
@@ -199,9 +202,9 @@ class DeviceAuthenticatorTests: XCTestCase {
             
             let privateKey = KeyAware.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
-            KeyAware.deleteKey(keyAlias: key)
         } catch {
             XCTFail("Failed to generate keys")
         }
+        KeyAware.deleteKey(keyAlias: key)
     }
 }

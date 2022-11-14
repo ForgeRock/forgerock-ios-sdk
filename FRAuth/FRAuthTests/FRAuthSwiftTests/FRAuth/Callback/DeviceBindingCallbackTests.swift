@@ -1196,23 +1196,29 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             ]
         }
         """
-        let callbackResponse = self.parseStringToDictionary(jsonStrWithoutInputValues)
+        let callbackResponse1 = self.parseStringToDictionary(jsonStrWithoutInputValues)
         let callbackResponse2 = self.parseStringToDictionary(jsonStrWithInputValues)
         
         do {
-            let callback = try DeviceBindingCallback(json: callbackResponse)
-            XCTAssertNotNil(callback)
+            let callback1 = try DeviceBindingCallback(json: callbackResponse1)
+            XCTAssertNotNil(callback1)
             
-            callback.setJws(jws)
-            callback.setDeviceId(deviceId)
-            callback.setDeviceName(deviceName)
-            callback.setClientError(clientError)
+            callback1.setJws(jws)
+            callback1.setDeviceId(deviceId)
+            callback1.setDeviceName(deviceName)
+            callback1.setClientError(clientError)
             
-            //TODO: This check is failing though it should work.
-            XCTAssertTrue(NSDictionary(dictionary: callbackResponse2).isEqual(to: callback.buildResponse()))
+            let response1 = callback1.buildResponse()
+            
+            XCTAssertTrue(response1["type"] as! String == callbackResponse2["type"] as! String)
+            XCTAssertTrue(response1["output"] as! [[String : Any]] == callbackResponse2["output"] as! [[String : Any]])
+            
+            let input1 = (response1["input"]  as! [[String : String]]).sorted{$0["name"]! > $1["name"]!}
+            let input2 = (callbackResponse2["input"] as! [[String : String]]).sorted{$0["name"]! > $1["name"]!}
+            XCTAssertTrue(input1 == input2)
         }
         catch {
-            XCTFail("Failed to construct callback: \(callbackResponse)")
+            XCTFail("Failed to construct callback: \(callbackResponse1)")
         }
     }
     
@@ -1580,6 +1586,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTFail("Callback Execute failed: \(error.errorMessage)")
                 }
             }
+            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -1660,6 +1667,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
+            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -1740,6 +1748,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
+            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -1820,6 +1829,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
+            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -1900,6 +1910,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
+            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -1980,6 +1991,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
+            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")

@@ -57,11 +57,10 @@ class KeyAwareTests: XCTestCase {
             
             privateKey = KeyAware.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
-            
-            KeyAware.deleteKey(keyAlias: key)
         } catch {
             XCTFail("Failed to create KeyPair")
         }
+        KeyAware.deleteKey(keyAlias: key)
     }
     
     
