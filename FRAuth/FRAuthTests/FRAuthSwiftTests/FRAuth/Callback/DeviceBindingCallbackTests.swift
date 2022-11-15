@@ -1515,6 +1515,15 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_20_execute_success() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
         let jsonStr = """
         {
             "type": "DeviceBindingCallback",
@@ -1595,6 +1604,15 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_21_execute_fail_timeout() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
         let jsonStr = """
         {
             "type": "DeviceBindingCallback",

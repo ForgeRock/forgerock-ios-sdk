@@ -30,7 +30,7 @@ class DeviceAuthenticatorTests: XCTestCase {
     }
     
     
-    func test_02_test_None_sign() {
+    func test_02_None_sign() {
         let userId = "Test User Id 2"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
@@ -88,7 +88,16 @@ class DeviceAuthenticatorTests: XCTestCase {
     }
     
     
-    func test_04_test_BiometricOnly_sign() {
+    func test_04_BiometricOnly_sign() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
         let userId = "Test User Id 4"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
@@ -126,6 +135,15 @@ class DeviceAuthenticatorTests: XCTestCase {
     
     
     func test_05_BiometricOnly_generateKeys() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
         let userId = "Test User Id 5"
         let keyAware = KeyAware(userId: userId)
         let key = KeyAware.getKeyAlias(keyName: userId)
@@ -150,7 +168,16 @@ class DeviceAuthenticatorTests: XCTestCase {
     }
     
     
-    func test_06_test_BiometricAndDeviceCredential_sign() {
+    func test_06_BiometricAndDeviceCredential_sign() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
         let userId = "Test User Id 6"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
@@ -188,6 +215,15 @@ class DeviceAuthenticatorTests: XCTestCase {
     
     
     func test_07_BiometricAndDeviceCredential_generateKeys() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
         let userId = "Test User Id 7"
         let keyAware = KeyAware(userId: userId)
         let key = KeyAware.getKeyAlias(keyName: userId)
