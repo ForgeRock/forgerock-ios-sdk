@@ -14,64 +14,93 @@ import JOSESwift
 
 class DeviceBindingCallbackTests: FRAuthBaseTest {
     
-    func test_01_basic_init() {
+    func getJsonString(userIdKey: String = "userId",
+                       userId: String = "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config",
+                       usernameKey: String = "username",
+                       username: String = "demo",
+                       authenticationTypeKey: String = "authenticationType",
+                       authenticationType: DeviceBindingAuthenticationType = .none,
+                       challengeKey: String = "challenge",
+                       challenge: String = "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo=",
+                       titleKey: String = "title",
+                       title: String = "Authentication required",
+                       subtitleKey: String = "subtitle",
+                       subtitle: String = "Cryptography device binding",
+                       descriptionKey: String = "description",
+                       description: String = "Please complete with biometric to proceed",
+                       timeoutKey: String = "timeout",
+                       timeout: Int = 60,
+                       jwsKey: String = "IDToken1jws",
+                       jws: String = "",
+                       deviceNameKey: String = "IDToken1deviceName",
+                       deviceName: String = "",
+                       deviceIdKey: String = "IDToken1deviceId",
+                       deviceId: String = "",
+                       clientErrorKey: String = "IDToken1clientError",
+                       clientError: String = "") -> String {
         let jsonStr = """
         {
             "type": "DeviceBindingCallback",
             "output": [
                 {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
+                    "name": "\(userIdKey)",
+                    "value": "\(userId)"
                 },
                 {
-                    "name": "username",
-                    "value": "vahan"
+                    "name": "\(usernameKey)",
+                    "value": "\(username)"
                 },
                 {
-                    "name": "authenticationType",
-                    "value": "NONE"
+                    "name": "\(authenticationTypeKey)",
+                    "value": "\(authenticationType.rawValue)"
                 },
                 {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
+                    "name": "\(challengeKey)",
+                    "value": "\(challenge)"
                 },
                 {
-                    "name": "title",
-                    "value": "Authentication required"
+                    "name": "\(titleKey)",
+                    "value": "\(title)"
                 },
                 {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
+                    "name": "\(subtitleKey)",
+                    "value": "\(subtitle)"
                 },
                 {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
+                    "name": "\(descriptionKey)",
+                    "value": "\(description)"
                 },
                 {
-                    "name": "timeout",
-                    "value": 60
+                    "name": "\(timeoutKey)",
+                    "value": \(timeout)
                 }
             ],
             "input": [
                 {
-                    "name": "IDToken1jws",
-                    "value": ""
+                    "name": "\(jwsKey)",
+                    "value": "\(jws)"
                 },
                 {
-                    "name": "IDToken1deviceName",
-                    "value": ""
+                    "name": "\(deviceNameKey)",
+                    "value": "\(deviceName)"
                 },
                 {
-                    "name": "IDToken1deviceId",
-                    "value": ""
+                    "name": "\(deviceIdKey)",
+                    "value": "\(deviceId)"
                 },
                 {
-                    "name": "IDToken1clientError",
-                    "value": ""
+                    "name": "\(clientErrorKey)",
+                    "value": "\(clientError)"
                 }
             ]
         }
         """
+        return jsonStr
+    }
+
+    
+    func test_01_basic_init() {
+        let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -98,63 +127,18 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
         let deviceIdKey = "IDToken1deviceId"
         let clientErrorKey = "IDToken1clientError"
         
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "\(userId)"
-                },
-                {
-                    "name": "username",
-                    "value": "\(username)"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "\(authenticationType.rawValue)"
-                },
-                {
-                    "name": "challenge",
-                    "value": "\(challenge)"
-                },
-                {
-                    "name": "title",
-                    "value": "\(title)"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "\(subtitle)"
-                },
-                {
-                    "name": "description",
-                    "value": "\(description)"
-                },
-                {
-                    "name": "timeout",
-                    "value": \(timeout)
-                }
-            ],
-            "input": [
-                {
-                    "name": "\(jwsKey)",
-                    "value": ""
-                },
-                {
-                    "name": "\(deviceNameKey)",
-                    "value": ""
-                },
-                {
-                    "name": "\(deviceIdKey)",
-                    "value": ""
-                },
-                {
-                    "name": "\(clientErrorKey)",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(userId: userId,
+                                    username: username,
+                                    authenticationType: authenticationType,
+                                    challenge: challenge,
+                                    title: title,
+                                    subtitle: subtitle,
+                                    description: description,
+                                    timeout: timeout,
+                                    jwsKey: jwsKey,
+                                    deviceNameKey: deviceNameKey,
+                                    deviceIdKey: deviceIdKey,
+                                    clientErrorKey: clientErrorKey)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -182,59 +166,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_03_missing_userId_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(userIdKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -258,59 +190,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_04_missing_username_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(usernameKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -334,59 +214,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_05_missing_authenticationType_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationTypeKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -410,59 +238,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_06_missing_challenge_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(challengeKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -486,59 +262,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_07_missing_title_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(titleKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -562,59 +286,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_08_missing_subtitle_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(subtitleKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -638,59 +310,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_09_missing_description_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(descriptionKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -714,60 +334,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_10_missing_timeout_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                }
-                        
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(timeoutKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -781,59 +348,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_11_missing_jwsKey_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(jwsKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -855,59 +370,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_12_missing_deviceNameKey_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(deviceNameKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -929,59 +392,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_13_missing_deviceIdKey_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(deviceIdKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1003,59 +414,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_14_missing_clientErrorKey_value() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(clientErrorKey: "WrongKey")
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1082,120 +441,11 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
         let deviceName = "DeviceName"
         let clientError = "ClientError"
         
-        let jsonStrWithoutInputValues = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
-        let jsonStrWithInputValues = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": "\(jws)"
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": "\(deviceName)"
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": "\(deviceId)"
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": "\(clientError)"
-                }
-            ]
-        }
-        """
+        let jsonStrWithoutInputValues = getJsonString()
+        let jsonStrWithInputValues = getJsonString(jws: jws,
+                                                   deviceName: deviceName,
+                                                   deviceId: deviceId,
+                                                   clientError: clientError)
         let callbackResponse1 = self.parseStringToDictionary(jsonStrWithoutInputValues)
         let callbackResponse2 = self.parseStringToDictionary(jsonStrWithInputValues)
         
@@ -1223,63 +473,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     func test_16_getExpiration() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1296,63 +490,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_17_getDeviceBindingAuthenticator_None() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "NONE"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .none)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1369,63 +507,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_18_getDeviceBindingAuthenticator_BiometricOnly() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ONLY"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricOnly)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1442,63 +524,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_19_getDeviceBindingAuthenticator_BiometricAndDeviceCredential() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1524,63 +550,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
         }
 #endif
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1613,63 +583,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
         }
 #endif
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 0
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback,
+                                    timeout: 0)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1694,63 +609,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_22_execute_custom_not_supported() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1775,63 +634,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_23_execute_custom_generate_keys_failed() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1856,63 +659,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_24_execute_custom_sign_failed() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -1937,63 +684,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_25_execute_custom_aborted() {
-        let jsonStr = """
-        {
-            "type": "DeviceBindingCallback",
-            "output": [
-                {
-                    "name": "userId",
-                    "value": "id=b8f68f20-312c-4e52-b835-f0518cddc648,ou=user,o=alpha,ou=services,ou=am-config"
-                },
-                {
-                    "name": "username",
-                    "value": "vahan"
-                },
-                {
-                    "name": "authenticationType",
-                    "value": "BIOMETRIC_ALLOW_FALLBACK"
-                },
-                {
-                    "name": "challenge",
-                    "value": "uPbJ4E58qPAQJn4zyN7PI5NwKEibZzd6NnPHOhYLOJo="
-                },
-                {
-                    "name": "title",
-                    "value": "Authentication required"
-                },
-                {
-                    "name": "subtitle",
-                    "value": "Cryptography device binding"
-                },
-                {
-                    "name": "description",
-                    "value": "Please complete with biometric to proceed"
-                },
-                {
-                    "name": "timeout",
-                    "value": 60
-                }
-            ],
-            "input": [
-                {
-                    "name": "IDToken1jws",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceName",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1deviceId",
-                    "value": ""
-                },
-                {
-                    "name": "IDToken1clientError",
-                    "value": ""
-                }
-            ]
-        }
-        """
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
