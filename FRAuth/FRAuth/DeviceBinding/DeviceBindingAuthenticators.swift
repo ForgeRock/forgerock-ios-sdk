@@ -103,9 +103,11 @@ internal struct BiometricOnly: DeviceAuthenticator {
         var keyBuilderQuery = keyAware.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
         
+#if !targetEnvironment(simulator)
         let context = LAContext()
         context.localizedReason = promptDescription
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+#endif
         
         return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
     }
@@ -155,9 +157,11 @@ internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
         var keyBuilderQuery = keyAware.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
         
+#if !targetEnvironment(simulator)
         let context = LAContext()
         context.localizedReason = promptDescription
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+#endif
         
         return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
     }
