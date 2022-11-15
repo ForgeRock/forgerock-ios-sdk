@@ -177,7 +177,7 @@ class NotificationTests: FRABaseTests {
     func test_07_1_notification_is_pending_with_interval() {
         do {
             let notification = try PushNotification(messageId: messageId, payload: payload)
-            XCTAssertFalse(notification.isPending)
+            XCTAssertTrue(notification.isPending)
             XCTAssertFalse(notification.isDenied)
             XCTAssertFalse(notification.isApproved)
         }
@@ -195,7 +195,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertTrue(notification.isApproved)
             XCTAssertFalse(notification.isDenied)
             XCTAssertFalse(notification.isPending)
-            XCTAssertFalse(notification.isExpired)
+            XCTAssertTrue(notification.isExpired)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -211,7 +211,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertTrue(notification.isDenied)
             XCTAssertFalse(notification.isPending)
             XCTAssertFalse(notification.isApproved)
-            XCTAssertFalse(notification.isExpired)
+            XCTAssertTrue(notification.isExpired)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -249,6 +249,19 @@ class NotificationTests: FRABaseTests {
         }
     }
     
+    func test_09_2_notification_is_not_expired() {
+        do {
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            XCTAssertTrue(notification.isExpired)
+            let calendar = Calendar.current
+            let future = calendar.date(byAdding: .minute, value: 1, to: Date())
+            notification.timeAdded = future!
+            XCTAssertFalse(notification.isExpired)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
     
     func test_10_notification_archive_obj() {
         do {

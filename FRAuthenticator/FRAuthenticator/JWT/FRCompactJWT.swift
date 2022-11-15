@@ -2,7 +2,7 @@
 //  FRCompactJWT.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -117,7 +117,7 @@ struct FRCompactJWT {
             throw CryptoError.invalidJWT
         }
         var payloadStr = String(components[1])
-        payloadStr = payloadStr.base64Pad()
+        payloadStr = payloadStr.urlSafeDecoding().base64Pad()
         
         guard let payloadData = Data(base64Encoded: payloadStr),
         let payload = try? JSONSerialization.jsonObject(with: payloadData, options: []) as? [String: Any] else {

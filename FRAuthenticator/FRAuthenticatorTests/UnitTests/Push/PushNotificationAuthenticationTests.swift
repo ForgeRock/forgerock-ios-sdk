@@ -9,6 +9,7 @@
 //
 
 import XCTest
+@testable import FRCore
 @testable import FRAuthenticator
 
 class PushNotificationAuthenticationTests: FRABaseTests {
@@ -292,6 +293,9 @@ class PushNotificationAuthenticationTests: FRABaseTests {
     
     
     func test_07_push_notification_expired() {
+        
+        self.loadMockResponses(["AM_Push_Authentication_Fail"])
+        
         let qrCode = URL(string: "pushauth://push/forgerock:pushdemouser1?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=O9JHEGfOsaZqc5JT0DHM5hYFA8jofohw5vAP0EpG4JU&c=75OQ3FXmzV99TPf0ihevFfB0s43XsxQ747sY6BopgME&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:fe6311ab-013e-4599-9c0e-4c4e2525199b1588721418483&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
         
         do {
@@ -315,11 +319,11 @@ class PushNotificationAuthenticationTests: FRABaseTests {
                 ex.fulfill()
             }) { (error) in
                 switch error {
-                case PushNotificationError.notificationInvalidStatus:
+                case NetworkError.apiRequestFailure(_, _, _):
                     break
                 default:
-                XCTFail("Push authentication is expected to failed with PushNotificationError.notificationInvalidStatus for expired status, but failed with different reason: \(error.localizedDescription)")
-                    break
+                    XCTFail("Push authentication is expected to failed for expired status, but failed with different reason: \(error.localizedDescription)")
+                        break
                 }
                 ex.fulfill()
             }

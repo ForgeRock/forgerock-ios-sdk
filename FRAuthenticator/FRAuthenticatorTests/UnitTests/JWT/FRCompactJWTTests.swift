@@ -2,7 +2,7 @@
 //  FRCompactJWTTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -191,6 +191,23 @@ class FRCompactJWTTests: FRABaseTests {
         }
         catch {
             XCTFail("JWT extracting payload with invalid payload segment failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_10_extract_payload_with_extra_data() {
+        let jwt1 = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwIjoieyAgfSIsImMiOiJ2TGhoaW9FNTIxVlcyYmNsNUM2aktERGp1bXk3Um01d2NwVkpYQllUY2ZFPSIsInQiOiIyMCIsInUiOiI0NkQ2QkUzQi02NTEyLTQ4QTQtODY4Ni1DQUIxQTkxNTZCNDQiLCJpIjoiMTY2Nzk0MDI3NDk0MiIsImsiOiJjaGFsbGVuZ2UiLCJsIjoiWVcxc1ltTnZiMnRwWlQwd01RPT0iLCJtIjoiRGlkIHlvdSB0cnkgdG8gbG9naW4_IiwibiI6IjUwLDYyLDg5In0.GXCMwE1VJTC1zVzLfBcSeiGEfPiY5i13lrtf6Fpwz6w"
+        let jwt2 = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwIjoieyAgfSIsImMiOiJqK0NBWlhrUnlRdEdxdHljYmFMc3EwTWtjcFJZbU9SSzRhUzgyQWNlTWNrPSIsInQiOiIyMCIsInUiOiI0NkQ2QkUzQi02NTEyLTQ4QTQtODY4Ni1DQUIxQTkxNTZCNDQiLCJpIjoiMTY2Nzk0MTA5MTMwNiIsImsiOiJkZWZhdWx0IiwibCI6IllXMXNZbU52YjJ0cFpUMHdNUT09IiwibSI6IkRpZCB5b3UgdHJ5IHRvIGxvZ2luPyJ9.L2WjxnumzIgA9gpNN8p7onip0As5Rytb0RuOW8_sDWI"
+        
+        do {
+            let payload1 = try FRCompactJWT.extractPayload(jwt: jwt1)
+            let payload2 = try FRCompactJWT.extractPayload(jwt: jwt2)
+            
+            XCTAssertEqual(payload1.keys.count, 9)
+            XCTAssertEqual(payload2.keys.count, 8)
+
+        }
+        catch {
+            XCTFail("Failed to extract JWT payload: \(error.localizedDescription)")
         }
     }
 }
