@@ -1,10 +1,10 @@
 # Version 3.4.1
 ## [3.4.1]
 #### Changed
-- Updated Legacy encryption algorithm for iOS SE [SDKS-1994]
-- PushNotification Timeout should be validated by AM [SDKS-2164]
+- Updated legacy encryption algorithm for iOS SE [SDKS-1994]
+- Fixed an issue related to push notifications timeout [SDKS-2164]
+- Fixed an unexpected error occurring during the decoding of some push notifications [SDKS-2199]
 
-# Version 3.4.0
 ## [3.4.0]
 #### Added
 - Dynamic SDK Configuration [SDKS-1760]
@@ -14,7 +14,6 @@
 - Fixed build errors on Xcode 14 [SDKS-2073]
 - Fixed bug where the `state` parameter value was not verified upon calling the `Authorize` endpoint [SDKS-2077]
 
-# Version 3.3.2
 ## [3.3.2]
 #### Added
 - Interface for log management [SDKS-1863]
