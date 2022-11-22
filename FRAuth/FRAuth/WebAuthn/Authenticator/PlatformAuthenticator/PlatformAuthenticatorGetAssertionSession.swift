@@ -305,19 +305,19 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                             switch LAError(_nsError: error as NSError) {
                             case LAError.userFallback:
                                 FRLog.e("LAContext - User fallback", subModule: WebAuthn.module)
-                                completion(WAKError.notAllowed)
+                                completion(WAKError.unsupported)
                             case LAError.userCancel:
                                 FRLog.e("LAContext - User cancelled", subModule: WebAuthn.module)
-                                completion(WAKError.notAllowed)
+                                completion(WAKError.cancelled)
                             case LAError.authenticationFailed:
                                 FRLog.e("LAContext - User authentication failed", subModule: WebAuthn.module)
                                 completion(WAKError.notAllowed)
                             case LAError.passcodeNotSet:
                                 FRLog.e("LAContext - Passcode is not set", subModule: WebAuthn.module)
-                                completion(WAKError.notAllowed)
+                                completion(WAKError.unsupported)
                             case LAError.systemCancel:
                                 FRLog.e("LAContext - System cancel", subModule: WebAuthn.module)
-                                completion(WAKError.notAllowed)
+                                completion(WAKError.cancelled)
                             default:
                                 FRLog.e("LAContext - Unexpected error: \(error.localizedDescription)", subModule: WebAuthn.module)
                                 completion(WAKError.unknown)
