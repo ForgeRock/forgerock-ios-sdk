@@ -223,6 +223,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError.webAuthnError {
                     case .notAllowed:
+                        XCTAssertNotNil(webAuthnError.message)
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
