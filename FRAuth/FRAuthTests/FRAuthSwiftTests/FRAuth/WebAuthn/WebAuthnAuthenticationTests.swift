@@ -221,7 +221,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             }) { (error) in
                 
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .notAllowed:
                         break
                     default:
@@ -403,7 +403,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             }) { (error) in
                 
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .timeout:
                         break
                     default:

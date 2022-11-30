@@ -93,7 +93,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .timeout:
                         break
                     default:
@@ -136,7 +136,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .cancelled:
                         break
                     default:
@@ -179,7 +179,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .cancelled:
                         break
                     default:
@@ -224,7 +224,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .unsupported:
                         break
                     default:
@@ -304,7 +304,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .invalidState:
                         break
                     default:
@@ -341,7 +341,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError {
+                    switch webAuthnError.webAuthnError {
                     case .notAllowed:
                         break
                     default:
