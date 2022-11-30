@@ -15,25 +15,31 @@ import FRCore
 ///
 /// WebAuthnError represents an error captured by FRAuth SDK for WebAuthn related operation
 ///
-public enum WebAuthnError: FRError {
-    case badData
-    case badOperation
-    case invalidState
-    case constraint
-    case cancelled
-    case timeout
-    case notAllowed
-    case unsupported
-    case unknown
-}
 
+public struct WebAuthnError: FRError {
+    public enum WebAuthnError: FRError {
+        case badData
+        case badOperation
+        case invalidState
+        case constraint
+        case cancelled
+        case timeout
+        case notAllowed
+        case unsupported
+        case unknown
+    }
+
+    public let webAuthnError: WebAuthnError
+    public let platformError: Error?
+    public let message: String?
+}
 
 extension WebAuthnError {
     
     /// Converts WebAuthnError to matching type of AM's Error enum
     /// - Returns: String value of matching error type in AM
     func convertToAMErrorType() -> String {
-        switch self {
+        switch self.webAuthnError {
         case .badData:
             return "DataError"
         case .badOperation:
@@ -54,6 +60,16 @@ extension WebAuthnError {
             return "UnknownError"
         }
     }
+    
+    func extractErrorDescription() -> String? {
+        if let nsError = self.platformError as? NSError {
+            return (nsError.userInfo["NSDebugDescription"] as? String) ?? nsError.localizedDescription
+        } else if let errorDescription = self.message {
+            return errorDescription
+        } else {
+            return nil
+        }
+    }
 }
 
 
@@ -68,7 +84,7 @@ public extension WebAuthnError {
     ///
     /// - Returns: Int value of unique error code
     func parseErrorCode() -> Int {
-        switch self {
+        switch self.webAuthnError {
         case .badData:
             return 1600001
         case .badOperation:
@@ -93,11 +109,11 @@ public extension WebAuthnError {
     /// Converts WebAuthnError into String representation of error that can be used as WebAuthn outcome in WebAuthn HiddenValueCallback
     /// - Returns: String value of WebAuthn error outcome
     func convertToWebAuthnOutcome() -> String {
-        switch self {
+        switch self.webAuthnError {
         case .unsupported:
             return "unsupported"
         default:
-            return "ERROR::" + self.convertToAMErrorType() + ":"
+            return "ERROR::" + self.convertToAMErrorType() + ":" + (self.extractErrorDescription() ?? "")
         }
     }
 }
@@ -116,7 +132,7 @@ extension WebAuthnError: CustomNSError {
     
     /// Error UserInfo
     public var errorUserInfo: [String : Any] {
-        switch self {
+        switch self.webAuthnError {
         case .badData:
             return [NSLocalizedDescriptionKey: "Provided data is inadequate"]
         case .badOperation:
@@ -139,27 +155,27 @@ extension WebAuthnError: CustomNSError {
     }
 }
 
-extension WAKError {
+extension FRWAKError {
     func convert() -> WebAuthnError {
-        switch self {
+        switch self.error {
         case .badData:
-            return WebAuthnError.badData
+            return WebAuthnError(webAuthnError: .badData, platformError: self.platformError, message: self.message)
         case .badOperation:
-            return WebAuthnError.badOperation
+            return WebAuthnError(webAuthnError: .badOperation, platformError: self.platformError, message: self.message)
         case .invalidState:
-            return WebAuthnError.invalidState
+            return WebAuthnError(webAuthnError: .invalidState, platformError: self.platformError, message: self.message)
         case .constraint:
-            return WebAuthnError.constraint
+            return WebAuthnError(webAuthnError: .constraint, platformError: self.platformError, message: self.message)
         case .cancelled:
-            return WebAuthnError.cancelled
+            return WebAuthnError(webAuthnError: .cancelled, platformError: self.platformError, message: self.message)
         case .timeout:
-            return WebAuthnError.timeout
+            return WebAuthnError(webAuthnError: .timeout, platformError: self.platformError, message: self.message)
         case .notAllowed:
-            return WebAuthnError.notAllowed
+            return WebAuthnError(webAuthnError: .notAllowed, platformError: self.platformError, message: self.message)
         case .unsupported:
-            return WebAuthnError.unsupported
+            return WebAuthnError(webAuthnError: .unsupported, platformError: self.platformError, message: self.message)
         case .unknown:
-            return WebAuthnError.unknown
+            return WebAuthnError(webAuthnError: .unknown, platformError: self.platformError, message: self.message)
         }
     }
 }

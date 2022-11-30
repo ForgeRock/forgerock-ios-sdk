@@ -60,16 +60,18 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
         WAKLogger.debug("<GetOperation> start")
         DispatchQueue.global().async {
             if self.stopped {
-                WAKLogger.debug("<GetOperation> already stopped")
-                onError(WAKError.badOperation)
+                let logMessage = "<GetOperation> already stopped"
+                WAKLogger.debug(logMessage)
+                onError(FRWAKError(error: .badOperation, message: logMessage))
                 self.delegate?.operationDidFinish(opType: self.type, opId: self.id)
                 return
             }
             
             let transports: [AuthenticatorTransport] = self.options.allowCredentials.flatMap { $0.transports }
             if !transports.isEmpty && !transports.contains(self.session.transport) {
-                WAKLogger.debug("<GetOperation> transport mismatch")
-                onError(WAKError.notAllowed)
+                let logMessage = "<GetOperation> transport mismatch"
+                WAKLogger.debug(logMessage)
+                onError(FRWAKError(error: .notAllowed, message: logMessage))
                 self.delegate?.operationDidFinish(opType: self.type, opId: self.id)
                 return
             }
@@ -85,7 +87,7 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
         }
     }
     
-    func cancel(reason: WAKError = .cancelled) {
+    func cancel(reason: FRWAKError = FRWAKError(error: .cancelled)) {
         WAKLogger.debug("<GetOperation> cancel")
         if self.completion != nil && !self.stopped {
             DispatchQueue.global().async {
@@ -120,7 +122,7 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
         self.delegate?.operationDidFinish(opType: self.type, opId: self.id)
     }
 
-    private func stopInternal(reason: WAKError) {
+    private func stopInternal(reason: FRWAKError) {
         WAKLogger.debug("<GetOperation> stop")
         if self.completion == nil {
             WAKLogger.debug("<GetOperation> not started")
@@ -152,13 +154,13 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
         }
     }
 
-    private func stop(by error: WAKError) {
+    private func stop(by error: FRWAKError) {
         WAKLogger.debug("<GetOperation> stop by")
         self.stopInternal(reason: error)
         self.dispatchError(error)
     }
 
-    private func dispatchError(_ error: WAKError) {
+    private func dispatchError(_ error: FRWAKError) {
         WAKLogger.debug("<GetOperation> dispatchError")
         
         if let completion = self.completion {
@@ -174,9 +176,10 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
     }
 
     @objc func lifetimeTimerTimeout() {
-        WAKLogger.debug("<GetOperation> timeout")
+        let logMessage = "<GetOperation> timeout"
+        WAKLogger.debug(logMessage)
         self.stopLifetimeTimer()
-        self.cancel(reason: .timeout)
+        self.cancel(reason: FRWAKError(error: .timeout, message: logMessage))
     }
 
     private func judgeUserVerificationExecution(_ session: AuthenticatorGetAssertionSession) -> Bool {
@@ -204,8 +207,9 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
 
         if self.options.userVerification == .required
             && !session.canPerformUserVerification() {
-            WAKLogger.debug("<GetOperation> user-verification is required, but this authenticator doesn't support")
-            self.stop(by: .unsupported)
+            let logMessage = "<GetOperation> user-verification is required, but this authenticator doesn't support"
+            WAKLogger.debug(logMessage)
+            self.stop(by: FRWAKError(error: .unsupported, message: logMessage))
             return
         }
 
@@ -232,8 +236,9 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
             }
 
             if (allowCredentialDescriptorList.isEmpty) {
-                WAKLogger.debug("<GetOperation> no matched credential on this authenticator")
-                self.stop(by: .notAllowed)
+                let logMessage = "<GetOperation> no matched credential on this authenticator"
+                WAKLogger.debug(logMessage)
+                self.stop(by: FRWAKError(error: .notAllowed, message: logMessage))
                 return
             }
 
@@ -268,8 +273,9 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
         } else {
             WAKLogger.debug("<GetOperation> use credentialId from authenticator")
             guard let resultId = assertion.credentailId else {
-                WAKLogger.debug("<GetOperation> credentialId not found")
-                self.dispatchError(.unknown)
+                let logMessage = "<GetOperation> credentialId not found"
+                WAKLogger.debug(logMessage)
+                self.dispatchError(FRWAKError(error: .unknown, message: logMessage))
                 return
             }
             credentialId = resultId
@@ -296,13 +302,14 @@ class ClientGetOperation: AuthenticatorGetAssertionSessionDelegate {
     }
 
     func authenticatorSessionDidBecomeUnavailable(session: AuthenticatorGetAssertionSession) {
-        WAKLogger.debug("<GetOperation> authenticator become unavailable")
-        self.stop(by: .notAllowed)
+        let logMessage = "<GetOperation> authenticator become unavailable"
+        WAKLogger.debug(logMessage)
+        self.stop(by: FRWAKError(error: .notAllowed, message: logMessage))
     }
 
     func authenticatorSessionDidStopOperation(
         session: AuthenticatorGetAssertionSession,
-        reason:  WAKError
+        reason:  FRWAKError
     ) {
         WAKLogger.debug("<GetOperation> authenticator stopped operation")
         self.stop(by: reason)

@@ -242,7 +242,7 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
         }) { (error) in
         
             /// Converts internal WAKError into WebAuthnError
-            if let webAuthnError = error as? WAKError {
+            if let webAuthnError = error as? FRWAKError {
                 //  Converts the error to public facing error
                 let publicError = webAuthnError.convert()
                 if let node = node {

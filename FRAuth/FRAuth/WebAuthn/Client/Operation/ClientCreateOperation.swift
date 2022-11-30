@@ -60,14 +60,16 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
         
         DispatchQueue.global().async {
             if self.stopped {
-                WAKLogger.debug("<CreateOperation> already stopped")
-                onError(WAKError.badOperation)
+                let logMessage = "<CreateOperation> already stopped"
+                WAKLogger.debug(logMessage)
+                onError(FRWAKError(error: .badOperation, message: logMessage))
                 self.delegate?.operationDidFinish(opType: self.type, opId: self.id)
                 return
             }
             if self.completion != nil {
-                WAKLogger.debug("<CreateOperation> already started")
-                onError(WAKError.badOperation)
+                let logMessage = "<CreateOperation> already started"
+                WAKLogger.debug(logMessage)
+                onError(FRWAKError(error: .badOperation, message: logMessage))
                 self.delegate?.operationDidFinish(opType: self.type, opId: self.id)
                 return
             }
@@ -82,7 +84,7 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
         
     }
 
-    func cancel(reason: WAKError = .cancelled) {
+    func cancel(reason: FRWAKError = FRWAKError(error: .cancelled)) {
         WAKLogger.debug("<CreateOperation> cancel")
         if self.completion != nil && !self.stopped {
             DispatchQueue.global().async {
@@ -92,10 +94,10 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
                     // At the timing like that,
                     // it causes trouble if this operation tries to close.
                     // So, let the session to start closing
-                    if reason == .timeout {
-                        self.session.cancel(reason: .timeout)
+                    if reason.error == .timeout {
+                        self.session.cancel(reason: FRWAKError(error: .timeout, message: "<CreateOperation> timeout"))
                     } else {
-                        self.session.cancel(reason: .cancelled)
+                        self.session.cancel(reason: FRWAKError(error: .cancelled, message: "<CreateOperation> cancelled"))
                     }
                 } else {
                     self.stop(by: reason)
@@ -119,7 +121,7 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
         self.delegate?.operationDidFinish(opType: self.type, opId: self.id)
     }
 
-    private func stopInternal(reason: WAKError) {
+    private func stopInternal(reason: FRWAKError) {
         WAKLogger.debug("<CreateOperation> stop")
         if self.completion == nil {
             WAKLogger.debug("<CreateOperation> not started")
@@ -137,13 +139,13 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
 
     // MARK: Private Methods
 
-    private func stop(by error: WAKError) {
+    private func stop(by error: FRWAKError) {
         WAKLogger.debug("<CreateOperation> stop by \(error)")
         self.stopInternal(reason: error)
         self.dispatchError(error)
     }
 
-    private func dispatchError(_ error: WAKError) {
+    private func dispatchError(_ error: FRWAKError) {
         WAKLogger.debug("<CreateOperation> dispatchError")
         if let completion = self.completion {
             completion.onError(error)
@@ -175,9 +177,10 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
     }
 
     @objc func lifetimeTimerTimeout() {
-        WAKLogger.debug("<CreateOperation> timeout")
+        let logMessage = "<CreateOperation> timeout"
+        WAKLogger.debug(logMessage)
         self.stopLifetimeTimer()
-        self.cancel(reason: .timeout)
+        self.cancel(reason: FRWAKError(error: .timeout, message: logMessage))
     }
 
     private func judgeUserVerificationExecution(_ session: AuthenticatorMakeCredentialSession) -> Bool {
@@ -211,23 +214,26 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
             // XXX should be checked beforehand?
             if let attachment = selection.authenticatorAttachment {
                 if attachment != session.attachment {
-                    WAKLogger.debug("<CreateOperation> authenticator's attachment doesn't match to RP's request")
-                    self.stop(by: .unsupported)
+                    let logMessage = "<CreateOperation> authenticator's attachment doesn't match to RP's request"
+                    WAKLogger.debug(logMessage)
+                    self.stop(by: FRWAKError(error: .unsupported, message: logMessage))
                     return
                 }
             }
 
             if selection.requireResidentKey
                 && !session.canStoreResidentKey() {
-                WAKLogger.debug("<CreateOperation> This authenticator can't store resident-key")
-                self.stop(by: .unsupported)
+                let logMessage = "<CreateOperation> This authenticator can't store resident-key"
+                WAKLogger.debug(logMessage)
+                self.stop(by: FRWAKError(error: .unsupported, message: logMessage))
                 return
             }
 
             if selection.userVerification == .required
                 && !session.canPerformUserVerification() {
-                WAKLogger.debug("<CreateOperation> This authenticator can't perform user verification")
-                self.stop(by: .unsupported)
+                let logMessage = "<CreateOperation> This authenticator can't perform user verification"
+                WAKLogger.debug(logMessage)
+                self.stop(by: FRWAKError(error: .unsupported, message: logMessage))
                 return
             }
         }
@@ -269,8 +275,9 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
     }
 
     func authenticatorSessionDidBecomeUnavailable(session: AuthenticatorMakeCredentialSession) {
-        WAKLogger.debug("<CreateOperation> authenticator become unavailable")
-        self.stop(by: .notAllowed)
+        let logMessage = "<CreateOperation> authenticator become unavailable"
+        WAKLogger.debug(logMessage)
+        self.stop(by: FRWAKError(error: .notAllowed, message: logMessage))
     }
 
     func authenticatorSessionDidMakeCredential(
@@ -281,8 +288,9 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
         
         guard let attestedCred =
             attestation.authData.attestedCredentialData else {
-            WAKLogger.debug("<CreateOperation> attested credential data not found")
-            self.dispatchError(.unknown)
+            let logMessage = "<CreateOperation> attested credential data not found"
+            WAKLogger.debug(logMessage)
+            self.dispatchError(FRWAKError(error: .unknown, message: logMessage))
             return
         }
 
@@ -298,8 +306,9 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
             WAKLogger.debug("<CreateOperation> attestation conveyance request is 'none', but this is not a self-attestation.")
             atts = attestation.toNone()
             guard let bytes = atts.toBytes() else {
-                WAKLogger.debug("<CreateOperation> failed to build attestation-object")
-                self.dispatchError(.unknown)
+                let logMessage = "<CreateOperation> failed to build attestation-object"
+                WAKLogger.debug(logMessage)
+                self.dispatchError(FRWAKError(error: .unknown, message: logMessage))
                 return
             }
             attestationObject = bytes
@@ -307,8 +316,9 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
             WAKLogger.debug("<CreateOperation> replace AAGUID with zero")
         } else {
             guard let bytes = atts.toBytes() else {
-                WAKLogger.debug("<CreateOperation> failed to build attestation-object")
-                self.dispatchError(.unknown)
+                let logMessage = "<CreateOperation> failed to build attestation-object"
+                WAKLogger.debug(logMessage)
+                self.dispatchError(FRWAKError(error: .unknown, message: logMessage))
                 return
             }
             attestationObject = bytes
@@ -337,7 +347,7 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
 
     func authenticatorSessionDidStopOperation(
         session: AuthenticatorMakeCredentialSession,
-        reason:  WAKError
+        reason:  FRWAKError
     ) {
         WAKLogger.debug("<CreateOperation> authenticator stopped operation")
         self.stop(by: reason)

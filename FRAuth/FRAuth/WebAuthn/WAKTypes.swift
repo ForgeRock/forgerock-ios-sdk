@@ -9,16 +9,22 @@
 
 import Foundation
 
-enum WAKError : Error {
-    case badData
-    case badOperation
-    case invalidState
-    case constraint
-    case cancelled
-    case timeout
-    case notAllowed
-    case unsupported
-    case unknown
+struct FRWAKError: Error {
+    enum WAKError : Error {
+        case badData
+        case badOperation
+        case invalidState
+        case constraint
+        case cancelled
+        case timeout
+        case notAllowed
+        case unsupported
+        case unknown
+    }
+    
+    var error: WAKError
+    var platformError: Error?
+    var message: String?
 }
 
 enum WAKResult<T, Error: Swift.Error> {
