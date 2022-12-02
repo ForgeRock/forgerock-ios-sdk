@@ -231,7 +231,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     }
                     context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: NSLocalizedString(WebAuthn.localAuthenticationString, comment: "Description text for local authentication reason displayed in iOS' local authentication screen.")) { [weak self] (result, error) in
                         
-                        if result {
+                        if result && error != nil {
                             completion(nil)
                         }
                         else if let error = error as? NSError {

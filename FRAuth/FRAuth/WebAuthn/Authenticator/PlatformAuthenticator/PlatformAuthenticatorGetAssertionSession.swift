@@ -306,7 +306,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                     }
                     FRLog.v("Evaluation with LocalContext is available, performing biometric LocalAuthentication", subModule: WebAuthn.module)
                     context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: NSLocalizedString(WebAuthn.localAuthenticationString, comment: "Description text for local authentication reason displayed in iOS' local authentication screen.")) { [weak self] (result, error) in
-                        if result {
+                        if result && error != nil {
                             FRLog.v("User Verification is completed", subModule: WebAuthn.module)
                             completion(nil)
                         }
