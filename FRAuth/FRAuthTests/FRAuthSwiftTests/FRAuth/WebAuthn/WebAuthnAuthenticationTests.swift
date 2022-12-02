@@ -221,7 +221,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             }) { (error) in
                 
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnError {
+                    switch webAuthnError.webAuthnErrorCase {
                     case .notAllowed:
                         XCTAssertNotNil(webAuthnError.message)
                         break
@@ -404,7 +404,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             }) { (error) in
                 
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnError {
+                    switch webAuthnError.webAuthnErrorCase {
                     case .timeout:
                         break
                     default:
