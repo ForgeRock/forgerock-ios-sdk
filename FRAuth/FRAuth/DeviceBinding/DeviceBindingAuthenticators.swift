@@ -30,6 +30,13 @@ public protocol DeviceAuthenticator {
     /// - Returns: compact serialized jws
     func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String
     
+    /// Sign the challenge sent from the server and generate signed JWT
+    /// - Parameter userKey: user Information
+    /// - Parameter challenge: challenge received from server
+    /// - Parameter expiration: experation Date of jws
+    /// - Returns: compact serialized jws
+    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String
+    
     /// Check if authentication is supported
     func isSupported() -> Bool
     
@@ -66,6 +73,43 @@ extension DeviceAuthenticator {
         
         //create signer
         guard let signer = Signer(signingAlgorithm: algorithm, key: keyPair.privateKey) else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
+        }
+        
+        //create jws
+        let jws = try JWS(header: header, payload: payload, signer: signer)
+        
+        return jws.compactSerializedString
+    }
+    
+    
+    // Default implemention
+    /// Sign the challenge sent from the server and generate signed JWT
+    /// - Parameter userKey: user Information
+    /// - Parameter challenge: challenge received from server
+    /// - Parameter expiration: experation Date of jws
+    /// - Returns: compact serialized jws
+    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+        guard let keyStoreKey = KeyAware.getSecureKey(keyAlias: userKey.keyAlias) else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot read the private key")
+        }
+//        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: ["use": "sig", "alg": "ES256"])
+//        let jwkWithKeyId = try jwk.withThumbprintAsKeyId()
+        let algorithm = SignatureAlgorithm.ES256
+        
+        //create header
+        var header = JWSHeader(algorithm: algorithm)
+        header.kid = userKey.kid
+        header.typ = "JWS"
+        //header.jwkTyped = jwkWithKeyId
+        
+        //create payload
+        let params: [String: Any] = ["sub": userKey.userId, "challenge": challenge, "exp": (Int(expiration.timeIntervalSince1970))]
+        let message = try JSONSerialization.data(withJSONObject: params, options: [])
+        let payload = Payload(message)
+        
+        //create signer
+        guard let signer = Signer(signingAlgorithm: algorithm, key: keyStoreKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         

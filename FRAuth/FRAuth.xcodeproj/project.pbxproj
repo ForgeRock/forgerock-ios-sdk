@@ -19,6 +19,13 @@
 		A5BE3C2F29196DDB0041F990 /* DeviceBindingCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C2E29196DDB0041F990 /* DeviceBindingCallbackTests.swift */; };
 		A5BE3C33291D51CD0041F990 /* KeyAwareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C32291D51CC0041F990 /* KeyAwareTests.swift */; };
 		A5BE3C35291D5E510041F990 /* DeviceAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C34291D5E510041F990 /* DeviceAuthenticatorTests.swift */; };
+		A5BE3C37292BEE7D0041F990 /* DeviceSigningVerifierCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C36292BEE7C0041F990 /* DeviceSigningVerifierCallback.swift */; };
+		A5BE3C39292E610A0041F990 /* UserDeviceKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */; };
+		A5BE3C3B292E76F40041F990 /* SharedPreferencesDeviceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C3A292E76F40041F990 /* SharedPreferencesDeviceRepository.swift */; };
+		A5BE3C43293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */; };
+		A5BE3C45293DAA8B0041F990 /* SharedPreferencesDeviceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C44293DAA8B0041F990 /* SharedPreferencesDeviceRepositoryTests.swift */; };
+		A5BE3C47293DB6780041F990 /* UserDeviceKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */; };
+		A5BE3C49293E58850041F990 /* DeviceSigningVerifierDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C48293E58850041F990 /* DeviceSigningVerifierDelegate.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
@@ -350,6 +357,13 @@
 		A5BE3C2E29196DDB0041F990 /* DeviceBindingCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallbackTests.swift; sourceTree = "<group>"; };
 		A5BE3C32291D51CC0041F990 /* KeyAwareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAwareTests.swift; sourceTree = "<group>"; };
 		A5BE3C34291D5E510041F990 /* DeviceAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAuthenticatorTests.swift; sourceTree = "<group>"; };
+		A5BE3C36292BEE7C0041F990 /* DeviceSigningVerifierCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallback.swift; sourceTree = "<group>"; };
+		A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeviceKeyService.swift; sourceTree = "<group>"; };
+		A5BE3C3A292E76F40041F990 /* SharedPreferencesDeviceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreferencesDeviceRepository.swift; sourceTree = "<group>"; };
+		A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallbackTests.swift; sourceTree = "<group>"; };
+		A5BE3C44293DAA8B0041F990 /* SharedPreferencesDeviceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreferencesDeviceRepositoryTests.swift; sourceTree = "<group>"; };
+		A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeviceKeyServiceTests.swift; sourceTree = "<group>"; };
+		A5BE3C48293E58850041F990 /* DeviceSigningVerifierDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierDelegate.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
@@ -658,6 +672,9 @@
 				A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */,
 				A54874A828F8609900FF9B99 /* KeyAware.swift */,
 				A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */,
+				A5BE3C3A292E76F40041F990 /* SharedPreferencesDeviceRepository.swift */,
+				A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */,
+				A5BE3C48293E58850041F990 /* DeviceSigningVerifierDelegate.swift */,
 			);
 			path = DeviceBinding;
 			sourceTree = "<group>";
@@ -675,6 +692,8 @@
 			children = (
 				A5BE3C32291D51CC0041F990 /* KeyAwareTests.swift */,
 				A5BE3C34291D5E510041F990 /* DeviceAuthenticatorTests.swift */,
+				A5BE3C44293DAA8B0041F990 /* SharedPreferencesDeviceRepositoryTests.swift */,
+				A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */,
 			);
 			path = DeviceBinding;
 			sourceTree = "<group>";
@@ -836,6 +855,7 @@
 				D58BC38E2602A47600254654 /* IdPCallbackTests.swift */,
 				D588649126312D2000EAFE4E /* CallbackConstantsTests.swift */,
 				A5BE3C2E29196DDB0041F990 /* DeviceBindingCallbackTests.swift */,
+				A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -1137,6 +1157,7 @@
 				D5B2061325FFE0E500DABB9B /* SelectIdPCallback.swift */,
 				D5B2061725FFE0F300DABB9B /* IdPCallback.swift */,
 				A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */,
+				A5BE3C36292BEE7C0041F990 /* DeviceSigningVerifierCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1810,7 +1831,9 @@
 				D53A803A262789BD0093B1CA /* CBOR.swift in Sources */,
 				D586CFA223358EE0007A2194 /* StringAttributeInputCallback.swift in Sources */,
 				D53A8041262789BD0093B1CA /* PlatformAuthenticatorMakeCredentialSession.swift in Sources */,
+				A5BE3C3B292E76F40041F990 /* SharedPreferencesDeviceRepository.swift in Sources */,
 				D53A804E262789BD0093B1CA /* WAKTypes.swift in Sources */,
+				A5BE3C49293E58850041F990 /* DeviceSigningVerifierDelegate.swift in Sources */,
 				D53A804A262789BD0093B1CA /* AuthenticatorData.swift in Sources */,
 				D53A803E262789BD0093B1CA /* Bytes.swift in Sources */,
 				D53A8044262789BD0093B1CA /* PlatformAuthenticatorConfig.swift in Sources */,
@@ -1824,6 +1847,7 @@
 				D586CF8223358EE0007A2194 /* SSHDetector.swift in Sources */,
 				D5F01B1D240F0B9F00BD48AA /* FRLog.swift in Sources */,
 				D586CFAD23358EE0007A2194 /* FRUser.swift in Sources */,
+				A5BE3C39292E610A0041F990 /* UserDeviceKeyService.swift in Sources */,
 				D586CF8423358EE0007A2194 /* FRJailbreakDetector.swift in Sources */,
 				EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */,
 				D586CFB823358EE0007A2194 /* HardwareCollector.swift in Sources */,
@@ -1889,6 +1913,7 @@
 				D5CD493225265FF8006DD932 /* BrowserError.swift in Sources */,
 				D5C6DB682509747D00E1A857 /* Browser.swift in Sources */,
 				D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */,
+				A5BE3C37292BEE7D0041F990 /* DeviceSigningVerifierCallback.swift in Sources */,
 				D53A8045262789BD0093B1CA /* KeySupport.swift in Sources */,
 				D586CFA323358EE0007A2194 /* KbaCreateCallback.swift in Sources */,
 				D586CF9523358EE0007A2194 /* MultipleValuesCallback.swift in Sources */,
@@ -1925,10 +1950,12 @@
 			files = (
 				D53A807026278A5C0093B1CA /* WebAuthnAuthenticationCallbackTests.swift in Sources */,
 				D5791B5025F87DE7004B487A /* CustomCallback.swift in Sources */,
+				A5BE3C43293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift in Sources */,
 				D5791B5125F87DE7004B487A /* NoSessionInterceptor.swift in Sources */,
 				D58BC3C0260315DA00254654 /* AppleSignInHandlerTests.swift in Sources */,
 				D5791B8425F87DE7004B487A /* Config.swift in Sources */,
 				D5791B8525F87DE7004B487A /* FRAuthBaseTest.swift in Sources */,
+				A5BE3C45293DAA8B0041F990 /* SharedPreferencesDeviceRepositoryTests.swift in Sources */,
 				D5791B8625F87DE7004B487A /* FRBaseTestCase.swift in Sources */,
 				D5791B8725F87DE7004B487A /* FRTestStubResponseParser.swift in Sources */,
 				D5791B8825F87DE7004B487A /* FRTestUtils.swift in Sources */,
@@ -2001,6 +2028,7 @@
 				D5791BD125F87DE8004B487A /* FRDeviceCollectorTests.swift in Sources */,
 				D5791BD225F87DE8004B487A /* AuthErrorTests.swift in Sources */,
 				D5791BD325F87DE8004B487A /* ConfigErrorTests.swift in Sources */,
+				A5BE3C47293DB6780041F990 /* UserDeviceKeyServiceTests.swift in Sources */,
 				D5791BD425F87DE8004B487A /* TokenErrorTests.swift in Sources */,
 				D5791BD525F87DE8004B487A /* AuthApiErrorTests.swift in Sources */,
 				D5791BD625F87DE8004B487A /* BrowserErrorTests.swift in Sources */,

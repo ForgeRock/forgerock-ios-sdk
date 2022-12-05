@@ -243,4 +243,136 @@ class DeviceAuthenticatorTests: XCTestCase {
         }
         KeyAware.deleteKey(keyAlias: key)
     }
+    
+    
+    func test_08_None_sign_with_userKey() {
+        let userId = "Test User Id 8"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let keyAware = KeyAware(userId: userId)
+        let kid = UUID().uuidString
+        
+        let authenticator = None(keyAware: keyAware)
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: KeyAware.getKeyAlias(keyName: userId))
+            let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
+            
+            //verify signature
+            let jws = try JWS(compactSerialization: jwsString)
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+                XCTFail("Failed to create Verifier")
+                return
+            }
+            
+            let _ = try jws.validate(using: verifier)
+            let payload = jws.payload
+            let message = String(data: payload.data(), encoding: .utf8)!
+            XCTAssertEqual(kid, jws.header.kid)
+            XCTAssertEqual("JWS", jws.header.typ)
+            
+            let messageDictionary = FRTestUtils.parseStringToDictionary(message)
+            
+            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
+            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
+            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+        } catch {
+            XCTFail("Failed to verify JWS signature")
+        }
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+    }
+    
+    
+    func test_09_BiometricOnly_sign_with_userKey() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
+        let userId = "Test User Id 9"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let keyAware = KeyAware(userId: userId)
+        let kid = UUID().uuidString
+        
+        let authenticator = BiometricOnly(description: "Description", keyAware: keyAware)
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: KeyAware.getKeyAlias(keyName: userId))
+            let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
+            
+            //verify signature
+            let jws = try JWS(compactSerialization: jwsString)
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+                XCTFail("Failed to create Verifier")
+                return
+            }
+            
+            let _ = try jws.validate(using: verifier)
+            let payload = jws.payload
+            let message = String(data: payload.data(), encoding: .utf8)!
+            XCTAssertEqual(kid, jws.header.kid)
+            XCTAssertEqual("JWS", jws.header.typ)
+            
+            let messageDictionary = FRTestUtils.parseStringToDictionary(message)
+            
+            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
+            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
+            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+        } catch {
+            XCTFail("Failed to verify JWS signature")
+        }
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+    }
+    
+    
+    func test_10_BiometricAndDeviceCredential_sign_with_userKey() {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+#if targetEnvironment(simulator)
+        if #available(iOS 15.0, *) {
+            guard #available(iOS 16.0, *) else {
+                return
+            }
+        }
+#endif
+        let userId = "Test User Id 10"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let keyAware = KeyAware(userId: userId)
+        let kid = UUID().uuidString
+        
+        let authenticator = BiometricAndDeviceCredential(description: "Description", keyAware: keyAware)
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: KeyAware.getKeyAlias(keyName: userId))
+            let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
+            
+            //verify signature
+            let jws = try JWS(compactSerialization: jwsString)
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+                XCTFail("Failed to create Verifier")
+                return
+            }
+            
+            let _ = try jws.validate(using: verifier)
+            let payload = jws.payload
+            let message = String(data: payload.data(), encoding: .utf8)!
+            XCTAssertEqual(kid, jws.header.kid)
+            XCTAssertEqual("JWS", jws.header.typ)
+            
+            let messageDictionary = FRTestUtils.parseStringToDictionary(message)
+            
+            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
+            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
+            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+        } catch {
+            XCTFail("Failed to verify JWS signature")
+        }
+        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+    }
 }
