@@ -56,15 +56,14 @@ extension DeviceAuthenticator {
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
     func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
-        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: ["use": "sig", "alg": "ES256"])
-        let jwkWithKeyId = try jwk.withThumbprintAsKeyId()
+        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: "sig", JWKParameter.algorithm.rawValue: "ES256", JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
         
         //create header
         var header = JWSHeader(algorithm: algorithm)
         header.kid = kid
         header.typ = "JWS"
-        header.jwkTyped = jwkWithKeyId
+        header.jwkTyped = jwk
         
         //create payload
         let params: [String: Any] = ["sub": userId, "challenge": challenge, "exp": (Int(expiration.timeIntervalSince1970))]
