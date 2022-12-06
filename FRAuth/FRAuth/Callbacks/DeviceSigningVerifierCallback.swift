@@ -114,7 +114,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
     
     /// Sign the device.
     /// - Parameter completion Completion block for Device binding result callback
-    open func sign(completion: @escaping DeviceBindingResultCallback) {
+    open func sign(completion: @escaping DeviceSigningResultCallback) {
         execute(userKeyService: nil, completion)
     }
     
@@ -123,7 +123,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
     /// - Parameter userKeyService: service to sort and fetch the keys stored in the device
     /// - Parameter completion: completion Completion block for Device binding result callback
     internal func execute(userKeyService: UserKeyService?,
-                          _ completion: @escaping DeviceBindingResultCallback) {
+                          _ completion: @escaping DeviceSigningResultCallback) {
         let newUserKeyService = userKeyService ?? UserDeviceKeyService(encryptedPreference: nil)
         
         let status = newUserKeyService.getKeyStatus(userId: userId)
@@ -152,7 +152,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
     /// - Parameter completion: completion Completion block for Device binding result callback
     internal func authenticate(userKey: UserKey,
                                authInterface: DeviceAuthenticator?,
-                               _ completion: @escaping DeviceBindingResultCallback) {
+                               _ completion: @escaping DeviceSigningResultCallback) {
         let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator(userKey: userKey)
         
         guard newAuthInterface.isSupported() else {
@@ -204,7 +204,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
     /// Handle all the errors for the device binding.
     /// - Parameter status: Device binding status
     /// - Parameter completion: Completion block Device binding result callback
-    open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceBindingResultCallback) {
+    open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceSigningResultCallback) {
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))

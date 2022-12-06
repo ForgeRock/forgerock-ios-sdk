@@ -1,5 +1,5 @@
 // 
-//  SharedPreferencesDeviceRepository.swift
+//  KeychainDeviceRepository.swift
 //  FRAuth
 //
 //  Copyright (c) 2022 ForgeRock. All rights reserved.
@@ -26,7 +26,7 @@ protocol DeviceRepository {
 
 
 /// Helper class to save and retrieve EncryptedMessage
-internal class SharedPreferencesDeviceRepository: DeviceRepository {
+internal class KeychainDeviceRepository: DeviceRepository {
     static let keychainServiceIdentifier = "com.forgerock.ios.devicebinding.keychainservice"
     static let userIdKey = "userId"
     static let kidKey = "kid"
@@ -41,7 +41,7 @@ internal class SharedPreferencesDeviceRepository: DeviceRepository {
     /// - Parameter keychainService: set nil for default value
     init(uuid: String?, keychainService: KeychainService?) {
         self.uuid = uuid ?? UUID().uuidString
-        self.keychainService = keychainService ?? FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: SharedPreferencesDeviceRepository.keychainServiceIdentifier, securedKey: nil)
+        self.keychainService = keychainService ?? FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)
     }
     
     
@@ -55,10 +55,10 @@ internal class SharedPreferencesDeviceRepository: DeviceRepository {
                  userName: String,
                  key: String,
                  authenticationType: DeviceBindingAuthenticationType) throws -> String {
-        let dictionary = [SharedPreferencesDeviceRepository.userIdKey: userId,
-                          SharedPreferencesDeviceRepository.userNameKey: userName,
-                          SharedPreferencesDeviceRepository.kidKey: uuid,
-                          SharedPreferencesDeviceRepository.authTypeKey: authenticationType.rawValue]
+        let dictionary = [KeychainDeviceRepository.userIdKey: userId,
+                          KeychainDeviceRepository.userNameKey: userName,
+                          KeychainDeviceRepository.kidKey: uuid,
+                          KeychainDeviceRepository.authTypeKey: authenticationType.rawValue]
         let data = try JSONEncoder().encode(dictionary)
         if let str = String(data: data, encoding: .utf8) {
             keychainService.set(str, key: key)

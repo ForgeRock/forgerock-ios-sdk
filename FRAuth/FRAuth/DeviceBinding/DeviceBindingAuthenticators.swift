@@ -93,15 +93,12 @@ extension DeviceAuthenticator {
         guard let keyStoreKey = KeyAware.getSecureKey(keyAlias: userKey.keyAlias) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot read the private key")
         }
-//        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: ["use": "sig", "alg": "ES256"])
-//        let jwkWithKeyId = try jwk.withThumbprintAsKeyId()
         let algorithm = SignatureAlgorithm.ES256
         
         //create header
         var header = JWSHeader(algorithm: algorithm)
         header.kid = userKey.kid
         header.typ = "JWS"
-        //header.jwkTyped = jwkWithKeyId
         
         //create payload
         let params: [String: Any] = ["sub": userKey.userId, "challenge": challenge, "exp": (Int(expiration.timeIntervalSince1970))]
@@ -118,12 +115,11 @@ extension DeviceAuthenticator {
         
         return jws.compactSerializedString
     }
-    
 }
 
 
 /// DeviceAuthenticator adoption for biometric only authentication
-internal struct BiometricOnly: DeviceAuthenticator {
+internal class BiometricOnly: DeviceAuthenticator {
     /// prompt description for authentication promp if applicable
     var promptDescription: String
     /// local authentication policy for authentication
@@ -177,7 +173,7 @@ internal struct BiometricOnly: DeviceAuthenticator {
 
 
 /// DeviceAuthenticator adoption for biometric and Device Credential authentication
-internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
+internal class BiometricAndDeviceCredential: DeviceAuthenticator {
     /// prompt description for authentication promp if applicable
     var promptDescription: String
     /// local authentication policy for authentication
@@ -230,7 +226,7 @@ internal struct BiometricAndDeviceCredential: DeviceAuthenticator {
 }
 
 
-internal struct None: DeviceAuthenticator {
+internal class None: DeviceAuthenticator {
     
     /// keyAware for key pair generation
     var keyAware: KeyAware

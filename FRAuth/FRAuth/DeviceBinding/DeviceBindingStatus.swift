@@ -65,3 +65,14 @@ public enum DeviceBindingResult {
 
 /// Callback definition for completion of Device Binding
 public typealias DeviceBindingResultCallback = (_ result: DeviceBindingResult) -> Void
+
+
+/// Result enum for Device Signing
+public enum DeviceSigningResult {
+    case success
+    case failure(DeviceBindingStatus)
+}
+
+
+/// Callback definition for completion of Device Signing
+public typealias DeviceSigningResultCallback = (_ result: DeviceSigningResult) -> Void

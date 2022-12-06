@@ -159,7 +159,7 @@ open class DeviceBindingCallback: MultipleValuesCallback {
                           _ completion: @escaping DeviceBindingResultCallback) {
         let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator()
         let newDeviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
-        let newEncryptedPreference = encryptedPreference ?? SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+        let newEncryptedPreference = encryptedPreference ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
         
         guard newAuthInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)

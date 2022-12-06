@@ -412,7 +412,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let delegate = CustomDeviceSigningVerifierDelegate()
             callback.delegate = delegate
             
-            let encryptedPreference = SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+            let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
             let _ = try? encryptedPreference.persist(userId: "User Id 1", userName: "User Name 1", key: "User Key 1", authenticationType: .none)
             let _ = try? encryptedPreference.persist(userId: "User Id 2", userName: "User Name 2", key: "User Key 2", authenticationType: .none)
@@ -451,7 +451,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let keyAware = KeyAware(userId: "User Id 1")
             let keyPair = try keyAware.createKeyPair(builderQuery: keyAware.keyBuilderQuery())
             
-            let encryptedPreference = SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+            let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
             
             let _ = try? encryptedPreference.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)
@@ -492,7 +492,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let delegate = CustomDeviceSigningVerifierDelegate()
             callback.delegate = delegate
             
-            let encryptedPreference = SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+            let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
             
             let userKeyService = UserDeviceKeyService(encryptedPreference: encryptedPreference)
@@ -539,7 +539,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let keyAware2 = KeyAware(userId: "User Id 2")
             let keyPair2 = try keyAware2.createKeyPair(builderQuery: keyAware2.keyBuilderQuery())
             
-            let encryptedPreference = SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+            let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
             
             let _ = try? encryptedPreference.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair1.keyAlias, authenticationType: .none)
@@ -584,7 +584,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let keyAware = KeyAware(userId: "User Id 1")
             let keyPair = try keyAware.createKeyPair(builderQuery: keyAware.keyBuilderQuery())
             
-            let encryptedPreference = SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+            let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
             
             let _ = try? encryptedPreference.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)

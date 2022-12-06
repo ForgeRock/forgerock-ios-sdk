@@ -33,7 +33,7 @@ internal class UserDeviceKeyService: UserKeyService {
     /// - Parameter uuid: set nil for default value
     /// - Parameter keychainService: set nil for default value
     init(encryptedPreference: DeviceRepository?) {
-        self.encryptedPreference = encryptedPreference ?? SharedPreferencesDeviceRepository(uuid: nil, keychainService: nil)
+        self.encryptedPreference = encryptedPreference ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
         getAllUsers()
     }
     
@@ -44,10 +44,10 @@ internal class UserDeviceKeyService: UserKeyService {
             
             if let data = (value as? String)?.data(using: .utf8),
                let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-               let userId = json[SharedPreferencesDeviceRepository.userIdKey] as? String,
-               let userName = json[SharedPreferencesDeviceRepository.userNameKey] as? String,
-               let kid = json[SharedPreferencesDeviceRepository.kidKey] as? String,
-               let authTypeString = json[SharedPreferencesDeviceRepository.authTypeKey] as? String,
+               let userId = json[KeychainDeviceRepository.userIdKey] as? String,
+               let userName = json[KeychainDeviceRepository.userNameKey] as? String,
+               let kid = json[KeychainDeviceRepository.kidKey] as? String,
+               let authTypeString = json[KeychainDeviceRepository.authTypeKey] as? String,
                let authType = DeviceBindingAuthenticationType(rawValue: authTypeString) {
                 let userKey = UserKey(userId: userId, userName: userName, kid: kid, authType: authType, keyAlias: key)
                 userKeys.append(userKey)
