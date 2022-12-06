@@ -1,5 +1,5 @@
 // 
-//  DeviceBindingCallback.swift
+//  DeviceSigningVerifierCallback.swift
 //  FRAuth
 //
 //  Copyright (c) 2022 ForgeRock. All rights reserved.
@@ -9,25 +9,20 @@
 //
 
 
-import Foundation
+import UIKit
 import JOSESwift
-import FRCore
 
 /**
  * Callback to collect the device binding information
  */
-open class DeviceBindingCallback: MultipleValuesCallback {
+open class DeviceSigningVerifierCallback: MultipleValuesCallback {
     
     //  MARK: - Properties
     
     /// The userId received from server
-    public private(set) var userId: String
-    /// The userName received from server
-    public private(set) var userName: String
+    public private(set) var userId: String?
     /// The challenge received from server
     public private(set) var challenge: String
-    /// The authentication type of the journey
-    public private(set) var deviceBindingAuthenticationType: DeviceBindingAuthenticationType
     // The title to be displayed in biometric prompt
     public private(set) var title: String
     // The subtitle to be displayed in biometric prompt
@@ -39,18 +34,16 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     
     /// Jws input key in callback response
     private var jwsKey: String
-    /// Device name input key in callback response
-    private var deviceNameKey: String
-    /// Device id input key in callback response
-    private var deviceIdKey: String
     /// Client Error input key in callback response
     private var clientErrorKey: String
+    /// Delegation to perform user selection in case of multiple keys
+    public weak var delegate: DeviceSigningVerifierDelegate?
     
     //  MARK: - Init
     
-    /// Designated initialization method for DeviceBindingCallback
+    /// Designated initialization method for DeviceSigningVerifierCallback
     ///
-    /// - Parameter json: JSON object of DeviceBindingCallback
+    /// - Parameter json: JSON object of DeviceSigningVerifierCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     required public init(json: [String : Any]) throws {
         guard let callbackType = json[CBConstants.type] as? String else {
@@ -70,20 +63,7 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             outputDictionary[outputName] = outputValue
         }
         
-        guard let userId = outputDictionary[CBConstants.userId] as? String else {
-            throw AuthError.invalidCallbackResponse("Missing userId")
-        }
-        self.userId = userId
-        
-        guard let userName = outputDictionary[CBConstants.username] as? String else {
-            throw AuthError.invalidCallbackResponse("Missing username")
-        }
-        self.userName = userName
-        
-        guard let outputValue = outputDictionary[CBConstants.authenticationType] as? String, let deviceBindingAuthenticationType = DeviceBindingAuthenticationType(rawValue: outputValue) else {
-            throw AuthError.invalidCallbackResponse("Missing authenticationType")
-        }
-        self.deviceBindingAuthenticationType = deviceBindingAuthenticationType
+        self.userId = outputDictionary[CBConstants.userId] as? String
         
         guard let challenge = outputDictionary[CBConstants.challenge] as? String else {
             throw AuthError.invalidCallbackResponse("Missing challenge")
@@ -121,16 +101,6 @@ open class DeviceBindingCallback: MultipleValuesCallback {
         }
         self.jwsKey = jwsKey
         
-        guard let deviceNameKey = inputNames.filter({ $0.contains(CBConstants.deviceName) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing deviceNameKey")
-        }
-        self.deviceNameKey = deviceNameKey
-        
-        guard let deviceIdKey = inputNames.filter({ $0.contains(CBConstants.deviceId) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing deviceIdKey")
-        }
-        self.deviceIdKey = deviceIdKey
-        
         guard let clientErrorKey = inputNames.filter({ $0.contains(CBConstants.clientError) }).first else {
             throw AuthError.invalidCallbackResponse("Missing clientErrorKey")
         }
@@ -142,24 +112,48 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     }
     
     
-    /// Bind the device.
+    /// Sign the device.
     /// - Parameter completion Completion block for Device binding result callback
-    open func bind(completion: @escaping DeviceBindingResultCallback) {
-        execute(authInterface: nil, deviceId: nil, encryptedPreference: nil, completion)
+    open func sign(completion: @escaping DeviceSigningResultCallback) {
+        execute(userKeyService: nil, completion)
     }
     
     
     /// Helper method to execute binding , signing, show biometric prompt.
-    /// - Parameter authInterface: Interface to find the Authentication Type - provide nil to default to getDeviceBindingAuthenticator()
-    /// - Parameter deviceId: Interface to find the Authentication Type - provide nil to default to FRDevice.currentDevice?.identifier.getIdentifier()
+    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device
     /// - Parameter completion: completion Completion block for Device binding result callback
-    internal func execute(authInterface: DeviceAuthenticator?,
-                          deviceId: String?,
-                          encryptedPreference: DeviceRepository?,
-                          _ completion: @escaping DeviceBindingResultCallback) {
-        let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator()
-        let newDeviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
-        let newEncryptedPreference = encryptedPreference ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
+    internal func execute(userKeyService: UserKeyService?,
+                          _ completion: @escaping DeviceSigningResultCallback) {
+        let newUserKeyService = userKeyService ?? UserDeviceKeyService(encryptedPreference: nil)
+        
+        let status = newUserKeyService.getKeyStatus(userId: userId)
+        
+        switch status {
+        case .singleKeyFound(key: let key):
+            authenticate(userKey: key, authInterface: nil, completion)
+        case .multipleKeysFound(keys: _):
+            getUserKey(userKeyService: newUserKeyService) { key in
+                if let key = key {
+                    self.authenticate(userKey: key, authInterface: nil, completion)
+                } else {
+                    self.handleException(status: .abort, completion: completion)
+                }
+            }
+            break
+        case .noKeysFound:
+            handleException(status: .unRegister, completion: completion)
+        }
+    }
+    
+    
+    /// Helper method to execute signing, show biometric prompt.
+    /// - Parameter userKey: User Information
+    /// - Parameter authInterface: Interface to find the Authentication Type - provide nil to default to getDeviceBindingAuthenticator()
+    /// - Parameter completion: completion Completion block for Device binding result callback
+    internal func authenticate(userKey: UserKey,
+                               authInterface: DeviceAuthenticator?,
+                               _ completion: @escaping DeviceSigningResultCallback) {
+        let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator(userKey: userKey)
         
         guard newAuthInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
@@ -170,10 +164,8 @@ open class DeviceBindingCallback: MultipleValuesCallback {
         let timeout = timeout ?? 60
         
         do {
-            let keyPair = try newAuthInterface.generateKeys()
-            let kid = try newEncryptedPreference.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType)
             // Authentication will be triggered during signing if necessary
-            let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: self.userId, challenge: self.challenge, expiration: self.getExpiration())
+            let jws = try newAuthInterface.sign(userKey: userKey, challenge: self.challenge, expiration: self.getExpiration())
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
@@ -184,9 +176,7 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             
             // If no errors, set the input values and complete with success
             self.setJws(jws)
-            if let newDeviceId = newDeviceId {
-                self.setDeviceId(newDeviceId)
-            }
+            
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
             self.handleException(status: .abort, completion: completion)
@@ -196,13 +186,25 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     }
     
     
+    /// Display fragment to select a user key from the list
+    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device
+    /// - Parameter completion: Completion block for keys result
+    open func getUserKey(userKeyService: UserKeyService,
+                         completion: @escaping (UserKey?) -> (Void)) {
+        if delegate == nil {
+            delegate = self
+        }
+        delegate?.selectUserKey(userKeys: userKeyService.userKeys, selectionCallback: { selectedUserKey in
+            completion(selectedUserKey)
+        })
+        
+    }
+    
+    
     /// Handle all the errors for the device binding.
     /// - Parameter status: Device binding status
     /// - Parameter completion: Completion block Device binding result callback
-    open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceBindingResultCallback) {
-        // Remove the private key if already generated
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
-        
+    open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceSigningResultCallback) {
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))
@@ -210,8 +212,9 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     
     
     /// Create the interface for the Authentication type(biometricOnly, biometricAllowFallback, none)
-    open func getDeviceBindingAuthenticator() -> DeviceAuthenticator {
-        return AuthenticatorFactory.getAuthenticator(userId: userId, authentication: deviceBindingAuthenticationType, title: title, subtitle: subtitle, description: promptDescription, keyAware: nil)
+    /// - Parameter userKey: selected UserKey from the device
+    open func getDeviceBindingAuthenticator(userKey: UserKey) -> DeviceAuthenticator {
+        return AuthenticatorFactory.getAuthenticator(userId: userKey.userId, authentication: userKey.authType, title: title, subtitle: subtitle, description: promptDescription, keyAware: nil)
     }
     
     
@@ -230,20 +233,6 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     }
     
     
-    /// Sets `deviceName` value in callback response
-    /// - Parameter deviceName: String value of `deviceName`]
-    public func setDeviceName(_ deviceName: String) {
-        self.inputValues[self.deviceNameKey] = deviceName
-    }
-    
-    
-    /// Sets `deviceId` value in callback response
-    /// - Parameter deviceId: String value of `deviceId`]
-    public func setDeviceId(_ deviceId: String) {
-        self.inputValues[self.deviceIdKey] = deviceId
-    }
-    
-    
     /// Sets `clientError` value in callback response
     /// - Parameter clientError: String value of `clientError`]
     public func setClientError(_ clientError: String) {
@@ -251,10 +240,4 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     }
 }
 
-
-/// Convert authentication type string received from server to authentication type enum
-public enum DeviceBindingAuthenticationType: String, Codable {
-    case biometricOnly = "BIOMETRIC_ONLY"
-    case biometricAllowFallback = "BIOMETRIC_ALLOW_FALLBACK"
-    case none = "NONE"
-}
+extension DeviceSigningVerifierCallback: DeviceSigningVerifierDelegate { }

@@ -217,6 +217,39 @@ class AuthStepViewController: UIViewController {
                     }
                 }
                 
+                var deviceSigningVerifierCallback: DeviceSigningVerifierCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceBindingCallback handling
+                    if let thisCallback = callback as? DeviceSigningVerifierCallback {
+                        deviceSigningVerifierCallback = thisCallback
+                    }
+                }
+                
+                //  If DeviceSigningVerifierCallback is found as one of Callbacks, verify signature and show the result
+                if let deviceSigningVerifierCallback = deviceSigningVerifierCallback {
+                    self.startLoading()
+                    deviceSigningVerifierCallback.sign { result in
+                        DispatchQueue.main.async {
+                            self.stopLoading()
+                            var bindingResult = ""
+                            switch result {
+                            case .success:
+                                bindingResult = "Success"
+                            case .failure(let error):
+                                bindingResult = error.errorMessage
+                            }
+                            
+                            let alert = UIAlertController(title: "Signing Verifier Result", message: bindingResult, preferredStyle: .alert)
+                            let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+                                self.renderAuthStep()
+                                
+                            })
+                            alert.addAction(action)
+                            self.present(alert, animated: true)
+                        }
+                    }
+                }
+                
                 else {
                     //  Otherwise, just render as usual
                     self.renderAuthStep()

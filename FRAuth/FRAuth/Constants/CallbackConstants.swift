@@ -92,6 +92,7 @@ enum CallbackType: String {
     case IdPCallback = "IdPCallback"
     case SelectIdPCallback = "SelectIdPCallback"
     case DeviceBindingCallback = "DeviceBindingCallback"
+    case DeviceSigningVerifierCallback = "DeviceSigningVerifierCallback"
 }
 
 /// CBConstants is mainly responsible to maintain all constant values related to Callback implementation

@@ -76,7 +76,7 @@ struct KeyAware {
         
         var query = [String: Any]()
         query[String(kSecClass)] = kSecClassKey
-        query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeEC)
+        query[String(kSecAttrKeyType)] = String(kSecAttrKeyTypeECSECPrimeRandom)
         query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = keyAlias
         
