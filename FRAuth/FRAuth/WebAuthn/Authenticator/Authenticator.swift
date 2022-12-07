@@ -4,7 +4,7 @@
 //
 //  Created by Lyo Kato on 2018/11/20.
 //  Original work Copyright © 2018 Lyo Kato. All rights reserved.
-//  Modified work Copyright © 2021 ForgeRock, Inc.
+//  Modified work Copyright © 2021-2022 ForgeRock, Inc.
 //
 
 import Foundation
@@ -23,14 +23,14 @@ struct AuthenticatorAssertionResult {
 protocol AuthenticatorMakeCredentialSessionDelegate: class {
     func authenticatorSessionDidBecomeAvailable(session: AuthenticatorMakeCredentialSession)
     func authenticatorSessionDidBecomeUnavailable(session: AuthenticatorMakeCredentialSession)
-    func authenticatorSessionDidStopOperation(session: AuthenticatorMakeCredentialSession, reason: WAKError)
+    func authenticatorSessionDidStopOperation(session: AuthenticatorMakeCredentialSession, reason: FRWAKError)
     func authenticatorSessionDidMakeCredential(session: AuthenticatorMakeCredentialSession, attestation: AttestationObject)
 }
 
 protocol AuthenticatorGetAssertionSessionDelegate: class {
     func authenticatorSessionDidBecomeAvailable(session: AuthenticatorGetAssertionSession)
     func authenticatorSessionDidBecomeUnavailable(session: AuthenticatorGetAssertionSession)
-    func authenticatorSessionDidStopOperation(session: AuthenticatorGetAssertionSession, reason: WAKError)
+    func authenticatorSessionDidStopOperation(session: AuthenticatorGetAssertionSession, reason: FRWAKError)
     func authenticatorSessionDidDiscoverCredential(session: AuthenticatorGetAssertionSession, assertion: AuthenticatorAssertionResult)
 }
 
@@ -53,7 +53,7 @@ protocol AuthenticatorGetAssertionSession {
     func canPerformUserVerification() -> Bool
     
     func start()
-    func cancel(reason: WAKError)
+    func cancel(reason: FRWAKError)
 
 }
 
@@ -80,7 +80,7 @@ protocol AuthenticatorMakeCredentialSession {
     func canStoreResidentKey() -> Bool
     
     func start()
-    func cancel(reason: WAKError)
+    func cancel(reason: FRWAKError)
 
 }
 

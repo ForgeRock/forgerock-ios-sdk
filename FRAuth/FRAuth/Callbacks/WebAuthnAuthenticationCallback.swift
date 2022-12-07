@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -242,7 +242,7 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
         }) { (error) in
         
             /// Converts internal WAKError into WebAuthnError
-            if let webAuthnError = error as? WAKError {
+            if let webAuthnError = error as? FRWAKError {
                 //  Converts the error to public facing error
                 let publicError = webAuthnError.convert()
                 if let node = node {

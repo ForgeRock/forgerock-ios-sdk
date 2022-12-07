@@ -4,7 +4,7 @@
 //
 //  Created by Lyo Kato on 2018/11/20.
 //  Original work Copyright © 2018 Lyo Kato. All rights reserved.
-//  Modified work Copyright © 2021 ForgeRock, Inc.
+//  Modified work Copyright © 2021-2022 ForgeRock, Inc.
 //
 
 import Foundation
