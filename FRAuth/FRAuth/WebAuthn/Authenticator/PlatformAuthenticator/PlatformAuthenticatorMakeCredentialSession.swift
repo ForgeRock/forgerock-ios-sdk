@@ -163,19 +163,19 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     case .allow:
                         let logMessage = "User allowed the operation; invalid state for excluded credentials"
                         FRLog.w(logMessage, subModule: WebAuthn.module)
-                        completion(FRWAKError(error: .invalidState, message: logMessage))
+                        completion(FRWAKError.invalidState(platformError: nil, message: logMessage))
                         break
                     case .reject:
                         let logMessage = "User rejected the operation; not allowed for excluded credentials"
                         FRLog.w(logMessage, subModule: WebAuthn.module)
-                        completion(FRWAKError(error: .notAllowed, message: logMessage))
+                        completion(FRWAKError.notAllowed(platformError: nil, message: logMessage))
                         break
                     }
                 }
             }
             else {
                 FRLog.e("PlatformAuthenticatorDelegate is missing", subModule: WebAuthn.module)
-                completion(FRWAKError(error: .unknown))
+                completion(FRWAKError.unknown(platformError: nil, message: nil))
             }
         }
         else {
@@ -203,14 +203,14 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                 case .reject:
                     let logMessage = "User rejected to generate new credential"
                     FRLog.e(logMessage, subModule: WebAuthn.module)
-                    completion(FRWAKError(error: .cancelled, message: logMessage))
+                    completion(FRWAKError.cancelled(platformError: nil, message: logMessage))
                     break
                 }
             }
         }
         else {
             FRLog.e("PlatformAuthenticatorDelegate is missing", subModule: WebAuthn.module)
-            completion(FRWAKError(error: .unknown))
+            completion(FRWAKError.unknown(platformError: nil, message: nil))
         }
     }
     
@@ -231,7 +231,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     }
                     context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: NSLocalizedString(WebAuthn.localAuthenticationString, comment: "Description text for local authentication reason displayed in iOS' local authentication screen.")) { [weak self] (result, error) in
                         
-                        if result && error != nil {
+                        if result && (error == nil) {
                             completion(nil)
                         }
                         else if let error = error as? NSError {
@@ -239,7 +239,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                         }
                         else {
                             WAKLogger.debug("<UserConsentUI> must not come here")
-                            completion(FRWAKError(error: .unknown))
+                            completion(FRWAKError.unknown(platformError: nil, message: nil))
                         }
                     }
                 }
@@ -247,7 +247,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     let reason = evalError?.localizedDescription ?? ""
                     let logMessage = "<UserConsentUI> device not supported: \(reason)"
                     WAKLogger.debug(logMessage)
-                    completion(FRWAKError(error: .notAllowed, message: logMessage))
+                    completion(FRWAKError.notAllowed(platformError: nil, message: logMessage))
                 }
             }
         }
@@ -260,22 +260,22 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
         switch LAError(_nsError: evalError) {
         case LAError.userFallback:
             WAKLogger.debug("<UserConsentUI> user fallback")
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "<UserConsentUI> user fallback")
         case LAError.userCancel:
             WAKLogger.debug("<UserConsentUI> user cancel")
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "<UserConsentUI> user cancel")
         case LAError.authenticationFailed:
             WAKLogger.debug("<UserConsentUI> authentication failed")
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "<UserConsentUI> authentication failed")
         case LAError.passcodeNotSet:
             WAKLogger.debug("<UserConsentUI> passcode not set")
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "<UserConsentUI> passcode not set")
         case LAError.systemCancel:
             WAKLogger.debug("<UserConsentUI> system cancel")
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "<UserConsentUI> system cancel")
         default:
             WAKLogger.debug("<UserConsentUI> must not come here")
-            return FRWAKError(error: .unknown, platformError: evalError)
+            return FRWAKError.unknown(platformError: evalError, message: "<UserConsentUI> must not come here")
         }
     }
     
@@ -306,7 +306,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
         guard let keySupport = self.keySupportChooser.choose(requestedAlgs) else {
             let logMessage = "Requested key algorithm(s) not supported; stopping the operation"
             FRLog.e(logMessage, subModule: WebAuthn.module)
-            self.stop(reason: FRWAKError(error: .unsupported, message: logMessage))
+            self.stop(reason: FRWAKError.unsupported(platformError: nil, message: logMessage))
             return
         }
         
@@ -317,7 +317,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     self.stop(reason: wakErr)
                 }
                 else {
-                    self.stop(reason: FRWAKError(error: .unknown))
+                    self.stop(reason: FRWAKError.unknown(platformError: nil, message: nil))
                 }
                 return
             }
@@ -326,7 +326,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
             if requireUserVerification && !self.config.allowUserVerification {
                 let logMessage = "User Verification is required, but not supported"
                 FRLog.e(logMessage, subModule: WebAuthn.module)
-                self.stop(reason: FRWAKError(error: .constraint, message: logMessage))
+                self.stop(reason: FRWAKError.constraint(platformError: nil, message: logMessage))
                 return
             }
             
@@ -342,7 +342,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                         self.stop(reason: wakErr)
                     }
                     else {
-                        self.stop(reason: FRWAKError(error: .unknown))
+                        self.stop(reason: FRWAKError.unknown(platformError: nil, message: nil))
                     }
                     return
                 }
@@ -353,7 +353,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                             self.stop(reason: wakErr)
                         }
                         else {
-                            self.stop(reason: FRWAKError(error: .unknown))
+                            self.stop(reason: FRWAKError.unknown(platformError: nil, message: nil))
                         }
                         return
                     }
@@ -372,14 +372,14 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     guard let publicKeyCOSE = keySupport.createKeyPair(label: credSource.keyLabel) else {
                         let logMessage = "Failed to generate new key"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unknown, message: logMessage))
+                        self.stop(reason: FRWAKError.unknown(platformError: nil, message: logMessage))
                         return
                     }
                     
                     guard self.credentialsStore.saveCredentialSource(credSource) else {
                         let logMessage = "Failed to store new credential"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unknown, message: logMessage))
+                        self.stop(reason: FRWAKError.unknown(platformError: nil, message: logMessage))
                         return
                     }
                     
@@ -392,7 +392,7 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     guard let attestation = PlatformAttestation.create(authData: authenticatorData, clientDataHash: hash, alg: keySupport.selectedAlg, keyLabel: credSource.keyLabel, attestationPreference: attestationPreference) else {
                         let logMessage = "Failed to create Attestation object"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unknown, message: logMessage))
+                        self.stop(reason: FRWAKError.unknown(platformError: nil, message: logMessage))
                         return
                     }
                     

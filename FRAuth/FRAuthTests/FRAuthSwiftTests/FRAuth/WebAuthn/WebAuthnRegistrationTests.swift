@@ -93,8 +93,9 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnErrorCase {
+                    switch webAuthnError {
                     case .timeout:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -136,8 +137,9 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnErrorCase {
+                    switch webAuthnError {
                     case .cancelled:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -179,8 +181,9 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnErrorCase {
+                    switch webAuthnError {
                     case .cancelled:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -224,8 +227,9 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnErrorCase {
+                    switch webAuthnError {
                     case .unsupported:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -304,8 +308,9 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnErrorCase {
+                    switch webAuthnError {
                     case .invalidState:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -341,9 +346,9 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }) { (error) in
             
                 if let webAuthnError = error as? WebAuthnError {
-                    switch webAuthnError.webAuthnErrorCase {
+                    switch webAuthnError {
                     case .notAllowed:
-                        XCTAssertNotNil(webAuthnError.message)
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")

@@ -100,7 +100,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
     /// Cancels the session's operation to generate assertion
     /// - Parameter reason: cancellation reason as in WAKError
     func cancel(reason: FRWAKError) {
-        FRLog.v("getAssertion cancelled: \(reason.error.localizedDescription)", subModule: WebAuthn.module)
+        FRLog.v("getAssertion cancelled: \(reason.localizedDescription) - \(reason.message() ?? "")", subModule: WebAuthn.module)
         guard !self.didStop else {
             return
         }
@@ -111,7 +111,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
     /// Stops the session's operation to generate assertion
     /// - Parameter reason: stopping reason as in WAKError
     func stop(reason: FRWAKError) {
-        FRLog.v("getAssertion stopped: \(reason.error.localizedDescription)", subModule: WebAuthn.module)
+        FRLog.v("getAssertion stopped: \(reason.localizedDescription) - \(reason.message() ?? "")", subModule: WebAuthn.module)
         guard self.inProgress else {
             return
         }
@@ -148,7 +148,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
         guard !credSources.isEmpty else {
             let logMessage = "Credential source is empty; stopping the operation"
             FRLog.w(logMessage, subModule: WebAuthn.module)
-            self.stop(reason: FRWAKError(error: .notAllowed, message: logMessage))
+            self.stop(reason: FRWAKError.notAllowed(platformError: nil, message: logMessage))
             return
         }
         
@@ -163,7 +163,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                             self.stop(reason: wakErr)
                         }
                         else {
-                            self.stop(reason: FRWAKError(error: .unknown))
+                            self.stop(reason: FRWAKError.unknown(platformError: nil, message: nil))
                         }
                         return
                     }
@@ -178,7 +178,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                     guard self.credentialsStore.saveCredentialSource(copiedCred) else {
                         let logMessage = "Updating credential source for signing count failed"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unknown, message: logMessage))
+                        self.stop(reason: FRWAKError.unknown(platformError: nil, message: logMessage))
                         return
                     }
                     FRLog.v("Signing count updated", subModule: WebAuthn.module)
@@ -194,21 +194,21 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                     guard let alg = COSEAlgorithmIdentifier.fromInt(selectedCredentials.alg) else {
                         let logMessage = "Unknown key algorithm (\(selectedCredentials.alg)), stopping operation"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unsupported, message: logMessage))
+                        self.stop(reason: FRWAKError.unsupported(platformError: nil, message: logMessage))
                         return
                     }
                     
                     guard let keySupport = self.keySupportChooser.choose([alg]) else {
                         let logMessage = "Not supported key algorithm (\(selectedCredentials.alg)), stopping operation"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unsupported, message: logMessage))
+                        self.stop(reason: FRWAKError.unsupported(platformError: nil, message: logMessage))
                         return
                     }
                     
                     guard let signature = keySupport.sign(data: data, label: selectedCredentials.keyLabel) else {
                         let logMessage = "Failed to sign the data"
                         FRLog.e(logMessage, subModule: WebAuthn.module)
-                        self.stop(reason: FRWAKError(error: .unknown, message: logMessage))
+                        self.stop(reason: FRWAKError.unknown(platformError: nil, message: logMessage))
                         return
                     }
                     
@@ -227,7 +227,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
             else {
                 let logMessage = "Unknwon 'keyName' is returned; stopping the operation"
                 FRLog.e(logMessage, subModule: WebAuthn.module)
-                self.stop(reason: FRWAKError(error: .notAllowed, message: logMessage))
+                self.stop(reason: FRWAKError.notAllowed(platformError: nil, message: logMessage))
                 return
             }
         }
@@ -306,7 +306,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                     }
                     FRLog.v("Evaluation with LocalContext is available, performing biometric LocalAuthentication", subModule: WebAuthn.module)
                     context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: NSLocalizedString(WebAuthn.localAuthenticationString, comment: "Description text for local authentication reason displayed in iOS' local authentication screen.")) { [weak self] (result, error) in
-                        if result && error != nil {
+                        if result && (error == nil) {
                             FRLog.v("User Verification is completed", subModule: WebAuthn.module)
                             completion(nil)
                         }
@@ -314,8 +314,9 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                             completion(self?.wakErrorForEvalError(evalError: error))
                         }
                         else {
-                            FRLog.e("LAContext - Unknown", subModule: WebAuthn.module)
-                            completion(FRWAKError(error: .unknown))
+                            let logMessage = "LAContext - Unknown"
+                            FRLog.e(logMessage, subModule: WebAuthn.module)
+                            completion(FRWAKError.unknown(platformError: nil, message: logMessage))
                         }
                     }
                 }
@@ -323,7 +324,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
                     let reason = evalError?.localizedDescription ?? ""
                     let logMessage = "LocalAuthentication with biometric is not available (\(reason)); getAssertion operation is not allowed"
                     FRLog.e(logMessage, subModule: WebAuthn.module)
-                    completion(FRWAKError(error: .notAllowed, message: logMessage))
+                    completion(FRWAKError.notAllowed(platformError: nil, message: logMessage))
                 }
             }
         }
@@ -337,22 +338,22 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
         switch LAError(_nsError: evalError) {
         case LAError.userFallback:
             FRLog.e("LAContext - User fallback", subModule: WebAuthn.module)
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "LAContext - User fallback")
         case LAError.userCancel:
             FRLog.e("LAContext - User cancelled", subModule: WebAuthn.module)
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "LAContext - User cancelled")
         case LAError.authenticationFailed:
             FRLog.e("LAContext - User authentication failed", subModule: WebAuthn.module)
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "LAContext - User authentication failed")
         case LAError.passcodeNotSet:
             FRLog.e("LAContext - Passcode is not set", subModule: WebAuthn.module)
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "LAContext - Passcode is not set")
         case LAError.systemCancel:
             FRLog.e("LAContext - System cancel", subModule: WebAuthn.module)
-            return FRWAKError(error: .notAllowed, platformError: evalError)
+            return FRWAKError.notAllowed(platformError: evalError, message: "LAContext - System cancel")
         default:
             FRLog.e("LAContext - Unexpected error: \(evalError.localizedDescription)", subModule: WebAuthn.module)
-            return FRWAKError(error: .unknown, platformError: evalError, message: evalError.localizedDescription)
+            return FRWAKError.unknown(platformError: evalError, message: "LAContext - Unexpected error: \(evalError.localizedDescription)")
         }
     }
 }

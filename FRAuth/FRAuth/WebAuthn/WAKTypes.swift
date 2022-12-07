@@ -9,22 +9,46 @@
 
 import Foundation
 
-struct FRWAKError: Error {
-    enum WAKError : Error {
-        case badData
-        case badOperation
-        case invalidState
-        case constraint
-        case cancelled
-        case timeout
-        case notAllowed
-        case unsupported
-        case unknown
+enum FRWAKError: Error {
+    case badData(platformError: Error?, message: String?)
+    case badOperation(platformError: Error?, message: String?)
+    case invalidState(platformError: Error?, message: String?)
+    case constraint(platformError: Error?, message: String?)
+    case cancelled(platformError: Error?, message: String?)
+    case timeout(platformError: Error?, message: String?)
+    case notAllowed(platformError: Error?, message: String?)
+    case unsupported(platformError: Error?, message: String?)
+    case unknown(platformError: Error?, message: String?)
+    
+    func platformError() -> Error? {
+        switch self {
+        case .badData(platformError: let platformError, message: _),
+                .badOperation(platformError: let platformError, message: _),
+                .invalidState(platformError: let platformError, message: _),
+                .constraint(platformError: let platformError, message: _),
+                .cancelled(platformError: let platformError, message: _),
+                .timeout(platformError: let platformError, message: _),
+                .notAllowed(platformError: let platformError, message: _),
+                .unsupported(platformError: let platformError, message: _),
+                .unknown(platformError: let platformError, message: _):
+            return platformError
+        }
     }
     
-    var error: WAKError
-    var platformError: Error?
-    var message: String?
+    func message() -> String? {
+        switch self {
+        case .badData(platformError: _, message: let message),
+                .badOperation(platformError: _, message: let message),
+                .invalidState(platformError: _, message: let message),
+                .constraint(platformError: _, message: let message),
+                .cancelled(platformError: _, message: let message),
+                .timeout(platformError: _, message: let message),
+                .notAllowed(platformError: _, message: let message),
+                .unsupported(platformError: _, message: let message),
+                .unknown(platformError: _, message: let message):
+            return message
+        }
+    }
 }
 
 enum WAKResult<T, Error: Swift.Error> {
