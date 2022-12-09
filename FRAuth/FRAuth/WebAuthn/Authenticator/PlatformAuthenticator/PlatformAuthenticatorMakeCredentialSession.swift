@@ -367,6 +367,9 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                         FRLog.v("Resident key is required; creating client-side discoverable credential source", subModule: WebAuthn.module)
                         userHandle = userEntity.id
                     }
+                    
+                    self.credentialsStore.removeDuplicates(rpId: rpEntity.id ?? "", keyName: userEntity.displayName)
+                    
                     let credSource = PublicKeyCredentialSource(id: credentialId, rpId: rpEntity.id ?? "", userHandle: userHandle, signCount: 0, alg: keySupport.selectedAlg.rawValue, otherUI: keyName)
                                         
                     guard let publicKeyCOSE = keySupport.createKeyPair(label: credSource.keyLabel) else {

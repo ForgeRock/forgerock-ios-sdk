@@ -16,6 +16,7 @@ protocol CredentialStore {
     func loadAllCredentialSources(rpId: String) -> [PublicKeyCredentialSource]
     func deleteCredentialSource(_ cred: PublicKeyCredentialSource) -> Bool
     func deleteAllCredentialSources(rpId: String, userHandle: [UInt8])
+    func removeDuplicates(rpId: String, keyName: String)
 }
 
 
@@ -69,7 +70,7 @@ struct WebAuthnKeychainStore {
     }
 }
 
-class KeychainCredentialStore : CredentialStore {
+public class KeychainCredentialStore : CredentialStore {
 
     let servicePrefix: String = "com.forgerock.ios.webauthn.credentialstore" + "::"
     var keychainStore: WebAuthnKeychainStore?
@@ -84,6 +85,14 @@ class KeychainCredentialStore : CredentialStore {
             let store = WebAuthnKeychainStore(service: service)
             self.keychainStore = store
             return store
+        }
+    }
+    
+    func removeDuplicates(rpId: String, keyName: String) {
+        loadAllCredentialSources(rpId: rpId).forEach { keyCredential  in
+            if keyCredential.otherUI.contains(keyName) {
+                _ = deleteCredentialSource(keyCredential)
+            }
         }
     }
     
