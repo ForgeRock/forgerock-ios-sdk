@@ -251,7 +251,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
         else {
             if let delegate = self.authenticatorDelegate {
                 FRLog.v("Found more than 1 credential sources, proceeding with delegation to select the credential source", subModule: WebAuthn.module)
-                delegate.selectCredential(keyNames: Array(sources.keys), selectionCallback: { (keyName) in
+                delegate.selectCredential(keyNames: Array(sources.keys).sorted(), selectionCallback: { (keyName) in
                     FRLog.v("Selected credential source received, proceeding with getAssertion operation", subModule: WebAuthn.module)
                     callback(keyName)
                 })
