@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
-		3A479F802944092600CA72AA /* WebAuthnKeySelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A479F7F2944092600CA72AA /* WebAuthnKeySelectorTests.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
@@ -333,7 +332,6 @@
 /* Begin PBXFileReference section */
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
-		3A479F7F2944092600CA72AA /* WebAuthnKeySelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnKeySelectorTests.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -895,7 +893,6 @@
 				D53A806226278A410093B1CA /* WebAuthnRegistrationTests.swift */,
 				D53A806326278A410093B1CA /* WebAuthnSharedUtils.swift */,
 				D53A806426278A410093B1CA /* WebAuthnAuthenticationTests.swift */,
-				3A479F7F2944092600CA72AA /* WebAuthnKeySelectorTests.swift */,
 			);
 			path = WebAuthn;
 			sourceTree = "<group>";
@@ -1926,7 +1923,6 @@
 				D5791BBC25F87DE8004B487A /* AbstractValidatedCallbackTests.swift in Sources */,
 				D5791BBD25F87DE8004B487A /* PasswordCallbackTests.swift in Sources */,
 				D5791BBE25F87DE8004B487A /* NameCallbackTests.swift in Sources */,
-				3A479F802944092600CA72AA /* WebAuthnKeySelectorTests.swift in Sources */,
 				D5791BBF25F87DE8004B487A /* MultipleValuesCallbackTests.swift in Sources */,
 				D5791BC025F87DE8004B487A /* KbaCreateCallbackTests.swift in Sources */,
 				D5791BC125F87DE8004B487A /* TermsAndConditionsCallbackTests.swift in Sources */,

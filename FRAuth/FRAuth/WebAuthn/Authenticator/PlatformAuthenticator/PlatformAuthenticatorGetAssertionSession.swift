@@ -251,8 +251,7 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
         else {
             if let delegate = self.authenticatorDelegate {
                 FRLog.v("Found more than 1 credential sources, proceeding with delegation to select the credential source", subModule: WebAuthn.module)
-
-                delegate.selectCredential(keyNames: Array(sources.keys).sortedByDate(), selectionCallback: { (keyName) in
+                delegate.selectCredential(keyNames: Array(sources.keys).sorted(), selectionCallback: { (keyName) in
                     FRLog.v("Selected credential source received, proceeding with getAssertion operation", subModule: WebAuthn.module)
                     callback(keyName)
                 })
@@ -358,25 +357,3 @@ class PlatformAuthenticatorGetAssertionSession: AuthenticatorGetAssertionSession
         }
     }
 }
-
-// The key we are sorting will look like "22ba8202-6ece-4f56-9667-4eac6c265a41 20220621 20:10:10"
-extension Array where Element == String {
-    func sortedByDate() -> [String] {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyyMMdd HH:mm:ss"
-            
-            return self.sorted { lhs, rhs in
-                let lhsComponent = lhs.components(separatedBy: " ")
-                let rhsComponent = rhs.components(separatedBy: " ")
-                
-                let lhsDate = lhsComponent.count > 1 ? formatter.date(from: lhsComponent[1]) : nil
-                let rhsDate = rhsComponent.count > 1 ? formatter.date(from: rhsComponent[1]) : nil
-                
-                if let lhsDate = lhsDate, let rhsDate = rhsDate {
-                    return lhsDate > rhsDate
-                }
-                return lhs > rhs
-            }
-        }
-}
-
