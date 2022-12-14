@@ -1,4 +1,8 @@
-# Version 3.4.1
+# Version 4.0.0
+## [4.0.0]
+#### Changed
+- Added error message description to the `WebAuthnError` enum [SDKS-2226]
+
 ## [3.4.1]
 #### Changed
 - Updated legacy encryption algorithm for iOS SE [SDKS-1994]
