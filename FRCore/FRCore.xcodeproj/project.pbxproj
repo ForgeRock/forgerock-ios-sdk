@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */; };
+		A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C229497F6E007237C1 /* CryptoKey.swift */; };
+		A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C5294A8747007237C1 /* CryptoKeyTests.swift */; };
+		A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */; };
 		A5950A1C27E9497800EDEFE4 /* FRURLSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792427A8091F0004A982 /* FRURLSessionHandler.swift */; };
 		A5950A1D27E9497A00EDEFE4 /* FRSecurityConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792327A8090F0004A982 /* FRSecurityConfiguration.swift */; };
 		A5950A2527E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2427E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift */; };
@@ -99,6 +103,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticator.swift; sourceTree = "<group>"; };
+		A56338C229497F6E007237C1 /* CryptoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKey.swift; sourceTree = "<group>"; };
+		A56338C5294A8747007237C1 /* CryptoKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeyTests.swift; sourceTree = "<group>"; };
+		A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticatorTests.swift; sourceTree = "<group>"; };
 		A5950A2427E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSecurityConfigurationTests.swift; sourceTree = "<group>"; };
 		A5950A2627E9759300EDEFE4 /* httpbin_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = httpbin_cert.der; sourceTree = "<group>"; };
 		D50115CE2410472F00219761 /* SecuredKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredKeyTests.swift; sourceTree = "<group>"; };
@@ -172,6 +180,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A56338BD29497E75007237C1 /* Authenticator */ = {
+			isa = PBXGroup;
+			children = (
+				A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */,
+				A56338C229497F6E007237C1 /* CryptoKey.swift */,
+			);
+			path = Authenticator;
+			sourceTree = "<group>";
+		};
+		A56338C4294A8716007237C1 /* Authenticator */ = {
+			isa = PBXGroup;
+			children = (
+				A56338C5294A8747007237C1 /* CryptoKeyTests.swift */,
+				A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */,
+			);
+			path = Authenticator;
+			sourceTree = "<group>";
+		};
 		D512CD49240DCD3200AF520E /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +273,7 @@
 		D5CBC23B24102B8700F9B6EA /* FRCore */ = {
 			isa = PBXGroup;
 			children = (
+				A56338C4294A8716007237C1 /* Authenticator */,
 				D5D214A12478580600B26403 /* Error */,
 				D5D214A22478580600B26403 /* Log */,
 				D5D214A32478580600B26403 /* RequestInterceptor */,
@@ -342,6 +369,7 @@
 		D5E75BCC2409B8C0005F589F /* FRCore */ = {
 			isa = PBXGroup;
 			children = (
+				A56338BD29497E75007237C1 /* Authenticator */,
 				D52D5C412413000900835035 /* Util */,
 				D512CD49240DCD3200AF520E /* Error */,
 				D5C979A72409DF9700DA380A /* Keychain */,
@@ -559,6 +587,7 @@
 				D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */,
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
+				A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
 				D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */,
@@ -567,6 +596,7 @@
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
 				EC5F792527A8091F0004A982 /* FRSecurityConfiguration.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
+				A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */,
 				D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */,
 				D5D1FBF925B1373E00771278 /* SecurityError.swift in Sources */,
 			);
@@ -580,6 +610,8 @@
 				D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */,
 				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
 				D5D214A924785BD800B26403 /* LogTests.swift in Sources */,
+				A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */,
+				A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */,
 				D5D2149F2478575900B26403 /* Action.swift in Sources */,
 				D5E7B1C5256C609200DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,

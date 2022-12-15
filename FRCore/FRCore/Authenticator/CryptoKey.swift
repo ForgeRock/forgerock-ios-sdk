@@ -1,5 +1,5 @@
-// 
-//  KeyAware.swift
+//
+//  CryptoKey.swift
 //  FRAuth
 //
 //  Copyright (c) 2022 ForgeRock. All rights reserved.
@@ -11,28 +11,28 @@
 
 import Foundation
 import CommonCrypto
-import FRCore
 import CryptoKit
 
+
 ///Helper struct to generate and sign the keys
-struct KeyAware {
-    private var userId: String
+public struct CryptoKey {
+    private var keyId: String
     var timeout = 60
     private var keySize = 256
     private var keyType = kSecAttrKeyTypeECSECPrimeRandom
-    private var key: String
+    var keyAlias: String
     
     
-    /// Initializes KeyAware with given userId String
-    /// - Parameter userId: user id for which key pair is to be generated
-    init(userId: String) {
-        self.userId = userId
-        self.key = KeyAware.getKeyAlias(keyName: userId)
+    /// Initializes CryptoKey with given keyId String
+    /// - Parameter keyId: user id for which key pair is to be generated
+    public init(keyId: String) {
+        self.keyId = keyId
+        self.keyAlias = CryptoKey.getKeyAlias(keyName: keyId)
     }
     
     
     /// Query attributes dictionary for generating key pair
-    func keyBuilderQuery() -> [String: Any] {
+    public func keyBuilderQuery() -> [String: Any] {
         var query = [String: Any]()
         
         query[String(kSecAttrKeyType)] = String(keyType)
@@ -40,11 +40,11 @@ struct KeyAware {
         
         var keyAttr = [String: Any]()
         keyAttr[String(kSecAttrIsPermanent)] = true
-        keyAttr[String(kSecAttrApplicationTag)] = key
+        keyAttr[String(kSecAttrApplicationTag)] = keyAlias
         query[String(kSecPrivateKeyAttrs)] = keyAttr
         
 #if !targetEnvironment(simulator)
-            query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
+        query[String(kSecAttrTokenID)] = String(kSecAttrTokenIDSecureEnclave)
 #endif
         
         return query
@@ -54,7 +54,7 @@ struct KeyAware {
     /// Creates Keypair for the given builder query attributes
     /// - Parameter builderQuery: query attributes dictionary for generating key pair
     /// - Throws: error during private/public key generation
-    func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair {
+    public func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair {
         
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(builderQuery as CFDictionary, &error) else {
@@ -65,14 +65,14 @@ struct KeyAware {
             throw NSError()
         }
         
-        return KeyPair(privateKey: privateKey, publicKey: publicKey, keyAlias: key)
+        return KeyPair(privateKey: privateKey, publicKey: publicKey, keyAlias: keyAlias)
     }
     
     
     /// Get the private key from the Keychain for given key alias
     /// - Parameter keyAlias: key alias for which to retrive the private key
     /// - Returns: private key for the given key alias
-    static func getSecureKey(keyAlias: String) -> SecKey? {
+    public static func getSecureKey(keyAlias: String) -> SecKey? {
         
         var query = [String: Any]()
         query[String(kSecClass)] = kSecClassKey
@@ -91,17 +91,18 @@ struct KeyAware {
     
     /// Remove the private key from the Keychain for given key alias
     /// - Parameter keyAlias: key alias for which to retrive the private key
-    static func deleteKey(keyAlias: String) {
+    public static func deleteKey(keyAlias: String) {
         var query = [String: Any]()
         query[String(kSecClass)] = String(kSecClassKey)
         query[String(kSecAttrApplicationTag)] = keyAlias
         SecItemDelete(query as CFDictionary)
     }
     
+    
     /// Get hash for the given key name (user id)
     /// - Parameter keyName: key names to be hashed
     /// - Returns: the hash for the given key name
-    static func getKeyAlias(keyName: String) -> String {
+    public static func getKeyAlias(keyName: String) -> String {
         let data = Data(keyName.utf8)
         if #available(iOS 13, *) {
             return Data(SHA256.hash(data: data)).base64EncodedString()
@@ -109,4 +110,15 @@ struct KeyAware {
             return data.sha256.base64EncodedString(options: NSData.Base64EncodingOptions([]))
         }
     }
+}
+
+
+///Public and private keypair struct
+public struct KeyPair {
+    /// The Private key
+    public var privateKey: SecKey
+    /// The Private key
+    public var publicKey: SecKey
+    /// Alias for the key
+    public var keyAlias: String
 }

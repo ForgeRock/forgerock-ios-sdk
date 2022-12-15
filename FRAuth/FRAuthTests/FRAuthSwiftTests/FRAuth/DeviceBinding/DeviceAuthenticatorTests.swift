@@ -12,21 +12,22 @@
 import XCTest
 import JOSESwift
 @testable import FRAuth
+@testable import FRCore
 
 class DeviceAuthenticatorTests: XCTestCase {
     
-    func test_01_AuthenticatorFactory_getAuthenticator() {
-        let userId = "Test User Id 1"
-        let keyAware = KeyAware(userId: userId)
-        
-        let noneAuthenticator = AuthenticatorFactory.getAuthenticator(userId: userId, authentication: .none, title: "Title", subtitle: "Subtitle", description: "description", keyAware: keyAware)
+    func test_01_getDeviceAuthenticator() {
+        let noneAuthenticator = DeviceBindingAuthenticationType.none.getAuthType()
         XCTAssertTrue(noneAuthenticator is None)
         
-        let biometricOnlyAuthenticator = AuthenticatorFactory.getAuthenticator(userId: userId, authentication: .biometricOnly, title: "Title", subtitle: "Subtitle", description: "description", keyAware: keyAware)
+        let biometricOnlyAuthenticator = DeviceBindingAuthenticationType.biometricOnly.getAuthType()
         XCTAssertTrue(biometricOnlyAuthenticator is BiometricOnly)
         
-        let biometricAllowFallbackAuthenticator = AuthenticatorFactory.getAuthenticator(userId: userId, authentication: .biometricAllowFallback, title: "Title", subtitle: "Subtitle", description: "description", keyAware: keyAware)
+        let biometricAllowFallbackAuthenticator = DeviceBindingAuthenticationType.biometricAllowFallback.getAuthType()
         XCTAssertTrue(biometricAllowFallbackAuthenticator is BiometricAndDeviceCredential)
+        
+        let applicationPinAuthenticator = DeviceBindingAuthenticationType.applicationPin.getAuthType()
+        XCTAssertTrue(applicationPinAuthenticator is ApplicationPinDeviceAuthenticator)
     }
     
     
@@ -34,10 +35,10 @@ class DeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 2"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
-        let keyAware = KeyAware(userId: userId)
         let kid = UUID().uuidString
         
-        let authenticator = None(keyAware: keyAware)
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -63,28 +64,28 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
     }
     
     
     func test_03_None_generateKeys() {
         let userId = "Test User Id 3"
-        let keyAware = KeyAware(userId: userId)
-        let key = KeyAware.getKeyAlias(keyName: userId)
+        let key = CryptoKey.getKeyAlias(keyName: userId)
         
-        let authenticator = None(keyAware: keyAware)
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNil(authenticator.accessControl())
         do {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = KeyAware.getSecureKey(keyAlias: key)
+            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        KeyAware.deleteKey(keyAlias: key)
+        CryptoKey.deleteKey(keyAlias: key)
     }
     
     
@@ -101,10 +102,10 @@ class DeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 4"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
-        let keyAware = KeyAware(userId: userId)
         let kid = UUID().uuidString
         
-        let authenticator = BiometricOnly(description: "Description", keyAware: keyAware)
+        let authenticator = BiometricOnly()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -130,7 +131,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
     }
     
     
@@ -145,10 +146,10 @@ class DeviceAuthenticatorTests: XCTestCase {
         }
 #endif
         let userId = "Test User Id 5"
-        let keyAware = KeyAware(userId: userId)
-        let key = KeyAware.getKeyAlias(keyName: userId)
+        let key = CryptoKey.getKeyAlias(keyName: userId)
         
-        let authenticator = BiometricOnly(description: "Description", keyAware: keyAware)
+        let authenticator = BiometricOnly()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
 #if !targetEnvironment(simulator)
         XCTAssertTrue(authenticator.isSupported())
 #else
@@ -159,12 +160,12 @@ class DeviceAuthenticatorTests: XCTestCase {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = KeyAware.getSecureKey(keyAlias: key)
+            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        KeyAware.deleteKey(keyAlias: key)
+        CryptoKey.deleteKey(keyAlias: key)
     }
     
     
@@ -181,10 +182,10 @@ class DeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 6"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
-        let keyAware = KeyAware(userId: userId)
         let kid = UUID().uuidString
         
-        let authenticator = BiometricAndDeviceCredential(description: "Description", keyAware: keyAware)
+        let authenticator = BiometricAndDeviceCredential()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -210,7 +211,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
     }
     
     
@@ -225,10 +226,10 @@ class DeviceAuthenticatorTests: XCTestCase {
         }
 #endif
         let userId = "Test User Id 7"
-        let keyAware = KeyAware(userId: userId)
-        let key = KeyAware.getKeyAlias(keyName: userId)
+        let key = CryptoKey.getKeyAlias(keyName: userId)
         
-        let authenticator = BiometricAndDeviceCredential(description: "Description", keyAware: keyAware)
+        let authenticator = BiometricAndDeviceCredential()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNotNil(authenticator.accessControl())
@@ -236,12 +237,12 @@ class DeviceAuthenticatorTests: XCTestCase {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = KeyAware.getSecureKey(keyAlias: key)
+            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        KeyAware.deleteKey(keyAlias: key)
+        CryptoKey.deleteKey(keyAlias: key)
     }
     
     
@@ -249,13 +250,13 @@ class DeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 8"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
-        let keyAware = KeyAware(userId: userId)
         let kid = UUID().uuidString
         
-        let authenticator = None(keyAware: keyAware)
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
         do {
             let keyPair = try authenticator.generateKeys()
-            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: KeyAware.getKeyAlias(keyName: userId))
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId))
             let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
             
             //verify signature
@@ -279,7 +280,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
     }
     
     
@@ -296,13 +297,13 @@ class DeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 9"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
-        let keyAware = KeyAware(userId: userId)
         let kid = UUID().uuidString
         
-        let authenticator = BiometricOnly(description: "Description", keyAware: keyAware)
+        let authenticator = BiometricOnly()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
-            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: KeyAware.getKeyAlias(keyName: userId))
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId))
             let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
             
             //verify signature
@@ -326,7 +327,7 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
     }
     
     
@@ -343,13 +344,13 @@ class DeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 10"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
-        let keyAware = KeyAware(userId: userId)
         let kid = UUID().uuidString
         
-        let authenticator = BiometricAndDeviceCredential(description: "Description", keyAware: keyAware)
+        let authenticator = BiometricAndDeviceCredential()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
-            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: KeyAware.getKeyAlias(keyName: userId))
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId))
             let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
             
             //verify signature
@@ -373,6 +374,51 @@ class DeviceAuthenticatorTests: XCTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+    }
+    
+    
+    func test_11_None_generateKeys_without_initialize() {
+        //make sure initialize is not called
+        let authenticator = None()
+        XCTAssertEqual(authenticator.type(), .none)
+        
+        do {
+            _ = try authenticator.generateKeys()
+            XCTFail("Generate Keys should have failed withut calling initialize()")
+            
+        } catch {
+            //all good, do nothing
+        }
+    }
+    
+    
+    func test_12_BiometricOnly_generateKeys_without_initialize() {
+        //make sure initialize is not called
+        let authenticator = BiometricOnly()
+        XCTAssertEqual(authenticator.type(), .biometricOnly)
+        
+        do {
+            _ = try authenticator.generateKeys()
+            XCTFail("Generate Keys should have failed withut calling initialize()")
+            
+        } catch {
+            //all good, do nothing
+        }
+    }
+    
+    
+    func test_13_BiometricAndDeviceCredential_generateKeys_without_initialize() {
+        //make sure initialize is not called
+        let authenticator = BiometricAndDeviceCredential()
+        XCTAssertEqual(authenticator.type(), .biometricAllowFallback)
+        
+        do {
+            _ = try authenticator.generateKeys()
+            XCTFail("Generate Keys should have failed withut calling initialize()")
+            
+        } catch {
+            //all good, do nothing
+        }
     }
 }

@@ -15,7 +15,7 @@ import JOSESwift
 /**
  * Callback to collect the device binding information
  */
-open class DeviceSigningVerifierCallback: MultipleValuesCallback {
+open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     
     //  MARK: - Properties
     
@@ -153,8 +153,8 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
     internal func authenticate(userKey: UserKey,
                                authInterface: DeviceAuthenticator?,
                                _ completion: @escaping DeviceSigningResultCallback) {
-        let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator(userKey: userKey)
-        
+        let newAuthInterface = authInterface ?? getDeviceAuthenticator(type: userKey.authType)
+        newAuthInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard newAuthInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return
@@ -165,12 +165,12 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
         
         do {
             // Authentication will be triggered during signing if necessary
-            let jws = try newAuthInterface.sign(userKey: userKey, challenge: self.challenge, expiration: self.getExpiration())
+            let jws = try newAuthInterface.sign(userKey: userKey, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
-                self.handleException(status: .timeout, completion: completion)
+                handleException(status: .timeout, completion: completion)
                 return
             }
             
@@ -179,9 +179,9 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
             
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
-            self.handleException(status: .abort, completion: completion)
+            handleException(status: .abort, completion: completion)
         } catch let error {
-            self.handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
+            handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
         }
     }
     
@@ -208,19 +208,6 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback {
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))
-    }
-    
-    
-    /// Create the interface for the Authentication type(biometricOnly, biometricAllowFallback, none)
-    /// - Parameter userKey: selected UserKey from the device
-    open func getDeviceBindingAuthenticator(userKey: UserKey) -> DeviceAuthenticator {
-        return AuthenticatorFactory.getAuthenticator(userId: userKey.userId, authentication: userKey.authType, title: title, subtitle: subtitle, description: promptDescription, keyAware: nil)
-    }
-    
-    
-    /// Get Expiration date for the signed token, claim "exp" will be set to the JWS
-    open func getExpiration() -> Date {
-        return Date().addingTimeInterval(Double(timeout ?? 60))
     }
     
     

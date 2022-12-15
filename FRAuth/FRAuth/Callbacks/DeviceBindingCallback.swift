@@ -16,7 +16,7 @@ import FRCore
 /**
  * Callback to collect the device binding information
  */
-open class DeviceBindingCallback: MultipleValuesCallback {
+open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     //  MARK: - Properties
     
@@ -157,7 +157,8 @@ open class DeviceBindingCallback: MultipleValuesCallback {
                           deviceId: String?,
                           encryptedPreference: DeviceRepository?,
                           _ completion: @escaping DeviceBindingResultCallback) {
-        let newAuthInterface = authInterface ?? getDeviceBindingAuthenticator()
+        let newAuthInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
+        newAuthInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         let newDeviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
         let newEncryptedPreference = encryptedPreference ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
         
@@ -173,25 +174,25 @@ open class DeviceBindingCallback: MultipleValuesCallback {
             let keyPair = try newAuthInterface.generateKeys()
             let kid = try newEncryptedPreference.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType)
             // Authentication will be triggered during signing if necessary
-            let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: self.userId, challenge: self.challenge, expiration: self.getExpiration())
+            let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
-                self.handleException(status: .timeout, completion: completion)
+                handleException(status: .timeout, completion: completion)
                 return
             }
             
             // If no errors, set the input values and complete with success
-            self.setJws(jws)
+            setJws(jws)
             if let newDeviceId = newDeviceId {
-                self.setDeviceId(newDeviceId)
+                setDeviceId(newDeviceId)
             }
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
-            self.handleException(status: .abort, completion: completion)
+            handleException(status: .abort, completion: completion)
         } catch let error {
-            self.handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
+            handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
         }
     }
     
@@ -201,23 +202,11 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     /// - Parameter completion: Completion block Device binding result callback
     open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceBindingResultCallback) {
         // Remove the private key if already generated
-        KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: userId))
+        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
         
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))
-    }
-    
-    
-    /// Create the interface for the Authentication type(biometricOnly, biometricAllowFallback, none)
-    open func getDeviceBindingAuthenticator() -> DeviceAuthenticator {
-        return AuthenticatorFactory.getAuthenticator(userId: userId, authentication: deviceBindingAuthenticationType, title: title, subtitle: subtitle, description: promptDescription, keyAware: nil)
-    }
-    
-    
-    /// Get Expiration date for the signed token, claim "exp" will be set to the JWS
-    open func getExpiration() -> Date {
-        return Date().addingTimeInterval(Double(timeout ?? 60))
     }
     
     
@@ -249,12 +238,4 @@ open class DeviceBindingCallback: MultipleValuesCallback {
     public func setClientError(_ clientError: String) {
         self.inputValues[self.clientErrorKey] = clientError
     }
-}
-
-
-/// Convert authentication type string received from server to authentication type enum
-public enum DeviceBindingAuthenticationType: String, Codable {
-    case biometricOnly = "BIOMETRIC_ONLY"
-    case biometricAllowFallback = "BIOMETRIC_ALLOW_FALLBACK"
-    case none = "NONE"
 }
