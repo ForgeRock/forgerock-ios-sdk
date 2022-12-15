@@ -1,6 +1,6 @@
 //
 //  CryptoKey.swift
-//  FRAuth
+//  FRCore
 //
 //  Copyright (c) 2022 ForgeRock. All rights reserved.
 //
@@ -113,7 +113,7 @@ public struct CryptoKey {
 }
 
 
-///Public and private keypair struct
+/// Public and private keypair struct
 public struct KeyPair {
     /// The Private key
     public var privateKey: SecKey

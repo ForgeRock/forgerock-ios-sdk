@@ -1,6 +1,6 @@
 // 
 //  CryptoKeyTests.swift
-//  FRAuthTests
+//  FRCoreTests
 //
 //  Copyright (c) 2022 ForgeRock. All rights reserved.
 //
