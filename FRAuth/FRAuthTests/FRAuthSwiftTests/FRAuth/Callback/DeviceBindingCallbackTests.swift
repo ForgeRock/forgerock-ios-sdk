@@ -11,6 +11,7 @@
 import XCTest
 import JOSESwift
 @testable import FRAuth
+@testable import FRCore
 
 class DeviceBindingCallbackTests: FRAuthBaseTest {
     
@@ -97,7 +98,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
         """
         return jsonStr
     }
-
+    
     
     func test_01_basic_init() {
         let jsonStr = getJsonString()
@@ -480,7 +481,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let expiration = callback.getExpiration()
+            let expiration = callback.getExpiration(timeout: callback.timeout)
             XCTAssertGreaterThanOrEqual(Date().addingTimeInterval(Double(callback.timeout ?? 60)), expiration)
         }
         catch {
@@ -497,7 +498,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let noneAuthenticator = callback.getDeviceBindingAuthenticator()
+            let noneAuthenticator = callback.getDeviceAuthenticator(type: .none)
             XCTAssertTrue(noneAuthenticator is None)
         }
         catch {
@@ -512,7 +513,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
         
         do {
             let callback = try DeviceBindingCallback(json: callbackResponse)
-            let noneAuthenticator = callback.getDeviceBindingAuthenticator()
+            let noneAuthenticator = callback.getDeviceAuthenticator(type: .biometricOnly)
             
             XCTAssertNotNil(callback)
             XCTAssertTrue(noneAuthenticator is BiometricOnly)
@@ -531,7 +532,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let noneAuthenticator = callback.getDeviceBindingAuthenticator()
+            let noneAuthenticator = callback.getDeviceAuthenticator(type: .biometricAllowFallback)
             XCTAssertTrue(noneAuthenticator is BiometricAndDeviceCredential)
         }
         catch {
@@ -565,7 +566,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTFail("Callback Execute failed: \(error.errorMessage)")
                 }
             }
-            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
+            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -600,7 +601,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
+            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -616,7 +617,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorUnsupported(keyAware: KeyAware(userId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorUnsupported(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
@@ -625,7 +626,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
+            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -641,7 +642,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorGenerateKeysFailed(keyAware: KeyAware(userId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorGenerateKeysFailed(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
@@ -650,7 +651,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
+            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -666,7 +667,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorSignFailed(keyAware: KeyAware(userId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorSignFailed(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
@@ -675,7 +676,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
+            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -691,7 +692,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorAborted(keyAware: KeyAware(userId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorAborted(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", encryptedPreference: nil) { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of aborted")
@@ -700,7 +701,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            KeyAware.deleteKey(keyAlias: KeyAware.getKeyAlias(keyName: callback.userId))
+            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -710,15 +711,15 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
 
 
 struct CustomAuthenticatorUnsupported: DeviceAuthenticator {
-    var keyAware: KeyAware
+    var cryptoKey: CryptoKey
     
-    init(keyAware: KeyAware) {
-        self.keyAware = keyAware
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
     }
     
     func generateKeys() throws -> KeyPair {
-        let keyBuilderQuery = keyAware.keyBuilderQuery()
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
     func isSupported() -> Bool {
         return false
@@ -727,14 +728,18 @@ struct CustomAuthenticatorUnsupported: DeviceAuthenticator {
     func accessControl() -> SecAccessControl? {
         return nil
     }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
 }
 
 
 struct CustomAuthenticatorGenerateKeysFailed: DeviceAuthenticator {
-    var keyAware: KeyAware
+    var cryptoKey: CryptoKey
     
-    init(keyAware: KeyAware) {
-        self.keyAware = keyAware
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
     }
     
     func generateKeys() throws -> KeyPair {
@@ -747,19 +752,23 @@ struct CustomAuthenticatorGenerateKeysFailed: DeviceAuthenticator {
     func accessControl() -> SecAccessControl? {
         return nil
     }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
 }
 
 
 struct CustomAuthenticatorSignFailed: DeviceAuthenticator {
-    var keyAware: KeyAware
+    var cryptoKey: CryptoKey
     
-    init(keyAware: KeyAware) {
-        self.keyAware = keyAware
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
     }
     
     func generateKeys() throws -> KeyPair {
-        let keyBuilderQuery = keyAware.keyBuilderQuery()
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
     func isSupported() -> Bool {
         return true
@@ -772,19 +781,23 @@ struct CustomAuthenticatorSignFailed: DeviceAuthenticator {
     func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         throw NSError(domain: "domain", code: 1)
     }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
 }
 
 
 struct CustomAuthenticatorAborted: DeviceAuthenticator {
-    var keyAware: KeyAware
+    var cryptoKey: CryptoKey
     
-    init(keyAware: KeyAware) {
-        self.keyAware = keyAware
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
     }
     
     func generateKeys() throws -> KeyPair {
-        let keyBuilderQuery = keyAware.keyBuilderQuery()
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
     func isSupported() -> Bool {
         return true
@@ -796,5 +809,9 @@ struct CustomAuthenticatorAborted: DeviceAuthenticator {
     
     func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         throw JOSESwiftError.localAuthenticationFailed(errorCode: 1)
+    }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
     }
 }

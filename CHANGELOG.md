@@ -4,6 +4,7 @@
 #### Added
 - Device Binding callback implementation
 - Device Signing Verifier callback implementation
+- Application PIN authenticator type to Device Binding and Device Signing Verification
 ## [3.4.0]
 #### Added
 - Dynamic SDK Configuration [SDKS-1760]

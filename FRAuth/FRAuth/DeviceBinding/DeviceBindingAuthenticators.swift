@@ -42,6 +42,17 @@ public protocol DeviceAuthenticator {
     
     /// Access Control for the authetication type
     func accessControl() -> SecAccessControl?
+    
+    /// Set the Authentication Prompt
+    func setPrompt(_ prompt: Prompt)
+    
+    /// Get the Device Binding Authentication Type
+    func type() -> DeviceBindingAuthenticationType
+    
+    /// initialize already created entity with useriD and Promp
+    /// - Parameter userId: userId of the authentication
+    /// - Parameter prompt: Prompt containing the description for authentication
+    func initialize(userId: String, prompt: Prompt)
 }
 
 
@@ -55,7 +66,7 @@ extension DeviceAuthenticator {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: "sig", JWKParameter.algorithm.rawValue: "ES256", JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
         
@@ -88,8 +99,8 @@ extension DeviceAuthenticator {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
-    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
-        guard let keyStoreKey = KeyAware.getSecureKey(keyAlias: userKey.keyAlias) else {
+    public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+        guard let keyStoreKey = CryptoKey.getSecureKey(keyAlias: userKey.keyAlias) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot read the private key")
         }
         let algorithm = SignatureAlgorithm.ES256
@@ -114,46 +125,82 @@ extension DeviceAuthenticator {
         
         return jws.compactSerializedString
     }
+    
+    
+    
+    /// Set the Authentication Prompt
+    public func setPrompt(_ prompt: Prompt) {
+        //Do Nothing
+    }
+    
+    
+    /// initialize already created entity with useriD and Promp
+    /// - Parameter userId: userId of the authentication
+    /// - Parameter prompt: Prompt containing the description for authentication
+    public func initialize(userId: String, prompt: Prompt) {
+        
+        if let cryptoAware = self as? CryptoAware {
+            cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId))
+        }
+        
+        self.setPrompt(prompt)
+    }
+    
+}
+
+
+open class BiometricAuthenticator: CryptoAware {
+    
+    /// prompt  for authentication promp if applicable
+    var prompt: Prompt?
+    /// cryptoKey for key pair generation
+    var cryptoKey: CryptoKey?
+    
+    
+    open func setKey(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    
+    open func setPrompt(_ prompt: Prompt) {
+        self.prompt = prompt
+    }
 }
 
 
 /// DeviceAuthenticator adoption for biometric only authentication
-internal class BiometricOnly: DeviceAuthenticator {
-    /// prompt description for authentication promp if applicable
-    var promptDescription: String
+open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
     /// local authentication policy for authentication
     var policy: LAPolicy
-    /// keyAware for key pair generation
-    var keyAware: KeyAware
     
     
-    /// Initializes BiometricOnly with given BiometricHandler and KeyAware
-    /// - Parameter biometricInterface: biometric handler for authentication
-    /// - Parameter keyAware: keyAware for key pair generation
-    init(description: String, keyAware: KeyAware) {
-        self.promptDescription = description
-        self.keyAware = keyAware
+    /// Initializes BiometricOnly with the right LAPolicy
+    override init() {
         policy = .deviceOwnerAuthenticationWithBiometrics
     }
     
     
     /// Generate public and private key pair
-    func generateKeys() throws -> KeyPair {
-        var keyBuilderQuery = keyAware.keyBuilderQuery()
+    open func generateKeys() throws -> KeyPair {
+        guard let cryptoKey = cryptoKey, let prompt = prompt else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing cryptoKey or prompt")
+        }
+        
+        var keyBuilderQuery = cryptoKey.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
         
 #if !targetEnvironment(simulator)
         let context = LAContext()
-        context.localizedReason = promptDescription
+        context.localizedReason = prompt.description
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
 #endif
         
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
     
     
     /// Check if authentication is supported
-    func isSupported() -> Bool {
+    open func isSupported() -> Bool {
         let laContext = LAContext()
         var evalError: NSError?
         return laContext.canEvaluatePolicy(policy, error: &evalError)
@@ -161,53 +208,54 @@ internal class BiometricOnly: DeviceAuthenticator {
     
     
     /// Access Control for the authetication type
-    func accessControl() -> SecAccessControl? {
+    open func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .privateKeyUsage], nil)
 #else
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet], nil)
 #endif
     }
+    
+    
+    open func type() -> DeviceBindingAuthenticationType {
+        return .biometricOnly
+    }
 }
 
 
 /// DeviceAuthenticator adoption for biometric and Device Credential authentication
-internal class BiometricAndDeviceCredential: DeviceAuthenticator {
-    /// prompt description for authentication promp if applicable
-    var promptDescription: String
+open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthenticator {
     /// local authentication policy for authentication
     var policy: LAPolicy
-    /// keyAware for key pair generation
-    var keyAware: KeyAware
     
     
-    /// Initializes BiometricOnly with given BiometricHandler and KeyAware
-    /// - Parameter biometricInterface: biometric handler for authentication
-    /// - Parameter keyAware: keyAware for key pair generation
-    init(description: String, keyAware: KeyAware) {
-        self.promptDescription = description
-        self.keyAware = keyAware
+    /// Initializes BiometricOnly with the rightLAPolicy
+    override init() {
         policy = .deviceOwnerAuthentication
     }
     
     
     /// Generate public and private key pair
-    func generateKeys() throws -> KeyPair {
-        var keyBuilderQuery = keyAware.keyBuilderQuery()
+    open func generateKeys() throws -> KeyPair {
+        guard let cryptoKey = cryptoKey, let prompt = prompt else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing cryptoKey or prompt")
+        }
+        
+        var keyBuilderQuery = cryptoKey.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
         
 #if !targetEnvironment(simulator)
         let context = LAContext()
-        context.localizedReason = promptDescription
+        context.localizedReason = prompt.description
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
 #endif
         
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
     
     
     /// Check if authentication is supported
-    func isSupported() -> Bool {
+    open func isSupported() -> Bool {
         let laContext = LAContext()
         var evalError: NSError?
         return laContext.canEvaluatePolicy(policy, error: &evalError)
@@ -215,79 +263,84 @@ internal class BiometricAndDeviceCredential: DeviceAuthenticator {
     
     
     /// Access Control for the authetication type
-    func accessControl() -> SecAccessControl? {
+    open func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence, .privateKeyUsage], nil)
 #else
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence], nil)
 #endif
     }
+    
+    
+    open func type() -> DeviceBindingAuthenticationType {
+        return .biometricAllowFallback
+    }
 }
 
 
-internal class None: DeviceAuthenticator {
+open class None: DeviceAuthenticator, CryptoAware {
     
-    /// keyAware for key pair generation
-    var keyAware: KeyAware
-    
-    
-    /// Initializes BiometricOnly with given BiometricHandler and KeyAware
-    /// - Parameter keyAware: keyAware for key pair generation
-    init(keyAware: KeyAware) {
-        self.keyAware = keyAware
-    }
-    
+    /// cryptoKey for key pair generation
+    var cryptoKey: CryptoKey?
     
     /// Generate public and private key pair
-    func generateKeys() throws -> KeyPair {
-        let keyBuilderQuery = keyAware.keyBuilderQuery()
-        return try keyAware.createKeyPair(builderQuery: keyBuilderQuery)
+    open func generateKeys() throws -> KeyPair {
+        guard let cryptoKey = cryptoKey else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing cryptoKey")
+        }
+        
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
     
     
     /// Check if authentication is supported
-    func isSupported() -> Bool {
+    open func isSupported() -> Bool {
         return true
     }
     
     
     /// Access Control for the authetication type
-    func accessControl() -> SecAccessControl? {
+    open func accessControl() -> SecAccessControl? {
         return nil
     }
-}
-
-
-///Public and private keypair struct
-public struct KeyPair {
-    /// The Private key
-    var privateKey: SecKey
-    /// The Private key
-    var publicKey: SecKey
-    /// Alias for the key
-    var keyAlias: String
-}
-
-
-/// AuthenticatorFactory to create the authentication type.
-internal struct AuthenticatorFactory {
     
-    /// Static method to create and return the correct type of authenticator
-    static func getAuthenticator(userId: String,
-                                 authentication: DeviceBindingAuthenticationType,
-                                 title: String,
-                                 subtitle: String,
-                                 description: String,
-                                 keyAware: KeyAware?) -> DeviceAuthenticator {
-        let newKeyAware = keyAware ?? KeyAware(userId: userId)
-        switch authentication {
+    
+    open func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    open func setKey(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+}
+
+
+/// Convert authentication type string received from server to authentication type enum
+public enum DeviceBindingAuthenticationType: String, Codable {
+    case biometricOnly = "BIOMETRIC_ONLY"
+    case biometricAllowFallback = "BIOMETRIC_ALLOW_FALLBACK"
+    case applicationPin = "APPLICATION_PIN"
+    case none = "NONE"
+    
+    /// get the right type of DeviceAuthenticator
+    func getAuthType() -> DeviceAuthenticator {
+        switch self {
         case .biometricOnly:
-            return BiometricOnly(description: description, keyAware: newKeyAware)
+            return BiometricOnly()
         case .biometricAllowFallback:
-            return BiometricAndDeviceCredential(description: description, keyAware: newKeyAware)
+            return BiometricAndDeviceCredential()
+        case .applicationPin:
+            return ApplicationPinDeviceAuthenticator()
         case .none:
-            return None(keyAware: newKeyAware)
-            
+            return None()
         }
     }
+}
+
+
+public struct Prompt {
+    var title: String
+    var subtitle: String
+    var description: String
 }

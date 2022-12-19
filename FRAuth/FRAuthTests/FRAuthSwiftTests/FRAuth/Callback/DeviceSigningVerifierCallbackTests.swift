@@ -11,6 +11,7 @@
 
 import XCTest
 @testable import FRAuth
+@testable import FRCore
 
 class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
@@ -337,7 +338,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let expiration = callback.getExpiration()
+            let expiration = callback.getExpiration(timeout: callback.timeout)
             XCTAssertGreaterThanOrEqual(Date().addingTimeInterval(Double(callback.timeout ?? 60)), expiration)
         }
         catch {
@@ -355,7 +356,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             XCTAssertNotNil(callback)
             
             let userKey = UserKey(userId: "", userName: "", kid: "", authType: .none, keyAlias: "")
-            let noneAuthenticator = callback.getDeviceBindingAuthenticator(userKey: userKey)
+            let noneAuthenticator = callback.getDeviceAuthenticator(type: .none)
             XCTAssertTrue(noneAuthenticator is None)
         }
         catch {
@@ -372,7 +373,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             
             let userKey = UserKey(userId: "", userName: "", kid: "", authType: .biometricOnly, keyAlias: "")
-            let noneAuthenticator = callback.getDeviceBindingAuthenticator(userKey: userKey)
+            let noneAuthenticator = callback.getDeviceAuthenticator(type: .biometricOnly)
             
             XCTAssertNotNil(callback)
             XCTAssertTrue(noneAuthenticator is BiometricOnly)
@@ -392,7 +393,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             XCTAssertNotNil(callback)
             
             let userKey = UserKey(userId: "", userName: "", kid: "", authType: .biometricAllowFallback, keyAlias: "")
-            let noneAuthenticator = callback.getDeviceBindingAuthenticator(userKey: userKey)
+            let noneAuthenticator = callback.getDeviceAuthenticator(type: .biometricAllowFallback)
             XCTAssertTrue(noneAuthenticator is BiometricAndDeviceCredential)
         }
         catch {
@@ -448,8 +449,8 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let delegate = CustomDeviceSigningVerifierDelegate()
             callback.delegate = delegate
             
-            let keyAware = KeyAware(userId: "User Id 1")
-            let keyPair = try keyAware.createKeyPair(builderQuery: keyAware.keyBuilderQuery())
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
             
             let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
@@ -533,11 +534,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let delegate = CustomDeviceSigningVerifierDelegate()
             callback.delegate = delegate
             
-            let keyAware1 = KeyAware(userId: "User Id 1")
-            let keyPair1 = try keyAware1.createKeyPair(builderQuery: keyAware1.keyBuilderQuery())
+            let cryptoKey1 = CryptoKey(keyId: "User Id 1")
+            let keyPair1 = try cryptoKey1.createKeyPair(builderQuery: cryptoKey1.keyBuilderQuery())
             
-            let keyAware2 = KeyAware(userId: "User Id 2")
-            let keyPair2 = try keyAware2.createKeyPair(builderQuery: keyAware2.keyBuilderQuery())
+            let cryptoKey2 = CryptoKey(keyId: "User Id 2")
+            let keyPair2 = try cryptoKey2.createKeyPair(builderQuery: cryptoKey2.keyBuilderQuery())
             
             let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
@@ -581,8 +582,8 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let delegate = CustomDeviceSigningVerifierDelegate()
             callback.delegate = delegate
             
-            let keyAware = KeyAware(userId: "User Id 1")
-            let keyPair = try keyAware.createKeyPair(builderQuery: keyAware.keyBuilderQuery())
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
             
             let encryptedPreference = KeychainDeviceRepository(uuid: nil, keychainService: nil)
             let _ = encryptedPreference.deleteAllKeys()
