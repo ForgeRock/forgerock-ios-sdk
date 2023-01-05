@@ -376,6 +376,12 @@ public class FRUser: NSObject, NSSecureCoding {
         return BrowserBuilder(oAuth2Client, frAuth.keychainManager)
     }
     
+    @objc
+    public func clearWebAuthnCredentialsForRpId(_ rpId: String) {
+        let platformAuthenticator = PlatformAuthenticator()
+        platformAuthenticator.clearAllCredentialsFromCredentialStore(rpId: rpId)
+    }
+    
     
     // MARK: - Private methods
     

@@ -108,4 +108,11 @@ class PlatformAuthenticator: Authenticator {
         FRLog.v("Starting getAssertionSession", subModule: WebAuthn.module)
         return PlatformAuthenticatorGetAssertionSession(config: self.config, keySupportChooser: self.keySupportChooser, credentialsStore: self.credentialsStore, authenticatorDelegate: self.authenticationDelegate)
     }
+    
+    func clearAllCredentialsFromCredentialStore(rpId: String) {
+        let credentialSources = self.credentialsStore.loadAllCredentialSources(rpId: rpId)
+        credentialSources.forEach {
+            _ = self.credentialsStore.deleteCredentialSource($0)
+        }
+    }
 }

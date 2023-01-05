@@ -57,6 +57,7 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     /// Boolean indicator whether or not Callback response is AM 7.1.0 or above
     var isNewJSONFormat: Bool = false
     var pubCredAlg: [COSEAlgorithmIdentifier] = []
+    var platformAuthenticator: PlatformAuthenticator?
     
     //  MARK: - Lifecycle
     
@@ -293,7 +294,11 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
         }
         
         //  Platform Authenticator
-        let platformAuthenticator = PlatformAuthenticator(registrationDelegate: self)
+        self.platformAuthenticator = PlatformAuthenticator(registrationDelegate: self)
+        guard let platformAuthenticator = self.platformAuthenticator else {
+            onError(FRWAKError.unknown(platformError: nil, message: "Failed to create PlatformAuthenticator"))
+            return
+        }
         //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
         var origin = CBConstants.originScheme + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
         //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
@@ -372,6 +377,10 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
                 onError(error)
             }
         }
+    }
+    
+    public func clearAllCredentials() {
+        self.platformAuthenticator?.clearAllCredentialsFromCredentialStore(rpId: self.relyingPartyId)
     }
 }
 
