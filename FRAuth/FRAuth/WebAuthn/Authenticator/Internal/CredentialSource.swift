@@ -10,7 +10,7 @@
 import Foundation
 import FRCore
 
-struct PublicKeyCredentialSource {
+public struct PublicKeyCredentialSource {
     
     var keyLabel: String {
         get {

@@ -115,4 +115,12 @@ class PlatformAuthenticator: Authenticator {
             _ = self.credentialsStore.deleteCredentialSource($0)
         }
     }
+    
+    func loadAllCredentials(rpId: String) ->  [PublicKeyCredentialSource] {
+        return self.credentialsStore.loadAllCredentialSources(rpId: rpId)
+    }
+    
+    func deleteCredential(publicKeyCredentialSource: PublicKeyCredentialSource) {
+        _ = self.credentialsStore.deleteCredentialSource(publicKeyCredentialSource)
+    }
 }
