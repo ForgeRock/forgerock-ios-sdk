@@ -283,6 +283,7 @@
 		EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */; };
 		EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */; };
 		ECDF5F4929674E9E007BB721 /* FRWebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDF5F4829674E9E007BB721 /* FRWebAuthn.swift */; };
+		ECDF5F4C296851DD007BB721 /* FRWebAuthnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDF5F4B296851DD007BB721 /* FRWebAuthnTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -614,6 +615,7 @@
 		EC7EA0F327D10FA70003F878 /* AppleSignInUserStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUserStructs.swift; sourceTree = "<group>"; };
 		EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRHTTPCookie.swift; sourceTree = "<group>"; };
 		ECDF5F4829674E9E007BB721 /* FRWebAuthn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRWebAuthn.swift; sourceTree = "<group>"; };
+		ECDF5F4B296851DD007BB721 /* FRWebAuthnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRWebAuthnTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -893,6 +895,7 @@
 		D53A806126278A410093B1CA /* WebAuthn */ = {
 			isa = PBXGroup;
 			children = (
+				ECDF5F4B296851DD007BB721 /* FRWebAuthnTests.swift */,
 				D53A806226278A410093B1CA /* WebAuthnRegistrationTests.swift */,
 				D53A806326278A410093B1CA /* WebAuthnSharedUtils.swift */,
 				D53A806426278A410093B1CA /* WebAuthnAuthenticationTests.swift */,
@@ -1964,6 +1967,7 @@
 				D5791BDD25F87DE8004B487A /* TokenTests.swift in Sources */,
 				D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */,
 				D58BC39F2602FB7700254654 /* IdPValueTests.swift in Sources */,
+				ECDF5F4C296851DD007BB721 /* FRWebAuthnTests.swift in Sources */,
 				D5791BDF25F87DE8004B487A /* AccessTokenTests.swift in Sources */,
 				D5791BE025F87DE8004B487A /* FRUserTests.swift in Sources */,
 				D5791BE125F87DE8004B487A /* FRUserBrowserTests.swift in Sources */,
