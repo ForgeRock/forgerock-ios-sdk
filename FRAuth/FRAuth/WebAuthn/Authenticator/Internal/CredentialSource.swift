@@ -4,12 +4,22 @@
 //
 //  Created by Lyo Kato on 2018/11/23.
 //  Original work Copyright © 2018 Lyo Kato. All rights reserved.
-//  Modified work Copyright © 2021 ForgeRock, Inc.
+//  Modified work Copyright © 2021-2023 ForgeRock, Inc.
 //
 
 import Foundation
 import FRCore
 
+/**
+ PublicKeyCredentialSource is a struct representing a WebAuthn Public Key credential. The initializer expects the folowing variables:
+ `id: [UInt8]`,
+ `rpId: String`,
+ `userHandle: [UInt8]?`,
+ `signCount: UInt32`,
+ `alg: Int`,
+ `otherUI: String`
+ PublicKeyCredentialSources are used to list and stored credentials on the device.
+ */
 public struct PublicKeyCredentialSource {
     
     var keyLabel: String {
