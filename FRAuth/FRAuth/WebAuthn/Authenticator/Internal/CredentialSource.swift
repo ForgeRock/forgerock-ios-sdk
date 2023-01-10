@@ -22,7 +22,7 @@ import FRCore
  */
 public struct PublicKeyCredentialSource {
     
-    var keyLabel: String {
+    public var keyLabel: String {
         get {
             let idHex = self.id.toHexString()
             return "\(self.rpId)/\(idHex)"
@@ -35,7 +35,7 @@ public struct PublicKeyCredentialSource {
     var rpId:       String
     var userHandle: [UInt8]?
     var alg:        Int = COSEAlgorithmIdentifier.rs256.rawValue
-    var otherUI:    String
+    public var otherUI:    String
     
     init(
         id:         [UInt8],

@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -14,6 +14,7 @@ import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
+import SwiftUI
 
 class ViewController: UIViewController {
 
@@ -150,7 +151,8 @@ class ViewController: UIViewController {
             "Login without UI (Accesstoken)",
             "FRSession.authenticate without UI (Token)",
             "Display Configurations",
-            "Revoke Access Token"
+            "Revoke Access Token",
+            "List WebAuthn Credentials"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -592,6 +594,27 @@ class ViewController: UIViewController {
         })
     }
     
+    func listWebAuthnCredentialsByRpId() {
+        
+        let alert = UIAlertController(title: "List WebAuthn Credentials",
+                                      message: "List all credentials by RpId", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "RpId"
+        }
+        
+        alert.addAction(UIAlertAction(title: "List", style: .default, handler: { [weak alert] (_) in
+            guard let textField = alert?.textFields?[0], let rpid = textField.text else { return }
+            
+            let viewController = WebAuthnCredentialsTableViewController(rpId: rpid)
+            alert!.view.addSubview(viewController.view)
+            self.present(viewController, animated: true, completion: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     
     func performJailbreakDetector() {
         let result = FRJailbreakDetector.shared.analyze()
@@ -785,6 +808,10 @@ class ViewController: UIViewController {
             // Revoke Access Token
             self.revokeAccessToken()
             break
+        case 19:
+            // List WebAuthn Credentials by rpId
+            self.listWebAuthnCredentialsByRpId()
+            break
         default:
             break
         }
@@ -869,4 +896,89 @@ extension ViewController: AuthorizationPolicyDelegate {
 //        mutableRequest.setValue(txId, forHTTPHeaderField: "transactionId")
 //        return mutableRequest as URLRequest
 //    }
+}
+
+class WebAuthnCredentialsTableViewController: UITableViewController {
+    let identifier = "cell"
+    var rpId = ""
+    var credentialSource: [PublicKeyCredentialSource] = []
+    
+    init(rpId: String) {
+        self.rpId = rpId
+        self.credentialSource = FRWebAuthn.loadAllCredentials(by: rpId)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.identifier)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return credentialSource.count
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.identifier)!
+        cell.textLabel?.text = self.credentialSource[indexPath.row].otherUI
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+      if(editingStyle == .delete) {
+        FRWebAuthn.deleteCredential(with: self.credentialSource[indexPath.row])
+        self.credentialSource = FRWebAuthn.loadAllCredentials(by: self.rpId)
+        tableView.reloadData()
+       }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Found \(credentialSource.count) WebAuthn Credentials for rpID \"\(self.rpId)\""
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        let deleteAllButton = UIButton()
+        deleteAllButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30)
+        deleteAllButton.setTitle("Delete All", for: .normal)
+        deleteAllButton.setTitleColor(.white, for: .normal)
+        deleteAllButton.backgroundColor = .red
+        deleteAllButton.addTarget(self, action: #selector(deleteAllAction), for: .touchUpInside)
+        
+        footerView.addSubview(deleteAllButton)
+        return footerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    @objc func deleteAllAction(sender: UIButton!) {
+        let alert = UIAlertController(title: "Delete WebAuthn Credentials",
+                                      message: "Are you sure you want to delete all credentials for RpId \"\(self.rpId)\"?",
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (alert: UIAlertAction!) in
+            FRWebAuthn.deleteCredentials(by: self.rpId)
+            self.credentialSource = FRWebAuthn.loadAllCredentials(by: self.rpId)
+            self.tableView.reloadData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
 }
