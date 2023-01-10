@@ -378,10 +378,6 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             }
         }
     }
-    
-    public func clearAllCredentials() {
-        self.platformAuthenticator?.clearAllCredentialsFromCredentialStore(rpId: self.relyingPartyId)
-    }
 }
 
 
