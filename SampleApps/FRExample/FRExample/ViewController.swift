@@ -14,7 +14,6 @@ import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
-import SwiftUI
 
 class ViewController: UIViewController {
 
