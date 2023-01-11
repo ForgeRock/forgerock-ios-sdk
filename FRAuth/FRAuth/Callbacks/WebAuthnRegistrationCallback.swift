@@ -48,6 +48,8 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     public var authenticatorAttachment: WAAuthenticatorAttachment
     /// Delegation to perform required user interaction while generating assertion
     public weak var delegate: PlatformAuthenticatorRegistrationDelegate?
+    /// Device name set during registration
+    public var deviceName: String?
     
     
     //  MARK: - Private properties
@@ -282,9 +284,12 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     /// Registers against AM's `WebAuthn Registration Node` based on the JSON callback and WebAuthn's properties within the Callback
     /// - Parameters:
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
+    ///   - deviceName: Optional `Device Name` object to set Device Name value to the designated `HiddenValueCallback`
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func register(node: Node? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+    public func register(node: Node? = nil, deviceName: String? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        
+        self.deviceName = deviceName
         
         if self.isNewJSONFormat {
             FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)
@@ -345,13 +350,18 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
         options.authenticatorSelection = AuthenticatorSelectionCriteria(requireResidentKey: self.requireResidentKey, userVerification: userVerification)
 
         //  Perfrom credential create operation through WebAuthnClient
-        webAuthnClient.create(options, onSuccess: { (credential) in
+        webAuthnClient.create(options, onSuccess: { [unowned self] (credential) in
         
             let int8Arr = credential.response.attestationObject.map { Int8(bitPattern: $0) }
             let attObj = self.convertInt8ArrToStr(int8Arr)
             //  Expected AM result for successful attestation
-            //  {clientDataJSON as String}::{attestation object in Int8 array}::{hashed credential identifier}
-            let result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)"
+            //  {clientDataJSON as String}::{attestation object in Int8 array}::{hashed credential identifier}::{device name}`
+            let result: String
+            if let unwrappedDeviceName = self.deviceName {
+                result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)::\(unwrappedDeviceName)"
+            } else {
+                result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)"
+            }
             
             //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
             if let node = node {
@@ -360,7 +370,7 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             }
             onSuccess(result)
             
-        }) { (error) in
+        }) { [unowned self] (error) in
         
             /// Converts internal WAKError into WebAuthnError
             if let webAuthnError = error as? FRWAKError {
