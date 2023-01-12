@@ -48,8 +48,6 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     public var authenticatorAttachment: WAAuthenticatorAttachment
     /// Delegation to perform required user interaction while generating assertion
     public weak var delegate: PlatformAuthenticatorRegistrationDelegate?
-    /// Device name set during registration
-    public var deviceName: String?
     
     
     //  MARK: - Private properties
@@ -289,8 +287,6 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
     public func register(node: Node? = nil, deviceName: String? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
         
-        self.deviceName = deviceName
-        
         if self.isNewJSONFormat {
             FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)
         }
@@ -357,7 +353,7 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             //  Expected AM result for successful attestation
             //  {clientDataJSON as String}::{attestation object in Int8 array}::{hashed credential identifier}::{device name}`
             let result: String
-            if let unwrappedDeviceName = self.deviceName {
+            if let unwrappedDeviceName = deviceName {
                 result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)::\(unwrappedDeviceName)"
             } else {
                 result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)"

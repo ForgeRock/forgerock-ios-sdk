@@ -644,7 +644,6 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 XCTAssertNotNil(webAuthnOutcome)
                 let components = webAuthnOutcome.components(separatedBy: "::")
                 XCTAssertTrue(components.last == "Test Device Name")
-                XCTAssertTrue(callback.deviceName == "Test Device Name")
                 ex.fulfill()
             }) { (error) in
                 XCTFail("Failed with unexpected error: \(error.localizedDescription)")
