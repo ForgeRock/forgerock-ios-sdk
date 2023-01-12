@@ -18,12 +18,13 @@ class AppPinAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 1"
         let cryptoKey = CryptoKey(keyId: userId)
         let appPinAuthenticator = AppPinAuthenticator(cryptoKey: cryptoKey)
+        let pin = "1234"
         
         do {
-            let keyPair = try appPinAuthenticator.generateKeys(description: "Description")
+            let keyPair = try appPinAuthenticator.generateKeys(description: "Description", pin: pin)
             XCTAssertEqual(cryptoKey.keyAlias, keyPair.keyAlias)
             
-            let privateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias)
+            let privateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias, pin: pin)
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
@@ -47,15 +48,16 @@ class AppPinAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 3"
         let cryptoKey = CryptoKey(keyId: userId)
         let appPinAuthenticator = AppPinAuthenticator(cryptoKey: cryptoKey)
+        let pin = "1234"
         
         do {
-            let keyPair = try appPinAuthenticator.generateKeys(description: "Description")
+            let keyPair = try appPinAuthenticator.generateKeys(description: "Description", pin: pin)
             XCTAssertEqual(cryptoKey.keyAlias, keyPair.keyAlias)
             
-            let cryptoPrivateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias)
+            let cryptoPrivateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias, pin: pin)
             XCTAssertNotNil(cryptoPrivateKey)
             
-            let privateKey = appPinAuthenticator.getPrivateKey()
+            let privateKey = appPinAuthenticator.getPrivateKey(pin: pin)
             XCTAssertNotNil(privateKey)
             
             XCTAssertEqual(cryptoPrivateKey, privateKey)

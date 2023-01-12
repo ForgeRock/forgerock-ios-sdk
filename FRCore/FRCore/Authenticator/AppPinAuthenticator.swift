@@ -24,13 +24,14 @@ public class AppPinAuthenticator {
     
     
     /// Generate public and private key pair
-    open func generateKeys(description: String) throws -> KeyPair {
+    open func generateKeys(description: String, pin: String) throws -> KeyPair {
         var keyBuilderQuery = cryptoKey.keyBuilderQuery()
         keyBuilderQuery[String(kSecAttrAccessControl)] = accessControl()
         
 #if !targetEnvironment(simulator)
         let context = LAContext()
         context.localizedReason = description
+        context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
 #endif
         
@@ -48,8 +49,8 @@ public class AppPinAuthenticator {
     }
     
     
-    func getPrivateKey() -> SecKey? {
-        return CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias)
+    func getPrivateKey(pin: String) -> SecKey? {
+        return CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias, pin: pin)
     }
     
     

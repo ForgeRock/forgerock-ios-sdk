@@ -23,6 +23,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let kid = UUID().uuidString
         
         let authenticator = ApplicationPinDeviceAuthenticator()
+        authenticator.delegate = ApplicationPinDeviceAuthenticatorDelegateMock()
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
@@ -60,6 +61,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let kid = UUID().uuidString
         
         let authenticator = ApplicationPinDeviceAuthenticator()
+        authenticator.delegate = ApplicationPinDeviceAuthenticatorDelegateMock()
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
@@ -96,6 +98,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
         let authenticator = ApplicationPinDeviceAuthenticator()
+        authenticator.delegate = ApplicationPinDeviceAuthenticatorDelegateMock()
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNotNil(authenticator.accessControl())
@@ -123,6 +126,12 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
             
         } catch {
             //all good, do nothing
+        }
+    }
+    
+    class ApplicationPinDeviceAuthenticatorDelegateMock: ApplicationPinDeviceAuthenticatorDelegate {
+        func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void) {
+            completion("1234")
         }
     }
 }
