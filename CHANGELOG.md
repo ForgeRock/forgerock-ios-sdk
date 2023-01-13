@@ -2,6 +2,8 @@
 ## [4.0.0]
 #### Changed
 - Added error message description to the `WebAuthnError` enum [SDKS-2226]
+- Exposed interface for listing and deleting WebAuthn credentials from the device [SDKS-2279]
+- Exposed interface for assigning device name during the WebAuthn registration process [SDKS-2297]
 
 ## [3.4.1]
 #### Changed
