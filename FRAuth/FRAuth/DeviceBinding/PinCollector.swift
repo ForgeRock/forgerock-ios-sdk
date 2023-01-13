@@ -1,5 +1,5 @@
 // 
-//  ApplicationPinDeviceAuthenticatorDelegate.swift
+//  PinCollector.swift
 //  FRAuth
 //
 //  Copyright (c) 2023 ForgeRock. All rights reserved.
@@ -12,15 +12,15 @@
 import UIKit
 
 
-/// ApplicationPinDeviceAuthenticatorDelegate for collecting the Pin
-public protocol ApplicationPinDeviceAuthenticatorDelegate: AnyObject {
+/// Protocol for collecting the Pin
+public protocol PinCollector: AnyObject {
     /// Delegate method to collect the Pin
     func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void)
 }
 
 
-/// Default implementation for ApplicationPinDeviceAuthenticatorDelegate
-public class ApplicationPinDeviceAuthenticatorDefaultDelegate: NSObject, ApplicationPinDeviceAuthenticatorDelegate {
+/// Default implementation for PinCollector protocol
+public class DefaultPinCollector: NSObject, PinCollector {
     
     var alert: UIAlertController!
     

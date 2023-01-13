@@ -115,7 +115,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     /// Sign the device.
     /// - Parameter completion: Completion block for Device binding result callback
     open func sign(completion: @escaping DeviceSigningResultCallback) {
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .background)
+        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
         dispatchQueue.async {
             self.execute(userKeyService: nil, completion)
         }

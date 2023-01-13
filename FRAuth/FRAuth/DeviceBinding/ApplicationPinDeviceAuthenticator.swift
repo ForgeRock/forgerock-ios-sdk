@@ -23,30 +23,20 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     var cryptoKey: CryptoKey?
     /// AppPinAuthenticator to take care of key generation
     var appPinAuthenticator: AppPinAuthenticator?
-    /// ApplicationPinDeviceAuthenticatorDelegate for collection the Pin
-    public var delegate: ApplicationPinDeviceAuthenticatorDelegate?
+    /// PinCollector for collecting the Pin
+    public var pinCollector: PinCollector
     
-    init() {
-        delegate = ApplicationPinDeviceAuthenticatorDefaultDelegate()
+    init(pinCollector: PinCollector = DefaultPinCollector()) {
+        self.pinCollector = pinCollector
     }
     
     /// Generate public and private key pair
     open func generateKeys() throws -> KeyPair {
-        
         guard let appPinAuthenticator = appPinAuthenticator, let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing appPinAuthenticator or prompt")
         }
-        
-        // Use DispatchSemaphore to wait for the delegate to finish collecting the pin from the user before continuing
-        let semaphore = DispatchSemaphore(value: 0)
-        var pin: String? = nil
-        delegate?.collectPin(prompt: prompt, completion: { collectedPin in
-            pin = collectedPin
-            semaphore.signal()
-        })
-        semaphore.wait()
-        
-        if let pin = pin {
+       
+        if let pin = collectPin(prompt: prompt) {
             return try appPinAuthenticator.generateKeys(description: prompt.description, pin: pin)
         } else {
             throw DeviceBindingStatus.abort
@@ -92,16 +82,8 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         guard let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot retrive keys, missing prompt")
         }
-        // Use DispatchSemaphore to wait for the delegate to finish collecting the pin from the user before continuing
-        let semaphore = DispatchSemaphore(value: 0)
-        var pin: String? = nil
-        delegate?.collectPin(prompt: prompt, completion: { collectedPin in
-            pin = collectedPin
-            semaphore.signal()
-        })
-        semaphore.wait()
         
-        guard let pin = pin else {
+        guard let pin = collectPin(prompt: prompt) else {
             throw DeviceBindingStatus.abort
         }
         
@@ -129,5 +111,21 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         let jws = try JWS(header: header, payload: payload, signer: signer)
         
         return jws.compactSerializedString
+    }
+    
+    
+    func collectPin(prompt: Prompt) -> String? {
+        // Use DispatchGroup to wait for pinCollector to finish collecting the pin before continuing
+        let group = DispatchGroup()
+        var pin: String?
+        
+        group.enter()
+        pinCollector.collectPin(prompt: prompt, completion: { collectedPin in
+            pin = collectedPin
+            group.leave()
+        })
+        
+        group.wait()
+        return pin
     }
 }

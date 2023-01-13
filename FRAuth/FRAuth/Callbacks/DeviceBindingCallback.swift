@@ -145,7 +145,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// Bind the device.
     /// - Parameter completion Completion block for Device binding result callback
     open func bind(completion: @escaping DeviceBindingResultCallback) {
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .background)
+        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
         dispatchQueue.async {
             self.execute(authInterface: nil, deviceId: nil, encryptedPreference: nil, completion)
         }

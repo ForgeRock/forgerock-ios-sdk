@@ -22,8 +22,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let expiration = Date().addingTimeInterval(60.0)
         let kid = UUID().uuidString
         
-        let authenticator = ApplicationPinDeviceAuthenticator()
-        authenticator.delegate = ApplicationPinDeviceAuthenticatorDelegateMock()
+        let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
@@ -60,8 +59,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let expiration = Date().addingTimeInterval(60.0)
         let kid = UUID().uuidString
         
-        let authenticator = ApplicationPinDeviceAuthenticator()
-        authenticator.delegate = ApplicationPinDeviceAuthenticatorDelegateMock()
+        let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
@@ -97,8 +95,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 3"
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
-        let authenticator = ApplicationPinDeviceAuthenticator()
-        authenticator.delegate = ApplicationPinDeviceAuthenticatorDelegateMock()
+        let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNotNil(authenticator.accessControl())
@@ -129,7 +126,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         }
     }
     
-    class ApplicationPinDeviceAuthenticatorDelegateMock: ApplicationPinDeviceAuthenticatorDelegate {
+    class PinCollectorMock: PinCollector {
         func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void) {
             completion("1234")
         }
