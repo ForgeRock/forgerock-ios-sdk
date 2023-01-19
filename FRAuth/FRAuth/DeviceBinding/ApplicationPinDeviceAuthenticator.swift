@@ -37,7 +37,11 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         }
        
         if let pin = collectPin(prompt: prompt) {
-            return try appPinAuthenticator.generateKeys(description: prompt.description, pin: pin)
+            do {
+                return try appPinAuthenticator.generateKeys(description: prompt.description, pin: pin)
+            } catch {
+                throw DeviceBindingStatus.unsupported(errorMessage: nil)
+            }
         } else {
             throw DeviceBindingStatus.abort
         }
@@ -88,7 +92,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         }
         
         guard let keyStoreKey = CryptoKey.getSecureKey(keyAlias: userKey.keyAlias, pin: pin) else {
-            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot read the private key")
+            throw DeviceBindingStatus.unRegister
         }
         let algorithm = SignatureAlgorithm.ES256
         
@@ -108,9 +112,14 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         }
         
         //create jws
-        let jws = try JWS(header: header, payload: payload, signer: signer)
-        
-        return jws.compactSerializedString
+        // Even if the provided pin is wrong, the system still returns the key above in the CryptoKey.getSecureKey call.
+        // However it fails during signing. So we catch the invalid credentials error only during signing
+        do {
+            let jws = try JWS(header: header, payload: payload, signer: signer)
+            return jws.compactSerializedString
+        } catch {
+            throw DeviceBindingStatus.unAuthorize
+        }
     }
     
     

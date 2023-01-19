@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -274,6 +274,52 @@ class ViewController: UIViewController {
                             textField.autocorrectionType = .no
                             textField.autocapitalizationType = .none
                         })
+                    } else if callback.type == "TextOutputCallback", let textOutputCallback = callback as? TextOutputCallback {
+                        alert.title = textOutputCallback.message
+                    } else if callback.type == "ConfirmationCallback", let confirmationCallback = callback as? ConfirmationCallback {
+                        if let options = confirmationCallback.options {
+                            for (index, option) in options.enumerated() {
+                                let action = UIAlertAction(title: option, style: .default, handler: { (_) in
+                                    confirmationCallback.value = index
+                                    handleNode(node)
+                                })
+                                alert.addAction(action)
+                            }
+                        }
+                        self.present(alert, animated: true, completion: nil)
+                        return
+                    } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
+                        deviceBindingCallback.bind { result in
+                            DispatchQueue.main.async {
+                                var bindingResult = ""
+                                switch result {
+                                case .success:
+                                    bindingResult = "Success"
+                                case .failure(let error):
+                                    bindingResult = error.errorMessage
+                                }
+                                
+                                self.displayLog("Device Binding Result: \n\(bindingResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
+                        deviceSigningVerifierCallback.sign { result in
+                            DispatchQueue.main.async {
+                                var signingResult = ""
+                                switch result {
+                                case .success:
+                                    signingResult = "Success"
+                                case .failure(let error):
+                                    signingResult = error.errorMessage
+                                }
+                                
+                                self.displayLog("Signing Verifier Result: \n\(signingResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
                     }
                     else {
                         let errorAlert = UIAlertController(title: "Invalid Callback", message: "\(callback.type) is not supported.", preferredStyle: .alert)
@@ -297,21 +343,7 @@ class ViewController: UIViewController {
                         counter += 1
                     }
                     
-                    if T.self as AnyObject? === AccessToken.self {
-                        node.next(completion: { (token: AccessToken?, node, error) in
-                            self.handleNode(token, node, error)
-                        })
-                    }
-                    else if T.self as AnyObject? === Token.self {
-                        node.next(completion: { (token: Token?, node, error) in
-                            self.handleNode(token, node, error)
-                        })
-                    }
-                    else if T.self as AnyObject? === FRUser.self {
-                        node.next(completion: { (user: FRUser?, node, error) in
-                            self.handleNode(user, node, error)
-                        })
-                    }
+                    handleNode(node)
                 })
                 
                 alert.addAction(cancelAction)
@@ -325,6 +357,24 @@ class ViewController: UIViewController {
         }
         else {
             self.displayLog("Authentication Tree flow was successful; no result returned")
+        }
+        
+        func handleNode(_ node: Node) {
+            if T.self as AnyObject? === AccessToken.self {
+                node.next(completion: { (token: AccessToken?, node, error) in
+                    self.handleNode(token, node, error)
+                })
+            }
+            else if T.self as AnyObject? === Token.self {
+                node.next(completion: { (token: Token?, node, error) in
+                    self.handleNode(token, node, error)
+                })
+            }
+            else if T.self as AnyObject? === FRUser.self {
+                node.next(completion: { (user: FRUser?, node, error) in
+                    self.handleNode(user, node, error)
+                })
+            }
         }
     }
     

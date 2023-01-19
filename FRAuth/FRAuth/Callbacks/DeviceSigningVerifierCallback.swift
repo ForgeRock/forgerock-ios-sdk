@@ -183,8 +183,10 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
             handleException(status: .abort, completion: completion)
+        } catch let error as DeviceBindingStatus {
+            handleException(status: error, completion: completion)
         } catch let error {
-            handleException(status: .unsupported(errorMessage: error.localizedDescription), completion: completion)
+            handleException(status: .unknown(errorMessage: error.localizedDescription), completion: completion)
         }
     }
     

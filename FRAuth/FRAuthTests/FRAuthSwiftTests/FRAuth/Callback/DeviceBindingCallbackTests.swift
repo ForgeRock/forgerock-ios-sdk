@@ -2,7 +2,7 @@
 //  DeviceBindingCallbackTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -647,7 +647,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unsupported(errorMessage: "").clientError)
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unknown(errorMessage: "").clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
@@ -672,7 +672,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unsupported(errorMessage: "").clientError)
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unknown(errorMessage: "").clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }

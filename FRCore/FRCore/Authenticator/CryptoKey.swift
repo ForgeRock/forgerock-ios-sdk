@@ -85,8 +85,8 @@ public struct CryptoKey {
         if let pin = pin {
             let context = LAContext()
             context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
+            context.interactionNotAllowed = false
             query[kSecUseAuthenticationContext as String] = context
-            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
         }
 
         var item: CFTypeRef?
