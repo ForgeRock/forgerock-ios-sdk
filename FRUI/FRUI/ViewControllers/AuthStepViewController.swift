@@ -2,7 +2,7 @@
 //  AuthStepViewController.swift
 //  FRUI
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -208,7 +208,7 @@ class AuthStepViewController: UIViewController {
                             
                             let alert = UIAlertController(title: "Binding Result", message: bindingResult, preferredStyle: .alert)
                             let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
-                                self.renderAuthStep()
+                                self.submitCurrentNode()
                                 
                             })
                             alert.addAction(action)
@@ -241,7 +241,7 @@ class AuthStepViewController: UIViewController {
                             
                             let alert = UIAlertController(title: "Signing Verifier Result", message: bindingResult, preferredStyle: .alert)
                             let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
-                                self.renderAuthStep()
+                                self.submitCurrentNode()
                                 
                             })
                             alert.addAction(action)

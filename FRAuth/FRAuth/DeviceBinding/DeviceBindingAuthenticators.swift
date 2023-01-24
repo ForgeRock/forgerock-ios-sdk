@@ -2,7 +2,7 @@
 //  DeviceBindingAuthenticators.swift
 //  FRAuth
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -101,7 +101,7 @@ extension DeviceAuthenticator {
     /// - Returns: compact serialized jws
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
         guard let keyStoreKey = CryptoKey.getSecureKey(keyAlias: userKey.keyAlias) else {
-            throw DeviceBindingStatus.unsupported(errorMessage: "Cannot read the private key")
+            throw DeviceBindingStatus.unRegister
         }
         let algorithm = SignatureAlgorithm.ES256
         
@@ -194,8 +194,11 @@ open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
         context.localizedReason = prompt.description
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
 #endif
-        
-        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+        do {
+            return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+        } catch {
+            throw DeviceBindingStatus.unsupported(errorMessage: nil)
+        }
     }
     
     
@@ -250,7 +253,11 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthentic
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
 #endif
         
-        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+        do {
+            return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+        } catch {
+            throw DeviceBindingStatus.unsupported(errorMessage: nil)
+        }
     }
     
     
@@ -290,7 +297,11 @@ open class None: DeviceAuthenticator, CryptoAware {
         }
         
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
-        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+        do {
+            return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+        } catch {
+            throw DeviceBindingStatus.unsupported(errorMessage: nil)
+        }
     }
     
     
