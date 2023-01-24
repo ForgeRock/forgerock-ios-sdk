@@ -2,7 +2,7 @@
 //  ApplicationPinDeviceAuthenticatorTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,7 +22,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let expiration = Date().addingTimeInterval(60.0)
         let kid = UUID().uuidString
         
-        let authenticator = ApplicationPinDeviceAuthenticator()
+        let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
@@ -59,7 +59,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let expiration = Date().addingTimeInterval(60.0)
         let kid = UUID().uuidString
         
-        let authenticator = ApplicationPinDeviceAuthenticator()
+        let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
@@ -95,7 +95,7 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
         let userId = "Test User Id 3"
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
-        let authenticator = ApplicationPinDeviceAuthenticator()
+        let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNotNil(authenticator.accessControl())
@@ -123,6 +123,12 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
             
         } catch {
             //all good, do nothing
+        }
+    }
+    
+    class PinCollectorMock: PinCollector {
+        func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void) {
+            completion("1234")
         }
     }
 }

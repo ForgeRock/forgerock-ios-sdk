@@ -2,7 +2,7 @@
 //  CryptoKey.swift
 //  FRCore
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,6 +12,7 @@
 import Foundation
 import CommonCrypto
 import CryptoKit
+import LocalAuthentication
 
 
 ///Helper struct to generate and sign the keys
@@ -71,8 +72,9 @@ public struct CryptoKey {
     
     /// Get the private key from the Keychain for given key alias
     /// - Parameter keyAlias: key alias for which to retrive the private key
+    /// - Parameter pin: password for the private key credential if applies
     /// - Returns: private key for the given key alias
-    public static func getSecureKey(keyAlias: String) -> SecKey? {
+    public static func getSecureKey(keyAlias: String, pin: String? = nil) -> SecKey? {
         
         var query = [String: Any]()
         query[String(kSecClass)] = kSecClassKey
@@ -80,6 +82,13 @@ public struct CryptoKey {
         query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = keyAlias
         
+        if let pin = pin {
+            let context = LAContext()
+            context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
+            query[kSecUseAuthenticationContext as String] = context
+            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
+        }
+
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {

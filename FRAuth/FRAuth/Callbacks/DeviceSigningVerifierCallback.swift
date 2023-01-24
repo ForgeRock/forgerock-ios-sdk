@@ -2,7 +2,7 @@
 //  DeviceSigningVerifierCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -113,9 +113,12 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     
     
     /// Sign the device.
-    /// - Parameter completion Completion block for Device binding result callback
+    /// - Parameter completion: Completion block for Device binding result callback
     open func sign(completion: @escaping DeviceSigningResultCallback) {
-        execute(userKeyService: nil, completion)
+        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
+        dispatchQueue.async {
+            self.execute(userKeyService: nil, completion)
+        }
     }
     
     
