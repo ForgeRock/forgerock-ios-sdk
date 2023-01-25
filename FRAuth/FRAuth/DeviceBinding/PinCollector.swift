@@ -26,11 +26,7 @@ public class DefaultPinCollector: NSObject, PinCollector {
     
     public func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void) {
         
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                completion(nil)
-                return
-            }
+        DispatchQueue.main.async {
             
             let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
             var topVC = keyWindow?.rootViewController
@@ -48,8 +44,8 @@ public class DefaultPinCollector: NSObject, PinCollector {
                 textField.addTarget(self, action: #selector(self.textFieldDidChange), for: UIControl.Event.editingChanged)
             }
             
-            let okAction = UIAlertAction(title: "Ok", style: .default) { (_) in
-                completion(self.alert.textFields?.first?.text)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] (_) in
+                completion(self?.alert.textFields?.first?.text)
             }
             okAction.isEnabled = false
             self.alert.addAction(okAction)
