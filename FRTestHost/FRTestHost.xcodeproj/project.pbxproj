@@ -48,6 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3AF80E5429830356000243C6 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigPKHash.plist; sourceTree = "<group>"; };
 		A5950A2D27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigEmptyPKHash.plist; sourceTree = "<group>"; };
 		D5087148248CE01600B584D9 /* FRTestHostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestHostTests.swift; sourceTree = "<group>"; };
@@ -98,6 +99,7 @@
 		D5A7A1DC248CD88C00E30CFE = {
 			isa = PBXGroup;
 			children = (
+				3AF80E5429830356000243C6 /* MyPlayground.playground */,
 				D5A7A1E7248CD88C00E30CFE /* FRTestHost */,
 				D5087147248CE01600B584D9 /* FRTestHostTests */,
 				D5A7A1E6248CD88C00E30CFE /* Products */,

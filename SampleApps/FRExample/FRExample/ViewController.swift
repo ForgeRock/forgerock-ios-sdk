@@ -151,7 +151,8 @@ class ViewController: UIViewController {
             "FRSession.authenticate without UI (Token)",
             "Display Configurations",
             "Revoke Access Token",
-            "List WebAuthn Credentials"
+            "List WebAuthn Credentials",
+            "App Attest"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -811,6 +812,15 @@ class ViewController: UIViewController {
             // List WebAuthn Credentials by rpId
             self.listWebAuthnCredentialsByRpId()
             break
+        case 20:
+            if #available(iOS 14.0, *) {
+                let appAttest = AppAttest()
+                appAttest.generateAppAttestKey()
+                appAttest.getAppAttestKeyId()
+                print("jey")
+            }
+            break
+            
         default:
             break
         }
