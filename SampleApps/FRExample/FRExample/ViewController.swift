@@ -152,7 +152,8 @@ class ViewController: UIViewController {
             "Display Configurations",
             "Revoke Access Token",
             "List WebAuthn Credentials",
-            "App Attest"
+            "App Attest",
+            "Device Check"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -819,6 +820,12 @@ class ViewController: UIViewController {
                 appAttest.getAppAttestKeyId()
                 print("jey")
             }
+            break
+            
+        case 21:
+            let deviceCheck = DeviceCheck()
+            deviceCheck.loginWithDeviceCheck()
+            print("jey")
             break
             
         default:
