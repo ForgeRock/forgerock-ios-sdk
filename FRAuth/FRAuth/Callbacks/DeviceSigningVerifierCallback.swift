@@ -111,11 +111,11 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     
     
     /// Sign the challenge with binded device key
-    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is DefaultUserKeySelector()
-    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - provide nil to default to `deviceAuthenticatorIdentifier`
+    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is `DefaultUserKeySelector()`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` -default value is `deviceAuthenticatorIdentifier`
     /// - Parameter completion: Completion block for Device binding result callback
     open func sign(userKeySelector: UserKeySelector = DefaultUserKeySelector(),
-                   deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)?,
+                   deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                    completion: @escaping DeviceSigningResultCallback) {
         
         let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
@@ -127,13 +127,13 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     
     
     /// Helper method to execute signing, show biometric prompt.
-    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device - default value is UserDeviceKeyService()
-    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is  DefaultUserKeySelector()
-    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - provide nil to default to `deviceAuthenticatorIdentifier`
+    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device - default value is `UserDeviceKeyService()`
+    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is  `DefaultUserKeySelector()`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - default value is `deviceAuthenticatorIdentifier`
     /// - Parameter completion: Completion block for Device signing result callback
     internal func execute(userKeyService: UserKeyService = UserDeviceKeyService(),
                           userKeySelector: UserKeySelector = DefaultUserKeySelector(),
-                          deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)?,
+                          deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                           _ completion: @escaping DeviceSigningResultCallback) {
         
         let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier

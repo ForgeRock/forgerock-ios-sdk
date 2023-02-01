@@ -143,33 +143,32 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     
     /// Bind the device.
-    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - provide nil to default to `deviceAuthenticatorIdentifier`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - defaults value is `deviceAuthenticatorIdentifier`
     /// - Parameter completion: Completion block for Device binding result callback
-    open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)?,
+    open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                    completion: @escaping DeviceBindingResultCallback) {
         
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
         let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
         dispatchQueue.async {
-            self.execute(authInterface: authInterface, deviceId: nil, deviceRepository: nil, completion)
+            self.execute(authInterface: authInterface, completion)
         }
     }
     
     
     /// Helper method to execute binding , signing, show biometric prompt.
-    /// - Parameter authInterface: Interface to find the Authentication Type - provide nil to default to ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
-    /// - Parameter deviceId: Interface to find the Authentication Type - provide nil to default to `FRDevice.currentDevice?.identifier.getIdentifier()`
-    /// - Parameter deviceRepository: Storage for user keys - provide nil to default to ``KeychainDeviceRepository``
+    /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
+    /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
+    /// - Parameter deviceRepository: Storage for user keys - default value is ``KeychainDeviceRepository()``
     /// - Parameter completion: Completion block for Device binding result callback
-    internal func execute(authInterface: DeviceAuthenticator?,
-                          deviceId: String?,
-                          deviceRepository: DeviceRepository?,
+    internal func execute(authInterface: DeviceAuthenticator? = nil,
+                          deviceId: String? = nil,
+                          deviceRepository: DeviceRepository = KeychainDeviceRepository(),
                           _ completion: @escaping DeviceBindingResultCallback) {
 
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
         authInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
-        let deviceRepository = deviceRepository ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
         
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)

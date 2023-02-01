@@ -20,7 +20,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 1"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
             let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
             XCTAssertFalse(uuid.isEmpty)
@@ -43,7 +43,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
             let uuid = try sharedPreferencesDeviceRepository.persist(userId: "Wrong user Id", userName: userName, key: key, authenticationType: authenticationType)
             XCTAssertFalse(uuid.isEmpty)
@@ -72,7 +72,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 3"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
             let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
             XCTAssertFalse(uuid.isEmpty)
@@ -101,7 +101,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 4"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
             let uuid1 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
             XCTAssertFalse(uuid1.isEmpty)

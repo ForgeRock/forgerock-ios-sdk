@@ -441,12 +441,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let cryptoKey = CryptoKey(keyId: "User Id 1")
             let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
             
-            let deviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+            let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
             let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
-            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), deviceAuthenticator: nil) { result in
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
                 switch result {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
@@ -478,12 +478,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let deviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+            let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
             
-            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), deviceAuthenticator: nil) { result in
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
                 switch result {
                 case .success:
                     XCTFail("Should not succeed")
@@ -522,14 +522,14 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let cryptoKey2 = CryptoKey(keyId: "User Id 2")
             let keyPair2 = try cryptoKey2.createKeyPair(builderQuery: cryptoKey2.keyBuilderQuery())
             
-            let deviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+            let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
             let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair1.keyAlias, authenticationType: .none)
             let _ = try? deviceRepository.persist(userId: "User Id 2", userName: "User Name 2", key: keyPair2.keyAlias, authenticationType: .none)
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
             
-            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), deviceAuthenticator: nil) { result in
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
                 switch result {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
@@ -564,13 +564,13 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let cryptoKey = CryptoKey(keyId: "User Id 1")
             let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
             
-            let deviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+            let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
             let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
             
-            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), deviceAuthenticator: nil) { result in
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
@@ -607,7 +607,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let cryptoKey = CryptoKey(keyId: "User Id 1")
             let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
             
-            let deviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+            let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
             let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)

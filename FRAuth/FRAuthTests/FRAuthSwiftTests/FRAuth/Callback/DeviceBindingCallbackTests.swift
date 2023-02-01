@@ -575,7 +575,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: nil, deviceId: "DeviceId", deviceRepository: nil) { result in
+            callback.execute(deviceId: "DeviceId") { result in
                 switch result {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 2)
@@ -609,7 +609,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: nil, deviceId: "DeviceId", deviceRepository: nil) { result in
+            callback.execute(deviceId: "DeviceId") { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
@@ -634,7 +634,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorUnsupported(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", deviceRepository: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorUnsupported(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId") { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
@@ -659,7 +659,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorGenerateKeysFailed(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", deviceRepository: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorGenerateKeysFailed(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId") { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
@@ -684,7 +684,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorSignFailed(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", deviceRepository: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorSignFailed(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId") { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
@@ -709,7 +709,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             let callback = try DeviceBindingCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            callback.execute(authInterface: CustomAuthenticatorAborted(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId", deviceRepository: nil) { result in
+            callback.execute(authInterface: CustomAuthenticatorAborted(cryptoKey: CryptoKey(keyId: callback.userId)), deviceId: "DeviceId") { result in
                 switch result {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of aborted")

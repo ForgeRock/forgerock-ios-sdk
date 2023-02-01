@@ -30,8 +30,8 @@ internal class UserDeviceKeyService: UserKeyService {
     
     
     /// Initializes ``UserDeviceKeyService`` with given ``DeviceRepository``
-    /// - Parameter deviceRepository: default value is ``KeychainDeviceRepository(uuid: nil, keychainService: nil)``
-    init(deviceRepository: DeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)) {
+    /// - Parameter deviceRepository: default value is ``KeychainDeviceRepository()``
+    init(deviceRepository: DeviceRepository = KeychainDeviceRepository()) {
         self.deviceRepository = deviceRepository
         getAllUsers()
     }

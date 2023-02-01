@@ -37,9 +37,9 @@ internal class KeychainDeviceRepository: DeviceRepository {
     private var keychainService: KeychainService
     
     /// Initializes KeychainDeviceRepository with given uuid and keychainService
-    /// - Parameter uuid: set nil for default value
-    /// - Parameter keychainService: set nil for default value
-    init(uuid: String?, keychainService: KeychainService?) {
+    /// - Parameter uuid: default value is `UUID().uuidString`
+    /// - Parameter keychainService: default value is `FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)`
+    init(uuid: String? = nil, keychainService: KeychainService? = nil) {
         self.uuid = uuid ?? UUID().uuidString
         self.keychainService = keychainService ?? FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)
     }
