@@ -36,6 +36,8 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     private var jwsKey: String
     /// Client Error input key in callback response
     private var clientErrorKey: String
+    /// Background queue used for certain tasks not to block the main thread
+    let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
     
     //  MARK: - Init
     
@@ -119,7 +121,6 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
                    completion: @escaping DeviceSigningResultCallback) {
         
         let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
         dispatchQueue.async {
             self.execute(userKeySelector: userKeySelector, deviceAuthenticator: deviceAuthenticator, completion)
         }
@@ -145,7 +146,9 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         case .multipleKeysFound(keys: _):
             userKeySelector.selectUserKey(userKeys: userKeyService.userKeys) { key in
                 if let key = key {
-                    self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
+                    self.dispatchQueue.async {
+                        self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
+                    }
                 } else {
                     self.handleException(status: .abort, completion: completion)
                 }
