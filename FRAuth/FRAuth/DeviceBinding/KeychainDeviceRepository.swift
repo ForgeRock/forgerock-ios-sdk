@@ -2,7 +2,7 @@
 //  KeychainDeviceRepository.swift
 //  FRAuth
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -15,7 +15,7 @@ import FRCore
 
 protocol DeviceRepository {
     
-    /// Persist the data in encrypted shared preference
+    /// Persist user key in encrypted storage
     func persist(userId: String,
                  userName: String,
                  key: String,
@@ -25,7 +25,7 @@ protocol DeviceRepository {
 }
 
 
-/// Helper class to save and retrieve EncryptedMessage
+/// Helper class to save and retrieve user keys
 internal class KeychainDeviceRepository: DeviceRepository {
     static let keychainServiceIdentifier = "com.forgerock.ios.devicebinding.keychainservice"
     static let userIdKey = "userId"
@@ -36,7 +36,7 @@ internal class KeychainDeviceRepository: DeviceRepository {
     private var uuid: String = ""
     private var keychainService: KeychainService
     
-    /// Initializes SharedPreferencesDeviceRepository with given uuid and keychainService
+    /// Initializes KeychainDeviceRepository with given uuid and keychainService
     /// - Parameter uuid: set nil for default value
     /// - Parameter keychainService: set nil for default value
     init(uuid: String?, keychainService: KeychainService?) {
@@ -45,7 +45,7 @@ internal class KeychainDeviceRepository: DeviceRepository {
     }
     
     
-    /// Persist the data in encrypted shared preference
+    /// Persist the data in keychain
     /// - Parameter userId: user id to be persisted
     /// - Parameter userName: user name to be persisted
     /// - Parameter key: key to be persisted
@@ -69,7 +69,7 @@ internal class KeychainDeviceRepository: DeviceRepository {
     }
     
     
-    /// Get all keys stored in
+    /// Get all keys stored in keychain
     func getAllKeys() -> [String: Any]? {
         keychainService.allItems()
     }
@@ -81,7 +81,7 @@ internal class KeychainDeviceRepository: DeviceRepository {
     }
     
     
-    /// Delete user info for given key
+    /// Delete all user keys
     func deleteAllKeys() -> Bool {
         return keychainService.deleteAll()
     }

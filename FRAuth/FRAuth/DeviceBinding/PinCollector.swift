@@ -15,6 +15,8 @@ import UIKit
 /// Protocol for collecting the Pin
 public protocol PinCollector: AnyObject {
     /// Delegate method to collect the Pin
+    /// - Parameter prompt: Prompt to be shown during the pin collection
+    /// - Parameter completion: callback containing the Pin
     func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void)
 }
 

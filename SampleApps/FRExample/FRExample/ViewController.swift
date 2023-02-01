@@ -289,7 +289,7 @@ class ViewController: UIViewController {
                         self.present(alert, animated: true, completion: nil)
                         return
                     } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
-                        deviceBindingCallback.bind { result in
+                        deviceBindingCallback.bind(deviceAuthenticator: nil) { result in
                             DispatchQueue.main.async {
                                 var bindingResult = ""
                                 switch result {
@@ -305,7 +305,7 @@ class ViewController: UIViewController {
                         }
                         return
                     } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
-                        deviceSigningVerifierCallback.sign { result in
+                        deviceSigningVerifierCallback.sign(deviceAuthenticator: nil) { result in
                             DispatchQueue.main.async {
                                 var signingResult = ""
                                 switch result {

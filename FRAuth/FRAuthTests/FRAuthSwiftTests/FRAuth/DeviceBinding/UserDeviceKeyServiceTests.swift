@@ -29,7 +29,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(encryptedPreference: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
         XCTAssertEqual(userDeviceKeyService.userKeys.first!.userId, userId)
@@ -52,7 +52,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(encryptedPreference: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: userId)
@@ -81,7 +81,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(encryptedPreference: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: userId)
@@ -112,7 +112,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(encryptedPreference: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: nil)

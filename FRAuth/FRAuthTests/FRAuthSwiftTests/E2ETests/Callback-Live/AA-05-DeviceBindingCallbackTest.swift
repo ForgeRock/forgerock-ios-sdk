@@ -183,7 +183,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
                 
                 var bindingResult = ""
                 let ex = self.expectation(description: "Device Binding")
-                deviceBindingCallback.execute(authInterface: nil, deviceId: nil, encryptedPreference: nil, { (result) in
+                deviceBindingCallback.execute(authInterface: nil, deviceId: nil, deviceRepository: nil, { (result) in
                         switch result {
                         case .success:
                             bindingResult = "Success"
