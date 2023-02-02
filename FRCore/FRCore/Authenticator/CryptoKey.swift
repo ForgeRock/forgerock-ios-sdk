@@ -57,6 +57,10 @@ public struct CryptoKey {
     /// - Throws: error during private/public key generation
     public func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair {
         
+        if let keyAttr = builderQuery[String(kSecPrivateKeyAttrs)] as? [String: Any], let keyAlias = keyAttr[String(kSecAttrApplicationTag)] as? String {
+            Self.deleteKey(keyAlias: keyAlias)
+        }
+        
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(builderQuery as CFDictionary, &error) else {
             throw error?.takeRetainedValue() as? Error ?? NSError()
