@@ -31,7 +31,7 @@ public class DefaultUserKeySelector: NSObject, UserKeySelector {
             }
             guard let topVC = topVC else { return }
             
-            let actionSheet = UIAlertController(title: "Select User", message: nil, preferredStyle: .actionSheet)
+            let actionSheet = UIAlertController(title: NSLocalizedString("Select User", comment: "User selection list title"), message: nil, preferredStyle: .actionSheet)
             
             for userKey in userKeys {
                 actionSheet.addAction(UIAlertAction(title: userKey.userName, style: .default, handler: { (action) in
@@ -39,7 +39,7 @@ public class DefaultUserKeySelector: NSObject, UserKeySelector {
                 }))
             }
             
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            actionSheet.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button title"), style: .cancel, handler: { (action) in
                 selectionCallback(nil)
             }))
             
