@@ -577,7 +577,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
         
-        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
+        
+        let jsonStr = getJsonString(authenticationType: .none)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
@@ -605,7 +606,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
         
-        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback,
+        let jsonStr = getJsonString(authenticationType: .none,
                                     timeout: 0)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         

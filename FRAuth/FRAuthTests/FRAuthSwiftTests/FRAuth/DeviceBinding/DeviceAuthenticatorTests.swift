@@ -107,6 +107,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(!Self.biometricTestsSupported, "Biometric tests are not supported")
         
         let userId = "Test User Id 4"
         let challenge = "challenge"
@@ -177,6 +178,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(!Self.biometricTestsSupported, "Biometric tests are not supported")
         
         let userId = "Test User Id 6"
         let challenge = "challenge"
@@ -282,6 +284,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(!Self.biometricTestsSupported, "Biometric tests are not supported")
         
         let userId = "Test User Id 9"
         let challenge = "challenge"
@@ -324,6 +327,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(!Self.biometricTestsSupported, "Biometric tests are not supported")
         
         let userId = "Test User Id 10"
         let challenge = "challenge"
