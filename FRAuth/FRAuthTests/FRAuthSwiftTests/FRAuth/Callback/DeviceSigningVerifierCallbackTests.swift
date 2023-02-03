@@ -15,6 +15,20 @@ import XCTest
 
 class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
+    var isIOS15 = false
+    
+    override func setUp() {
+        super.setUp()
+        
+        if #available(iOS 15.0, *) {
+            if #available(iOS 16.0, *) {
+                isIOS15 = false
+            } else {
+                isIOS15 = true
+            }
+        }
+    }
+    
     func getJsonString(userIdKey: String = "userId",
                        userId: String = "",
                        challengeKey: String = "challenge",
@@ -420,16 +434,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_17_execute_singleKeyFound() {
+    func test_17_execute_singleKeyFound() throws {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
-#if targetEnvironment(simulator)
-        if #available(iOS 15.0, *) {
-            guard #available(iOS 16.0, *) else {
-                return
-            }
-        }
-#endif
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
         let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -461,16 +470,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_18_execute_noKeysFound() {
+    func test_18_execute_noKeysFound() throws {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
-#if targetEnvironment(simulator)
-        if #available(iOS 15.0, *) {
-            guard #available(iOS 16.0, *) else {
-                return
-            }
-        }
-#endif
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
         let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -499,16 +503,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_19_execute_multipleKeysFound() {
+    func test_19_execute_multipleKeysFound() throws {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
-#if targetEnvironment(simulator)
-        if #available(iOS 15.0, *) {
-            guard #available(iOS 16.0, *) else {
-                return
-            }
-        }
-#endif
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
         let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -544,16 +543,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_20_execute_fail_timeout() {
+    func test_20_execute_fail_timeout() throws {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
-#if targetEnvironment(simulator)
-        if #available(iOS 15.0, *) {
-            guard #available(iOS 16.0, *) else {
-                return
-            }
-        }
-#endif
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
         let jsonStr = getJsonString(timeout: 0)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -586,16 +580,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_18_sign_customDeviceBindingIdentifier() {
+    func test_18_sign_customDeviceBindingIdentifier() throws {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
-#if targetEnvironment(simulator)
-        if #available(iOS 15.0, *) {
-            guard #available(iOS 16.0, *) else {
-                return
-            }
-        }
-#endif
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
         let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         

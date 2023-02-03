@@ -14,7 +14,7 @@ import JOSESwift
 @testable import FRAuth
 @testable import FRCore
 
-class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
+class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
     
     func test_01_sign() {
         let userId = "Test User Id 1"
@@ -53,7 +53,8 @@ class ApplicationPinDeviceAuthenticatorTests: XCTestCase {
     }
     
     
-    func test_02_sign_with_userKey() {
+    func test_02_sign_with_userKey() throws {
+        try XCTSkipIf(self.isSimulator, "LAContext().setCredential(...) call is not supported on iOS Simulator.")
         let userId = "Test User Id 2"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)

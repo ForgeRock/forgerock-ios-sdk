@@ -14,6 +14,8 @@ import XCTest
 
 class FRBaseTestCase: XCTestCase {
     
+    var isSimulator = false
+    
     //  MARK: - Properties
     
     var config: Config = Config()
@@ -48,6 +50,9 @@ class FRBaseTestCase: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        #if targetEnvironment(simulator)
+            isSimulator = true
+        #endif
         self.continueAfterFailure = false
         self.shouldLoadMockResponses = true
         //  Set TestLogger
