@@ -152,8 +152,10 @@ class ViewController: UIViewController {
             "Display Configurations",
             "Revoke Access Token",
             "List WebAuthn Credentials",
-            "App Attest",
-            "Device Check"
+            "App Attest (Attestation)",
+            "App Attest (Verification)",
+            "Device Check Validation",
+            "Device Check Two Bits"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -817,15 +819,24 @@ class ViewController: UIViewController {
             if #available(iOS 14.0, *) {
                 let appAttest = AppAttest()
                 appAttest.generateAppAttestKey()
-                appAttest.getAppAttestKeyId()
                 print("jey")
             }
             break
             
         case 21:
+            if #available(iOS 14.0, *) {
+                let appAttest = AppAttest()
+                appAttest.verifyAssertion()
+            }
+            break
+            
+        case 22:
             let deviceCheck = DeviceCheck()
-            deviceCheck.loginWithDeviceCheck()
-            print("jey")
+            deviceCheck.loginWithDeviceCheck(twobits: false)
+            break
+        case 23:
+            let deviceCheck = DeviceCheck()
+            deviceCheck.loginWithDeviceCheck(twobits: true)
             break
             
         default:
