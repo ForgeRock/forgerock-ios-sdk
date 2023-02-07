@@ -14,21 +14,22 @@ import XCTest
 class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     
     static var USERNAME: String = "sdkuser"
+    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
+                            realm: "alpha",
+                            enableCookie: true,
+                            cookieName: "afef1acb448a873",
+                            timeout: "180",
+                            authServiceName: "device-bind",
+                            oauthThreshold: "60",
+                            oauthClientId: "iosclient",
+                            oauthRedirectUri: "http://localhost:8081",
+                            oauthScope: "openid profile email address",
+                            keychainAccessGroup: "com.bitbar.*"
+                            )
+
+
     override func setUp() {
         do {
-            let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
-                                    realm: "alpha",
-                                    enableCookie: true,
-                                    cookieName: "afef1acb448a873",
-                                    timeout: "180",
-                                    authServiceName: "device-bind",
-                                    oauthThreshold: "60",
-                                    oauthClientId: "iosclient",
-                                    oauthRedirectUri: "http://localhost:8081",
-                                    oauthScope: "openid profile email address",
-                                    keychainAccessGroup: "com.bitbar.*"
-                                    )
-
             try FRAuth.start(options: options)
         }
         catch {
@@ -260,7 +261,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         
         var ex = self.expectation(description: "Provide username")
         
-        FRSession.authenticate(authIndexValue: FRAuth.shared!.authServiceName) { (token: Token?, node, error) in
+        FRSession.authenticate(authIndexValue: options.authServiceName) { (token: Token?, node, error) in
             // Validate result
             XCTAssertNil(token)
             XCTAssertNil(error)
