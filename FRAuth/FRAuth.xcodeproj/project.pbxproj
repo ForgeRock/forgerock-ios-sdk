@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
+		3A2E3F422992196600985360 /* UserKeySelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2E3F412992196600985360 /* UserKeySelectorTests.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
 		A54874A028EF336400FF9B99 /* DeviceBindingCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */; };
 		A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */; };
@@ -351,6 +352,7 @@
 /* Begin PBXFileReference section */
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
+		3A2E3F412992196600985360 /* UserKeySelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeySelectorTests.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
 		A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
 		A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingAuthenticators.swift; sourceTree = "<group>"; };
@@ -702,6 +704,7 @@
 				A56338C8294A92C9007237C1 /* ApplicationPinDeviceAuthenticatorTests.swift */,
 				A5BE3C44293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift */,
 				A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */,
+				3A2E3F412992196600985360 /* UserKeySelectorTests.swift */,
 			);
 			path = DeviceBinding;
 			sourceTree = "<group>";
@@ -1975,6 +1978,7 @@
 				D5791B8A25F87DE7004B487A /* FRTestLogger.swift in Sources */,
 				D5791B9B25F87DE7004B487A /* AA_00_RegistrationTests.swift in Sources */,
 				D5791B9D25F87DE7004B487A /* AA_03_SecondFactorAuthenticationTests.swift in Sources */,
+				3A2E3F422992196600985360 /* UserKeySelectorTests.swift in Sources */,
 				D5791B9F25F87DE7004B487A /* AA_04_PageCallbackTest.swift in Sources */,
 				D5791BA025F87DE7004B487A /* AA_04_TermsAndConditionCallbackTest.swift in Sources */,
 				D5791BA125F87DE7004B487A /* AA_04_BooleanAttributeInputCallbackTest.swift in Sources */,
