@@ -36,8 +36,8 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     private var jwsKey: String
     /// Client Error input key in callback response
     private var clientErrorKey: String
-    /// Delegation to perform user selection in case of multiple keys
-    public weak var delegate: DeviceSigningVerifierDelegate?
+    /// Background queue used for certain tasks not to block the main thread
+    let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
     
     //  MARK: - Init
     
@@ -112,32 +112,43 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     }
     
     
-    /// Sign the device.
+    /// Sign the challenge with binded device key
+    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is `DefaultUserKeySelector()`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` -default value is `deviceAuthenticatorIdentifier`
     /// - Parameter completion: Completion block for Device binding result callback
-    open func sign(completion: @escaping DeviceSigningResultCallback) {
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
+    open func sign(userKeySelector: UserKeySelector = DefaultUserKeySelector(),
+                   deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
+                   completion: @escaping DeviceSigningResultCallback) {
+        
+        let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
         dispatchQueue.async {
-            self.execute(userKeyService: nil, completion)
+            self.execute(userKeySelector: userKeySelector, deviceAuthenticator: deviceAuthenticator, completion)
         }
     }
     
     
-    /// Helper method to execute binding , signing, show biometric prompt.
-    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device
-    /// - Parameter completion: completion Completion block for Device binding result callback
-    internal func execute(userKeyService: UserKeyService?,
+    /// Helper method to execute signing, show biometric prompt.
+    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device - default value is `UserDeviceKeyService()`
+    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is  `DefaultUserKeySelector()`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - default value is `deviceAuthenticatorIdentifier`
+    /// - Parameter completion: Completion block for Device signing result callback
+    internal func execute(userKeyService: UserKeyService = UserDeviceKeyService(),
+                          userKeySelector: UserKeySelector = DefaultUserKeySelector(),
+                          deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                           _ completion: @escaping DeviceSigningResultCallback) {
-        let newUserKeyService = userKeyService ?? UserDeviceKeyService(encryptedPreference: nil)
         
-        let status = newUserKeyService.getKeyStatus(userId: userId)
+        let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
+        let status = userKeyService.getKeyStatus(userId: userId)
         
         switch status {
         case .singleKeyFound(key: let key):
-            authenticate(userKey: key, authInterface: nil, completion)
+            authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
         case .multipleKeysFound(keys: _):
-            getUserKey(userKeyService: newUserKeyService) { key in
+            userKeySelector.selectUserKey(userKeys: userKeyService.userKeys) { key in
                 if let key = key {
-                    self.authenticate(userKey: key, authInterface: nil, completion)
+                    self.dispatchQueue.async {
+                        self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
+                    }
                 } else {
                     self.handleException(status: .abort, completion: completion)
                 }
@@ -151,14 +162,14 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     
     /// Helper method to execute signing, show biometric prompt.
     /// - Parameter userKey: User Information
-    /// - Parameter authInterface: Interface to find the Authentication Type - provide nil to default to getDeviceBindingAuthenticator()
-    /// - Parameter completion: completion Completion block for Device binding result callback
+    /// - Parameter authInterface: Interface to find the Authentication Type
+    /// - Parameter completion: Completion block for Device binding result callback
     internal func authenticate(userKey: UserKey,
-                               authInterface: DeviceAuthenticator?,
+                               authInterface: DeviceAuthenticator,
                                _ completion: @escaping DeviceSigningResultCallback) {
-        let newAuthInterface = authInterface ?? getDeviceAuthenticator(type: userKey.authType)
-        newAuthInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
-        guard newAuthInterface.isSupported() else {
+        
+        authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return
         }
@@ -168,7 +179,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         
         do {
             // Authentication will be triggered during signing if necessary
-            let jws = try newAuthInterface.sign(userKey: userKey, challenge: challenge, expiration: getExpiration(timeout: timeout))
+            let jws = try authInterface.sign(userKey: userKey, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
@@ -188,21 +199,6 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         } catch let error {
             handleException(status: .unknown(errorMessage: error.localizedDescription), completion: completion)
         }
-    }
-    
-    
-    /// Display fragment to select a user key from the list
-    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device
-    /// - Parameter completion: Completion block for keys result
-    open func getUserKey(userKeyService: UserKeyService,
-                         completion: @escaping (UserKey?) -> (Void)) {
-        if delegate == nil {
-            delegate = self
-        }
-        delegate?.selectUserKey(userKeys: userKeyService.userKeys, selectionCallback: { selectedUserKey in
-            completion(selectedUserKey)
-        })
-        
     }
     
     
@@ -231,5 +227,3 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         self.inputValues[self.clientErrorKey] = clientError
     }
 }
-
-extension DeviceSigningVerifierCallback: DeviceSigningVerifierDelegate { }

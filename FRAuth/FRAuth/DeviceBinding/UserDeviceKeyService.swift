@@ -2,7 +2,7 @@
 //  UserDeviceKeyService.swift
 //  FRAuth
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -25,22 +25,21 @@ public protocol UserKeyService {
 
 
 internal class UserDeviceKeyService: UserKeyService {
-    private var encryptedPreference: DeviceRepository
+    private var deviceRepository: DeviceRepository
     var userKeys: [UserKey] = []
     
     
-    /// Initializes SharedPreferencesDeviceRepository with given uuid and keychainService
-    /// - Parameter uuid: set nil for default value
-    /// - Parameter keychainService: set nil for default value
-    init(encryptedPreference: DeviceRepository?) {
-        self.encryptedPreference = encryptedPreference ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
+    /// Initializes ``UserDeviceKeyService`` with given ``DeviceRepository``
+    /// - Parameter deviceRepository: default value is ``KeychainDeviceRepository()``
+    init(deviceRepository: DeviceRepository = KeychainDeviceRepository()) {
+        self.deviceRepository = deviceRepository
         getAllUsers()
     }
     
     
     /// Get all the user keys in device.
     private func getAllUsers() {
-        encryptedPreference.getAllKeys()?.forEach({ (key, value) in
+        deviceRepository.getAllKeys()?.forEach({ (key, value) in
             
             if let data = (value as? String)?.data(using: .utf8),
                let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],

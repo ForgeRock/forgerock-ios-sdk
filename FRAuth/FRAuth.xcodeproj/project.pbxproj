@@ -24,7 +24,7 @@
 		A5BE3C43293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */; };
 		A5BE3C45293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C44293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift */; };
 		A5BE3C47293DB6780041F990 /* UserDeviceKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */; };
-		A5BE3C49293E58850041F990 /* DeviceSigningVerifierDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C48293E58850041F990 /* DeviceSigningVerifierDelegate.swift */; };
+		A5BE3C49293E58850041F990 /* UserKeySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C48293E58850041F990 /* UserKeySelector.swift */; };
 		A5BE3C6A294500360041F990 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C69294500360041F990 /* Binding.swift */; };
 		A5BE3C6D294518A40041F990 /* CryptoAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C6C294518A40041F990 /* CryptoAware.swift */; };
 		A5C4D5392947DB28003024B5 /* ApplicationPinDeviceAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C4D5382947DB28003024B5 /* ApplicationPinDeviceAuthenticator.swift */; };
@@ -365,7 +365,7 @@
 		A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallbackTests.swift; sourceTree = "<group>"; };
 		A5BE3C44293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainDeviceRepositoryTests.swift; sourceTree = "<group>"; };
 		A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeviceKeyServiceTests.swift; sourceTree = "<group>"; };
-		A5BE3C48293E58850041F990 /* DeviceSigningVerifierDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierDelegate.swift; sourceTree = "<group>"; };
+		A5BE3C48293E58850041F990 /* UserKeySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeySelector.swift; sourceTree = "<group>"; };
 		A5BE3C69294500360041F990 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		A5BE3C6C294518A40041F990 /* CryptoAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAware.swift; sourceTree = "<group>"; };
 		A5C4D5382947DB28003024B5 /* ApplicationPinDeviceAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationPinDeviceAuthenticator.swift; sourceTree = "<group>"; };
@@ -682,7 +682,7 @@
 				A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */,
 				A5BE3C3A292E76F40041F990 /* KeychainDeviceRepository.swift */,
 				A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */,
-				A5BE3C48293E58850041F990 /* DeviceSigningVerifierDelegate.swift */,
+				A5BE3C48293E58850041F990 /* UserKeySelector.swift */,
 			);
 			path = DeviceBinding;
 			sourceTree = "<group>";
@@ -1842,7 +1842,7 @@
 				D53A8041262789BD0093B1CA /* PlatformAuthenticatorMakeCredentialSession.swift in Sources */,
 				A5BE3C3B292E76F40041F990 /* KeychainDeviceRepository.swift in Sources */,
 				D53A804E262789BD0093B1CA /* WAKTypes.swift in Sources */,
-				A5BE3C49293E58850041F990 /* DeviceSigningVerifierDelegate.swift in Sources */,
+				A5BE3C49293E58850041F990 /* UserKeySelector.swift in Sources */,
 				D53A804A262789BD0093B1CA /* AuthenticatorData.swift in Sources */,
 				D53A803E262789BD0093B1CA /* Bytes.swift in Sources */,
 				D53A8044262789BD0093B1CA /* PlatformAuthenticatorConfig.swift in Sources */,

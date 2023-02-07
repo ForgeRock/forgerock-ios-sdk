@@ -20,7 +20,7 @@ class KeychainDeviceRepositoryTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 1"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         
         do {
             let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
@@ -47,7 +47,7 @@ class KeychainDeviceRepositoryTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository(uuid: nil, keychainService: nil)
+        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         
         do {
             let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)

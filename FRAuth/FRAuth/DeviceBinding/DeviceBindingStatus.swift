@@ -14,7 +14,7 @@ import FRCore
 
 
 /// Error Status enum for Device binding related operations
-public enum DeviceBindingStatus: LocalizedError {
+public enum DeviceBindingStatus: LocalizedError, Equatable {
     case timeout
     case abort
     case unsupported(errorMessage: String?)

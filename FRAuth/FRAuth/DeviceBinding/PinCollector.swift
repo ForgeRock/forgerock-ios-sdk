@@ -15,6 +15,8 @@ import UIKit
 /// Protocol for collecting the Pin
 public protocol PinCollector: AnyObject {
     /// Delegate method to collect the Pin
+    /// - Parameter prompt: Prompt to be shown during the pin collection
+    /// - Parameter completion: callback containing the Pin
     func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void)
 }
 
@@ -44,13 +46,13 @@ public class DefaultPinCollector: NSObject, PinCollector {
                 textField.addTarget(self, action: #selector(self.textFieldDidChange), for: UIControl.Event.editingChanged)
             }
             
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] (_) in
+            let okAction = UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok button title"), style: .default) { [weak self] (_) in
                 completion(self?.alert.textFields?.first?.text)
             }
             okAction.isEnabled = false
             self.alert.addAction(okAction)
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Ok button title"), style: .cancel, handler: { (_) in
                 completion(nil)
             })
             self.alert.addAction(cancelAction)

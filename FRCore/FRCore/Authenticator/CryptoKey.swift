@@ -57,6 +57,10 @@ public struct CryptoKey {
     /// - Throws: error during private/public key generation
     public func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair {
         
+        if let keyAttr = builderQuery[String(kSecPrivateKeyAttrs)] as? [String: Any], let keyAlias = keyAttr[String(kSecAttrApplicationTag)] as? String {
+            Self.deleteKey(keyAlias: keyAlias)
+        }
+        
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(builderQuery as CFDictionary, &error) else {
             throw error?.takeRetainedValue() as? Error ?? NSError()
@@ -84,7 +88,8 @@ public struct CryptoKey {
         
         if let pin = pin {
             let context = LAContext()
-            context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
+            let credentialIsSet = context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
+            guard credentialIsSet == true else { return nil }
             context.interactionNotAllowed = false
             query[kSecUseAuthenticationContext as String] = context
         }

@@ -31,7 +31,8 @@ public class AppPinAuthenticator {
 #if !targetEnvironment(simulator)
         let context = LAContext()
         context.localizedReason = description
-        context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
+        let credentialIsSet = context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
+        guard credentialIsSet == true else { throw NSError() }
         keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
 #endif
         

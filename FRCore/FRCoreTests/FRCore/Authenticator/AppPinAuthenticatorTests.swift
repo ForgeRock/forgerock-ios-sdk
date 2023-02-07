@@ -12,9 +12,10 @@
 import XCTest
 @testable import FRCore
 
-class AppPinAuthenticatorTests: XCTestCase {
+class AppPinAuthenticatorTests: FRBaseTestCase {
     
-    func test_01_generateKeys() {
+    func test_01_generateKeys() throws {
+        try XCTSkipIf(self.isSimulator, "LAContext().setCredential(...) call is not supported on iOS Simulator.")
         let userId = "Test User Id 1"
         let cryptoKey = CryptoKey(keyId: userId)
         let appPinAuthenticator = AppPinAuthenticator(cryptoKey: cryptoKey)
@@ -44,7 +45,8 @@ class AppPinAuthenticatorTests: XCTestCase {
     }
     
     
-    func test_03_getPrivateKey() {
+    func test_03_getPrivateKey() throws {
+        try XCTSkipIf(self.isSimulator, "LAContext().setCredential(...) call is not supported on iOS Simulator.")
         let userId = "Test User Id 3"
         let cryptoKey = CryptoKey(keyId: userId)
         let appPinAuthenticator = AppPinAuthenticator(cryptoKey: cryptoKey)

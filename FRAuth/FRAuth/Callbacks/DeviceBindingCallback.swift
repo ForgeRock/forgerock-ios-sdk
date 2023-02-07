@@ -143,29 +143,34 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     
     /// Bind the device.
-    /// - Parameter completion Completion block for Device binding result callback
-    open func bind(completion: @escaping DeviceBindingResultCallback) {
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - defaults value is `deviceAuthenticatorIdentifier`
+    /// - Parameter completion: Completion block for Device binding result callback
+    open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
+                   completion: @escaping DeviceBindingResultCallback) {
+        
+        let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
         let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
         dispatchQueue.async {
-            self.execute(authInterface: nil, deviceId: nil, encryptedPreference: nil, completion)
+            self.execute(authInterface: authInterface, completion)
         }
     }
     
     
     /// Helper method to execute binding , signing, show biometric prompt.
-    /// - Parameter authInterface: Interface to find the Authentication Type - provide nil to default to getDeviceBindingAuthenticator()
-    /// - Parameter deviceId: Interface to find the Authentication Type - provide nil to default to FRDevice.currentDevice?.identifier.getIdentifier()
-    /// - Parameter completion: completion Completion block for Device binding result callback
-    internal func execute(authInterface: DeviceAuthenticator?,
-                          deviceId: String?,
-                          encryptedPreference: DeviceRepository?,
+    /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
+    /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
+    /// - Parameter deviceRepository: Storage for user keys - default value is ``KeychainDeviceRepository()``
+    /// - Parameter completion: Completion block for Device binding result callback
+    internal func execute(authInterface: DeviceAuthenticator? = nil,
+                          deviceId: String? = nil,
+                          deviceRepository: DeviceRepository = KeychainDeviceRepository(),
                           _ completion: @escaping DeviceBindingResultCallback) {
-        let newAuthInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
-        newAuthInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
-        let newDeviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
-        let newEncryptedPreference = encryptedPreference ?? KeychainDeviceRepository(uuid: nil, keychainService: nil)
+
+        let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
+        authInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
         
-        guard newAuthInterface.isSupported() else {
+        guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return
         }
@@ -174,10 +179,10 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         let timeout = timeout ?? 60
         
         do {
-            let keyPair = try newAuthInterface.generateKeys()
-            let kid = try newEncryptedPreference.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType)
+            let keyPair = try authInterface.generateKeys()
+            let kid = try deviceRepository.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType)
             // Authentication will be triggered during signing if necessary
-            let jws = try newAuthInterface.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
+            let jws = try authInterface.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
@@ -188,8 +193,8 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             
             // If no errors, set the input values and complete with success
             setJws(jws)
-            if let newDeviceId = newDeviceId {
-                setDeviceId(newDeviceId)
+            if let deviceId = deviceId {
+                setDeviceId(deviceId)
             }
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
