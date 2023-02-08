@@ -11,6 +11,7 @@
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
 		3A2E3F422992196600985360 /* UserKeySelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2E3F412992196600985360 /* UserKeySelectorTests.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
+		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
 		A54874A028EF336400FF9B99 /* DeviceBindingCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */; };
 		A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */; };
 		A54874A728F74F5500FF9B99 /* JOSESwift in Frameworks */ = {isa = PBXBuildFile; productRef = A54874A628F74F5500FF9B99 /* JOSESwift */; };
@@ -354,6 +355,7 @@
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
 		3A2E3F412992196600985360 /* UserKeySelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeySelectorTests.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
+		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
 		A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
 		A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingAuthenticators.swift; sourceTree = "<group>"; };
 		A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingStatus.swift; sourceTree = "<group>"; };
@@ -1269,6 +1271,7 @@
 		D5888C1325664E920041FD94 /* Callback-Live */ = {
 			isa = PBXGroup;
 			children = (
+				D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */,
 				D5888C1425664E920041FD94 /* AA_04_PageCallbackTest.swift */,
 				D5888C1525664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift */,
 				D5888C1625664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift */,
@@ -1276,13 +1279,13 @@
 				D5888C1825664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift */,
 				D5888C1925664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift */,
 				D5888C1A25664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift */,
-				D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */,
 				D5888C1C25664E920041FD94 /* AA_04_PageCallback65Test.swift */,
 				D5888C1D25664E920041FD94 /* AA_04_ChoiceCallbackTest.swift */,
 				D5888C1E25664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift */,
 				D5888C1F25664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift */,
 				D5888C2025664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift */,
 				959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */,
+				95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */,
 			);
 			path = "Callback-Live";
 			sourceTree = "<group>";
@@ -1963,6 +1966,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */,
 				D53A807026278A5C0093B1CA /* WebAuthnAuthenticationCallbackTests.swift in Sources */,
 				D5791B5025F87DE7004B487A /* CustomCallback.swift in Sources */,
 				A5BE3C43293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift in Sources */,
