@@ -24,7 +24,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -63,7 +63,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId), createdAt: Date().timeIntervalSince1970)
@@ -100,7 +100,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
         let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNotNil(authenticator.accessControl())
         do {

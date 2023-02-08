@@ -52,7 +52,16 @@ public protocol DeviceAuthenticator {
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
-    func initialize(userId: String, prompt: Prompt)
+    func initialize(userId: String, prompt: Prompt) -> DeviceAuthenticator 
+    
+    
+    /// initialize already created entity with useriD and Promp
+    /// - Parameter userId: userId of the authentication
+    func initialize(userId: String) -> DeviceAuthenticator
+    
+    
+    /// Remove Keys
+    func deleteKeys()
 }
 
 
@@ -137,15 +146,23 @@ extension DeviceAuthenticator {
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
-    public func initialize(userId: String, prompt: Prompt) {
+    public func initialize(userId: String, prompt: Prompt) -> DeviceAuthenticator {
+        
+        self.setPrompt(prompt)
+        return initialize(userId: userId)
+    }
+    
+    
+    /// initialize already created entity with useriD and Promp
+    /// - Parameter userId: userId of the authentication
+    public func initialize(userId: String) -> DeviceAuthenticator {
         
         if let cryptoAware = self as? CryptoAware {
             cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId))
         }
         
-        self.setPrompt(prompt)
+        return self
     }
-    
 }
 
 
@@ -164,6 +181,11 @@ open class BiometricAuthenticator: CryptoAware {
     
     open func setPrompt(_ prompt: Prompt) {
         self.prompt = prompt
+    }
+    
+    /// Remove keys
+    open func deleteKeys() {
+        cryptoKey?.deleteKeys()
     }
 }
 
@@ -321,8 +343,14 @@ open class None: DeviceAuthenticator, CryptoAware {
         return .none
     }
     
+    
     open func setKey(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
+    }
+    
+    
+    open func deleteKeys() {
+        cryptoKey?.deleteKeys()
     }
 }
 

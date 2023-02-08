@@ -20,45 +20,41 @@ public protocol UserKeyService {
     
     
     /// Get all the user keys in device.
-    var userKeys: [UserKey] { get set }
+    func getAll() -> [UserKey]
+    
+    
+    /// Delete user key
+    func delete(userKey: UserKey)
 }
 
 
 internal class UserDeviceKeyService: UserKeyService {
     private var deviceRepository: DeviceRepository
-    var userKeys: [UserKey] = []
     
     
     /// Initializes ``UserDeviceKeyService`` with given ``DeviceRepository``
     /// - Parameter deviceRepository: default value is ``KeychainDeviceRepository()``
     init(deviceRepository: DeviceRepository = KeychainDeviceRepository()) {
         self.deviceRepository = deviceRepository
-        getAllUsers()
     }
     
     
     /// Get all the user keys in device.
-    private func getAllUsers() {
-        deviceRepository.getAllKeys()?.forEach({ (key, value) in
-            
-            if let data = (value as? String)?.data(using: .utf8),
-               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-               let userId = json[KeychainDeviceRepository.userIdKey] as? String,
-               let userName = json[KeychainDeviceRepository.userNameKey] as? String,
-               let kid = json[KeychainDeviceRepository.kidKey] as? String,
-               let createdAt = json[KeychainDeviceRepository.createdAtKey] as? Double,
-               let authTypeString = json[KeychainDeviceRepository.authTypeKey] as? String,
-               let authType = DeviceBindingAuthenticationType(rawValue: authTypeString) {
-                let userKey = UserKey(userId: userId, userName: userName, kid: kid, authType: authType, keyAlias: key, createdAt: createdAt)
-                userKeys.append(userKey)
+    func getAll() -> [UserKey] {
+        return deviceRepository.getAllKeys()?.compactMap { (key, value) -> UserKey? in
+            guard let data = (value as? String)?.data(using: .utf8),
+               let userKey = try? JSONDecoder().decode(UserKey.self, from: data) else {
+                return nil
             }
-        })
+            return userKey
+        } ?? [UserKey]()
     }
     
     
     /// Fetch the key existence status in device.
     /// - Parameter  userId: optional and received from server
     func getKeyStatus(userId: String?) -> KeyFoundStatus {
+        let userKeys = getAll()
         if let userId = userId, !userId.isEmpty {
             let key = userKeys.first { $0.userId == userId }
             return key == nil ? .noKeysFound : .singleKeyFound(key: key!)
@@ -71,6 +67,14 @@ internal class UserDeviceKeyService: UserKeyService {
         }
     }
     
+    
+    /// Delete user key
+    /// - Parameter userkey: ``UserKey`` to be deleted
+    func delete(userKey: UserKey) {
+        let _ = deviceRepository.delete(key: userKey.keyAlias)
+        userKey.authType.getAuthType().initialize(userId: userKey.userId).deleteKeys()
+    }
+    
 }
 
 
@@ -81,7 +85,7 @@ public enum KeyFoundStatus {
 }
 
 
-public struct UserKey: Equatable {
+public struct UserKey: Equatable, Codable {
     var userId: String
     var userName: String
     var kid: String

@@ -52,7 +52,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = None()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -87,7 +87,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
         let authenticator = None()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNil(authenticator.accessControl())
         do {
@@ -115,7 +115,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = BiometricOnly()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -155,7 +155,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
         let authenticator = BiometricOnly()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
 #if !targetEnvironment(simulator)
         XCTAssertTrue(authenticator.isSupported())
 #else
@@ -187,7 +187,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = BiometricAndDeviceCredential()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration)
@@ -227,7 +227,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
         let authenticator = BiometricAndDeviceCredential()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         
         XCTAssertTrue(authenticator.isSupported())
         XCTAssertNotNil(authenticator.accessControl())
@@ -251,7 +251,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = None()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
         do {
             let keyPair = try authenticator.generateKeys()
             let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId), createdAt: Date().timeIntervalSince1970)
@@ -294,7 +294,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = BiometricOnly()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId), createdAt: Date().timeIntervalSince1970)
@@ -337,7 +337,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         let kid = UUID().uuidString
         
         let authenticator = BiometricAndDeviceCredential()
-        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
+        let _ = authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
         do {
             let keyPair = try authenticator.generateKeys()
             let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId), createdAt: Date().timeIntervalSince1970)

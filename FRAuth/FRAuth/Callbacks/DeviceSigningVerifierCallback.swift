@@ -144,7 +144,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         case .singleKeyFound(key: let key):
             authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
         case .multipleKeysFound(keys: _):
-            userKeySelector.selectUserKey(userKeys: userKeyService.userKeys) { key in
+            userKeySelector.selectUserKey(userKeys: userKeyService.getAll()) { key in
                 if let key = key {
                     self.dispatchQueue.async {
                         self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
@@ -168,7 +168,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
                                authInterface: DeviceAuthenticator,
                                _ completion: @escaping DeviceSigningResultCallback) {
         
-        authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        let _ = authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return

@@ -789,6 +789,10 @@ struct CustomAuthenticatorUnsupported: DeviceAuthenticator {
     func type() -> DeviceBindingAuthenticationType {
         return .none
     }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
 }
 
 
@@ -812,6 +816,10 @@ struct CustomAuthenticatorGenerateKeysFailed: DeviceAuthenticator {
     
     func type() -> DeviceBindingAuthenticationType {
         return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
     }
 }
 
@@ -842,6 +850,10 @@ struct CustomAuthenticatorSignFailed: DeviceAuthenticator {
     func type() -> DeviceBindingAuthenticationType {
         return .none
     }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
 }
 
 
@@ -870,6 +882,10 @@ struct CustomAuthenticatorAborted: DeviceAuthenticator {
     
     func type() -> DeviceBindingAuthenticationType {
         return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
     }
 }
 
@@ -903,5 +919,9 @@ struct CustomDeviceAuthenticator: DeviceAuthenticator {
     
     func type() -> DeviceBindingAuthenticationType {
         return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
     }
 }
