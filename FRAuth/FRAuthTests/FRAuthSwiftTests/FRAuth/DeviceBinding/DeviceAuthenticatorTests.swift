@@ -149,6 +149,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         
         let userId = "Test User Id 5"
         let key = CryptoKey.getKeyAlias(keyName: userId)
@@ -220,6 +221,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         
         let userId = "Test User Id 7"
         let key = CryptoKey.getKeyAlias(keyName: userId)

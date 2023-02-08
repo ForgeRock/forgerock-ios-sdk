@@ -16,7 +16,8 @@ import JOSESwift
 
 class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
     
-    func test_01_sign() {
+    func test_01_sign() throws {
+        try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         let userId = "Test User Id 1"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
@@ -55,6 +56,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
     
     func test_02_sign_with_userKey() throws {
         try XCTSkipIf(self.isSimulator, "LAContext().setCredential(...) call is not supported on iOS Simulator.")
+        try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         let userId = "Test User Id 2"
         let challenge = "challenge"
         let expiration = Date().addingTimeInterval(60.0)
@@ -92,7 +94,8 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
     }
     
     
-    func test_03_generateKeys() {
+    func test_03_generateKeys() throws {
+        try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         let userId = "Test User Id 3"
         let key = CryptoKey.getKeyAlias(keyName: userId)
         
