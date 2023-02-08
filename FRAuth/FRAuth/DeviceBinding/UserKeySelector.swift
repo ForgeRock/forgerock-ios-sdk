@@ -33,8 +33,8 @@ public class DefaultUserKeySelector: NSObject, UserKeySelector {
             
             let actionSheet = UIAlertController(title: NSLocalizedString("Select User", comment: "User selection list title"), message: nil, preferredStyle: UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet)
             
-            for userKey in userKeys {
-                actionSheet.addAction(UIAlertAction(title: userKey.userName, style: .default, handler: { (action) in
+            for userKey in userKeys.sorted() {
+                actionSheet.addAction(UIAlertAction(title: "\(userKey.userName)-(\(userKey.authType.rawValue))-(\(userKey.createdAt.formattedDateString()))", style: .default, handler: { (action) in
                     selectionCallback(userKey)
                 }))
             }
@@ -56,3 +56,25 @@ public class DefaultUserKeySelector: NSObject, UserKeySelector {
 
 /// Completion Callback for selected user key
 public typealias UserKeySelectorCallback = (_ selectedUserKey: UserKey?) -> Void
+
+/// Format the createdAt before display in actionsheet
+extension Double {
+    func formattedDateString(dateFormat: String = "yyyyMMdd HH:mm:ss") -> String {
+        let date = Date(timeIntervalSince1970: self)
+        let formatter = DateFormatter()
+        formatter.dateFormat = dateFormat
+        return formatter.string(from: date)
+    }
+}
+
+/// Sort the Userkeys based on username and creation date
+extension Array where Element == UserKey {
+    func sorted() -> [UserKey] {
+        return self.sorted {
+            if $0.userName == $1.userName {
+                return $0.createdAt < $1.createdAt
+            }
+            return $0.userName < $1.userName
+        }
+    }
+}

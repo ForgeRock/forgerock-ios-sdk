@@ -19,7 +19,8 @@ protocol DeviceRepository {
     func persist(userId: String,
                  userName: String,
                  key: String,
-                 authenticationType: DeviceBindingAuthenticationType) throws -> String
+                 authenticationType: DeviceBindingAuthenticationType,
+                 createdAt: Double) throws -> String
     
     func getAllKeys() -> [String: Any]?
 }
@@ -32,6 +33,7 @@ internal class KeychainDeviceRepository: DeviceRepository {
     static let kidKey = "kid"
     static let authTypeKey = "authType"
     static let userNameKey = "username"
+    static let createdAtKey = "createdAt"
     
     private var uuid: String = ""
     private var keychainService: KeychainService
@@ -54,12 +56,16 @@ internal class KeychainDeviceRepository: DeviceRepository {
     func persist(userId: String,
                  userName: String,
                  key: String,
-                 authenticationType: DeviceBindingAuthenticationType) throws -> String {
-        let dictionary = [KeychainDeviceRepository.userIdKey: userId,
-                          KeychainDeviceRepository.userNameKey: userName,
-                          KeychainDeviceRepository.kidKey: uuid,
-                          KeychainDeviceRepository.authTypeKey: authenticationType.rawValue]
-        let data = try JSONEncoder().encode(dictionary)
+                 authenticationType: DeviceBindingAuthenticationType,
+                 createdAt: Double) throws -> String {
+        
+        let dictionary: [String: Any] = [KeychainDeviceRepository.userIdKey: userId,
+                                         KeychainDeviceRepository.userNameKey: userName,
+                                         KeychainDeviceRepository.kidKey: uuid,
+                                         KeychainDeviceRepository.authTypeKey: authenticationType.rawValue,
+                                         KeychainDeviceRepository.createdAtKey: createdAt]
+        
+        let data = try JSONSerialization.data(withJSONObject: dictionary)
         if let str = String(data: data, encoding: .utf8) {
             keychainService.set(str, key: key)
         } else {

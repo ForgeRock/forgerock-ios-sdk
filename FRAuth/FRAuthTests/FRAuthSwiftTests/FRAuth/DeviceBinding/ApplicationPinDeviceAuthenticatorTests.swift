@@ -66,7 +66,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
         do {
             let keyPair = try authenticator.generateKeys()
-            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+            let userKey = UserKey(userId: userId, userName: "username", kid: kid, authType: .none, keyAlias: CryptoKey.getKeyAlias(keyName: userId), createdAt: Date().timeIntervalSince1970)
             let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration)
             
             //verify signature

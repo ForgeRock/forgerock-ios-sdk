@@ -22,7 +22,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let authenticationType = DeviceBindingAuthenticationType.none
         let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
-            let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
+            let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid.isEmpty)
             
         } catch {
@@ -45,7 +45,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let authenticationType = DeviceBindingAuthenticationType.none
         let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
-            let uuid = try sharedPreferencesDeviceRepository.persist(userId: "Wrong user Id", userName: userName, key: key, authenticationType: authenticationType)
+            let uuid = try sharedPreferencesDeviceRepository.persist(userId: "Wrong user Id", userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid.isEmpty)
             
         } catch {
@@ -74,7 +74,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let authenticationType = DeviceBindingAuthenticationType.none
         let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
-            let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
+            let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid.isEmpty)
             
         } catch {
@@ -103,9 +103,9 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let authenticationType = DeviceBindingAuthenticationType.none
         let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
         do {
-            let uuid1 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
+            let uuid1 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid1.isEmpty)
-            let uuid2 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType)
+            let uuid2 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid2.isEmpty)
             
         } catch {

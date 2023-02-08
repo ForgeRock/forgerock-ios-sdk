@@ -180,7 +180,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         do {
             let keyPair = try authInterface.generateKeys()
-            let kid = try deviceRepository.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType)
+            let kid = try deviceRepository.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
             // Authentication will be triggered during signing if necessary
             let jws = try authInterface.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
