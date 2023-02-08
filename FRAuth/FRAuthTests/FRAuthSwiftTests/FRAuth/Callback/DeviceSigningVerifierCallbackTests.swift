@@ -369,7 +369,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .none, keyAlias: "")
+            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .none, keyAlias: "", createdAt: Date().timeIntervalSince1970)
             let noneAuthenticator = callback.getDeviceAuthenticator(type: userKey.authType)
             XCTAssertTrue(noneAuthenticator is None)
         }
@@ -386,7 +386,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
         do {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             
-            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .biometricOnly, keyAlias: "")
+            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .biometricOnly, keyAlias: "", createdAt: Date().timeIntervalSince1970)
             let biometricOnlyAuthenticator = callback.getDeviceAuthenticator(type: userKey.authType)
             
             XCTAssertNotNil(callback)
@@ -406,7 +406,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .biometricAllowFallback, keyAlias: "")
+            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .biometricAllowFallback, keyAlias: "", createdAt: Date().timeIntervalSince1970)
             let biometricAllowFallbackAuthenticator = callback.getDeviceAuthenticator(type: userKey.authType)
             XCTAssertTrue(biometricAllowFallbackAuthenticator is BiometricAndDeviceCredential)
         }
@@ -424,7 +424,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
             XCTAssertNotNil(callback)
             
-            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .applicationPin, keyAlias: "")
+            let userKey = UserKey(userId: "", userName: "", kid: "", authType: .applicationPin, keyAlias: "", createdAt: Date().timeIntervalSince1970)
             let applicationPinAuthenticator = callback.getDeviceAuthenticator(type: userKey.authType)
             XCTAssertTrue(applicationPinAuthenticator is ApplicationPinDeviceAuthenticator)
         }
@@ -453,7 +453,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
-            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)
+            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none, createdAt: Date().timeIntervalSince1970)
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
             callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
                 switch result {
@@ -524,8 +524,8 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
-            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair1.keyAlias, authenticationType: .none)
-            let _ = try? deviceRepository.persist(userId: "User Id 2", userName: "User Name 2", key: keyPair2.keyAlias, authenticationType: .none)
+            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair1.keyAlias, authenticationType: .none, createdAt: Date().timeIntervalSince1970)
+            let _ = try? deviceRepository.persist(userId: "User Id 2", userName: "User Name 2", key: keyPair2.keyAlias, authenticationType: .none, createdAt: Date().timeIntervalSince1970)
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
             
             callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
@@ -561,7 +561,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
-            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)
+            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none, createdAt: Date().timeIntervalSince1970)
             let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
             
             callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector()) { result in
@@ -599,7 +599,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
             let deviceRepository = KeychainDeviceRepository()
             let _ = deviceRepository.deleteAllKeys()
             
-            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none)
+            let _ = try? deviceRepository.persist(userId: "User Id 1", userName: "User Name 1", key: keyPair.keyAlias, authenticationType: .none, createdAt: Date().timeIntervalSince1970)
             
             let customDeviceBindingIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator =  { type in
                 return CustomDeviceAuthenticator(cryptoKey: CryptoKey(keyId: "User Id 1"))

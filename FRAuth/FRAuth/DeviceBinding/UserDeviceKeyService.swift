@@ -46,9 +46,10 @@ internal class UserDeviceKeyService: UserKeyService {
                let userId = json[KeychainDeviceRepository.userIdKey] as? String,
                let userName = json[KeychainDeviceRepository.userNameKey] as? String,
                let kid = json[KeychainDeviceRepository.kidKey] as? String,
+               let createdAt = json[KeychainDeviceRepository.createdAtKey] as? Double,
                let authTypeString = json[KeychainDeviceRepository.authTypeKey] as? String,
                let authType = DeviceBindingAuthenticationType(rawValue: authTypeString) {
-                let userKey = UserKey(userId: userId, userName: userName, kid: kid, authType: authType, keyAlias: key)
+                let userKey = UserKey(userId: userId, userName: userName, kid: kid, authType: authType, keyAlias: key, createdAt: createdAt)
                 userKeys.append(userKey)
             }
         })
@@ -80,10 +81,11 @@ public enum KeyFoundStatus {
 }
 
 
-public struct UserKey {
+public struct UserKey: Equatable {
     var userId: String
     var userName: String
     var kid: String
     var authType: DeviceBindingAuthenticationType
     var keyAlias: String
+    var createdAt: Double
 }
