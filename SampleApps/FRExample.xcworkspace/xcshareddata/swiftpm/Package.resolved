@@ -44,6 +44,15 @@
         "revision" : "40f4103fb52109032c05599a0c39ad43edbdf80a",
         "version" : "1.2.2"
       }
+    },
+    {
+      "identity" : "joseswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airsidemobile/JOSESwift",
+      "state" : {
+        "revision" : "10ed3b6736def7c26eb87135466b1cb46ea7e37f",
+        "version" : "2.4.0"
+      }
     }
   ],
   "version" : 2
