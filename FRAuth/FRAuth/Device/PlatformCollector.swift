@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import FRCore
 import UIKit
 
 /// PlatformCollector is responsible for collecting platform information of the device using UIDevice, and system information.
