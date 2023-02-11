@@ -2,7 +2,7 @@
 //  QRCodeParser.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -50,7 +50,7 @@ struct OathQRCodeParser {
     /// - Parameter url: QR Code's data as in URL
     init(url: URL) throws {
         
-        guard let scheme = url.scheme, (scheme == "otpauth" || scheme == "pushauth") else {
+        guard let scheme = url.scheme, (scheme == "otpauth" || scheme == "mfauth") else {
             throw MechanismError.invalidQRCode
         }
         self.scheme = scheme

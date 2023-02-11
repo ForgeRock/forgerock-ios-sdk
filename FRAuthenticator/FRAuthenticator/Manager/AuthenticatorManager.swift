@@ -2,7 +2,7 @@
 //  AuthenticatorManager.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -19,13 +19,18 @@ struct AuthenticatorManager {
     /// StorageClient instance
     let storageClient: StorageClient
     
+    /// FRAPolicyEvaluator instance
+    let policyEvaluator: FRAPolicyEvaluator
     
     //  MARK: - Init
     
     /// Initializes AuthenticatorManager object with given StorageClient
-    /// - Parameter storageClient: StorageClient instance to store/retrieve/remove Account/Mechanism objects
-    init(storageClient: StorageClient) {
+    /// - Parameters:
+    ///     - storageClient: StorageClient instance to store/retrieve/remove Account/Mechanism objects
+    ///     - policyEvaluator: The PolicyEvaluator instance used to enforce  Authenticator Policy rules such as Device Tampering dectection
+    init(storageClient: StorageClient, policyEvaluator: FRAPolicyEvaluator) {
         self.storageClient = storageClient
+        self.policyEvaluator = policyEvaluator
     }
     
     
@@ -39,36 +44,61 @@ struct AuthenticatorManager {
     func createMechanismFromUri(uri: URL, onSuccess: @escaping MechanismCallback, onError: @escaping ErrorCallback) {
         
         let authType = uri.getAuthType()
-        FRALog.v("Received URI (\(uri.absoluteString)) with authType (\(authType.rawValue)), and proceeding to construct Mechanism object")
-
-        if authType == .hotp {
+        if let scheme = uri.scheme, scheme == "mfauth" {
+            FRALog.v("Evaluating policies for the new Account")
+            let result = self.policyEvaluator.evaluate(uri: uri)
+            if(!result.comply) {
+                onError(AccountError.failToRegisterPolicyViolation(result.nonCompliancePolicy!.name))
+                return
+            }
+            
+            FRALog.v("Received Combined MFA URI (\(uri.absoluteString)). Proceeding to construct Mechanism objects")
+            // try to register OATH mechanism, do not return object or error
             do {
                 let mechanism = try self.storeOathQRCode(uri: uri)
-                onSuccess(mechanism)
+                FRALog.v("OATH mechanism for (\(mechanism.issuer)) in Combined MFA successfully created.")
             }
             catch {
-                onError(error)
+                FRALog.v("Error creating OATH mechanism from Combined MFA URI")
             }
-        }
-        else if authType == .totp {
-            do {
-                let mechanism = try self.storeOathQRCode(uri: uri)
-                onSuccess(mechanism)
-            }
-            catch {
-                onError(error)
-            }
-        }
-        else if authType == .push {
+            // try to register push mechanism and do return object or error
             self.storePushQRcode(uri: uri, onSuccess: { (mechanism) in
                 onSuccess(mechanism)
             }, onFailure: {(error) in
                 onError(error)
             })
-        }
-        else {
-            FRALog.e("Unsupported auth type: \(String(describing: uri.host))")
-            onError(MechanismError.invalidType)
+        } else {
+            FRALog.v("Received URI (\(uri.absoluteString)) with authType (\(authType.rawValue)), and proceeding to construct Mechanism object")
+
+            if authType == .hotp {
+                do {
+                    let mechanism = try self.storeOathQRCode(uri: uri)
+                    onSuccess(mechanism)
+                }
+                catch {
+                    onError(error)
+                }
+            }
+            else if authType == .totp {
+                do {
+                    let mechanism = try self.storeOathQRCode(uri: uri)
+                    onSuccess(mechanism)
+                }
+                catch {
+                    onError(error)
+                }
+            }
+            else if authType == .push {
+                self.storePushQRcode(uri: uri, onSuccess: { (mechanism) in
+                    onSuccess(mechanism)
+                }, onFailure: {(error) in
+                    onError(error)
+                })
+            }
+            else {
+                FRALog.e("Unsupported auth type: \(String(describing: uri.host))")
+                onError(MechanismError.invalidType)
+            }
         }
     }
     
@@ -212,6 +242,8 @@ struct AuthenticatorManager {
         let accounts = self.storageClient.getAllAccounts()
         // Loop through accounts, and retrieve Mechanism, and PushNotification
         for account in accounts {
+            // Evaluate policies
+            evaluatePoliciesForAccount(account: account)
             // Get Mechanisms
             let mechanisms = self.storageClient.getMechanismsForAccount(account: account)
             for mechanism in mechanisms {
@@ -232,6 +264,8 @@ struct AuthenticatorManager {
     /// - Returns: Account object with given identifier
     func getAccount(identifier: String) -> Account? {
         if let account = self.storageClient.getAccount(accountIdentifier: identifier) {
+            // Evaluate policies
+            evaluatePoliciesForAccount(account: account)
             // Get Mechanisms
             let mechanisms = self.storageClient.getMechanismsForAccount(account: account)
             for mechanism in mechanisms {
@@ -252,8 +286,12 @@ struct AuthenticatorManager {
     
     /// Update given Account object on the StorageClient
     /// - Parameter account: Account object to be updated
+    /// - Throws: AccountError
     /// - Returns: Boolean result of the operation
-    @discardableResult func updateAccount(account: Account) -> Bool {
+    @discardableResult func updateAccount(account: Account) throws -> Bool {
+        if(account.lock) {
+            throw AccountError.accountLocked(account.lockingPolicy!)
+        }
         
         if (self.storageClient.getAccount(accountIdentifier: account.identifier)) != nil {
             if !self.storageClient.setAccount(account: account) {
@@ -295,6 +333,53 @@ struct AuthenticatorManager {
 
         FRALog.v("Account object (\(account.identifier) was removed")
         return true
+    }
+    
+    
+    /// Lock the given `Account` object limiting the access to all `Mechanism` objects and any `PushNotification` objects associated with it.
+    /// - Parameters:
+    ///     - account: Account object to be locked
+    ///     - policy: The non-compliance policy
+    /// - Throws: AccountError
+    /// - Returns: Boolean result of lock operation
+    @discardableResult public func lockAccount(account: Account, policy: FRAPolicy) throws -> Bool {
+        if account.lock {
+            throw AccountError.failToLockAccountAlreadyLocked
+        } else if policy.name.isEmpty {
+            throw AccountError.failToLockMissingPolicyName
+        } else if !policyEvaluator.isPolicyAttached(account: account, policyName: policy.name) {
+            throw AccountError.failToLockInvalidPolicy
+        } else {
+            account.lock(policy: policy)
+            return storageClient.setAccount(account: account)
+        }
+    }
+    
+    
+    /// Unlock the  given `Account` object
+    /// - Parameter account: Account object to be locked
+    /// - Throws: AccountError
+    /// - Returns: Boolean result of unlock operation
+    @discardableResult public func unlockAccount(account: Account) throws -> Bool {
+        if !account.lock {
+            throw AccountError.failToUnlockAccountNotLocked
+        } else {
+            account.unlock()
+            return storageClient.setAccount(account: account)
+        }
+    }
+    
+    private func evaluatePoliciesForAccount(account: Account) -> Void {
+        let result = self.policyEvaluator.evaluate(account: account)
+        if(!result.comply) {
+            FRALog.w("Locking Account ID (\(account.identifier)) due non-compliance policy: \(result.nonCompliancePolicy!.name)")
+            account.lock(policy: result.nonCompliancePolicy!)
+            storageClient.setAccount(account: account)
+        } else if account.lock && result.comply {
+            FRALog.w("Unlocking previously locked Account: All policies are compliance.")
+            account.unlock()
+            storageClient.setAccount(account: account)
+        }
     }
     
     

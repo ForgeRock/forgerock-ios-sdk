@@ -2,7 +2,7 @@
 //  FRAError.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -18,6 +18,7 @@ import FRCore
 public enum FRAError: FRError {
     case invalidStateForChangingStorage
     case failToSaveIntoStorageClient(String)
+    case invalidStateForChangingPolicyEvaluator
 }
 
 
@@ -37,6 +38,8 @@ public extension FRAError {
             return 8000000
         case .failToSaveIntoStorageClient:
             return 8000001
+        case .invalidStateForChangingPolicyEvaluator:
+            return 8000002
         }
     }
 }
@@ -60,6 +63,8 @@ extension FRAError: CustomNSError {
             return [NSLocalizedDescriptionKey: "SDK has already started; StorageClient cannot be changed after initialization"]
         case .failToSaveIntoStorageClient(let message):
             return [NSLocalizedDescriptionKey: "Failed to save data into StorageClient: \(message)"]
+        case .invalidStateForChangingPolicyEvaluator:
+            return [NSLocalizedDescriptionKey: "SDK has already started; FRAPolicyEvaluator cannot be changed after initialization"]
         }
     }
 }
