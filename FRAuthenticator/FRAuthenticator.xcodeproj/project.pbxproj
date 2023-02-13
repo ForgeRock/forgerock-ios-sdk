@@ -16,6 +16,8 @@
 		1BB34B402996FBFF00729300 /* DummyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B3F2996FBFF00729300 /* DummyPolicy.swift */; };
 		1BB34B422996FC3E00729300 /* DummyWithDataPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B412996FC3E00729300 /* DummyWithDataPolicy.swift */; };
 		1BB34B44299704A300729300 /* AccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B43299704A300729300 /* AccountError.swift */; };
+		1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */; };
+		1BB34B48299AE08300729300 /* URIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B47299AE08300729300 /* URIType.swift */; };
 		A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */; };
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
 		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
@@ -197,6 +199,8 @@
 		1BB34B3F2996FBFF00729300 /* DummyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyPolicy.swift; sourceTree = "<group>"; };
 		1BB34B412996FC3E00729300 /* DummyWithDataPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyWithDataPolicy.swift; sourceTree = "<group>"; };
 		1BB34B43299704A300729300 /* AccountError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountError.swift; sourceTree = "<group>"; };
+		1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidFakePolicy.swift; sourceTree = "<group>"; };
+		1BB34B47299AE08300729300 /* URIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URIType.swift; sourceTree = "<group>"; };
 		A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthentication.swift; sourceTree = "<group>"; };
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
 		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
@@ -420,6 +424,7 @@
 				D5D9147D242E900900E24ECA /* OathAlgorithm.swift */,
 				D5230BDF2457868B004AB6E9 /* FRAConstants.swift */,
 				D5A9EC3424638833002009E2 /* AuthType.swift */,
+				1BB34B47299AE08300729300 /* URIType.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -495,6 +500,7 @@
 				D5D1DC0C2465E0B10004B4CB /* DummyStorageClient.swift */,
 				1BB34B3F2996FBFF00729300 /* DummyPolicy.swift */,
 				1BB34B412996FC3E00729300 /* DummyWithDataPolicy.swift */,
+				1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */,
 			);
 			path = TestUtils;
 			sourceTree = "<group>";
@@ -1097,6 +1103,7 @@
 				D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */,
 				D5C354A52412EC0600695A84 /* PushNotification.swift in Sources */,
 				A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */,
+				1BB34B48299AE08300729300 /* URIType.swift in Sources */,
 				D54E88EE241749BE00E8ACB1 /* FRAError.swift in Sources */,
 				D52D5C5824131B2D00835035 /* HOTPMechanism.swift in Sources */,
 				1BB34B44299704A300729300 /* AccountError.swift in Sources */,
@@ -1115,6 +1122,7 @@
 				D5791C1525F88393004B487A /* FRTestNetworkStubProtocol.swift in Sources */,
 				D5791BEF25F8829F004B487A /* DummyStorageClient.swift in Sources */,
 				D5791BF025F8829F004B487A /* AuthenticatorManagerTests.swift in Sources */,
+				1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */,
 				1BB34B3E2996C02C00729300 /* FRAPolicyEvaluatorTests.swift in Sources */,
 				D5791BF125F8829F004B487A /* FRAClientTests.swift in Sources */,
 				D5791BF225F8829F004B487A /* FRAClientOATHMechanismAlgorithmTests.swift in Sources */,

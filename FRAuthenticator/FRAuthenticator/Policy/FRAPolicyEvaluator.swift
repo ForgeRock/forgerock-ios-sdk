@@ -57,12 +57,19 @@ public class FRAPolicyEvaluator {
     /// - Parameters:
     ///   - policies: An array of FRAPolicy to be registered
     ///   - shouldOverride: Boolean indicator whether or not to override existing array
-    public func registerPolicies(policies: [FRAPolicy], shouldOverride: Bool = true) {
+    /// - Throws: FRAError
+    public func registerPolicies(policies: [FRAPolicy], shouldOverride: Bool = true) throws {
+        for policy in policies {
+            guard !policy.name.isEmpty else {
+                throw FRAError.invalidPolicyRegisteredWithPolicyEvaluator(String(describing: policy.self))
+            }
+        }
+        
         if shouldOverride || self.policies == nil {
             self.policies = policies
         } else {
             for policy in policies {
-                self.policies!.append(policy)
+                self.policies?.append(policy)
             }
         }
     }
@@ -86,7 +93,7 @@ public class FRAPolicyEvaluator {
     ///   - policyName: The name of the policy
     /// - Returns: true, if the policy was attached to the Account, false otherwise.
     public func isPolicyAttached(account: Account, policyName: String) -> Bool {
-        if let policiesDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: account.policies!) {
+        if let policies = account.policies, let policiesDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: policies) {
             return policiesDictionary.keys.contains(policyName)
         } else {
             return false;
@@ -97,8 +104,8 @@ public class FRAPolicyEvaluator {
     //  MARK: - Private
     
     private func processPolicies(policiesJson: String?) -> Result {
-        if (policiesJson != nil) {
-            self.targetedPolicies = getPoliciesToVerify(policiesJson: policiesJson!)
+        if let policies = policiesJson {
+            self.targetedPolicies = getPoliciesToVerify(policiesJson: policies)
             
             for policy in self.targetedPolicies {
                 if(!policy.evaluate()) {
@@ -113,8 +120,8 @@ public class FRAPolicyEvaluator {
     private func getPoliciesToVerify(policiesJson: String) -> [FRAPolicy] {
         var targetedPolicies = [FRAPolicy]()
 
-        if let policiesDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: policiesJson) {
-            for policy in self.policies! {
+        if let policiesDictionary = FRJSONEncoder.jsonStringToDictionary(jsonString: policiesJson), let policies = self.policies {
+            for policy in policies {
                 if let data = policiesDictionary[policy.name] {
                     policy.data = data
                     targetedPolicies.append(policy)

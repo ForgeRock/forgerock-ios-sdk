@@ -1069,7 +1069,7 @@ class FRAClientTests: FRABaseTests {
 func test_11_policy_evaluator_changed() {
     do {
         let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
         try FRAClient.setPolicyEvaluator(policyEvaluator: policyEvaluator)
         FRAClient.start()
         XCTAssertTrue(FRAClient.shared?.authenticatorManager.policyEvaluator.policies?.count == 1)
@@ -1087,7 +1087,7 @@ func test_12_policy_evaluator_changed_after_start() {
         FRAClient.start()
         XCTAssertTrue(FRAClient.shared?.authenticatorManager.storageClient is DummyStorageClient)
         let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
         try FRAClient.setPolicyEvaluator(policyEvaluator: policyEvaluator)
     }
     catch FRAError.invalidStateForChangingPolicyEvaluator {

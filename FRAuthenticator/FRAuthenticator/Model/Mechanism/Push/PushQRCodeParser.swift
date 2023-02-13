@@ -17,8 +17,8 @@ struct PushQRCodeParser {
     
     //  MARK: - Properties
     
-    /// Supported type
-    let supportedTypes: [String] = ["push"]
+    /// OATH types
+    let oathTypes: [String] = [AuthType.totp.rawValue, AuthType.hotp.rawValue]
     /// scheme of QR Code URL; must be either 'pushauth'
     var scheme: String
     /// type of auth; must be 'push'
@@ -50,12 +50,12 @@ struct PushQRCodeParser {
     /// Constructs and validates given QR Code data (URL) for Push Mechanism
     /// - Parameter url: QR Code's data as in URL
     init(url: URL) throws {
-        guard let scheme = url.scheme, (scheme == "pushauth" || scheme == "mfauth") else {
+        guard let scheme = url.scheme, (scheme == URIType.pushauth.rawValue || scheme == URIType.mfauth.rawValue) else {
             throw MechanismError.invalidQRCode
         }
         self.scheme = scheme
         
-        guard let type = url.host, (scheme == "pushauth" && supportedTypes.contains(type.lowercased())) || (scheme == "mfauth" && ["totp", "hotp"].contains(type.lowercased())) else {
+        guard let type = url.host, (scheme == URIType.pushauth.rawValue && type == AuthType.push.rawValue) || (scheme == URIType.mfauth.rawValue && oathTypes.contains(type.lowercased())) else {
             throw MechanismError.invalidType
         }
         self.type = type

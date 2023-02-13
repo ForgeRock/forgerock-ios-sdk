@@ -20,7 +20,7 @@ import FRCore
 /// - failToLockInvalidPolicy: Given policy was not attached during Account registration.
 /// - failToLockAccountAlreadyLocked: Given Account is already locked
 /// - failToUnlockAccountNotLocked: Given Account is not locked
-/// - failToRegisterPolicyViolation: Account cannot be registered on the device due policy violation
+/// - failToRegisterPolicyViolation: Account cannot be registered on the device due to policy violation
 public enum AccountError: FRError {
     case accountLocked(String)
     case failToLockMissingPolicyName

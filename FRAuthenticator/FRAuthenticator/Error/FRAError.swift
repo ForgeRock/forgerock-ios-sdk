@@ -19,6 +19,7 @@ public enum FRAError: FRError {
     case invalidStateForChangingStorage
     case failToSaveIntoStorageClient(String)
     case invalidStateForChangingPolicyEvaluator
+    case invalidPolicyRegisteredWithPolicyEvaluator(String)
 }
 
 
@@ -40,6 +41,8 @@ public extension FRAError {
             return 8000001
         case .invalidStateForChangingPolicyEvaluator:
             return 8000002
+        case .invalidPolicyRegisteredWithPolicyEvaluator:
+            return 8000003
         }
     }
 }
@@ -65,6 +68,8 @@ extension FRAError: CustomNSError {
             return [NSLocalizedDescriptionKey: "Failed to save data into StorageClient: \(message)"]
         case .invalidStateForChangingPolicyEvaluator:
             return [NSLocalizedDescriptionKey: "SDK has already started; FRAPolicyEvaluator cannot be changed after initialization"]
+        case .invalidPolicyRegisteredWithPolicyEvaluator(let policy):
+            return [NSLocalizedDescriptionKey: "Failed to register the policy: \(policy). The policy name cannot be null or empty."]
         }
     }
 }

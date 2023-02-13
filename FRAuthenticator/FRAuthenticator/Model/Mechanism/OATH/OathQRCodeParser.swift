@@ -17,7 +17,7 @@ struct OathQRCodeParser {
     //  MARK: - Properties
     
     /// Supported types
-    let supportedTypes: [String] = ["totp", "hotp"]
+    let supportedTypes: [String] = [AuthType.totp.rawValue, AuthType.hotp.rawValue]
     /// scheme of QR Code URL; must be either 'otpauth' or 'pushauth'
     var scheme: String
     /// type of OATH; must be either 'totp' or 'hotp'
@@ -50,7 +50,7 @@ struct OathQRCodeParser {
     /// - Parameter url: QR Code's data as in URL
     init(url: URL) throws {
         
-        guard let scheme = url.scheme, (scheme == "otpauth" || scheme == "mfauth") else {
+        guard let scheme = url.scheme, (scheme == URIType.otpauth.rawValue || scheme == URIType.mfauth.rawValue) else {
             throw MechanismError.invalidQRCode
         }
         self.scheme = scheme

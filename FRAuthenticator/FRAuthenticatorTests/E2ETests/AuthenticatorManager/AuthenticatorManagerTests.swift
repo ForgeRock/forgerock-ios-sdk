@@ -174,14 +174,14 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_1_account_auto_lock_operation_policy_pass() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -199,14 +199,15 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_2_account_auto_lock_operation_policy_fail() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -224,14 +225,14 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_3_account_unlock_operation() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -253,14 +254,14 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_4_account_lock_operation() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -282,14 +283,14 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_5_account_lock_operation_fail_already_locked() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -314,14 +315,14 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_6_account_lock_operation_fail_invalid_policy() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -345,14 +346,14 @@ class AuthenticatorManagerTests: FRABaseTests {
     
     
     func test_06_7_account_unlock_operation_fail() {
-        //  Given
-        let storageClient = KeychainServiceClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-        
         do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
             //  When
             try authenticatorManager.storeAccount(account: account)
             let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
@@ -933,8 +934,12 @@ class AuthenticatorManagerTests: FRABaseTests {
     func test_25_2_create_mechanism_from_uri_policy_evaluation_failure() {
         
         let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-        XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        do {
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        } catch {
+            XCTFail("AuthenticatorManager.createMechanismFromUri failed: \(error.localizedDescription)")
+        }
         
         // Given
         let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
@@ -976,7 +981,13 @@ class AuthenticatorManagerTests: FRABaseTests {
         // Given
         let storageClient = DummyStorageClient()
         let policyEvaluator = FRAPolicyEvaluator()
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+        
+        do {
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+        } catch {
+            XCTFail("AuthenticatorManager.createMechanismFromUri failed: \(error.localizedDescription)")
+        }
+        
         let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
         let qrCode = URL(string: "mfauth://totp/forgerock:pushreg3?" +
                          "a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&" +

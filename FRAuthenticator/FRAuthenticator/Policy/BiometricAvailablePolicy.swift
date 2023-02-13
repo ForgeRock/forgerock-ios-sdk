@@ -36,17 +36,13 @@ extension LAContext {
             return biometricResult(result: false)
         }
 
-        if #available(iOS 11.0, *) {
-            switch self.biometryType {
-            case .none:
-                return biometricResult(result: false)
-            case .touchID, .faceID:
-                return biometricResult(result: true)
-            @unknown default:
-                return biometricResult(result: false)
-            }
-        } else {
-            return biometricResult(result: self.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil))
+        switch self.biometryType {
+        case .none:
+            return biometricResult(result: false)
+        case .touchID, .faceID:
+            return biometricResult(result: true)
+        @unknown default:
+            return biometricResult(result: false)
         }
     }
     

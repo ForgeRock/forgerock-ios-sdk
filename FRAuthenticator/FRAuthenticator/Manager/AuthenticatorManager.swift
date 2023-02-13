@@ -43,12 +43,13 @@ struct AuthenticatorManager {
     ///   - onFailure: failure callback with Error
     func createMechanismFromUri(uri: URL, onSuccess: @escaping MechanismCallback, onError: @escaping ErrorCallback) {
         
+        let uriType = uri.getURIType()
         let authType = uri.getAuthType()
-        if let scheme = uri.scheme, scheme == "mfauth" {
+        if uriType == .mfauth {
             FRALog.v("Evaluating policies for the new Account")
             let result = self.policyEvaluator.evaluate(uri: uri)
-            if(!result.comply) {
-                onError(AccountError.failToRegisterPolicyViolation(result.nonCompliancePolicy!.name))
+            if let policy = result.nonCompliancePolicy, !result.comply {
+                onError(AccountError.failToRegisterPolicyViolation(policy.name))
                 return
             }
             
@@ -289,8 +290,8 @@ struct AuthenticatorManager {
     /// - Throws: AccountError
     /// - Returns: Boolean result of the operation
     @discardableResult func updateAccount(account: Account) throws -> Bool {
-        if(account.lock) {
-            throw AccountError.accountLocked(account.lockingPolicy!)
+        if let policyName = account.lockingPolicy, account.lock {
+            throw AccountError.accountLocked(policyName)
         }
         
         if (self.storageClient.getAccount(accountIdentifier: account.identifier)) != nil {
@@ -371,9 +372,9 @@ struct AuthenticatorManager {
     
     private func evaluatePoliciesForAccount(account: Account) -> Void {
         let result = self.policyEvaluator.evaluate(account: account)
-        if(!result.comply) {
-            FRALog.w("Locking Account ID (\(account.identifier)) due non-compliance policy: \(result.nonCompliancePolicy!.name)")
-            account.lock(policy: result.nonCompliancePolicy!)
+        if let policy = result.nonCompliancePolicy, !result.comply {
+            FRALog.w("Locking Account ID (\(account.identifier)) due non-compliance policy: \(policy.name))")
+            account.lock(policy: policy)
             storageClient.setAccount(account: account)
         } else if account.lock && result.comply {
             FRALog.w("Unlocking previously locked Account: All policies are compliance.")

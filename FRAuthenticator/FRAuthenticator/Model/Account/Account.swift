@@ -221,7 +221,7 @@ public class Account: NSObject, NSSecureCoding, Codable {
     /// Lock this Account
     /// - Parameters:
     ///   - policy: the non-compliance policy
-    public func lock(policy: FRAPolicy) -> Void {
+    public func lock(policy: FRAPolicy) -> Void {        
         self.lockingPolicy = policy.name
         self.lock = true
     }

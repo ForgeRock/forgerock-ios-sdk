@@ -17,67 +17,93 @@ final class FRAPolicyEvaluatorTests: FRABaseTests {
     func test_01_register_single_policy() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 1)
     }
 
     func test_02_register_multiple_policies() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
+        try policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
     }
     
     func test_03_register_multiple_policies_override_true() {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        XCTAssertEqual(policyEvaluator.policies?.count, 1)
-        policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies, shouldOverride: true)
-        XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        do {
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            XCTAssertEqual(policyEvaluator.policies?.count, 1)
+            try policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies, shouldOverride: true)
+            XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        } catch {
+            XCTFail("Failed to register policies: \(error.localizedDescription)")
+        }
     }
-    
+
     func test_04_register_multiple_policies_override_false() {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        XCTAssertEqual(policyEvaluator.policies?.count, 1)
-        policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies, shouldOverride: false)
-        XCTAssertEqual(policyEvaluator.policies?.count, 3)
+        do {
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            XCTAssertEqual(policyEvaluator.policies?.count, 1)
+            try policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies, shouldOverride: false)
+            XCTAssertEqual(policyEvaluator.policies?.count, 3)
+        } catch {
+            XCTFail("Failed to register policies: \(error.localizedDescription)")
+        }
     }
-    
+
     func test_05_register_empty_override_false() {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
-        XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: [], shouldOverride: false)
-        XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        do {
+            try policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
+            XCTAssertEqual(policyEvaluator.policies?.count, 2)
+            try policyEvaluator.registerPolicies(policies: [], shouldOverride: false)
+            XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        } catch {
+            XCTFail("Failed to register policies: \(error.localizedDescription)")
+        }
     }
-    
+
     func test_06_register_empty_override_true() {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
-        XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: [], shouldOverride: true)
-        XCTAssertEqual(policyEvaluator.policies?.count, 0)
+        do {
+            try policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
+            XCTAssertEqual(policyEvaluator.policies?.count, 2)
+            try policyEvaluator.registerPolicies(policies: [], shouldOverride: true)
+            XCTAssertEqual(policyEvaluator.policies?.count, 0)
+        } catch {
+            XCTFail("Failed to register policies: \(error.localizedDescription)")
+        }
     }
-    
+
     func test_07_register_same_policy_twice() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
+        try policyEvaluator.registerPolicies(policies: FRAPolicyEvaluator.defaultPolicies)
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        policyEvaluator.registerPolicies(policies: [DeviceTamperingPolicy()], shouldOverride: false)
+        try policyEvaluator.registerPolicies(policies: [DeviceTamperingPolicy()], shouldOverride: false)
         XCTAssertEqual(policyEvaluator.policies?.count, 3)
     }
+
+    func test_08_register_invalid_policy_fail() {
+        let policyEvaluator = FRAPolicyEvaluator()
+        XCTAssertThrowsError(try policyEvaluator.registerPolicies(policies: [InvalidFakePolicy()])) { error in
+            guard case FRAError.invalidPolicyRegisteredWithPolicyEvaluator(let policy) = error else {
+                return XCTFail()
+            }
+            XCTAssertTrue(policy.contains(String(describing: InvalidFakePolicy.self)))
+        }
+    }
     
-    func test_08_evaluate_uri_successful_when_policy_registered() throws {
+    func test_09_evaluate_uri_successful_when_policy_registered() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 1)
 
         let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
@@ -93,18 +119,18 @@ final class FRAPolicyEvaluatorTests: FRABaseTests {
                          "digits=6&" +
                          "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
                          "period=30&")!
-        
+
         let result = policyEvaluator.evaluate(uri: qrCode)
-        
+
         XCTAssertTrue(result.comply)
         XCTAssertNil(result.nonCompliancePolicy)
     }
-    
-    func test_09_evaluate_uri_successful_when_failure_policy_not_registered() throws {
+
+    func test_10_evaluate_uri_successful_when_failure_policy_not_registered() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 1)
 
         let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
@@ -120,18 +146,18 @@ final class FRAPolicyEvaluatorTests: FRABaseTests {
                          "digits=6&" +
                          "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
                          "period=30&")!
-        
+
         let result = policyEvaluator.evaluate(uri: qrCode)
-        
+
         XCTAssertTrue(result.comply)
         XCTAssertNil(result.nonCompliancePolicy)
     }
-    
-    func test_10_evaluate_uri_unsuccessful_when_failure_policy_registered() throws {
+
+    func test_11_evaluate_uri_unsuccessful_when_failure_policy_registered() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
 
         let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
@@ -147,71 +173,71 @@ final class FRAPolicyEvaluatorTests: FRABaseTests {
                          "digits=6&" +
                          "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
                          "period=30&")!
-        
+
         let result = policyEvaluator.evaluate(uri: qrCode)
-        
+
         XCTAssertFalse(result.comply)
         XCTAssertNotNil(result.nonCompliancePolicy)
         XCTAssertEqual(result.nonCompliancePolicy?.name, "dummyWithData")
     }
-    
-    func test_11_evaluate_account_successful() throws {
+
+    func test_12_evaluate_account_successful() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 1)
-        
+
         let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)
-        
+
         let result = policyEvaluator.evaluate(account: account!)
-        
+
         XCTAssertTrue(result.comply)
         XCTAssertNil(result.nonCompliancePolicy)
     }
-    
-    func test_12_evaluate_account_unsuccessful() throws {
+
+    func test_13_evaluate_account_unsuccessful() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
+
         let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)
-        
+
         let result = policyEvaluator.evaluate(account: account!)
-        
+
         XCTAssertFalse(result.comply)
         XCTAssertNotNil(result.nonCompliancePolicy)
         XCTAssertEqual(result.nonCompliancePolicy?.name, "dummyWithData")
     }
-    
-    func test_13_evaluate_account_successful_when_no_policy_registered() throws {
+
+    func test_14_evaluate_account_successful_when_no_policy_registered() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [])
+
+        try policyEvaluator.registerPolicies(policies: [])
         XCTAssertEqual(policyEvaluator.policies?.count, 0)
-        
+
         let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)
-        
+
         let result = policyEvaluator.evaluate(account: account!)
-        
+
         XCTAssertTrue(result.comply)
         XCTAssertNil(result.nonCompliancePolicy)
     }
-    
-    func test_14_evaluate_account_successful_when_no_policy_attached_to_account() throws {
+
+    func test_15_evaluate_account_successful_when_no_policy_attached_to_account() throws {
         let policyEvaluator = FRAPolicyEvaluator()
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
-        policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+
+        try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
         XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        
+
         let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: nil, lockingPolicy: nil, lock: false)
-        
+
         let result = policyEvaluator.evaluate(account: account!)
-        
+
         XCTAssertTrue(result.comply)
         XCTAssertNil(result.nonCompliancePolicy)
     }
