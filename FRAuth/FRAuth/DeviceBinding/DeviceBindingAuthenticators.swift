@@ -110,7 +110,7 @@ extension DeviceAuthenticator {
     /// - Returns: compact serialized jws
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
         guard let keyStoreKey = CryptoKey.getSecureKey(keyAlias: userKey.keyAlias) else {
-            throw DeviceBindingStatus.unRegister
+            throw DeviceBindingStatus.clientNotRegistered
         }
         let algorithm = SignatureAlgorithm.ES256
         

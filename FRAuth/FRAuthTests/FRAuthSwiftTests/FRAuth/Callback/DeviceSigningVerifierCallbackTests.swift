@@ -492,7 +492,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Should not succeed")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unRegister.clientError)
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.clientNotRegistered.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }

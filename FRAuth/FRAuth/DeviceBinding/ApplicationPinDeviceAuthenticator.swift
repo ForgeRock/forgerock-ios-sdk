@@ -97,7 +97,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         }
         
         guard let keyStoreKey = CryptoKey.getSecureKey(keyAlias: userKey.keyAlias, pin: pin) else {
-            throw DeviceBindingStatus.unRegister
+            throw DeviceBindingStatus.clientNotRegistered
         }
         let algorithm = SignatureAlgorithm.ES256
         
