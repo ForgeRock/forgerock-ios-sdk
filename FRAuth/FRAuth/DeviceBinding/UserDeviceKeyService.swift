@@ -88,10 +88,10 @@ public enum KeyFoundStatus {
 
 
 public struct UserKey: Equatable, Codable {
-    var userId: String
-    var userName: String
-    var kid: String
-    var authType: DeviceBindingAuthenticationType
-    var keyAlias: String
-    var createdAt: Double
+    public var userId: String
+    public var userName: String
+    public var kid: String
+    public var authType: DeviceBindingAuthenticationType
+    public var keyAlias: String
+    public var createdAt: Double
 }
