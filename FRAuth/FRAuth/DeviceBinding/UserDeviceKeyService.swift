@@ -72,7 +72,9 @@ internal class UserDeviceKeyService: UserKeyService {
     /// - Parameter userkey: ``UserKey`` to be deleted
     func delete(userKey: UserKey) {
         let _ = deviceRepository.delete(key: userKey.keyAlias)
-        userKey.authType.getAuthType().initialize(userId: userKey.userId).deleteKeys()
+        let authInterface = userKey.authType.getAuthType()
+        authInterface.initialize(userId: userKey.userId)
+        authInterface.deleteKeys()
     }
     
 }

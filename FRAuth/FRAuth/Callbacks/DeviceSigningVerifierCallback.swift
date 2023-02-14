@@ -168,7 +168,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
                                authInterface: DeviceAuthenticator,
                                _ completion: @escaping DeviceSigningResultCallback) {
         
-        let _ = authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return

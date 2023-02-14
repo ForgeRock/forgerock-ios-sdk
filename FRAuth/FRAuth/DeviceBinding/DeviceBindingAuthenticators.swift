@@ -52,12 +52,12 @@ public protocol DeviceAuthenticator {
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
-    func initialize(userId: String, prompt: Prompt) -> DeviceAuthenticator 
+    func initialize(userId: String, prompt: Prompt)
     
     
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
-    func initialize(userId: String) -> DeviceAuthenticator
+    func initialize(userId: String)
     
     
     /// Remove Keys
@@ -146,22 +146,20 @@ extension DeviceAuthenticator {
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
-    public func initialize(userId: String, prompt: Prompt) -> DeviceAuthenticator {
+    public func initialize(userId: String, prompt: Prompt) {
         
-        self.setPrompt(prompt)
-        return initialize(userId: userId)
+        setPrompt(prompt)
+        initialize(userId: userId)
     }
     
     
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
-    public func initialize(userId: String) -> DeviceAuthenticator {
+    public func initialize(userId: String) {
         
         if let cryptoAware = self as? CryptoAware {
             cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId))
         }
-        
-        return self
     }
 }
 
