@@ -113,6 +113,15 @@ public struct CryptoKey {
     }
     
     
+    /// Delete Keys from the Keychain
+    public func deleteKeys() {
+        var query = [String: Any]()
+        query[String(kSecClass)] = String(kSecClassKey)
+        query[String(kSecAttrApplicationTag)] = keyAlias
+        SecItemDelete(query as CFDictionary)
+    }
+    
+    
     /// Get hash for the given key name (user id)
     /// - Parameter keyName: key names to be hashed
     /// - Returns: the hash for the given key name

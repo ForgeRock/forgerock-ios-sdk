@@ -2,7 +2,7 @@
 //  UserDeviceKeyServiceTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -20,21 +20,22 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 1"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
+        let deviceRepository = KeychainDeviceRepository()
+        let _ = deviceRepository.deleteAllKeys()
         do {
-            let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid.isEmpty)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
         
-        XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
-        XCTAssertEqual(userDeviceKeyService.userKeys.first!.userId, userId)
+        XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
+        XCTAssertEqual(userDeviceKeyService.getAll().first!.userId, userId)
         
-        let _ = sharedPreferencesDeviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(key: key)
     }
     
     
@@ -43,18 +44,18 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
+        let deviceRepository = KeychainDeviceRepository()
         do {
-            let uuid = try sharedPreferencesDeviceRepository.persist(userId: "Wrong user Id", userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            let uuid = try deviceRepository.persist(userId: "Wrong user Id", userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid.isEmpty)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
         
-        XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
+        XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: userId)
         switch status {
         case .noKeysFound:
@@ -63,7 +64,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Wrong Key status")
         }
         
-        let _ = sharedPreferencesDeviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(key: key)
     }
     
     
@@ -72,18 +73,18 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 3"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
+        let deviceRepository = KeychainDeviceRepository()
         do {
-            let uuid = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid.isEmpty)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
         
-        XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
+        XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: userId)
         switch status {
         case .singleKeyFound(let key):
@@ -92,29 +93,29 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Wrong Key status")
         }
         
-        let _ = sharedPreferencesDeviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(key: key)
     }
     
     
     func test_04_getKeyStatus_multipleKeysFound() {
-        let userId = "Test User Id 5"
+        let userId = "Test User Id 4"
         let userName = "User Name"
         let key = "Test Key 4"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let sharedPreferencesDeviceRepository = KeychainDeviceRepository()
+        let deviceRepository = KeychainDeviceRepository()
         do {
-            let uuid1 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            let uuid1 = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid1.isEmpty)
-            let uuid2 = try sharedPreferencesDeviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            let uuid2 = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
             XCTAssertFalse(uuid2.isEmpty)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: sharedPreferencesDeviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
         
-        XCTAssertFalse(userDeviceKeyService.userKeys.isEmpty)
+        XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: nil)
         switch status {
         case .multipleKeysFound(let keys):
@@ -123,6 +124,40 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Wrong Key status")
         }
         
-        let _ = sharedPreferencesDeviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(key: key)
+    }
+    
+    
+    func test_05_delete() {
+        let userId = "Test User Id 5"
+        let userName = "User Name"
+        let key1 = "Test Key 5.1"
+        let key2 = "Test Key 5.2"
+        let authenticationType = DeviceBindingAuthenticationType.none
+        let deviceRepository = KeychainDeviceRepository()
+        let _ = deviceRepository.deleteAllKeys()
+        do {
+            let uuid1 = try deviceRepository.persist(userId: userId, userName: userName, key: key1, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            XCTAssertFalse(uuid1.isEmpty)
+            let uuid2 = try deviceRepository.persist(userId: userId, userName: userName, key: key2, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
+            XCTAssertFalse(uuid2.isEmpty)
+            
+        } catch {
+            XCTFail("Failed to persist user info")
+        }
+        
+        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        
+        XCTAssertTrue(userDeviceKeyService.getAll().count == 2)
+        
+        let userkey = userDeviceKeyService.getAll().first!
+        userDeviceKeyService.delete(userKey: userkey)
+        XCTAssertTrue(userDeviceKeyService.getAll().count == 1)
+        
+        //delete same key
+        userDeviceKeyService.delete(userKey: userkey)
+        XCTAssertTrue(userDeviceKeyService.getAll().count == 1)
+        
+        let _ = deviceRepository.deleteAllKeys()
     }
 }

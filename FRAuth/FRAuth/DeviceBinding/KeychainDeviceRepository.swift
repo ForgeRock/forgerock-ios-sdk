@@ -22,28 +22,24 @@ protocol DeviceRepository {
                  authenticationType: DeviceBindingAuthenticationType,
                  createdAt: Double) throws -> String
     
+    /// Get all keys
     func getAllKeys() -> [String: Any]?
+    
+    /// Delete the key
+    func delete(key: String) -> Bool 
 }
 
 
 /// Helper class to save and retrieve user keys
 internal class KeychainDeviceRepository: DeviceRepository {
     static let keychainServiceIdentifier = "com.forgerock.ios.devicebinding.keychainservice"
-    static let userIdKey = "userId"
-    static let kidKey = "kid"
-    static let authTypeKey = "authType"
-    static let userNameKey = "username"
-    static let createdAtKey = "createdAt"
     
-    private var uuid: String = ""
     private var keychainService: KeychainService
     
-    /// Initializes KeychainDeviceRepository with given uuid and keychainService
-    /// - Parameter uuid: default value is `UUID().uuidString`
+    /// Initializes KeychainDeviceRepository with given keychainService
     /// - Parameter keychainService: default value is `FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)`
-    init(uuid: String? = nil, keychainService: KeychainService? = nil) {
-        self.uuid = uuid ?? UUID().uuidString
-        self.keychainService = keychainService ?? FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)
+    init(keychainService: KeychainService? = nil) {
+        self.keychainService = keychainService ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)
     }
     
     
@@ -58,14 +54,10 @@ internal class KeychainDeviceRepository: DeviceRepository {
                  key: String,
                  authenticationType: DeviceBindingAuthenticationType,
                  createdAt: Double) throws -> String {
-        
-        let dictionary: [String: Any] = [KeychainDeviceRepository.userIdKey: userId,
-                                         KeychainDeviceRepository.userNameKey: userName,
-                                         KeychainDeviceRepository.kidKey: uuid,
-                                         KeychainDeviceRepository.authTypeKey: authenticationType.rawValue,
-                                         KeychainDeviceRepository.createdAtKey: createdAt]
-        
-        let data = try JSONSerialization.data(withJSONObject: dictionary)
+        let uuid = UUID().uuidString
+        let userKey = UserKey(userId: userId, userName: userName, kid: uuid, authType: authenticationType, keyAlias: key, createdAt: createdAt)
+
+        let data = try JSONEncoder().encode(userKey)
         if let str = String(data: data, encoding: .utf8) {
             keychainService.set(str, key: key)
         } else {

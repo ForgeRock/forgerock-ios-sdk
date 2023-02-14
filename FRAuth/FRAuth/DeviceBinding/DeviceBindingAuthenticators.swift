@@ -53,6 +53,15 @@ public protocol DeviceAuthenticator {
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
     func initialize(userId: String, prompt: Prompt)
+    
+    
+    /// initialize already created entity with useriD and Promp
+    /// - Parameter userId: userId of the authentication
+    func initialize(userId: String)
+    
+    
+    /// Remove Keys
+    func deleteKeys()
 }
 
 
@@ -139,13 +148,19 @@ extension DeviceAuthenticator {
     /// - Parameter prompt: Prompt containing the description for authentication
     public func initialize(userId: String, prompt: Prompt) {
         
+        setPrompt(prompt)
+        initialize(userId: userId)
+    }
+    
+    
+    /// initialize already created entity with useriD and Promp
+    /// - Parameter userId: userId of the authentication
+    public func initialize(userId: String) {
+        
         if let cryptoAware = self as? CryptoAware {
             cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId))
         }
-        
-        self.setPrompt(prompt)
     }
-    
 }
 
 
@@ -164,6 +179,11 @@ open class BiometricAuthenticator: CryptoAware {
     
     open func setPrompt(_ prompt: Prompt) {
         self.prompt = prompt
+    }
+    
+    /// Remove keys
+    open func deleteKeys() {
+        cryptoKey?.deleteKeys()
     }
 }
 
@@ -321,8 +341,14 @@ open class None: DeviceAuthenticator, CryptoAware {
         return .none
     }
     
+    
     open func setKey(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
+    }
+    
+    
+    open func deleteKeys() {
+        cryptoKey?.deleteKeys()
     }
 }
 

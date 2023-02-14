@@ -144,7 +144,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         case .singleKeyFound(key: let key):
             authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
         case .multipleKeysFound(keys: _):
-            userKeySelector.selectUserKey(userKeys: userKeyService.userKeys) { key in
+            userKeySelector.selectUserKey(userKeys: userKeyService.getAll()) { key in
                 if let key = key {
                     self.dispatchQueue.async {
                         self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)

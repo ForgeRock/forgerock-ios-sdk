@@ -14,7 +14,7 @@ import XCTest
 class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     
     static var USERNAME: String = "sdkuser"
-    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-sdks-dbind.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "afef1acb448a873",

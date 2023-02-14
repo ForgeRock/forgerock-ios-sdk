@@ -76,6 +76,11 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     }
     
     
+    public func deleteKeys() {
+        cryptoKey?.deleteKeys()
+    }
+    
+    
     // Default implemention
     /// Sign the challenge sent from the server and generate signed JWT
     /// - Parameter userKey: user Information

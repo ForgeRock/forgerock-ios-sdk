@@ -108,4 +108,21 @@ class CryptoKeyTests: XCTestCase {
         XCTAssertEqual(CryptoKey.getKeyAlias(keyName: userId1), CryptoKey.getKeyAlias(keyName: userId1))
         XCTAssertNotEqual(CryptoKey.getKeyAlias(keyName: userId1), CryptoKey.getKeyAlias(keyName: userId2))
     }
+    
+    
+    func test_07_deleteKeys() {
+        let userId = "Test User Id 7"
+        let cryptoKey = CryptoKey(keyId: userId)
+        let query = cryptoKey.keyBuilderQuery()
+        var privateKey: SecKey?
+        
+        SecKeyCreateRandomKey(query as CFDictionary, nil)
+        
+        privateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias)
+        XCTAssertNotNil(privateKey)
+        
+        cryptoKey.deleteKeys()
+        privateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias)
+        XCTAssertNil(privateKey)
+    }
 }
