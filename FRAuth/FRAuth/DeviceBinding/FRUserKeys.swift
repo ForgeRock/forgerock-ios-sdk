@@ -33,7 +33,7 @@ public struct FRUserKeys {
     
     /// Delete the ``UserKey``
     /// - Parameter userKey: the ``UserKey`` to be deleted
-    public func delete(userkey: UserKey) {
-        userKeyService.delete(userKey: userkey)
+    public func delete(userKey: UserKey) {
+        userKeyService.delete(userKey: userKey)
     }
 }

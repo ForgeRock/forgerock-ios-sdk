@@ -16,7 +16,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     static var USERNAME: String = "sdkuser"
     static var APPLICATION_PIN: String = "1111"
     
-    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-sdks-dbind.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "afef1acb448a873",

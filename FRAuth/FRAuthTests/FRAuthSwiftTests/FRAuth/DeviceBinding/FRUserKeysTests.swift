@@ -81,12 +81,12 @@ final class FRUserKeysTests: XCTestCase {
         XCTAssertTrue(userKeys.contains(userKey1))
         XCTAssertTrue(userKeys.contains(userKey2))
         
-        frUserKeys.delete(userkey: userKey1)
+        frUserKeys.delete(userKey: userKey1)
         userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 1)
         XCTAssertTrue(userKeys.contains(userKey2))
         
-        frUserKeys.delete(userkey: userKey2)
+        frUserKeys.delete(userKey: userKey2)
         userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 0)
     }
