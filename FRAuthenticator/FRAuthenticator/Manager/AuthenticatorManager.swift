@@ -70,17 +70,7 @@ struct AuthenticatorManager {
             })
         } else {
             FRALog.v("Received URI (\(uri.absoluteString)) with authType (\(authType.rawValue)), and proceeding to construct Mechanism object")
-
-            if authType == .hotp {
-                do {
-                    let mechanism = try self.storeOathQRCode(uri: uri)
-                    onSuccess(mechanism)
-                }
-                catch {
-                    onError(error)
-                }
-            }
-            else if authType == .totp {
+            if authType == .hotp || authType == .totp {
                 do {
                     let mechanism = try self.storeOathQRCode(uri: uri)
                     onSuccess(mechanism)
