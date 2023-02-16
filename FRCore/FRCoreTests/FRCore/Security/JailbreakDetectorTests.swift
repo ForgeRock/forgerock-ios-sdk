@@ -1,17 +1,17 @@
 //
 //  JailbreakDetectorTests.swift
-//  FRAuthTests
+//  FRCoreTests
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
 //
 
 import XCTest
-@testable import FRAuth
+@testable import FRCore
 
-class JailbreakDetectorTests: FRAuthBaseTest {
+class JailbreakDetectorTests: FRBaseTestCase {
 
     
     func testNoJailbreakDetector() {
@@ -55,7 +55,7 @@ class JailbreakDetectorTests: FRAuthBaseTest {
             #if !targetEnvironment(simulator)
             XCTAssertEqual(detector.analyze(), expectedResult, "Detector comparison failed for \(String(describing: detector))")
             #else
-            if String(describing: detector) == "FRAuth.SandboxDetector" {
+            if String(describing: detector) == "FRCoreTests.SandboxDetector" {
                 print("Ignoring SandboxDetector result on Simulator as its return value keeps changing: \(String(describing: detector))")
             }
             else {

@@ -1,8 +1,8 @@
 //
 //  AptDetector.swift
-//  FRAuth
+//  FRCore
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -20,18 +20,18 @@ public class AptDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 if apt is accessible; otherwise returns 0.0
     public func analyze() -> Double {
-        FRLog.v("\(self) analyzing")
+        Log.v("\(self) analyzing")
         let fileManager = FileManager.default
         let charArr: [Character] = ["/","e","t","c","/","a","p","t"]
         let searchPath = String(charArr)
         
         if fileManager.fileExists(atPath: searchPath) {
-            FRLog.w("Security Warning: \(self) is returning 1.0")
+            Log.w("Security Warning: \(self) is returning 1.0")
             return 1.0
         }
         
         if self.canOpen(path: searchPath) {
-            FRLog.w("Security Warning: \(self) is returning 1.0")
+            Log.w("Security Warning: \(self) is returning 1.0")
             return 1.0
         }
         

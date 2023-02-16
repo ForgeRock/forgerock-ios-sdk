@@ -124,7 +124,6 @@
 		D5791BD925F87DE8004B487A /* FRSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BF7E7323D64FF800B90BF8 /* FRSessionTests.swift */; };
 		D5791BDA25F87DE8004B487A /* SessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59A0CE223AC28C8008D948E /* SessionManagerTests.swift */; };
 		D5791BDB25F87DE8004B487A /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8B12B23EA404800A68E13 /* KeychainManagerTests.swift */; };
-		D5791BDC25F87DE8004B487A /* JailbreakDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1647231484D60095905A /* JailbreakDetectorTests.swift */; };
 		D5791BDD25F87DE8004B487A /* TokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1649231484D60095905A /* TokenTests.swift */; };
 		D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D164A231484D60095905A /* PKCETests.swift */; };
 		D5791BDF25F87DE8004B487A /* AccessTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D164B231484D60095905A /* AccessTokenTests.swift */; };
@@ -132,23 +131,10 @@
 		D5791BE125F87DE8004B487A /* FRUserBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */; };
 		D5791BE225F87DE8004B487A /* NetworkReachabilityMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1640231484D60095905A /* NetworkReachabilityMonitorTests.swift */; };
 		D5791BE325F87DE8004B487A /* FRBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D165A231484D60095905A /* FRBaseTest.swift */; };
-		D5791C1D25F8869C004B487A /* JBUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = D5791C1B25F8869C004B487A /* JBUtil.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D5791C1E25F8869C004B487A /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = D5791C1C25F8869C004B487A /* JBUtil.c */; };
 		D57F63FA2601C5DE00BBA0B6 /* SocialLoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F63F92601C5DD00BBA0B6 /* SocialLoginError.swift */; };
 		D586CF7723358EE0007A2194 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2123358EDF007A2194 /* AuthError.swift */; };
 		D586CF7823358EE0007A2194 /* ConfigError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2223358EDF007A2194 /* ConfigError.swift */; };
 		D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2423358EDF007A2194 /* TokenError.swift */; };
-		D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2623358EDF007A2194 /* CydiaDetector.swift */; };
-		D586CF7C23358EE0007A2194 /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2723358EDF007A2194 /* SandboxDetector.swift */; };
-		D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2823358EDF007A2194 /* SymbolicLinkDetector.swift */; };
-		D586CF7F23358EE0007A2194 /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2A23358EDF007A2194 /* CydiaSubstrateDetector.swift */; };
-		D586CF8023358EE0007A2194 /* DyldDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2B23358EDF007A2194 /* DyldDetector.swift */; };
-		D586CF8123358EE0007A2194 /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2C23358EDF007A2194 /* AptDetector.swift */; };
-		D586CF8223358EE0007A2194 /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2D23358EDF007A2194 /* SSHDetector.swift */; };
-		D586CF8323358EE0007A2194 /* JailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2E23358EDF007A2194 /* JailbreakDetector.swift */; };
-		D586CF8423358EE0007A2194 /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2F23358EDF007A2194 /* FRJailbreakDetector.swift */; };
-		D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */; };
-		D586CF8723358EE0007A2194 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3223358EDF007A2194 /* BashDetector.swift */; };
 		D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */; };
 		D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3D23358EDF007A2194 /* AccessToken.swift */; };
 		D586CF9023358EE0007A2194 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3E23358EDF007A2194 /* PKCE.swift */; };
@@ -349,7 +335,6 @@
 		D52D163E231484D60095905A /* NodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeTests.swift; sourceTree = "<group>"; };
 		D52D1640231484D60095905A /* NetworkReachabilityMonitorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityMonitorTests.swift; sourceTree = "<group>"; };
 		D52D1644231484D60095905A /* FRAuthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAuthTests.swift; sourceTree = "<group>"; };
-		D52D1647231484D60095905A /* JailbreakDetectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetectorTests.swift; sourceTree = "<group>"; };
 		D52D1649231484D60095905A /* TokenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTests.swift; sourceTree = "<group>"; };
 		D52D164A231484D60095905A /* PKCETests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
 		D52D164B231484D60095905A /* AccessTokenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenTests.swift; sourceTree = "<group>"; };
@@ -411,24 +396,10 @@
 		D5723C3923F4C65800557AA8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D5723C3A23F4C65800557AA8 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		D5723C3E23F4C66A00557AA8 /* PolicyAdvice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdvice.swift; sourceTree = "<group>"; };
-		D5791C1825F8869C004B487A /* FRAuth.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = FRAuth.modulemap; sourceTree = "<group>"; };
-		D5791C1B25F8869C004B487A /* JBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBUtil.h; sourceTree = "<group>"; };
-		D5791C1C25F8869C004B487A /* JBUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = JBUtil.c; sourceTree = "<group>"; };
 		D57F63F92601C5DD00BBA0B6 /* SocialLoginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginError.swift; sourceTree = "<group>"; };
 		D586CF2123358EDF007A2194 /* AuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		D586CF2223358EDF007A2194 /* ConfigError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigError.swift; sourceTree = "<group>"; };
 		D586CF2423358EDF007A2194 /* TokenError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenError.swift; sourceTree = "<group>"; };
-		D586CF2623358EDF007A2194 /* CydiaDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaDetector.swift; sourceTree = "<group>"; };
-		D586CF2723358EDF007A2194 /* SandboxDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SandboxDetector.swift; sourceTree = "<group>"; };
-		D586CF2823358EDF007A2194 /* SymbolicLinkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolicLinkDetector.swift; sourceTree = "<group>"; };
-		D586CF2A23358EDF007A2194 /* CydiaSubstrateDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaSubstrateDetector.swift; sourceTree = "<group>"; };
-		D586CF2B23358EDF007A2194 /* DyldDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DyldDetector.swift; sourceTree = "<group>"; };
-		D586CF2C23358EDF007A2194 /* AptDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AptDetector.swift; sourceTree = "<group>"; };
-		D586CF2D23358EDF007A2194 /* SSHDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHDetector.swift; sourceTree = "<group>"; };
-		D586CF2E23358EDF007A2194 /* JailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetector.swift; sourceTree = "<group>"; };
-		D586CF2F23358EDF007A2194 /* FRJailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRJailbreakDetector.swift; sourceTree = "<group>"; };
-		D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateFileWritableDetector.swift; sourceTree = "<group>"; };
-		D586CF3223358EDF007A2194 /* BashDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashDetector.swift; sourceTree = "<group>"; };
 		D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityMonitor.swift; sourceTree = "<group>"; };
 		D586CF3D23358EDF007A2194 /* AccessToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessToken.swift; sourceTree = "<group>"; };
 		D586CF3E23358EDF007A2194 /* PKCE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
@@ -730,19 +701,10 @@
 		D52D1645231484D60095905A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D52D1646231484D60095905A /* Security */,
 				D52D1648231484D60095905A /* OAuth2 */,
 				D52D164C231484D60095905A /* User */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		D52D1646231484D60095905A /* Security */ = {
-			isa = PBXGroup;
-			children = (
-				D52D1647231484D60095905A /* JailbreakDetectorTests.swift */,
-			);
-			path = Security;
 			sourceTree = "<group>";
 		};
 		D52D1648231484D60095905A /* OAuth2 */ = {
@@ -927,7 +889,6 @@
 		D55462FA22A6DF720096C7A4 /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
-				D5791C1725F8869C004B487A /* SharedC */,
 				D5723C3823F4C65800557AA8 /* Authentication */,
 				D5723C3B23F4C65800557AA8 /* Authorization */,
 				D586CF4023358EDF007A2194 /* Callbacks */,
@@ -940,7 +901,6 @@
 				D586CF3523358EDF007A2194 /* Network */,
 				D586CF3C23358EDF007A2194 /* OAuth2 */,
 				D533270924806633002FF207 /* Policy */,
-				D586CF2523358EDF007A2194 /* Security */,
 				D5BE349323CD2F23005873BB /* Session */,
 				D5B205E825FFDD4600DABB9B /* SocialLogin */,
 				D586CF5D23358EE0007A2194 /* User */,
@@ -988,32 +948,6 @@
 			path = Authorization;
 			sourceTree = "<group>";
 		};
-		D5791C1725F8869C004B487A /* SharedC */ = {
-			isa = PBXGroup;
-			children = (
-				D5791C1825F8869C004B487A /* FRAuth.modulemap */,
-				D5791C1925F8869C004B487A /* Sources */,
-			);
-			path = SharedC;
-			sourceTree = "<group>";
-		};
-		D5791C1925F8869C004B487A /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				D5791C1A25F8869C004B487A /* include */,
-				D5791C1C25F8869C004B487A /* JBUtil.c */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		D5791C1A25F8869C004B487A /* include */ = {
-			isa = PBXGroup;
-			children = (
-				D5791C1B25F8869C004B487A /* JBUtil.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
 		D586CF2023358EDF007A2194 /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,24 +961,6 @@
 				D53A805B262789FC0093B1CA /* WebAuthnError.swift */,
 			);
 			path = Error;
-			sourceTree = "<group>";
-		};
-		D586CF2523358EDF007A2194 /* Security */ = {
-			isa = PBXGroup;
-			children = (
-				D586CF2623358EDF007A2194 /* CydiaDetector.swift */,
-				D586CF2723358EDF007A2194 /* SandboxDetector.swift */,
-				D586CF2823358EDF007A2194 /* SymbolicLinkDetector.swift */,
-				D586CF2A23358EDF007A2194 /* CydiaSubstrateDetector.swift */,
-				D586CF2B23358EDF007A2194 /* DyldDetector.swift */,
-				D586CF2C23358EDF007A2194 /* AptDetector.swift */,
-				D586CF2D23358EDF007A2194 /* SSHDetector.swift */,
-				D586CF2E23358EDF007A2194 /* JailbreakDetector.swift */,
-				D586CF2F23358EDF007A2194 /* FRJailbreakDetector.swift */,
-				D586CF3123358EDF007A2194 /* PrivateFileWritableDetector.swift */,
-				D586CF3223358EDF007A2194 /* BashDetector.swift */,
-			);
-			path = Security;
 			sourceTree = "<group>";
 		};
 		D586CF3523358EDF007A2194 /* Network */ = {
@@ -1553,7 +1469,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5791C1D25F8869C004B487A /* JBUtil.h in Headers */,
 				D554630922A6DF720096C7A4 /* FRAuth.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1773,16 +1688,13 @@
 				D53A803E262789BD0093B1CA /* Bytes.swift in Sources */,
 				D53A8044262789BD0093B1CA /* PlatformAuthenticatorConfig.swift in Sources */,
 				EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */,
-				D586CF8623358EE0007A2194 /* PrivateFileWritableDetector.swift in Sources */,
 				D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */,
 				D586CF9D23358EE0007A2194 /* AbstractValidatedCallback.swift in Sources */,
 				D586CFBD23358EE0007A2194 /* FRDeviceIdentifier.swift in Sources */,
 				D586CF9723358EE0007A2194 /* SingleValueCallback.swift in Sources */,
 				D53A803B262789BD0093B1CA /* UUID.swift in Sources */,
-				D586CF8223358EE0007A2194 /* SSHDetector.swift in Sources */,
 				D5F01B1D240F0B9F00BD48AA /* FRLog.swift in Sources */,
 				D586CFAD23358EE0007A2194 /* FRUser.swift in Sources */,
-				D586CF8423358EE0007A2194 /* FRJailbreakDetector.swift in Sources */,
 				EC8BCAFF273C3EC100C3B2D8 /* FRHTTPCookie.swift in Sources */,
 				D586CFB823358EE0007A2194 /* HardwareCollector.swift in Sources */,
 				D586CFAA23358EE0007A2194 /* ServerConfig.swift in Sources */,
@@ -1818,8 +1730,6 @@
 				D5B2061425FFE0E500DABB9B /* SelectIdPCallback.swift in Sources */,
 				D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */,
 				D586CF7823358EE0007A2194 /* ConfigError.swift in Sources */,
-				D586CF8723358EE0007A2194 /* BashDetector.swift in Sources */,
-				D586CF7F23358EE0007A2194 /* CydiaSubstrateDetector.swift in Sources */,
 				D586CF7723358EE0007A2194 /* AuthError.swift in Sources */,
 				D53A800E262789A80093B1CA /* WebAuthn.swift in Sources */,
 				D586CFB923358EE0007A2194 /* DeviceCollector.swift in Sources */,
@@ -1844,32 +1754,25 @@
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,
 				D5CD493225265FF8006DD932 /* BrowserError.swift in Sources */,
 				D5C6DB682509747D00E1A857 /* Browser.swift in Sources */,
-				D586CF7B23358EE0007A2194 /* CydiaDetector.swift in Sources */,
 				D53A8045262789BD0093B1CA /* KeySupport.swift in Sources */,
 				D586CFA323358EE0007A2194 /* KbaCreateCallback.swift in Sources */,
 				D586CF9523358EE0007A2194 /* MultipleValuesCallback.swift in Sources */,
-				D586CF7C23358EE0007A2194 /* SandboxDetector.swift in Sources */,
-				D586CF8323358EE0007A2194 /* JailbreakDetector.swift in Sources */,
 				D586CFB123358EE0007A2194 /* Typealias.swift in Sources */,
 				D554632222A6EDF90096C7A4 /* FRAuth.swift in Sources */,
 				D586CFAB23358EE0007A2194 /* UserInfo.swift in Sources */,
 				D53A8043262789BD0093B1CA /* PlatformAttestation.swift in Sources */,
 				D586CF9923358EE0007A2194 /* ConfirmationCallback.swift in Sources */,
 				D57F63FA2601C5DE00BBA0B6 /* SocialLoginError.swift in Sources */,
-				D586CF8023358EE0007A2194 /* DyldDetector.swift in Sources */,
 				D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */,
 				D586CFB323358EE0007A2194 /* PlatformCollector.swift in Sources */,
 				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
-				D5791C1E25F8869C004B487A /* JBUtil.c in Sources */,
 				ECDF5F4929674E9E007BB721 /* FRWebAuthn.swift in Sources */,
 				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
 				D53A803C262789BD0093B1CA /* JSON.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D53A8049262789BD0093B1CA /* Attestation.swift in Sources */,
 				D5B2061825FFE0F300DABB9B /* IdPCallback.swift in Sources */,
-				D586CF7D23358EE0007A2194 /* SymbolicLinkDetector.swift in Sources */,
 				D586CF9323358EE0007A2194 /* NameCallback.swift in Sources */,
-				D586CF8123358EE0007A2194 /* AptDetector.swift in Sources */,
 				D586CF9F23358EE0007A2194 /* ChoiceCallback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1963,7 +1866,6 @@
 				D5791BD925F87DE8004B487A /* FRSessionTests.swift in Sources */,
 				D5791BDA25F87DE8004B487A /* SessionManagerTests.swift in Sources */,
 				D5791BDB25F87DE8004B487A /* KeychainManagerTests.swift in Sources */,
-				D5791BDC25F87DE8004B487A /* JailbreakDetectorTests.swift in Sources */,
 				D5791BDD25F87DE8004B487A /* TokenTests.swift in Sources */,
 				D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */,
 				D58BC39F2602FB7700254654 /* IdPValueTests.swift in Sources */,
@@ -2141,7 +2043,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = "4.0.0-beta2";
-				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuth/SharedC/FRAuth.modulemap";
+				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2175,7 +2077,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = "4.0.0-beta2";
-				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuth/SharedC/FRAuth.modulemap";
+				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";

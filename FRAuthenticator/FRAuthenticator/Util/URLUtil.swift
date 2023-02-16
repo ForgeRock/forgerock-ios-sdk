@@ -2,7 +2,7 @@
 //  URLUtil.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -21,5 +21,15 @@ extension URL {
         }
         
         return authType
+    }
+    
+    /// Extracts scheme of URL, and parses host into URIType
+    /// - Returns: URIType enum value; if unsupported type is found, URIType.unknown is returned
+    func getURIType() -> URIType {
+        guard let scheme = self.scheme, let type = URIType(rawValue: scheme) else {
+            return .unknown
+        }
+        
+        return type
     }
 }
