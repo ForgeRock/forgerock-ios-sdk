@@ -4,6 +4,8 @@
 - Added error message description to the `WebAuthnError` enum [SDKS-2226]
 - Exposed interface for listing and deleting WebAuthn credentials from the device [SDKS-2279]
 - Exposed interface for assigning device name during the WebAuthn registration process [SDKS-2297]
+- Added support for combined MFA in the Authenticator SDK [SDKS-2166]
+- Added support for policy enforcement in the Authenticator SDK [SDKS-2166]
 
 ## [3.4.1]
 #### Changed
