@@ -134,7 +134,11 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             self.setWebAuthnOutcome(outcome: result)
             self.delegate?.didFinishAuthorization()
         default:
-            fatalError("Received unknown authorization type.")
+            let webAuthnError = FRWAKError.badData(platformError: nil, message: "Received unknown authorization type.")
+            FRLog.e("Received unknown authorization type.")
+            let publicError = webAuthnError.convert()
+            self.setWebAuthnOutcome(outcome: publicError.convertToWebAuthnOutcome())
+            self.delegate?.didCompleteWithError(publicError)
         }
 
         isPerformingModalReqest = false
@@ -145,25 +149,36 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             isPerformingModalReqest = false
             FRLog.e("Unexpected authorization error: \(error.localizedDescription)")
             self.delegate?.didCompleteWithError(error)
+            let webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
+            let publicError = webAuthnError.convert()
+            self.setWebAuthnOutcome(outcome: publicError.convertToWebAuthnOutcome())
             return
         }
-
-        if authorizationError.code == .canceled {
-            // Either the system doesn't find any credentials and the request ends silently, or the user cancels the request.
-            // This is a good time to show a traditional login form, or ask the user to create an account.
+        FRLog.e("Error: \((error as NSError).userInfo)")
+        let webAuthnError: FRWAKError
+        switch authorizationError.code {
+        case .canceled:
+            webAuthnError = FRWAKError.notAllowed(platformError: error, message: error.localizedDescription)
+            let publicErrorOutcome = webAuthnError.convert().convertToWebAuthnOutcome()
+            self.setWebAuthnOutcome(outcome: publicErrorOutcome)
+            self.delegate?.didCancelModalSheet()
             FRLog.i("Request canceled.")
-
-            if isPerformingModalReqest {
-                self.setWebAuthnOutcome(outcome: "ERROR::NotAllowedError:")
-                self.delegate?.didCancelModalSheet()
-            }
-        } else {
-            // Another ASAuthorization error.
-            // Note: The userInfo dictionary contains useful information.
-            self.delegate?.didCompleteWithError(error)
-            FRLog.e("Error: \((error as NSError).userInfo)")
+            isPerformingModalReqest = false
+            return
+        case .unknown:
+            webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
+        case .invalidResponse:
+            webAuthnError = FRWAKError.notAllowed(platformError: error, message: error.localizedDescription)
+        case .failed:
+            webAuthnError = FRWAKError.notAllowed(platformError: error, message: error.localizedDescription)
+        case .notHandled, .notInteractive:
+            webAuthnError = FRWAKError.invalidState(platformError: error, message: error.localizedDescription)
+        @unknown default:
+            webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
         }
-
+        let publicError = webAuthnError.convert()
+        self.setWebAuthnOutcome(outcome: publicError.convertToWebAuthnOutcome())
+        self.delegate?.didCompleteWithError(error)
         isPerformingModalReqest = false
     }
     
@@ -196,6 +211,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         return base64url
     }
 }
+
 fileprivate extension Data {
     var bytes: [UInt8] {
         return [UInt8](self)
