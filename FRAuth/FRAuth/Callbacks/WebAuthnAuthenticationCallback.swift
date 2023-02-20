@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -10,6 +10,7 @@
 
 
 import Foundation
+import UIKit
 
 /**
  WebAuthnAuthenticationCallback is a representation of AM's WebAuthn Authentication Node to generate WebAuthn assertion based on given credentials, and optionally set the WebAuthn outcome value in `Node`'s designated `HiddenValueCallback`
@@ -41,6 +42,9 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     /// Boolean indicator whether or not Callback response is AM 7.1.0 or above
     var isNewJSONFormat: Bool = false
     
+    var successCallback: StringCompletionCallback?
+    var errorCallback: ErrorCallback?
+    var webAuthnManager: Any?
     
     //  MARK: - Lifecycle
     
@@ -86,7 +90,7 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
             throw AuthError.invalidCallbackResponse("Missing userVerification")
         }
         self.userVerification = userVerification
-                
+        
         //  If AM 7.1.0 or above
         if self.isNewJSONFormat {
             //  Relying Party Identifier
@@ -171,89 +175,98 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func authenticate(node: Node? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
-        
-        if self.isNewJSONFormat {
-            FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)
-        }
-        else {
-            FRLog.i("Performing WebAuthn authentication for AM 7.0.0 or below", subModule: WebAuthn.module)
-        }
-        
-        //  Platform Authenticator
-        let platformAuthenticator = PlatformAuthenticator(authenticationDelegate: self)
-        //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
-        var origin = CBConstants.originScheme + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
-        //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
-        if self.isNewJSONFormat {
-            origin = CBConstants.originPrefix + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
-        }
-        
-        let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)
-        self.webAuthnClient = webAuthnClient
-        
-        //  PublicKey credential request options
-        var options = PublicKeyCredentialRequestOptions()
-        
-        //  Default userVerification option set to preferred
-        options.userVerification = self.userVerification.convert()
-        
-        //  Challenge
-        options.challenge = Bytes.fromString(self.challenge.urlSafeEncoding())
-        //  Relying Party
-        options.rpId = self.relyingPartyId
-        //  Timeout
-        options.timeout = UInt64(self.timeout/1000)
-        
-        //  Allowed credentials
-        for allowCred in allowCredentials {
-            options.addAllowCredential(credentialId: allowCred, transports: [.internal_])
-        }
-
-        webAuthnClient.get(options, onSuccess: { (assertion) in
-        
-            var result = "\(assertion.response.clientDataJSON)"
-            
-            let authInt8Arr = assertion.response.authenticatorData.map { Int8(bitPattern: $0) }
-            let sigInt8Arr = assertion.response.signature.map { Int8(bitPattern: $0) }
-            
-            let authenticatorData = self.convertInt8ArrToStr(authInt8Arr)
-            result = result + "::\(authenticatorData)"
-            let signatureData = self.convertInt8ArrToStr(sigInt8Arr)
-            result = result + "::\(signatureData)"
-            result = result + "::\(assertion.id)"
-            if let userHandle = assertion.response.userHandle {
-                let encoded = Base64.encodeBase64(userHandle)
-                if let decoded = encoded.base64Decoded() {
-                    result = result + "::\(decoded)"
-                }
-            }
-            
-            //  Expected AM result for successful assertion
-            //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
-            
-            //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
-            if let node = node {
-                FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                self.setWebAuthnOutcome(node: node, outcome: result)
-            }
-            onSuccess(result)
-            
-        }) { (error) in
-        
-            /// Converts internal WAKError into WebAuthnError
-            if let webAuthnError = error as? FRWAKError {
-                //  Converts the error to public facing error
-                let publicError = webAuthnError.convert()
-                if let node = node {
-                    FRLog.i("Found optional 'Node' instance, setting WebAuthn error outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                    //  Converts WebAuthnError to proper WebAuthn error outcome that can be understood by AM
-                    self.setWebAuthnOutcome(node: node, outcome: publicError.convertToWebAuthnOutcome())
-                }
-                onError(publicError)
+    public func authenticate(node: Node? = nil, window: UIWindow? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        if #available(iOS 16.0, *) {
+            self.successCallback = onSuccess
+            self.errorCallback = onError
+            guard let window = window, let data = Data(base64Encoded: self.challenge, options: .ignoreUnknownCharacters), let node = node else { fatalError("The view was not in the app's view hierarchy!") }
+            self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
+            guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
+            webAuthnManager.delegate = self
+            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: false, challenge: data, allowedCredentialsArray: self.allowCredentials)
+        } else {
+            if self.isNewJSONFormat {
+                FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)
             }
             else {
-                onError(error)
+                FRLog.i("Performing WebAuthn authentication for AM 7.0.0 or below", subModule: WebAuthn.module)
+            }
+            
+            //  Platform Authenticator
+            let platformAuthenticator = PlatformAuthenticator(authenticationDelegate: self)
+            //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
+            var origin = CBConstants.originScheme + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
+            //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
+            if self.isNewJSONFormat {
+                origin = CBConstants.originPrefix + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
+            }
+            
+            let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)
+            self.webAuthnClient = webAuthnClient
+            
+            //  PublicKey credential request options
+            var options = PublicKeyCredentialRequestOptions()
+            
+            //  Default userVerification option set to preferred
+            options.userVerification = self.userVerification.convert()
+            
+            //  Challenge
+            options.challenge = Bytes.fromString(self.challenge.urlSafeEncoding())
+            //  Relying Party
+            options.rpId = self.relyingPartyId
+            //  Timeout
+            options.timeout = UInt64(self.timeout/1000)
+            
+            //  Allowed credentials
+            for allowCred in allowCredentials {
+                options.addAllowCredential(credentialId: allowCred, transports: [.internal_])
+            }
+            
+            webAuthnClient.get(options, onSuccess: { (assertion) in
+                
+                var result = "\(assertion.response.clientDataJSON)"
+                
+                let authInt8Arr = assertion.response.authenticatorData.map { Int8(bitPattern: $0) }
+                let sigInt8Arr = assertion.response.signature.map { Int8(bitPattern: $0) }
+                
+                let authenticatorData = self.convertInt8ArrToStr(authInt8Arr)
+                result = result + "::\(authenticatorData)"
+                let signatureData = self.convertInt8ArrToStr(sigInt8Arr)
+                result = result + "::\(signatureData)"
+                result = result + "::\(assertion.id)"
+                if let userHandle = assertion.response.userHandle {
+                    let encoded = Base64.encodeBase64(userHandle)
+                    if let decoded = encoded.base64Decoded() {
+                        result = result + "::\(decoded)"
+                    }
+                }
+                
+                //  Expected AM result for successful assertion
+                //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
+                
+                //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
+                if let node = node {
+                    FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+                    self.setWebAuthnOutcome(node: node, outcome: result)
+                }
+                onSuccess(result)
+                
+            }) { (error) in
+                
+                /// Converts internal WAKError into WebAuthnError
+                if let webAuthnError = error as? FRWAKError {
+                    //  Converts the error to public facing error
+                    let publicError = webAuthnError.convert()
+                    if let node = node {
+                        FRLog.i("Found optional 'Node' instance, setting WebAuthn error outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+                        //  Converts WebAuthnError to proper WebAuthn error outcome that can be understood by AM
+                        self.setWebAuthnOutcome(node: node, outcome: publicError.convertToWebAuthnOutcome())
+                    }
+                    onError(publicError)
+                }
+                else {
+                    onError(error)
+                }
             }
         }
     }
@@ -268,5 +281,20 @@ extension WebAuthnAuthenticationCallback: PlatformAuthenticatorAuthenticationDel
         else {
             FRLog.e("Missing PlatformAuthenticatorAuthenticationDelegate", subModule: WebAuthn.module)
         }
+    }
+}
+
+extension WebAuthnAuthenticationCallback: FRWebAuthnManagerDelegate {
+    // MARK: - WebAuthnManagerDelegate
+    public func didFinishAuthorization() {
+        self.successCallback?("Success")
+    }
+    
+    public func didCompleteWithError(_ error: Error) {
+        self.errorCallback?(error)
+    }
+    
+    public func didCancelModalSheet() {
+        self.successCallback?("Cancel")
     }
 }
