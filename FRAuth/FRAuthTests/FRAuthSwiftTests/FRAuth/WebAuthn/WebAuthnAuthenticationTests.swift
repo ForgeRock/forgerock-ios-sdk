@@ -75,7 +75,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -136,7 +136,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -179,7 +179,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -214,7 +214,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
@@ -269,7 +269,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -312,7 +312,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -355,7 +355,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -397,7 +397,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
@@ -462,7 +462,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -505,7 +505,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
@@ -561,7 +561,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()

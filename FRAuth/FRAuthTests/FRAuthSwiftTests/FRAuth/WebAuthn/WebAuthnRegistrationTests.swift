@@ -54,7 +54,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -86,7 +86,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -130,7 +130,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -174,7 +174,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -220,7 +220,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -265,7 +265,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             var ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 result = webAuthnOutcome
                 ex.fulfill()
@@ -301,7 +301,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration with excludedCredentials
             ex = self.expectation(description: "WebAuthn Registration")
-            newCallback.register(onSuccess: { (webAuthnOutcome) in
+            newCallback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -339,7 +339,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration with excludedCredentials
             ex = self.expectation(description: "WebAuthn Registration")
-            newCallback1.register(onSuccess: { (webAuthnOutcome) in
+            newCallback1.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -387,7 +387,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -444,7 +444,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -500,7 +500,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -548,7 +548,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -596,7 +596,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -640,7 +640,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(deviceName: "Test Device Name", onSuccess: { (webAuthnOutcome) in
+            callback.register(deviceName: "Test Device Name", usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 let components = webAuthnOutcome.components(separatedBy: "::")
                 XCTAssertTrue(components.last == "Test Device Name")

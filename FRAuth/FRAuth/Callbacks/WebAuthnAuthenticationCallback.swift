@@ -175,15 +175,20 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func authenticate(node: Node? = nil, window: UIWindow? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
-        if #available(iOS 16.0, *) {
+    public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = true, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        if #available(iOS 16.0, *), usePasskeysIfAvailable {
+            FRLog.i("Performing WebAuthn authentication using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
             self.successCallback = onSuccess
             self.errorCallback = onError
-            guard let window = window, let data = Data(base64Encoded: self.challenge, options: .ignoreUnknownCharacters), let node = node else { fatalError("The view was not in the app's view hierarchy!") }
+            guard let window = window, let data = Data(base64Encoded: self.challenge, options: .ignoreUnknownCharacters), let node = node else {
+                FRLog.e("The view was not in the app's view hierarchy!", subModule: WebAuthn.module)
+                onError(FRWAKError.unknown(platformError: nil, message: "Failed to create PlatformAuthenticator"))
+                return
+            }
             self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
             guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
             webAuthnManager.delegate = self
-            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: false, challenge: data, allowedCredentialsArray: self.allowCredentials)
+            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, challenge: data, allowedCredentialsArray: self.allowCredentials)
         } else {
             if self.isNewJSONFormat {
                 FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)
