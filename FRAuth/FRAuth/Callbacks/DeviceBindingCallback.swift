@@ -201,8 +201,8 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {
             handleException(status: error, completion: completion)
-        } catch let error {
-            handleException(status: .unknown(errorMessage: error.localizedDescription), completion: completion)
+        } catch {
+            handleException(status: .abort, completion: completion)
         }
     }
     
