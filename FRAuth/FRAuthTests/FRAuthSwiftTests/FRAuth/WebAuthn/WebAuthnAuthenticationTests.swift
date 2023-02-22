@@ -599,6 +599,8 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
 
 
 extension WebAuthnAuthenticationTests: PlatformAuthenticatorAuthenticationDelegate {
+    func localKeyExistsAndPasskeysAreAvailable() { }
+    
     func selectCredential(keyNames: [String], selectionCallback: @escaping WebAuthnCredentialsSelectionCallback) {
         if self.causeDelay > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(self.causeDelay)) {
