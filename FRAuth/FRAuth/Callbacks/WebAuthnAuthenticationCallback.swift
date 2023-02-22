@@ -173,6 +173,9 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     /// Authenticates against AM's `WebAuthn Authentication Node` based on the JSON callback and WebAuthn's properties within the Callback
     /// - Parameters:
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
+    ///   - window: Optional `Window` set the presenting Window for the Apple Passkeys UI. If not set it will default to `UIApplication.shared.windows.first`
+    ///   - preferImmediatelyAvailableCredentials: Optional `preferImmediatelyAvailableCredentials` set this to true if you want to use only local credentials. Default value `false`
+    ///   - usePasskeysIfAvailable: Optional `usePasskeysIfAvailable` set this to enable Passkeys in supported devices (iOS 16+). Setting this to true will not affect older OSs
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
     public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
