@@ -204,9 +204,9 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         } catch let error as DeviceBindingStatus {
             authInterface.deleteKeys()
             handleException(status: error, completion: completion)
-        } catch let error {
+        } catch {
             authInterface.deleteKeys()
-            handleException(status: .unknown(errorMessage: error.localizedDescription), completion: completion)
+            handleException(status: .abort, completion: completion)
         }
     }
     

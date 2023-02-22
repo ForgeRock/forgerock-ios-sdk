@@ -18,15 +18,15 @@ public enum DeviceBindingStatus: LocalizedError, Equatable {
     case timeout
     case abort
     case unsupported(errorMessage: String?)
-    case unRegister
+    case clientNotRegistered
     case unAuthorize
-    case unknown(errorMessage: String?)
 }
 
 struct BindingStatusConstants {
     static let abort = "Abort"
     static let timeout = "Timeout"
     static let unsupported = "Unsupported"
+    static let clientNotRegistered = "ClientNotRegistered"
 }
 
 
@@ -44,11 +44,9 @@ public extension DeviceBindingStatus {
             return BindingStatusConstants.abort
         case .unsupported:
             return BindingStatusConstants.unsupported
-        case .unRegister:
-            return BindingStatusConstants.unsupported
+        case .clientNotRegistered:
+            return BindingStatusConstants.clientNotRegistered
         case .unAuthorize:
-            return BindingStatusConstants.unsupported
-        case .unknown:
             return BindingStatusConstants.abort
         }
     }
@@ -63,12 +61,10 @@ public extension DeviceBindingStatus {
             return "User Terminates the Authentication"
         case .unsupported(let errorMessage):
             return errorMessage ?? "Device not supported. Please verify the biometric or Pin settings"
-        case .unRegister:
+        case .clientNotRegistered:
             return "PublicKey or PrivateKey Not found in Device"
         case .unAuthorize:
             return "Invalid Credentials"
-        case .unknown(let errorMessage):
-            return errorMessage ?? "Unknown"
         }
     }
 }

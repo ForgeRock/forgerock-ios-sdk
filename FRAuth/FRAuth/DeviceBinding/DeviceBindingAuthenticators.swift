@@ -111,7 +111,7 @@ extension DeviceAuthenticator {
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
         guard let keyStoreKey = cryptoKey.getSecureKey() else {
-            throw DeviceBindingStatus.unRegister
+            throw DeviceBindingStatus.clientNotRegistered
         }
         let algorithm = SignatureAlgorithm.ES256
         
