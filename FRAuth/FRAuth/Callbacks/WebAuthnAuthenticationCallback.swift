@@ -175,7 +175,7 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = true, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+    public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
         if #available(iOS 16.0, *), usePasskeysIfAvailable {
             FRLog.i("Performing WebAuthn authentication using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
             self.successCallback = onSuccess
@@ -254,6 +254,12 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
                     FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
                     self.setWebAuthnOutcome(node: node, outcome: result)
                 }
+                
+                if #available(iOS 16.0, *) {
+                    FRLog.i("Local keypair exists and user authenticated locally succesfully. The device and FR SDK now supports Passkeys, in order to use it enable the functionality using `usePasskeysIfAvailable=true` and register a new keyPair.", subModule: WebAuthn.module)
+                    self.delegate?.localKeyExistsAndPasskeysAreAvailable()
+                }
+                
                 onSuccess(result)
                 
             }) { (error) in
@@ -278,6 +284,8 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
 }
 
 extension WebAuthnAuthenticationCallback: PlatformAuthenticatorAuthenticationDelegate {
+    public func localKeyExistsAndPasskeysAreAvailable() { }
+    
     public func selectCredential(keyNames: [String], selectionCallback: @escaping WebAuthnCredentialsSelectionCallback) {
         if let delegate = self.delegate {
             FRLog.i("Found PlatformAuthenticatorAuthenticationDelegate, waiting for completion", subModule: WebAuthn.module)

@@ -290,7 +290,7 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     ///   - deviceName: Optional `Device Name` object to set Device Name value to the designated `HiddenValueCallback`
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func register(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, deviceName: String? = nil, usePasskeysIfAvailable: Bool = true, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+    public func register(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, deviceName: String? = nil, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
         if #available(iOS 16.0, *), usePasskeysIfAvailable {
             FRLog.i("Performing WebAuthn registration using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
             self.successCallback = onSuccess
@@ -303,7 +303,7 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
             guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
             webAuthnManager.delegate = self
-            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId)
+            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId, deviceName: deviceName)
         } else {
             if self.isNewJSONFormat {
                 FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)

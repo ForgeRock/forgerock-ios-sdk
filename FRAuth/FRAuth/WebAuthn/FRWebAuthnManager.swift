@@ -27,6 +27,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
     private var isPerformingModalReqest: Bool = false
     private var node: Node
     private let domain: String
+    private var deviceName: String?
     
     public init(domain: String, authenticationAnchor: ASPresentationAnchor?, node: Node) {
         self.domain = domain
@@ -65,7 +66,8 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         isPerformingModalReqest = true
     }
     
-    public func signUpWith(userName: String, challenge: Data, userID: String) {
+    public func signUpWith(userName: String, challenge: Data, userID: String, deviceName: String?) {
+        self.deviceName = deviceName
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: domain)
 
         // Fetch the challenge from the server. The challenge needs to be unique for each request.
@@ -109,7 +111,12 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             let credID = base64ToBase64url(base64: credentialRegistration.credentialID.base64EncodedString())
             //  Expected AM result for successful attestation
             //  {clientDataJSON as String}::{attestation object in Int8 array}::{hashed credential identifier}
-            let result = "\(clientDataJSON)::\(attestationObject)::\(credID)"
+            let result: String
+            if let unwrappedDeviceName = self.deviceName {
+                result = "\(clientDataJSON)::\(attestationObject)::\(credID)::\(unwrappedDeviceName)"
+            } else {
+                result = "\(clientDataJSON)::\(attestationObject)::\(credID)"
+            }
             // After the server verifies the registration and creates the user account, sign in the user with the new account.
             //didFinishSignIn()
             self.setWebAuthnOutcome(outcome: result)
