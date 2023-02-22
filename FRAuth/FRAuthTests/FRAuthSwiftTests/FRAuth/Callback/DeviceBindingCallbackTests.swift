@@ -672,7 +672,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unknown(errorMessage: "").clientError)
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
@@ -698,7 +698,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unknown(errorMessage: "").clientError)
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
