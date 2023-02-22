@@ -187,6 +187,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
+                authInterface.deleteKeys()
                 handleException(status: .timeout, completion: completion)
                 return
             }
@@ -198,10 +199,13 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             }
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
+            authInterface.deleteKeys()
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {
+            authInterface.deleteKeys()
             handleException(status: error, completion: completion)
         } catch let error {
+            authInterface.deleteKeys()
             handleException(status: .unknown(errorMessage: error.localizedDescription), completion: completion)
         }
     }
@@ -211,9 +215,6 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter status: Device binding status
     /// - Parameter completion: Completion block Device binding result callback
     open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceBindingResultCallback) {
-        // Remove the private key if already generated
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
-        
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))

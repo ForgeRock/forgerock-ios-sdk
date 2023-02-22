@@ -22,13 +22,23 @@ public struct CryptoKey {
     private var keySize = 256
     private var keyType = kSecAttrKeyTypeECSECPrimeRandom
     var keyAlias: String
+    private var accessGroup: String?
     
     
     /// Initializes CryptoKey with given keyId String
     /// - Parameter keyId: user id for which key pair is to be generated
-    public init(keyId: String) {
+    /// - Parameter accessGroup: Optional Access Group string
+    public init(keyId: String, accessGroup: String? = nil) {
         self.keyId = keyId
         self.keyAlias = CryptoKey.getKeyAlias(keyName: keyId)
+        if let accessGroup = accessGroup {
+            var validatedAccessGroup = accessGroup
+            if let appleTeamId = KeychainService.getAppleTeamId(), !accessGroup.hasPrefix(appleTeamId) {
+                // If Apple TeamId prefix is found, and accessGroup provided doesn't contain, append it
+                validatedAccessGroup = appleTeamId + "." + accessGroup
+            }
+            self.accessGroup = validatedAccessGroup
+        }
     }
     
     
@@ -38,6 +48,11 @@ public struct CryptoKey {
         
         query[String(kSecAttrKeyType)] = String(keyType)
         query[String(kSecAttrKeySizeInBits)] = keySize
+        
+        
+        if let accessGroup = accessGroup {
+            query[String(kSecAttrAccessGroup)] = accessGroup
+        }
         
         var keyAttr = [String: Any]()
         keyAttr[String(kSecAttrIsPermanent)] = true
@@ -57,9 +72,7 @@ public struct CryptoKey {
     /// - Throws: error during private/public key generation
     public func createKeyPair(builderQuery: [String: Any]) throws -> KeyPair {
         
-        if let keyAttr = builderQuery[String(kSecPrivateKeyAttrs)] as? [String: Any], let keyAlias = keyAttr[String(kSecAttrApplicationTag)] as? String {
-            Self.deleteKey(keyAlias: keyAlias)
-        }
+        deleteKeys()
         
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(builderQuery as CFDictionary, &error) else {
@@ -75,10 +88,9 @@ public struct CryptoKey {
     
     
     /// Get the private key from the Keychain for given key alias
-    /// - Parameter keyAlias: key alias for which to retrive the private key
     /// - Parameter pin: password for the private key credential if applies
     /// - Returns: private key for the given key alias
-    public static func getSecureKey(keyAlias: String, pin: String? = nil) -> SecKey? {
+    public func getSecureKey(pin: String? = nil) -> SecKey? {
         
         var query = [String: Any]()
         query[String(kSecClass)] = kSecClassKey
@@ -93,7 +105,11 @@ public struct CryptoKey {
             context.interactionNotAllowed = false
             query[kSecUseAuthenticationContext as String] = context
         }
-
+        
+        if let accessGroup = accessGroup {
+            query[String(kSecAttrAccessGroup)] = accessGroup
+        }
+        
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {
@@ -103,21 +119,14 @@ public struct CryptoKey {
     }
     
     
-    /// Remove the private key from the Keychain for given key alias
-    /// - Parameter keyAlias: key alias for which to retrive the private key
-    public static func deleteKey(keyAlias: String) {
-        var query = [String: Any]()
-        query[String(kSecClass)] = String(kSecClassKey)
-        query[String(kSecAttrApplicationTag)] = keyAlias
-        SecItemDelete(query as CFDictionary)
-    }
-    
-    
     /// Delete Keys from the Keychain
     public func deleteKeys() {
         var query = [String: Any]()
         query[String(kSecClass)] = String(kSecClassKey)
         query[String(kSecAttrApplicationTag)] = keyAlias
+        if let accessGroup = accessGroup {
+            query[String(kSecAttrAccessGroup)] = accessGroup
+        }
         SecItemDelete(query as CFDictionary)
     }
     

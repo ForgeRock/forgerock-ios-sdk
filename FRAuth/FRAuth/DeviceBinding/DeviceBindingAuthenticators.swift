@@ -109,7 +109,8 @@ extension DeviceAuthenticator {
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
-        guard let keyStoreKey = CryptoKey.getSecureKey(keyAlias: userKey.keyAlias) else {
+        let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
+        guard let keyStoreKey = cryptoKey.getSecureKey() else {
             throw DeviceBindingStatus.unRegister
         }
         let algorithm = SignatureAlgorithm.ES256
@@ -158,7 +159,7 @@ extension DeviceAuthenticator {
     public func initialize(userId: String) {
         
         if let cryptoAware = self as? CryptoAware {
-            cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId))
+            cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup))
         }
     }
 }

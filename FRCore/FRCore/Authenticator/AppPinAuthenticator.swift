@@ -51,7 +51,7 @@ public class AppPinAuthenticator {
     
     
     func getPrivateKey(pin: String) -> SecKey? {
-        return CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias, pin: pin)
+        return cryptoKey.getSecureKey(pin: pin)
     }
     
     

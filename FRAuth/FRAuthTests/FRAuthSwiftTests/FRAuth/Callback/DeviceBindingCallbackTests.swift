@@ -593,7 +593,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTFail("Callback Execute failed: \(error.errorMessage)")
                 }
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -623,7 +624,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -648,7 +650,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -673,7 +676,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -698,7 +702,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -723,7 +728,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -757,7 +763,8 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 }
                 expectation.fulfill()
             }
-            CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: callback.userId))
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
             waitForExpectations(timeout: 60, handler: nil)
         }
         catch {

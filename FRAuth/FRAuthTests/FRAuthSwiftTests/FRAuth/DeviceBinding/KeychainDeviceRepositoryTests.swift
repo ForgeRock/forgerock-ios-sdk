@@ -13,9 +13,9 @@ import XCTest
 @testable import FRAuth
 
 
-class KeychainDeviceRepositoryTests: XCTestCase {
+class KeychainDeviceRepositoryTests: FRAuthBaseTest {
     
-    func test_01_persist() {
+    func test_01_persist_without_accessGroup() {
         let userId = "Test User Id 1"
         let userName = "User Name"
         let key = "Test Key 1"
@@ -39,7 +39,7 @@ class KeychainDeviceRepositoryTests: XCTestCase {
             let actualUserKey = try! JSONDecoder().decode(UserKey.self, from: data!)
             
             XCTAssertTrue(actualUserKey == userKey)
-
+            
             //cleanup
             let _ = deviceRepository.delete(key: key)
         } catch {
@@ -48,7 +48,7 @@ class KeychainDeviceRepositoryTests: XCTestCase {
     }
     
     
-    func test_02_getAllKeys() {
+    func test_02_getAllKeys_without_accessGroup() {
         let userId = "Test User Id 2"
         let userName = "User Name"
         let key = "Test Key 2"
@@ -79,4 +79,83 @@ class KeychainDeviceRepositoryTests: XCTestCase {
             XCTFail("Failed to persist user info")
         }
     }
+    
+    
+    func test_03_persist_with_accessGroup() {
+        self.config.configPlistFileName = "FRAuthConfig"
+        FRAuth.configPlistFileName = "FRAuthConfig"
+        
+        //  Init SDK
+        self.startSDK()
+        
+        let userId = "Test User Id 1"
+        let userName = "User Name"
+        let key = "Test Key 1"
+        let authenticationType = DeviceBindingAuthenticationType.none
+        let deviceRepository = KeychainDeviceRepository()
+        let createdAt = Date().timeIntervalSince1970
+        
+        do {
+            
+            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: createdAt)
+            let userKey = UserKey(userId: userId, userName: userName, kid: uuid, authType: authenticationType, keyAlias: key, createdAt: createdAt)
+            XCTAssertFalse(uuid.isEmpty)
+            
+            let allKeys = deviceRepository.getAllKeys()
+            XCTAssertNotNil(allKeys)
+            
+            let userKeyJson = allKeys![key]
+            XCTAssertNotNil(userKeyJson)
+            
+            let data = (userKeyJson as? String)?.data(using: .utf8)
+            let actualUserKey = try! JSONDecoder().decode(UserKey.self, from: data!)
+            
+            XCTAssertTrue(actualUserKey == userKey)
+            
+            //cleanup
+            let _ = deviceRepository.delete(key: key)
+        } catch {
+            XCTFail("Failed to persist user info")
+        }
+    }
+    
+    
+    func test_04_getAllKeys_with_accessGroup() {
+        self.config.configPlistFileName = "FRAuthConfig"
+        FRAuth.configPlistFileName = "FRAuthConfig"
+        
+        //  Init SDK
+        self.startSDK()
+        
+        let userId = "Test User Id 2"
+        let userName = "User Name"
+        let key = "Test Key 2"
+        let authenticationType = DeviceBindingAuthenticationType.none
+        let deviceRepository = KeychainDeviceRepository()
+        let createdAt = Date().timeIntervalSince1970
+        
+        do {
+            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: createdAt)
+            XCTAssertFalse(uuid.isEmpty)
+            
+            var allKeys = deviceRepository.getAllKeys()
+            XCTAssertNotNil(allKeys)
+            XCTAssertNotNil(allKeys![key])
+            
+            XCTAssertTrue(allKeys!.count > 0)
+            
+            let deleted = deviceRepository.delete(key: key)
+            XCTAssertTrue(deleted)
+            
+            allKeys = deviceRepository.getAllKeys()
+            XCTAssertNotNil(allKeys)
+            XCTAssertNil(allKeys![key])
+            
+            //cleanup
+            let _ = deviceRepository.delete(key: key)
+        } catch {
+            XCTFail("Failed to persist user info")
+        }
+    }
+    
 }
