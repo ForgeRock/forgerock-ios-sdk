@@ -150,7 +150,8 @@ class ViewController: UIViewController {
             "Login without UI (Accesstoken)",
             "FRSession.authenticate without UI (Token)",
             "Display Configurations",
-            "Revoke Access Token"
+            "Revoke Access Token",
+            "App Attest"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -587,8 +588,8 @@ class ViewController: UIViewController {
     func performCentralizedLogin() {
         FRUser.browser()?
             .set(presentingViewController: self)
-            .set(browserType: .authSession)
-            .setCustomParam(key: "custom", value: "value")
+            .set(browserType: .sfViewController)
+            .setCustomParam(key: "prompt", value: "login")
             .build().login { (user, error) in
                 self.displayLog("User: \(String(describing: user)) || Error: \(String(describing: error))")
         }
@@ -834,6 +835,12 @@ class ViewController: UIViewController {
         case 18:
             // Revoke Access Token
             self.revokeAccessToken()
+            break
+        case 19:
+            if #available(iOS 14.0, *) {
+                let appAttest = AppAttest()
+                appAttest.certifyAppAttestKey()
+            }
             break
         default:
             break

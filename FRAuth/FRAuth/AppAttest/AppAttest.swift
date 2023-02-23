@@ -100,6 +100,7 @@ public class AppAttest {
             return
         }
 
+       // let keyId = "nydIR7caes6XY+pcDV1v2/3jNKw8Zq/ygMjOTN+WRBQ="
         
         let hashValue = Data(SHA256.hash(data: challenge.data(using: .utf8)!))
         
@@ -109,6 +110,7 @@ public class AppAttest {
         // This method contacts Apple's server to retrieve an attestation object for the given hash value
         dcAppAttestService.attestKey(keyId, clientDataHash: hashValue) { attestation, error in
             guard error == nil else {
+                print(error?.localizedDescription ?? "")
                 return
             }
 

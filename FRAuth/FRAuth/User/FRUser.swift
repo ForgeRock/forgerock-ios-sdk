@@ -180,7 +180,7 @@ public class FRUser: NSObject, NSSecureCoding {
             frSession.logout()
             ssoTokenInvalidated = true
         }
-        
+
         if let frAuth = FRAuth.shared, let tokens = tempToken {
             FRLog.v("Invalidating OAuth2 token(s)")
             // Revoke OAuth2 tokens

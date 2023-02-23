@@ -79,11 +79,11 @@ import SafariServices
     public func login(completion: @escaping UserCallback) {
         
         //  Makes sure if the user is already authenticated or not
-        if let _ = FRUser.currentUser?.token {
-            completion(nil, AuthError.userAlreadyAuthenticated(true))
-            return
-        }
-        
+//        if let _ = FRUser.currentUser?.token {
+//            completion(nil, AuthError.userAlreadyAuthenticated(true))
+//            return
+//        }
+//
         //  Or make sure that either same Browser instance or other Browser instance is currently running
         if let isInProgress = Browser.currentBrowser?.isInProgress, isInProgress {
             completion(nil, BrowserError.externalUserAgentAuthenticationInProgress)
