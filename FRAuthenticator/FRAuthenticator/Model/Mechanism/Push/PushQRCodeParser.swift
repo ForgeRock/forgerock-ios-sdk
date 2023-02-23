@@ -43,7 +43,8 @@ struct PushQRCodeParser {
     var backgroundColor: String?
     /// image URL of logo
     var image: String?
-    
+    /// Set of policies
+    var policies: String?
     
     //  MARK: - Init
     
@@ -112,5 +113,6 @@ struct PushQRCodeParser {
         self.challenge = challenge.urlSafeDecoding()
         self.loadBalancer = params["l"]?.base64Decoded()
         self.backgroundColor = params["b"]
+        self.policies = params["policies"]?.base64Decoded()
     }
 }

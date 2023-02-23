@@ -42,7 +42,8 @@ struct OathQRCodeParser {
     var backgroundColor: String?
     /// image URL of logo
     var image: String?
-    
+    /// Set of policies
+    var policies: String?
     
     //  MARK: - Init
     
@@ -120,6 +121,9 @@ struct OathQRCodeParser {
                 }
                 if item.name == "issuer", let strVal = item.value {
                     self.issuer = strVal
+                }
+                if item.name == "policies", let strVal = item.value {
+                    self.policies = strVal.base64Decoded()
                 }
             }
         }

@@ -2,7 +2,7 @@
 //  OathQRCodeParserTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -375,6 +375,50 @@ class OathQRCodeParserTests: FRABaseTests {
             let parser = try OathQRCodeParser(url: qrCode)
             XCTAssertEqual(parser.issuer, "ACME")
             XCTAssertEqual(parser.label, "demo")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_21_parse_totp_from_mfa_qrcode_success() {
+        let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
+                         "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
+                         "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
+                         "b=ff00ff&" +
+                         "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
+                         "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
+                         "c=Daf8vrc8onKu-dcptwCRS9UHmdui5u16vAdG2HMU4w0&" +
+                         "l=YW1sYmNvb2tpZT0wMQ==&" +
+                         "m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&" +
+                         "policies=eyJiaW9tZXRyaWNBdmFpbGFibGUiOiB7IH0sImRldmljZVRhbXBlcmluZyI6IHsic2NvcmUiOiAwLjh9fQ&" +
+                         "digits=6&" +
+                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                         "period=30&")!
+        
+        let jsonPolicies = """
+        {"biometricAvailable": { },"deviceTampering": {"score": 0.8}}
+        """
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            
+            XCTAssertNotNil(parser.scheme)
+            XCTAssertNotNil(parser.type)
+            XCTAssertNotNil(parser.issuer)
+            XCTAssertNotNil(parser.label)
+            XCTAssertNotNil(parser.secret)
+            XCTAssertNotNil(parser.period)
+            XCTAssertNotNil(parser.algorithm)
+            
+            XCTAssertEqual(parser.scheme, "mfauth")
+            XCTAssertEqual(parser.type, "totp")
+            XCTAssertEqual(parser.issuer, "Forgerock")
+            XCTAssertEqual(parser.label, "demo")
+            XCTAssertEqual(parser.secret, "R2PYFZRISXA5L25NVSSYK2RQ6E======")
+            XCTAssertEqual(parser.period, 30)
+            XCTAssertEqual(parser.algorithm, "sha1")
+            XCTAssertEqual(parser.policies, jsonPolicies)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

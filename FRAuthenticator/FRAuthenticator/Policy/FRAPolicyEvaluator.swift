@@ -31,7 +31,7 @@ public class FRAPolicyEvaluator {
     //  MARK: - Init
     
     /// Initializes FRAPolicyEvaluator object
-    init() {
+    public init() {
         self.policies = FRAPolicyEvaluator.defaultPolicies
     }
     

@@ -99,7 +99,8 @@ public class Account: NSObject, NSSecureCoding, Codable {
     /// - Parameter displayAccountName: String value of the alternative accountName
     /// - Parameter imageUrl: String of account's logo image (optional)
     /// - Parameter backgroundColor: String HEX code of account's background color (optional)
-    init(issuer: String, displayIssuer: String? = nil, accountName: String, displayAccountName: String? = nil, imageUrl: String? = nil, backgroundColor: String? = nil) {
+    /// - Parameter policies: Authenticator Policies in a JSON String format
+    init(issuer: String, displayIssuer: String? = nil, accountName: String, displayAccountName: String? = nil, imageUrl: String? = nil, backgroundColor: String? = nil, policies: String? = nil) {
 
         self.issuer = issuer
         self._displayIssuer = displayIssuer
@@ -107,6 +108,7 @@ public class Account: NSObject, NSSecureCoding, Codable {
         self._displayAccountName = displayAccountName
         self.imageUrl = imageUrl
         self.backgroundColor = backgroundColor
+        self.policies = policies
         self.mechanisms = []
         self.timeAdded = Date()
         self.lock = false

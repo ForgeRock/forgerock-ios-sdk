@@ -105,7 +105,7 @@ struct AuthenticatorManager {
         do {
             // Parses QRCode, and constructs Account object
             let parser = try PushQRCodeParser(url: uri)
-            let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor)
+            let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor,  policies: parser.policies)
             FRALog.v("Account object (\(account.identifier)) is created")
             
             let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
@@ -156,7 +156,7 @@ struct AuthenticatorManager {
 
         // Parses QRCode, and constructs Account object
         let parser = try OathQRCodeParser(url: uri)
-        let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor)
+        let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor, policies: parser.policies)
         FRALog.v("Account object (\(account.identifier)) is created")
         
         // Constructs Mechanism object, and tries to store it into StorageClient
