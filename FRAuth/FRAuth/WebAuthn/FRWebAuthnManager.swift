@@ -18,6 +18,9 @@ public protocol FRWebAuthnManagerDelegate: NSObject {
     func didCancelModalSheet()
 }
 
+/**
+ FRWebAuthnManager is a class handling WebAuthn Registation and Authentication using Apple's ASAuthorization libraries. Used by the SDK, it is called by the WebAuthnRegistration and WebAuthnAuthenticaton callbacks and sets the outcome in the HiddenValueCallback. This comes with the `FRWebAuthnManagerDelegate` that offers callbacks in the calling class for Success, Error and Cancel scenarios.
+ */
 @available(iOS 16, *)
 public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationContextProviding, ASAuthorizationControllerDelegate {
     
@@ -35,6 +38,14 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         self.node = node
         super.init()
     }
+    
+    /// Sign In method, using AuthenticationServices. This will use the stored Passkeys to create the challenge and set it in tghe HiddenValue callback. Called by the WebAuthnAuthentication callback,
+    /// by triggering the `func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization)`
+    /// delegate method.
+    /// - Parameters:
+    ///    - preferImmediatelyAvailableCredentials: set to `True` to use only local keys
+    ///    - challenge: challenge `Data` as received from the Node
+    ///    - allowedCredentialsArray: Allowed credentials
     
     public func signInWith(preferImmediatelyAvailableCredentials: Bool, challenge: Data, allowedCredentialsArray: [[UInt8]]) {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: domain)
@@ -66,6 +77,14 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         isPerformingModalReqest = true
     }
     
+    /// Sign un method, using AuthenticationServices. This create the Passkey and store it in the Keychain,
+    /// by triggering the `func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization)`
+    /// delegate method.
+    /// - Parameters:
+    ///    - userName: username
+    ///    - challenge: challenge `Data` as received from the Node
+    ///    - userID: userID
+    ///    - deviceName: Optional device name. This will be the device name, that appears in the list of user devices
     public func signUpWith(userName: String, challenge: Data, userID: String, deviceName: String?) {
         self.deviceName = deviceName
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: domain)
@@ -106,7 +125,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             let int8Arr = credentialRegistration.rawAttestationObject?.bytes.map { Int8(bitPattern: $0) }
             let attestationObject = self.convertInt8ArrToStr(int8Arr!)
             
-            let clientDataJSON = String(data: credentialRegistration.rawClientDataJSON, encoding: .utf8)!
+            let clientDataJSON = String(decoding: credentialRegistration.rawClientDataJSON, as: UTF8.self)
             
             let credID = base64ToBase64url(base64: credentialRegistration.credentialID.base64EncodedString())
             //  Expected AM result for successful attestation
@@ -127,12 +146,11 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             
             let signatureInt8 = credentialAssertion.signature.bytes.map { Int8(bitPattern: $0) }
             let signature = self.convertInt8ArrToStr(signatureInt8)
-            let clientDataJSON = String(data: credentialAssertion.rawClientDataJSON, encoding: .utf8)!
+            let clientDataJSON = String(decoding: credentialAssertion.rawClientDataJSON, as: UTF8.self)
             let authenticatorDataInt8 = credentialAssertion.rawAuthenticatorData.bytes.map { Int8(bitPattern: $0) }
             let authenticatorData = self.convertInt8ArrToStr(authenticatorDataInt8)
             let credID = base64ToBase64url(base64: credentialAssertion.credentialID.base64EncodedString())
-            let userIDString = String(data: credentialAssertion.userID, encoding: .utf8)!
-            //let userIDString = base64ToBase64url(base64: credentialAssertion.userID.base64EncodedString())
+            let userIDString = String(decoding: credentialAssertion.userID, as: UTF8.self)
             //  Expected AM result for successful assertion
             
             //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
