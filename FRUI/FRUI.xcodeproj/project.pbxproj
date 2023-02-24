@@ -684,7 +684,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.0.0-beta3";
+				MARKETING_VERSION = "4.0.0-beta4";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -718,7 +718,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.0.0-beta3";
+				MARKETING_VERSION = "4.0.0-beta4";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
