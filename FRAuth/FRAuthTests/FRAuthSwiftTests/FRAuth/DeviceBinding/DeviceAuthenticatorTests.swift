@@ -2,7 +2,7 @@
 //  DeviceAuthenticatorTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -78,13 +78,15 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
     func test_03_None_generateKeys() {
         let userId = "Test User Id 3"
-        let key = CryptoKey.getKeyAlias(keyName: userId)
+        let cryptoKey = CryptoKey(keyId: userId)
+        let key = cryptoKey.keyAlias
         
         let authenticator = None()
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
@@ -94,12 +96,13 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
+            
+            let privateKey = cryptoKey.getSecureKey()
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        CryptoKey.deleteKey(keyAlias: key)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -141,7 +144,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -152,7 +156,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         
         let userId = "Test User Id 5"
-        let key = CryptoKey.getKeyAlias(keyName: userId)
+        let cryptoKey = CryptoKey(keyId: userId)
+        let key = cryptoKey.keyAlias
         
         let authenticator = BiometricOnly()
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
@@ -166,12 +171,12 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
+            let privateKey = cryptoKey.getSecureKey()
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        CryptoKey.deleteKey(keyAlias: key)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -213,7 +218,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -224,7 +230,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         
         let userId = "Test User Id 7"
-        let key = CryptoKey.getKeyAlias(keyName: userId)
+        let cryptoKey = CryptoKey(keyId: userId)
+        let key = cryptoKey.keyAlias
         
         let authenticator = BiometricAndDeviceCredential()
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "Description"))
@@ -235,12 +242,12 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
+            let privateKey = cryptoKey.getSecureKey()
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        CryptoKey.deleteKey(keyAlias: key)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -278,7 +285,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -321,7 +329,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -364,7 +373,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     

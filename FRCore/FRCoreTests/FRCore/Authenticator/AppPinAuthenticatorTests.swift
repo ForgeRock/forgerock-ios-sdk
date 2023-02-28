@@ -25,12 +25,12 @@ class AppPinAuthenticatorTests: FRBaseTestCase {
             let keyPair = try appPinAuthenticator.generateKeys(description: "Description", pin: pin)
             XCTAssertEqual(cryptoKey.keyAlias, keyPair.keyAlias)
             
-            let privateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias, pin: pin)
+            let privateKey = cryptoKey.getSecureKey(pin: pin)
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        CryptoKey.deleteKey(keyAlias: cryptoKey.keyAlias)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -41,7 +41,7 @@ class AppPinAuthenticatorTests: FRBaseTestCase {
         
         XCTAssertEqual(cryptoKey.keyAlias, appPinAuthenticator.getKeyAlias())
         
-        CryptoKey.deleteKey(keyAlias: cryptoKey.keyAlias)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -56,7 +56,7 @@ class AppPinAuthenticatorTests: FRBaseTestCase {
             let keyPair = try appPinAuthenticator.generateKeys(description: "Description", pin: pin)
             XCTAssertEqual(cryptoKey.keyAlias, keyPair.keyAlias)
             
-            let cryptoPrivateKey = CryptoKey.getSecureKey(keyAlias: cryptoKey.keyAlias, pin: pin)
+            let cryptoPrivateKey = cryptoKey.getSecureKey(pin: pin)
             XCTAssertNotNil(cryptoPrivateKey)
             
             let privateKey = appPinAuthenticator.getPrivateKey(pin: pin)
@@ -66,6 +66,6 @@ class AppPinAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to generate keys")
         }
-        CryptoKey.deleteKey(keyAlias: cryptoKey.keyAlias)
+        cryptoKey.deleteKeys()
     }
 }

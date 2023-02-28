@@ -50,7 +50,8 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
@@ -90,14 +91,16 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
-        CryptoKey.deleteKey(keyAlias: CryptoKey.getKeyAlias(keyName: userId))
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
     }
     
     
     func test_03_generateKeys() throws {
         try XCTSkipIf(!Self.biometricTestsSupported, "This test requires PIN setup on the device")
         let userId = "Test User Id 3"
-        let key = CryptoKey.getKeyAlias(keyName: userId)
+        let cryptoKey = CryptoKey(keyId: userId)
+        let key = cryptoKey.keyAlias
         
         let authenticator = ApplicationPinDeviceAuthenticator(pinCollector: PinCollectorMock())
         authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: "description"))
@@ -107,12 +110,12 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
             let keyPair = try authenticator.generateKeys()
             XCTAssertEqual(key, keyPair.keyAlias)
             
-            let privateKey = CryptoKey.getSecureKey(keyAlias: key)
+            let privateKey = cryptoKey.getSecureKey()
             XCTAssertNotNil(privateKey)
         } catch {
             XCTFail("Failed to generate keys")
         }
-        CryptoKey.deleteKey(keyAlias: key)
+        cryptoKey.deleteKeys()
     }
     
     

@@ -39,7 +39,16 @@ internal class KeychainDeviceRepository: DeviceRepository {
     /// Initializes KeychainDeviceRepository with given keychainService
     /// - Parameter keychainService: default value is `FRAuth.shared?.keychainManager.sharedStore ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)`
     init(keychainService: KeychainService? = nil) {
-        self.keychainService = keychainService ?? KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, securedKey: nil)
+        guard let keychainService = keychainService else {
+            if let accessGroup = FRAuth.shared?.options?.keychainAccessGroup {
+                self.keychainService = KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier, accessGroup: accessGroup)
+            } else {
+                self.keychainService = KeychainService(service: KeychainDeviceRepository.keychainServiceIdentifier)
+            }
+            return
+        }
+        
+        self.keychainService = keychainService
     }
     
     
