@@ -15,8 +15,8 @@ import XCTest
 final class FRUserKeysTests: XCTestCase {
 
     func test_01_loadAll() {
-        let deviceRepository = KeychainDeviceRepository()
-        let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let deviceRepository = LocalDeviceBindingRepository()
+        let userKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         let frUserKeys = FRUserKeys(userKeyService: userKeyService)
         
         let _ = deviceRepository.deleteAllKeys()
@@ -26,9 +26,10 @@ final class FRUserKeysTests: XCTestCase {
         let key1 = "Test Key 1"
         let type1 = DeviceBindingAuthenticationType.applicationPin
         let createdAt1 = Date().timeIntervalSince1970
+        let uuid1 = UUID().uuidString
         
-        let uuid1 = try! deviceRepository.persist(userId: userId1, userName: userName1, key: key1, authenticationType: type1, createdAt: createdAt1)
-        let userKey1 = UserKey(userId: userId1, userName: userName1, kid: uuid1, authType: type1, keyAlias: key1, createdAt: createdAt1)
+        let userKey1 = UserKey(id: key1, userId: userId1, userName: userName1, kid: uuid1, authType: type1, createdAt: createdAt1)
+        try! deviceRepository.persist(userKey: userKey1)
         
         var userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 1)
@@ -39,9 +40,10 @@ final class FRUserKeysTests: XCTestCase {
         let key2 = "Test Key 2"
         let type2 = DeviceBindingAuthenticationType.biometricOnly
         let createdAt2 = Date().timeIntervalSince1970
+        let uuid2 = UUID().uuidString
         
-        let uuid2 = try! deviceRepository.persist(userId: userId2, userName: userName2, key: key2, authenticationType: type2, createdAt: createdAt2)
-        let userKey2 = UserKey(userId: userId2, userName: userName2, kid: uuid2, authType: type2, keyAlias: key2, createdAt: createdAt2)
+        let userKey2 = UserKey(id: key2, userId: userId2, userName: userName2, kid: uuid2, authType: type2, createdAt: createdAt2)
+        try! deviceRepository.persist(userKey: userKey2)
         
         userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 2)
@@ -51,8 +53,8 @@ final class FRUserKeysTests: XCTestCase {
     
     
     func test_02_delete_userKey() {
-        let deviceRepository = KeychainDeviceRepository()
-        let userKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let deviceRepository = LocalDeviceBindingRepository()
+        let userKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         let frUserKeys = FRUserKeys(userKeyService: userKeyService)
         
         let _ = deviceRepository.deleteAllKeys()
@@ -62,9 +64,10 @@ final class FRUserKeysTests: XCTestCase {
         let key1 = "Test Key 1"
         let type1 = DeviceBindingAuthenticationType.applicationPin
         let createdAt1 = Date().timeIntervalSince1970
+        let uuid1 = UUID().uuidString
         
-        let uuid1 = try! deviceRepository.persist(userId: userId1, userName: userName1, key: key1, authenticationType: type1, createdAt: createdAt1)
-        let userKey1 = UserKey(userId: userId1, userName: userName1, kid: uuid1, authType: type1, keyAlias: key1, createdAt: createdAt1)
+        let userKey1 = UserKey(id: key1, userId: userId1, userName: userName1, kid: uuid1, authType: type1, createdAt: createdAt1)
+        try! deviceRepository.persist(userKey: userKey1)
         
         
         let userId2 = "Test User Id 2"
@@ -72,21 +75,22 @@ final class FRUserKeysTests: XCTestCase {
         let key2 = "Test Key 2"
         let type2 = DeviceBindingAuthenticationType.biometricOnly
         let createdAt2 = Date().timeIntervalSince1970
+        let uuid2 = UUID().uuidString
         
-        let uuid2 = try! deviceRepository.persist(userId: userId2, userName: userName2, key: key2, authenticationType: type2, createdAt: createdAt2)
-        let userKey2 = UserKey(userId: userId2, userName: userName2, kid: uuid2, authType: type2, keyAlias: key2, createdAt: createdAt2)
+        let userKey2 = UserKey(id: key2, userId: userId2, userName: userName2, kid: uuid2, authType: type2, createdAt: createdAt2)
+        try! deviceRepository.persist(userKey: userKey2)
         
         var userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 2)
         XCTAssertTrue(userKeys.contains(userKey1))
         XCTAssertTrue(userKeys.contains(userKey2))
         
-        frUserKeys.delete(userKey: userKey1)
+        frUserKeys.delete(userKey: userKey1, forceDelete: true)
         userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 1)
         XCTAssertTrue(userKeys.contains(userKey2))
         
-        frUserKeys.delete(userKey: userKey2)
+        frUserKeys.delete(userKey: userKey2, forceDelete: true)
         userKeys = frUserKeys.loadAll()
         XCTAssertEqual(userKeys.count, 0)
     }

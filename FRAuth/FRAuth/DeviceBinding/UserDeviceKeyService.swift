@@ -24,30 +24,27 @@ public protocol UserKeyService {
     
     
     /// Delete user key
-    func delete(userKey: UserKey)
+    func delete(userKey: UserKey, forceDelete: Bool) throws
 }
 
 
 internal class UserDeviceKeyService: UserKeyService {
-    private var deviceRepository: DeviceRepository
+    private var localDeviceBindingRepository: DeviceBindingRepository
+    private var remoteDeviceBindingRepository: DeviceBindingRepository
     
-    
-    /// Initializes ``UserDeviceKeyService`` with given ``DeviceRepository``
-    /// - Parameter deviceRepository: default value is ``KeychainDeviceRepository()``
-    init(deviceRepository: DeviceRepository = KeychainDeviceRepository()) {
-        self.deviceRepository = deviceRepository
+    /// Initializes ``UserDeviceKeyService``
+    /// - Parameter localDeviceBindingRepository: default value is ``LocalDeviceBindingRepository()``
+    /// - Parameter remoteDeviceBindingRepository: default value is ``RemoteDeviceBindingRepository()``
+    init(localDeviceBindingRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
+         remoteDeviceBindingRepository: DeviceBindingRepository = RemoteDeviceBindingRepository()) {
+        self.localDeviceBindingRepository = localDeviceBindingRepository
+        self.remoteDeviceBindingRepository = remoteDeviceBindingRepository
     }
     
     
     /// Get all the user keys in device.
     func getAll() -> [UserKey] {
-        return deviceRepository.getAllKeys()?.compactMap { (key, value) -> UserKey? in
-            guard let data = (value as? String)?.data(using: .utf8),
-               let userKey = try? JSONDecoder().decode(UserKey.self, from: data) else {
-                return nil
-            }
-            return userKey
-        } ?? [UserKey]()
+        return localDeviceBindingRepository.getAllKeys()
     }
     
     
@@ -70,8 +67,22 @@ internal class UserDeviceKeyService: UserKeyService {
     
     /// Delete user key
     /// - Parameter userkey: ``UserKey`` to be deleted
-    func delete(userKey: UserKey) {
-        let _ = deviceRepository.delete(key: userKey.keyAlias)
+    /// - Parameter forceDelete: Defaults to false, true will delete local keys even if the server key removal has failed
+    func delete(userKey: UserKey, forceDelete: Bool = false) throws {
+        do {
+            try remoteDeviceBindingRepository.delete(userKey: userKey)
+            deleteLocal(userKey: userKey)
+        } catch let error {
+            if forceDelete {
+                deleteLocal(userKey: userKey)
+            }
+            throw error
+        }
+    }
+    
+    
+    private func deleteLocal(userKey: UserKey) {
+        let _ = try? localDeviceBindingRepository.delete(userKey: userKey)
         let authInterface = userKey.authType.getAuthType()
         authInterface.initialize(userId: userKey.userId)
         authInterface.deleteKeys()
@@ -88,10 +99,10 @@ public enum KeyFoundStatus {
 
 
 public struct UserKey: Equatable, Codable {
+    public var id: String
     public var userId: String
     public var userName: String
     public var kid: String
     public var authType: DeviceBindingAuthenticationType
-    public var keyAlias: String
     public var createdAt: Double
 }

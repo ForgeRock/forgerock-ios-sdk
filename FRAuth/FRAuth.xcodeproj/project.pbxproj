@@ -16,6 +16,7 @@
 		A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */; };
 		A54874A728F74F5500FF9B99 /* JOSESwift in Frameworks */ = {isa = PBXBuildFile; productRef = A54874A628F74F5500FF9B99 /* JOSESwift */; };
 		A54874AD28FE158D00FF9B99 /* DeviceBindingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */; };
+		A555CE6A29AD0F97001336EA /* RemoteDeviceBindingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A555CE6929AD0F97001336EA /* RemoteDeviceBindingRepository.swift */; };
 		A56338C9294A92C9007237C1 /* ApplicationPinDeviceAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C8294A92C9007237C1 /* ApplicationPinDeviceAuthenticatorTests.swift */; };
 		A58186352992B15900A8058B /* FRUserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58186342992B15800A8058B /* FRUserKeys.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
@@ -23,9 +24,9 @@
 		A5BE3C35291D5E510041F990 /* DeviceAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C34291D5E510041F990 /* DeviceAuthenticatorTests.swift */; };
 		A5BE3C37292BEE7D0041F990 /* DeviceSigningVerifierCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C36292BEE7C0041F990 /* DeviceSigningVerifierCallback.swift */; };
 		A5BE3C39292E610A0041F990 /* UserDeviceKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */; };
-		A5BE3C3B292E76F40041F990 /* KeychainDeviceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C3A292E76F40041F990 /* KeychainDeviceRepository.swift */; };
+		A5BE3C3B292E76F40041F990 /* LocalDeviceBindingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C3A292E76F40041F990 /* LocalDeviceBindingRepository.swift */; };
 		A5BE3C43293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */; };
-		A5BE3C45293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C44293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift */; };
+		A5BE3C45293DAA8B0041F990 /* LocalDeviceBindingRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C44293DAA8B0041F990 /* LocalDeviceBindingRepositoryTests.swift */; };
 		A5BE3C47293DB6780041F990 /* UserDeviceKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */; };
 		A5BE3C49293E58850041F990 /* UserKeySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C48293E58850041F990 /* UserKeySelector.swift */; };
 		A5BE3C6A294500360041F990 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE3C69294500360041F990 /* Binding.swift */; };
@@ -361,6 +362,7 @@
 		A548749F28EF336400FF9B99 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
 		A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingAuthenticators.swift; sourceTree = "<group>"; };
 		A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingStatus.swift; sourceTree = "<group>"; };
+		A555CE6929AD0F97001336EA /* RemoteDeviceBindingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDeviceBindingRepository.swift; sourceTree = "<group>"; };
 		A56338C8294A92C9007237C1 /* ApplicationPinDeviceAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationPinDeviceAuthenticatorTests.swift; sourceTree = "<group>"; };
 		A58186342992B15800A8058B /* FRUserKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUserKeys.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
@@ -368,9 +370,9 @@
 		A5BE3C34291D5E510041F990 /* DeviceAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAuthenticatorTests.swift; sourceTree = "<group>"; };
 		A5BE3C36292BEE7C0041F990 /* DeviceSigningVerifierCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallback.swift; sourceTree = "<group>"; };
 		A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeviceKeyService.swift; sourceTree = "<group>"; };
-		A5BE3C3A292E76F40041F990 /* KeychainDeviceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainDeviceRepository.swift; sourceTree = "<group>"; };
+		A5BE3C3A292E76F40041F990 /* LocalDeviceBindingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDeviceBindingRepository.swift; sourceTree = "<group>"; };
 		A5BE3C42293D99A90041F990 /* DeviceSigningVerifierCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallbackTests.swift; sourceTree = "<group>"; };
-		A5BE3C44293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainDeviceRepositoryTests.swift; sourceTree = "<group>"; };
+		A5BE3C44293DAA8B0041F990 /* LocalDeviceBindingRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDeviceBindingRepositoryTests.swift; sourceTree = "<group>"; };
 		A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeviceKeyServiceTests.swift; sourceTree = "<group>"; };
 		A5BE3C48293E58850041F990 /* UserKeySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeySelector.swift; sourceTree = "<group>"; };
 		A5BE3C69294500360041F990 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
@@ -688,7 +690,8 @@
 				A54874A328F741AA00FF9B99 /* DeviceBindingAuthenticators.swift */,
 				A5BE3C6C294518A40041F990 /* CryptoAware.swift */,
 				A54874AC28FE158D00FF9B99 /* DeviceBindingStatus.swift */,
-				A5BE3C3A292E76F40041F990 /* KeychainDeviceRepository.swift */,
+				A5BE3C3A292E76F40041F990 /* LocalDeviceBindingRepository.swift */,
+				A555CE6929AD0F97001336EA /* RemoteDeviceBindingRepository.swift */,
 				A5BE3C38292E61090041F990 /* UserDeviceKeyService.swift */,
 				A5BE3C48293E58850041F990 /* UserKeySelector.swift */,
 				A58186342992B15800A8058B /* FRUserKeys.swift */,
@@ -709,7 +712,7 @@
 			children = (
 				A5BE3C34291D5E510041F990 /* DeviceAuthenticatorTests.swift */,
 				A56338C8294A92C9007237C1 /* ApplicationPinDeviceAuthenticatorTests.swift */,
-				A5BE3C44293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift */,
+				A5BE3C44293DAA8B0041F990 /* LocalDeviceBindingRepositoryTests.swift */,
 				A5BE3C46293DB6780041F990 /* UserDeviceKeyServiceTests.swift */,
 				3A2E3F412992196600985360 /* UserKeySelectorTests.swift */,
 				A5EB6B1C2994364400737F02 /* FRUserKeysTests.swift */,
@@ -1852,7 +1855,7 @@
 				D53A803A262789BD0093B1CA /* CBOR.swift in Sources */,
 				D586CFA223358EE0007A2194 /* StringAttributeInputCallback.swift in Sources */,
 				D53A8041262789BD0093B1CA /* PlatformAuthenticatorMakeCredentialSession.swift in Sources */,
-				A5BE3C3B292E76F40041F990 /* KeychainDeviceRepository.swift in Sources */,
+				A5BE3C3B292E76F40041F990 /* LocalDeviceBindingRepository.swift in Sources */,
 				D53A804E262789BD0093B1CA /* WAKTypes.swift in Sources */,
 				A5BE3C49293E58850041F990 /* UserKeySelector.swift in Sources */,
 				D53A804A262789BD0093B1CA /* AuthenticatorData.swift in Sources */,
@@ -1957,6 +1960,7 @@
 				A54874A428F741AA00FF9B99 /* DeviceBindingAuthenticators.swift in Sources */,
 				D5791C1E25F8869C004B487A /* JBUtil.c in Sources */,
 				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
+				A555CE6A29AD0F97001336EA /* RemoteDeviceBindingRepository.swift in Sources */,
 				D53A803C262789BD0093B1CA /* JSON.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D53A8049262789BD0093B1CA /* Attestation.swift in Sources */,
@@ -1981,7 +1985,7 @@
 				D58BC3C0260315DA00254654 /* AppleSignInHandlerTests.swift in Sources */,
 				D5791B8425F87DE7004B487A /* Config.swift in Sources */,
 				D5791B8525F87DE7004B487A /* FRAuthBaseTest.swift in Sources */,
-				A5BE3C45293DAA8B0041F990 /* KeychainDeviceRepositoryTests.swift in Sources */,
+				A5BE3C45293DAA8B0041F990 /* LocalDeviceBindingRepositoryTests.swift in Sources */,
 				D5791B8625F87DE7004B487A /* FRBaseTestCase.swift in Sources */,
 				D5791B8725F87DE7004B487A /* FRTestStubResponseParser.swift in Sources */,
 				D5791B8825F87DE7004B487A /* FRTestUtils.swift in Sources */,

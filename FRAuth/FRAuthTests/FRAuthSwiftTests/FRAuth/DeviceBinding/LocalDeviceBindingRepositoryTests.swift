@@ -1,5 +1,5 @@
 // 
-//  KeychainDeviceRepositoryTests.swift
+//  LocalDeviceBindingRepositoryTests.swift
 //  FRAuthTests
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
@@ -13,35 +13,30 @@ import XCTest
 @testable import FRAuth
 
 
-class KeychainDeviceRepositoryTests: FRAuthBaseTest {
+class LocalDeviceBindingRepositoryTests: FRAuthBaseTest {
     
     func test_01_persist_without_accessGroup() {
         let userId = "Test User Id 1"
         let userName = "User Name"
         let key = "Test Key 1"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
         let createdAt = Date().timeIntervalSince1970
+        let uuid = UUID().uuidString
         
         do {
-            
-            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: createdAt)
-            let userKey = UserKey(userId: userId, userName: userName, kid: uuid, authType: authenticationType, keyAlias: key, createdAt: createdAt)
-            XCTAssertFalse(uuid.isEmpty)
+            let userKey = UserKey(id: key, userId: userId, userName: userName, kid: uuid, authType: authenticationType, createdAt: createdAt)
+            try deviceRepository.persist(userKey: userKey)
             
             let allKeys = deviceRepository.getAllKeys()
             XCTAssertNotNil(allKeys)
             
-            let userKeyJson = allKeys![key]
-            XCTAssertNotNil(userKeyJson)
-            
-            let data = (userKeyJson as? String)?.data(using: .utf8)
-            let actualUserKey = try! JSONDecoder().decode(UserKey.self, from: data!)
+            let actualUserKey = allKeys.first { $0.id == key }
             
             XCTAssertTrue(actualUserKey == userKey)
             
             //cleanup
-            let _ = deviceRepository.delete(key: key)
+            let _ = deviceRepository.delete(userKey: userKey)
         } catch {
             XCTFail("Failed to persist user info")
         }
@@ -53,28 +48,28 @@ class KeychainDeviceRepositoryTests: FRAuthBaseTest {
         let userName = "User Name"
         let key = "Test Key 2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
         let createdAt = Date().timeIntervalSince1970
+        let uuid = UUID().uuidString
         
         do {
-            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: createdAt)
-            XCTAssertFalse(uuid.isEmpty)
+            let userKey = UserKey(id: key, userId: userId, userName: userName, kid: uuid, authType: authenticationType, createdAt: createdAt)
+            try deviceRepository.persist(userKey: userKey)
             
             var allKeys = deviceRepository.getAllKeys()
             XCTAssertNotNil(allKeys)
-            XCTAssertNotNil(allKeys![key])
             
-            XCTAssertTrue(allKeys!.count > 0)
+            XCTAssertTrue(allKeys.count > 0)
             
-            let deleted = deviceRepository.delete(key: key)
-            XCTAssertTrue(deleted)
+            deviceRepository.delete(userKey: userKey)
+            
             
             allKeys = deviceRepository.getAllKeys()
             XCTAssertNotNil(allKeys)
-            XCTAssertNil(allKeys![key])
+            XCTAssertNil(allKeys.first { $0.id == key })
             
             //cleanup
-            let _ = deviceRepository.delete(key: key)
+            let _ = deviceRepository.delete(userKey: userKey)
         } catch {
             XCTFail("Failed to persist user info")
         }
@@ -92,28 +87,24 @@ class KeychainDeviceRepositoryTests: FRAuthBaseTest {
         let userName = "User Name"
         let key = "Test Key 1"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
         let createdAt = Date().timeIntervalSince1970
+        let uuid = UUID().uuidString
         
         do {
             
-            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: createdAt)
-            let userKey = UserKey(userId: userId, userName: userName, kid: uuid, authType: authenticationType, keyAlias: key, createdAt: createdAt)
-            XCTAssertFalse(uuid.isEmpty)
+            let userKey = UserKey(id: key, userId: userId, userName: userName, kid: uuid, authType: authenticationType, createdAt: createdAt)
+            try deviceRepository.persist(userKey: userKey)
             
             let allKeys = deviceRepository.getAllKeys()
             XCTAssertNotNil(allKeys)
             
-            let userKeyJson = allKeys![key]
-            XCTAssertNotNil(userKeyJson)
-            
-            let data = (userKeyJson as? String)?.data(using: .utf8)
-            let actualUserKey = try! JSONDecoder().decode(UserKey.self, from: data!)
+            let actualUserKey = allKeys.first { $0.id == key }
             
             XCTAssertTrue(actualUserKey == userKey)
             
             //cleanup
-            let _ = deviceRepository.delete(key: key)
+            let _ = deviceRepository.delete(userKey: userKey)
         } catch {
             XCTFail("Failed to persist user info")
         }
@@ -131,28 +122,28 @@ class KeychainDeviceRepositoryTests: FRAuthBaseTest {
         let userName = "User Name"
         let key = "Test Key 2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
         let createdAt = Date().timeIntervalSince1970
+        let uuid = UUID().uuidString
         
         do {
-            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: createdAt)
-            XCTAssertFalse(uuid.isEmpty)
+            let userKey = UserKey(id: key, userId: userId, userName: userName, kid: uuid, authType: authenticationType, createdAt: createdAt)
+            try deviceRepository.persist(userKey: userKey)
             
             var allKeys = deviceRepository.getAllKeys()
             XCTAssertNotNil(allKeys)
-            XCTAssertNotNil(allKeys![key])
             
-            XCTAssertTrue(allKeys!.count > 0)
+            XCTAssertTrue(allKeys.count > 0)
             
-            let deleted = deviceRepository.delete(key: key)
-            XCTAssertTrue(deleted)
+            deviceRepository.delete(userKey: userKey)
+            
             
             allKeys = deviceRepository.getAllKeys()
             XCTAssertNotNil(allKeys)
-            XCTAssertNil(allKeys![key])
+            XCTAssertNil(allKeys.first { $0.id == key })
             
             //cleanup
-            let _ = deviceRepository.delete(key: key)
+            let _ = deviceRepository.delete(userKey: userKey)
         } catch {
             XCTFail("Failed to persist user info")
         }

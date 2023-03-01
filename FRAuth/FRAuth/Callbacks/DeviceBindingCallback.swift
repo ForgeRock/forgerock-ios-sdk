@@ -159,11 +159,11 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// Helper method to execute binding , signing, show biometric prompt.
     /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
     /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
-    /// - Parameter deviceRepository: Storage for user keys - default value is ``KeychainDeviceRepository()``
+    /// - Parameter deviceRepository: Storage for user keys - default value is ``LocalDeviceBindingRepository()``
     /// - Parameter completion: Completion block for Device binding result callback
     internal func execute(authInterface: DeviceAuthenticator? = nil,
                           deviceId: String? = nil,
-                          deviceRepository: DeviceRepository = KeychainDeviceRepository(),
+                          deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
                           _ completion: @escaping DeviceBindingResultCallback) {
 
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
@@ -180,9 +180,10 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         do {
             let keyPair = try authInterface.generateKeys()
-            let kid = try deviceRepository.persist(userId: userId, userName: userName, key: keyPair.keyAlias, authenticationType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            let userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            try deviceRepository.persist(userKey: userKey)
             // Authentication will be triggered during signing if necessary
-            let jws = try authInterface.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
+            let jws = try authInterface.sign(keyPair: keyPair, kid: userKey.kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
