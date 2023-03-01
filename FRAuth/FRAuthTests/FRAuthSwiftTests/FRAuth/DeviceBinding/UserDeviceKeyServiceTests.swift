@@ -159,11 +159,11 @@ class UserDeviceKeyServiceTests: XCTestCase {
         XCTAssertTrue(userDeviceKeyService.getAll().count == 2)
         
         let userkey = userDeviceKeyService.getAll().first!
-        userDeviceKeyService.delete(userKey: userkey, forceDelete: true)
+        try? userDeviceKeyService.delete(userKey: userkey, forceDelete: true)
         XCTAssertTrue(userDeviceKeyService.getAll().count == 1)
         
         //delete same key
-        userDeviceKeyService.delete(userKey: userkey, forceDelete: true)
+        try? userDeviceKeyService.delete(userKey: userkey, forceDelete: true)
         XCTAssertTrue(userDeviceKeyService.getAll().count == 1)
         
         let _ = deviceRepository.deleteAllKeys()
