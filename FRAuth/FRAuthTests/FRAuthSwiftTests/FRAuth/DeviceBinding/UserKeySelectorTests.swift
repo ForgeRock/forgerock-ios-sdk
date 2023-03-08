@@ -26,19 +26,19 @@ final class UserKeySelectorTests: XCTestCase {
     func testSortedUserKeys() throws {
         
         let userKeys = [
-            UserKey(userId: "test", userName: "test", kid: "kid", authType: .applicationPin, keyAlias: "testKeyAlias", createdAt: 1675748818),
-            UserKey(userId: "test", userName: "test", kid: "kid", authType: .biometricOnly, keyAlias: "testKeyAlias", createdAt: 1575748818),
-            UserKey(userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricOnly, keyAlias: "testKeyAlias", createdAt: 1675749991),
-            UserKey(userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricAllowFallback, keyAlias: "testKeyAlias", createdAt: 1575748818)
+            UserKey(id: "id", userId: "test", userName: "test", kid: "kid", authType: .applicationPin, createdAt: 1675748818),
+            UserKey(id: "id", userId: "test", userName: "test", kid: "kid", authType: .biometricOnly, createdAt: 1575748818),
+            UserKey(id: "id", userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricOnly, createdAt: 1675749991),
+            UserKey(id: "id", userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricAllowFallback, createdAt: 1575748818)
         ]
-        
+
         let sorted = userKeys.sorted()
         
         let expected = [
-            UserKey(userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricAllowFallback, keyAlias: "testKeyAlias", createdAt: 1575748818),
-            UserKey(userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricOnly, keyAlias: "testKeyAlias", createdAt: 1675749991),
-            UserKey(userId: "test", userName: "test", kid: "kid", authType: .biometricOnly, keyAlias: "testKeyAlias", createdAt: 1575748818),
-            UserKey(userId: "test", userName: "test", kid: "kid", authType: .applicationPin, keyAlias: "testKeyAlias", createdAt: 1675748818)
+            UserKey(id: "id", userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricAllowFallback, createdAt: 1575748818),
+            UserKey(id: "id", userId: "spetrov", userName: "spetrov", kid: "kid", authType: .biometricOnly, createdAt: 1675749991),
+            UserKey(id: "id", userId: "test", userName: "test", kid: "kid", authType: .biometricOnly, createdAt: 1575748818),
+            UserKey(id: "id", userId: "test", userName: "test", kid: "kid", authType: .applicationPin, createdAt: 1675748818)
         ]
         
         XCTAssertEqual(sorted, expected)

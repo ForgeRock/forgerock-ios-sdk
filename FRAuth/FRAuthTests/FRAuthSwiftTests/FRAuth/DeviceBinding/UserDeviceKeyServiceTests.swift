@@ -20,22 +20,23 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 1"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
         let _ = deviceRepository.deleteAllKeys()
+        let uuid = UUID().uuidString
+        let userKey = UserKey(id: key, userId: userId, userName: userName, kid: uuid, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
         do {
-            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid.isEmpty)
+            try deviceRepository.persist(userKey: userKey)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         XCTAssertEqual(userDeviceKeyService.getAll().first!.userId, userId)
         
-        let _ = deviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(userKey: userKey)
     }
     
     
@@ -44,16 +45,17 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
+        let uuid = UUID().uuidString
+        let userKey = UserKey(id: key, userId: "Wrong user Id", userName: userName, kid: uuid, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
         do {
-            let uuid = try deviceRepository.persist(userId: "Wrong user Id", userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid.isEmpty)
+            try deviceRepository.persist(userKey: userKey)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: userId)
@@ -64,7 +66,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Wrong Key status")
         }
         
-        let _ = deviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(userKey: userKey)
     }
     
     
@@ -73,16 +75,17 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 3"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
+        let uuid = UUID().uuidString
+        let userKey = UserKey(id: key, userId: userId, userName: userName, kid: uuid, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
         do {
-            let uuid = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid.isEmpty)
+            try deviceRepository.persist(userKey: userKey)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: userId)
@@ -93,7 +96,7 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Wrong Key status")
         }
         
-        let _ = deviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(userKey: userKey)
     }
     
     
@@ -102,18 +105,20 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let userName = "User Name"
         let key = "Test Key 4"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
+        let uuid1 = UUID().uuidString
+        let userKey1 = UserKey(id: key, userId: userId, userName: userName, kid: uuid1, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
+        let uuid2 = UUID().uuidString
+        let userKey2 = UserKey(id: key, userId: userId, userName: userName, kid: uuid2, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
         do {
-            let uuid1 = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid1.isEmpty)
-            let uuid2 = try deviceRepository.persist(userId: userId, userName: userName, key: key, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid2.isEmpty)
+            try deviceRepository.persist(userKey: userKey1)
+            try deviceRepository.persist(userKey: userKey2)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         
         XCTAssertFalse(userDeviceKeyService.getAll().isEmpty)
         let status = userDeviceKeyService.getKeyStatus(userId: nil)
@@ -124,7 +129,8 @@ class UserDeviceKeyServiceTests: XCTestCase {
             XCTFail("Wrong Key status")
         }
         
-        let _ = deviceRepository.delete(key: key)
+        let _ = deviceRepository.delete(userKey: userKey1)
+        let _ = deviceRepository.delete(userKey: userKey2)
     }
     
     
@@ -134,28 +140,30 @@ class UserDeviceKeyServiceTests: XCTestCase {
         let key1 = "Test Key 5.1"
         let key2 = "Test Key 5.2"
         let authenticationType = DeviceBindingAuthenticationType.none
-        let deviceRepository = KeychainDeviceRepository()
+        let deviceRepository = LocalDeviceBindingRepository()
         let _ = deviceRepository.deleteAllKeys()
+        let uuid1 = UUID().uuidString
+        let userKey1 = UserKey(id: key1, userId: userId, userName: userName, kid: uuid1, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
+        let uuid2 = UUID().uuidString
+        let userKey2 = UserKey(id: key2, userId: userId, userName: userName, kid: uuid2, authType: authenticationType, createdAt: Date().timeIntervalSince1970)
         do {
-            let uuid1 = try deviceRepository.persist(userId: userId, userName: userName, key: key1, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid1.isEmpty)
-            let uuid2 = try deviceRepository.persist(userId: userId, userName: userName, key: key2, authenticationType: authenticationType, createdAt: Date().timeIntervalSince1970)
-            XCTAssertFalse(uuid2.isEmpty)
+            try deviceRepository.persist(userKey: userKey1)
+            try deviceRepository.persist(userKey: userKey2)
             
         } catch {
             XCTFail("Failed to persist user info")
         }
         
-        let userDeviceKeyService = UserDeviceKeyService(deviceRepository: deviceRepository)
+        let userDeviceKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
         
         XCTAssertTrue(userDeviceKeyService.getAll().count == 2)
         
         let userkey = userDeviceKeyService.getAll().first!
-        userDeviceKeyService.delete(userKey: userkey)
+        try? userDeviceKeyService.delete(userKey: userkey, forceDelete: true)
         XCTAssertTrue(userDeviceKeyService.getAll().count == 1)
         
         //delete same key
-        userDeviceKeyService.delete(userKey: userkey)
+        try? userDeviceKeyService.delete(userKey: userkey, forceDelete: true)
         XCTAssertTrue(userDeviceKeyService.getAll().count == 1)
         
         let _ = deviceRepository.deleteAllKeys()

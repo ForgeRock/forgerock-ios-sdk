@@ -972,7 +972,13 @@ class UserKeysTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
       if(editingStyle == .delete) {
-          frUserKeys.delete(userKey: self.userKeys[indexPath.row])
+          
+          do {
+              try frUserKeys.delete(userKey: self.userKeys[indexPath.row], forceDelete: false)
+          }
+          catch {
+              self.showErrorAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
+          }
           self.userKeys = frUserKeys.loadAll()
           tableView.reloadData()
        }
@@ -1007,7 +1013,12 @@ class UserKeysTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (alert: UIAlertAction!) in
             for (_, userKey) in self.userKeys.enumerated().reversed()
             {
-                self.frUserKeys.delete(userKey: userKey)
+                do {
+                    try self.frUserKeys.delete(userKey: userKey, forceDelete: false)
+                }
+                catch {
+                    self.showErrorAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
+                }
             }
             self.userKeys = self.frUserKeys.loadAll()
             self.tableView.reloadData()
@@ -1016,5 +1027,12 @@ class UserKeysTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func showErrorAlert(title: String, message: String) {
+        let errorAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
+        errorAlert.addAction(cancelAction)
+        self.present(errorAlert, animated: true, completion: nil)
     }
 }

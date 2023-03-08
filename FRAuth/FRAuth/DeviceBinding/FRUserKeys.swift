@@ -33,7 +33,8 @@ public struct FRUserKeys {
     
     /// Delete the ``UserKey``
     /// - Parameter userKey: the ``UserKey`` to be deleted
-    public func delete(userKey: UserKey) {
-        userKeyService.delete(userKey: userKey)
+    /// - Parameter forceDelete:  Defaults to false, true will delete local keys even if the server key removal has failed
+    public func delete(userKey: UserKey, forceDelete: Bool = false) throws {
+        try userKeyService.delete(userKey: userKey, forceDelete: forceDelete)
     }
 }

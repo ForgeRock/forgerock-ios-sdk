@@ -546,7 +546,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
 
         for callback in node.callbacks {
             if callback is TextOutputCallback, let textOutputCallback = callback as? TextOutputCallback {
-                XCTAssertEqual(textOutputCallback.message, "Unsupported")
+                XCTAssertEqual(textOutputCallback.message, "Abort")
                 break
             }
             else {
