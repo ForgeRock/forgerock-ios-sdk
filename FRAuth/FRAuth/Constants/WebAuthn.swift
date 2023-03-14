@@ -122,4 +122,5 @@ public protocol PlatformAuthenticatorRegistrationDelegate: AnyObject {
 
 public protocol PlatformAuthenticatorAuthenticationDelegate: AnyObject {
     func selectCredential(keyNames: [String], selectionCallback: @escaping WebAuthnCredentialsSelectionCallback)
+    func localKeyExistsAndPasskeysAreAvailable()
 }
