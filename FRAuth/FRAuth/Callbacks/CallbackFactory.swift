@@ -82,7 +82,8 @@ public class CallbackFactory: NSObject {
             CallbackType.IdPCallback.rawValue: IdPCallback.self,
             CallbackType.SelectIdPCallback.rawValue: SelectIdPCallback.self,
             CallbackType.DeviceBindingCallback.rawValue: DeviceBindingCallback.self,
-            CallbackType.DeviceSigningVerifierCallback.rawValue: DeviceSigningVerifierCallback.self
+            CallbackType.DeviceSigningVerifierCallback.rawValue: DeviceSigningVerifierCallback.self,
+            CallbackType.AppIntegrityCallback.rawValue: AppIntegrityCallback.self
         ]
     }
     

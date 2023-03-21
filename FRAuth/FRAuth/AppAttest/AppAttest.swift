@@ -24,17 +24,11 @@ public class AppAttest {
     
     public init () {}
     
-    public func getAppAttestKeyId() -> String? {
-         
-         guard let keyId = keyChainManager?.privateStore.getString(keyName) else {
-            generateAppAttestKey()
-            return nil
-        }
-
-        return keyId
-    }
     
-    public func generateAppAttestKey() {
+    public func generateAppAttestKey(completion: @escaping (String) -> Void) {
+        
+        self.keyChainManager?.privateStore.set(nil, key: self.keyName)
+    
         // The generateKey method returns an ID associated with the key.  The key itself is stored in the Secure Enclave
         dcAppAttestService.generateKey(completionHandler: { keyId, error in
 
@@ -43,18 +37,22 @@ public class AppAttest {
                 return
             }
             
+//            // we check this
+//            self.keyChainManager?.privateStore.getString(self.keyName)
+            
             self.keyChainManager?.privateStore.set(attestKeyId, key: self.keyName)
             
-            self.certifyAppAttestKey()
-
+            completion(attestKeyId)
+            
         })
     }
     
     public func verifyAssertion(challenge: String = "1234") {
         
-        guard let keyId = getAppAttestKeyId() else {
-            return
+        guard let keyId = keyChainManager?.privateStore.getString(keyName) else {
+                return
         }
+        
         
         let clientData = Data(SHA256.hash(data: challenge.data(using: .utf8)!))
         //let clientDataHash = Data(SHA256.hash(data: clientData))
@@ -65,7 +63,7 @@ public class AppAttest {
                 return
             }
             // create assertion request
-            var urlRequest = URLRequest(url: URL(string: "http://192.168.1.93:8080/users/verify")!)
+            var urlRequest = URLRequest(url: URL(string: "http://192.168.1.93:8090/users/verify4J")!)
             urlRequest.httpMethod = "POST"
             urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
             let clientDataString = clientData.base64EncodedString()
@@ -96,10 +94,9 @@ public class AppAttest {
     
     // may be this challenge comes from server
     public func certifyAppAttestKey(challenge: String = "1234") {
-        guard let keyId = getAppAttestKeyId() else {
-            return
-        }
-
+        
+        generateAppAttestKey(completion: { keyId in
+            
        // let keyId = "nydIR7caes6XY+pcDV1v2/3jNKw8Zq/ygMjOTN+WRBQ="
         
         let hashValue = Data(SHA256.hash(data: challenge.data(using: .utf8)!))
@@ -108,7 +105,7 @@ public class AppAttest {
 //        let hashValue = Data(SHA256.hash(data: requestJSON))
         
         // This method contacts Apple's server to retrieve an attestation object for the given hash value
-        dcAppAttestService.attestKey(keyId, clientDataHash: hashValue) { attestation, error in
+            self.dcAppAttestService.attestKey(keyId, clientDataHash: hashValue) { attestation, error in
             guard error == nil else {
                 print(error?.localizedDescription ?? "")
                 return
@@ -132,7 +129,7 @@ public class AppAttest {
             
 
             // send to application server to complete attestation
-            let url = URL(string: "http://192.168.1.93:8080/users/attest")!
+            let url = URL(string: "http://192.168.1.93:8090/users/attest4J")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -150,7 +147,7 @@ public class AppAttest {
             }
             task.resume()
         }
+        })
     }
-    
 }
 

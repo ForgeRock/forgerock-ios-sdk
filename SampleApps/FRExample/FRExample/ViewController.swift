@@ -151,7 +151,9 @@ class ViewController: UIViewController {
             "FRSession.authenticate without UI (Token)",
             "Display Configurations",
             "Revoke Access Token",
-            "App Attest"
+            "App Attest + Receipt Validation",
+            "App Verification",
+            "Device Identification"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -320,6 +322,22 @@ class ViewController: UIViewController {
                                 handleNode(node)
                             }
                         }
+                        return
+                    }
+                    else if callback.type == "AppIntegrityCallback", let appIntegrityCallback = callback as? AppIntegrityCallback {
+                        appIntegrityCallback.validate(completion: { result in
+                            DispatchQueue.main.async {
+                                var signingResult = ""
+                                switch result {
+                                case .success:
+                                    signingResult = "Success"
+                                case .failure:
+                                    signingResult = "Failure"
+                                }
+                                self.displayLog("AppIntegrityCallback \n\(signingResult)")
+                                handleNode(node)
+                            }
+                        })
                         return
                     }
                     else {
@@ -633,6 +651,7 @@ class ViewController: UIViewController {
     }
     
     func revokeAccessToken() {
+        
         FRUser.currentUser?.revokeAccessToken(completion: { (user, error) in
             if let tokenError = error {
                 self.displayLog(tokenError.localizedDescription)
@@ -841,6 +860,16 @@ class ViewController: UIViewController {
                 let appAttest = AppAttest()
                 appAttest.certifyAppAttestKey()
             }
+            break
+        case 20:
+            if #available(iOS 14.0, *) {
+                let appAttest = AppAttest()
+                appAttest.verifyAssertion()
+            }
+            break
+        case 21:
+            let deviceCheck = DeviceCheck()
+            deviceCheck.loginWithDeviceCheck(twobits: false)
             break
         default:
             break

@@ -50,6 +50,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3A3DC00129C4E56400714D97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A3DBFFB29C4E56400714D97 /* FRExample-App.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A3DBFCE29C4E54500714D97;
+			remoteInfo = "FRExample-App";
+		};
+		3A3DC00329C4E56400714D97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A3DBFFB29C4E56400714D97 /* FRExample-App.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A3DBFDE29C4E54600714D97;
+			remoteInfo = "FRExample-AppTests";
+		};
+		3A3DC00529C4E56400714D97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A3DBFFB29C4E56400714D97 /* FRExample-App.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A3DBFE829C4E54600714D97;
+			remoteInfo = "FRExample-AppUITests";
+		};
 		D58BC3D226031BE500254654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */;
@@ -214,6 +235,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A3DBFFB29C4E56400714D97 /* FRExample-App.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "FRExample-App.xcodeproj"; path = "../FRExample-App/FRExample-App.xcodeproj"; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530424326321BF00079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +295,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A3DBFFC29C4E56400714D97 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3A3DC00229C4E56400714D97 /* FRExample-App.app */,
+				3A3DC00429C4E56400714D97 /* FRExample-AppTests.xctest */,
+				3A3DC00629C4E56400714D97 /* FRExample-AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D545BAB0233AC3CE00B0EB6D /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +317,7 @@
 		D554632322A6EF950096C7A4 = {
 			isa = PBXGroup;
 			children = (
+				3A3DBFFB29C4E56400714D97 /* FRExample-App.xcodeproj */,
 				D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */,
 				D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */,
 				D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */,
@@ -507,6 +540,10 @@
 					ProjectRef = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
 				},
 				{
+					ProductGroup = 3A3DBFFC29C4E56400714D97 /* Products */;
+					ProjectRef = 3A3DBFFB29C4E56400714D97 /* FRExample-App.xcodeproj */;
+				},
+				{
 					ProductGroup = D58BC3D926031BF100254654 /* Products */;
 					ProjectRef = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
 				},
@@ -532,6 +569,27 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		3A3DC00229C4E56400714D97 /* FRExample-App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "FRExample-App.app";
+			remoteRef = 3A3DC00129C4E56400714D97 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3A3DC00429C4E56400714D97 /* FRExample-AppTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "FRExample-AppTests.xctest";
+			remoteRef = 3A3DC00329C4E56400714D97 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3A3DC00629C4E56400714D97 /* FRExample-AppUITests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "FRExample-AppUITests.xctest";
+			remoteRef = 3A3DC00529C4E56400714D97 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
