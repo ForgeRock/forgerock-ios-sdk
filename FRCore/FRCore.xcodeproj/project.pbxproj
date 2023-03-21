@@ -889,7 +889,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.0.0-beta4";
+				MARKETING_VERSION = "4.0.0-beta5";
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRCore/SharedC/FRCore.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
@@ -923,7 +923,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.0.0-beta4";
+				MARKETING_VERSION = "4.0.0-beta5";
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRCore/SharedC/FRCore.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;

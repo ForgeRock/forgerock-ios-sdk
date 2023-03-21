@@ -6,6 +6,7 @@
 - Exposed interface for assigning device name during the WebAuthn registration process [SDKS-2297]
 - Added support for combined MFA in the Authenticator SDK [SDKS-2166]
 - Added support for policy enforcement in the Authenticator SDK [SDKS-2166]
+- Added support for passkeys [SDKS-2140]
 
 ## [3.4.1]
 #### Changed
