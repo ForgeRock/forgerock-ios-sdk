@@ -2,7 +2,7 @@
 //  Notification.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -361,6 +361,11 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         
         if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: self.mechanismUUID) as? PushMechanism {
             
+            if let account = FRAClient.storage.getAccount(accountIdentifier: mechanism.accountIdentifier), let policyName = account.lockingPolicy, account.lock {
+                FRALog.e("Unable to process the Push Authentication request: Account is locked.")
+                onError(AccountError.accountLocked(policyName))
+                return
+            }
             
             do {
                 let request = try buildPushAuthenticationRequest(challengeResponse: challengeResponse, approved: approved, mechanism: mechanism)

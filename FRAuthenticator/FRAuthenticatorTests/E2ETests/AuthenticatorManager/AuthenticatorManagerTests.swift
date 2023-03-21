@@ -173,209 +173,6 @@ class AuthenticatorManagerTests: FRABaseTests {
     }
     
     
-    func test_06_1_account_auto_lock_operation_policy_pass() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, false)
-        }
-        catch {
-            XCTFail("Account auto lock operation failed: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func test_06_2_account_auto_lock_operation_policy_fail() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-            
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, true)
-        }
-        catch {
-            XCTFail("Account auto lock operation failed: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func test_06_3_account_unlock_operation() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, true)
-            
-            try authenticatorManager.unlockAccount(account: accountFromManager!)
-            XCTAssertEqual(accountFromManager?.lock, false)
-            XCTAssertNil(accountFromManager?.lockingPolicy)
-        }
-        catch {
-            XCTFail("Account unlock operation failed: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func test_06_4_account_lock_operation() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, false)
-            
-            try authenticatorManager.lockAccount(account: accountFromManager!, policy: DummyPolicy())
-            XCTAssertEqual(accountFromManager?.lock, true)
-            XCTAssertNotNil(accountFromManager?.lockingPolicy)
-        }
-        catch {
-            XCTFail("Account lock operation failed: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func test_06_5_account_lock_operation_fail_already_locked() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, true)
-            
-            XCTAssertThrowsError(try authenticatorManager.lockAccount(account: accountFromManager!, policy: DummyWithDataPolicy())) { error in
-                guard case AccountError.failToLockAccountAlreadyLocked = error else {
-                    return XCTFail()
-                }
-            }
-            
-        }
-        catch {
-            XCTFail("AuthenticatorManager.lockAccount() failed with unexpected reason: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func test_06_6_account_lock_operation_fail_invalid_policy() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, false)
-            
-            XCTAssertThrowsError(try authenticatorManager.lockAccount(account: accountFromManager!, policy: DummyWithDataPolicy())) { error in
-                guard case AccountError.failToLockInvalidPolicy = error else {
-                    return XCTFail()
-                }
-            }
-        }
-        catch {
-            XCTFail("AuthenticatorManager.lockAccount() failed with unexpected reason: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func test_06_7_account_unlock_operation_fail() {
-        do {
-            //  Given
-            let storageClient = KeychainServiceClient()
-            let policyEvaluator = FRAPolicyEvaluator()
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
-            
-            //  When
-            try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
-            
-            //  Then
-            XCTAssertNotNil(accountFromManager)
-            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
-            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
-            XCTAssertEqual(accountFromManager?.lock, false)
-            
-            XCTAssertThrowsError(try authenticatorManager.unlockAccount(account: accountFromManager!)) { error in
-                guard case AccountError.failToUnlockAccountNotLocked = error else {
-                    return XCTFail()
-                }
-            }
-        }
-        catch {
-            XCTFail("Account unlock operation failed: \(error.localizedDescription)")
-        }
-    }
-    
-    
     //  MARK: - storeOathQRCode - Push (Invalid)
     
     func test_07_store_invalid_oath_qrcode() {
@@ -891,131 +688,6 @@ class AuthenticatorManagerTests: FRABaseTests {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
-    func test_25_1_create_mechanism_from_uri_push_oath_success() {
-        
-        self.loadMockResponses(["AM_Push_Registration_Successful"])
-        // Set DeviceToken before PushMechnaism registration
-        let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
-        guard let deviceToken = deviceTokenStr.decodeBase64() else {
-            XCTFail("Failed to parse device token data")
-            return
-        }
-        FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
-        
-        // Given
-        let storageClient = DummyStorageClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let qrCode = URL(string: "mfauth://totp/forgerock:pushreg3?" +
-                         "a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&" +
-                         "b=519387&" +
-                         "r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&" + "s=5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg&c=KP0XQfZ21N_jsXP_xfVQMmsmoUiWvdDPWecHdb5_INQ&" +
-                         "l=YW1sYmNvb2tpZT0wMQ&" +
-                         "m=REGISTER:a8970dea-3257-4be1-a37a-23eed2b692131588282723889" +
-                         "digits=6&" +
-                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
-                         "period=30&")!
-        
-        let ex = self.expectation(description: "Register PushMechanism")
-        authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in
-            XCTAssertNotNil(mechanism)
-            let accountFromStorage = authenticatorManager.getAccount(identifier: "forgerock-pushreg3")
-            XCTAssertNotNil(accountFromStorage)
-            XCTAssertEqual(authenticatorManager.getAllAccounts().count, 1)
-            XCTAssertEqual(accountFromStorage?.mechanisms.count, 2)
-            ex.fulfill()
-        }) { (error) in
-            XCTFail("authenticatorManager.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-    }
-    
-    func test_25_2_create_mechanism_from_uri_policy_evaluation_failure() {
-        
-        let policyEvaluator = FRAPolicyEvaluator()
-        do {
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
-            XCTAssertEqual(policyEvaluator.policies?.count, 2)
-        } catch {
-            XCTFail("AuthenticatorManager.createMechanismFromUri failed: \(error.localizedDescription)")
-        }
-        
-        // Given
-        let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
-                         "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
-                         "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
-                         "b=ff00ff&" +
-                         "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
-                         "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
-                         "c=Daf8vrc8onKu-dcptwCRS9UHmdui5u16vAdG2HMU4w0&" +
-                         "l=YW1sYmNvb2tpZT0wMQ==&" +
-                         "m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&" +
-                         "policies=eyJkdW1teSI6IHsgfSwgImR1bW15V2l0aERhdGEiOiB7ICJyZXN1bHQiIDogZmFsc2UgfX0=&" +
-                         "digits=6&" +
-                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
-                         "period=30&")!
-        let authenticatorManager = AuthenticatorManager(storageClient: FRAClient.storage, policyEvaluator: policyEvaluator)
-        
-        let ex = self.expectation(description: "AuthenticatorManager.createMechanismFromUri")
-        authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in
-            XCTFail("AuthenticatorManager.createMechanismFromUri was expected to fail; but somehow passed")
-            ex.fulfill()
-        }) { (error) in
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-    }
-    
-    func test_25_3_create_mechanism_from_uri_policy_evaluation_success() {
-        
-        self.loadMockResponses(["AM_Push_Registration_Successful"])
-        // Set DeviceToken before PushMechnaism registration
-        let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
-        guard let deviceToken = deviceTokenStr.decodeBase64() else {
-            XCTFail("Failed to parse device token data")
-            return
-        }
-        FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
-        
-        // Given
-        let storageClient = DummyStorageClient()
-        let policyEvaluator = FRAPolicyEvaluator()
-        
-        do {
-            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
-        } catch {
-            XCTFail("AuthenticatorManager.createMechanismFromUri failed: \(error.localizedDescription)")
-        }
-        
-        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
-        let qrCode = URL(string: "mfauth://totp/forgerock:pushreg3?" +
-                         "a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&" +
-                         "b=519387&" +
-                         "r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&" +
-                         "s=5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg&" +
-                         "c=KP0XQfZ21N_jsXP_xfVQMmsmoUiWvdDPWecHdb5_INQ&" +
-                         "l=YW1sYmNvb2tpZT0wMQ&" +
-                         "m=REGISTER:a8970dea-3257-4be1-a37a-23eed2b692131588282723889&" +
-                         "policies=eyJkdW1teSI6IHsgfX0=&" +
-                         "digits=6&" +
-                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
-                         "period=30&")!
-        
-        let ex = self.expectation(description: "Register PushMechanism")
-        authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in
-            XCTAssertNotNil(mechanism)
-            let accountFromStorage = authenticatorManager.getAccount(identifier: "forgerock-pushreg3")
-            XCTAssertNotNil(accountFromStorage)
-            XCTAssertEqual(authenticatorManager.getAllAccounts().count, 1)
-            XCTAssertEqual(accountFromStorage?.mechanisms.count, 2)
-            ex.fulfill()
-        }) { (error) in
-            XCTFail("authenticatorManager.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-    }
     
     //  MARK: - removeMechanism
     
@@ -1820,5 +1492,455 @@ class AuthenticatorManagerTests: FRABaseTests {
         XCTAssertEqual(notifications[0].messageId, "AUTHENTICATE:64e909a2-84db-4ee8-b244-f0dbbeb8b0ff1589151035455")
         XCTAssertEqual(notifications[1].messageId, "AUTHENTICATE:0666696b-859d-4565-b069-f13c800c5e3c1589151071515")
         XCTAssertEqual(notifications[2].messageId, "AUTHENTICATE:929d72b7-c3e6-4460-a7b6-8e1c950b43361589151096771")
+    }
+
+
+    //  MARK: - Authenticator Policies
+
+    func test_33_account_auto_lock_operation_policy_pass() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, false)
+        }
+        catch {
+            XCTFail("Account auto lock operation failed: \(error.localizedDescription)")
+        }
+    }
+
+
+    func test_34_account_auto_lock_operation_policy_fail() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, true)
+        }
+        catch {
+            XCTFail("Account auto lock operation failed: \(error.localizedDescription)")
+        }
+    }
+
+
+    func test_35_account_unlock_operation() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, true)
+            
+            try authenticatorManager.unlockAccount(account: accountFromManager!)
+            XCTAssertEqual(accountFromManager?.lock, false)
+            XCTAssertNil(accountFromManager?.lockingPolicy)
+        }
+        catch {
+            XCTFail("Account unlock operation failed: \(error.localizedDescription)")
+        }
+    }
+
+
+    func test_36_account_lock_operation() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, false)
+            
+            try authenticatorManager.lockAccount(account: accountFromManager!, policy: DummyPolicy())
+            XCTAssertEqual(accountFromManager?.lock, true)
+            XCTAssertNotNil(accountFromManager?.lockingPolicy)
+        }
+        catch {
+            XCTFail("Account lock operation failed: \(error.localizedDescription)")
+        }
+    }
+
+
+    func test_37_account_lock_operation_fail_already_locked() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, true)
+            
+            XCTAssertThrowsError(try authenticatorManager.lockAccount(account: accountFromManager!, policy: DummyWithDataPolicy())) { error in
+                guard case AccountError.failToLockAccountAlreadyLocked = error else {
+                    return XCTFail()
+                }
+            }
+            
+        }
+        catch {
+            XCTFail("AuthenticatorManager.lockAccount() failed with unexpected reason: \(error.localizedDescription)")
+        }
+    }
+
+
+    func test_38_account_lock_operation_fail_invalid_policy() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, false)
+            
+            XCTAssertThrowsError(try authenticatorManager.lockAccount(account: accountFromManager!, policy: DummyWithDataPolicy())) { error in
+                guard case AccountError.failToLockInvalidPolicy = error else {
+                    return XCTFail()
+                }
+            }
+        }
+        catch {
+            XCTFail("AuthenticatorManager.lockAccount() failed with unexpected reason: \(error.localizedDescription)")
+        }
+    }
+
+
+    func test_39_account_unlock_operation_fail() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }}", lockingPolicy: nil, lock: false)!
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, false)
+            
+            XCTAssertThrowsError(try authenticatorManager.unlockAccount(account: accountFromManager!)) { error in
+                guard case AccountError.failToUnlockAccountNotLocked = error else {
+                    return XCTFail()
+                }
+            }
+        }
+        catch {
+            XCTFail("Account unlock operation failed: \(error.localizedDescription)")
+        }
+    }
+
+    func test_40_create_mechanism_from_uri_push_oath_success() {
+        
+        self.loadMockResponses(["AM_Push_Registration_Successful"])
+        // Set DeviceToken before PushMechnaism registration
+        let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
+        guard let deviceToken = deviceTokenStr.decodeBase64() else {
+            XCTFail("Failed to parse device token data")
+            return
+        }
+        FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        
+        // Given
+        let storageClient = DummyStorageClient()
+        let policyEvaluator = FRAPolicyEvaluator()
+        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+        let qrCode = URL(string: "mfauth://totp/forgerock:pushreg3?" +
+                         "a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&" +
+                         "b=519387&" +
+                         "r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&" + "s=5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg&c=KP0XQfZ21N_jsXP_xfVQMmsmoUiWvdDPWecHdb5_INQ&" +
+                         "l=YW1sYmNvb2tpZT0wMQ&" +
+                         "m=REGISTER:a8970dea-3257-4be1-a37a-23eed2b692131588282723889" +
+                         "digits=6&" +
+                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                         "period=30&")!
+        
+        let ex = self.expectation(description: "Register PushMechanism")
+        authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in
+            XCTAssertNotNil(mechanism)
+            let accountFromStorage = authenticatorManager.getAccount(identifier: "forgerock-pushreg3")
+            XCTAssertNotNil(accountFromStorage)
+            XCTAssertEqual(authenticatorManager.getAllAccounts().count, 1)
+            XCTAssertEqual(accountFromStorage?.mechanisms.count, 2)
+            ex.fulfill()
+        }) { (error) in
+            XCTFail("authenticatorManager.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+
+    func test_41_create_mechanism_from_uri_policy_evaluation_failure() {
+        
+        let policyEvaluator = FRAPolicyEvaluator()
+        do {
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            XCTAssertEqual(policyEvaluator.policies?.count, 2)
+        } catch {
+            XCTFail("AuthenticatorManager.createMechanismFromUri failed: \(error.localizedDescription)")
+        }
+        
+        // Given
+        let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
+                         "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
+                         "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
+                         "b=ff00ff&" +
+                         "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
+                         "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
+                         "c=Daf8vrc8onKu-dcptwCRS9UHmdui5u16vAdG2HMU4w0&" +
+                         "l=YW1sYmNvb2tpZT0wMQ==&" +
+                         "m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&" +
+                         "policies=eyJkdW1teSI6IHsgfSwgImR1bW15V2l0aERhdGEiOiB7ICJyZXN1bHQiIDogZmFsc2UgfX0=&" +
+                         "digits=6&" +
+                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                         "period=30&")!
+        let authenticatorManager = AuthenticatorManager(storageClient: FRAClient.storage, policyEvaluator: policyEvaluator)
+        
+        let ex = self.expectation(description: "AuthenticatorManager.createMechanismFromUri")
+        authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in
+            XCTFail("AuthenticatorManager.createMechanismFromUri was expected to fail; but somehow passed")
+            ex.fulfill()
+        }) { (error) in
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+
+    func test_42_create_mechanism_from_uri_policy_evaluation_success() {
+        
+        self.loadMockResponses(["AM_Push_Registration_Successful"])
+        // Set DeviceToken before PushMechnaism registration
+        let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
+        guard let deviceToken = deviceTokenStr.decodeBase64() else {
+            XCTFail("Failed to parse device token data")
+            return
+        }
+        FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        
+        // Given
+        let storageClient = DummyStorageClient()
+        let policyEvaluator = FRAPolicyEvaluator()
+        
+        do {
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy()])
+        } catch {
+            XCTFail("AuthenticatorManager.createMechanismFromUri failed: \(error.localizedDescription)")
+        }
+        
+        let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+        let qrCode = URL(string: "mfauth://totp/forgerock:pushreg3?" +
+                         "a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&" +
+                         "b=519387&" +
+                         "r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&" +
+                         "s=5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg&" +
+                         "c=KP0XQfZ21N_jsXP_xfVQMmsmoUiWvdDPWecHdb5_INQ&" +
+                         "l=YW1sYmNvb2tpZT0wMQ&" +
+                         "m=REGISTER:a8970dea-3257-4be1-a37a-23eed2b692131588282723889&" +
+                         "policies=eyJkdW1teSI6IHsgfX0=&" +
+                         "digits=6&" +
+                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                         "period=30&")!
+        
+        let ex = self.expectation(description: "Register PushMechanism")
+        authenticatorManager.createMechanismFromUri(uri: qrCode, onSuccess: { (mechanism) in
+            XCTAssertNotNil(mechanism)
+            let accountFromStorage = authenticatorManager.getAccount(identifier: "forgerock-pushreg3")
+            XCTAssertNotNil(accountFromStorage)
+            XCTAssertEqual(authenticatorManager.getAllAccounts().count, 1)
+            XCTAssertEqual(accountFromStorage?.mechanisms.count, 2)
+            ex.fulfill()
+        }) { (error) in
+            XCTFail("authenticatorManager.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+
+    
+    func test_43_generate_hotp_fail_account_locked() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            let mechanism = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", counter: 0)
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, true)
+            
+            XCTAssertThrowsError(try mechanism.generateCode()) { error in
+                guard case AccountError.accountLocked(let policy) = error else {
+                    return XCTFail()
+                }
+                XCTAssertNotNil(policy)
+            }
+        }
+        catch {
+            XCTFail("AuthenticatorManager.lockAccount() failed with unexpected reason: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_44_generate_totp_fail_account_locked() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            let mechanism = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", period: 30)
+            
+            //  When
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            //  Then
+            XCTAssertNotNil(accountFromManager)
+            XCTAssertEqual(accountFromManager?.issuer, account.issuer)
+            XCTAssertEqual(accountFromManager?.accountName, account.accountName)
+            XCTAssertEqual(accountFromManager?.lock, true)
+            
+            XCTAssertThrowsError(try mechanism.generateCode()) { error in
+                guard case AccountError.accountLocked(let policy) = error else {
+                    return XCTFail()
+                }
+                XCTAssertNotNil(policy)
+            }
+        }
+        catch {
+            XCTFail("AuthenticatorManager.lockAccount() failed with unexpected reason: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_45_push_auth_fail_account_locked() {
+        do {
+            //  Given
+            let storageClient = KeychainServiceClient()
+            let policyEvaluator = FRAPolicyEvaluator()
+            try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
+            let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
+            let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
+            try authenticatorManager.storeAccount(account: account)
+            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            
+            self.loadMockResponses(["AM_Push_Authentication_Successful"])
+            
+            let qrCode = URL(string: "pushauth://push/Forgerock:demo?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=O9JHEGfOsaZqc5JT0DHM5hYFA8jofohw5vAP0EpG4JU&c=75OQ3FXmzV99TPf0ihevFfB0s43XsxQ747sY6BopgME&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:fe6311ab-013e-4599-9c0e-4c4e2525199b1588721418483")!
+        
+            let parser = try PushQRCodeParser(url: qrCode)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+            storageClient.setMechanism(mechanism: mechanism)
+            
+            // When
+            let messageId = "AUTHENTICATE:8af40ee6-8fa0-4bdd-949c-1dd29d5e55931588721432364"
+            var notificationPayload: [String: String] = [:]
+            notificationPayload["c"] = "6ggPLysKJ6wSwBsQFtPclHQKebpOTMNwHP53kZxIGE4="
+            notificationPayload["t"] = "120"
+            notificationPayload["u"] = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+            notificationPayload["l"] = "YW1sYmNvb2tpZT0wMQ=="
+            
+            // Then
+            let ex = self.expectation(description: "PushNotification Authentication: accept")
+            let notification = try PushNotification(messageId: messageId, payload: notificationPayload)
+            notification.accept(onSuccess: {
+                XCTFail("Push authentication is expected failed due account locked, but somehow passed")
+                ex.fulfill()
+            }) { (error) in
+                switch error {
+                case AccountError.accountLocked(let policy):
+                    XCTAssertNotNil(policy)
+                    break
+                default:
+                XCTFail("Push authentication is expected to failed with AccountError.accountLocked, but failed with different reason: \(error.localizedDescription)")
+                    break
+                }
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Push authentication failed to prepare auth request")
+        }
     }
 }
