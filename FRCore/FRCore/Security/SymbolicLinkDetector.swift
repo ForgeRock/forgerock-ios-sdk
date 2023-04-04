@@ -1,8 +1,8 @@
 //
 //  SymbolicLinkDetector.swift
-//  FRAuth
+//  FRCore
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,7 +22,7 @@ public class SymbolicLinkDetector: JailbreakDetector {
     ///
     /// - Returns: returns 1.0 when "/Applications", "/Library/Ringtones", "/Library/Wallpaper" directory is found as a symbolic link; otherwise returns 0.0
     public func analyze() -> Double {
-        FRLog.v("\(self) analyzing")
+        Log.v("\(self) analyzing")
         let urls: [String] = ["/Applications", "/Library/Ringtones", "/Library/Wallpaper"]
         
         for urlString in urls {
@@ -30,7 +30,7 @@ public class SymbolicLinkDetector: JailbreakDetector {
             if let ok = try? url.checkResourceIsReachable(), ok {
                 let vals = try? url.resourceValues(forKeys: [.isSymbolicLinkKey])
                 if let vals = vals, let islink = vals.isSymbolicLink, islink {
-                    FRLog.w("Security Warning: \(self) is returning 1.0")
+                    Log.w("Security Warning: \(self) is returning 1.0")
                     return 1.0
                 }
             }

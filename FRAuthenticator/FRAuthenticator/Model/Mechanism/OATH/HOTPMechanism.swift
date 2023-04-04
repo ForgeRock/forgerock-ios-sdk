@@ -2,7 +2,7 @@
 //  HOTPMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -98,9 +98,14 @@ public class HOTPMechanism: OathMechanism {
     //  MARK: - Oath Code
         
     /// Generates OathTokenCode object based on current counter, and given secret for Mechanism
-    /// - Throws: CryptoError, MechanismError
+    /// - Throws: AccountError, CryptoError, MechanismError
     /// - Returns: OathTokenCode which represents Oath code for HOTP
     public func generateCode() throws -> OathTokenCode {
+        
+        if let account = FRAClient.storage.getAccount(accountIdentifier: self.accountIdentifier), let policyName = account.lockingPolicy, account.lock {
+            FRALog.e("Error generating next OTP code: Account is locked.")
+            throw AccountError.accountLocked(policyName)
+        }
         
         let startTimeInSeconds = Date().timeIntervalSince1970
         let currentCode = try OathCodeGenerator.generateOTP(secret: self.secret.base64Pad(), algorithm: self.algorithm, counter: UInt64(self.counter), digits: self.digits)

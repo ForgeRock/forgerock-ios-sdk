@@ -111,6 +111,8 @@ extension WebAuthnCallbackTableViewCell: PlatformAuthenticatorRegistrationDelega
 
 
 extension WebAuthnCallbackTableViewCell: PlatformAuthenticatorAuthenticationDelegate {
+    func localKeyExistsAndPasskeysAreAvailable() { }
+    
     func selectCredential(keyNames: [String], selectionCallback: @escaping WebAuthnCredentialsSelectionCallback) {
         
         let actionSheet = UIAlertController(title: "Select Credentials", message: nil, preferredStyle: .actionSheet)

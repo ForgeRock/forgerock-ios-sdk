@@ -2,7 +2,7 @@
 //  URLUtilTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -56,4 +56,37 @@ class URLUtilTests: FRABaseTests {
         let authType = url.getAuthType()
         XCTAssertEqual(authType, .unknown)
     }
+    
+    func test_06_otpauth_url_test() {
+        // Given
+        let url = URL(string: "otpauth://hotp/Forgerock:demo")!
+        // Then
+        let uriType = url.getURIType()
+        XCTAssertEqual(uriType, .otpauth)
+    }
+    
+    func test_07_pushauth_url_test() {
+        // Given
+        let url = URL(string: "pushauth://hotp/Forgerock:demo")!
+        // Then
+        let uriType = url.getURIType()
+        XCTAssertEqual(uriType, .pushauth)
+    }
+    
+    func test_08_mfauth_url_test() {
+        // Given
+        let url = URL(string: "mfauth://hotp/Forgerock:demo")!
+        // Then
+        let uriType = url.getURIType()
+        XCTAssertEqual(uriType, .mfauth)
+    }
+    
+    func test_09_non_valid_scheme_url_test() {
+        // Given
+        let url = URL(string: "someauth:/hotp/Forgerock:demo")!
+        // Then
+        let uriType = url.getURIType()
+        XCTAssertEqual(uriType, .unknown)
+    }
+
 }

@@ -2,7 +2,7 @@
 //  SecuredKey.swift
 //  FRCore
 //
-//  Copyright (c) 2020 - 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,7 +22,7 @@ public struct SecuredKey {
     /// Public Key of SecuredKey
     fileprivate var publicKey: SecKey
     /// Algorithm to be used for encryption/decryption using SecuredKey
-    fileprivate let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
+    fileprivate let oldAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
     
     /// Validates whether SecuredKey using Secure Enclave is available on the device or not
     public static func isAvailable() -> Bool {
@@ -161,15 +161,15 @@ public struct SecuredKey {
     
     /// Encrypts Data object using SecuredKey object
     /// - Parameter data: Encrypted Data object
-    public func encrypt(data: Data) -> Data? {
+    public func encrypt(data: Data, secAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorVariableIVX963SHA256AESGCM) -> Data? {
         
-        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, algorithm) else {
-            Log.e("\(algorithm) is not supported on the device.")
+        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, secAlgorithm) else {
+            Log.e("\(secAlgorithm) is not supported on the device.")
             return nil
         }
         
         var error: Unmanaged<CFError>?
-        let encryptedData = SecKeyCreateEncryptedData(publicKey, algorithm, data as CFData, &error) as Data?
+        let encryptedData = SecKeyCreateEncryptedData(publicKey, secAlgorithm, data as CFData, &error) as Data?
         if let error = error {
             Log.e("Failed to encrypt data: \(error)")
         }
@@ -180,17 +180,25 @@ public struct SecuredKey {
     
     /// Decrypts Data object using SecuredKey object
     /// - Parameter data: Decrypted Data object
-    public func decrypt(data: Data) -> Data? {
+    public func decrypt(data: Data, secAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorVariableIVX963SHA256AESGCM) -> Data? {
         
-        guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, algorithm) else {
-            Log.e("\(algorithm) is not supported on the device.")
+        guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, secAlgorithm) else {
+            Log.e("\(secAlgorithm) is not supported on the device.")
             return nil
         }
         
         var error: Unmanaged<CFError>?
-        let decryptedData = SecKeyCreateDecryptedData(privateKey, algorithm, data as CFData, &error) as Data?
+        let decryptedData = SecKeyCreateDecryptedData(privateKey, secAlgorithm, data as CFData, &error) as Data?
         if let error = error {
-            Log.e("Failed to decrypt data: \(error)")
+            Log.e("Failed to decrypt data -  attempting Legacy Algorithm: \(error)")
+            var decryptError: Unmanaged<CFError>?
+            let decryptedData = SecKeyCreateDecryptedData(privateKey, oldAlgorithm, data as CFData, &decryptError) as Data?
+            if let decryptError = decryptError {
+                Log.e("Failed to decrypt data: \(decryptError)")
+            } else {
+                return decryptedData
+            }
+            
         }
         return decryptedData
     }

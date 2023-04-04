@@ -2,7 +2,7 @@
 //  WebAuthnRegistrationCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -10,6 +10,7 @@
 
 
 import Foundation
+import UIKit
 
 /**
  WebAuthnRegistrationCallback is a representation of AM's WebAuthn Registration Node to generate WebAuthn attestation based on given credentials, and optionally set the WebAuthn outcome value in `Node`'s designated `HiddenValueCallback`
@@ -57,6 +58,11 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     /// Boolean indicator whether or not Callback response is AM 7.1.0 or above
     var isNewJSONFormat: Bool = false
     var pubCredAlg: [COSEAlgorithmIdentifier] = []
+    var platformAuthenticator: PlatformAuthenticator?
+    
+    var successCallback: StringCompletionCallback?
+    var errorCallback: ErrorCallback?
+    var webAuthnManager: Any?
     
     //  MARK: - Lifecycle
     
@@ -281,95 +287,121 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
     /// Registers against AM's `WebAuthn Registration Node` based on the JSON callback and WebAuthn's properties within the Callback
     /// - Parameters:
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
+    ///   - window: Optional `Window` set the presenting Window for the Apple Passkeys UI. If not set it will default to `UIApplication.shared.windows.first`
+    ///   - deviceName: Optional `Device Name` object to set Device Name value to the designated `HiddenValueCallback`
+    ///   - usePasskeysIfAvailable: Optional `usePasskeysIfAvailable` set this to enable Passkeys in supported devices (iOS 16+). Setting this to true will not affect older OSs
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func register(node: Node? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
-        
-        if self.isNewJSONFormat {
-            FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)
-        }
-        else {
-            FRLog.i("Performing WebAuthn registration for AM 7.0.0 or below", subModule: WebAuthn.module)
-        }
-        
-        //  Platform Authenticator
-        let platformAuthenticator = PlatformAuthenticator(registrationDelegate: self)
-        //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
-        var origin = CBConstants.originScheme + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
-        //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
-        if self.isNewJSONFormat {
-            origin = CBConstants.originPrefix + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
-        }
-        let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)
-        self.webAuthnClient = webAuthnClient
-        
-        //  Default UserVerification set to preferred
-        let userVerification = self.userVerification.convert()
-        
-        //  PublicKey credential creation options
-        var options = PublicKeyCredentialCreationOptions()
-        //  Challenge
-        options.challenge = Bytes.fromString(self.challenge.urlSafeEncoding())
-        //  User
-        options.user.id = Bytes.fromString(self.userId)
-        options.user.name = self.userName
-        options.user.displayName = self.displayName
-        //  Relying Party
-        options.rp.id = self.relyingPartyId
-        options.rp.name = self.relyingPartyName
-        //  Timeout
-        options.timeout = UInt64(self.timeout/1000)
-        
-        //  Default attestation to none
-        options.attestation = self.attestationPreference.convert()
-        
-        //  PublicKey credential parameters
-        for alg in self.pubCredAlg {
-            options.addPubKeyCredParam(alg: alg)
-        }
-        
-        //  Exclude credentials with PublicKeyCredentialDescriptor
-        for excludedCred in self.excludeCredentials {
-            //  Do not define transport due to a bug in ClientCreateOperation.swift#241 as per https://www.w3.org/TR/webauthn/#op-make-cred 6.3.2.3
-            //  As long as the given credentials is known to Authenticator, the client should trigger the authorization gesture regardless of the transport
-            let excludeCredentialDescriptor = PublicKeyCredentialDescriptor(id: excludedCred, transports: [])
-            options.excludeCredentials.append(excludeCredentialDescriptor)
-        }
-        
-        //  Authenticator selection
-        options.authenticatorSelection = AuthenticatorSelectionCriteria(requireResidentKey: self.requireResidentKey, userVerification: userVerification)
-
-        //  Perfrom credential create operation through WebAuthnClient
-        webAuthnClient.create(options, onSuccess: { (credential) in
-        
-            let int8Arr = credential.response.attestationObject.map { Int8(bitPattern: $0) }
-            let attObj = self.convertInt8ArrToStr(int8Arr)
-            //  Expected AM result for successful attestation
-            //  {clientDataJSON as String}::{attestation object in Int8 array}::{hashed credential identifier}
-            let result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)"
+    public func register(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, deviceName: String? = nil, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        if #available(iOS 16.0, *), usePasskeysIfAvailable {
+            FRLog.i("Performing WebAuthn registration using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
+            self.successCallback = onSuccess
+            self.errorCallback = onError
             
-            //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
-            if let node = node {
-                FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                self.setWebAuthnOutcome(node: node, outcome: result)
+            guard let window = window, let data = Data(base64Encoded: self.challenge, options: .ignoreUnknownCharacters), let node = node else { FRLog.e("The view was not in the app's view hierarchy!", subModule: WebAuthn.module)
+                onError(FRWAKError.unknown(platformError: nil, message: "Failed to create PlatformAuthenticator"))
+                return
             }
-            onSuccess(result)
-            
-        }) { (error) in
-        
-            /// Converts internal WAKError into WebAuthnError
-            if let webAuthnError = error as? WAKError {
-                //  Converts the error to public facing error
-                let publicError = webAuthnError.convert()
-                if let node = node {
-                    FRLog.i("Found optional 'Node' instance, setting WebAuthn error outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                    //  Converts WebAuthnError to proper WebAuthn error outcome that can be understood by AM
-                    self.setWebAuthnOutcome(node: node, outcome: publicError.convertToWebAuthnOutcome())
-                }
-                onError(publicError)
+            self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
+            guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
+            webAuthnManager.delegate = self
+            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId, deviceName: deviceName)
+        } else {
+            if self.isNewJSONFormat {
+                FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)
             }
             else {
-                onError(error)
+                FRLog.i("Performing WebAuthn registration for AM 7.0.0 or below", subModule: WebAuthn.module)
+            }
+            
+            //  Platform Authenticator
+            self.platformAuthenticator = PlatformAuthenticator(registrationDelegate: self)
+            guard let platformAuthenticator = self.platformAuthenticator else {
+                onError(FRWAKError.unknown(platformError: nil, message: "Failed to create PlatformAuthenticator"))
+                return
+            }
+            //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
+            var origin = CBConstants.originScheme + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
+            //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
+            if self.isNewJSONFormat {
+                origin = CBConstants.originPrefix + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
+            }
+            let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)
+            self.webAuthnClient = webAuthnClient
+            
+            //  Default UserVerification set to preferred
+            let userVerification = self.userVerification.convert()
+            
+            //  PublicKey credential creation options
+            var options = PublicKeyCredentialCreationOptions()
+            //  Challenge
+            options.challenge = Bytes.fromString(self.challenge.urlSafeEncoding())
+            //  User
+            options.user.id = Bytes.fromString(self.userId)
+            options.user.name = self.userName
+            options.user.displayName = self.displayName
+            //  Relying Party
+            options.rp.id = self.relyingPartyId
+            options.rp.name = self.relyingPartyName
+            //  Timeout
+            options.timeout = UInt64(self.timeout/1000)
+            
+            //  Default attestation to none
+            options.attestation = self.attestationPreference.convert()
+            
+            //  PublicKey credential parameters
+            for alg in self.pubCredAlg {
+                options.addPubKeyCredParam(alg: alg)
+            }
+            
+            //  Exclude credentials with PublicKeyCredentialDescriptor
+            for excludedCred in self.excludeCredentials {
+                //  Do not define transport due to a bug in ClientCreateOperation.swift#241 as per https://www.w3.org/TR/webauthn/#op-make-cred 6.3.2.3
+                //  As long as the given credentials is known to Authenticator, the client should trigger the authorization gesture regardless of the transport
+                let excludeCredentialDescriptor = PublicKeyCredentialDescriptor(id: excludedCred, transports: [])
+                options.excludeCredentials.append(excludeCredentialDescriptor)
+            }
+            
+            //  Authenticator selection
+            options.authenticatorSelection = AuthenticatorSelectionCriteria(requireResidentKey: self.requireResidentKey, userVerification: userVerification)
+            
+            //  Perfrom credential create operation through WebAuthnClient
+            webAuthnClient.create(options, onSuccess: { [unowned self] (credential) in
+                
+                let int8Arr = credential.response.attestationObject.map { Int8(bitPattern: $0) }
+                let attObj = self.convertInt8ArrToStr(int8Arr)
+                //  Expected AM result for successful attestation
+                //  {clientDataJSON as String}::{attestation object in Int8 array}::{hashed credential identifier}::{device name}`
+                let result: String
+                if let unwrappedDeviceName = deviceName {
+                    result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)::\(unwrappedDeviceName)"
+                } else {
+                    result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)"
+                }
+                
+                //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
+                if let node = node {
+                    FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+                    self.setWebAuthnOutcome(node: node, outcome: result)
+                }
+                onSuccess(result)
+                
+            }) { [unowned self] (error) in
+                
+                /// Converts internal WAKError into WebAuthnError
+                if let webAuthnError = error as? FRWAKError {
+                    //  Converts the error to public facing error
+                    let publicError = webAuthnError.convert()
+                    if let node = node {
+                        FRLog.i("Found optional 'Node' instance, setting WebAuthn error outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+                        //  Converts WebAuthnError to proper WebAuthn error outcome that can be understood by AM
+                        self.setWebAuthnOutcome(node: node, outcome: publicError.convertToWebAuthnOutcome())
+                    }
+                    onError(publicError)
+                }
+                else {
+                    onError(error)
+                }
             }
         }
     }
@@ -399,5 +431,20 @@ extension WebAuthnRegistrationCallback: PlatformAuthenticatorRegistrationDelegat
             FRLog.e("Missing PlatformAuthenticatorRegistrationDelegate", subModule: WebAuthn.module)
             consentCallback(.reject)
         }
+    }
+}
+
+extension WebAuthnRegistrationCallback: FRWebAuthnManagerDelegate {
+    // MARK: - WebAuthnManagerDelegate
+    public func didFinishAuthorization() {
+        self.successCallback?("Success")
+    }
+    
+    public func didCompleteWithError(_ error: Error) {
+        self.errorCallback?(error)
+    }
+    
+    public func didCancelModalSheet() {
+        self.successCallback?("Cancel")
     }
 }

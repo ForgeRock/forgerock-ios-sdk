@@ -2,7 +2,7 @@
 //  WebAuthnRegistrationTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -54,7 +54,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -86,7 +86,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -95,6 +95,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .timeout:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -129,7 +130,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -138,6 +139,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .cancelled:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -172,7 +174,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -181,6 +183,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .cancelled:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -217,7 +220,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -226,6 +229,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .unsupported:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -261,7 +265,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             var ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 result = webAuthnOutcome
                 ex.fulfill()
@@ -297,7 +301,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration with excludedCredentials
             ex = self.expectation(description: "WebAuthn Registration")
-            newCallback.register(onSuccess: { (webAuthnOutcome) in
+            newCallback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -306,6 +310,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .invalidState:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -334,7 +339,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             
             //  Perform registration with excludedCredentials
             ex = self.expectation(description: "WebAuthn Registration")
-            newCallback1.register(onSuccess: { (webAuthnOutcome) in
+            newCallback1.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnRegistration unexpectedly succeeded")
                 ex.fulfill()
@@ -343,6 +348,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .notAllowed:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -381,7 +387,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -438,7 +444,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -494,7 +500,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -542,7 +548,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -590,7 +596,7 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             //  Perform registration
             var result: String?
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -612,6 +618,38 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
             }
             
             XCTAssertEqual(attestationObj.fmt, "packed")
+        }
+        catch {
+            XCTFail("Failed with unexpected error")
+        }
+    }
+    
+    func test_12_webauthn_registration_with_device_name() {
+        do {
+            let callback = try self.createRegistrationCallback()
+            
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            
+            //  Set delegation consent result
+            self.createNewKeyConsentResult = .allow
+            
+            //  Perform registration
+            let ex = self.expectation(description: "WebAuthn Registration")
+            callback.register(deviceName: "Test Device Name", usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                XCTAssertNotNil(webAuthnOutcome)
+                let components = webAuthnOutcome.components(separatedBy: "::")
+                XCTAssertTrue(components.last == "Test Device Name")
+                ex.fulfill()
+            }) { (error) in
+                XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
         }
         catch {
             XCTFail("Failed with unexpected error")

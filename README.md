@@ -14,7 +14,7 @@
     ·
     <a href="#documentation" target="_blank">Docs</a>
   </p>
-  <hr/>
+  <hr />
 </p>
 
 The ForgeRock iOS SDK enables you to quickly integrate the [ForgeRock Identity Platform](https://www.forgerock.com/digital-identity-and-access-management-platform) into your iOS apps.
@@ -28,7 +28,7 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 * ForgeRock Identity Platform
     * Access Management (AM) 6.5.2+
-* iOS 12 and above   
+* iOS 12 and above
 * Xcode
 * Swift 5.x or Objective-C
 * CocoaPods or Swift Package Manager (optional)
@@ -45,7 +45,7 @@ Use the following pods in your `Podfile` to install FR iOS SDK module(s) if you 
 pod 'FRAuth' // Authentication module for Access Manager
 pod 'FRUI' // UI SDK demonstrates FRAuth SDK functionalities
 pod 'FRProximity' // Add-on for FRAuth's Device Profile feature related to location, and BLE
-pod 'FRAutheneticator' // Authenticator module that generates HOTP, TOTP, and Push registration/authentication
+pod 'FRAuthenticator' // Authenticator module that generates HOTP, TOTP, and Push registration/authentication
 pod 'FRGoogleSignIn' // Social Login module for Google Sign In
 pod 'FRFacebookSignIn' // Social Login module for Facebook Login
 ```
@@ -53,7 +53,7 @@ pod 'FRFacebookSignIn' // Social Login module for Facebook Login
 ### Swift Package Manager
 > * The ForgeRock iOS SDK is available via Swift Package Manager from 3.0.0 and above. Any older versions (2.2.0 and below) are only available via Cocoapods.
 > * `FRGoogleSignIn` module is currently not available in Swift Package Manager; use Cocoapods instead to integrate `FRGoogleSignIn` module.
- 
+
 1. In Xcode menus, `File` -> `Swift Packages` -> `Add Package Dependencies...`
 2. Select the project to integrate the ForgeRock iOS SDK
 3. Enter the url of the repo: `https://github.com/ForgeRock/forgerock-ios-sdk`
@@ -66,7 +66,9 @@ pod 'FRFacebookSignIn' // Social Login module for Facebook Login
 
 To try out the ForgeRock iOS SDK sample, perform these steps:
 
-1. Setup an Access Management (AM) instance, as described in the [documentation](https://sdks.forgerock.com/ios/01_prepare-am/).
+1. Setup Access Management (AM) as described in the documentation:
+    - [Self-managed AM server](https://backstage.forgerock.com/docs/sdks/latest/serverconfiguration/onpremise/index.html)
+    - [Identity Cloud tenant](https://backstage.forgerock.com/docs/sdks/latest/serverconfiguration/cloud/index.html)
 2. Clone this repo:
     ```
     git clone https://github.com/ForgeRock/forgerock-ios-sdk.git
@@ -84,9 +86,9 @@ ForgeRock provides these samples to help demonstrate SDK functionality:
 
 - **Swift Sample - `/FRExample/`**
 
-    This sample Swift app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface. 
-    
-    Other features include:
+  This sample Swift app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface.
+
+  Other features include:
 
     - OAuth 2.0 access tokens
     - Logout
@@ -94,23 +96,23 @@ ForgeRock provides these samples to help demonstrate SDK functionality:
     - Get the current user's details
     - Jailbreak detection
 
-    Configure your AM instance settings in the `/FRexampleObjC/FRexampleObjC/Configs/FRAuthConfig.plist` file to use this sample application.
+  Configure your AM instance settings in the `/FRexampleObjC/FRexampleObjC/Configs/FRAuthConfig.plist` file to use this sample application.
 
 - **Objective-C Sample - `/FRexampleObjC/`**
 
-    This sample Objective-C app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface. 
-    
-    Other features include:
+  This sample Objective-C app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface.
+
+  Other features include:
 
     - Logout
     - Collecting device information
     - Get the current user's details
     - Jailbreak detection
 
-    Configure your AM instance settings in the `/FRExample/FRExample/Configs/FRAuthConfig.plist` file to use this sample application.
-    
+  Configure your AM instance settings in the `/FRExample/FRExample/Configs/FRAuthConfig.plist` file to use this sample application.
+
 - **Authenticator App Sample - `/FRAuthenticatorExample/`**
-	This Authenticator sample app demonstrates HMAC-based, and Time-based One-time Password, and Push Registration and Authentication with ForgeRock's Access Manager.
+  This Authenticator sample app demonstrates HMAC-based, and Time-based One-time Password, and Push Registration and Authentication with ForgeRock's Access Manager.
 
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
@@ -118,9 +120,9 @@ ForgeRock provides these samples to help demonstrate SDK functionality:
 
 ## Documentation
 
-Documentation for the SDKs is provided at **<https://sdks.forgerock.com>**, and includes topics such as:
+Documentation for the SDKs is provided on **[BackStage](https://backstage.forgerock.com/docs/sdks/latest/whatsnew/)**, and includes topics such as:
 
-* Introducting the SDK Features
+* Introducing SDK features
 * Preparing AM for use with the SDKS
 * API Reference documentation
 
@@ -134,9 +136,9 @@ If you encounter any issues, be sure to check our **[Troubleshooting](https://ba
 Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
 * Suspected bugs or problems with ForgeRock software.
-* Requests for assistance - please look at the **[Documentation](https://sdks.forgerock.com)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
+* Requests for assistance - please look at the **[Documentation](https://backstage.forgerock.com/docs/sdks/latest/whatsnew/)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
 
-You can raise a ticket using **[BackStage](https://backstage.forgerock.com/support/tickets)**, our customer support portal that provides one stop access to ForgeRock services. 
+You can raise a ticket using **[BackStage](https://backstage.forgerock.com/support/tickets)**, our customer support portal that provides one stop access to ForgeRock services.
 
 BackStage shows all currently open support tickets and allows you to raise a new one by clicking **New Ticket**.
 
@@ -164,6 +166,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-&copy; Copyright 2020 ForgeRock AS. All Rights Reserved
+&copy; Copyright 2022 ForgeRock AS. All Rights Reserved
 
 [forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg "ForgeRock Logo"

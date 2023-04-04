@@ -1,8 +1,8 @@
 //
 //  JailbreakDetector.swift
-//  FRAuth
+//  FRCore
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -68,7 +68,7 @@ public class FRJailbreakDetector: NSObject {
     @objc
     public func analyze() -> Double {
         #if targetEnvironment(simulator)
-            FRLog.i("Currently running on Simulator; aborting JailbreakDetector")
+            Log.i("Currently running on Simulator; aborting JailbreakDetector")
             return 0.0
         #else
         if self.detectors.count > 0 {
@@ -91,7 +91,7 @@ public class FRJailbreakDetector: NSObject {
             return maxResult
         }
         else {
-            FRLog.w("No JailbreakDetector is found")
+            Log.w("No JailbreakDetector is found")
             return -1.0
         }
         #endif

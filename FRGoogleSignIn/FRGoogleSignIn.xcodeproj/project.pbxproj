@@ -451,7 +451,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = "4.0.0-beta5";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -484,7 +484,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = "4.0.0-beta5";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
@@ -510,6 +510,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignInTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -529,6 +532,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignInTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

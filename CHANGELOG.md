@@ -1,10 +1,26 @@
-# Version 3.4.0
+# Version 4.0.0
 
 ## Unreleased
 #### Added
 - Device Binding callback implementation
 - Device Signing Verifier callback implementation
 - Application PIN authenticator type to Device Binding and Device Signing Verification
+
+## [4.0.0]
+#### Changed
+- Added error message description to the `WebAuthnError` enum [SDKS-2226]
+- Exposed interface for listing and deleting WebAuthn credentials from the device [SDKS-2279]
+- Exposed interface for assigning device name during the WebAuthn registration process [SDKS-2297]
+- Added support for combined MFA in the Authenticator SDK [SDKS-2166]
+- Added support for policy enforcement in the Authenticator SDK [SDKS-2166]
+- Added support for passkeys [SDKS-2140]
+
+## [3.4.1]
+#### Changed
+- Updated legacy encryption algorithm for iOS SE [SDKS-1994]
+- Fixed an issue related to push notifications timeout [SDKS-2164]
+- Fixed an unexpected error occurring during the decoding of some push notifications [SDKS-2199]
+
 ## [3.4.0]
 #### Added
 - Dynamic SDK Configuration [SDKS-1760]
@@ -14,7 +30,6 @@
 - Fixed build errors on Xcode 14 [SDKS-2073]
 - Fixed bug where the `state` parameter value was not verified upon calling the `Authorize` endpoint [SDKS-2077]
 
-# Version 3.3.2
 ## [3.3.2]
 #### Added
 - Interface for log management [SDKS-1863]
