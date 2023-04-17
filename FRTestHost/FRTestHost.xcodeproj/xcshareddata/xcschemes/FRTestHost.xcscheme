@@ -90,6 +90,20 @@
                ReferencedContainer = "container:../FRUI/FRUI.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A5D1C37B29E59FC30096039E"
+               BuildableName = "FRDeviceBindingTests.xctest"
+               BlueprintName = "FRDeviceBindingTests"
+               ReferencedContainer = "container:../FRDeviceBinding/FRDeviceBinding.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -134,6 +148,13 @@
             BuildableName = "FRAuthenticator.framework"
             BlueprintName = "FRAuthenticator"
             ReferencedContainer = "container:../FRAuthenticator/FRAuthenticator.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A5D1C37329E59FC20096039E"
+            BuildableName = "FRDeviceBinding.framework"
+            BlueprintName = "FRDeviceBinding"
+            ReferencedContainer = "container:../FRDeviceBinding/FRDeviceBinding.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
@@ -185,6 +206,16 @@
                BuildableName = "FRUITests.xctest"
                BlueprintName = "FRUITests"
                ReferencedContainer = "container:../FRUI/FRUI.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A5D1C37B29E59FC30096039E"
+               BuildableName = "FRDeviceBindingTests.xctest"
+               BlueprintName = "FRDeviceBindingTests"
+               ReferencedContainer = "container:../FRDeviceBinding/FRDeviceBinding.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

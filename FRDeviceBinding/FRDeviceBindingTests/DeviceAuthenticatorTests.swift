@@ -13,6 +13,7 @@ import XCTest
 import JOSESwift
 @testable import FRAuth
 @testable import FRCore
+@testable import FRDeviceBinding
 
 class DeviceAuthenticatorTests: FRBaseTestCase {
     

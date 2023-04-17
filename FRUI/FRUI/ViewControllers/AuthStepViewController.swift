@@ -11,6 +11,7 @@
 import UIKit
 import FRAuth
 import FRCore
+import FRDeviceBinding
 
 protocol AuthStepProtocol {
     func submitNode()

@@ -81,9 +81,7 @@ public class CallbackFactory: NSObject {
             CallbackType.WebAuthnRegistrationCallback.rawValue: WebAuthnRegistrationCallback.self,
             CallbackType.IdPCallback.rawValue: IdPCallback.self,
             CallbackType.SelectIdPCallback.rawValue: SelectIdPCallback.self,
-            CallbackType.DeviceBindingCallback.rawValue: DeviceBindingCallback.self,
-            CallbackType.DeviceSigningVerifierCallback.rawValue: DeviceSigningVerifierCallback.self
-        ]
+        ] 
     }
     
     

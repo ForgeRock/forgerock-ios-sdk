@@ -10,6 +10,7 @@
 
 import XCTest
 @testable import FRAuth
+@testable import FRDeviceBinding
 
 class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     

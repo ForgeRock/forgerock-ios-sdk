@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A589EC8829E6430700399B64 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A589EC8729E6430700399B64 /* FRDeviceBinding.framework */; };
+		A589EC8929E6430F00399B64 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A589EC8729E6430700399B64 /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5950A2C27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */; };
 		A5950A2E27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5950A2D27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist */; };
 		D5A7A1E9248CD88C00E30CFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A7A1E8248CD88C00E30CFE /* AppDelegate.swift */; };
@@ -18,15 +20,15 @@
 		D5A7A200248CDA7100E30CFE /* FRAuthConfigNonSSO.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1FF248CDA7100E30CFE /* FRAuthConfigNonSSO.plist */; };
 		D5B870C425D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5B870C325D5059C009FFA21 /* FRAuthConfigNoOAuth2.plist */; };
 		D5D5DC0B25E76C8100A8AF0E /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */; };
-		D5D5DC0C25E76C8100A8AF0E /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5D5DC0C25E76C8100A8AF0E /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D5DC0D25E76C8100A8AF0E /* FRAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */; };
-		D5D5DC0E25E76C8100A8AF0E /* FRAuthenticator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5D5DC0E25E76C8100A8AF0E /* FRAuthenticator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D5DC0F25E76C8100A8AF0E /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0825E76C8100A8AF0E /* FRCore.framework */; };
-		D5D5DC1025E76C8100A8AF0E /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0825E76C8100A8AF0E /* FRCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5D5DC1025E76C8100A8AF0E /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0825E76C8100A8AF0E /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D5DC1125E76C8100A8AF0E /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0925E76C8100A8AF0E /* FRProximity.framework */; };
-		D5D5DC1225E76C8100A8AF0E /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0925E76C8100A8AF0E /* FRProximity.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5D5DC1225E76C8100A8AF0E /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0925E76C8100A8AF0E /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D5DC1325E76C8100A8AF0E /* FRUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0A25E76C8100A8AF0E /* FRUI.framework */; };
-		D5D5DC1425E76C8100A8AF0E /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0A25E76C8100A8AF0E /* FRUI.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5D5DC1425E76C8100A8AF0E /* FRUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D5DC0A25E76C8100A8AF0E /* FRUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +38,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A589EC8929E6430F00399B64 /* FRDeviceBinding.framework in Embed Frameworks */,
 				D5D5DC0E25E76C8100A8AF0E /* FRAuthenticator.framework in Embed Frameworks */,
 				D5D5DC0C25E76C8100A8AF0E /* FRAuth.framework in Embed Frameworks */,
 				D5D5DC1425E76C8100A8AF0E /* FRUI.framework in Embed Frameworks */,
@@ -48,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A589EC8729E6430700399B64 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigPKHash.plist; sourceTree = "<group>"; };
 		A5950A2D27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigEmptyPKHash.plist; sourceTree = "<group>"; };
 		D5087148248CE01600B584D9 /* FRTestHostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestHostTests.swift; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A589EC8829E6430700399B64 /* FRDeviceBinding.framework in Frameworks */,
 				D5D5DC0D25E76C8100A8AF0E /* FRAuthenticator.framework in Frameworks */,
 				D5D5DC0B25E76C8100A8AF0E /* FRAuth.framework in Frameworks */,
 				D5D5DC1325E76C8100A8AF0E /* FRUI.framework in Frameworks */,
@@ -135,6 +140,7 @@
 		D5D5DC0525E76C8100A8AF0E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A589EC8729E6430700399B64 /* FRDeviceBinding.framework */,
 				D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */,
 				D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */,
 				D5D5DC0825E76C8100A8AF0E /* FRCore.framework */,

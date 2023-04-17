@@ -11,6 +11,7 @@
 
 import UIKit
 import JOSESwift
+import FRAuth
 
 /**
  * Callback to collect the device binding information

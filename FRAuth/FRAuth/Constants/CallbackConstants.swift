@@ -96,7 +96,7 @@ enum CallbackType: String {
 }
 
 /// CBConstants is mainly responsible to maintain all constant values related to Callback implementation
-struct CBConstants {
+public struct CBConstants {
     static let type: String = "type"
     static let _type: String = "_type"
     static let _action: String = "_action"

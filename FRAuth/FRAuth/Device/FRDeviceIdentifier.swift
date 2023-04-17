@@ -14,7 +14,7 @@ import FRCore
 
 /// FRDeviceIdentifier provides a unique identifier for each device defined in same Shared Keychain Access Group,
 /// and provides a secure mechanism to uniquely generate, persist, and manage the identifier
-struct FRDeviceIdentifier {
+public struct FRDeviceIdentifier {
     
     /// RSA Key types enumeration
     ///
@@ -51,7 +51,7 @@ struct FRDeviceIdentifier {
     /// Generates, or retrieves an identifier, returns
     ///
     /// - Returns: Uniquely generated Identifier as per Keychain Sharing Access Group
-    @discardableResult func getIdentifier() -> String {
+    @discardableResult public func getIdentifier() -> String {
         
         if let identifier = self.keychainService.getString(self.identifierKeychainServiceKey) {
             FRLog.v("Device Identifier is retrieved from Device Identifier Store")

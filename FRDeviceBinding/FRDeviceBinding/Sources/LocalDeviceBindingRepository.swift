@@ -11,7 +11,7 @@
 
 import Foundation
 import FRCore
-
+import FRAuth
 
 protocol DeviceBindingRepository {
     

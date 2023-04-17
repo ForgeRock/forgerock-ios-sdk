@@ -13,6 +13,7 @@ import Foundation
 import FRCore
 import JOSESwift
 import LocalAuthentication
+import FRAuth
 
 
 /// Protocol to override keypair generation, authentication, signing and access control

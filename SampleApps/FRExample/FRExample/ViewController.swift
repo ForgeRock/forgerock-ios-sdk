@@ -14,6 +14,7 @@ import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
+import FRDeviceBinding
 
 class ViewController: UIViewController {
 
@@ -204,6 +205,9 @@ class ViewController: UIViewController {
         catch {
             self.displayLog(String(describing: error))
         }
+        
+        CallbackFactory.shared.registerCallback(callbackType: "DeviceBindingCallback", callbackClass: DeviceBindingCallback.self)
+        CallbackFactory.shared.registerCallback(callbackType: "DeviceSigningVerifierCallback", callbackClass: DeviceSigningVerifierCallback.self)
     }
     
     

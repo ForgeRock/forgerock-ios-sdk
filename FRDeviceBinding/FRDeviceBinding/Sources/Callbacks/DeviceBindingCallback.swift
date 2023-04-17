@@ -12,6 +12,7 @@
 import Foundation
 import JOSESwift
 import FRCore
+import FRAuth
 
 /**
  * Callback to collect the device binding information

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */; };
 		D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51F44D722B1B8C900FC8F0D /* FRAuth.framework */; };
 		D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D527D03024BCDB4E00C21663 /* FRUITextView.swift */; };
 		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
@@ -88,6 +89,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
 		D527D03024BCDB4E00C21663 /* FRUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUITextView.swift; sourceTree = "<group>"; };
 		D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsTableViewCell.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */,
 				D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +175,7 @@
 		D51F44DA22B1B8CF00FC8F0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

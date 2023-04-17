@@ -11,6 +11,7 @@
 
 import XCTest
 @testable import FRAuth
+@testable import FRDeviceBinding
 
 
 class UserDeviceKeyServiceTests: XCTestCase {

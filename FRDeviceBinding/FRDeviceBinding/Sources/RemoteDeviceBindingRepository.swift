@@ -10,13 +10,14 @@
 
 
 import FRCore
+import FRAuth
 
 internal class RemoteDeviceBindingRepository: DeviceBindingRepository {
     
-    private var serverConfig: ServerConfig?
+    private var options: FROptions?
     
-    init(serverConfig: ServerConfig? = FRAuth.shared?.serverConfig){
-        self.serverConfig = serverConfig
+    init(options: FROptions? = FRAuth.shared?.options){
+        self.options = options
     }
     
     func persist(userKey: UserKey) throws {
@@ -28,16 +29,16 @@ internal class RemoteDeviceBindingRepository: DeviceBindingRepository {
     }
     
     func delete(userKey: UserKey) throws {
-        guard let serverConfig = serverConfig else {
+        guard let options = options else {
             throw AuthApiError.apiFailureWithMessage("Bad Request", "No Configuration found", 400, nil)
         }
         
-        let url = serverConfig.baseURL.absoluteString + "/json/realms/\(serverConfig.realm)/users/\(userKey.userId)/devices/2fa/binding/\(userKey.kid)"
+        let url = options.url + "/json/realms/\(options.realm)/users/\(userKey.userId)/devices/2fa/binding/\(userKey.kid)"
         
         var headers: [String: String] = [:]
-        headers[OpenAM.acceptAPIVersion] = "resource=1.0"
+        headers["accept-api-version"] = "resource=1.0"
         
-        let request =  Request(url: url, method: .DELETE, headers: headers, requestType: .json, responseType: nil, timeoutInterval: serverConfig.timeout)
+        let request =  Request(url: url, method: .DELETE, headers: headers, requestType: .json, responseType: nil, timeoutInterval: Double(options.timeout) ?? 60)
         
         let result = FRRestClient.invokeSync(request: request, action: nil)
         
