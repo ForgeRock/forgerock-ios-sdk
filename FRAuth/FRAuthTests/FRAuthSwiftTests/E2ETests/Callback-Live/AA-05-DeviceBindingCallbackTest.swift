@@ -32,6 +32,8 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     override func setUp() {
         do {
             try FRAuth.start(options: options)
+            CallbackFactory.shared.registerCallback(callbackType: "DeviceBindingCallback", callbackClass: DeviceBindingCallback.self)
+            CallbackFactory.shared.registerCallback(callbackType: "DeviceSigningVerifierCallback", callbackClass: DeviceSigningVerifierCallback.self)
         }
         catch {
             XCTFail("Fail to start the the SDK with custom config.")
