@@ -1,6 +1,6 @@
 // 
 //  FRUserKeysTests.swift
-//  FRAuthTests
+//  FRDeviceBindingTests
 //
 //  Copyright (c) 2023 ForgeRock. All rights reserved.
 //
