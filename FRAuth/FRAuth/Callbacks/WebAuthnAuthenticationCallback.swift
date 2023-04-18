@@ -11,6 +11,7 @@
 
 import Foundation
 import UIKit
+import AuthenticationServices
 
 /**
  WebAuthnAuthenticationCallback is a representation of AM's WebAuthn Authentication Node to generate WebAuthn assertion based on given credentials, and optionally set the WebAuthn outcome value in `Node`'s designated `HiddenValueCallback`
@@ -191,7 +192,16 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
             self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
             guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
             webAuthnManager.delegate = self
-            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, challenge: data, allowedCredentialsArray: self.allowCredentials)
+            let verificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference
+            switch self.userVerification {
+            case .preferred:
+                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.preferred
+            case .required:
+                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.required
+            case .discouraged:
+                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.discouraged
+            }
+            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, challenge: data, allowedCredentialsArray: self.allowCredentials, userVerificationPreference: verificationPreference)
         } else {
             if self.isNewJSONFormat {
                 FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)

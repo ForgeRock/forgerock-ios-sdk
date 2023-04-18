@@ -11,6 +11,7 @@
 
 import Foundation
 import UIKit
+import AuthenticationServices
 
 /**
  WebAuthnRegistrationCallback is a representation of AM's WebAuthn Registration Node to generate WebAuthn attestation based on given credentials, and optionally set the WebAuthn outcome value in `Node`'s designated `HiddenValueCallback`
@@ -305,7 +306,16 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
             guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
             webAuthnManager.delegate = self
-            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId, deviceName: deviceName)
+            let verificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference
+            switch self.userVerification {
+            case .preferred:
+                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.preferred
+            case .required:
+                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.required
+            case .discouraged:
+                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.discouraged
+            }
+            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId, deviceName: deviceName, userVerificationPreference: verificationPreference)
         } else {
             if self.isNewJSONFormat {
                 FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)

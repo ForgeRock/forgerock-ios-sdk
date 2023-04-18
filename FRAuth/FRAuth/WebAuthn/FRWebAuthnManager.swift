@@ -47,7 +47,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
     ///    - challenge: challenge `Data` as received from the Node
     ///    - allowedCredentialsArray: Allowed credentials
     
-    public func signInWith(preferImmediatelyAvailableCredentials: Bool, challenge: Data, allowedCredentialsArray: [[UInt8]]) {
+    public func signInWith(preferImmediatelyAvailableCredentials: Bool, challenge: Data, allowedCredentialsArray: [[UInt8]], userVerificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference) {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: domain)
 
         let assertionRequest = publicKeyCredentialProvider.createCredentialAssertionRequest(challenge: challenge)
@@ -56,6 +56,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             credentialsArray.append(ASAuthorizationPlatformPublicKeyCredentialDescriptor(credentialID: Data(credID)))
         }
         assertionRequest.allowedCredentials = credentialsArray
+        assertionRequest.userVerificationPreference = userVerificationPreference
         // Pass in any mix of supported sign-in request types.
         let authController = ASAuthorizationController(authorizationRequests: [ assertionRequest ] )
         authController.delegate = self
@@ -85,7 +86,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
     ///    - challenge: challenge `Data` as received from the Node
     ///    - userID: userID
     ///    - deviceName: Optional device name. This will be the device name, that appears in the list of user devices
-    public func signUpWith(userName: String, challenge: Data, userID: String, deviceName: String?) {
+    public func signUpWith(userName: String, challenge: Data, userID: String, deviceName: String?, userVerificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference) {
         self.deviceName = deviceName
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: domain)
 
@@ -96,6 +97,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         
         let registrationRequest = publicKeyCredentialProvider.createCredentialRegistrationRequest(challenge: challenge,
                                                                                                   name: userName, userID: userID)
+        registrationRequest.userVerificationPreference = userVerificationPreference
         
         // Use only ASAuthorizationPlatformPublicKeyCredentialRegistrationRequests or
         // ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequests here.
