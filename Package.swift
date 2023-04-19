@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package (
     name: "ForgeRock-iOS-SDK",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(name: "FRCore", targets: ["FRCore"]),
