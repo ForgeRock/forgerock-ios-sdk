@@ -206,8 +206,7 @@ class ViewController: UIViewController {
             self.displayLog(String(describing: error))
         }
         
-        CallbackFactory.shared.registerCallback(callbackType: "DeviceBindingCallback", callbackClass: DeviceBindingCallback.self)
-        CallbackFactory.shared.registerCallback(callbackType: "DeviceSigningVerifierCallback", callbackClass: DeviceSigningVerifierCallback.self)
+        FRDeviceBinding.registerCallbacks()
     }
     
     

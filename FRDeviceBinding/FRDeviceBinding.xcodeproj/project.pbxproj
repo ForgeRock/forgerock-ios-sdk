@@ -30,6 +30,7 @@
 		A5C3E2D029E662D300338904 /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = A589ECD329E6467600399B64 /* Config-live-01.json */; };
 		A5C3E2D129E662D300338904 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = A589ECD429E6467600399B64 /* Config.json */; };
 		A5C3E2D229E662E200338904 /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC9629E6467600399B64 /* CustomCallback.swift */; };
+		A5C3E30029EF873E00338904 /* FRDeviceBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C3E2FF29EF873E00338904 /* FRDeviceBinding.swift */; };
 		A5D1C37D29E59FC30096039E /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C37429E59FC20096039E /* FRDeviceBinding.framework */; };
 		A5D1C38329E59FC30096039E /* FRDeviceBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1C37729E59FC20096039E /* FRDeviceBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5D8939929E5AB76004D21F4 /* UserKeySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8938E29E5AB75004D21F4 /* UserKeySelector.swift */; };
@@ -164,6 +165,7 @@
 		A5C38A2929E5B1DD0016B565 /* DeviceSigningVerifierCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallback.swift; sourceTree = "<group>"; };
 		A5C38A3129E5B3910016B565 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
 		A5C38A3329E5B5EC0016B565 /* CBConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBConstants.swift; sourceTree = "<group>"; };
+		A5C3E2FF29EF873E00338904 /* FRDeviceBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDeviceBinding.swift; sourceTree = "<group>"; };
 		A5D1C37429E59FC20096039E /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5D1C37729E59FC20096039E /* FRDeviceBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRDeviceBinding.h; sourceTree = "<group>"; };
 		A5D1C37C29E59FC30096039E /* FRDeviceBindingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRDeviceBindingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -443,6 +445,7 @@
 				A5D8939629E5AB76004D21F4 /* UserDeviceKeyService.swift */,
 				A5D8938E29E5AB75004D21F4 /* UserKeySelector.swift */,
 				A5C38A3329E5B5EC0016B565 /* CBConstants.swift */,
+				A5C3E2FF29EF873E00338904 /* FRDeviceBinding.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -624,6 +627,7 @@
 				A5D8939D29E5AB76004D21F4 /* DeviceBindingAuthenticators.swift in Sources */,
 				A5D893A329E5AB76004D21F4 /* DeviceBindingStatus.swift in Sources */,
 				A5C38A2D29E5B1DD0016B565 /* DeviceSigningVerifierCallback.swift in Sources */,
+				A5C3E30029EF873E00338904 /* FRDeviceBinding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
