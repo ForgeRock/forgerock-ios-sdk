@@ -356,11 +356,7 @@ open class None: DeviceAuthenticator, CryptoAware {
 
 
 /// Convert authentication type string received from server to authentication type enum
-public enum DeviceBindingAuthenticationType: String, Codable {
-    case biometricOnly = "BIOMETRIC_ONLY"
-    case biometricAllowFallback = "BIOMETRIC_ALLOW_FALLBACK"
-    case applicationPin = "APPLICATION_PIN"
-    case none = "NONE"
+extension DeviceBindingAuthenticationType {
     
     /// get the right type of DeviceAuthenticator
     func getAuthType() -> DeviceAuthenticator {

@@ -12,6 +12,8 @@
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
 		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
+		A5C3E36029F0EEE600338904 /* DeviceBindingCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C3E35F29F0EEE600338904 /* DeviceBindingCallback.swift */; };
+		A5C3E36329F0F07400338904 /* DeviceSigningVerifierCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C3E36229F0F07400338904 /* DeviceSigningVerifierCallback.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
@@ -326,6 +328,8 @@
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
 		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
+		A5C3E35F29F0EEE600338904 /* DeviceBindingCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallback.swift; sourceTree = "<group>"; };
+		A5C3E36229F0F07400338904 /* DeviceSigningVerifierCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallback.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
@@ -1025,6 +1029,8 @@
 				D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */,
 				D5B2061325FFE0E500DABB9B /* SelectIdPCallback.swift */,
 				D5B2061725FFE0F300DABB9B /* IdPCallback.swift */,
+				A5C3E35F29F0EEE600338904 /* DeviceBindingCallback.swift */,
+				A5C3E36229F0F07400338904 /* DeviceSigningVerifierCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1717,6 +1723,7 @@
 				D53A8058262789E40093B1CA /* WebAuthnRegistrationCallback.swift in Sources */,
 				D53A8039262789BD0093B1CA /* COSE.swift in Sources */,
 				D5B2061025FFDDD200DABB9B /* IdPClient.swift in Sources */,
+				A5C3E36029F0EEE600338904 /* DeviceBindingCallback.swift in Sources */,
 				D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
 				D5B2061C260004E500DABB9B /* AppleSignInHandler.swift in Sources */,
@@ -1763,6 +1770,7 @@
 				D53A803F262789BD0093B1CA /* WAKLogger.swift in Sources */,
 				D53A8046262789BD0093B1CA /* CredentialStore.swift in Sources */,
 				D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */,
+				A5C3E36329F0F07400338904 /* DeviceSigningVerifierCallback.swift in Sources */,
 				D5723C3D23F4C65800557AA8 /* Node.swift in Sources */,
 				D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */,
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,

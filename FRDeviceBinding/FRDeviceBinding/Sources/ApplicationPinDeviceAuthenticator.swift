@@ -13,6 +13,7 @@ import UIKit
 import LocalAuthentication
 import FRCore
 import JOSESwift
+import FRAuth
 
 
 /// DeviceAuthenticator adoption for Application Pin authentication

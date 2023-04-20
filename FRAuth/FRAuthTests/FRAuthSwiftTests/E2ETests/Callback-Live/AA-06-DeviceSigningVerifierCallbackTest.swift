@@ -34,7 +34,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         super.setUp()
         do {
             try FRAuth.start(options: options)
-            FRDeviceBinding.registerCallbacks()
         }
         catch {
             XCTFail("Fail to start the the SDK with custom config.")

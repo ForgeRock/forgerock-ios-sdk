@@ -10,6 +10,7 @@
 
 
 import Foundation
+import FRAuth
 
 
 /// Device Binding protocol to provide utility methods for ``DeviceBindingCallback`` and ``DeviceSigningVerifierCallback``
