@@ -87,11 +87,6 @@ public final class FRAuth: NSObject {
             FRLog.i("FRProximity SDK found; starting FRProximity")
             c.perform(Selector(("startProximity")))
         }
-        
-        if let c: NSObject.Type = NSClassFromString("FRDeviceBinding.FRDeviceBinding") as? NSObject.Type {
-            FRLog.i("FRDeviceBinding SDK found; registering callbacks")
-            c.perform(Selector(("registerCallbacks")))
-        }
     }
     
     //  MARK: - Private Init

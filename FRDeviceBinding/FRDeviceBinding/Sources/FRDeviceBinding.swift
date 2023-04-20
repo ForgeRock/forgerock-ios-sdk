@@ -11,10 +11,10 @@
 import Foundation
 import FRAuth
 
-@objc public final class FRDeviceBinding: NSObject  {
+public class FRDeviceBinding {
     
     /// Register ``DeviceBindingCallback`` and ``DeviceSigningVerifierCallback`` callbacks
-    @objc static public func registerCallbacks() {
+    public static func registerCallbacks() {
         CallbackFactory.shared.registerCallback(callbackType: "DeviceBindingCallback", callbackClass: DeviceBindingCallback.self)
         CallbackFactory.shared.registerCallback(callbackType: "DeviceSigningVerifierCallback", callbackClass: DeviceSigningVerifierCallback.self)
     }

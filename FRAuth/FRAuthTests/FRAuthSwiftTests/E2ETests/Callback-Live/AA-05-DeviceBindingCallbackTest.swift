@@ -32,6 +32,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     override func setUp() {
         do {
             try FRAuth.start(options: options)
+            FRDeviceBinding.registerCallbacks()
         }
         catch {
             XCTFail("Fail to start the the SDK with custom config.")

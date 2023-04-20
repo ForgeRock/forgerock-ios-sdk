@@ -206,6 +206,7 @@ class ViewController: UIViewController {
             self.displayLog(String(describing: error))
         }
         
+        FRDeviceBinding.registerCallbacks()
     }
     
     
