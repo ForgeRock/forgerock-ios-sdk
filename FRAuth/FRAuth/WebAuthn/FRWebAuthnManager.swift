@@ -31,6 +31,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
     private var node: Node
     private let domain: String
     private var deviceName: String?
+    private var asAuthorizationController: ASAuthorizationController?
     
     public init(domain: String, authenticationAnchor: ASPresentationAnchor?, node: Node) {
         self.domain = domain
@@ -61,7 +62,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         let authController = ASAuthorizationController(authorizationRequests: [ assertionRequest ] )
         authController.delegate = self
         authController.presentationContextProvider = self
-
+        self.setTimeout()
         if preferImmediatelyAvailableCredentials {
             // If credentials are available, presents a modal sign-in sheet.
             // If there are no locally saved credentials, no UI appears and
@@ -74,7 +75,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             // passkey from a nearby device.
             authController.performRequests()
         }
-
+        self.asAuthorizationController = authController
         isPerformingModalReqest = true
     }
     
@@ -86,7 +87,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
     ///    - challenge: challenge `Data` as received from the Node
     ///    - userID: userID
     ///    - deviceName: Optional device name. This will be the device name, that appears in the list of user devices
-    public func signUpWith(userName: String, challenge: Data, userID: String, deviceName: String?, userVerificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference) {
+    public func signUpWith(userName: String, challenge: Data, userID: String, deviceName: String?, userVerificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference, attestationPreference: ASAuthorizationPublicKeyCredentialAttestationKind) {
         self.deviceName = deviceName
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: domain)
 
@@ -96,9 +97,10 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         let userID = Data(userID.utf8)
         
         let registrationRequest = publicKeyCredentialProvider.createCredentialRegistrationRequest(challenge: challenge,
-                                                                                                  name: userName, userID: userID)
+                                                                                                name: userName, userID: userID)
         registrationRequest.userVerificationPreference = userVerificationPreference
-        
+        registrationRequest.attestationPreference = attestationPreference
+        self.setTimeout()
         // Use only ASAuthorizationPlatformPublicKeyCredentialRegistrationRequests or
         // ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequests here.
         let authController = ASAuthorizationController(authorizationRequests: [ registrationRequest ] )
@@ -106,6 +108,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
         authController.presentationContextProvider = self
     
         authController.performRequests()
+        self.asAuthorizationController = authController
         isPerformingModalReqest = true
     }
     
@@ -236,6 +239,23 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             .replacingOccurrences(of: "/", with: "_")
             .replacingOccurrences(of: "=", with: "")
         return base64url
+    }
+    
+    private func setTimeout() {
+        var timeoutInSec = 60
+        for callback in node.callbacks {
+            if let webAuthnCallback = callback as? WebAuthnRegistrationCallback {
+                timeoutInSec = webAuthnCallback.timeout/1000
+            }
+            if let webAuthnCallback = callback as? WebAuthnAuthenticationCallback {
+                timeoutInSec = webAuthnCallback.timeout/1000
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.seconds(timeoutInSec)) { [weak self] in
+            if self?.isPerformingModalReqest == true {
+                self?.asAuthorizationController?.cancel()
+            }
+        }
     }
 }
 

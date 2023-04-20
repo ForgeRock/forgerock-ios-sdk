@@ -192,16 +192,8 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
             self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
             guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
             webAuthnManager.delegate = self
-            let verificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference
-            switch self.userVerification {
-            case .preferred:
-                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.preferred
-            case .required:
-                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.required
-            case .discouraged:
-                verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.discouraged
-            }
-            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, challenge: data, allowedCredentialsArray: self.allowCredentials, userVerificationPreference: verificationPreference)
+            
+            webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, challenge: data, allowedCredentialsArray: self.allowCredentials, userVerificationPreference: self.convertUserVerification())
         } else {
             if self.isNewJSONFormat {
                 FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)
@@ -322,5 +314,22 @@ extension WebAuthnAuthenticationCallback: FRWebAuthnManagerDelegate {
     
     public func didCancelModalSheet() {
         self.successCallback?("Cancel")
+    }
+}
+
+extension WebAuthnAuthenticationCallback {
+    @available(iOS 15.0, *)
+    fileprivate func convertUserVerification() -> ASAuthorizationPublicKeyCredentialUserVerificationPreference {
+        let verificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference
+        switch self.userVerification {
+        case .preferred:
+            verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.preferred
+        case .required:
+            verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.required
+        case .discouraged:
+            verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.discouraged
+        }
+        
+        return verificationPreference
     }
 }
