@@ -83,11 +83,15 @@ public final class FRAuth: NSObject {
             try FRAuth.initWithOptions(options: configOptions)
         }
         
+        // If FRProximity module is present, invoke FRProximity.startProximity()
+        // This adds FRProximity's device collectors to FRDeviceCollector's collectors list
         if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type {
             FRLog.i("FRProximity SDK found; starting FRProximity")
             c.perform(Selector(("startProximity")))
         }
         
+        // If FRDeviceBinding module is present, invoke FRDeviceBinding.registerCallbacks()
+        // This adds FRDeviceBinding's callbacks to CallbackFactory's supportedCallbacks list
         if let c: NSObject.Type = NSClassFromString("FRDeviceBinding.FRDeviceBinding") as? NSObject.Type {
             FRLog.i("FRDeviceBinding SDK found; registering callbacks")
             c.perform(Selector(("registerCallbacks")))
