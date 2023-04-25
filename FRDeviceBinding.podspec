@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.version          = '4.0.0-beta5'
   s.summary          = 'ForgeRock Device Binding SDK for iOS'
   s.description      = <<-DESC
-    FRDeviceBinding is a SDK adds support for Device Binding feature. FRDeviceBinding depends on JOSESwift.
+    FRDeviceBinding is a SDK that adds support for Device Binding feature. FRDeviceBinding depends on JOSESwift.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
