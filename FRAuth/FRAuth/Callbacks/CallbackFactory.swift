@@ -38,8 +38,6 @@ import Foundation
          19. WebAuthnAuthenticationCallback
          20. IdPCallback
          21. SelectIdPCallback
-         22. DeviceBindingCallback
-         23. DeviceSigningVerifierCallback
  */
 @objc(FRCallbackFactory)
 public class CallbackFactory: NSObject {
