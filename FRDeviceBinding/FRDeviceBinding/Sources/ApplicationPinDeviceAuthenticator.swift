@@ -104,10 +104,13 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         //create header
         var header = JWSHeader(algorithm: algorithm)
         header.kid = userKey.kid
-        header.typ = "JWS"
+        header.typ = DBConstants.JWS
         
         //create payload
-        let params: [String: Any] = ["sub": userKey.userId, "challenge": challenge, "exp": (Int(expiration.timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            params[DBConstants.iss] = bundleIdentifier
+        }
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         
