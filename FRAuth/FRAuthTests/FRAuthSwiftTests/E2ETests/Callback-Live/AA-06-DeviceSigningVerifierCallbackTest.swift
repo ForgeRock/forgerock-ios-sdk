@@ -17,7 +17,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     static var USERNAME: String = "sdkuser"
     static var APPLICATION_PIN: String = "1111"
     
-    let options = FROptions(url: "https://openam-sdks-dbind.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "afef1acb448a873",
@@ -539,7 +539,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
 
-        // Ensusre that a TextOutputCallback is received with message "Unsupported"
+        // Ensusre that a TextOutputCallback is received with message "Abort"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -559,14 +559,14 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         node.next { (token: AccessToken?, node, error) in
             // Validate result
             XCTAssertNil(node)
-            XCTAssertNotNil(error)
-            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
         
         // User should not have been authenticated...
-        XCTAssertNil(FRUser.currentUser)
+        XCTAssertNotNil(FRUser.currentUser)
     }
     
     /// Bind a device

@@ -15,7 +15,7 @@ import XCTest
 class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     
     static var USERNAME: String = "sdkuser"
-    let options = FROptions(url: "https://openam-sdks-dbind.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "afef1acb448a873",
@@ -254,6 +254,58 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
+    }
+    
+    func test_05_test_device_binding_wrong_app_id() {
+        var currentNode: Node
+        
+        do {
+            try currentNode = startTest(nodeConfiguration: "wrong-app-id")
+        } catch AuthError.invalidCallbackResponse {
+            XCTFail("Expected a Device Binding node, but got nothing!")
+            return
+        } catch {
+            XCTFail("Unexpected error occured!")
+            return
+        }
+        
+        // We expect DeviceBinding callback with wrong app id settings here. Assert its properties. . .
+        for callback in currentNode.callbacks {
+            if callback is DeviceBindingCallback, let deviceBindingCallback = callback as? DeviceBindingCallback {
+                
+                var bindingResult = ""
+                let ex = self.expectation(description: "Device Binding")
+                deviceBindingCallback.execute({ (result) in
+                        switch result {
+                        case .success:
+                            bindingResult = "Success"
+                        case .failure(let error):
+                            bindingResult = error.errorMessage
+                        };
+                        ex.fulfill()
+                    })
+                waitForExpectations(timeout: 60, handler: nil)
+                
+                XCTAssertEqual(bindingResult, "Success")
+
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        
+        let ex = self.expectation(description: "Submit DeviceBinding callback and continue...")
+        currentNode.next { (token: AccessToken?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNotNil(error)
+            XCTAssertNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNil(FRUser.currentUser)
     }
     
     /// Common steps for all test cases
