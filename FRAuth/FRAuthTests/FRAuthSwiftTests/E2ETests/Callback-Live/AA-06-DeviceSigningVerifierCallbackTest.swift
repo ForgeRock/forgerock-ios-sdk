@@ -86,7 +86,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        // Ensusre that a TextCallback was received with message "Abort"
+        // Ensure that a TextCallback was received with message "Abort"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -156,7 +156,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        /// Ensusre that a TextCallback is received with message "Custom"
+        /// Ensure that a TextCallback is received with message "Custom"
         guard let node = currentNode else {
             XCTFail("Failed to get next node...")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -227,7 +227,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        // Ensusre that a TextOutputCallback is received with message "Success"
+        // Ensure that a TextOutputCallback is received with message "Success"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -298,7 +298,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        // Ensusre that a TextOutputCallback is received with message "Success"
+        // Ensure that a TextOutputCallback is received with message "Success"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -370,7 +370,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        // Ensusre that a TextOutputCallback is received with message "Timeout"
+        // Ensure that a TextOutputCallback is received with message "Timeout"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -454,7 +454,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
 
-        // Ensusre that a TextOutputCallback is received with message "Success"
+        // Ensure that a TextOutputCallback is received with message "Success"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
@@ -539,7 +539,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
 
-        // Ensusre that a TextOutputCallback is received with message "Abort"
+        // Ensure that a TextOutputCallback is received with message "Abort"
         guard let node = currentNode else {
             XCTFail("Failed to get next node")
             throw AuthError.invalidCallbackResponse("Expected TextOutputCallback, but got nothing...")
