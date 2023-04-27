@@ -2,12 +2,57 @@
   "object": {
     "pins": [
       {
+        "package": "AppAuth",
+        "repositoryURL": "https://github.com/openid/AppAuth-iOS.git",
+        "state": {
+          "branch": null,
+          "revision": "0eadcdec4ddb121865f3d66917549194afce1f2b",
+          "version": "1.6.1"
+        }
+      },
+      {
         "package": "Facebook",
         "repositoryURL": "https://github.com/facebook/facebook-ios-sdk.git",
         "state": {
           "branch": null,
           "revision": "82dec0403c32d7b1d93529dcabb9fcb18f0825cc",
           "version": "9.1.0"
+        }
+      },
+      {
+        "package": "GoogleSignIn",
+        "repositoryURL": "https://github.com/google/GoogleSignIn-iOS.git",
+        "state": {
+          "branch": null,
+          "revision": "60ca2bfd218ccb194a746a79b41d9d50eb7e3af0",
+          "version": "6.1.0"
+        }
+      },
+      {
+        "package": "GTMSessionFetcher",
+        "repositoryURL": "https://github.com/google/gtm-session-fetcher.git",
+        "state": {
+          "branch": null,
+          "revision": "4e9bbf2808b8fee444e84a48f5f3c12641987d3e",
+          "version": "1.7.2"
+        }
+      },
+      {
+        "package": "GTMAppAuth",
+        "repositoryURL": "https://github.com/google/GTMAppAuth.git",
+        "state": {
+          "branch": null,
+          "revision": "6dee0cde8a1b223737a5159e55e6b4ec16bbbdd9",
+          "version": "1.3.1"
+        }
+      },
+      {
+        "package": "JOSESwift",
+        "repositoryURL": "https://github.com/airsidemobile/JOSESwift.git",
+        "state": {
+          "branch": null,
+          "revision": "10ed3b6736def7c26eb87135466b1cb46ea7e37f",
+          "version": "2.4.0"
         }
       }
     ]

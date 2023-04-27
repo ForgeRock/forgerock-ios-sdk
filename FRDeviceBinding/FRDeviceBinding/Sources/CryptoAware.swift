@@ -1,6 +1,6 @@
 // 
 //  CryptoAware.swift
-//  FRAuth
+//  FRDeviceBinding
 //
 //  Copyright (c) 2022 ForgeRock. All rights reserved.
 //

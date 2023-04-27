@@ -1,6 +1,6 @@
 //
 //  DeviceBindingAuthenticators.swift
-//  FRAuth
+//  FRDeviceBinding
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
@@ -13,6 +13,7 @@ import Foundation
 import FRCore
 import JOSESwift
 import LocalAuthentication
+import FRAuth
 
 
 /// Protocol to override keypair generation, authentication, signing and access control

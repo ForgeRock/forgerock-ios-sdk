@@ -14,6 +14,7 @@ import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
+import FRDeviceBinding
 
 class ViewController: UIViewController {
 
@@ -204,6 +205,7 @@ class ViewController: UIViewController {
         catch {
             self.displayLog(String(describing: error))
         }
+        
     }
     
     

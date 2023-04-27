@@ -1,6 +1,6 @@
 // 
 //  UserDeviceKeyServiceTests.swift
-//  FRAuthTests
+//  FRDeviceBindingTests
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
@@ -11,6 +11,7 @@
 
 import XCTest
 @testable import FRAuth
+@testable import FRDeviceBinding
 
 
 class UserDeviceKeyServiceTests: XCTestCase {

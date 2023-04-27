@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; };
 		D521A2062303644300EDD28E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
 		D521A2082303644300EDD28E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
@@ -50,6 +53,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A5D1C39229E59FC30096039E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A5D1C37429E59FC20096039E;
+			remoteInfo = FRDeviceBinding;
+		};
+		A5D1C39429E59FC30096039E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A5D1C37C29E59FC30096039E;
+			remoteInfo = FRDeviceBindingTests;
+		};
 		D58BC3D226031BE500254654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */;
@@ -185,6 +202,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */,
 				D58BC3E926031C3200254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				EC2FF36928B8DB800095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */,
 				D5E6F460233AC3B700D18DF1 /* FRAuth.framework in Embed Frameworks */,
@@ -201,6 +219,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */,
 				D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				EC2FF36328B8DB780095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */,
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
@@ -214,6 +233,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530424326321BF00079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -261,6 +281,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */,
 				D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */,
 				EC2FF36228B8DB780095EDD1 /* FRGoogleSignIn.framework in Frameworks */,
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
@@ -273,6 +294,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A5D1C38D29E59FC30096039E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */,
+				A5D1C39529E59FC30096039E /* FRDeviceBindingTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D545BAB0233AC3CE00B0EB6D /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +315,7 @@
 		D554632322A6EF950096C7A4 = {
 			isa = PBXGroup;
 			children = (
+				A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */,
 				D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */,
 				D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */,
 				D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */,
@@ -507,6 +538,10 @@
 					ProjectRef = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
 				},
 				{
+					ProductGroup = A5D1C38D29E59FC30096039E /* Products */;
+					ProjectRef = A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */;
+				},
+				{
 					ProductGroup = D58BC3D926031BF100254654 /* Products */;
 					ProjectRef = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
 				},
@@ -532,6 +567,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRDeviceBinding.framework;
+			remoteRef = A5D1C39229E59FC30096039E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A5D1C39529E59FC30096039E /* FRDeviceBindingTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRDeviceBindingTests.xctest;
+			remoteRef = A5D1C39429E59FC30096039E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;

@@ -1,6 +1,6 @@
 // 
 //  DeviceBindingStatus.swift
-//  FRAuth
+//  FRDeviceBinding
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //

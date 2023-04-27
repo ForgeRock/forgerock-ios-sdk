@@ -1,6 +1,6 @@
 // 
-//  DeviceBindingCallback.swift
-//  FRAuth
+//  DeviceSigningVerifierCallback.swift
+//  FRDeviceBinding
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
@@ -9,25 +9,21 @@
 //
 
 
-import Foundation
+import UIKit
 import JOSESwift
-import FRCore
+import FRAuth
 
 /**
  * Callback to collect the device binding information
  */
-open class DeviceBindingCallback: MultipleValuesCallback, Binding {
+open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     
     //  MARK: - Properties
     
     /// The userId received from server
-    public private(set) var userId: String
-    /// The userName received from server
-    public private(set) var userName: String
+    public private(set) var userId: String?
     /// The challenge received from server
     public private(set) var challenge: String
-    /// The authentication type of the journey
-    public private(set) var deviceBindingAuthenticationType: DeviceBindingAuthenticationType
     // The title to be displayed in biometric prompt
     public private(set) var title: String
     // The subtitle to be displayed in biometric prompt
@@ -39,18 +35,16 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     /// Jws input key in callback response
     private var jwsKey: String
-    /// Device name input key in callback response
-    private var deviceNameKey: String
-    /// Device id input key in callback response
-    private var deviceIdKey: String
     /// Client Error input key in callback response
     private var clientErrorKey: String
+    /// Background queue used for certain tasks not to block the main thread
+    let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
     
     //  MARK: - Init
     
-    /// Designated initialization method for DeviceBindingCallback
+    /// Designated initialization method for DeviceSigningVerifierCallback
     ///
-    /// - Parameter json: JSON object of DeviceBindingCallback
+    /// - Parameter json: JSON object of DeviceSigningVerifierCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     required public init(json: [String : Any]) throws {
         guard let callbackType = json[CBConstants.type] as? String else {
@@ -70,20 +64,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             outputDictionary[outputName] = outputValue
         }
         
-        guard let userId = outputDictionary[CBConstants.userId] as? String else {
-            throw AuthError.invalidCallbackResponse("Missing userId")
-        }
-        self.userId = userId
-        
-        guard let userName = outputDictionary[CBConstants.username] as? String else {
-            throw AuthError.invalidCallbackResponse("Missing username")
-        }
-        self.userName = userName
-        
-        guard let outputValue = outputDictionary[CBConstants.authenticationType] as? String, let deviceBindingAuthenticationType = DeviceBindingAuthenticationType(rawValue: outputValue) else {
-            throw AuthError.invalidCallbackResponse("Missing authenticationType")
-        }
-        self.deviceBindingAuthenticationType = deviceBindingAuthenticationType
+        self.userId = outputDictionary[CBConstants.userId] as? String
         
         guard let challenge = outputDictionary[CBConstants.challenge] as? String else {
             throw AuthError.invalidCallbackResponse("Missing challenge")
@@ -121,16 +102,6 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         }
         self.jwsKey = jwsKey
         
-        guard let deviceNameKey = inputNames.filter({ $0.contains(CBConstants.deviceName) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing deviceNameKey")
-        }
-        self.deviceNameKey = deviceNameKey
-        
-        guard let deviceIdKey = inputNames.filter({ $0.contains(CBConstants.deviceId) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing deviceIdKey")
-        }
-        self.deviceIdKey = deviceIdKey
-        
         guard let clientErrorKey = inputNames.filter({ $0.contains(CBConstants.clientError) }).first else {
             throw AuthError.invalidCallbackResponse("Missing clientErrorKey")
         }
@@ -142,34 +113,63 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     }
     
     
-    /// Bind the device.
-    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - defaults value is `deviceAuthenticatorIdentifier`
+    /// Sign the challenge with binded device key
+    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is `DefaultUserKeySelector()`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` -default value is `deviceAuthenticatorIdentifier`
     /// - Parameter completion: Completion block for Device binding result callback
-    open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
-                   completion: @escaping DeviceBindingResultCallback) {
+    open func sign(userKeySelector: UserKeySelector = DefaultUserKeySelector(),
+                   deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
+                   completion: @escaping DeviceSigningResultCallback) {
         
-        let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
+        let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
         dispatchQueue.async {
-            self.execute(authInterface: authInterface, completion)
+            self.execute(userKeySelector: userKeySelector, deviceAuthenticator: deviceAuthenticator, completion)
         }
     }
     
     
-    /// Helper method to execute binding , signing, show biometric prompt.
-    /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
-    /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
-    /// - Parameter deviceRepository: Storage for user keys - default value is ``LocalDeviceBindingRepository()``
-    /// - Parameter completion: Completion block for Device binding result callback
-    internal func execute(authInterface: DeviceAuthenticator? = nil,
-                          deviceId: String? = nil,
-                          deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
-                          _ completion: @escaping DeviceBindingResultCallback) {
-
-        let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
-        authInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
-        let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
+    /// Helper method to execute signing, show biometric prompt.
+    /// - Parameter userKeyService: service to sort and fetch the keys stored in the device - default value is `UserDeviceKeyService()`
+    /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is  `DefaultUserKeySelector()`
+    /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - default value is `deviceAuthenticatorIdentifier`
+    /// - Parameter completion: Completion block for Device signing result callback
+    internal func execute(userKeyService: UserKeyService = UserDeviceKeyService(),
+                          userKeySelector: UserKeySelector = DefaultUserKeySelector(),
+                          deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
+                          _ completion: @escaping DeviceSigningResultCallback) {
         
+        let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
+        let status = userKeyService.getKeyStatus(userId: userId)
+        
+        switch status {
+        case .singleKeyFound(key: let key):
+            authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
+        case .multipleKeysFound(keys: _):
+            userKeySelector.selectUserKey(userKeys: userKeyService.getAll()) { key in
+                if let key = key {
+                    self.dispatchQueue.async {
+                        self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), completion)
+                    }
+                } else {
+                    self.handleException(status: .abort, completion: completion)
+                }
+            }
+            break
+        case .noKeysFound:
+            handleException(status: .clientNotRegistered, completion: completion)
+        }
+    }
+    
+    
+    /// Helper method to execute signing, show biometric prompt.
+    /// - Parameter userKey: User Information
+    /// - Parameter authInterface: Interface to find the Authentication Type
+    /// - Parameter completion: Completion block for Device binding result callback
+    internal func authenticate(userKey: UserKey,
+                               authInterface: DeviceAuthenticator,
+                               _ completion: @escaping DeviceSigningResultCallback) {
+        
+        authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return
@@ -179,34 +179,25 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         let timeout = timeout ?? 60
         
         do {
-            let keyPair = try authInterface.generateKeys()
-            let userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
-            try deviceRepository.persist(userKey: userKey)
             // Authentication will be triggered during signing if necessary
-            let jws = try authInterface.sign(keyPair: keyPair, kid: userKey.kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
+            let jws = try authInterface.sign(userKey: userKey, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
-                authInterface.deleteKeys()
                 handleException(status: .timeout, completion: completion)
                 return
             }
             
             // If no errors, set the input values and complete with success
-            setJws(jws)
-            if let deviceId = deviceId {
-                setDeviceId(deviceId)
-            }
+            self.setJws(jws)
+            
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
-            authInterface.deleteKeys()
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {
-            authInterface.deleteKeys()
             handleException(status: error, completion: completion)
         } catch {
-            authInterface.deleteKeys()
             handleException(status: .abort, completion: completion)
         }
     }
@@ -215,7 +206,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// Handle all the errors for the device binding.
     /// - Parameter status: Device binding status
     /// - Parameter completion: Completion block Device binding result callback
-    open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceBindingResultCallback) {
+    open func handleException(status: DeviceBindingStatus, completion: @escaping DeviceSigningResultCallback) {
         setClientError(status.clientError)
         FRLog.e(status.errorMessage)
         completion(.failure(status))
@@ -228,20 +219,6 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter jws: String value of `jws`]
     public func setJws(_ jws: String) {
         self.inputValues[self.jwsKey] = jws
-    }
-    
-    
-    /// Sets `deviceName` value in callback response
-    /// - Parameter deviceName: String value of `deviceName`]
-    public func setDeviceName(_ deviceName: String) {
-        self.inputValues[self.deviceNameKey] = deviceName
-    }
-    
-    
-    /// Sets `deviceId` value in callback response
-    /// - Parameter deviceId: String value of `deviceId`]
-    public func setDeviceId(_ deviceId: String) {
-        self.inputValues[self.deviceIdKey] = deviceId
     }
     
     

@@ -1,6 +1,6 @@
 // 
 //  ApplicationPinDeviceAuthenticatorTests.swift
-//  FRAuthTests
+//  FRDeviceBindingTests
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
@@ -13,6 +13,7 @@ import XCTest
 import JOSESwift
 @testable import FRAuth
 @testable import FRCore
+@testable import FRDeviceBinding
 
 class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
     

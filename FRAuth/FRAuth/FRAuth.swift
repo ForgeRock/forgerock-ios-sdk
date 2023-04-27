@@ -2,7 +2,7 @@
 //  FRAuth.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -83,9 +83,18 @@ public final class FRAuth: NSObject {
             try FRAuth.initWithOptions(options: configOptions)
         }
         
+        // If FRProximity module is present, invoke FRProximity.startProximity()
+        // This adds FRProximity's device collectors to FRDeviceCollector's collectors list
         if let c: NSObject.Type = NSClassFromString("FRProximity.FRProximity") as? NSObject.Type {
             FRLog.i("FRProximity SDK found; starting FRProximity")
             c.perform(Selector(("startProximity")))
+        }
+        
+        // If FRDeviceBinding module is present, invoke FRDeviceBinding.registerCallbacks()
+        // This adds FRDeviceBinding's callbacks to CallbackFactory's supportedCallbacks list
+        if let c: NSObject.Type = NSClassFromString("FRDeviceBinding.FRDeviceBinding") as? NSObject.Type {
+            FRLog.i("FRDeviceBinding SDK found; registering callbacks")
+            c.perform(Selector(("registerCallbacks")))
         }
     }
     

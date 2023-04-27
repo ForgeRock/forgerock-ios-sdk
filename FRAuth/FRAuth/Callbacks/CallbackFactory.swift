@@ -2,7 +2,7 @@
 //  CallbackFactory.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -38,8 +38,6 @@ import Foundation
          19. WebAuthnAuthenticationCallback
          20. IdPCallback
          21. SelectIdPCallback
-         22. DeviceBindingCallback
-         23. DeviceSigningVerifierCallback
  */
 @objc(FRCallbackFactory)
 public class CallbackFactory: NSObject {
@@ -81,9 +79,7 @@ public class CallbackFactory: NSObject {
             CallbackType.WebAuthnRegistrationCallback.rawValue: WebAuthnRegistrationCallback.self,
             CallbackType.IdPCallback.rawValue: IdPCallback.self,
             CallbackType.SelectIdPCallback.rawValue: SelectIdPCallback.self,
-            CallbackType.DeviceBindingCallback.rawValue: DeviceBindingCallback.self,
-            CallbackType.DeviceSigningVerifierCallback.rawValue: DeviceSigningVerifierCallback.self
-        ]
+        ] 
     }
     
     

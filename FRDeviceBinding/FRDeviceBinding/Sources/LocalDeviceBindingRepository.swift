@@ -1,6 +1,6 @@
 // 
 //  LocalDeviceBindingRepository.swift
-//  FRAuth
+//  FRDeviceBinding
 //
 //  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
@@ -11,7 +11,7 @@
 
 import Foundation
 import FRCore
-
+import FRAuth
 
 protocol DeviceBindingRepository {
     
