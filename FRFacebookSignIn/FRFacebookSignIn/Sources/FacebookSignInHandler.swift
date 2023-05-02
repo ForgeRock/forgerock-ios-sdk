@@ -2,7 +2,7 @@
 //  FacebookSignInHandler.swift
 //  FRFacebookSignIn
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -86,6 +86,19 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
         let btn = FBLoginButton()
         btn.tooltipColorStyle = colorStyle
         return btn
+    }
+    
+    
+    /// Call this method from the `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)` method of your application delegate. It should be invoked for the proper use of the Facebook SDK.
+    /// As part of SDK initialization, basic auto-logging of app events will occur; this can be controlled via the `FacebookAutoLogAppEventsEnabled` key in the project's Info.plist file.
+    ///
+    /// - Parameters:
+    ///   - application: The application as passed to `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)`.
+    ///   - launchOptions: The launch options as passed to `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)`.
+    /// - Returns: `true` if there are any added application observers that themselves return true from calling `application(_:didFinishLaunchingWithOptions:)`.
+    ///    Otherwise will return `false`.
+    public static func handle(_ application: UIApplication, _ launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        return ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
     
