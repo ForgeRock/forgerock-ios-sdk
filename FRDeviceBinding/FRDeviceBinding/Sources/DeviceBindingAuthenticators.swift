@@ -77,17 +77,20 @@ extension DeviceAuthenticator {
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
     public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
-        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: "sig", JWKParameter.algorithm.rawValue: "ES256", JWKParameter.keyIdentifier.rawValue: kid])
+        let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: DBConstants.sig, JWKParameter.algorithm.rawValue: DBConstants.ES256, JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
         
         //create header
         var header = JWSHeader(algorithm: algorithm)
         header.kid = kid
-        header.typ = "JWS"
+        header.typ = DBConstants.JWS
         header.jwkTyped = jwk
         
         //create payload
-        let params: [String: Any] = ["sub": userId, "challenge": challenge, "exp": (Int(expiration.timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios]
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            params[DBConstants.iss] = bundleIdentifier
+        }
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         
@@ -119,10 +122,13 @@ extension DeviceAuthenticator {
         //create header
         var header = JWSHeader(algorithm: algorithm)
         header.kid = userKey.kid
-        header.typ = "JWS"
+        header.typ = DBConstants.JWS
         
         //create payload
-        let params: [String: Any] = ["sub": userKey.userId, "challenge": challenge, "exp": (Int(expiration.timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            params[DBConstants.iss] = bundleIdentifier
+        }
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         
@@ -382,4 +388,18 @@ public struct Prompt {
     var title: String
     var subtitle: String
     var description: String
+}
+
+//  MARK: - Device Binding Constants
+struct DBConstants {
+    static let sig: String = "sig"
+    static let alg: String = "alg"
+    static let ES256: String = "ES256"
+    static let JWS: String = "JWS"
+    static let sub: String = "sub"
+    static let challenge: String = "challenge"
+    static let exp: String = "exp"
+    static let platform: String = "platform"
+    static let ios: String = "ios"
+    static let iss: String = "iss"
 }

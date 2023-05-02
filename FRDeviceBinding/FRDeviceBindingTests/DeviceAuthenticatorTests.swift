@@ -69,13 +69,17 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let payload = jws.payload
             let message = String(data: payload.data(), encoding: .utf8)!
             XCTAssertEqual(kid, jws.header.kid)
-            XCTAssertEqual("JWS", jws.header.typ)
+            XCTAssertEqual(DBConstants.JWS, jws.header.typ)
             
             let messageDictionary = FRTestUtils.parseStringToDictionary(message)
             
-            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
-            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
-            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
+            XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
+            XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.platform] as? String, DBConstants.ios)
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
+            }
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
@@ -135,13 +139,17 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let payload = jws.payload
             let message = String(data: payload.data(), encoding: .utf8)!
             XCTAssertEqual(kid, jws.header.kid)
-            XCTAssertEqual("JWS", jws.header.typ)
+            XCTAssertEqual(DBConstants.JWS, jws.header.typ)
             
             let messageDictionary = FRTestUtils.parseStringToDictionary(message)
             
-            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
-            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
-            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
+            XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
+            XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.platform] as? String, DBConstants.ios)
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
+            }
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
@@ -209,13 +217,17 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let payload = jws.payload
             let message = String(data: payload.data(), encoding: .utf8)!
             XCTAssertEqual(kid, jws.header.kid)
-            XCTAssertEqual("JWS", jws.header.typ)
+            XCTAssertEqual(DBConstants.JWS, jws.header.typ)
             
             let messageDictionary = FRTestUtils.parseStringToDictionary(message)
             
-            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
-            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
-            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
+            XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
+            XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.platform] as? String, DBConstants.ios)
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
+            }
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
@@ -276,13 +288,16 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let payload = jws.payload
             let message = String(data: payload.data(), encoding: .utf8)!
             XCTAssertEqual(kid, jws.header.kid)
-            XCTAssertEqual("JWS", jws.header.typ)
+            XCTAssertEqual(DBConstants.JWS, jws.header.typ)
             
             let messageDictionary = FRTestUtils.parseStringToDictionary(message)
             
-            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
-            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
-            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
+            XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
+            XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
+            }
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
@@ -320,13 +335,16 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let payload = jws.payload
             let message = String(data: payload.data(), encoding: .utf8)!
             XCTAssertEqual(kid, jws.header.kid)
-            XCTAssertEqual("JWS", jws.header.typ)
+            XCTAssertEqual(DBConstants.JWS, jws.header.typ)
             
             let messageDictionary = FRTestUtils.parseStringToDictionary(message)
             
-            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
-            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
-            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
+            XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
+            XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
+            }
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
@@ -364,13 +382,16 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             let payload = jws.payload
             let message = String(data: payload.data(), encoding: .utf8)!
             XCTAssertEqual(kid, jws.header.kid)
-            XCTAssertEqual("JWS", jws.header.typ)
+            XCTAssertEqual(DBConstants.JWS, jws.header.typ)
             
             let messageDictionary = FRTestUtils.parseStringToDictionary(message)
             
-            XCTAssertEqual(messageDictionary["challenge"] as? String, challenge)
-            XCTAssertEqual(messageDictionary["sub"] as? String, userId)
-            XCTAssertEqual(messageDictionary["exp"] as? Int, Int(expiration.timeIntervalSince1970))
+            XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
+            XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
+            XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
+            }
         } catch {
             XCTFail("Failed to verify JWS signature")
         }
