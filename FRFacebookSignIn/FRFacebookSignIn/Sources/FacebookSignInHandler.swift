@@ -95,25 +95,8 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     /// - Parameters:
     ///   - application: The application as passed to `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)`.
     ///   - launchOptions: The launch options as passed to `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)`.
-    /// - Returns: `true` if there are any added application observers that themselves return true from calling `application(_:didFinishLaunchingWithOptions:)`.
-    ///    Otherwise will return `false`.
-    public static func handle(_ application: UIApplication, _ launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    /// - Returns: `true` if there are any added application observers that themselves return true from calling `application(_:didFinishLaunchingWithOptions:)`. Otherwise will return `false`.
+    public static func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
-    
-    
-    //  MARK: - iOS 10 Support
-    
-    /// Handles incoming URL for Facebook Sign-in using SFSafariViewController
-    ///
-    ///  Note: This is only required to support iOS 10; this must be called at AppDelegate of the application
-    ///
-    /// - Parameters:
-    ///   - application: UIApplication instance
-    ///   - url: Incoming URL as in URL instance
-    ///   - options: UIApplication.OpenURLOptions
-    /// - Returns: Boolean result whether or not the URL is designated for Facebook Login
-    public static func handle(_ application: UIApplication, _ url: URL, _ options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return ApplicationDelegate.shared.application(application, open: url, options: options)
     }
 }
