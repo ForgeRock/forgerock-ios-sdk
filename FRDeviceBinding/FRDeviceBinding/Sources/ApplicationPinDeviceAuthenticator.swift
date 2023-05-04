@@ -108,9 +108,10 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         
         //create payload
         var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
-        if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            params[DBConstants.iss] = bundleIdentifier
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
+        params[DBConstants.iss] = bundleIdentifier
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         
