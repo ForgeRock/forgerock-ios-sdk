@@ -125,9 +125,9 @@ class PushQRCodeParserTests: FRABaseTests {
     
     
     func test_08_parse_push_from_mfa_qrcode_success() {
-        let qrCode = URL(string: "mfauth://totp/Forgerock:demo?" +
+        let qrCode = URL(string: "mfauth://totp/Test:demo?" +
                          "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
-                         "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
+                         "image=https://img.favpng.com/9/25/24/computer-icons-instagram-logo-sticker-png-favpng-LZmXr3KPyVbr8LkxNML458QV3.jpg&" +
                          "b=ff00ff&" +
                          "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
                          "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
@@ -154,10 +154,16 @@ class PushQRCodeParserTests: FRABaseTests {
             
             XCTAssertEqual(parser.scheme, "mfauth")
             XCTAssertEqual(parser.type, "totp")
-            XCTAssertEqual(parser.issuer, "Forgerock")
+            XCTAssertEqual(parser.issuer, "Test")
             XCTAssertEqual(parser.label, "demo")
+            XCTAssertEqual(parser.loadBalancer, "amlbcookie=01")
+            XCTAssertEqual(parser.challenge, "Daf8vrc8onKu+dcptwCRS9UHmdui5u16vAdG2HMU4w0")
             XCTAssertEqual(parser.secret, "ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc")
+            XCTAssertEqual(parser.registrationEndpoint.absoluteString, "https://forgerock.example.com/openam/json/push/sns/message?_action=register")
+            XCTAssertEqual(parser.authenticationEndpoint.absoluteString, "https://forgerock.example.com/openam/json/push/sns/message?_action=authenticate")
             XCTAssertEqual(parser.policies, jsonPolicies)
+            XCTAssertEqual(parser.backgroundColor, "ff00ff")
+            XCTAssertEqual(parser.image, "https://img.favpng.com/9/25/24/computer-icons-instagram-logo-sticker-png-favpng-LZmXr3KPyVbr8LkxNML458QV3.jpg")
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
