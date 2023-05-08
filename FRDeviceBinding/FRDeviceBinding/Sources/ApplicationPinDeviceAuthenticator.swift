@@ -87,6 +87,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
+    /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
         guard let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot retrive keys, missing prompt")
