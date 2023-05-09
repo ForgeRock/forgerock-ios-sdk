@@ -102,8 +102,10 @@ struct PushQRCodeParser {
                 throw MechanismError.invalidInformation("registration and/or authentication URL")
         }
         
-        if let imgUrlEncoded = params["image"], let imgUrlDecodedData = imgUrlEncoded.decodeURL(), let imageUrlStr = String(data: imgUrlDecodedData, encoding: .utf8) {
+        if self.scheme == URIType.pushauth.rawValue, let imgUrlEncoded = params["image"], let imgUrlDecodedData = imgUrlEncoded.decodeURL(), let imageUrlStr = String(data: imgUrlDecodedData, encoding: .utf8) {
             self.image = imageUrlStr
+        } else {
+            self.image = params["image"]
         }
         
         self.secret = secret

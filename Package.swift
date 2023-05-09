@@ -17,9 +17,8 @@ let package = Package (
         .library(name: "FRDeviceBinding", targets: ["FRDeviceBinding"])
     ],
     dependencies: [
-        .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("9.1.0")),
-        .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("6.1.0")),
-        .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .exact("2.4.0"))
+        .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("16.0.1")),
+        .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("6.1.0"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),

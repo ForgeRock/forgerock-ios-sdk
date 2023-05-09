@@ -11,6 +11,7 @@
 
 import Foundation
 import UIKit
+import AuthenticationServices
 
 /**
  WebAuthnRegistrationCallback is a representation of AM's WebAuthn Registration Node to generate WebAuthn attestation based on given credentials, and optionally set the WebAuthn outcome value in `Node`'s designated `HiddenValueCallback`
@@ -305,7 +306,8 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
             self.webAuthnManager = FRWebAuthnManager(domain: self.relyingPartyId, authenticationAnchor: window, node: node)
             guard let webAuthnManager = self.webAuthnManager as? FRWebAuthnManager else { return }
             webAuthnManager.delegate = self
-            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId, deviceName: deviceName)
+            
+            webAuthnManager.signUpWith(userName: self.displayName, challenge: data, userID: self.userId, deviceName: deviceName, userVerificationPreference: self.convertUserVerification(), attestationPreference: self.convertAttestationPreference())
         } else {
             if self.isNewJSONFormat {
                 FRLog.i("Performing WebAuthn registration for AM 7.1.0 or above", subModule: WebAuthn.module)
@@ -446,5 +448,36 @@ extension WebAuthnRegistrationCallback: FRWebAuthnManagerDelegate {
     
     public func didCancelModalSheet() {
         self.successCallback?("Cancel")
+    }
+}
+
+extension WebAuthnRegistrationCallback {
+    @available(iOS 15.0, *)
+    fileprivate func convertAttestationPreference() -> ASAuthorizationPublicKeyCredentialAttestationKind {
+        let attestationPreference: ASAuthorizationPublicKeyCredentialAttestationKind
+        switch self.attestationPreference {
+        case .none:
+            attestationPreference = .none
+        case .direct:
+            attestationPreference = .direct
+        case .indirect:
+            attestationPreference = .indirect
+        }
+        return attestationPreference
+    }
+    
+    @available(iOS 15.0, *)
+    fileprivate func convertUserVerification() -> ASAuthorizationPublicKeyCredentialUserVerificationPreference {
+        let verificationPreference: ASAuthorizationPublicKeyCredentialUserVerificationPreference
+        switch self.userVerification {
+        case .preferred:
+            verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.preferred
+        case .required:
+            verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.required
+        case .discouraged:
+            verificationPreference = ASAuthorizationPublicKeyCredentialUserVerificationPreference.discouraged
+        }
+        
+        return verificationPreference
     }
 }
