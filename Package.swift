@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package (
     name: "ForgeRock-iOS-SDK",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(name: "FRCore", targets: ["FRCore"]),
@@ -16,7 +16,7 @@ let package = Package (
         .library(name: "FRGoogleSignIn", targets: ["FRGoogleSignIn"])
     ],
     dependencies: [
-        .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("9.1.0")),
+        .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("16.0.1")),
         .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("7.0.0"))
     ],
     targets: [

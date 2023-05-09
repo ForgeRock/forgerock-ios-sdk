@@ -7,6 +7,7 @@
 - Added support for combined MFA in the Authenticator SDK [SDKS-2166]
 - Added support for policy enforcement in the Authenticator SDK [SDKS-2166]
 - Added support for passkeys [SDKS-2140]
+- Updated Facebook SDK Version to 16.0.1 [SDKS-1839]
 
 ## [3.4.1]
 #### Changed
