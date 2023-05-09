@@ -29,6 +29,7 @@ public protocol DeviceAuthenticator {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
+    /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String
     
     /// Sign the challenge sent from the server and generate signed JWT
@@ -36,6 +37,7 @@ public protocol DeviceAuthenticator {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
+    /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String
     
     /// Check if authentication is supported
@@ -76,6 +78,7 @@ extension DeviceAuthenticator {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
+    /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: DBConstants.sig, JWKParameter.algorithm.rawValue: DBConstants.ES256, JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
@@ -88,9 +91,10 @@ extension DeviceAuthenticator {
         
         //create payload
         var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios]
-        if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            params[DBConstants.iss] = bundleIdentifier
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
+        params[DBConstants.iss] = bundleIdentifier
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         
@@ -112,6 +116,7 @@ extension DeviceAuthenticator {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
+    /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
         guard let keyStoreKey = cryptoKey.getSecureKey() else {
@@ -126,9 +131,10 @@ extension DeviceAuthenticator {
         
         //create payload
         var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
-        if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            params[DBConstants.iss] = bundleIdentifier
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
+        params[DBConstants.iss] = bundleIdentifier
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         

@@ -87,6 +87,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
+    /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
         guard let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot retrive keys, missing prompt")
@@ -108,9 +109,10 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         
         //create payload
         var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
-        if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            params[DBConstants.iss] = bundleIdentifier
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
+        params[DBConstants.iss] = bundleIdentifier
         let message = try JSONSerialization.data(withJSONObject: params, options: [])
         let payload = Payload(message)
         
