@@ -14,9 +14,6 @@ import FRCore
 #if canImport(FRFacebookSignIn)
 import FRFacebookSignIn
 #endif
-#if canImport(FRGoogleSignIn)
-import FRGoogleSignIn
-#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,11 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         #if canImport(FRFacebookSignIn)
         if FacebookSignInHandler.handle(app, url, options) {
-            return true
-        }
-        #endif
-        #if canImport(FRGoogleSignIn)
-        if GoogleSignInHandler.handle(app, url, options) {
             return true
         }
         #endif
