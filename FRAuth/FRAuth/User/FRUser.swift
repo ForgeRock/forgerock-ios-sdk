@@ -54,7 +54,7 @@ public class FRUser: NSObject, NSSecureCoding {
     static var _staticUser: FRUser? = nil
     /// AccessToken object associated with FRUser object
     @objc
-    public var token: AccessToken? {
+    public var token: FRAccessToken? {
         get {
             if let frAuth = FRAuth.shared, let accessToken = try? frAuth.keychainManager.getAccessToken() {
                 let sessionToken = frAuth.keychainManager.getSSOToken()
@@ -82,7 +82,7 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameters:
     ///   - token: AccessToken object associated with the user instance
-    init(token: AccessToken?) {
+    init(token: FRAccessToken?) {
     
         super.init()
 
@@ -118,7 +118,7 @@ public class FRUser: NSObject, NSSecureCoding {
         else if let frAuth = FRAuth.shared {
             FRLog.v("Initiating login process")
             
-            FRSession.authenticate(authIndexValue: frAuth.authServiceName) { (token: Token?, node, error) in
+            FRSession.authenticate(authIndexValue: frAuth.authServiceName) { (token: FRToken?, node, error) in
                 completion(nil, node, error)
             }
         }
@@ -152,7 +152,7 @@ public class FRUser: NSObject, NSSecureCoding {
         else if let frAuth = FRAuth.shared {
             FRLog.v("Initiating register process")
             
-            FRSession.authenticate(authIndexValue: frAuth.registerServiceName) { (token: Token?, node, error) in
+            FRSession.authenticate(authIndexValue: frAuth.registerServiceName) { (token: FRToken?, node, error) in
                 completion(nil, node, error)
             }
         }

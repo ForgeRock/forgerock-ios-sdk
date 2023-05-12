@@ -57,7 +57,7 @@ public typealias SocialLoginCompletionCallback = (_ token: String?, _ tokenType:
 //  MARK: - OAuth2Client
 
 /// Callback definition for completion of exchanging access_token request
-public typealias TokenCompletionCallback = (_ token: AccessToken?, _ error:Error?) -> Void
+public typealias TokenCompletionCallback = (_ token: FRAccessToken?, _ error:Error?) -> Void
 
 
 //  MARK: - OAuth2 / OIDC

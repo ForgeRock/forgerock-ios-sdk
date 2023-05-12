@@ -58,7 +58,7 @@ public class OAuth2Client: NSObject, Codable {
     ///   - accessToken: AccessToken object to revoke
     ///   - completion: Completion callback to notify the result of operation
     @objc
-    public func revoke(accessToken: AccessToken, completion: @escaping CompletionCallback) {
+    public func revoke(accessToken: FRAccessToken, completion: @escaping CompletionCallback) {
         // Construct parameter for the request
         var parameter:[String: String] = [:]
         let token = accessToken.refreshToken ?? accessToken.value
@@ -118,7 +118,7 @@ public class OAuth2Client: NSObject, Codable {
         FRRestClient.invoke(request: request, action: Action(type: .REFRESH_TOKEN)) { (result) in
             switch result {
             case .success(let response, _ ):
-                if let accessToken = AccessToken(tokenResponse: response) {
+                if let accessToken = FRAccessToken(tokenResponse: response) {
                     do {
                         try FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
                     }
@@ -152,14 +152,14 @@ public class OAuth2Client: NSObject, Codable {
     /// - Parameter refreshToken: refresh_token to be consumed for requesting new OAuth2 token set
     /// - Returns: AccessToken object if refreshing token was successful
     /// - Throws: AuthError or TokenError
-    @objc public func refreshSync(refreshToken: String) throws -> AccessToken {
+    @objc public func refreshSync(refreshToken: String) throws -> FRAccessToken {
         
         let request = self.buildRefreshRequest(refreshToken: refreshToken)
         let result = FRRestClient.invokeSync(request: request, action: Action(type: .REFRESH_TOKEN))
         
         switch result {
         case .success(let response, _ ):
-            if let accessToken = AccessToken(tokenResponse: response) {
+            if let accessToken = FRAccessToken(tokenResponse: response) {
                 do {
                     try FRAuth.shared?.keychainManager.setAccessToken(token: accessToken)
                 }
@@ -192,7 +192,7 @@ public class OAuth2Client: NSObject, Codable {
     ///   - token: Token object (SSO Token) received from OpenAM through AuthService/Node authentication flow
     ///   - completion: Completion callback which returns set of token(s), or error upon completion of request
     @objc
-    public func exchangeToken(token: Token, completion: @escaping TokenCompletionCallback) {
+    public func exchangeToken(token: FRToken, completion: @escaping TokenCompletionCallback) {
        
         let ssoToken = token.value
         let pkce = PKCE()
@@ -219,7 +219,7 @@ public class OAuth2Client: NSObject, Codable {
                         FRRestClient.invoke(request: request, action: Action(type: .EXCHANGE_TOKEN), completion: { (result) in
                             switch result {
                             case .success(let response, _):
-                                if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
+                                if let accessToken = FRAccessToken(tokenResponse: response, sessionToken: ssoToken) {
                                     completion(accessToken, nil)
                                 }
                                 else {
@@ -260,7 +260,7 @@ public class OAuth2Client: NSObject, Codable {
         FRRestClient.invoke(request: request, action: Action(type: .EXCHANGE_TOKEN), completion: { (result) in
             switch result {
             case .success(let response, _):
-                if let accessToken = AccessToken(tokenResponse: response) {
+                if let accessToken = FRAccessToken(tokenResponse: response) {
                     completion(accessToken, nil)
                 }
                 else {
@@ -282,7 +282,7 @@ public class OAuth2Client: NSObject, Codable {
     /// - Parameter token: Token object (SSO Token) received from OpenAM through AuthService/Node authentication flow
     /// - Returns: AccessToken object if exchanging token was successful
     /// - Throws: AuthError or TokenError
-    public func exchangeTokenSync(token: Token) throws -> AccessToken? {
+    public func exchangeTokenSync(token: FRToken) throws -> FRAccessToken? {
         let ssoToken = token.value
         let pkce = PKCE()
         let request = self.buildAuthorizeRequest(ssoToken: ssoToken, pkce: pkce)
@@ -307,7 +307,7 @@ public class OAuth2Client: NSObject, Codable {
                     let result = FRRestClient.invokeSync(request: request, action: Action(type: .EXCHANGE_TOKEN))
                     switch result {
                     case .success(let response, _ ):
-                        if let accessToken = AccessToken(tokenResponse: response, sessionToken: ssoToken) {
+                        if let accessToken = FRAccessToken(tokenResponse: response, sessionToken: ssoToken) {
                             return accessToken
                         }
                         else {

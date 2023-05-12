@@ -154,13 +154,13 @@ public class Node: NSObject {
     /// - Parameter completion: NodeCompletion callback which returns the result of Node submission.
     public func next<T>(completion:@escaping NodeCompletion<T>) {
 
-        if T.self as AnyObject? === Token.self {
-            next { (token: Token?, node, error) in
+        if T.self as AnyObject? === FRToken.self {
+            next { (token: FRToken?, node, error) in
                 completion(token as? T, node, error)
             }
         }
-        else if T.self as AnyObject? === AccessToken.self {
-            next { (token: AccessToken?, node, error) in
+        else if T.self as AnyObject? === FRAccessToken.self {
+            next { (token: FRAccessToken?, node, error) in
                 completion(token as? T, node, error)
             }
         }
@@ -187,7 +187,7 @@ public class Node: NSObject {
             completion(currentUser, nil, nil)
         }
         else {
-            self.next { (accessToken: AccessToken?, node, error) in
+            self.next { (accessToken: FRAccessToken?, node, error) in
                 if let token = accessToken {
                     let user = FRUser(token: token)
                     
@@ -204,14 +204,14 @@ public class Node: NSObject {
     /// Submits current node, and returns AccessToken instance if result of node returns SSO TOken
     ///
     /// - Parameter completion: NodeCompletion<AccessToken> callback that returns AccessToken upon completion
-    fileprivate func next(completion:@escaping NodeCompletion<AccessToken>) {
+    fileprivate func next(completion:@escaping NodeCompletion<FRAccessToken>) {
         FRLog.v("Called")
         if let accessToken = try? self.keychainManager?.getAccessToken() {
             FRLog.i("access_token retrieved from SessionManager; ignoring Node submit")
             completion(accessToken, nil, nil)
         }
         else {
-            self.next { (token: Token?, node, error) in
+            self.next { (token: FRToken?, node, error) in
                 
                 if let tokenId = token {
                     // If OAuth2Client is provided (for abstraction layer)
@@ -252,7 +252,7 @@ public class Node: NSObject {
     /// Submits current node, and returns Token instance if result of node returns SSO TOken
     ///
     /// - Parameter completion: NodeCompletion<Token> callback that returns Token upon completion
-    fileprivate func next(completion:@escaping NodeCompletion<Token>) {
+    fileprivate func next(completion:@escaping NodeCompletion<FRToken>) {
 
         let thisRequest = self.buildAuthServiceRequest()
         FRRestClient.invoke(request: thisRequest, action: Action(type: .AUTHENTICATE, payload: ["tree": self.serviceName, "type": self.authIndexType])) { (result) in
@@ -271,7 +271,7 @@ public class Node: NSObject {
                     }
                 }
                 else if let tokenId = response[OpenAM.tokenId] as? String {
-                    let token = Token(tokenId)
+                    let token = FRToken(tokenId)
                     if let keychainManager = self.keychainManager {
                         let currentSessionToken = keychainManager.getSSOToken()
                         if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
@@ -357,14 +357,14 @@ public class Node: NSObject {
     
     @objc(nextWithAccessTokenCompletion:)
     @available(swift, obsoleted: 1.0)
-    public func nextWithAccessTokenCompletion(completion:@escaping NodeCompletion<AccessToken>) {
+    public func nextWithAccessTokenCompletion(completion:@escaping NodeCompletion<FRAccessToken>) {
         self.next(completion: completion)
     }
     
     
     @objc(nextWithTokenCompletion:)
     @available(swift, obsoleted: 1.0)
-    public func nextWithTokenCompletion(completion:@escaping NodeCompletion<Token>) {
+    public func nextWithTokenCompletion(completion:@escaping NodeCompletion<FRToken>) {
         self.next(completion: completion)
     }
 }

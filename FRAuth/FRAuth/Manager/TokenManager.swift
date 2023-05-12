@@ -80,7 +80,7 @@ struct TokenManager {
     ///
     /// - Returns: AccessToken if it was able to retrieve, or get new set of OAuth2 token
     /// - Throws: AuthError will be thrown when refresh_token request failed, or TokenError
-    public func getAccessToken() throws -> AccessToken? {
+    public func getAccessToken() throws -> FRAccessToken? {
         if let token = try self.keychainManager.getAccessToken() {
             
             if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
@@ -158,7 +158,7 @@ struct TokenManager {
     /// Refreshs OAuth2 token set synchronously with current refresh_token
     /// - Throws: TokenError
     /// - Returns: renewed OAuth2 token 
-    func refreshSync() throws -> AccessToken? {
+    func refreshSync() throws -> FRAccessToken? {
         if let token = try self.keychainManager.getAccessToken() {
             
             if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
@@ -247,7 +247,7 @@ struct TokenManager {
     /// Renews OAuth 2 token(s) with SSO Token
     /// - Throws: AuthApiError, TokenError
     /// - Returns: AccessToken object containing OAuth 2 token if it was successful
-    func refreshUsingSSOTokenAsync() throws -> AccessToken? {
+    func refreshUsingSSOTokenAsync() throws -> FRAccessToken? {
         if let ssoToken = self.keychainManager.getSSOToken() {
             do {
                 let token = try self.oAuth2Client.exchangeTokenSync(token: ssoToken)
@@ -308,7 +308,7 @@ struct TokenManager {
     /// - Parameter token: AccessToken object to be consumed for renewal
     /// - Throws: AuthApiError, TokenError
     /// - Returns: AccessToken object containing OAuth 2 token if it was successful
-    func refreshUsingRefreshTokenAsync(token: AccessToken) throws -> AccessToken? {
+    func refreshUsingRefreshTokenAsync(token: FRAccessToken) throws -> FRAccessToken? {
         if let refreshToken = token.refreshToken {
             let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
             newToken.sessionToken = token.sessionToken
@@ -330,7 +330,7 @@ struct TokenManager {
     /// - Parameters:
     ///   - token: AccessToken object to be consumed for renewal
     ///   - completion: Completion callback to notify the result
-    func refreshUsingRefreshToken(token: AccessToken, completion: @escaping TokenCompletionCallback) {
+    func refreshUsingRefreshToken(token:FRAccessToken, completion: @escaping TokenCompletionCallback) {
         if let refreshToken = token.refreshToken {
             self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
                 do {

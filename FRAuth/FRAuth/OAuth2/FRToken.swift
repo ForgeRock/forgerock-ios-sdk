@@ -1,5 +1,5 @@
 //
-//  Token.swift
+//  FRToken.swift
 //  FRAuth
 //
 //  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
@@ -11,7 +11,7 @@
 import Foundation
 
 /// Token class represents any token object type
-@objc public class Token: NSObject, Encodable, NSSecureCoding {
+@objc public class FRToken: NSObject, Encodable, NSSecureCoding {
     
     //  MARK: - Property
     
@@ -72,7 +72,7 @@ import Foundation
     ///   - lhs: Token to be compared
     ///   - rhs: Token to be compared
     /// - Returns: Boolean result of whether given two Tokens are equal or not
-    static func == (lhs: Token, rhs: Token) -> Bool {
+    static func == (lhs: FRToken, rhs: FRToken) -> Bool {
         return lhs.value == rhs.value
     }
     
@@ -82,7 +82,7 @@ import Foundation
     /// - Parameter object: An object to be compared
     /// - Returns: Boolean result of whether given Token is equal or not
     override public func isEqual(_ object: Any?) -> Bool {
-        if let obj = object as? Token {
+        if let obj = object as? FRToken {
             return
                 self.value == obj.value
         }
