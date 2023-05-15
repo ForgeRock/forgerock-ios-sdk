@@ -14,9 +14,6 @@ import FRCore
 #if canImport(FRFacebookSignIn)
 import FRFacebookSignIn
 #endif
-#if canImport(FRGoogleSignIn)
-import FRGoogleSignIn
-#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -34,12 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        #if canImport(FRGoogleSignIn)
-        if GoogleSignInHandler.handle(app, url, options) {
-            return true
-        }
-        #endif
         
         var resumeURL: URL?
         if let resumeURI = url.valueOf("resumeURI"), let thisURI = URL(string: resumeURI) {
