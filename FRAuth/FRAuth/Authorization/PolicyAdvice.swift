@@ -27,9 +27,9 @@ public enum AdviceType: String {
     //  MARK: - Property
     
     /// AdviceType of the PolicyAdvice
-    public var type: AdviceType
+    private var type: AdviceType
     /// Advice value (transactionId, or AuthenticationTree name)
-    public var value: String
+    private var value: String
     /// Optional transactionId; only available for transactional authorization
     public var txId: String?
     
@@ -43,14 +43,20 @@ public enum AdviceType: String {
     
     /// Initializes PolicyAdvice object with URL; PolicyAdvice class extracts certain information fromt he redirect-url, and construct the object
     /// - Parameter redirectUrl: redirectURL string value from the response header
-    @objc public init?(redirectUrl: String) {
-        guard let url = URL(string: redirectUrl), let xmlstring = url.valueOf("authIndexValue"), let authIndexType = url.valueOf("authIndexType") else {
+    @objc public init?(redirectUrl: String, base64Decoded: Bool = false) {
+        guard let url = URL(string: redirectUrl), var xmlstring = url.valueOf("authIndexValue"), let authIndexType = url.valueOf("authIndexType") else {
             return nil
         }
         
         self.authIndexType = authIndexType
         self.authIndexValue = xmlstring
 
+        if base64Decoded {
+            guard let data = self.authIndexValue.decodeURL(),
+                    let decode = String(data: data, encoding: .utf8) else { return nil }
+            xmlstring = decode
+        }
+        
         if let range = xmlstring.range(of: #"(?<=\<Value\>).*?(?=\<\/Value\>)"#, options: .regularExpression) {
             value = String(xmlstring[range])
         } else {
@@ -107,6 +113,42 @@ public enum AdviceType: String {
         else {
             return nil
         }
+    }
+    
+    @objc public init?(advice: String) {
+
+        var dict: [String: String] = [:]
+        let regex = try! NSRegularExpression(pattern: "^\"|\"$", options: [])
+        advice.components(separatedBy: ",").forEach { value in
+            let componenets = value.components(separatedBy: "=")
+            if(componenets.count > 1 ) {
+                dict[componenets[0]] = regex.stringByReplacingMatches(in: componenets[1], range: NSMakeRange(0, componenets[1].count), withTemplate: "")
+            }
+        }
+        
+        
+        guard let advices = dict["advices"],
+            let decode = advices.decodeBase64(),
+              let fooDict = try? JSONSerialization.jsonObject(with: decode, options: []) as? [String: Any] else {
+            return nil
+        }
+        
+        
+        if let adviceKey = fooDict.keys.first, let adviceValues = fooDict["TransactionConditionAdvice"] as? [String], let adviceValue = adviceValues.first, let adviceType = AdviceType(rawValue: adviceKey) {
+
+            authIndexType = OpenAM.compositeAdvice
+            authIndexValue = "<Advices><AttributeValuePair><Attribute name=\"\(adviceType.rawValue)\"/><Value>\(adviceValue)</Value></AttributeValuePair></Advices>"
+            type = adviceType
+            value = adviceValue
+
+            if type == .transactionCondition {
+                txId = value
+            }
+        }
+        else {
+            return nil
+        }
+
     }
     
     

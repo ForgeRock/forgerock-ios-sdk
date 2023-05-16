@@ -106,6 +106,12 @@ import Foundation
             return policyAdvise
         }
         
+        if response.statusCode == 307, let redirectUrl = response.allHeaderFields["Location"] as? String, let policyAdvise = PolicyAdvice(redirectUrl: redirectUrl, base64Decoded: true) {
+            FRLog.i("[AuthorizationPolicy] IG request redirect (307) for Authorization Policy found; constructed PolicyAdvice based on IG redirection")
+            return policyAdvise
+        }
+        
+        
         if let redirectUrl = response.allHeaderFields["Location"] as? String, let policyAdvise = PolicyAdvice(redirectUrl: redirectUrl) {
             FRLog.i("[AuthorizationPolicy] Request redirect URL is recognized as PolicyAdvice; returning PolicyAdvice from redirect URL")
             return policyAdvise
@@ -131,6 +137,13 @@ import Foundation
     /// - Returns: PolicyAdvice if given redirect response matches with any of conditions
     func evaluateAuthorizationPolicy(responseData: Data?, response: URLResponse?, error: Error?) -> PolicyAdvice? {
         FRLog.v("[AuthorizationPolicy] Evaluating Authorization Policy started")
+        
+        if let origResponse = response as? HTTPURLResponse, let json = origResponse.allHeaderFields["Www-Authenticate"] as? String ,
+           let policyAdvice = PolicyAdvice(advice: json) {
+            FRLog.i("[AuthorizationPolicy] PolicyAdvice JSON object found from response JSON payload; returning PolicyAdvice")
+            return policyAdvice
+        }
+        
         if let data = responseData, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]], let evalResult = json.first, let policyAdvice = PolicyAdvice(json: evalResult) {
             FRLog.i("[AuthorizationPolicy] PolicyAdvice JSON object found from response JSON payload; returning PolicyAdvice")
             return policyAdvice
