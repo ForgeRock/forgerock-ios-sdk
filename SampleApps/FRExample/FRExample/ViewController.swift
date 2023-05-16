@@ -158,11 +158,11 @@ class ViewController: UIViewController {
         // - MARK: Token Management - Example
         // Register FRURLProtocol
         URLProtocol.registerClass(FRURLProtocol.self)
-//        let policy = TokenManagementPolicy(validatingURL: [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!], delegate: self)
-//        FRURLProtocol.tokenManagementPolicy = policy
+        let policy = TokenManagementPolicy(validatingURL: [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!], delegate: self)
+        FRURLProtocol.tokenManagementPolicy = policy
         
         //  - MARK: Authorization Policy - Example
-        let authPolicy = AuthorizationPolicy(validatingURL: [URL(string: "https://openig.petrov.ca/products")!], delegate: self)
+        let authPolicy = AuthorizationPolicy(validatingURL: [URL(string: "http://localhost:9888/policy/transfer")!], delegate: self)
         FRURLProtocol.authorizationPolicy = authPolicy
         
         // Configure FRURLProtocol for HTTP client
@@ -683,8 +683,7 @@ class ViewController: UIViewController {
     
     @IBAction func invokeAPIButton(sender: UIButton) {
         
-        let foo: String? = "https://openig.petrov.ca/products"
-        guard let urlStr = foo, let url = URL(string: urlStr) else {
+        guard let urlStr = urlField?.text, let url = URL(string: urlStr) else {
             return
         }
         
@@ -697,8 +696,6 @@ class ViewController: UIViewController {
         }
         
         var request = URLRequest(url: url)
-        
-        //requestBuilder.addHeader("x-authenticate-response", "header");
         
         request.setValue("header", forHTTPHeaderField: "x-authenticate-response")
         

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aAq-sj-F74">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aAq-sj-F74">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Zf-vGY">
-                                <rect key="frame" x="35" y="435" width="344" height="392"/>
+                                <rect key="frame" x="35" y="439" width="344" height="388"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="tintColor" systemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsi-fR-Iuf" customClass="FRButton" customModule="FRUI">
-                                <rect key="frame" x="35" y="198" width="344" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsi-fR-Iuf" customClass="FRButton" customModule="FRUI">
+                                <rect key="frame" x="35" y="202" width="344" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="TWv-Z1-VGh"/>
                                 </constraints>
@@ -33,8 +33,8 @@
                                     <action selector="performActionWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pWQ-ek-P99"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Orl-ar-tW1" customClass="FRButton" customModule="FRUI">
-                                <rect key="frame" x="35" y="278" width="344" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Orl-ar-tW1" customClass="FRButton" customModule="FRUI">
+                                <rect key="frame" x="35" y="282" width="344" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="CWy-kA-es7"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="sXY-qg-JnU"/>
@@ -44,8 +44,8 @@
                                     <action selector="clearLogBtnClickedWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q8E-Ph-PZb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xP7-ib-U9Q" customClass="FRButton" customModule="FRUI">
-                                <rect key="frame" x="287" y="355" width="92" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xP7-ib-U9Q" customClass="FRButton" customModule="FRUI">
+                                <rect key="frame" x="287" y="359" width="92" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="GcK-sU-gob"/>
                                     <constraint firstAttribute="width" constant="92" id="Tdz-YL-7RK"/>
@@ -55,22 +55,23 @@
                                     <action selector="invokeAPIButtonWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GeD-82-ynw"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x96-fx-gqH" customClass="FRTextField" customModule="FRUI">
-                                <rect key="frame" x="35" y="354" width="237" height="43"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="https://openig.petrov.ca/products" borderStyle="line" placeholder="URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x96-fx-gqH" customClass="FRTextField" customModule="FRUI">
+                                <rect key="frame" x="35" y="358" width="237" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="5TA-bP-kGY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NkK-UP-muE" customClass="FRDropDownButton" customModule="FRUI">
-                                <rect key="frame" x="35" y="128" width="344" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NkK-UP-muE" customClass="FRDropDownButton" customModule="FRUI">
+                                <rect key="frame" x="35" y="132" width="344" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="LO4-0h-gfr"/>
                                 </constraints>
                                 <state key="normal" title="Select an action"/>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="x96-fx-gqH" firstAttribute="top" secondItem="Orl-ar-tW1" secondAttribute="bottom" constant="36" id="3FR-nb-KaB"/>
@@ -92,7 +93,6 @@
                             <constraint firstItem="x96-fx-gqH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="tFh-Mk-Yjo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Orl-ar-tW1" secondAttribute="trailing" constant="35" id="tGH-uH-SuH"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="BtW-jv-vJs"/>
                     <connections>
@@ -113,7 +113,7 @@
             <objects>
                 <navigationController id="aAq-sj-F74" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lAt-a9-y2i">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -125,4 +125,9 @@
             <point key="canvasLocation" x="-671" y="135"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
