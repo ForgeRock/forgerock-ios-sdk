@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3ACC79B12A1C4C0700C18E7E /* RecaptchaEnterprise in Frameworks */ = {isa = PBXBuildFile; productRef = 3ACC79B02A1C4C0700C18E7E /* RecaptchaEnterprise */; };
+		3ACC79B32A1C4C0700C18E7E /* RecaptchaInterop in Frameworks */ = {isa = PBXBuildFile; productRef = 3ACC79B22A1C4C0700C18E7E /* RecaptchaInterop */; };
 		D521A2062303644300EDD28E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
 		D521A2082303644300EDD28E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
@@ -214,6 +216,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3ACC79AB2A1C4A2300C18E7E /* FRExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FRExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530424326321BF00079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -265,8 +268,10 @@
 				EC2FF36228B8DB780095EDD1 /* FRGoogleSignIn.framework in Frameworks */,
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
+				3ACC79B32A1C4C0700C18E7E /* RecaptchaInterop in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
 				D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */,
+				3ACC79B12A1C4C0700C18E7E /* RecaptchaEnterprise in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +408,7 @@
 				D5FE5E6123190A0000E04658 /* FRExample.entitlements */,
 				D5FE5E6023190A0000E04658 /* FRExampleSSO-Info.plist */,
 				D5FE5E5F23190A0000E04658 /* FRExampleSSO.entitlements */,
+				3ACC79AB2A1C4A2300C18E7E /* FRExample-Bridging-Header.h */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -450,6 +456,10 @@
 				D59FAEBF23441B7E005D34DA /* PBXTargetDependency */,
 			);
 			name = FRExample;
+			packageProductDependencies = (
+				3ACC79B02A1C4C0700C18E7E /* RecaptchaEnterprise */,
+				3ACC79B22A1C4C0700C18E7E /* RecaptchaInterop */,
+			);
 			productName = FRExample;
 			productReference = D554632C22A6EF950096C7A4 /* FRExample.app */;
 			productType = "com.apple.product-type.application";
@@ -499,6 +509,9 @@
 				Base,
 			);
 			mainGroup = D554632322A6EF950096C7A4;
+			packageReferences = (
+				3ACC79AF2A1C4C0700C18E7E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */,
+			);
 			productRefGroup = D554632D22A6EF950096C7A4 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -818,8 +831,10 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "FRExample/Supporting Files/FRExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -872,8 +887,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "FRExample/Supporting Files/FRExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -898,9 +915,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "4.0.0-beta5";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "FRExample/Supporting Files/FRExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -925,9 +944,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "4.0.0-beta5";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "FRExample/Supporting Files/FRExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -964,6 +985,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3ACC79AF2A1C4C0700C18E7E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3ACC79B02A1C4C0700C18E7E /* RecaptchaEnterprise */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3ACC79AF2A1C4C0700C18E7E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */;
+			productName = RecaptchaEnterprise;
+		};
+		3ACC79B22A1C4C0700C18E7E /* RecaptchaInterop */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3ACC79AF2A1C4C0700C18E7E /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */;
+			productName = RecaptchaInterop;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D554632422A6EF950096C7A4 /* Project object */;
 }
