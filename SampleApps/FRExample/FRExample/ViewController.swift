@@ -14,7 +14,6 @@ import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
-import RecaptchaEnterprise
 
 
 class ViewController: UIViewController {
@@ -97,16 +96,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Recaptcha.getClient(withSiteKey: "6LeaOSUmAAAAACbWluebip0Ls-GObCPhXfyZNZAT") { client, error in
-            print("RecaptchaClient creation error: \(error).")
-              guard let client = client else {
-                  print("RecaptchaClient creation error: \(error).")
-                return
-              }
-              self.recaptchaClient = client
-            }
-
         
         if let bundleName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String {
             self.title = bundleName
@@ -827,14 +816,6 @@ class ViewController: UIViewController {
               print("RecaptchaClient creation failed.")
               return
             }
-            recaptchaClient.execute(withAction: RecaptchaAction.login) { token, error in
-              if let token = token {
-                print(token)
-              } else {
-                print(error)
-              }
-            }
-
             break
         default:
             break

@@ -165,6 +165,25 @@ class AuthStepViewController: UIViewController {
                 let headerFrame = self.tableView?.tableHeaderView?.bounds ?? CGRect(x: 0, y: 0, width: 0, height: 0)
                 self.tableView?.tableHeaderView?.frame = CGRect(x: headerFrame.origin.x, y: headerFrame.origin.y, width: headerFrame.size.width, height: 225 + descriptionTextViewHeightConstant)
                 
+                var captchaCallback: ReCaptchaCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceProfileCallback handling
+                    if let thisCallback = callback as? ReCaptchaCallback {
+                        captchaCallback = thisCallback
+                        if self.authCallbacks.count > 1 {
+                            self.authCallbacks.remove(at: index)
+                        }
+                    }
+                }
+                
+                if let captchaCallback = captchaCallback {
+                    self.startLoading()
+                    captchaCallback.execute { (profile) in
+                        self.stopLoading()
+                        self.renderAuthStep()
+                    }
+                }
+                
                 var deviceProfileCallback: DeviceProfileCallback?
                 for (index, callback) in self.authCallbacks.enumerated() {
                     //  DeviceProfileCallback handling

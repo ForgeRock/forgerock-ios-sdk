@@ -9,8 +9,7 @@
 //
 
 import Foundation
-
-
+import RecaptchaEnterprise
 /**
  ReCaptchaCallback is a representation of ReCaptchaCallback Callback in OpenAM which provides ReCaptcha credentials to process ReCaptcha in native application.
  */
@@ -28,6 +27,8 @@ public class ReCaptchaCallback: Callback {
     /// String value of ReCaptcha SiteKey
     @objc
     public var recaptchaSiteKey: String
+    
+    var recaptchaClient: RecaptchaClient?
     
     
     //  MARK: - Init
@@ -72,6 +73,34 @@ public class ReCaptchaCallback: Callback {
         self.response = json
     }
     
+    private func initRecaptcha(completion: @escaping (RecaptchaClient?) -> ()) {
+        Recaptcha.getClient(withSiteKey: self.recaptchaSiteKey) { client, error in
+            print("RecaptchaClient creation error: \(String(describing: error)).")
+              guard let client = client else {
+                  print("RecaptchaClient creation error: \(String(describing: error)).")
+                  completion(nil)
+                return
+              }
+              self.recaptchaClient = client
+              completion(client)
+            }
+    }
+    
+    public func execute(completion: @escaping CompletionCallback) {
+        initRecaptcha { client in
+            client?.execute(withAction: RecaptchaAction.login) { token, error in
+              if let token = token {
+                print(token)
+                  self.value = token
+                  self.inputName = self.recaptchaSiteKey
+                completion(nil)
+              } else {
+                completion(error)
+              }
+            }
+
+        }
+    }
     
     //  MARK: - Build
     
