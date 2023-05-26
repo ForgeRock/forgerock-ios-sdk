@@ -10,7 +10,7 @@
 
 import Foundation
 
-class CallbackViewModel: ObservableObject {
+class CallbackViewModel {
     var name: String
     var value: String
     var isSecret: Bool
