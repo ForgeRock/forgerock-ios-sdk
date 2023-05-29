@@ -578,7 +578,7 @@
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
 			requirement = {
 				kind = exactVersion;
-				version = 6.1.0;
+				version = 7.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
