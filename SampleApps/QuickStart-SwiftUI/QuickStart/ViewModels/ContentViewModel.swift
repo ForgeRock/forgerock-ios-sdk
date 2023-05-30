@@ -16,7 +16,6 @@ import FRAuth
     
     func startSDK(statusViewModel: StatusViewModel) {
         FRLog.setLogLevel([.network, .all])
-        FRAuth.configPlistFileName = "FRAuthConfig"
         
         do {
             try FRAuth.start()

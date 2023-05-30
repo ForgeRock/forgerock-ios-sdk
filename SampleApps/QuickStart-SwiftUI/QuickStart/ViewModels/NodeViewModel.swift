@@ -31,9 +31,9 @@ import FRAuth
         }
         
         for callback in node.callbacks {
-            if callback.isKind(of: NameCallback.self), let nameCallBack = callback as? NameCallback {
+            if let nameCallBack = callback as? NameCallback {
                 callbackViewModels.append(CallbackViewModel(name: nameCallBack.prompt!, value: ""))
-            } else if callback.isKind(of: PasswordCallback.self), let passwordCallback = callback as? PasswordCallback {
+            } else if let passwordCallback = callback as? PasswordCallback {
                 callbackViewModels.append(CallbackViewModel(name: passwordCallback.prompt!, value: "", isSecret: true))
             } else {
                 statusViewModel?.status = Status(statusDescription: "\(callback.type) is not suppoorted", statusType: .error)
@@ -48,10 +48,12 @@ import FRAuth
     }
     
     func submitNode() {
-        guard let node = node, let callbacks = node.callbacks as? [SingleValueCallback] else { return }
+        guard let node = node else { return }
         
         for (index, input) in callbackViewModels.enumerated() {
-            callbacks[index].setValue(input.value)
+            if let callback =  node.callbacks[index] as? SingleValueCallback {
+                callback.setValue(input.value)
+            }
         }
         
         node.next { [weak self] (user: FRUser?, node, error) in
