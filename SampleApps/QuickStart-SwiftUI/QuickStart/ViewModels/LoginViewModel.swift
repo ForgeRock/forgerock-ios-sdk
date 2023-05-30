@@ -33,10 +33,10 @@ import FRAuth
                 guard let self = self else { return }
                 if error != nil {
                     print(error.debugDescription)
-                    statusViewModel?.status = Status(statusDescription: "Authentication Error", statusType: .error)
+                    self.statusViewModel?.status = Status(statusDescription: "Authentication Error", statusType: .error)
                 } else if user != nil {
-                    statusViewModel?.status = Status(statusDescription: "Login Success", statusType: .success)
-                    statusViewModel?.isLoggedIn = true
+                    self.statusViewModel?.status = Status(statusDescription: "Login Success", statusType: .success)
+                    self.statusViewModel?.isLoggedIn = true
                 } else if let node = node {
                     self.node = node
                     DispatchQueue.main.async {
