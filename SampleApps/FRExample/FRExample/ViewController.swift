@@ -14,6 +14,7 @@ import FRCore
 import FRUI
 import CoreLocation
 import QuartzCore
+import FRDeviceBinding
 
 class ViewController: UIViewController {
 
@@ -151,7 +152,8 @@ class ViewController: UIViewController {
             "FRSession.authenticate without UI (Token)",
             "Display Configurations",
             "Revoke Access Token",
-            "List WebAuthn Credentials"
+            "List WebAuthn Credentials",
+            "List Device Binding Keys"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -203,6 +205,7 @@ class ViewController: UIViewController {
         catch {
             self.displayLog(String(describing: error))
         }
+        
     }
     
     
@@ -275,6 +278,52 @@ class ViewController: UIViewController {
                             textField.autocorrectionType = .no
                             textField.autocapitalizationType = .none
                         })
+                    } else if callback.type == "TextOutputCallback", let textOutputCallback = callback as? TextOutputCallback {
+                        alert.title = textOutputCallback.message
+                    } else if callback.type == "ConfirmationCallback", let confirmationCallback = callback as? ConfirmationCallback {
+                        if let options = confirmationCallback.options {
+                            for (index, option) in options.enumerated() {
+                                let action = UIAlertAction(title: option, style: .default, handler: { (_) in
+                                    confirmationCallback.value = index
+                                    handleNode(node)
+                                })
+                                alert.addAction(action)
+                            }
+                        }
+                        self.present(alert, animated: true, completion: nil)
+                        return
+                    } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
+                        deviceBindingCallback.bind() { result in
+                            DispatchQueue.main.async {
+                                var bindingResult = ""
+                                switch result {
+                                case .success:
+                                    bindingResult = "Success"
+                                case .failure(let error):
+                                    bindingResult = error.errorMessage
+                                }
+                                
+                                self.displayLog("Device Binding Result: \n\(bindingResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
+                        deviceSigningVerifierCallback.sign() { result in
+                            DispatchQueue.main.async {
+                                var signingResult = ""
+                                switch result {
+                                case .success:
+                                    signingResult = "Success"
+                                case .failure(let error):
+                                    signingResult = error.errorMessage
+                                }
+                                
+                                self.displayLog("Signing Verifier Result: \n\(signingResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
                     }
                     else {
                         let errorAlert = UIAlertController(title: "Invalid Callback", message: "\(callback.type) is not supported.", preferredStyle: .alert)
@@ -298,21 +347,7 @@ class ViewController: UIViewController {
                         counter += 1
                     }
                     
-                    if T.self as AnyObject? === AccessToken.self {
-                        node.next(completion: { (token: AccessToken?, node, error) in
-                            self.handleNode(token, node, error)
-                        })
-                    }
-                    else if T.self as AnyObject? === Token.self {
-                        node.next(completion: { (token: Token?, node, error) in
-                            self.handleNode(token, node, error)
-                        })
-                    }
-                    else if T.self as AnyObject? === FRUser.self {
-                        node.next(completion: { (user: FRUser?, node, error) in
-                            self.handleNode(user, node, error)
-                        })
-                    }
+                    handleNode(node)
                 })
                 
                 alert.addAction(cancelAction)
@@ -326,6 +361,24 @@ class ViewController: UIViewController {
         }
         else {
             self.displayLog("Authentication Tree flow was successful; no result returned")
+        }
+        
+        func handleNode(_ node: Node) {
+            if T.self as AnyObject? === AccessToken.self {
+                node.next(completion: { (token: AccessToken?, node, error) in
+                    self.handleNode(token, node, error)
+                })
+            }
+            else if T.self as AnyObject? === Token.self {
+                node.next(completion: { (token: Token?, node, error) in
+                    self.handleNode(token, node, error)
+                })
+            }
+            else if T.self as AnyObject? === FRUser.self {
+                node.next(completion: { (user: FRUser?, node, error) in
+                    self.handleNode(user, node, error)
+                })
+            }
         }
     }
     
@@ -593,6 +646,7 @@ class ViewController: UIViewController {
         })
     }
     
+    
     func listWebAuthnCredentialsByRpId() {
         
         let alert = UIAlertController(title: "List WebAuthn Credentials",
@@ -612,6 +666,13 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    func listUserKeys() {
+        let viewController = UserKeysTableViewController()
+        view.addSubview(viewController.view)
+        self.present(viewController, animated: true, completion: nil)
     }
     
     
@@ -811,6 +872,10 @@ class ViewController: UIViewController {
             // List WebAuthn Credentials by rpId
             self.listWebAuthnCredentialsByRpId()
             break
+        case 20:
+            // List device binding user keys
+            self.listUserKeys()
+            break
         default:
             break
         }
@@ -979,5 +1044,111 @@ class WebAuthnCredentialsTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
 
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+
+class UserKeysTableViewController: UITableViewController {
+    let identifier = "cell"
+    let frUserKeys = FRUserKeys()
+    var userKeys: [UserKey] = []
+    
+    init() {
+        userKeys = frUserKeys.loadAll()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.identifier)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return userKeys.count
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.identifier)!
+        cell.textLabel?.text = "\(self.userKeys[indexPath.row].userName) - \(self.userKeys[indexPath.row].authType)"
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+      if(editingStyle == .delete) {
+          
+          do {
+              try frUserKeys.delete(userKey: self.userKeys[indexPath.row], forceDelete: false)
+          }
+          catch {
+              self.showErrorAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
+          }
+          self.userKeys = frUserKeys.loadAll()
+          tableView.reloadData()
+       }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Found \(userKeys.count) user key(s)"
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        let deleteAllButton = UIButton()
+        deleteAllButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30)
+        deleteAllButton.setTitle("Delete All", for: .normal)
+        deleteAllButton.setTitleColor(.white, for: .normal)
+        deleteAllButton.backgroundColor = .red
+        deleteAllButton.addTarget(self, action: #selector(deleteAllAction), for: .touchUpInside)
+        
+        footerView.addSubview(deleteAllButton)
+        return footerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    @objc func deleteAllAction(sender: UIButton!) {
+        let alert = UIAlertController(title: "Delete all user keys?",
+                                      message: "Are you sure you want to delete all (\(userKeys.count)) user keys from the device?",
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (alert: UIAlertAction!) in
+            for (_, userKey) in self.userKeys.enumerated().reversed()
+            {
+                do {
+                    try self.frUserKeys.delete(userKey: userKey, forceDelete: false)
+                }
+                catch {
+                    self.showErrorAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
+                }
+            }
+            self.userKeys = self.frUserKeys.loadAll()
+            self.tableView.reloadData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func showErrorAlert(title: String, message: String) {
+        let errorAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
+        errorAlert.addAction(cancelAction)
+        self.present(errorAlert, animated: true, completion: nil)
     }
 }

@@ -27,3 +27,10 @@ Base32 encoding and decoding implementation
 
 Project: https://github.com/google/google-authenticator-libpam
 License: https://github.com/google/google-authenticator-libpam/blob/master/LICENSE
+
+JOSESwift
+------
+JOSESwift is a modular and extensible framework for the JOSE standards JWS, JWE, and JWK written in Swift.
+
+Project: https://github.com/airsidemobile/JOSESwift
+License: https://github.com/airsidemobile/JOSESwift/blob/master/LICENSE

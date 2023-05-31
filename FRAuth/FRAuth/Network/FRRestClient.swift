@@ -2,7 +2,7 @@
 //  FRRestClient.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 - 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -14,7 +14,7 @@ import FRCore
 
 /// FRRestclient is FRCore's RestClient wrapper with additional functionalities for Cookie management
 @objc
-class FRRestClient: NSObject {
+public class FRRestClient: NSObject {
     
     
     //  MARK: - Invoke
@@ -62,7 +62,7 @@ class FRRestClient: NSObject {
     ///
     /// - Parameter request: `Request` object for API request which should contain all information regarding the request
     /// - Returns: `Result` instance of API Request
-    static func invokeSync(request: Request, action: Action? = nil) -> Result {
+    public static func invokeSync(request: Request, action: Action? = nil) -> Result {
         
         var newRequest = request
         //  Get Cookie from Cookie Store, and set it to header

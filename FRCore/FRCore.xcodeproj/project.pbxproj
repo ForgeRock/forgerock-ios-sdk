@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */; };
+		A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C229497F6E007237C1 /* CryptoKey.swift */; };
+		A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C5294A8747007237C1 /* CryptoKeyTests.swift */; };
+		A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */; };
 		1B5D4CFE299416DB003D96F1 /* JBUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA471592994162E00E657DA /* JBUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B5D4CFF299416DE003D96F1 /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA4715B2994162E00E657DA /* JBUtil.c */; };
 		1BA47141299346C100E657DA /* JailbreakDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA47140299346C100E657DA /* JailbreakDetectorTests.swift */; };
@@ -124,6 +128,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticator.swift; sourceTree = "<group>"; };
+		A56338C229497F6E007237C1 /* CryptoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKey.swift; sourceTree = "<group>"; };
+		A56338C5294A8747007237C1 /* CryptoKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeyTests.swift; sourceTree = "<group>"; };
+		A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticatorTests.swift; sourceTree = "<group>"; };
 		1BA47140299346C100E657DA /* JailbreakDetectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetectorTests.swift; sourceTree = "<group>"; };
 		1BA471582994162E00E657DA /* FRCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = FRCore.modulemap; sourceTree = "<group>"; };
 		1BA471592994162E00E657DA /* JBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBUtil.h; sourceTree = "<group>"; };
@@ -212,6 +220,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A56338BD29497E75007237C1 /* Authenticator */ = {
+			isa = PBXGroup;
+			children = (
+				A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */,
+				A56338C229497F6E007237C1 /* CryptoKey.swift */,
+			);
+			path = Authenticator;
+			sourceTree = "<group>";
+		};
+		A56338C4294A8716007237C1 /* Authenticator */ = {
+			isa = PBXGroup;
+			children = (
+				A56338C5294A8747007237C1 /* CryptoKeyTests.swift */,
+				A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */,
+			);
+			path = Authenticator;
+            sourceTree = "<group>";
+        };
 		1BA4713F299346C100E657DA /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,6 +365,7 @@
 		D5CBC23B24102B8700F9B6EA /* FRCore */ = {
 			isa = PBXGroup;
 			children = (
+				A56338C4294A8716007237C1 /* Authenticator */,
 				D5D214A12478580600B26403 /* Error */,
 				D5D214A22478580600B26403 /* Log */,
 				D5D214A32478580600B26403 /* RequestInterceptor */,
@@ -435,6 +462,7 @@
 		D5E75BCC2409B8C0005F589F /* FRCore */ = {
 			isa = PBXGroup;
 			children = (
+				A56338BD29497E75007237C1 /* Authenticator */,
 				1BA4715D2994162E00E657DA /* SharedC */,
 				D52D5C412413000900835035 /* Util */,
 				D512CD49240DCD3200AF520E /* Error */,
@@ -664,6 +692,7 @@
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
 				1BA471452993472500E657DA /* BashDetector.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
+				A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
 				D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */,
@@ -674,6 +703,7 @@
 				EC5F792527A8091F0004A982 /* FRSecurityConfiguration.swift in Sources */,
 				1BA471472993472500E657DA /* JailbreakDetector.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
+				A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */,
 				D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */,
 				D5D1FBF925B1373E00771278 /* SecurityError.swift in Sources */,
 				1BA4714C2993472500E657DA /* SymbolicLinkDetector.swift in Sources */,
@@ -689,6 +719,8 @@
 				D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */,
 				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
 				D5D214A924785BD800B26403 /* LogTests.swift in Sources */,
+				A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */,
+				A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */,
 				D5D2149F2478575900B26403 /* Action.swift in Sources */,
 				D5E7B1C5256C609200DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,

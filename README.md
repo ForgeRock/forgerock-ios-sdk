@@ -48,6 +48,7 @@ pod 'FRProximity' // Add-on for FRAuth's Device Profile feature related to locat
 pod 'FRAuthenticator' // Authenticator module that generates HOTP, TOTP, and Push registration/authentication
 pod 'FRGoogleSignIn' // Social Login module for Google Sign In
 pod 'FRFacebookSignIn' // Social Login module for Facebook Login
+pod 'FRDeviceBinding' // Add-on for Device Binding feature
 ```
 
 ### Swift Package Manager

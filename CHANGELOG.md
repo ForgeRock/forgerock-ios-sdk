@@ -1,4 +1,11 @@
 # Version 4.0.0
+
+## Unreleased
+#### Added
+- Device Binding callback implementation
+- Device Signing Verifier callback implementation
+- Application PIN authenticator type to Device Binding and Device Signing Verification
+
 ## [4.0.0]
 #### Changed
 - Added error message description to the `WebAuthnError` enum [SDKS-2226]
