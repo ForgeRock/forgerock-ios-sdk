@@ -9,6 +9,7 @@
 - Added support for passkeys [SDKS-2140]
 - Updated Facebook SDK Version to 16.0.1 [SDKS-1839]
 - Updated Google SDK Version to 7.0.0 [SDKS-2426]
+- Added SwiftUI QuickStart Example [SDKS-2405]
 
 ## [3.4.1]
 #### Changed
