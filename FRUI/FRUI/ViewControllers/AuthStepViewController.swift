@@ -218,6 +218,42 @@ class AuthStepViewController: UIViewController {
                     }
                 }
                 
+                
+                if #available(iOS 14.0, *) {
+                                   var appIntegrity: AppIntegrityCallback?
+                                   for (index, callback) in self.authCallbacks.enumerated() {
+                                       //  DeviceBindingCallback handling
+                                       if let thisCallback = callback as? AppIntegrityCallback {
+                                           appIntegrity = thisCallback
+                                       }
+                                   }
+                                   
+                                   //  If DeviceBindingCallback is found as one of Callbacks, bind the device and show the authentication result
+                                   if let appIntegrity = appIntegrity {
+                                       self.startLoading()
+                                       appIntegrity.attest { result in
+                                           DispatchQueue.main.async {
+                                               self.stopLoading()
+                                               var bindingResult = ""
+                                               switch result {
+                                               case .success:
+                                                   bindingResult = "Success"
+                                               case .failure:
+                                                   bindingResult = "failed"
+                                               }
+                                               
+                                               let alert = UIAlertController(title: "App Attestation Result", message: bindingResult, preferredStyle: .alert)
+                                               let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+                                                   self.submitCurrentNode()
+                                                   
+                                               })
+                                               alert.addAction(action)
+                                               self.present(alert, animated: true)
+                                           }
+                                       }
+                                   }
+                               }
+
                 var deviceSigningVerifierCallback: DeviceSigningVerifierCallback?
                 for (index, callback) in self.authCallbacks.enumerated() {
                     //  DeviceBindingCallback handling

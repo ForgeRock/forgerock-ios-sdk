@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A1A7F522A2852E200D48F4F /* AppIntegrityCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1A7F512A2852E200D48F4F /* AppIntegrityCallback.swift */; };
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
@@ -321,6 +322,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A1A7F512A2852E200D48F4F /* AppIntegrityCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntegrityCallback.swift; sourceTree = "<group>"; };
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
@@ -1025,6 +1027,7 @@
 				D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */,
 				D5B2061325FFE0E500DABB9B /* SelectIdPCallback.swift */,
 				D5B2061725FFE0F300DABB9B /* IdPCallback.swift */,
+				3A1A7F512A2852E200D48F4F /* AppIntegrityCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1782,6 +1785,7 @@
 				D5723C3C23F4C65800557AA8 /* AuthService.swift in Sources */,
 				ECDF5F4929674E9E007BB721 /* FRWebAuthn.swift in Sources */,
 				D5E86BBD2481E5B800DFD5E0 /* FRURLProtocol.swift in Sources */,
+				3A1A7F522A2852E200D48F4F /* AppIntegrityCallback.swift in Sources */,
 				D53A803C262789BD0093B1CA /* JSON.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D53A8049262789BD0093B1CA /* Attestation.swift in Sources */,
