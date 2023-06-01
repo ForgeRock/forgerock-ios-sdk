@@ -324,21 +324,24 @@ class ViewController: UIViewController {
                         }
                         return
                     }
-                    else if callback.type == "AppIntegrityCallback", let appIntegrityCallback = callback as? AppIntegrityCallback {
-                        appIntegrityCallback.validate(completion: { result in
-                            DispatchQueue.main.async {
-                                var signingResult = ""
-                                switch result {
-                                case .success:
-                                    signingResult = "Success"
-                                case .failure:
-                                    signingResult = "Failure"
+                    
+                    if #available(iOS 14.0, *) {
+                        if callback.type == "AppIntegrityCallback", let appIntegrityCallback = callback as? AppIntegrityCallback {
+                            appIntegrityCallback.validate(completion: { result in
+                                DispatchQueue.main.async {
+                                    var signingResult = ""
+                                    switch result {
+                                    case .success:
+                                        signingResult = "Success"
+                                    case .failure:
+                                        signingResult = "Failure"
+                                    }
+                                    self.displayLog("AppIntegrityCallback \n\(signingResult)")
+                                    handleNode(node)
                                 }
-                                self.displayLog("AppIntegrityCallback \n\(signingResult)")
-                                handleNode(node)
-                            }
-                        })
-                        return
+                            })
+                            return
+                        }
                     }
                     else {
                         let errorAlert = UIAlertController(title: "Invalid Callback", message: "\(callback.type) is not supported.", preferredStyle: .alert)

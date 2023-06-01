@@ -1,4 +1,4 @@
-// 
+//
 //  AppIntegrityCallback.swift
 //  FRAuth
 //
@@ -11,7 +11,9 @@
 
 import Foundation
 import DeviceCheck
+import CryptoKit
 
+@available(iOS 14.0, *)
 open class AppIntegrityCallback: MultipleValuesCallback {
     
 
@@ -23,6 +25,12 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     private var token: String
     /// Client Error input key in callback response
     private var clientErrorKey: String
+    
+    var keyChainManager: KeychainManager? = FRAuth.shared?.keychainManager
+    
+    private let dcAppAttestService = DCAppAttestService.shared
+    
+    private let keyName = "appAttestKey"
     
     public required init(json: [String : Any]) throws {
         
@@ -88,6 +96,71 @@ open class AppIntegrityCallback: MultipleValuesCallback {
         self.inputValues[self.clientErrorKey] = error
     }
     
+    private func generate(completion: @escaping (String?) -> Void) {
+        dcAppAttestService.generateKey(completionHandler: { keyId, error in
+
+            guard let attestKeyId = keyId else {
+                print("key generate failed: \(String(describing: error))")
+                completion(nil)
+                return
+            }
+            self.keyChainManager?.privateStore.set(attestKeyId, key: self.keyName)
+            completion(attestKeyId)
+            
+        })
+    }
+    
+    private func getAppAttestKey(completion: @escaping (String?) -> Void, forceGenerate: Bool = false) {
+      
+        if forceGenerate || keyChainManager?.privateStore.getString(keyName) == nil {
+            generate(completion: completion)
+            return
+        }
+        
+      if let keyId = keyChainManager?.privateStore.getString(keyName) {
+          completion(keyId)
+      } else {
+          completion(nil)
+      }
+    }
+    
+    // may be this challenge comes from server
+    public func attest(completion: @escaping (_ result: AppIntegrityResult) -> Void, forceGenerate: Bool = false) {
+        getAppAttestKey(completion: { keyId in
+            
+            let hashValue = Data(SHA256.hash(data: self.challenge.data(using: .utf8)!))
+            
+            guard let keyId = keyId else {
+                self.setClientError("invalid keyid")
+                completion(.failure)
+                return
+            }
+            
+            self.dcAppAttestService.attestKey(keyId, clientDataHash: hashValue) { attestation, error in
+                guard error == nil else {
+                    print(error?.localizedDescription ?? "")
+                    if forceGenerate {
+                        self.setClientError("key error")
+                        completion(.failure)
+                        return
+                    }
+                    self.attest(completion: completion, forceGenerate: true)
+                    return
+                }
+                
+                guard let attestation = attestation?.base64EncodedString() else {
+                    self.setClientError("base64 error")
+                    completion(.failure)
+                    return
+                }
+                
+                self.settoken(attestation)
+                completion(.success)
+            }
+        })
+    }
+    
+
     public func validate(completion: @escaping (_ result: AppIntegrityResult) -> Void) {
         if DCDevice.current.isSupported {
             // A unique token will be generated for every call to this method
@@ -106,9 +179,11 @@ open class AppIntegrityCallback: MultipleValuesCallback {
         }
     }
     
+    
 }
 
 public enum AppIntegrityResult {
     case success
     case failure
 }
+

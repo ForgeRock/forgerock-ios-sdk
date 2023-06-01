@@ -83,8 +83,12 @@ public class CallbackFactory: NSObject {
             CallbackType.SelectIdPCallback.rawValue: SelectIdPCallback.self,
             CallbackType.DeviceBindingCallback.rawValue: DeviceBindingCallback.self,
             CallbackType.DeviceSigningVerifierCallback.rawValue: DeviceSigningVerifierCallback.self,
-            CallbackType.AppIntegrityCallback.rawValue: AppIntegrityCallback.self
+           
         ]
+        
+        if #available(iOS 14.0, *) {
+            self.supportedCallbacks[CallbackType.AppIntegrityCallback.rawValue] = AppIntegrityCallback.self
+        }
     }
     
     
