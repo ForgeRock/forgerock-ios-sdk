@@ -202,13 +202,19 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
                 FRLog.i("Performing WebAuthn authentication for AM 7.0.0 or below", subModule: WebAuthn.module)
             }
             
+            guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+                FRLog.e("Bundle Identifier is missing")
+                onError(FRWAKError.unknown(platformError: nil, message: "Bundle Identifier is missing"))
+                return
+            }
+            
             //  Platform Authenticator
             let platformAuthenticator = PlatformAuthenticator(authenticationDelegate: self)
             //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
-            var origin = CBConstants.originScheme + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
+            var origin = CBConstants.originScheme + bundleIdentifier
             //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
             if self.isNewJSONFormat {
-                origin = CBConstants.originPrefix + (Bundle.main.bundleIdentifier ?? CBConstants.defaultOrigin)
+                origin = CBConstants.originPrefix + bundleIdentifier
             }
             
             let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)

@@ -73,7 +73,9 @@ struct KeychainManager {
         let service = self.defaultService
         let currentService = baseUrl + "/" + service
         self.primaryServiceStore = KeychainService(service: service)
-        var appBundleIdentifier = Bundle.main.bundleIdentifier ?? "com.forgerock.ios.sdk"
+        guard var appBundleIdentifier = Bundle.main.bundleIdentifier else {
+            throw ConfigError.invalidConfiguration("Bundle Identifier is missing")
+        }
         appBundleIdentifier = "-" + appBundleIdentifier
         
         if let accessGroup = accessGroup {
@@ -271,7 +273,10 @@ struct KeychainManager {
     /// - Parameter service: Service identifier
     /// - Parameter accessGroup: AcessGroup identifier
     static func clearAllKeychainStore(service: String, accessGroup: String?) {
-        var appBundleIdentifier = Bundle.main.bundleIdentifier ?? "com.forgerock.ios.sdk"
+        guard var appBundleIdentifier = Bundle.main.bundleIdentifier else {
+            FRLog.e("Bundle Identifier is missing")
+            return
+        }
         appBundleIdentifier = "-" + appBundleIdentifier
         // Initiate old stores, and delete all items
         let oldPrivateStore = KeychainService(service: service + appBundleIdentifier + KeychainStoreType.local.rawValue)
