@@ -244,7 +244,7 @@ class AuthStepViewController: UIViewController {
                                                
                                                let alert = UIAlertController(title: "App Attestation Result", message: bindingResult, preferredStyle: .alert)
                                                let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
-                                                   self.submitCurrentNode()
+                                                 //  self.submitCurrentNode()
                                                    
                                                })
                                                alert.addAction(action)

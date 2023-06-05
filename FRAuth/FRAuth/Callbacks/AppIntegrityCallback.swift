@@ -26,6 +26,12 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     /// Client Error input key in callback response
     private var clientErrorKey: String
     
+    private var keyId: String
+    
+    private var challengeClientData: String
+    
+    private var appVerification: String
+    
     var keyChainManager: KeychainManager? = FRAuth.shared?.keychainManager
     
     private let dcAppAttestService = DCAppAttestService.shared
@@ -75,6 +81,21 @@ open class AppIntegrityCallback: MultipleValuesCallback {
         }
         self.clientErrorKey = clientErrorKey
         
+        guard let keyId = inputNames.filter({ $0.contains("IDToken1keyId") }).first else {
+            throw AuthError.invalidCallbackResponse("Missing keyId")
+        }
+        self.keyId = keyId
+        
+        guard let appVerification = inputNames.filter({ $0.contains("IDToken1version") }).first else {
+            throw AuthError.invalidCallbackResponse("Missing appVerification")
+        }
+        self.appVerification = appVerification
+        
+        guard let challengeClientData = inputNames.filter({ $0.contains("IDToken1challenge") }).first else {
+            throw AuthError.invalidCallbackResponse("Missing challenge")
+        }
+        self.challengeClientData = challengeClientData
+        
         try super.init(json: json)
         type = callbackType
         response = json
@@ -95,6 +116,19 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     public func setClientError(_ error: String) {
         self.inputValues[self.clientErrorKey] = error
     }
+    
+    public func setkeyId(_ keyId: String) {
+        self.inputValues[self.keyId] = keyId
+    }
+    
+    public func setVerification(_ appVerification: String) {
+        self.inputValues[self.appVerification] = appVerification
+    }
+    
+    public func setClientData(_ challenge: String) {
+        self.inputValues[self.challengeClientData] = challenge
+    }
+    
     
     private func generate(completion: @escaping (String?) -> Void) {
         dcAppAttestService.generateKey(completionHandler: { keyId, error in
@@ -154,10 +188,30 @@ open class AppIntegrityCallback: MultipleValuesCallback {
                     return
                 }
                 
-                self.settoken(attestation)
-                completion(.success)
+                
+                DCAppAttestService.shared.generateAssertion(keyId, clientDataHash: hashValue) { assertion, error in
+                    guard error == nil else {
+                        print ("ERROR: Assertion not available right now")
+                        return
+                    }
+                    
+                    guard let assertion = assertion?.base64EncodedString() else {
+                        self.setClientError("base64 error")
+                        completion(.failure)
+                        return
+                    }
+                    self.setVerification(assertion)
+                    self.settoken(attestation)
+                    self.setkeyId(keyId)
+                    self.setClientData(self.challenge.data(using: .utf8)!.base64EncodedString())
+                    completion(.success)
+                }
+
+                
+             
+                
             }
-        })
+        }, forceGenerate: forceGenerate)
     }
     
 
