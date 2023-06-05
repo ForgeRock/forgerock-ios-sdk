@@ -4,9 +4,6 @@ name: CI
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-    branches:
-      - master
-      - develop
   push:
     branches:
       - master

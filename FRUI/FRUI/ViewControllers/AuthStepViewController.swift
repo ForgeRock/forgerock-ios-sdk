@@ -2,7 +2,7 @@
 //  AuthStepViewController.swift
 //  FRUI
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -11,6 +11,7 @@
 import UIKit
 import FRAuth
 import FRCore
+import FRDeviceBinding
 
 protocol AuthStepProtocol {
     func submitNode()
@@ -183,6 +184,73 @@ class AuthStepViewController: UIViewController {
                         self.renderAuthStep()
                     }
                 }
+                
+                var deviceBindingCallback: DeviceBindingCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceBindingCallback handling
+                    if let thisCallback = callback as? DeviceBindingCallback {
+                        deviceBindingCallback = thisCallback
+                    }
+                }
+                
+                //  If DeviceBindingCallback is found as one of Callbacks, bind the device and show the authentication result
+                if let deviceBindingCallback = deviceBindingCallback {
+                    self.startLoading()
+                    deviceBindingCallback.bind() { result in
+                        DispatchQueue.main.async {
+                            self.stopLoading()
+                            var bindingResult = ""
+                            switch result {
+                            case .success:
+                                bindingResult = "Success"
+                            case .failure(let error):
+                                bindingResult = error.errorMessage
+                            }
+                            
+                            let alert = UIAlertController(title: "Binding Result", message: bindingResult, preferredStyle: .alert)
+                            let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+                                self.submitCurrentNode()
+                                
+                            })
+                            alert.addAction(action)
+                            self.present(alert, animated: true)
+                        }
+                    }
+                }
+                
+                var deviceSigningVerifierCallback: DeviceSigningVerifierCallback?
+                for (index, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceBindingCallback handling
+                    if let thisCallback = callback as? DeviceSigningVerifierCallback {
+                        deviceSigningVerifierCallback = thisCallback
+                    }
+                }
+                
+                //  If DeviceSigningVerifierCallback is found as one of Callbacks, verify signature and show the result
+                if let deviceSigningVerifierCallback = deviceSigningVerifierCallback {
+                    self.startLoading()
+                    deviceSigningVerifierCallback.sign() { result in
+                        DispatchQueue.main.async {
+                            self.stopLoading()
+                            var bindingResult = ""
+                            switch result {
+                            case .success:
+                                bindingResult = "Success"
+                            case .failure(let error):
+                                bindingResult = error.errorMessage
+                            }
+                            
+                            let alert = UIAlertController(title: "Signing Verifier Result", message: bindingResult, preferredStyle: .alert)
+                            let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+                                self.submitCurrentNode()
+                                
+                            })
+                            alert.addAction(action)
+                            self.present(alert, animated: true)
+                        }
+                    }
+                }
+                
                 else {
                     //  Otherwise, just render as usual
                     self.renderAuthStep()

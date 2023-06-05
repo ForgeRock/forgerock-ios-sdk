@@ -9,8 +9,13 @@
 /* Begin PBXBuildFile section */
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
+
 		3A53E4DA2A153AF200E17DDF /* PolicyAdviceCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53E4D92A153AF200E17DDF /* PolicyAdviceCreatorTests.swift */; };
 		3A6D26672A1345400099D877 /* PolicyAdviceCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D26662A1345400099D877 /* PolicyAdviceCreator.swift */; };
+
+		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
+		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
+
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
@@ -323,8 +328,13 @@
 /* Begin PBXFileReference section */
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
+
 		3A53E4D92A153AF200E17DDF /* PolicyAdviceCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceCreatorTests.swift; sourceTree = "<group>"; };
 		3A6D26662A1345400099D877 /* PolicyAdviceCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceCreator.swift; sourceTree = "<group>"; };
+
+		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
+		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
+
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -1125,6 +1135,7 @@
 		D5888C1325664E920041FD94 /* Callback-Live */ = {
 			isa = PBXGroup;
 			children = (
+				D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */,
 				D5888C1425664E920041FD94 /* AA_04_PageCallbackTest.swift */,
 				D5888C1525664E920041FD94 /* AA_04_TermsAndConditionCallbackTest.swift */,
 				D5888C1625664E920041FD94 /* AA_04_BooleanAttributeInputCallbackTest.swift */,
@@ -1132,12 +1143,13 @@
 				D5888C1825664E920041FD94 /* AA_04_DeviceProfileCallbackTest.swift */,
 				D5888C1925664E920041FD94 /* AA_04_StringAttributeInputCallbackTest.swift */,
 				D5888C1A25664E920041FD94 /* AA_04_PollingWaitCallbackTest.swift */,
-				D5888C1B25664E920041FD94 /* CallbackBaseTest.swift */,
 				D5888C1C25664E920041FD94 /* AA_04_PageCallback65Test.swift */,
 				D5888C1D25664E920041FD94 /* AA_04_ChoiceCallbackTest.swift */,
 				D5888C1E25664E920041FD94 /* AA_04_ReCaptchaCallbackTest.swift */,
 				D5888C1F25664E920041FD94 /* AA_04_KbaCreateCallbackTest.swift */,
 				D5888C2025664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift */,
+				959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */,
+				95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */,
 			);
 			path = "Callback-Live";
 			sourceTree = "<group>";
@@ -1500,6 +1512,8 @@
 				D5C979BD2409E8DA00DA380A /* PBXTargetDependency */,
 			);
 			name = FRAuth;
+			packageProductDependencies = (
+			);
 			productName = FRAuth;
 			productReference = D55462F822A6DF720096C7A4 /* FRAuth.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1552,6 +1566,8 @@
 				Base,
 			);
 			mainGroup = D55462EE22A6DF720096C7A4;
+			packageReferences = (
+			);
 			productRefGroup = D55462F922A6DF720096C7A4 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -1792,6 +1808,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */,
 				D53A807026278A5C0093B1CA /* WebAuthnAuthenticationCallbackTests.swift in Sources */,
 				D5791B5025F87DE7004B487A /* CustomCallback.swift in Sources */,
 				D5791B5125F87DE7004B487A /* NoSessionInterceptor.swift in Sources */,
@@ -1880,7 +1897,11 @@
 				D5791BDD25F87DE8004B487A /* TokenTests.swift in Sources */,
 				D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */,
 				D58BC39F2602FB7700254654 /* IdPValueTests.swift in Sources */,
+
 				3A53E4DA2A153AF200E17DDF /* PolicyAdviceCreatorTests.swift in Sources */,
+
+				959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */,
+
 				ECDF5F4C296851DD007BB721 /* FRWebAuthnTests.swift in Sources */,
 				D5791BDF25F87DE8004B487A /* AccessTokenTests.swift in Sources */,
 				D5791BE025F87DE8004B487A /* FRUserTests.swift in Sources */,

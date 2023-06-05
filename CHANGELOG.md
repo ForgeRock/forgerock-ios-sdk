@@ -1,4 +1,11 @@
 # Version 4.0.0
+
+## Unreleased
+#### Added
+- Device Binding callback implementation
+- Device Signing Verifier callback implementation
+- Application PIN authenticator type to Device Binding and Device Signing Verification
+
 ## [4.0.0]
 #### Changed
 - Added error message description to the `WebAuthnError` enum [SDKS-2226]
@@ -9,6 +16,7 @@
 - Added support for passkeys [SDKS-2140]
 - Updated Facebook SDK Version to 16.0.1 [SDKS-1839]
 - Updated Google SDK Version to 7.0.0 [SDKS-2426]
+- Added SwiftUI QuickStart Example [SDKS-2405]
 
 ## [3.4.1]
 #### Changed

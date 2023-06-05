@@ -2,7 +2,7 @@
 //  FRDevice.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -16,7 +16,7 @@ import Foundation
     /// Static FRDeivce instance for singleton
     static var _staticDevice: FRDevice? = nil
     /// FRDeviceIdentifier object responsible for device's instance identifier
-    fileprivate(set) var identifier: FRDeviceIdentifier
+    public fileprivate(set) var identifier: FRDeviceIdentifier
     /// Current representation of FRDevice for FRAuth SDK; currentDevice may return nil if SDK was not properly started due to missing configuration file
     @objc public static var currentDevice: FRDevice? {
         get {
