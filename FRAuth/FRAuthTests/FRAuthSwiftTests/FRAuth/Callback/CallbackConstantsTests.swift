@@ -141,7 +141,6 @@ class CallbackConstantsTests: FRBaseTestCase {
     
     func test_08_webauthn_callback_constant_values() {
         XCTAssertEqual(CBConstants.webAuthnOutcome, "webAuthnOutcome")
-        XCTAssertEqual(CBConstants.defaultOrigin, "com.forgerock.ios")
         XCTAssertEqual(CBConstants.originScheme, "https://")
         XCTAssertEqual(CBConstants.originPrefix, "ios:bundle-id:")
         XCTAssertEqual(CBConstants.WebAuthn, "WebAuthn")
