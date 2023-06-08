@@ -97,7 +97,11 @@ jobs:
           ls -la
           cd ~/build/Debug-iphoneos/
           cp -r FRTestHost.app/PlugIns/FRAuthTests.xctest .
-          zip -r -X FRAuthTests.xctest.zip FRAuthTests.xctest
+          cp -r FRTestHost.app/PlugIns/FRAuthenticatorTests.xctest .
+          cp -r FRTestHost.app/PlugIns/FRCoreTests.xctest .
+          cp -r FRTestHost.app/PlugIns/FRDeviceBindingTests.xctest .
+          cp -r FRTestHost.app/PlugIns/FRProximityTests.xctest .
+          zip -r -X FRAuthTests.xctest.zip FRAuthTests.xctest FRAuthenticatorTests.xctest FRCoreTests.xctest FRDeviceBindingTests.xctest FRProximityTests.xctest
           mkdir  Payload
           cp -r FRTestHost.app Payload/
           zip --symlinks -qr FRTestHost.ipa Payload
