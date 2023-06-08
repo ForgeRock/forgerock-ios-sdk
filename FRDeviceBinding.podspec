@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint FRAuth.podspec' to ensure this is a
+# Be sure to run `pod lib lint FRDeviceBinding.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,10 +8,10 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRDeviceBinding'
-  s.version          = '4.0.0-beta5'
+  s.version          = '4.0.0'
   s.summary          = 'ForgeRock Device Binding SDK for iOS'
   s.description      = <<-DESC
-    FRDeviceBinding is a SDK that adds support for Device Binding feature. FRDeviceBinding depends on JOSESwift.
+    FRDeviceBinding is a SDK that adds support for the Device Binding feature. FRDeviceBinding depends on JOSESwift.
                        DESC
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -29,6 +29,6 @@ Pod::Spec.new do |s|
 
   base_dir = "FRDeviceBinding/FRDeviceBinding"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRAuth', '~> 4.0.0-beta5'
+  s.ios.dependency 'FRAuth', '~> 4.0.0'
   s.ios.dependency 'JOSESwift', '~> 2.4.0'
 end
