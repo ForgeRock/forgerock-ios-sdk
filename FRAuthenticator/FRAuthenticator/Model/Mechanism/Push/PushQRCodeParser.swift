@@ -2,7 +2,7 @@
 //  PushQRCodeParser.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -17,8 +17,8 @@ struct PushQRCodeParser {
     
     //  MARK: - Properties
     
-    /// Supported type
-    let supportedTypes: [String] = ["push"]
+    /// OATH types
+    let oathTypes: [String] = [AuthType.totp.rawValue, AuthType.hotp.rawValue]
     /// scheme of QR Code URL; must be either 'pushauth'
     var scheme: String
     /// type of auth; must be 'push'
@@ -43,19 +43,20 @@ struct PushQRCodeParser {
     var backgroundColor: String?
     /// image URL of logo
     var image: String?
-    
+    /// Set of policies
+    var policies: String?
     
     //  MARK: - Init
     
     /// Constructs and validates given QR Code data (URL) for Push Mechanism
     /// - Parameter url: QR Code's data as in URL
     init(url: URL) throws {
-        guard let scheme = url.scheme, scheme == "pushauth" else {
+        guard let scheme = url.scheme, (scheme == URIType.pushauth.rawValue || scheme == URIType.mfauth.rawValue) else {
             throw MechanismError.invalidQRCode
         }
         self.scheme = scheme
         
-        guard let type = url.host, supportedTypes.contains(type.lowercased()) else {
+        guard let type = url.host, (scheme == URIType.pushauth.rawValue && type == AuthType.push.rawValue) || (scheme == URIType.mfauth.rawValue && oathTypes.contains(type.lowercased())) else {
             throw MechanismError.invalidType
         }
         self.type = type
@@ -93,18 +94,18 @@ struct PushQRCodeParser {
         let registrationEndpoint = params["r"],
         let authenticationEndpoint = params["a"],
         let messageId = params["m"],
-        let challenge = params["c"],
-        let issuerBase64Encoded = params["issuer"],
-        let issuer = issuerBase64Encoded.base64Decoded() else {
-                throw MechanismError.missingInformation("s, r, a, m, c or issuer")
+        let challenge = params["c"]  else {
+              throw MechanismError.missingInformation("s, r, a, m, or c")
         }
         
         guard let regUrlData = registrationEndpoint.decodeURL(), let regUrlStr = String(data: regUrlData, encoding: .utf8), let regURL = URL(string: regUrlStr), let authUrlData = authenticationEndpoint.decodeURL(), let authUrlStr = String(data: authUrlData, encoding: .utf8), let authURL = URL(string: authUrlStr) else {
                 throw MechanismError.invalidInformation("registration and/or authentication URL")
         }
         
-        if let imgUrlEncoded = params["image"], let imgUrlDecodedData = imgUrlEncoded.decodeURL(), let imageUrlStr = String(data: imgUrlDecodedData, encoding: .utf8) {
+        if self.scheme == URIType.pushauth.rawValue, let imgUrlEncoded = params["image"], let imgUrlDecodedData = imgUrlEncoded.decodeURL(), let imageUrlStr = String(data: imgUrlDecodedData, encoding: .utf8) {
             self.image = imageUrlStr
+        } else {
+            self.image = params["image"]
         }
         
         self.secret = secret
@@ -112,8 +113,8 @@ struct PushQRCodeParser {
         self.authenticationEndpoint = authURL
         self.messageId = messageId
         self.challenge = challenge.urlSafeDecoding()
-        self.issuer = issuer
         self.loadBalancer = params["l"]?.base64Decoded()
         self.backgroundColor = params["b"]
+        self.policies = params["policies"]?.base64Decoded()
     }
 }

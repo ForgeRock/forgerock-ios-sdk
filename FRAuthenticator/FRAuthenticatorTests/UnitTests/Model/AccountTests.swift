@@ -2,7 +2,7 @@
 //  AccountTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -37,8 +37,11 @@ class AccountTests: FRABaseTests {
         let other_accountName = "other_accountName"
         let imageUrl = "https://www.forgerock.com"
         let backgroundColor = "#FFFFFF"
+        let jsonPolicies = """
+            {"biometricAvailable": { },"deviceTampering": {"score": 0.8}}
+        """
         
-        let account = Account(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor)
+        let account = Account(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor, policies: jsonPolicies)
         
         XCTAssertNotNil(account)
         
@@ -46,6 +49,7 @@ class AccountTests: FRABaseTests {
         XCTAssertEqual(account.accountName, accountName)
         XCTAssertEqual(account.imageUrl, imageUrl)
         XCTAssertEqual(account.backgroundColor, backgroundColor)
+        XCTAssertEqual(account.policies, jsonPolicies)
         XCTAssertNotNil(account.timeAdded)
         
         account.displayIssuer = other_issuer

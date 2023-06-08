@@ -11,7 +11,7 @@ on:
         required: true
 jobs:
   build-and-test:
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 20
 
     steps:
@@ -29,15 +29,15 @@ jobs:
           CONFIG_E2E_CLOUD: ${{ secrets.CONFIG_E2E_CLOUD }}
         run: echo $CONFIG_E2E_CLOUD > FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json
 
-      # Set target Xcode version. For more details and options see: 
-      # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
+      # Set target Xcode version. For more details and options see:
+      # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-12-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_13.3.1.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app && /usr/bin/xcodebuild -version
 
       # Run all tests
       - name: Run tests
-        run: xcodebuild test -scheme FRTestHost -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.4' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
-      
+        run: xcodebuild test -scheme FRTestHost -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
+
       # Publish test results
       - name: Publish test results
         uses: kishikawakatsumi/xcresulttool@v1

@@ -2,7 +2,7 @@
 //  FRAuthenticator.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -20,6 +20,8 @@ public class FRAClient: NSObject {
     public static var shared: FRAClient? = nil
     /// current storage client object
     static var storage: StorageClient = KeychainServiceClient()
+    /// current policy evaluator object
+    static var policyEvaluator: FRAPolicyEvaluator = FRAPolicyEvaluator()
     /// AuthenticatorManager instance for FRAClient
     let authenticatorManager: AuthenticatorManager
     
@@ -31,10 +33,12 @@ public class FRAClient: NSObject {
     
     
     /// Initializes FRAClient object with StorageClient
-    /// - Parameter storageClient: Dedicated StorageClient for FRAClient instance
-    init(storageClient: StorageClient) {
+    /// - Parameters:
+    ///     - storageClient: Dedicated StorageClient for FRAClient instance
+    ///     - policyEvaluator: The PolicyEvaluator instance
+    init(storageClient: StorageClient, policyEvaluator: FRAPolicyEvaluator) {
         FRALog.v("Init: \(String(describing: storageClient))")
-        self.authenticatorManager = AuthenticatorManager(storageClient: storageClient)
+        self.authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
     }
     
     
@@ -43,7 +47,7 @@ public class FRAClient: NSObject {
     /// Starts SDK's lifecylce and internal process
     static public func start() {
         FRALog.v("FRAClient SDK started")
-        FRAClient.shared = FRAClient(storageClient: FRAClient.storage)
+        FRAClient.shared = FRAClient(storageClient: FRAClient.storage, policyEvaluator: FRAClient.policyEvaluator)
     }
     
     
@@ -51,6 +55,7 @@ public class FRAClient: NSObject {
     
     /// Sets default SDK's Storage Client; any storage client that inherits 'StorageClient' can be used for SDK's storage
     /// - Parameter storage: StoreClient object
+    /// - Throws: FRAError
     static public func setStorage(storage: StorageClient) throws {
         //  If SDK has already started; SDK can't handle the change of storage client. Throws an exception.
         guard FRAClient.shared == nil else {
@@ -60,6 +65,22 @@ public class FRAClient: NSObject {
         FRALog.i("StorageClient is set: \(String(describing: storage))")
         //  Update storage client
         FRAClient.storage = storage
+    }
+    
+    //  MARK: - FRAPolicyEvaluator
+    
+    /// Sets default SDK's PolicyEvaluator
+    /// - Parameter policyEvaluator: FRAPolicyEvaluator object
+    /// - Throws: FRAError
+    static public func setPolicyEvaluator(policyEvaluator: FRAPolicyEvaluator) throws {
+        //  If SDK has already started; SDK can't handle the change of storage client. Throws an exception.
+        guard FRAClient.shared == nil else {
+            FRALog.e("FRAPolicyEvaluator cannot be set; FRAClient already initialized")
+            throw FRAError.invalidStateForChangingPolicyEvaluator
+        }
+        FRALog.i("FRAPolicyEvaluator is set: \(String(describing: policyEvaluator))")
+        //  Update storage client
+        FRAClient.policyEvaluator = policyEvaluator
     }
     
     
@@ -90,9 +111,10 @@ public class FRAClient: NSObject {
     
     /// Update given Account object on the StorageClient
     /// - Parameter account: Account object to be updated
+    /// - Throws: AccountError
     /// - Returns: Boolean result of deleting operation
-    @discardableResult public func updateAccount(account: Account) -> Bool {
-        return self.authenticatorManager.updateAccount(account: account)
+    @discardableResult public func updateAccount(account: Account) throws -> Bool {
+        return try self.authenticatorManager.updateAccount(account: account)
     }
     
     
@@ -103,6 +125,24 @@ public class FRAClient: NSObject {
         return self.authenticatorManager.removeAccount(account: account)
     }
     
+    /// Lock the given `Account` object limiting the access to all `Mechanism` objects and any `PushNotification` objects associated with it.
+    /// - Parameters:
+    ///     - account: Account object to be locked
+    ///     - policy: The non-compliance policy
+    /// - Throws: AccountError
+    /// - Returns: Boolean result of lock operation
+    @discardableResult public func lockAccount(account: Account, policy: FRAPolicy) throws -> Bool {
+        return try self.authenticatorManager.lockAccount(account: account, policy: policy)
+    }
+    
+    /// Unlock the  given `Account` object
+    /// - Parameters:
+    ///     - account: Account object to be locked
+    /// - Throws: AccountError
+    /// - Returns: Boolean result of unlock operation
+    @discardableResult public func unlockAccount(account: Account) throws -> Bool {
+        return try self.authenticatorManager.unlockAccount(account: account)
+    }
     
     //  MARK: - Mechanism
     

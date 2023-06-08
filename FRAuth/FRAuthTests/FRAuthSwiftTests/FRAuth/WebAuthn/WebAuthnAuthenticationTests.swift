@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -75,7 +75,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
@@ -136,7 +136,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -179,7 +179,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -214,7 +214,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
@@ -223,6 +223,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .notAllowed:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -268,7 +269,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -311,7 +312,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -354,7 +355,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -396,7 +397,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             //  Since there is only one residentKey stored in storage,
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNil(webAuthnOutcome)
                 XCTFail("WebAuthnAuthentication unexpectedly succeeded")
                 ex.fulfill()
@@ -405,6 +406,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
                 if let webAuthnError = error as? WebAuthnError {
                     switch webAuthnError {
                     case .timeout:
+                        XCTAssertNotNil(webAuthnError.message())
                         break
                     default:
                         XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -460,7 +462,7 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
             
             //  Perform Authentication
             let ex = self.expectation(description: "WebAuthn Authentication")
-            callback.authenticate(onSuccess: { (webAuthnOutcome) in
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
             }) { (error) in
@@ -478,8 +480,118 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
         }
     }
     
+    func test_09_credentials_empty() {
+        
+        //  Retrieve credentialId
+        guard WebAuthnAuthenticationTests.registeredCredentialids.count == 5, WebAuthnAuthenticationTests.registeredKeyName.count == 5 else {
+            XCTFail("Failed to retrieve registered credentialIds")
+            return
+        }
+        
+        do {
+            let callback = try self.createAuthenticationCallback()
+            
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            //  Set timeout for 3 seconds
+            callback.timeout = 15000
+            //  Trigger delay for 10 seconds
+            self.causeDelay = 10
+                        
+            //  Since there is only one residentKey stored in storage,
+            //  Perform Authentication
+            let ex = self.expectation(description: "WebAuthn Authentication")
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                XCTAssertNil(webAuthnOutcome)
+                XCTFail("WebAuthnAuthentication unexpectedly succeeded")
+                ex.fulfill()
+            }) { (error) in
+                
+                if let webAuthnError = error as? WebAuthnError {
+                    switch webAuthnError {
+                    case .notAllowed:
+                        XCTAssertNil(webAuthnError.platformError())
+                        XCTAssertTrue("Credential source is empty; stopping the operation" == webAuthnError.message())
+                        break
+                    default:
+                        XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                        break
+                    }
+                }
+                else {
+                    XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                }
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to perform WebAuthn authentication: \(error.localizedDescription)")
+        }
+    }
     
-    func test_99_clena_up() {
+    func test_10_uknown_keyname() {
+        
+        //  Retrieve credentialId
+        guard WebAuthnAuthenticationTests.registeredCredentialids.count == 5, WebAuthnAuthenticationTests.registeredKeyName.count == 5 else {
+            XCTFail("Failed to retrieve registered credentialIds")
+            return
+        }
+        
+        do {
+            let callback = try self.createAuthenticationCallback()
+            
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            //  Set timeout for 3 seconds
+            callback.timeout = 15000
+            //  Trigger delay for 10 seconds
+            self.causeDelay = 10
+            //  Set allowedCredentials
+            callback.allowCredentials = WebAuthnAuthenticationTests.registeredCredentialids
+                        
+            //  Since there is only one residentKey stored in storage,
+            //  Perform Authentication
+            let ex = self.expectation(description: "WebAuthn Authentication")
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                XCTAssertNil(webAuthnOutcome)
+                XCTFail("WebAuthnAuthentication unexpectedly succeeded")
+                ex.fulfill()
+            }) { (error) in
+                
+                if let webAuthnError = error as? WebAuthnError {
+                    switch webAuthnError {
+                    case .notAllowed:
+                        XCTAssertNil(webAuthnError.platformError())
+                        XCTAssertTrue("Unknwon \'keyName\' is returned; stopping the operation" == webAuthnError.message())
+                        break
+                    default:
+                        XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                        break
+                    }
+                }
+                else {
+                    XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                }
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to perform WebAuthn authentication: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_99_clean_up() {
         //  Clean up all registered keys and credentials after entire authentication tests is done
         self.shouldCleanup = true
     }
@@ -487,6 +599,8 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
 
 
 extension WebAuthnAuthenticationTests: PlatformAuthenticatorAuthenticationDelegate {
+    func localKeyExistsAndPasskeysAreAvailable() { }
+    
     func selectCredential(keyNames: [String], selectionCallback: @escaping WebAuthnCredentialsSelectionCallback) {
         if self.causeDelay > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(self.causeDelay)) {

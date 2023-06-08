@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -14,9 +14,6 @@ import FRCore
 #if canImport(FRFacebookSignIn)
 import FRFacebookSignIn
 #endif
-#if canImport(FRGoogleSignIn)
-import FRGoogleSignIn
-#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,24 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+        #if canImport(FRFacebookSignIn)
+            FacebookSignInHandler.application(application, didFinishLaunchingWithOptions: launchOptions)
+        #endif
         // Enable logs for all level
         FRLog.setLogLevel([ .all])
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        #if canImport(FRFacebookSignIn)
-        if FacebookSignInHandler.handle(app, url, options) {
-            return true
-        }
-        #endif
-        #if canImport(FRGoogleSignIn)
-        if GoogleSignInHandler.handle(app, url, options) {
-            return true
-        }
-        #endif
         
         var resumeURL: URL?
         if let resumeURI = url.valueOf("resumeURI"), let thisURI = URL(string: resumeURI) {

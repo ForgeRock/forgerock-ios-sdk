@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint FRAuth.podspec' to ensure this is a
+# Be sure to run `pod lib lint FRFacebookSignIn.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRFacebookSignIn'
-  s.version          = '3.4.1'
+  s.version          = '4.0.0'
   s.summary          = 'ForgeRock Auth Facebook Sign-in SDK for iOS'
   s.description      = <<-DESC
   FRFacebookSignIn is a SDK that allows a user to sign-in through Facebook. FRFacebookSignIn depends on FBSDKLoginKit, and uses Facebook's SDK to perform authorization following Facebook's protocol.
@@ -29,6 +29,6 @@ Pod::Spec.new do |s|
 
   base_dir = "FRFacebookSignIn/FRFacebookSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRAuth', '~> 3.4.1'
-  s.ios.dependency 'FBSDKLoginKit', '~> 9.1.0'
+  s.ios.dependency 'FRAuth', '~> 4.0.0'
+  s.ios.dependency 'FBSDKLoginKit', '~> 16.0.1'
 end

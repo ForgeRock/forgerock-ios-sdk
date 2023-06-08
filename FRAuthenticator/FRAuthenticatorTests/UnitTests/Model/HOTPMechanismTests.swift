@@ -2,7 +2,7 @@
 //  HOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -282,4 +282,45 @@ class HOTPMechanismTests: FRABaseTests {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    func test_11_hotp_from_combined_mechanism() {
+         
+        let qrCode = URL(string: "mfauth://hotp/Forgerock:demo?" +
+                         "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
+                         "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
+                         "b=ff00ff&" +
+                         "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
+                         "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
+                         "c=Daf8vrc8onKu-dcptwCRS9UHmdui5u16vAdG2HMU4w0&" +
+                         "l=YW1sYmNvb2tpZT0wMQ==&" +
+                         "m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&" +
+                         "policies=eyJiaW9tZXRyaWNBdmFpbGFibGUiOiB7IH0sImRldmljZVRhbXBlcmluZyI6IHsic2NvcmUiOiAwLjh9fQ&" +
+                         "digits=6&" +
+                         "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                         "counter=10&")!
+         
+         do {
+             let parser = try OathQRCodeParser(url: qrCode)
+             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+             
+             XCTAssertNotNil(mechanism.mechanismUUID)
+             XCTAssertNotNil(mechanism.issuer)
+             XCTAssertNotNil(mechanism.type)
+             XCTAssertNotNil(mechanism.version)
+             XCTAssertNotNil(mechanism.accountName)
+             XCTAssertNotNil(mechanism.secret)
+             XCTAssertNotNil(mechanism.algorithm)
+             XCTAssertNotNil(mechanism.timeAdded)
+             
+             XCTAssertEqual(mechanism.issuer, "Forgerock")
+             XCTAssertEqual(mechanism.type, "hotp")
+             XCTAssertEqual(mechanism.accountName, "demo")
+             XCTAssertEqual(mechanism.secret, "R2PYFZRISXA5L25NVSSYK2RQ6E======")
+             XCTAssertEqual(mechanism.algorithm.rawValue, "sha1")
+             XCTAssertEqual(mechanism.counter, 10)
+         }
+         catch {
+             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+         }
+     }
 }

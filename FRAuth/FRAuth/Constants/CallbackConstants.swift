@@ -2,7 +2,7 @@
 //  CallbackConstants.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -91,10 +91,12 @@ enum CallbackType: String {
     case WebAuthnRegistrationCallback = "WebAuthnRegistrationCallback"
     case IdPCallback = "IdPCallback"
     case SelectIdPCallback = "SelectIdPCallback"
+    case DeviceBindingCallback = "DeviceBindingCallback"
+    case DeviceSigningVerifierCallback = "DeviceSigningVerifierCallback"
 }
 
 /// CBConstants is mainly responsible to maintain all constant values related to Callback implementation
-struct CBConstants {
+public struct CBConstants {
     static let type: String = "type"
     static let _type: String = "_type"
     static let _action: String = "_action"
@@ -195,7 +197,6 @@ extension CBConstants {
     
     static let webAuthnOutcome: String = "webAuthnOutcome"
     
-    static let defaultOrigin: String = "com.forgerock.ios"
     static let originScheme: String = "https://"
     static let originPrefix: String = "ios:bundle-id:"
     
@@ -228,4 +229,18 @@ extension CBConstants {
     static let _pubKeyCredParams: String = "_pubKeyCredParams"
     static let public_key: String = "public-key"
     static let alg: String = "alg"
+}
+
+//  MARK: - DeviceBindingCallback
+
+extension CBConstants {
+    static let username: String = "username"
+    static let authenticationType: String = "authenticationType"
+    static let title: String = "title"
+    static let subtitle: String = "subtitle"
+    static let description: String = "description"
+    static let jws: String = "jws"
+    static let deviceName: String = "deviceName"
+    static let deviceId: String = "deviceId"
+    static let clientError: String = "clientError"
 }

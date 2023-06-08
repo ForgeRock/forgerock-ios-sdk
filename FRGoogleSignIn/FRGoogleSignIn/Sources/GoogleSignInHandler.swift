@@ -2,7 +2,7 @@
 //  GoogleSignInHandler.swift
 //  FRGoogleSignIn
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -44,12 +44,13 @@ public class GoogleSignInHandler: NSObject, IdPHandler {
         GIDSignIn.sharedInstance.signOut()
         self.completionCallback = completion
         if let viewController = self.presentingViewController {
-            GIDSignIn.sharedInstance.signIn(with: GIDConfiguration(clientID: idpClient.clientId), presenting: viewController) { user, error in
+            GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: idpClient.clientId)
+            GIDSignIn.sharedInstance.signIn(withPresenting: viewController) { result, error in
                 Log.v("GIDSignIn completed with result", module: self.module)
                 if let error = error {
                     Log.e("An error ocurred during the authentication: \(error.localizedDescription)", module: self.module)
                 }
-                self.completionCallback?(user?.authentication.idToken, self.tokenType, error)
+                self.completionCallback?(result?.user.idToken?.tokenString, self.tokenType, error)
             }
         }
     }
@@ -72,21 +73,5 @@ public class GoogleSignInHandler: NSObject, IdPHandler {
         btn.style = style
         btn.colorScheme = colorScheme
         return btn
-    }
-    
-    
-    //  MARK: - iOS 10 Support
-    
-    /// Handles incoming URL for Google Sign-in using SFSafariViewController
-    ///
-    ///  Note: This is only required to support iOS 10; this must be called at AppDelegate of the application
-    ///
-    /// - Parameters:
-    ///   - application: UIApplication instance
-    ///   - url: Incoming URL as in URL instance
-    ///   - options: UIApplication.OpenURLOptions
-    /// - Returns: Boolean result whether or not the URL is designated for Google Sign-in
-    public static func handle(_ application: UIApplication, _ url: URL, _ options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return GIDSignIn.sharedInstance.handle(url)
     }
 }
