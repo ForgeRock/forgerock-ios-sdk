@@ -18,7 +18,8 @@ let package = Package (
     ],
     dependencies: [
         .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("16.0.1")),
-        .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("7.0.0"))
+        .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("7.0.0")),
+        .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .exact("2.4.0"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),
@@ -27,7 +28,7 @@ let package = Package (
         .target(name: "FRAuth", dependencies: [.target(name: "FRCore"), .product(name: "JOSESwift", package: "JOSESwift")], path: "FRAuth/FRAuth", exclude: ["Info.plist", "FRAuth.h"]),
         .target(name: "FRProximity", dependencies: [.target(name: "FRAuth")], path: "FRProximity/FRProximity", exclude: ["Info.plist", "FRProximity.h"]),
         .target(name: "FRAuthenticator", dependencies: [.target(name: "FRCore"), .target(name: "cFRAuthenticator")], path: "FRAuthenticator/FRAuthenticator", exclude: ["Info.plist", "FRAuthenticator.h", "SharedC/Sources/include/base32.h", "SharedC/Sources/base32.c", "SharedC/FRAuthenticator.modulemap"]),
-        .target(name: "FRUI", dependencies: [.target(name: "FRAuth")], path: "FRUI/FRUI", exclude: ["Info.plist", "FRUI.h"]),
+        .target(name: "FRUI", dependencies: [.target(name: "FRDeviceBinding")], path: "FRUI/FRUI", exclude: ["Info.plist", "FRUI.h"]),
         .target(name: "FRFacebookSignIn", dependencies: [.target(name: "FRAuth"), .product(name: "FacebookLogin", package: "Facebook")], path: "FRFacebookSignIn/FRFacebookSignIn/Sources"),
         .target(name: "FRGoogleSignIn", dependencies: [.target(name: "FRAuth"), .product(name: "GoogleSignIn", package: "GoogleSignIn")], path: "FRGoogleSignIn/FRGoogleSignIn/Sources"),
         .target(name: "FRDeviceBinding", dependencies: [.target(name: "FRAuth"), .product(name: "JOSESwift", package: "JOSESwift")], path: "FRDeviceBinding/FRDeviceBinding/Sources")
