@@ -63,6 +63,56 @@
                ReferencedContainer = "container:../FRAuth/FRAuth.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5C354882412EBF900695A84"
+               BuildableName = "FRAuthenticatorTests.xctest"
+               BlueprintName = "FRAuthenticatorTests"
+               ReferencedContainer = "container:../FRAuthenticator/FRAuthenticator.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5E75BD22409B8C0005F589F"
+               BuildableName = "FRCoreTests.xctest"
+               BlueprintName = "FRCoreTests"
+               ReferencedContainer = "container:../FRCore/FRCore.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A5D1C37B29E59FC30096039E"
+               BuildableName = "FRDeviceBindingTests.xctest"
+               BlueprintName = "FRDeviceBindingTests"
+               ReferencedContainer = "container:../FRDeviceBinding/FRDeviceBinding.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D59FAE26234413D3005D34DA"
+               BuildableName = "FRProximityTests.xctest"
+               BlueprintName = "FRProximityTests"
+               ReferencedContainer = "container:../FRProximity/FRProximity.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D53A91E922B1815B003DF94E"
+               BuildableName = "FRUITests.xctest"
+               BlueprintName = "FRUITests"
+               ReferencedContainer = "container:../FRUI/FRUI.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
