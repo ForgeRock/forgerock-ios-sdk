@@ -10,19 +10,19 @@ on:
       - develop
 
 jobs:
-  # # Build and run unit tests
-  # build-and-test:
-  #   name: Build and test
-  #   uses: ./.github/workflows/build-and-test.yaml
-  #   secrets:
-  #     CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
-  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  # Build and run unit tests
+  build-and-test:
+    name: Build and test
+    uses: ./.github/workflows/build-and-test.yaml
+    secrets:
+      CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   
   # Build and sign BitBar test artifacts (FRTestHost.ipa and FRAuthTests.xctest.zip)
   bitbar-prepare-artifacts:
     name: Prepare device farm artifacts
     uses: ./.github/workflows/bitbar-prepare-artifacts.yaml
-    # needs: build-and-test
+    needs: build-and-test
     secrets:
       CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
       CERTIFICATES_FILE_BASE64: ${{ secrets.CERTIFICATES_FILE_BASE64 }}

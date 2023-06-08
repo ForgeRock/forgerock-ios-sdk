@@ -154,7 +154,8 @@ class DeviceProfileCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_04_device_execute() {
+    func test_04_device_execute() throws {
+        try XCTSkipIf(!self.isSimulator, "Skipping on bitbar device due to not being able to respond to the bluetooth permission prompt")
         // Start SDK to collect DeviceIdentifier
         startSDK()
         
