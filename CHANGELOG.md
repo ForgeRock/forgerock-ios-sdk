@@ -1,22 +1,29 @@
 # Version 4.0.0
 
-## Unreleased
-#### Added
-- Device Binding callback implementation
-- Device Signing Verifier callback implementation
-- Application PIN authenticator type to Device Binding and Device Signing Verification
-
 ## [4.0.0]
-#### Changed
+#### Added
+- Support for passkeys [SDKS-2140]
+- `DeviceBinding` callback support [SDKS-1748]
+- `DeviceSigningVerifier` callback support [SDKS-2023]
+- Support for combined MFA in the Authenticator SDK [SDKS-1972]
+- Support for policy enforcement in the Authenticator SDK [SDKS-2166]
+- Interface for listing and deleting WebAuthn credentials from the device [SDKS-2279]
+- Interface for assigning device name during the WebAuthn registration process [SDKS-2297]
+- SwiftUI QuickStart Example [SDKS-2405]
+
+#### Fixed
 - Added error message description to the `WebAuthnError` enum [SDKS-2226]
-- Exposed interface for listing and deleting WebAuthn credentials from the device [SDKS-2279]
-- Exposed interface for assigning device name during the WebAuthn registration process [SDKS-2297]
-- Added support for combined MFA in the Authenticator SDK [SDKS-2166]
-- Added support for policy enforcement in the Authenticator SDK [SDKS-2166]
-- Added support for passkeys [SDKS-2140]
+- Updated the order of presenting the registered WebAuthn keys on the device [SDKS-2251]
 - Updated Facebook SDK Version to 16.0.1 [SDKS-1839]
 - Updated Google SDK Version to 7.0.0 [SDKS-2426]
-- Added SwiftUI QuickStart Example [SDKS-2405]
+
+#### Changed
+- In **WebAuthnRegistrationCallback**: `public func register(node: Node? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback)` to `public func register(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, deviceName: String? = nil, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback)`
+- In **WebAuthnAuthenticationCallback**: `public func authenticate(node: Node? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback)` to `public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback)`
+- In **FacebookSignInHandler**: `public static func handle(_ application: UIApplication, _ url: URL, _ options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool` to `public static func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool`.
+It should now be called from `application(_ application:, didFinishLaunchingWithOptions launchOptions: )` instead of `application(_ app:, open url:, options:)`.
+- **FRAClient.updateAccount()** now throws `AccountError.accountLocked` upon attempt to update a locked account [SDKS-2166]
+- **HOTPMechanism.generateCode()** and **TOTPMechanism.generateCode()** now throws `AccountError.accountLocked` upon attempt to get an OATH token for a locked account [SDKS-2166]
 
 ## [3.4.1]
 #### Changed

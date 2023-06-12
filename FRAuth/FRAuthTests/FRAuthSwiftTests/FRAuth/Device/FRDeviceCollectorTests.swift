@@ -20,8 +20,8 @@ class FRDeviceCollectorTests: FRAuthBaseTest {
         super.setUp()
     }
     
-    func testDeviceCollector() {
-        
+    func testDeviceCollector() throws {
+        try XCTSkipIf(!self.isSimulator, "Skipping on bitbar device due to not being able to respond to the bluetooth permission prompt")
         // Given SDK start
         self.startSDK()
         
@@ -157,7 +157,8 @@ class FRDeviceCollectorTests: FRAuthBaseTest {
 //        XCTAssertNotNil((location["latitude"] as? Double))
     }
     
-    func testCustomDeviceCollector() {
+    func testCustomDeviceCollector() throws {
+        try XCTSkipIf(!self.isSimulator, "Skipping on bitbar device due to not being able to respond to the bluetooth permission prompt")
         
         // Given SDK start
         self.startSDK()

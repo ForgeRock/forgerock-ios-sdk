@@ -197,7 +197,6 @@ extension CBConstants {
     
     static let webAuthnOutcome: String = "webAuthnOutcome"
     
-    static let defaultOrigin: String = "com.forgerock.ios"
     static let originScheme: String = "https://"
     static let originPrefix: String = "ios:bundle-id:"
     
