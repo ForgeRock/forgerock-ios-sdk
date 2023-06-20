@@ -10,6 +10,7 @@
 
 import UIKit
 import FRAuthenticator
+import FRCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FRALog.setLogLevel(.all)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PushInterceptor()])
+       
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in }
         application.registerForRemoteNotifications()
@@ -105,3 +108,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+class PushInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        if action.type == "PUSH_REGISTER" {
+          
+          // Add additional header:
+            var headers = request.headers
+            headers["x-Gateway-APIKey"] = "true"
+
+            // Construct the updated request:
+            let newRequest = Request(
+                url: request.url,
+                method: request.method,
+                headers: headers,
+                bodyParams: request.bodyParams,
+                urlParams: request.urlParams,
+                requestType: request.requestType,
+                responseType: request.responseType,
+                timeoutInterval: request.timeoutInterval
+            )
+            return newRequest
+        }
+        else {
+            return request
+        }
+    }
+}
