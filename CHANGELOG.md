@@ -1,4 +1,8 @@
-# Version 4.0.0
+# Version 4.1.0
+
+## [4.1.0]
+#### Fixed
+- Fixed an issue in the Authenticator module related to combined MFA registration [SDKS-2542]
 
 ## [4.0.0]
 #### Added
