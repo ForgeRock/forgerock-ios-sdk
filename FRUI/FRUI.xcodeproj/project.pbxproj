@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */; };
-		D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51F44D722B1B8C900FC8F0D /* FRAuth.framework */; };
 		D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D527D03024BCDB4E00C21663 /* FRUITextView.swift */; };
 		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
 		D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */; };
@@ -58,26 +57,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D51F44D622B1B8C900FC8F0D /* PBXContainerItemProxy */ = {
+		953E5D372A424347003BC7B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+			containerPortal = 953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D55462F822A6DF720096C7A4;
-			remoteInfo = FRAuth;
+			remoteGlobalIDString = A5D1C37429E59FC20096039E;
+			remoteInfo = FRDeviceBinding;
 		};
-		D51F44D822B1B8C900FC8F0D /* PBXContainerItemProxy */ = {
+		953E5D392A424347003BC7B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+			containerPortal = 953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D554630122A6DF720096C7A4;
-			remoteInfo = FRAuthTests;
-		};
-		D51F44DC22B1B8D400FC8F0D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D55462F722A6DF720096C7A4;
-			remoteInfo = FRAuth;
+			remoteGlobalIDString = A5D1C37C29E59FC30096039E;
+			remoteInfo = FRDeviceBindingTests;
 		};
 		D53A91EC22B1815B003DF94E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -89,8 +81,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
 		A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
 		D527D03024BCDB4E00C21663 /* FRUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUITextView.swift; sourceTree = "<group>"; };
 		D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsTableViewCell.swift; sourceTree = "<group>"; };
 		D539C8E722DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsAndConditionsTableViewCell.xib; sourceTree = "<group>"; };
@@ -148,7 +140,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */,
-				D51F44DB22B1B8CF00FC8F0D /* FRAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,11 +154,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D51F44D222B1B8C900FC8F0D /* Products */ = {
+		953E5D322A424347003BC7B3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D51F44D722B1B8C900FC8F0D /* FRAuth.framework */,
-				D51F44D922B1B8C900FC8F0D /* FRAuthTests.xctest */,
+				953E5D382A424347003BC7B3 /* FRDeviceBinding.framework */,
+				953E5D3A2A424347003BC7B3 /* FRDeviceBindingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,7 +174,7 @@
 		D53A91D722B1815B003DF94E = {
 			isa = PBXGroup;
 			children = (
-				D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */,
+				953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */,
 				D53A91E322B1815B003DF94E /* FRUI */,
 				D53A91EE22B1815B003DF94E /* FRUITests */,
 				D53A91E222B1815B003DF94E /* Products */,
@@ -367,7 +358,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D51F44DD22B1B8D400FC8F0D /* PBXTargetDependency */,
 			);
 			name = FRUI;
 			productName = FRUI;
@@ -423,8 +413,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D51F44D222B1B8C900FC8F0D /* Products */;
-					ProjectRef = D51F44D122B1B8C900FC8F0D /* FRAuth.xcodeproj */;
+					ProductGroup = 953E5D322A424347003BC7B3 /* Products */;
+					ProjectRef = 953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -436,18 +426,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		D51F44D722B1B8C900FC8F0D /* FRAuth.framework */ = {
+		953E5D382A424347003BC7B3 /* FRDeviceBinding.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = FRAuth.framework;
-			remoteRef = D51F44D622B1B8C900FC8F0D /* PBXContainerItemProxy */;
+			path = FRDeviceBinding.framework;
+			remoteRef = 953E5D372A424347003BC7B3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D51F44D922B1B8C900FC8F0D /* FRAuthTests.xctest */ = {
+		953E5D3A2A424347003BC7B3 /* FRDeviceBindingTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = FRAuthTests.xctest;
-			remoteRef = D51F44D822B1B8C900FC8F0D /* PBXContainerItemProxy */;
+			path = FRDeviceBindingTests.xctest;
+			remoteRef = 953E5D392A424347003BC7B3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -531,11 +521,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D51F44DD22B1B8D400FC8F0D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRAuth;
-			targetProxy = D51F44DC22B1B8D400FC8F0D /* PBXContainerItemProxy */;
-		};
 		D53A91ED22B1815B003DF94E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D53A91E022B1815B003DF94E /* FRUI */;
@@ -688,7 +673,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.0.0";
+				MARKETING_VERSION = "4.1.0-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -725,7 +710,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.0.0";
+				MARKETING_VERSION = "4.1.0-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
