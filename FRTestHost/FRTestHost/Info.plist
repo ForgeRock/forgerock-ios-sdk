@@ -2,10 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>FRTestHost app uses location information for some test case</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>FRTestHost app uses location information for some test case</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>FRTestHost app uses location information for some test case</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>FRTestHost app uses BLE to collect device information</string>
 	<key>NSFaceIDUsageDescription</key>
