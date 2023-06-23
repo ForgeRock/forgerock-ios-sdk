@@ -9,7 +9,9 @@
 //
 
 import Foundation
+#if canImport(CoreTelephony)
 import CoreTelephony
+#endif
 
 /// TelephonyCollector is responsible for collecting telephony information of the device using CTCarrier.
 public class TelephonyCollector: DeviceCollector {
@@ -27,35 +29,35 @@ public class TelephonyCollector: DeviceCollector {
 
         var result: [String: Any] = [:]
         
-        let networkInfo = CTTelephonyNetworkInfo()
-        var carrier: CTCarrier?
-        
-        if #available(iOS 12.0, *) {
-            if let providers = networkInfo.serviceSubscriberCellularProviders, providers.keys.count > 0 {
-                for (_, thisCarrier) in providers{
-                    carrier = thisCarrier
-                    break
-                }
-            }
-        }
-        else {
-            carrier = networkInfo.subscriberCellularProvider
-        }
-        
-        if let thisCarrier = carrier {
-            result["carrierName"] = thisCarrier.carrierName ?? "Unknown"
-            result["networkCountryIso"] = thisCarrier.isoCountryCode ?? "Unknown"
-//            result["mobileNetworkCode"] = thisCarrier.mobileNetworkCode ?? "Unknown"
-//            result["mobileCountryCode"] = thisCarrier.mobileCountryCode ?? "Unknown"
-//            result["voipEnabled"] = thisCarrier.allowsVOIP
-        }
-        else {
-            result["carrierName"] = "Unknown"
-            result["networkCountryIso"] = "Unknown"
-//            result["mobileNetworkCode"] = "Unknown"
-//            result["mobileCountryCode"] = "Unknown"
-//            result["voipEnabled"] = false
-        }
+//        let networkInfo = CTTelephonyNetworkInfo()
+//        var carrier: CTCarrier?
+//        
+//        if #available(iOS 12.0, *) {
+//            if let providers = networkInfo.serviceSubscriberCellularProviders, providers.keys.count > 0 {
+//                for (_, thisCarrier) in providers{
+//                    carrier = thisCarrier
+//                    break
+//                }
+//            }
+//        }
+//        else {
+//            carrier = networkInfo.subscriberCellularProvider
+//        }
+//        
+//        if let thisCarrier = carrier {
+//            result["carrierName"] = thisCarrier.carrierName ?? "Unknown"
+//            result["networkCountryIso"] = thisCarrier.isoCountryCode ?? "Unknown"
+////            result["mobileNetworkCode"] = thisCarrier.mobileNetworkCode ?? "Unknown"
+////            result["mobileCountryCode"] = thisCarrier.mobileCountryCode ?? "Unknown"
+////            result["voipEnabled"] = thisCarrier.allowsVOIP
+//        }
+//        else {
+//            result["carrierName"] = "Unknown"
+//            result["networkCountryIso"] = "Unknown"
+////            result["mobileNetworkCode"] = "Unknown"
+////            result["mobileCountryCode"] = "Unknown"
+////            result["voipEnabled"] = false
+//        }
         
         completion(result)
     }

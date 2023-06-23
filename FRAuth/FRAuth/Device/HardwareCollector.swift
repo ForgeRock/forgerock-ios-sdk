@@ -43,14 +43,15 @@ public class HardwareCollector: DeviceCollector {
     ///
     /// - Returns: Current device's camera information in Dictionary
     func getCameraInfo() -> [String: Any] {
-        if #available(iOS 10.2, *) {
-            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
-            return ["numberOfCameras": session.devices.count]
-        }
-        else {
-            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
-            return ["numberOfCameras": session.devices.count]
-        }
+//        if #available(iOS 10.2, *) {
+//            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+//            return ["numberOfCameras": session.devices.count]
+//        }
+//        else {
+//            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+//            return ["numberOfCameras": session.devices.count]
+//        }
+        return [String: Any]()
     }
     
 
@@ -59,9 +60,9 @@ public class HardwareCollector: DeviceCollector {
     /// - Returns: Current device's screen information in Dictionary
     func getScreenInfo() -> [String: Any] {
         var result: [String: Any] = [:]
-        result["width"] = Int(UIScreen.main.bounds.width)
-        result["height"] = Int(UIScreen.main.bounds.height)
-        result["orientation"] = UIDevice.current.orientation.isPortrait ? 1 : 0
+//        result["width"] = Int(UIScreen.main.bounds.width)
+//        result["height"] = Int(UIScreen.main.bounds.height)
+//        result["orientation"] = UIDevice.current.orientation.isPortrait ? 1 : 0
         return result
     }
     

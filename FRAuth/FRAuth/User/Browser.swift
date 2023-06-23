@@ -195,14 +195,14 @@ import SafariServices
             }
         }
         
-        if #available(iOS 11, *) {
-            if let sfAuthSession = self.currentSession as? SFAuthenticationSession {
-                FRLog.v("Close called with iOS 11 or above: \(String(describing: self.currentSession))")
-                DispatchQueue.main.async {
-                    sfAuthSession.cancel()
-                }
-            }
-        }
+//        if #available(iOS 11, *) {
+//            if let sfAuthSession = self.currentSession as? SFAuthenticationSession {
+//                FRLog.v("Close called with iOS 11 or above: \(String(describing: self.currentSession))")
+//                DispatchQueue.main.async {
+//                    sfAuthSession.cancel()
+//                }
+//            }
+//        }
     }
     
     
@@ -282,27 +282,28 @@ import SafariServices
     /// - Returns: Boolean indicator whether or not launching external user-agent was successful
     @available(iOS 11.0, *)
     func loginWithSFWebSession(url: URL, completion: @escaping UserCallback) -> Bool {
-        let sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
-        
-            if let error = error {
-                FRLog.e("Failed to complete authorization using SFAuthenticationSession: \(error.localizedDescription)")
-                completion(nil, error)
-                self.close()
-                self.cleanUp()
-                return
-            }
-            
-            if let authCode = url?.valueOf("code") {
-                self.exchangeAuthCode(code: authCode, completion: completion)
-            }
-            else {
-                completion(nil, OAuth2Error.convertOAuth2Error(urlValue: url?.absoluteString))
-                self.close()
-                self.cleanUp()
-            }
-        }
-        self.currentSession = sfAuthSession
-        return sfAuthSession.start()
+//        let sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
+//        
+//            if let error = error {
+//                FRLog.e("Failed to complete authorization using SFAuthenticationSession: \(error.localizedDescription)")
+//                completion(nil, error)
+//                self.close()
+//                self.cleanUp()
+//                return
+//            }
+//            
+//            if let authCode = url?.valueOf("code") {
+//                self.exchangeAuthCode(code: authCode, completion: completion)
+//            }
+//            else {
+//                completion(nil, OAuth2Error.convertOAuth2Error(urlValue: url?.absoluteString))
+//                self.close()
+//                self.cleanUp()
+//            }
+//        }
+//        self.currentSession = sfAuthSession
+//        return sfAuthSession.start()
+        return false
     }
     
     
@@ -318,11 +319,11 @@ import SafariServices
             let config = SFSafariViewController.Configuration()
             config.entersReaderIfAvailable = true
             viewController = SFSafariViewController(url: url, configuration: config)
-            viewController?.delegate = self
+            //viewController?.delegate = self
         }
         else {
             viewController = SFSafariViewController(url: url)
-            viewController?.delegate = self
+            //viewController?.delegate = self
         }
         self.currentSession = viewController
         if let currentViewController = self.presentingViewController, let sfVC = viewController {
@@ -383,34 +384,34 @@ import SafariServices
 
 
 //  MARK: - SFSafariViewControllerDelegate
-extension Browser: SFSafariViewControllerDelegate {
-    
-    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        FRLog.i("User cancelled the authorization process by closing the window")
-        self.cancel()
-    }
-    
-    public func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
-        
-        FRLog.v("Redirect in SFSafariViewController: \(URL.absoluteString)")
-        if URL.absoluteString.hasPrefix(oAuth2Client.redirectUri.absoluteString) {
-            FRLog.i("Found matching redirect_uri in SFSafariViewController; closing SFSafariViewController and trying to exchange authorization_code with OAuth2 token(s)")
-            controller.dismiss(animated: true, completion: nil)
-            
-            if let code = URL.valueOf("code") {
-                self.exchangeAuthCode(code: code)
-            }
-            else {
-                FRLog.e("Failed to retrieve authorization_code upon redirect_uri; completed redirect: \(URL.absoluteString)")
-                if let completionCallback = self.completionCallback {
-                    completionCallback(nil, OAuth2Error.convertOAuth2Error(urlValue: URL.absoluteString))
-                }
-                self.close()
-                self.cleanUp()
-            }
-        }
-    }
-}
+//extension Browser: SFSafariViewControllerDelegate {
+//    
+//    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+//        FRLog.i("User cancelled the authorization process by closing the window")
+//        self.cancel()
+//    }
+//    
+//    public func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
+//        
+//        FRLog.v("Redirect in SFSafariViewController: \(URL.absoluteString)")
+//        if URL.absoluteString.hasPrefix(oAuth2Client.redirectUri.absoluteString) {
+//            FRLog.i("Found matching redirect_uri in SFSafariViewController; closing SFSafariViewController and trying to exchange authorization_code with OAuth2 token(s)")
+//            controller.dismiss(animated: true, completion: nil)
+//            
+//            if let code = URL.valueOf("code") {
+//                self.exchangeAuthCode(code: code)
+//            }
+//            else {
+//                FRLog.e("Failed to retrieve authorization_code upon redirect_uri; completed redirect: \(URL.absoluteString)")
+//                if let completionCallback = self.completionCallback {
+//                    completionCallback(nil, OAuth2Error.convertOAuth2Error(urlValue: URL.absoluteString))
+//                }
+//                self.close()
+//                self.cleanUp()
+//            }
+//        }
+//    }
+//}
 
 
 //  MARK: - ASWebAuthenticationPresentationContextProviding
