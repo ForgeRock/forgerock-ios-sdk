@@ -182,7 +182,7 @@ public class PushMechanism: Mechanism {
     func register(onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
         do {
             let request = try buildPushRegistrationRequest()
-            RestClient.shared.invoke(request: request, action: Action(type: .PUSH_REGISTER)) { (result) in
+            RestClient.shared.invoke(request: request) { (result) in
                 switch result {
                 case .success(let result, let httpResponse):
                     FRALog.v("Push registration request was successful: \n\nResponse:\(result)\n\nHTTPResponse:\(String(describing: httpResponse))")
