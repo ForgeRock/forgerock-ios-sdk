@@ -63,6 +63,17 @@ class RequestInterceptorTests: FRABaseTests {
             for (index, intercepted) in RequestInterceptorTests.intercepted.enumerated() {
                 XCTAssertEqual(interceptorsInOrder[index], intercepted)
             }
+            
+            guard let urlRequest = FRTestNetworkStubProtocol.requestHistory.last else {
+                XCTFail("Failed to retrieve URLRequest from URLRequestProtocol")
+                return
+            }
+
+            guard let requestHeader = urlRequest.value(forHTTPHeaderField: "testHeader") else {
+                XCTFail("Failed to parse URL from URLRequest")
+                return
+            }
+            XCTAssertEqual(requestHeader, "PUSH_REGISTER")
         }
         catch {
             XCTFail("Fail to create PushMechanism with given QRCode: \(qrCode.absoluteString)")
@@ -89,10 +100,12 @@ class RequestInterceptorTests: FRABaseTests {
             notificationPayload["t"] = "120"
             notificationPayload["u"] = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             notificationPayload["l"] = "YW1sYmNvb2tpZT0wMQ=="
+            notificationPayload["k"] = "challenge"
+            notificationPayload["n"] =  "34,56,82"
             
             let ex = self.expectation(description: "PushNotification Authentication")
             let notification = try PushNotification(messageId: messageId, payload: notificationPayload)
-            notification.accept(onSuccess: {
+            notification.handleNotification(challengeResponse: "56", approved: true, onSuccess: {
                 // Expected to be successful
                 ex.fulfill()
             }) { (error) in
@@ -106,6 +119,17 @@ class RequestInterceptorTests: FRABaseTests {
             for (index, intercepted) in RequestInterceptorTests.intercepted.enumerated() {
                 XCTAssertEqual(interceptorsInOrder[index], intercepted)
             }
+            
+            guard let urlRequest = FRTestNetworkStubProtocol.requestHistory.last else {
+                XCTFail("Failed to retrieve URLRequest from URLRequestProtocol")
+                return
+            }
+
+            guard let requestHeader = urlRequest.value(forHTTPHeaderField: "testHeader") else {
+                XCTFail("Failed to parse URL from URLRequest")
+                return
+            }
+            XCTAssertEqual(requestHeader, "PUSH_AUTHENTICATE")
         }
         catch {
             XCTFail("Push authentication failed to prepare auth request")
@@ -115,13 +139,20 @@ class RequestInterceptorTests: FRABaseTests {
 
 class PushRequestInterceptor: RequestInterceptor {
     func intercept(request: Request, action: Action) -> Request {
+        var headers = request.headers
+        
         if action.type == "PUSH_REGISTER" {
             RequestInterceptorTests.intercepted.append("PUSH_REGISTER")
+            headers["testHeader"] = "PUSH_REGISTER"
         }
         else if action.type == "PUSH_AUTHENTICATE" {
             RequestInterceptorTests.intercepted.append("PUSH_AUTHENTICATE")
+            headers["testHeader"] = "PUSH_AUTHENTICATE"
         }
-        return request
+        
+        let newRequest = Request(url: request.url, method: request.method, headers: headers, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
+       
+        return newRequest
     }
 }
 
