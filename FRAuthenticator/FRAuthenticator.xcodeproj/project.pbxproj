@@ -18,6 +18,7 @@
 		1BB34B44299704A300729300 /* AccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B43299704A300729300 /* AccountError.swift */; };
 		1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */; };
 		1BB34B48299AE08300729300 /* URIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B47299AE08300729300 /* URIType.swift */; };
+		A56A46EF2A4A5601000C1055 /* RequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */; };
 		A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */; };
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
 		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
@@ -201,6 +202,7 @@
 		1BB34B43299704A300729300 /* AccountError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountError.swift; sourceTree = "<group>"; };
 		1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidFakePolicy.swift; sourceTree = "<group>"; };
 		1BB34B47299AE08300729300 /* URIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URIType.swift; sourceTree = "<group>"; };
+		A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorTests.swift; sourceTree = "<group>"; };
 		A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthentication.swift; sourceTree = "<group>"; };
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
 		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
@@ -357,6 +359,14 @@
 			path = Policy;
 			sourceTree = "<group>";
 		};
+		A56A46EC2A4A55EB000C1055 /* RequestInterceptor */ = {
+			isa = PBXGroup;
+			children = (
+				A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */,
+			);
+			path = RequestInterceptor;
+			sourceTree = "<group>";
+		};
 		A5EAD7D428367D12000637F0 /* Biometric */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,6 +452,7 @@
 				D52D5C67241333D500835035 /* Push */,
 				D542AA572416F9F800ECBFC1 /* Storage */,
 				D52D5C66241333D500835035 /* Util */,
+				A56A46EC2A4A55EB000C1055 /* RequestInterceptor */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -1146,6 +1157,7 @@
 				D5791C0225F8829F004B487A /* OathMechanismTests.swift in Sources */,
 				D5791C0325F8829F004B487A /* HOTPCodeGenerationTests.swift in Sources */,
 				D5791C0425F8829F004B487A /* TOTPCodeGenerationTests.swift in Sources */,
+				A56A46EF2A4A5601000C1055 /* RequestInterceptorTests.swift in Sources */,
 				D5791C0525F8829F004B487A /* OathAlgorithmTests.swift in Sources */,
 				D5791C0625F8829F004B487A /* OathTokenCodeTests.swift in Sources */,
 				D5791C0725F8829F004B487A /* FRAPushHandlerTests.swift in Sources */,
