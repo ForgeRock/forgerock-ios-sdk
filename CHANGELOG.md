@@ -1,6 +1,9 @@
 # Version 4.1.0
 
 ## [4.1.0]
+#### Added
+- Interceptor Support for Authenticator module [SDKS-2545]
+
 #### Fixed
 - Fixed an issue in the Authenticator module related to combined MFA registration [SDKS-2542]
 
