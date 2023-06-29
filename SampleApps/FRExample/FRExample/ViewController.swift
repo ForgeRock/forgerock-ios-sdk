@@ -758,6 +758,8 @@ class ViewController: UIViewController {
         
         var request = URLRequest(url: url)
         
+        request.setValue("header", forHTTPHeaderField: "x-authenticate-response")
+        
         //  TODO: - Change following code as needed for authorization policy, and PEP
         //  Setting SSO Token in the request cookie is expected for Identity Gateway set-up, and where IG is acting as Policy Enforcement Points (PEP)
         request.setValue("\(cookieName)="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")

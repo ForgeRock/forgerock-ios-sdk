@@ -2,7 +2,7 @@
 //  AuthorizationPolicyTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -284,6 +284,33 @@ class AuthorizationPolicyTests: FRAuthBaseTest {
         XCTAssertEqual(advice, self.policyAdvice)
         XCTAssertEqual(self.list.count, 1)
         XCTAssertEqual(self.list.first, "AuthorizationPolicyTests.evaluateAuthorizationPolicy")
+    }
+    
+    func test_16_redirect_evaluation_with_307_status_with_base64_encoded() {
+        let policy = AuthorizationPolicy(validatingURL: [URL(string: "https://openam.example.com/anything")!], delegate: self)
+        let header: [String: String] = ["Location": "https://default.forgeops.petrov.ca/am/?goto=http://openig.petrov.ca/products?_txid%3Debfbbd31-36d7-486f-89fd-7bf7694d3e7e&realm=/&authIndexType=composite_advice&authIndexValue=PEFkdmljZXM-PEF0dHJpYnV0ZVZhbHVlUGFpcj48QXR0cmlidXRlIG5hbWU9IlRyYW5zYWN0aW9uQ29uZGl0aW9uQWR2aWNlIi8-PFZhbHVlPmViZmJiZDMxLTM2ZDctNDg2Zi04OWZkLTdiZjc2OTRkM2U3ZTwvVmFsdWU-PC9BdHRyaWJ1dGVWYWx1ZVBhaXI-PC9BZHZpY2VzPg"]
+        let response = HTTPURLResponse(url: URL(string: "https://openam.example.com/anything")!, statusCode: 307, httpVersion: nil, headerFields: header)!
+        let advice = policy.evaluateAuthorizationPolicyWithRedirect(responseData: nil, session: URLSession(), task: URLSessionTask(), willPerformHTTPRedirection: response, newRequest: URLRequest(url: URL(string: "https://www.forgerock.com")!))
+        XCTAssertNotNil(advice)
+        XCTAssertEqual(self.list.count, 0)
+    }
+    
+    func test_17_redirect_evaluation_with_307_status_with_JSON() {
+        let policy = AuthorizationPolicy(validatingURL: [URL(string: "https://openam.example.com/anything")!], delegate: self)
+        let header: [String: String] = ["Location": "https://default.forgeops.petrov.ca/am/?goto=http://openig.petrov.ca/products?_txid%3Debfbbd31-36d7-486f-89fd-7bf7694d3e7e&realm=/&authIndexType=composite_advice&authIndexValue=PEFkdmljZXM-PEF0dHJpYnV0ZVZhbHVlUGFpcj48QXR0cmlidXRlIG5hbWU9IlRyYW5zYWN0aW9uQ29uZGl0aW9uQWR2aWNlIi8-PFZhbHVlPmViZmJiZDMxLTM2ZDctNDg2Zi04OWZkLTdiZjc2OTRkM2U3ZTwvVmFsdWU-PC9BdHRyaWJ1dGVWYWx1ZVBhaXI-PC9BZHZpY2VzPg"]
+        let response = HTTPURLResponse(url: URL(string: "https://openam.example.com/anything")!, statusCode: 307, httpVersion: nil, headerFields: header)!
+        let advice = policy.evaluateAuthorizationPolicyWithRedirect(responseData: nil, session: URLSession(), task: URLSessionTask(), willPerformHTTPRedirection: response, newRequest: URLRequest(url: URL(string: "https://www.forgerock.com")!))
+        XCTAssertNotNil(advice)
+        XCTAssertEqual(self.list.count, 0)
+    }
+    
+    func test_18_redirect_evaluation_with_307_status_with_base64_encoded() {
+        let policy = AuthorizationPolicy(validatingURL: [URL(string: "https://openam.example.com/anything")!], delegate: self)
+        let header: [String: String] = ["Www-Authenticate": "SSOADVICE realm=\"/\",advices=\"eyJUcmFuc2FjdGlvbkNvbmRpdGlvbkFkdmljZSI6WyI1ODY2OWUxOS00MjVhLTQzMzMtOTFkOC03MDk5NWFmMDY5MjciXX0=\",am_uri=\"https://default.forgeops.petrov.ca/am/\""]
+        let response = HTTPURLResponse(url: URL(string: "https://openam.example.com/anything")!, statusCode: 401, httpVersion: nil, headerFields: header)!
+        let advice = policy.evaluateAuthorizationPolicy(responseData: nil, response: response, error: nil)
+        XCTAssertNotNil(advice)
+        XCTAssertEqual(self.list.count, 0)
     }
 }
 

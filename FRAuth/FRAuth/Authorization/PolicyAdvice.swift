@@ -2,7 +2,7 @@
 //  PolicyAdvice.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -47,7 +47,7 @@ public enum AdviceType: String {
         guard let url = URL(string: redirectUrl), let xmlstring = url.valueOf("authIndexValue"), let authIndexType = url.valueOf("authIndexType") else {
             return nil
         }
-        
+
         self.authIndexType = authIndexType
         self.authIndexValue = xmlstring
 
@@ -91,12 +91,15 @@ public enum AdviceType: String {
         
         if let advicesJSON = json["advices"] as? [String: Any], advicesJSON.keys.count > 0 {
             advices = advicesJSON
+        } else {
+            advices = json
         }
+    
         
         if let advices = advices, let adviceKey = advices.keys.first, let adviceValues = advices[adviceKey] as? [String], let adviceValue = adviceValues.first, let adviceType = AdviceType(rawValue: adviceKey) {
 
-            authIndexType = OpenAM.compositeAdvice
-            authIndexValue = "<Advices><AttributeValuePair><Attribute name=\"\(adviceType.rawValue)\"/><Value>\(adviceValue)</Value></AttributeValuePair></Advices>"
+            self.authIndexType = OpenAM.compositeAdvice
+            self.authIndexValue = "<Advices><AttributeValuePair><Attribute name=\"\(adviceType.rawValue)\"/><Value>\(adviceValue)</Value></AttributeValuePair></Advices>"
             type = adviceType
             value = adviceValue
 
@@ -108,7 +111,6 @@ public enum AdviceType: String {
             return nil
         }
     }
-    
     
     /** Initializes PolicyAdvice object with authorization policy type, and value.
      With example JSON payload shown below, 'TransactionConditionAdvice' is type of PolicyAdvice, and '9dae2c80-fe7a-4a36-b57b-4fb1271b0687' is value of PolicyAdvice
@@ -128,15 +130,18 @@ public enum AdviceType: String {
      - Parameter type: Type of authorization policy in string; 'TransactionConditionAdvice' or 'AuthenticateToServiceConditionAdvice'
      - Parameter value: String value of authorization policy; (i.e. transactionId, or Authentication Tree name)
      **/
-    @objc public init?(type: String, value: String) {
+    @objc public init?(type: String,
+                       value: String,
+                       authIndexType: String? = nil,
+                       authIndexValue: String? = nil) {
         
         guard let adviceType = AdviceType(rawValue: type) else {
             FRLog.w("Failed to parse AdviceType string value")
             return nil
         }
         
-        authIndexType = OpenAM.compositeAdvice
-        authIndexValue = "<Advices><AttributeValuePair><Attribute name=\"\(adviceType.rawValue)\"/><Value>\(value)</Value></AttributeValuePair></Advices>"
+        self.authIndexType = authIndexType ?? OpenAM.compositeAdvice
+        self.authIndexValue = authIndexValue ?? "<Advices><AttributeValuePair><Attribute name=\"\(adviceType.rawValue)\"/><Value>\(value)</Value></AttributeValuePair></Advices>"
         self.type = adviceType
         self.value = value
 
