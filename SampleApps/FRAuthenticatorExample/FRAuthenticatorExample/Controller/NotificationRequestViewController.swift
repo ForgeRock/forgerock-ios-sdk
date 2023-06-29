@@ -9,6 +9,7 @@
 //
 
 import UIKit
+import FRCore
 import FRAuthenticator
 import CoreLocation
 
@@ -29,11 +30,14 @@ class NotificationRequestViewController: BaseViewController {
     @IBOutlet weak var numbersChallengeStackView: UIStackView!
     
     var notification: PushNotification?
+    static var intercepted: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Notification"
         
+        /// Uncomment the next line to test the http request interceptor...
+        // RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PushRequestInterceptor()])
         acceptButton.setImage(UIImage(named: "ApprovedIcon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         denyButton.setImage(UIImage(named: "DeniedIcon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         
@@ -216,4 +220,24 @@ extension NotificationRequestViewController {
         }
     }
     
+}
+
+/// This is an example http interceptor for testing purposes (SDKS-2545)
+class PushRequestInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        var headers = request.headers
+
+        if action.type == "PUSH_REGISTER" {
+            NotificationRequestViewController.intercepted.append("PUSH_REGISTER")
+            headers["testHeader"] = "PUSH_REGISTER"
+                    }
+        else if action.type == "PUSH_AUTHENTICATE" {
+            NotificationRequestViewController.intercepted.append("PUSH_AUTHENTICATE")
+            headers["testHeader"] = "PUSH_AUTHENTICATE"
+        }
+
+        let newRequest = Request(url: request.url, method: request.method, headers: headers, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
+
+        return newRequest
+    }
 }

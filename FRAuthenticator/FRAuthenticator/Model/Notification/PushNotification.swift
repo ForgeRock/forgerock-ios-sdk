@@ -369,7 +369,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
             
             do {
                 let request = try buildPushAuthenticationRequest(challengeResponse: challengeResponse, approved: approved, mechanism: mechanism)
-                RestClient.shared.invoke(request: request) { (result) in
+                RestClient.shared.invoke(request: request, action: Action(type: .PUSH_AUTHENTICATE)) { (result) in
                     switch result {
                     case .success(_, _):
                         self.approved = approved

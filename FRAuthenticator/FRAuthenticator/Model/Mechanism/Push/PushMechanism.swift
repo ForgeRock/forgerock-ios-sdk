@@ -2,7 +2,7 @@
 //  PushMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -182,7 +182,7 @@ public class PushMechanism: Mechanism {
     func register(onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
         do {
             let request = try buildPushRegistrationRequest()
-            RestClient.shared.invoke(request: request) { (result) in
+            RestClient.shared.invoke(request: request, action: Action(type: .PUSH_REGISTER)) { (result) in
                 switch result {
                 case .success(let result, let httpResponse):
                     FRALog.v("Push registration request was successful: \n\nResponse:\(result)\n\nHTTPResponse:\(String(describing: httpResponse))")
