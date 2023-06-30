@@ -2,7 +2,7 @@
 //  FRUserTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -658,6 +658,7 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(user)
             XCTAssertNil(error)
             ex.fulfill()
+            self.shouldCleanup = true
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
@@ -684,6 +685,7 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(error)
             XCTAssertNil(updatedUser?.token)
             ex.fulfill()
+            self.shouldCleanup = true
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
@@ -707,7 +709,68 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(updatedUser?.token)
             XCTAssertNotNil(error)
             ex.fulfill()
+            self.shouldCleanup = true
         }
         waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func test_06_01_ForceRefreshAccessTokenAsync() {
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        let oldAccessToken = user.token?.value
+        XCTAssertNotNil(oldAccessToken)
+        
+        let ex = self.expectation(description: "Refresh AccessToken failure")
+        user.refresh { updatedUser, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(updatedUser)
+            XCTAssertNotNil(updatedUser?.token)
+            XCTAssertFalse(oldAccessToken == updatedUser?.token?.value)
+            ex.fulfill()
+            self.shouldCleanup = true
+        }
+        
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func test_06_02_ForceRefreshAccessTokenSync() {
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        let oldAccessToken = user.token?.value
+        XCTAssertNotNil(oldAccessToken)
+        let updatedUser: FRUser?
+        do {
+            updatedUser = try user.refreshSync()
+            XCTAssertNotNil(updatedUser)
+            XCTAssertNotNil(updatedUser?.token)
+            XCTAssertFalse(oldAccessToken == updatedUser?.token?.value)
+        } catch {
+            XCTFail("Refresh AccessToken failure")
+        }
+        self.shouldCleanup = true
     }
 }
