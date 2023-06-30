@@ -658,7 +658,6 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(user)
             XCTAssertNil(error)
             ex.fulfill()
-            self.shouldCleanup = true
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
@@ -685,7 +684,6 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(error)
             XCTAssertNil(updatedUser?.token)
             ex.fulfill()
-            self.shouldCleanup = true
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
@@ -709,7 +707,6 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNil(updatedUser?.token)
             XCTAssertNotNil(error)
             ex.fulfill()
-            self.shouldCleanup = true
         }
         waitForExpectations(timeout: 60, handler: nil)
     }
@@ -739,7 +736,6 @@ class FRUserTests: FRAuthBaseTest {
             XCTAssertNotNil(updatedUser?.token)
             XCTAssertFalse(oldAccessToken == updatedUser?.token?.value)
             ex.fulfill()
-            self.shouldCleanup = true
         }
         
         waitForExpectations(timeout: 60, handler: nil)
@@ -771,6 +767,5 @@ class FRUserTests: FRAuthBaseTest {
         } catch {
             XCTFail("Refresh AccessToken failure")
         }
-        self.shouldCleanup = true
     }
 }
