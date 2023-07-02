@@ -28,7 +28,7 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     
     private var keyId: String
     
-   // private var challengeClientData: String
+    private var challengeClientData: String
     
     private var appVerification: String
     
@@ -92,10 +92,10 @@ open class AppIntegrityCallback: MultipleValuesCallback {
         }
         self.appVerification = appVerification
         
-//        guard let challengeClientData = inputNames.filter({ $0.contains("IDToken1challenge") }).first else {
-//            throw AuthError.invalidCallbackResponse("Missing challenge")
-//        }
-//        self.challengeClientData = challengeClientData
+        guard let challengeClientData = inputNames.filter({ $0.contains("IDToken1clientData") }).first else {
+            throw AuthError.invalidCallbackResponse("Missing clientData")
+        }
+        self.challengeClientData = challengeClientData
         
         try super.init(json: json)
         type = callbackType
@@ -126,10 +126,9 @@ open class AppIntegrityCallback: MultipleValuesCallback {
         self.inputValues[self.appVerification] = appVerification
     }
     
-//    public func setClientData(_ challenge: String) {
-//        self.inputValues[self.challengeClientData] = challenge
-//    }
-    
+    public func setClientData(_ challenge: String) {
+        self.inputValues[self.challengeClientData] = challenge
+    }
     
     private func generate(completion: @escaping (String?, Bool) -> Void) {
         dcAppAttestService.generateKey(completionHandler: { keyId, error in
@@ -189,9 +188,20 @@ open class AppIntegrityCallback: MultipleValuesCallback {
                         return
                     }
                     
+                    let appBundleIdentifier = Bundle.main.bundleIdentifier ?? "com.forgerock.ios.sdk"
+                    let userClientData = ["challenge": self.challenge, "bundleId": appBundleIdentifier]
                     
-                    DCAppAttestService.shared.generateAssertion(keyId, clientDataHash: hashValue) { assertion, error in
+                    let encoder = JSONEncoder()
+                    guard let jsonData = try? encoder.encode(userClientData) else {
+                        self.setClientError("jsonData error")
+                        return
+                    }
+                    
+                    
+                    let clientDataHash = Data(SHA256.hash(data: jsonData))
+                    DCAppAttestService.shared.generateAssertion(keyId, clientDataHash: clientDataHash) { assertion, error in
                         guard error == nil else {
+                            self.setClientError("jsonData error")
                             print ("ERROR: Assertion not available right now")
                             return
                         }
@@ -203,9 +213,9 @@ open class AppIntegrityCallback: MultipleValuesCallback {
                         }
                         self.setVerification(assertion)
                         self.setAttestation(attestation)
-                        self.keyChainManager?.privateStore.set(attestation, key: self.appAttestToken)
+//                        self.keyChainManager?.privateStore.set(attestation, key: self.appAttestToken)
                         self.setkeyId(keyId)
-                        //  self.setClientData(self.challenge.data(using: .utf8)!.base64EncodedString())
+                        self.setClientData(jsonData.base64EncodedString())
                         completion(.success)
                     }
                     
