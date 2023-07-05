@@ -3,6 +3,7 @@
 ## [4.1.0]
 #### Added
 - Interceptor Support for Authenticator module [SDKS-2545]
+- Deep link support in Authenticator sample app [SDKS-2524]
 
 #### Fixed
 - Fixed an issue in the Authenticator module related to combined MFA registration [SDKS-2542]
