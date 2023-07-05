@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  FRAuthenticatorExample
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -21,6 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in }
         application.registerForRemoteNotifications()
+        
+        if let url = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
+            NSLog("App launched with deeplink: \(url.absoluteString)")
+            createMechanismFromUri(uri: url)
+        }
+        
         return true
     }
     
@@ -74,6 +80,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        NSLog("App opened with deeplink: \(url.absoluteString)")
+        createMechanismFromUri(uri: url)
+        
+        return true
+    }
+    
     
     //  MARK: - Helper
     
@@ -103,5 +118,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         return UIImage(ciImage: outputImage)
     }
+    
+    
+    private func createMechanismFromUri(uri: URL) {
+        FRAClient.shared?.createMechanismFromUri(uri: uri, onSuccess: { mechanism in
+            NSLog("Successfully created a mechanism with deeplink: \(uri.absoluteString)");
+            DispatchQueue.main.async {
+                if let window = self.window,
+                   let rootViewController = window.rootViewController as? UINavigationController,
+                   let mainListViewCointroller = rootViewController.viewControllers.first as? MainListViewController {
+                    mainListViewCointroller.reload()
+                }
+            }
+        }, onError: { error in
+            NSLog("Error creating a mechanism with deeplink: \(uri.absoluteString)");
+        })
+    }
 }
-
