@@ -2,8 +2,10 @@
 
 ## [4.1.0]
 #### Added
-- Interceptor Support for Authenticator module [SDKS-2545]
-- Deep link support in Authenticator sample app [SDKS-2524]
+- Interceptor support for the Authenticator module [SDKS-2545]
+- Deep link support for `mfauth` scheme in Authenticator sample app [SDKS-2524]
+- Interface for access_token refresh [SDKS-2563]
+- Ability to process new JSON format of IG policy advice [SDKS-2239]
 
 #### Fixed
 - Fixed an issue in the Authenticator module related to combined MFA registration [SDKS-2542]
