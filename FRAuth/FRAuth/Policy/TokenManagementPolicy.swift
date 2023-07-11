@@ -14,7 +14,7 @@ import FRCore
 
 @objc(FRTokenManagementPolicyDelegate) public protocol TokenManagementPolicyDelegate {
     @objc optional func evaluateTokenRefresh(responseData: Data?, response: URLResponse?, error: Error?) -> Bool
-    @objc optional func updateRequest(originalRequest: URLRequest, token: AccessToken) -> URLRequest
+    @objc optional func updateRequest(originalRequest: URLRequest, token: FRAccessToken) -> URLRequest
 }
 
 
@@ -110,7 +110,7 @@ import FRCore
     ///   - originalRequest: original URLRequest object
     ///   - token: current `AccessToken` object that can be used for authorization header
     /// - Returns: Updated URLRequest to be invoked
-    func updateRequest(originalRequest: URLRequest, token: AccessToken) -> URLRequest {
+    func updateRequest(originalRequest: URLRequest, token: FRAccessToken) -> URLRequest {
         FRLog.v("[TokenManagementPolicy] Update URLRequest started")
         if let delegate = self.delegate, let newRequest = delegate.updateRequest?(originalRequest: originalRequest, token: token) {
             FRLog.i("[TokenManagementPolicy] TokenManagementPolicy.updateRequest found, proceeding with the updated URLRequest")

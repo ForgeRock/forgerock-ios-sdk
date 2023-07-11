@@ -255,7 +255,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         
         var originalRequest: URLRequest = request
         var shouldRetry: Bool = false
-        var token: AccessToken?
+        var token: FRAccessToken?
         if let tokenManagementPolicy = FRURLProtocol.tokenManagementPolicy {
             FRLog.i("[FRURLProtocol] TokenManagementPolicy found; evaluating refreshTokenPolicy")
             token = FRUser.currentUser?.token

@@ -153,9 +153,9 @@ struct KeychainManager {
     //  MARK: - SSO Token
     
     /// Returns current session's Token object that represents SSO Token
-    func getSSOToken() -> Token? {
+    func getSSOToken() -> FRToken? {
         if let ssoTokenString = self.sharedStore.getString(StorageKey.ssoToken.rawValue) {
-            return Token(ssoTokenString)
+            return FRToken(ssoTokenString)
         }
         else {
             return nil
@@ -166,7 +166,7 @@ struct KeychainManager {
     /// Stores SSOToken into designated Keychain Service, or removes SSOToken when nil
     /// - Parameter ssoToken: Token object
     /// - Returns: Boolean result of operation
-    @discardableResult func setSSOToken(ssoToken: Token?) -> Bool {
+    @discardableResult func setSSOToken(ssoToken: FRToken?) -> Bool {
         if let token = ssoToken {
             return self.sharedStore.set(token.value, key: StorageKey.ssoToken.rawValue)
         }
@@ -182,7 +182,7 @@ struct KeychainManager {
     /// - Parameter token: AccessToken object
     /// - Throws: `TokenError`
     /// - Returns: Boolean result of operation
-    @discardableResult func setAccessToken(token: AccessToken?) throws -> Bool {
+    @discardableResult func setAccessToken(token: FRAccessToken?) throws -> Bool {
         if let thisToken = token {
             do {
                 if #available(iOS 11.0, *) {
@@ -207,16 +207,16 @@ struct KeychainManager {
     /// Retrieves AccessToken object from the Keychain Service
     /// - Throws: `TokenError`
     /// - Returns: AccessToken object if exists
-    func getAccessToken() throws -> AccessToken? {
+    func getAccessToken() throws -> FRAccessToken? {
         if let tokenData = self.privateStore.getData(StorageKey.accessToken.rawValue) {
             do {
                 
                 if #available(iOS 11.0, *) {
-                    let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [AccessToken.self, Token.self], from: tokenData) as? AccessToken
+                    let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [FRAccessToken.self, FRToken.self], from: tokenData) as? FRAccessToken
                     return token
                 }
                 else {
-                    if let token = NSKeyedUnarchiver.unarchiveObject(with: tokenData) as? AccessToken {
+                    if let token = NSKeyedUnarchiver.unarchiveObject(with: tokenData) as? FRAccessToken {
                         return token
                     }
                 }

@@ -143,9 +143,9 @@
 		D586CF7823358EE0007A2194 /* ConfigError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2223358EDF007A2194 /* ConfigError.swift */; };
 		D586CF7A23358EE0007A2194 /* TokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF2423358EDF007A2194 /* TokenError.swift */; };
 		D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */; };
-		D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3D23358EDF007A2194 /* AccessToken.swift */; };
+		D586CF8F23358EE0007A2194 /* FRAccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3D23358EDF007A2194 /* FRAccessToken.swift */; };
 		D586CF9023358EE0007A2194 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3E23358EDF007A2194 /* PKCE.swift */; };
-		D586CF9123358EE0007A2194 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3F23358EDF007A2194 /* Token.swift */; };
+		D586CF9123358EE0007A2194 /* FRToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF3F23358EDF007A2194 /* FRToken.swift */; };
 		D586CF9223358EE0007A2194 /* TermsAndConditionsCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4123358EDF007A2194 /* TermsAndConditionsCallback.swift */; };
 		D586CF9323358EE0007A2194 /* NameCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4223358EDF007A2194 /* NameCallback.swift */; };
 		D586CF9423358EE0007A2194 /* PasswordCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586CF4323358EDF007A2194 /* PasswordCallback.swift */; };
@@ -416,9 +416,9 @@
 		D586CF2223358EDF007A2194 /* ConfigError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigError.swift; sourceTree = "<group>"; };
 		D586CF2423358EDF007A2194 /* TokenError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenError.swift; sourceTree = "<group>"; };
 		D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityMonitor.swift; sourceTree = "<group>"; };
-		D586CF3D23358EDF007A2194 /* AccessToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessToken.swift; sourceTree = "<group>"; };
+		D586CF3D23358EDF007A2194 /* FRAccessToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAccessToken.swift; sourceTree = "<group>"; };
 		D586CF3E23358EDF007A2194 /* PKCE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKCE.swift; sourceTree = "<group>"; };
-		D586CF3F23358EDF007A2194 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		D586CF3F23358EDF007A2194 /* FRToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRToken.swift; sourceTree = "<group>"; };
 		D586CF4123358EDF007A2194 /* TermsAndConditionsCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsCallback.swift; sourceTree = "<group>"; };
 		D586CF4223358EDF007A2194 /* NameCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameCallback.swift; sourceTree = "<group>"; };
 		D586CF4323358EDF007A2194 /* PasswordCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordCallback.swift; sourceTree = "<group>"; };
@@ -996,9 +996,9 @@
 		D586CF3C23358EDF007A2194 /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
-				D586CF3D23358EDF007A2194 /* AccessToken.swift */,
+				D586CF3D23358EDF007A2194 /* FRAccessToken.swift */,
 				D586CF3E23358EDF007A2194 /* PKCE.swift */,
-				D586CF3F23358EDF007A2194 /* Token.swift */,
+				D586CF3F23358EDF007A2194 /* FRToken.swift */,
 			);
 			path = OAuth2;
 			sourceTree = "<group>";
@@ -1742,7 +1742,7 @@
 				D5EC34FB247B329D0005A50C /* FRRequestInterceptorRegistry.swift in Sources */,
 				D5723C3F23F4C66A00557AA8 /* PolicyAdvice.swift in Sources */,
 				D53A8048262789BD0093B1CA /* Authenticator.swift in Sources */,
-				D586CF9123358EE0007A2194 /* Token.swift in Sources */,
+				D586CF9123358EE0007A2194 /* FRToken.swift in Sources */,
 				D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */,
 				3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */,
 				D586CF9823358EE0007A2194 /* ValidatedCreatePasswordCallback.swift in Sources */,
@@ -1775,7 +1775,7 @@
 				D586CFBB23358EE0007A2194 /* NetworkCollector.swift in Sources */,
 				D53A803F262789BD0093B1CA /* WAKLogger.swift in Sources */,
 				D53A8046262789BD0093B1CA /* CredentialStore.swift in Sources */,
-				D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */,
+				D586CF8F23358EE0007A2194 /* FRAccessToken.swift in Sources */,
 				D5723C3D23F4C65800557AA8 /* Node.swift in Sources */,
 				D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */,
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,

@@ -47,7 +47,7 @@ import Foundation
     
     /// Session Token object
     @objc
-    public var sessionToken: Token? {
+    public var sessionToken: FRToken? {
         get {
             if let frAuth = FRAuth.shared, let sessionToken = frAuth.keychainManager.getSSOToken() {
                 return sessionToken
@@ -64,11 +64,11 @@ import Foundation
     /// - Parameter policyAdvice: PolicyAdvice object which contains the information for authorization
     /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object
     @objc
-    public static func authenticate(policyAdvice: PolicyAdvice, completion:@escaping NodeCompletion<Token>) {
+    public static func authenticate(policyAdvice: PolicyAdvice, completion:@escaping NodeCompletion<FRToken>) {
         
         if let frAuth = FRAuth.shared {
             FRLog.v("Initiating FRSession authenticate process")
-            frAuth.next(authIndexValue: policyAdvice.authIndexValue, authIndexType: policyAdvice.authIndexType) { (token: Token?, node, error) in
+            frAuth.next(authIndexValue: policyAdvice.authIndexValue, authIndexType: policyAdvice.authIndexType) { (token: FRToken?, node, error) in
                 completion(token, node, error)
             }
         }
@@ -84,11 +84,11 @@ import Foundation
     /// - Parameter authIndexType: authIndexType; Authentication Tree type value in String
     /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object
     @objc
-    public static func authenticate(authIndexValue: String, authIndexType: String = "service", completion:@escaping NodeCompletion<Token>) {
+    public static func authenticate(authIndexValue: String, authIndexType: String = "service", completion:@escaping NodeCompletion<FRToken>) {
         
         if let frAuth = FRAuth.shared {
             FRLog.v("Initiating FRSession authenticate process")
-            frAuth.next(authIndexValue: authIndexValue, authIndexType: authIndexType) { (token: Token?, node, error) in
+            frAuth.next(authIndexValue: authIndexValue, authIndexType: authIndexType) { (token: FRToken?, node, error) in
                 completion(token, node, error)
             }
         }
@@ -103,11 +103,11 @@ import Foundation
     /// - Parameters:
     ///   - resumeURI: Resume URI received in Email from Suspend Email Node; URI **must** contain `suspendedId` in URL query parameter
     ///   - completion: NodeCompletion callback which returns the result of Session Token as Token object
-    @objc public static func authenticate(resumeURI: URL, completion:@escaping NodeCompletion<Token>) {
+    @objc public static func authenticate(resumeURI: URL, completion:@escaping NodeCompletion<FRToken>) {
         if let frAuth = FRAuth.shared {
             FRLog.v("Initiating FRSession authenticate process with resumeURI")
             if let suspendedId = resumeURI.valueOf("suspendedId") {
-                frAuth.next(suspendedId: suspendedId) { (token: Token?, node, error) in
+                frAuth.next(suspendedId: suspendedId) { (token: FRToken?, node, error) in
                     completion(token, node, error)
                 }
             }
@@ -146,8 +146,8 @@ import Foundation
     //  MARK: - Objective-C Compatibility
     @objc(authenticateWithAuthIndexValue:authIndexType:completion:)
     @available(swift, obsoleted: 1.0)
-    public func authenticate(authIndexValue: String, authIndexType: String, completion:@escaping NodeCompletion<Token>) {
-        FRSession.authenticate(authIndexValue: authIndexValue, authIndexType: authIndexType) { (token: Token?, node, error) in
+    public func authenticate(authIndexValue: String, authIndexType: String, completion:@escaping NodeCompletion<FRToken>) {
+        FRSession.authenticate(authIndexValue: authIndexValue, authIndexType: authIndexType) { (token: FRToken?, node, error) in
             completion(token, node, error)
         }
     }

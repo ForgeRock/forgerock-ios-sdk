@@ -1,5 +1,5 @@
 //
-//  AccessToken.swift
+//  FRAccessToken.swift
 //  FRAuth
 //
 //  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
@@ -11,7 +11,7 @@
 import Foundation
 
 /// AccessToken class represents access_token data inheriting from Token class
-@objc public class AccessToken: Token {
+@objc public class FRAccessToken: FRToken {
     
     //  MARK: - Property
     
@@ -191,7 +191,7 @@ import Foundation
     ///   - lhs: AccessToken to be compared
     ///   - rhs: AccessToken to be compared
     /// - Returns: Boolean result of whether given two AccessTokens are equal or not
-    static func == (lhs: AccessToken, rhs: AccessToken) -> Bool {
+    static func == (lhs: FRAccessToken, rhs: FRAccessToken) -> Bool {
         return
             lhs.value == rhs.value &&
                 lhs.expiresIn == rhs.expiresIn &&
@@ -209,7 +209,7 @@ import Foundation
     /// - Parameter object: An object to be compared
     /// - Returns: Boolean result of whether given AccessToken is equal or not
     override public func isEqual(_ object: Any?) -> Bool {
-        if let obj = object as? AccessToken {
+        if let obj = object as? FRAccessToken {
             return
                 self.value == obj.value &&
                     self.expiresIn == obj.expiresIn &&
