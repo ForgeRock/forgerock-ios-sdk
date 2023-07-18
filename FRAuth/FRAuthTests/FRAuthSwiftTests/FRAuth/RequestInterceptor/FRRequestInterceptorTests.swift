@@ -57,8 +57,8 @@ class FRRequestInterceptorTests: FRAuthBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
         
-        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
-        let interceptorsInOrder: [String] = ["REFRESH_TOKEN"]
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 2)
+        let interceptorsInOrder: [String] = ["REFRESH_TOKEN", "REVOKE_TOKEN"]
         for (index, intercepted) in FRRequestInterceptorTests.intercepted.enumerated() {
             XCTAssertEqual(interceptorsInOrder[index], intercepted)
         }

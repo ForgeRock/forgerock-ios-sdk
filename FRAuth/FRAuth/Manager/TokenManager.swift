@@ -365,4 +365,12 @@ struct TokenManager {
         FRUser._staticUser = nil
         Browser.currentBrowser = nil
     }
+    
+    
+    /// Revoke given token
+    func revokeToken(_ token: AccessToken, completion: @escaping CompletionCallback) {
+        self.oAuth2Client.revoke(accessToken: token) { (error) in
+            completion(error)
+        }
+    }
 }
