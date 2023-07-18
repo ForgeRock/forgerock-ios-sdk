@@ -305,6 +305,7 @@ public class FRUser: NSObject, NSSecureCoding {
         if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
             tokenManager.refresh{ (token, error) in
                 if let token = token {
+                    self.revokeOldAccessToken()
                     self.token = token
                     self.save()
                     completion(self, nil)
@@ -328,6 +329,7 @@ public class FRUser: NSObject, NSSecureCoding {
     public func refreshSync() throws -> FRUser {
         if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
             let token = try tokenManager.refreshSync()
+            self.revokeOldAccessToken()
             self.token = token
             self.save()
             return self
@@ -453,5 +455,18 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameter aCoder: NSCoder
     public func encode(with aCoder: NSCoder) {
+    }
+    
+    
+    /// Revoke the old(current) Access Token
+    private func revokeOldAccessToken() {
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager, let token = self.token {
+            tokenManager.revokeToken(token) {
+                error in
+                if let error = error {
+                    FRLog.e("Error revoking the old AccessToken: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
