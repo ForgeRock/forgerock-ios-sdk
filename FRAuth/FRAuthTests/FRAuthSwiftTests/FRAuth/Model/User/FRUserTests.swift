@@ -768,4 +768,31 @@ class FRUserTests: FRAuthBaseTest {
             XCTFail("Refresh AccessToken failure")
         }
     }
+    
+    func test_07_01_RevokeGivenAccessToken() {
+        // Perform login first
+        self.performLogin()
+        
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+        
+        // Load mock responses for refresh token
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success"])
+        
+        // Validate if FRUser.currentUser is not nil
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNotNil(user.token)
+        
+        let ex = self.expectation(description: "Revoke AccessToken failure")
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager, let token = user.token {
+            tokenManager.revokeToken(token) {
+                error in
+                XCTAssertNil(error)
+                ex.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
 }

@@ -367,9 +367,9 @@ struct TokenManager {
     }
     
     
-    /// Revoke given token
+    /// Revoke given Access Token without using the Refresh Token
     func revokeToken(_ token: AccessToken, completion: @escaping CompletionCallback) {
-        self.oAuth2Client.revoke(accessToken: token) { (error) in
+        self.oAuth2Client.revoke(accessToken: token, useRefreshToken: false) { (error) in
             completion(error)
         }
     }

@@ -2,7 +2,7 @@
 //  OAuth2Client.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -56,12 +56,16 @@ public class OAuth2Client: NSObject, Codable {
     ///
     /// - Parameters:
     ///   - accessToken: AccessToken object to revoke
+    ///   - useRefreshToken: Whether to use refreshToken or not. `true` by default
     ///   - completion: Completion callback to notify the result of operation
     @objc
-    public func revoke(accessToken: AccessToken, completion: @escaping CompletionCallback) {
+    public func revoke(accessToken: AccessToken, useRefreshToken: Bool = true, completion: @escaping CompletionCallback) {
         // Construct parameter for the request
         var parameter:[String: String] = [:]
-        let token = accessToken.refreshToken ?? accessToken.value
+        var token = accessToken.value
+        if useRefreshToken {
+            token = accessToken.refreshToken ?? accessToken.value
+        }
         parameter[OAuth2.token] = token
         parameter[OAuth2.clientId] = self.clientId
         
