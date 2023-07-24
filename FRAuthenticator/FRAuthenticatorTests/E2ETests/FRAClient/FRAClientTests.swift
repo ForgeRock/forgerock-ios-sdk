@@ -153,7 +153,6 @@ class FRAClientTests: FRABaseTests {
         }
     }
     
-    
     func test_04_account_removal_from_previous_test() {
         
         self.shouldCleanup = true
@@ -1061,7 +1060,156 @@ class FRAClientTests: FRABaseTests {
         }
     }
        
+    func test_13_store_combined_mechanisms_with_same_oath_account_and_fail() {
+        
+        self.shouldCleanup = true
+        
+        // Given
+        let totp = URL(string: "otpauth://totp/ForgeRock:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=6&period=30")!
+        
+        do {
+            self.loadMockResponses(["AM_Push_Registration_Successful", "AM_Push_Authentication_Successful", "AM_Push_Authentication_Successful", "AM_Push_Authentication_Successful"])
+            // Set DeviceToken before PushMechnaism registration
+            let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
+            guard let deviceToken = deviceTokenStr.decodeBase64() else {
+                XCTFail("Failed to parse device token data")
+                return
+            }
+            FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+            try FRAClient.setStorage(storage: DummyStorageClient())
+            FRAClient.start()
+
+            //  Store OATH Mechanism
+            var ex = self.expectation(description: "FRAClient.createMechanismFromUri")
+            FRAClient.shared?.createMechanismFromUri(uri: totp, onSuccess: { (mechanism) in
+                ex.fulfill()
+            }, onError: { (error) in
+                XCTFail("FRAClient.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
+                ex.fulfill()
+            })
+            waitForExpectations(timeout: 60, handler: nil)
+            
+            XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo1"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo1")?.mechanisms.count, 1)
+            
+            //  Store Combined Mechanism under same Account
+            let diff = URL(string: "mfauth://totp/ForgeRock:demo1?" +
+                             "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
+                             "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
+                             "b=ff00ff&" +
+                             "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
+                             "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
+                             "c=Daf8vrc8onKu-dcptwCRS9UHmdui5u16vAdG2HMU4w0&" +
+                             "l=YW1sYmNvb2tpZT0wMQ==&" +
+                             "m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&" +
+                             "digits=6&" +
+                             "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                             "period=30&" +
+                             "issuer=Rm9yZ2VSb2Nr")!
+            
+            ex = self.expectation(description: "FRAClient.createMechanismFromUri")
+            FRAClient.shared?.createMechanismFromUri(uri: diff, onSuccess: { (mechanism) in
+                XCTFail("FRAClient.createMechanismFromUri was expected to fail for duplication; but somehow passed")
+                ex.fulfill()
+            }, onError: { (error) in
+                switch error {
+                case MechanismError.alreadyExists(let message):
+                    XCTAssertEqual(message, "ForgeRock-demo1-totp")
+                    break
+                default:
+                    XCTFail("FRAClient.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
+                    break
+                }
+                ex.fulfill()
+            })
+            waitForExpectations(timeout: 60, handler: nil)
+                        
+            XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo1"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRock-demo1")?.mechanisms.count, 1)
+        }
+        catch {
+            XCTFail("Unexpected failure on SDK init: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_14_store_combined_mechanisms_with_same_push_account_and_fail() {
+        self.shouldCleanup = true
+        
+        // Given
+        let push = URL(string: "pushauth://push/ForgeRockSandbox:pushtestuser?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=-3xGWaKjfls_ZHFRnGeIvFHn--GxzjQyg1RVG_Pak1s&c=esDK4G8eYce0_Gdf4p9XGGg2cIYYoxf6CTlL_O_1aF8&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:593b6a92-f5c1-4ac0-a94a-a63e05451dd51589138620791&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+        
+        do {
+            self.loadMockResponses(["AM_Push_Registration_Successful", "AM_Push_Authentication_Successful"])
+            // Set DeviceToken before PushMechnaism registration
+            let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
+            guard let deviceToken = deviceTokenStr.decodeBase64() else {
+                XCTFail("Failed to parse device token data")
+                return
+            }
+            FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+            try FRAClient.setStorage(storage: DummyStorageClient())
+            FRAClient.start()
+
+            //  Store first Mechanism
+            var ex = self.expectation(description: "FRAClient.createMechanismFromUri")
+            FRAClient.shared?.createMechanismFromUri(uri: push, onSuccess: { (mechanism) in
+                ex.fulfill()
+            }, onError: { (error) in
+            XCTFail("FRAClient.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
+                ex.fulfill()
+            })
+            waitForExpectations(timeout: 60, handler: nil)
+
+            XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRockSandbox-pushtestuser"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRockSandbox-pushtestuser")?.mechanisms.count, 1)
+
+            //  Store Combined Mechanism under same Account
+            let diff = URL(string: "mfauth://totp/ForgeRockSandbox:pushtestuser?" +
+                             "a=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPWF1dGhlbnRpY2F0ZQ&" +
+                             "image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&" +
+                             "b=ff00ff&" +
+                             "r=aHR0cHM6Ly9mb3JnZXJvY2suZXhhbXBsZS5jb20vb3BlbmFtL2pzb24vcHVzaC9zbnMvbWVzc2FnZT9fYWN0aW9uPXJlZ2lzdGVy&" +
+                             "s=ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc&" +
+                             "c=Daf8vrc8onKu-dcptwCRS9UHmdui5u16vAdG2HMU4w0&" +
+                             "l=YW1sYmNvb2tpZT0wMQ==&" +
+                             "m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&" +
+                             "digits=6&" +
+                             "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
+                             "period=30&" +
+                             "issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+            
+            ex = self.expectation(description: "FRAClient.createMechanismFromUri")
+            FRAClient.shared?.createMechanismFromUri(uri: diff, onSuccess: { (mechanism) in
+                XCTFail("FRAClient.createMechanismFromUri was expected to fail for duplication; but somehow passed")
+                ex.fulfill()
+            }, onError: { (error) in
+                switch error {
+                case MechanismError.alreadyExists(let message):
+                    XCTAssertEqual(message, "ForgeRockSandbox-pushtestuser-push")
+                    break
+                default:
+                    XCTFail("FRAClient.createMechanismFromUri failed with unexpected reason: \(error.localizedDescription)")
+                    break
+                }
+                ex.fulfill()
+            })
+            waitForExpectations(timeout: 60, handler: nil)
+                        
+            XCTAssertEqual(FRAClient.shared?.getAllAccounts().count, 1)
+            XCTAssertNotNil(FRAClient.shared?.getAccount(identifier: "ForgeRockSandbox-pushtestuser"))
+            XCTAssertEqual(FRAClient.shared?.getAccount(identifier: "ForgeRockSandbox-pushtestuser")?.mechanisms.count, 1)
+
+        }
+        catch {
+            XCTFail("Unexpected failure on SDK init: \(error.localizedDescription)")
+        }
+    }
 }
+
+
 
 
 //  MARK: - PolicyEvaluator
