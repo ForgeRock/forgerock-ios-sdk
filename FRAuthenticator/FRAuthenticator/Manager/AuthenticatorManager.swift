@@ -50,7 +50,7 @@ struct AuthenticatorManager {
             do {
                 let parser = try PushQRCodeParser(url: uri)
                 let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor, policies: parser.policies)
-                for thisMechanism in self.storageClient.getMechanismsForAccount(account: account) {
+                if let thisMechanism = self.storageClient.getMechanismsForAccount(account: account).first {
                     FRALog.e("Found a Mechanism under the same account")
                     onError(MechanismError.alreadyExists(thisMechanism.identifier))
                     return
