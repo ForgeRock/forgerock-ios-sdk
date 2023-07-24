@@ -2,7 +2,7 @@
 //  TokenManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -364,5 +364,13 @@ struct TokenManager {
         FRSession._staticSession = nil
         FRUser._staticUser = nil
         Browser.currentBrowser = nil
+    }
+    
+    
+    /// Revoke given Access Token without using the Refresh Token
+    func revokeToken(_ token: AccessToken, completion: @escaping CompletionCallback) {
+        self.oAuth2Client.revoke(accessToken: token, useRefreshToken: false) { (error) in
+            completion(error)
+        }
     }
 }

@@ -2,7 +2,7 @@
 //  FRRequestInterceptorTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -57,8 +57,8 @@ class FRRequestInterceptorTests: FRAuthBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         XCTAssertEqual(FRRequestInterceptorTests.payload.count, 0)
         
-        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 1)
-        let interceptorsInOrder: [String] = ["REFRESH_TOKEN"]
+        XCTAssertEqual(FRRequestInterceptorTests.intercepted.count, 2)
+        let interceptorsInOrder: [String] = ["REFRESH_TOKEN", "REVOKE_TOKEN"]
         for (index, intercepted) in FRRequestInterceptorTests.intercepted.enumerated() {
             XCTAssertEqual(interceptorsInOrder[index], intercepted)
         }

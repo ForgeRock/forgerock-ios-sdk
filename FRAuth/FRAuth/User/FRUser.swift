@@ -303,8 +303,10 @@ public class FRUser: NSObject, NSSecureCoding {
     @objc
     public func refresh(completion:@escaping UserCallback) {
         if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            let oldToken = self.token
             tokenManager.refresh{ (token, error) in
                 if let token = token {
+                    self.revokeGivenAccessToken(oldToken)
                     self.token = token
                     self.save()
                     completion(self, nil)
@@ -326,8 +328,10 @@ public class FRUser: NSObject, NSSecureCoding {
     /// - Returns: FRUser object with newly renewed OAuth2 token
     @objc
     public func refreshSync() throws -> FRUser {
+        let oldToken = self.token
         if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
             let token = try tokenManager.refreshSync()
+            self.revokeGivenAccessToken(oldToken)
             self.token = token
             self.save()
             return self
@@ -453,5 +457,18 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameter aCoder: NSCoder
     public func encode(with aCoder: NSCoder) {
+    }
+    
+    
+    /// Revoke given Access Token without using the Refresh Token
+    func revokeGivenAccessToken(_ token: AccessToken?) {
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager, let token = token {
+            tokenManager.revokeToken(token) {
+                error in
+                if let error = error {
+                    FRLog.e("Error revoking the old AccessToken: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
