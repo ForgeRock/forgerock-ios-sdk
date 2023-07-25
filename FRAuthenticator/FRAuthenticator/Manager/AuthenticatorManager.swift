@@ -46,6 +46,20 @@ struct AuthenticatorManager {
         let uriType = uri.getURIType()
         let authType = uri.getAuthType()
         if uriType == .mfauth {
+            FRALog.v("Validating stored Mechanisms for duplication")
+            do {
+                let parser = try PushQRCodeParser(url: uri)
+                let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor, policies: parser.policies)
+                if let thisMechanism = self.storageClient.getMechanismsForAccount(account: account).first {
+                    FRALog.e("Found a Mechanism under the same account")
+                    onError(MechanismError.alreadyExists(thisMechanism.identifier))
+                    return
+                }
+            }
+            catch {
+                onError(error)
+            }
+            
             FRALog.v("Evaluating policies for the new Account")
             let result = self.policyEvaluator.evaluate(uri: uri)
             if let policy = result.nonCompliancePolicy, !result.comply {
