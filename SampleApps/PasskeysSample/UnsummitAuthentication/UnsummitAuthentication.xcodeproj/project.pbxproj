@@ -1,0 +1,436 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EC0BA22A282AA69E00F8326E /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = EC0BA229282AA69E00F8326E /* JGProgressHUD */; };
+		EC1A825A2822D0D1008D81BA /* FRAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EC1A82592822D0D1008D81BA /* FRAuth */; };
+		EC1A825C2822D0D1008D81BA /* FRCore in Frameworks */ = {isa = PBXBuildFile; productRef = EC1A825B2822D0D1008D81BA /* FRCore */; };
+		EC1A825E2822D0D1008D81BA /* FRFacebookSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EC1A825D2822D0D1008D81BA /* FRFacebookSignIn */; };
+		EC1A82602822D0D1008D81BA /* FRGoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EC1A825F2822D0D1008D81BA /* FRGoogleSignIn */; };
+		EC4F96C12695E82400B3C9B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4F96C02695E82400B3C9B8 /* AppDelegate.swift */; };
+		EC4F96C52695E82400B3C9B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4F96C42695E82400B3C9B8 /* LoginViewController.swift */; };
+		EC4F96C82695E82400B3C9B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4F96C62695E82400B3C9B8 /* Main.storyboard */; };
+		EC4F96CA2695E82500B3C9B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC4F96C92695E82500B3C9B8 /* Assets.xcassets */; };
+		EC4F96CD2695E82500B3C9B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4F96CB2695E82500B3C9B8 /* LaunchScreen.storyboard */; };
+		ECA14863282A6F7900D52E7D /* AuthenticatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA14862282A6F7900D52E7D /* AuthenticatedViewController.swift */; };
+		ECD8E04E2A6E811C009C421C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD8E04D2A6E811C009C421C /* SettingsViewController.swift */; };
+		ECD8E0502A6E8AAF009C421C /* PebbleBankUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD8E04F2A6E8AAF009C421C /* PebbleBankUtilities.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EC3A95FF27C8E9150094C650 /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC4F96BD2695E82400B3C9B8 /* UnsummitAuthentication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsummitAuthentication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC4F96C02695E82400B3C9B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EC4F96C42695E82400B3C9B8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		EC4F96C72695E82400B3C9B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EC4F96C92695E82500B3C9B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EC4F96CC2695E82500B3C9B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EC4F96CE2695E82500B3C9B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECA14862282A6F7900D52E7D /* AuthenticatedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedViewController.swift; sourceTree = "<group>"; };
+		ECD8E04D2A6E811C009C421C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		ECD8E04F2A6E8AAF009C421C /* PebbleBankUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PebbleBankUtilities.swift; sourceTree = "<group>"; };
+		ECEAA19E2A375443004F5823 /* UnsummitAuthentication.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UnsummitAuthentication.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EC4F96BA2695E82400B3C9B8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC1A825E2822D0D1008D81BA /* FRFacebookSignIn in Frameworks */,
+				EC1A825A2822D0D1008D81BA /* FRAuth in Frameworks */,
+				EC1A825C2822D0D1008D81BA /* FRCore in Frameworks */,
+				EC1A82602822D0D1008D81BA /* FRGoogleSignIn in Frameworks */,
+				EC0BA22A282AA69E00F8326E /* JGProgressHUD in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EC4F96B42695E82400B3C9B8 = {
+			isa = PBXGroup;
+			children = (
+				EC4F96BF2695E82400B3C9B8 /* UnsummitAuthentication */,
+				EC4F96BE2695E82400B3C9B8 /* Products */,
+				F84DC7CFEA86E95FDAA1F6EB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		EC4F96BE2695E82400B3C9B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC4F96BD2695E82400B3C9B8 /* UnsummitAuthentication.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC4F96BF2695E82400B3C9B8 /* UnsummitAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				ECEAA19E2A375443004F5823 /* UnsummitAuthentication.entitlements */,
+				EC4F96C02695E82400B3C9B8 /* AppDelegate.swift */,
+				EC4F96C42695E82400B3C9B8 /* LoginViewController.swift */,
+				ECA14862282A6F7900D52E7D /* AuthenticatedViewController.swift */,
+				ECD8E04D2A6E811C009C421C /* SettingsViewController.swift */,
+				EC4F96C62695E82400B3C9B8 /* Main.storyboard */,
+				EC4F96C92695E82500B3C9B8 /* Assets.xcassets */,
+				EC4F96CB2695E82500B3C9B8 /* LaunchScreen.storyboard */,
+				EC4F96CE2695E82500B3C9B8 /* Info.plist */,
+				ECD8E04F2A6E8AAF009C421C /* PebbleBankUtilities.swift */,
+			);
+			path = UnsummitAuthentication;
+			sourceTree = "<group>";
+		};
+		F84DC7CFEA86E95FDAA1F6EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EC3A95FF27C8E9150094C650 /* FRCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EC4F96BC2695E82400B3C9B8 /* UnsummitAuthentication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC4F96D12695E82500B3C9B8 /* Build configuration list for PBXNativeTarget "UnsummitAuthentication" */;
+			buildPhases = (
+				EC4F96B92695E82400B3C9B8 /* Sources */,
+				EC4F96BA2695E82400B3C9B8 /* Frameworks */,
+				EC4F96BB2695E82400B3C9B8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnsummitAuthentication;
+			packageProductDependencies = (
+				EC1A82592822D0D1008D81BA /* FRAuth */,
+				EC1A825B2822D0D1008D81BA /* FRCore */,
+				EC1A825D2822D0D1008D81BA /* FRFacebookSignIn */,
+				EC1A825F2822D0D1008D81BA /* FRGoogleSignIn */,
+				EC0BA229282AA69E00F8326E /* JGProgressHUD */,
+			);
+			productName = BioExample;
+			productReference = EC4F96BD2695E82400B3C9B8 /* UnsummitAuthentication.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EC4F96B52695E82400B3C9B8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					EC4F96BC2695E82400B3C9B8 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = EC4F96B82695E82400B3C9B8 /* Build configuration list for PBXProject "UnsummitAuthentication" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EC4F96B42695E82400B3C9B8;
+			packageReferences = (
+				EC1A82582822D0D1008D81BA /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */,
+				EC0BA228282AA69E00F8326E /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+			);
+			productRefGroup = EC4F96BE2695E82400B3C9B8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EC4F96BC2695E82400B3C9B8 /* UnsummitAuthentication */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EC4F96BB2695E82400B3C9B8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC4F96CD2695E82500B3C9B8 /* LaunchScreen.storyboard in Resources */,
+				EC4F96CA2695E82500B3C9B8 /* Assets.xcassets in Resources */,
+				EC4F96C82695E82400B3C9B8 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EC4F96B92695E82400B3C9B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC4F96C52695E82400B3C9B8 /* LoginViewController.swift in Sources */,
+				ECD8E0502A6E8AAF009C421C /* PebbleBankUtilities.swift in Sources */,
+				ECA14863282A6F7900D52E7D /* AuthenticatedViewController.swift in Sources */,
+				EC4F96C12695E82400B3C9B8 /* AppDelegate.swift in Sources */,
+				ECD8E04E2A6E811C009C421C /* SettingsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		EC4F96C62695E82400B3C9B8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EC4F96C72695E82400B3C9B8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EC4F96CB2695E82500B3C9B8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EC4F96CC2695E82500B3C9B8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EC4F96CF2695E82500B3C9B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EC4F96D02695E82500B3C9B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EC4F96D22695E82500B3C9B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UnsummitAuthentication/UnsummitAuthentication.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9QSE66762D;
+				INFOPLIST_FILE = UnsummitAuthentication/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.unsummit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EC4F96D32695E82500B3C9B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UnsummitAuthentication/UnsummitAuthentication.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9QSE66762D;
+				INFOPLIST_FILE = UnsummitAuthentication/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.unsummit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EC4F96B82695E82400B3C9B8 /* Build configuration list for PBXProject "UnsummitAuthentication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC4F96CF2695E82500B3C9B8 /* Debug */,
+				EC4F96D02695E82500B3C9B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC4F96D12695E82500B3C9B8 /* Build configuration list for PBXNativeTarget "UnsummitAuthentication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC4F96D22695E82500B3C9B8 /* Debug */,
+				EC4F96D32695E82500B3C9B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EC0BA228282AA69E00F8326E /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		EC1A82582822D0D1008D81BA /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ForgeRock/forgerock-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EC0BA229282AA69E00F8326E /* JGProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EC0BA228282AA69E00F8326E /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			productName = JGProgressHUD;
+		};
+		EC1A82592822D0D1008D81BA /* FRAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EC1A82582822D0D1008D81BA /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
+			productName = FRAuth;
+		};
+		EC1A825B2822D0D1008D81BA /* FRCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EC1A82582822D0D1008D81BA /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
+			productName = FRCore;
+		};
+		EC1A825D2822D0D1008D81BA /* FRFacebookSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EC1A82582822D0D1008D81BA /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
+			productName = FRFacebookSignIn;
+		};
+		EC1A825F2822D0D1008D81BA /* FRGoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EC1A82582822D0D1008D81BA /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
+			productName = FRGoogleSignIn;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = EC4F96B52695E82400B3C9B8 /* Project object */;
+}
