@@ -54,11 +54,11 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>362269018758347</string>
+	<string></string>
 	<key>FacebookClientToken</key>
-	<string>f4dce9aa634e6f9029497849c53b7785</string>
+	<string></string>
 	<key>FacebookDisplayName</key>
-	<string>BioExample</string>
+	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
