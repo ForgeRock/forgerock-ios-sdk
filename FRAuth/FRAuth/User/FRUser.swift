@@ -297,6 +297,51 @@ public class FRUser: NSObject, NSSecureCoding {
         }
     }
     
+    /// Refreshes user's session with refresh_token regardless of validity of current access_token
+    ///
+    /// - Parameter completion: Completion callback that notifies the result of operation
+    @objc
+    public func refresh(completion:@escaping UserCallback) {
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            let oldToken = self.token
+            tokenManager.refresh{ (token, error) in
+                if let token = token {
+                    self.revokeGivenAccessToken(oldToken)
+                    self.token = token
+                    self.save()
+                    completion(self, nil)
+                }
+                else {
+                    completion(nil, error)
+                }
+            }
+        }
+        else {
+            FRLog.w("Invalid SDK state")
+            completion(nil, ConfigError.invalidSDKState)
+        }
+    }
+    
+    
+    /// Refreshes user's session with refresh_token synchronously regardless of validity of current access_token
+    /// - Throws: TokenError
+    /// - Returns: FRUser object with newly renewed OAuth2 token
+    @objc
+    public func refreshSync() throws -> FRUser {
+        let oldToken = self.token
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
+            let token = try tokenManager.refreshSync()
+            self.revokeGivenAccessToken(oldToken)
+            self.token = token
+            self.save()
+            return self
+        }
+        else {
+            FRLog.w("Invalid SDK state")
+            throw ConfigError.invalidSDKState
+        }
+    }
+    
     //  MARK: - UserInfo
     
     /// Retrieves currently authenticated user's UserInfo from /userinfo endpoint
@@ -377,47 +422,6 @@ public class FRUser: NSObject, NSSecureCoding {
     }
     
     // MARK: - Private methods
-    
-    /// Refreshes user's session with refresh_token regardless of validity of current access_token
-    ///
-    /// - Parameter completion: Completion callback that notifies the result of operation
-    func refresh(completion:@escaping UserCallback) {
-        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
-            tokenManager.refresh{ (token, error) in
-                if let token = token {
-                    self.token = token
-                    self.save()
-                    completion(self, nil)
-                }
-                else {
-                    completion(nil, error)
-                }
-            }
-        }
-        else {
-            FRLog.w("Invalid SDK state")
-            completion(nil, ConfigError.invalidSDKState)
-        }
-    }
-    
-    
-    /// Refreshes user's session with refresh_token synchronously regardless of validity of current access_token
-    /// - Throws: TokenError
-    /// - Returns: FRUser object with newly renewed OAuth2 token
-    func refreshSync() throws -> FRUser {
-        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager {
-            let token = try tokenManager.refreshSync()
-            self.token = token
-            self.save()
-            return self
-        }
-        else {
-            FRLog.w("Invalid SDK state")
-            throw ConfigError.invalidSDKState
-        }
-    }
-    
-    
     /// Saves current FRUser instance to Keychain
     func save() {
     }
@@ -453,5 +457,18 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// - Parameter aCoder: NSCoder
     public func encode(with aCoder: NSCoder) {
+    }
+    
+    
+    /// Revoke given Access Token without using the Refresh Token
+    func revokeGivenAccessToken(_ token: AccessToken?) {
+        if let frAuth = FRAuth.shared, let tokenManager = frAuth.tokenManager, let token = token {
+            tokenManager.revokeToken(token) {
+                error in
+                if let error = error {
+                    FRLog.e("Error revoking the old AccessToken: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }

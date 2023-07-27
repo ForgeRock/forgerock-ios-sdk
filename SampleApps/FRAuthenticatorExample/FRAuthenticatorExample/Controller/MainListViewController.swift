@@ -9,6 +9,7 @@
 //
 
 import UIKit
+import FRCore
 import FRAuthenticator
 
 class MainListViewController: BaseTableViewController {
@@ -30,6 +31,10 @@ class MainListViewController: BaseTableViewController {
         DispatchQueue.main.async {
             self.reload()
         }
+        
+        // - MARK: PushRequestInterceptor example
+        /// Uncomment the next line to test the http request interceptor...
+        //RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PushRequestInterceptor()])
     }
     
     
@@ -233,3 +238,25 @@ extension MainListViewController: QRCodeScannerDelegate {
         self.displayAlert(title: "Error", message: error.localizedDescription)
     }
 }
+
+
+/// This is an example http interceptor for testing purposes (SDKS-2545)
+class PushRequestInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        var headers = request.headers
+
+        if action.type == "PUSH_REGISTER" {
+            NotificationRequestViewController.intercepted.append("PUSH_REGISTER")
+            headers["testHeader"] = "PUSH_REGISTER"
+                    }
+        else if action.type == "PUSH_AUTHENTICATE" {
+            NotificationRequestViewController.intercepted.append("PUSH_AUTHENTICATE")
+            headers["testHeader"] = "PUSH_AUTHENTICATE"
+        }
+
+        let newRequest = Request(url: request.url, method: request.method, headers: headers, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
+
+        return newRequest
+    }
+}
+

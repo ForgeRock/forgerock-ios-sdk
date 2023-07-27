@@ -9,6 +9,7 @@
 //
 
 import UIKit
+import FRCore
 import FRAuthenticator
 import CoreLocation
 
@@ -29,6 +30,7 @@ class NotificationRequestViewController: BaseViewController {
     @IBOutlet weak var numbersChallengeStackView: UIStackView!
     
     var notification: PushNotification?
+    static var intercepted: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()

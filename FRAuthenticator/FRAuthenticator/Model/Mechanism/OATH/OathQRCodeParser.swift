@@ -120,7 +120,11 @@ struct OathQRCodeParser {
                     self.backgroundColor = item.value
                 }
                 if item.name == "issuer", let strVal = item.value {
-                    self.issuer = strVal
+                    if self.scheme == URIType.mfauth.rawValue, let decodedVal = strVal.base64Decoded() {
+                        self.issuer = decodedVal
+                    } else {
+                        self.issuer = strVal
+                    }
                 }
                 if item.name == "policies", let strVal = item.value {
                     self.policies = strVal.base64Decoded()

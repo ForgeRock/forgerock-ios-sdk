@@ -2,7 +2,7 @@
 //  AuthorizationPolicy.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -101,7 +101,7 @@ import Foundation
     /// - Returns: PolicyAdvice if given redirect response matches with any of conditions
     func evaluateAuthorizationPolicyWithRedirect(responseData: Data?, session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest) -> PolicyAdvice? {
         FRLog.v("[AuthorizationPolicy] Evaluating Authorization Policy started")
-        if response.statusCode == 307, let redirectUrl = response.allHeaderFields["Location"] as? String, let policyAdvise = PolicyAdvice(redirectUrl: redirectUrl) {
+        if response.statusCode == 307, let redirectUrl = response.allHeaderFields["Location"] as? String, let policyAdvise = PolicyAdviceCreator().parse(advice: redirectUrl) {
             FRLog.i("[AuthorizationPolicy] IG request redirect (307) for Authorization Policy found; constructed PolicyAdvice based on IG redirection")
             return policyAdvise
         }
@@ -131,6 +131,13 @@ import Foundation
     /// - Returns: PolicyAdvice if given redirect response matches with any of conditions
     func evaluateAuthorizationPolicy(responseData: Data?, response: URLResponse?, error: Error?) -> PolicyAdvice? {
         FRLog.v("[AuthorizationPolicy] Evaluating Authorization Policy started")
+        
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 401, let json = httpResponse.allHeaderFields["Www-Authenticate"] as? String,
+           let policyAdvice = PolicyAdviceCreator().parseAsBase64(advice: json) {
+            FRLog.i("[AuthorizationPolicy] PolicyAdvice JSON object found from response JSON payload; returning PolicyAdvice")
+            return policyAdvice
+        }
+        
         if let data = responseData, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]], let evalResult = json.first, let policyAdvice = PolicyAdvice(json: evalResult) {
             FRLog.i("[AuthorizationPolicy] PolicyAdvice JSON object found from response JSON payload; returning PolicyAdvice")
             return policyAdvice

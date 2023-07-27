@@ -137,7 +137,8 @@ class PushQRCodeParserTests: FRABaseTests {
                          "policies=eyJiaW9tZXRyaWNBdmFpbGFibGUiOiB7IH0sImRldmljZVRhbXBlcmluZyI6IHsic2NvcmUiOiAwLjh9fQ&" +
                          "digits=6&" +
                          "secret=R2PYFZRISXA5L25NVSSYK2RQ6E======&" +
-                         "period=30&")!
+                         "period=30&" +
+                         "issuer=Rm9yZ2Vyb2Nr")!
         
         let jsonPolicies = """
         {"biometricAvailable": { },"deviceTampering": {"score": 0.8}}

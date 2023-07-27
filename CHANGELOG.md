@@ -1,4 +1,15 @@
-# Version 4.0.0
+# Version 4.1.0
+
+## [4.1.0]
+#### Added
+- Interceptor support for the Authenticator module [SDKS-2545]
+- Deep link support for `mfauth` scheme in Authenticator sample app [SDKS-2524]
+- Interface for access_token refresh [SDKS-2563]
+- Ability to process new JSON format of IG policy advice [SDKS-2239]
+
+#### Fixed
+- Fixed an issue on parsing `issuer` from combined MFA registration uri [SDKS-2542]
+- Added error message about duplicated accounts while performing combined MFA registration [SDKS-2627]
 
 ## [4.0.0]
 #### Added

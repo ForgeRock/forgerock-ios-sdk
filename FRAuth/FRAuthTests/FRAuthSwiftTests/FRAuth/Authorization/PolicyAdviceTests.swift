@@ -2,7 +2,7 @@
 //  PolicyAdviceTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -30,6 +30,18 @@ class PolicyAdviceTests: FRAuthBaseTest {
         //  Then
         let advice = PolicyAdvice(json: adviceJSON)
         XCTAssertNil(advice)
+    }
+    
+    func test_01_policy_advice_init_with_passed_dict() {
+        
+        //  Given
+        
+        var adviceJSON: [String: Any] = [:]
+        adviceJSON["TransactionConditionAdvice"] =  ["562fd2ef-c494-4d5d-9375-7f17aef817d3"]
+        
+        //  Then
+        let advice = PolicyAdvice(json: adviceJSON)
+        XCTAssertNotNil(advice)
     }
     
     
@@ -98,6 +110,20 @@ class PolicyAdviceTests: FRAuthBaseTest {
         XCTAssertEqual(advice?.type, AdviceType.transactionCondition)
         XCTAssertEqual(advice?.authIndexType, OpenAM.compositeAdvice)
         XCTAssertEqual(advice?.authIndexValue, "<Advices><AttributeValuePair><Attribute name=\"TransactionConditionAdvice\"/><Value>5afff42a-2715-40c8-98e7-919abc1b2dfc</Value></AttributeValuePair></Advices>")
+    }
+    
+    func test_04_policy_advice_init_with_params_with_indexTypes() {
+        //  Given
+        let indexValue = "<Advices><AttributeValuePair><Attribute name=\"TransactionConditionAdvice\"/><Value>5afff42a-2715-40c8-98e7-919abc1b2dfc</Value></AttributeValuePair></Advices>"
+        var advice = PolicyAdvice(type: "TransactionConditionAdvice", value: "5afff42a-2715-40c8-98e7-919abc1b2dfc", authIndexType: "other_advice", authIndexValue: indexValue)
+        //  Then
+        XCTAssertNotNil(advice)
+        XCTAssertNotNil(advice?.txId)
+        XCTAssertEqual(advice?.txId, "5afff42a-2715-40c8-98e7-919abc1b2dfc")
+        XCTAssertEqual(advice?.value, "5afff42a-2715-40c8-98e7-919abc1b2dfc")
+        XCTAssertEqual(advice?.type, AdviceType.transactionCondition)
+        XCTAssertEqual(advice?.authIndexType, "other_advice")
+        XCTAssertEqual(advice?.authIndexValue, indexValue)
         
         
         //  Given

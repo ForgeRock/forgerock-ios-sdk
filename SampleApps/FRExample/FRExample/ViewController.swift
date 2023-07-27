@@ -142,6 +142,7 @@ class ViewController: UIViewController {
             "Collect Device Information",
             "JailbreakDetector.analyze()",
             "FRUser.getAccessToken()",
+            "FRUser.refresh()",
             "Login with UI (Accesstoken)",
             "FRSession.authenticate with UI (Token)",
             "FRSession.logout()",
@@ -571,7 +572,23 @@ class ViewController: UIViewController {
             }
         }
     }
-    
+
+    func refreshAccessToken() {
+        guard let user = FRUser.currentUser else {
+            // If no currently authenticated user is found, log error
+            self.displayLog("FRUser.currentUser does not exist")
+            return
+        }
+        
+        user.refresh(completion: { (user, error) in
+            if let tokenError = error {
+                self.displayLog(tokenError.localizedDescription)
+            } else {
+                self.displayLog("Access token refreshed (forcefully)!")
+                self.displayLog("\(String(describing: user))")
+            }
+        })
+    }
     
     // MARK: - Helper: Logout / UserInfo / JailbreakDetector / Device Collector / Invoke API
     
@@ -758,6 +775,8 @@ class ViewController: UIViewController {
         
         var request = URLRequest(url: url)
         
+        request.setValue("header", forHTTPHeaderField: "x-authenticate-response")
+        
         //  TODO: - Change following code as needed for authorization policy, and PEP
         //  Setting SSO Token in the request cookie is expected for Identity Gateway set-up, and where IG is acting as Policy Enforcement Points (PEP)
         request.setValue("\(cookieName)="+(FRSession.currentSession?.sessionToken?.value ?? ""), forHTTPHeaderField: "Cookie")
@@ -829,26 +848,30 @@ class ViewController: UIViewController {
             self.getAccessTokenFromUser()
             break
         case 9:
+            // Force Refresh AccessToken
+            self.refreshAccessToken()
+            break
+        case 10:
             // Login for AccessToken
             self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 10:
+        case 11:
             // FRSession.authenticate with UI (Token)
             self.performSessionAuthenticate(handleWithUI: true)
             break
-        case 11:
+        case 12:
             // FRSession.logout
             FRSession.currentSession?.logout()
             break
-        case 12:
+        case 13:
             // Register a user for FRUser
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: FRUser.self)
             break
-        case 13:
+        case 14:
             // Register a user for AccessToken
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
             break
-        case 14:
+        case 15:
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
@@ -856,23 +879,23 @@ class ViewController: UIViewController {
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
-        case 16:
+        case 17:
             // FRSession.authenticate without UI (Token)
             self.performSessionAuthenticate(handleWithUI: false)
             break
-        case 17:
+        case 18:
             // Display current Configuration
             self.displayCurrentConfig()
             break
-        case 18:
+        case 19:
             // Revoke Access Token
             self.revokeAccessToken()
             break
-        case 19:
+        case 20:
             // List WebAuthn Credentials by rpId
             self.listWebAuthnCredentialsByRpId()
             break
-        case 20:
+        case 21:
             // List device binding user keys
             self.listUserKeys()
             break
