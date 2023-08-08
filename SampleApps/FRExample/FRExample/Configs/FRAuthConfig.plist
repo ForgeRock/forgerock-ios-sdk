@@ -27,7 +27,7 @@
 	<key>forgerock_keychain_access_group</key>
 	<string>com.forgerock.sso</string>
 	<key>forgerock_auth_service_name</key>
-	<string>appintegrity</string>
+	<string>integrity</string>
 	<key>forgerock_registration_service_name</key>
 	<string>Registration</string>
 </dict>

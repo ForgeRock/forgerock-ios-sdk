@@ -10,6 +10,7 @@
 		3A1A7F522A2852E200D48F4F /* AppIntegrityCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1A7F512A2852E200D48F4F /* AppIntegrityCallback.swift */; };
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
+		3A4FC74C2A814DCF00C6E353 /* AppIntegrityDomainModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4FC74B2A814DCF00C6E353 /* AppIntegrityDomainModal.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
 		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
@@ -325,6 +326,7 @@
 		3A1A7F512A2852E200D48F4F /* AppIntegrityCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntegrityCallback.swift; sourceTree = "<group>"; };
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
+		3A4FC74B2A814DCF00C6E353 /* AppIntegrityDomainModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntegrityDomainModal.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
 		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
@@ -1028,6 +1030,7 @@
 				D5B2061325FFE0E500DABB9B /* SelectIdPCallback.swift */,
 				D5B2061725FFE0F300DABB9B /* IdPCallback.swift */,
 				3A1A7F512A2852E200D48F4F /* AppIntegrityCallback.swift */,
+				3A4FC74B2A814DCF00C6E353 /* AppIntegrityDomainModal.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1694,6 +1697,7 @@
 				D53A804B262789BD0093B1CA /* ClientCreateOperation.swift in Sources */,
 				D55776B523702889005A911F /* MetadataCallback.swift in Sources */,
 				D5B2060725FFDDBA00DABB9B /* IdPHandler.swift in Sources */,
+				3A4FC74C2A814DCF00C6E353 /* AppIntegrityDomainModal.swift in Sources */,
 				D5BE349523CD2F38005873BB /* FRSession.swift in Sources */,
 				D586CFAE23358EE0007A2194 /* OpenAM.swift in Sources */,
 				D53A803A262789BD0093B1CA /* CBOR.swift in Sources */,
