@@ -2,7 +2,7 @@
 //  FRJSONEncoder.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 - 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,7 +13,7 @@ import Foundation
 
 
 /// FRJSONEncoder class is a helper class that is responsible to help JSON encoding operation using JSONEncoder
-class FRJSONEncoder: JSONEncoder {
+public class FRJSONEncoder: JSONEncoder {
     
     /// shared instance of FRAPushHandler
     static var shared: FRJSONEncoder = FRJSONEncoder()
@@ -39,7 +39,7 @@ class FRJSONEncoder: JSONEncoder {
     /// Convert  JSON string to Dictionary
     /// - Throws: exception if JSON string cannot be converted to dictionary
     /// - Returns: Dictionary
-    static func jsonStringToDictionary(jsonString: String) -> [String:AnyObject]? {
+    public static func jsonStringToDictionary(jsonString: String) -> [String:AnyObject]? {
         if let data = jsonString.data(using: .utf8) {
            do {
                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:AnyObject]

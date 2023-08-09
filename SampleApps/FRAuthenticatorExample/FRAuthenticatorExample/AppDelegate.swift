@@ -15,6 +15,7 @@ import FRAuthenticator
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var privacyScreen: UIImageView = UIImageView()
+    var sdoTokenHandler = SDOTokenHandler()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FRALog.setLogLevel(.all)
@@ -63,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if FRAClient.shared == nil {
                 FRAClient.start()
             }
+            
+            processSdoToken(notification: notification)
             
             viewController.notification = notification
             var currentController = rootViewController
@@ -133,5 +136,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }, onError: { error in
             NSLog("Error creating a mechanism with deeplink: \(uri.absoluteString)");
         })
+    }
+    
+    private func processSdoToken(notification: PushNotification) {
+        if let mechanism = FRAClient.shared?.getMechanism(notification: notification) {
+            sdoTokenHandler.processSdoTokenFromPushNotification(notification: notification, mechanism: mechanism);
+        } else {
+            NSLog("Error retrieving a mechanism for notification");
+        }
     }
 }

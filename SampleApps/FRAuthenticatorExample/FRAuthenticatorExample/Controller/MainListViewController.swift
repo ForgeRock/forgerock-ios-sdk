@@ -2,7 +2,7 @@
 //  MainListViewController.swift
 //  FRAuthenticatorExample
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -96,6 +96,15 @@ class MainListViewController: BaseTableViewController {
             scannerViewController.delegate = self
         }
         self.present(viewController, animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func displaySDOToken(sender: UIBarButtonItem) {
+        let sdoToken = SDOTokenHandler().getToken()
+        let message = sdoToken ?? "No SDO Token found"
+        let alert = UIAlertController(title: "SDO Token", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
     }
     
     

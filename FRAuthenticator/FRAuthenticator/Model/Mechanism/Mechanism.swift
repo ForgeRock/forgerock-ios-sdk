@@ -25,7 +25,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     /// issuer of auth
     public internal(set) var issuer: String
     /// shared secret of auth
-    var secret: String
+    public var secret: String
     /// accountName or username of auth
     public internal(set) var accountName: String
     /// Time added for push
