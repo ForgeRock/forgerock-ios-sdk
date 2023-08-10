@@ -25,7 +25,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     /// issuer of auth
     public internal(set) var issuer: String
     /// shared secret of auth
-    public var secret: String
+    var secret: String
     /// accountName or username of auth
     public internal(set) var accountName: String
     /// Time added for push
@@ -177,6 +177,28 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         
         let milliseconds = try container.decode(Double.self, forKey: .timeAdded)
         timeAdded = Date(timeIntervalSince1970: Double(milliseconds / 1000))
+    }
+    
+}
+
+extension Mechanism {
+    /// Decrypt given token with secret
+    /// - Parameter encryptedToken: encrypted token as String
+    /// - Returns: decrypted token as String
+    public func decryptTokenWithSecret(encryptedToken: String) -> String? {
+        let encryptedPair = encryptedToken.split(separator: ".")
+        let iv = String(encryptedPair[0])
+        let cipherText = String(encryptedPair[1])
+        
+        if let keyData = secret.decodeURL(),
+           let cipherData = cipherText.decodeURL(),
+           let decryptedTokenBytes = try? Crypto.QCCAESPadCBCDecrypt(key: keyData.bytes, iv: iv.bytes, cyphertext: cipherData.bytes),
+           let decryptedToken = String(bytes: decryptedTokenBytes, encoding: .utf8) {
+            return decryptedToken
+        } else {
+            NSLog("Unable to decrypt SDO Token")
+            return nil
+        }
     }
     
 }
