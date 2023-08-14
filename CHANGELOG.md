@@ -1,4 +1,9 @@
-# Version 4.1.0
+# Version 4.1.1
+
+## [4.1.1]
+
+#### Fixed
+- Fixed an issue where the `issuer` parameter was not properly parsed when using AM 7.2.x [SDKS-2653]
 
 ## [4.1.0]
 #### Added
