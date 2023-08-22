@@ -64,8 +64,7 @@ class AppIntegrityDomainModal {
     }
     
 }
-
-/// Result enum for Device Signing
+// Results of AppIntegrity Failures
 public enum AppIntegrityModalResult: Error {
     case invalidChallenge
     case invalidBundleIdentifier

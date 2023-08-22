@@ -155,9 +155,3 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     }
         
 }
-
-public enum AppIntegrityResult {
-    case success
-    case failure
-}
-
