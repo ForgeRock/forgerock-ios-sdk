@@ -31,13 +31,6 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     
     let appIntegrityDomainModal = AppIntegrityDomainModal()
     
-//    var keyChainManager: KeychainManager? = FRAuth.shared?.keychainManager
-//
-//    private let dcAppAttestService = DCAppAttestService.shared
-    
-    private let keyName = "appAttestKey"
-    private let appAttestToken = "appAttestToken"
-    
     public required init(json: [String : Any]) throws {
         
         guard let callbackType = json[CBConstants.type] as? String else {
@@ -131,20 +124,16 @@ open class AppIntegrityCallback: MultipleValuesCallback {
     
     open func attest() async throws {
         do {
-            var keyIdentifier = appIntegrityDomainModal.getKeyIdentifier()
-            if keyIdentifier == nil {
-                keyIdentifier = try await appIntegrityDomainModal.generateKey()
-            }
+     
+            let keyIdentifier = try await appIntegrityDomainModal.generateKey()
+            let attest = try await appIntegrityDomainModal.attest(challenge: challenge, keyIdentifier: keyIdentifier)
+            let assert = try await appIntegrityDomainModal.assert(challenge: challenge, keyIdentifier: keyIdentifier)
+        
+            self.setAttestation(attest)
+            self.setVerification(assert.0)
+            self.setkeyId(keyIdentifier)
+            self.setClientData(assert.1)
             
-            if let identifier = keyIdentifier {
-                let attest = try await appIntegrityDomainModal.attest(challenge: challenge, keyIdentifier: identifier)
-                let assert = try await appIntegrityDomainModal.assert(challenge: challenge, keyIdentifier: identifier)
-                
-                self.setAttestation(attest)
-                self.setVerification(assert.0)
-                self.setkeyId(identifier)
-                self.setClientData(assert.1)
-            }
             
         }
         catch {

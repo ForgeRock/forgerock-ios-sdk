@@ -32,7 +32,7 @@ class AppIntegrityDomainModal {
     func generateKey() async throws -> String {
         let keyIdentifier = try await dcAppAttestService.generateKey()
         self.keyChainManager?.privateStore.set(keyIdentifier, key: self.keyName)
-         return keyIdentifier
+        return keyIdentifier
     }
     
     func attest(challenge: String, keyIdentifier: String) async throws -> String {
@@ -65,6 +65,7 @@ class AppIntegrityDomainModal {
     
 }
 // Results of AppIntegrity Failures
+@available(iOS 14.0, *)
 public enum AppIntegrityModalResult: Error {
     case invalidChallenge
     case invalidBundleIdentifier
