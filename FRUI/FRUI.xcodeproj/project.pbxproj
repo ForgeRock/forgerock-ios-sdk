@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A59916472AA956DA00CFC95F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A59916462AA956DA00CFC95F /* PrivacyInfo.xcprivacy */; };
 		A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */; };
 		D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D527D03024BCDB4E00C21663 /* FRUITextView.swift */; };
 		D539C8E822DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */; };
@@ -82,6 +83,7 @@
 
 /* Begin PBXFileReference section */
 		953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
+		A59916462AA956DA00CFC95F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D527D03024BCDB4E00C21663 /* FRUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUITextView.swift; sourceTree = "<group>"; };
 		D539C8E622DE930800BE2B3C /* TermsAndConditionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsTableViewCell.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				D53A91E422B1815B003DF94E /* FRUI.h */,
 				D53A91E522B1815B003DF94E /* Info.plist */,
 				D5CACF8B22B1A87700656521 /* FRUI.swift */,
+				A59916462AA956DA00CFC95F /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRUI;
 			sourceTree = "<group>";
@@ -453,6 +456,7 @@
 				D592481623285AAF0027031A /* TextOutputCallbackTableViewCell.xib in Resources */,
 				D53A922C22B1869C003DF94E /* AuthStepViewController.xib in Resources */,
 				D5F8F9F424B7DC8300EC9AEB /* BooleanAttributeInputCallbackTableViewCell.xib in Resources */,
+				A59916472AA956DA00CFC95F /* PrivacyInfo.xcprivacy in Resources */,
 				D539C8E922DE930800BE2B3C /* TermsAndConditionsTableViewCell.xib in Resources */,
 				D53A922922B1869C003DF94E /* PasswordCallbackTableViewCell.xib in Resources */,
 				D53A922B22B1869C003DF94E /* NameCallbackTableViewCell.xib in Resources */,

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A59916422AA951E700CFC95F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A59916412AA951E700CFC95F /* PrivacyInfo.xcprivacy */; };
 		D58BC3B52603112A00254654 /* GoogleSignInHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BC3B42603112A00254654 /* GoogleSignInHandlerTests.swift */; };
 		D5B2067626008D0900DABB9B /* FRGoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2066C26008D0800DABB9B /* FRGoogleSignIn.framework */; };
 		D5B2067D26008D0900DABB9B /* FRGoogleSignIn.h in Headers */ = {isa = PBXBuildFile; fileRef = D5B2066F26008D0800DABB9B /* FRGoogleSignIn.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A59916412AA951E700CFC95F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D58BC3B42603112A00254654 /* GoogleSignInHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInHandlerTests.swift; sourceTree = "<group>"; };
 		D5B2066C26008D0800DABB9B /* FRGoogleSignIn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRGoogleSignIn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B2066F26008D0800DABB9B /* FRGoogleSignIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRGoogleSignIn.h; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				D5B206D026008F2E00DABB9B /* Sources */,
 				D5B2066F26008D0800DABB9B /* FRGoogleSignIn.h */,
 				D5B2067026008D0800DABB9B /* Info.plist */,
+				A59916412AA951E700CFC95F /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRGoogleSignIn;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A59916422AA951E700CFC95F /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

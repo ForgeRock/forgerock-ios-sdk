@@ -33,6 +33,7 @@
 		A5C3E30029EF873E00338904 /* FRDeviceBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C3E2FF29EF873E00338904 /* FRDeviceBinding.swift */; };
 		A5D1C37D29E59FC30096039E /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C37429E59FC20096039E /* FRDeviceBinding.framework */; };
 		A5D1C38329E59FC30096039E /* FRDeviceBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1C37729E59FC20096039E /* FRDeviceBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5D748CA2AA8E3F600C0583E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A5D748C92AA8E3F600C0583E /* PrivacyInfo.xcprivacy */; };
 		A5D8939929E5AB76004D21F4 /* UserKeySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8938E29E5AB75004D21F4 /* UserKeySelector.swift */; };
 		A5D8939A29E5AB76004D21F4 /* LocalDeviceBindingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8938F29E5AB75004D21F4 /* LocalDeviceBindingRepository.swift */; };
 		A5D8939B29E5AB76004D21F4 /* CryptoAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8939029E5AB76004D21F4 /* CryptoAware.swift */; };
@@ -169,6 +170,7 @@
 		A5D1C37429E59FC20096039E /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5D1C37729E59FC20096039E /* FRDeviceBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRDeviceBinding.h; sourceTree = "<group>"; };
 		A5D1C37C29E59FC30096039E /* FRDeviceBindingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRDeviceBindingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5D748C92AA8E3F600C0583E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A5D8938E29E5AB75004D21F4 /* UserKeySelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserKeySelector.swift; sourceTree = "<group>"; };
 		A5D8938F29E5AB75004D21F4 /* LocalDeviceBindingRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDeviceBindingRepository.swift; sourceTree = "<group>"; };
 		A5D8939029E5AB76004D21F4 /* CryptoAware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoAware.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 			children = (
 				A5D1C39B29E5A4160096039E /* Sources */,
 				A5D1C37729E59FC20096039E /* FRDeviceBinding.h */,
+				A5D748C92AA8E3F600C0583E /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRDeviceBinding;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5D748CA2AA8E3F600C0583E /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
