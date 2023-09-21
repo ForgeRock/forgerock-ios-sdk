@@ -2,7 +2,7 @@
 //  Browser.swift
 //  FRAuth
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -314,16 +314,8 @@ import SafariServices
     func loginWithSFViewController(url: URL, completion: @escaping UserCallback) -> Bool {
         
         var viewController: SFSafariViewController?
-        if #available(iOS 11.0, *) {
-            let config = SFSafariViewController.Configuration()
-            config.entersReaderIfAvailable = false
-            viewController = SFSafariViewController(url: url, configuration: config)
+        viewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
             viewController?.delegate = self
-        }
-        else {
-            viewController = SFSafariViewController(url: url)
-            viewController?.delegate = self
-        }
         self.currentSession = viewController
         if let currentViewController = self.presentingViewController, let sfVC = viewController {
             currentViewController.present(sfVC, animated: true)
