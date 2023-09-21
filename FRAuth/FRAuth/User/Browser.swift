@@ -316,7 +316,7 @@ import SafariServices
         var viewController: SFSafariViewController?
         if #available(iOS 11.0, *) {
             let config = SFSafariViewController.Configuration()
-            config.entersReaderIfAvailable = true
+            config.entersReaderIfAvailable = false
             viewController = SFSafariViewController(url: url, configuration: config)
             viewController?.delegate = self
         }
