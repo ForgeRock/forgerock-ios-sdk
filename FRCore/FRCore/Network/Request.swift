@@ -2,7 +2,7 @@
 //  Request.swift
 //  FRCore
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -120,7 +120,9 @@ public struct Request {
         let thisRequest = NSMutableURLRequest(url: thisUrl, cachePolicy: .useProtocolCachePolicy, timeoutInterval: self.timeoutInterval)
         //  Set HTTP method
         thisRequest.httpMethod = self.method.rawValue
-               
+        
+        //  Set Cache-Control to no-store
+        thisRequest.setValue("no-store", forHTTPHeaderField: "Cache-Control")
         //  Set Content-Type, and Accept headers based on request/response types
         thisRequest.setValue(self.requestType.rawValue, forHTTPHeaderField: "Content-Type")
         if let responseType = self.responseType {

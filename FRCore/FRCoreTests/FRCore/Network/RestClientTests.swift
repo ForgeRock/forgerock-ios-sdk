@@ -2,7 +2,7 @@
 //  RestClientTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -124,6 +124,50 @@ class RestClientTests: FRBaseTestCase {
            XCTFail("Request failed with unexpected error while expecting invalid response data type error")
            break
        }
+    }
+    
+    
+    func test_04_test_cache_control() {
+        
+        let request = Request(url: "https://httpbin.org/get", method: .GET)
+        let expectation = self.expectation(description: "GET request: \(request.debugDescription)")
+        
+        let urlRequest = request.build()!
+        let urlCache = RestClient.shared._urlSession?.configuration.urlCache
+        urlCache?.removeCachedResponse(for: urlRequest)
+        
+        var response:[String: Any]?, urlResponse: URLResponse?, error: NetworkError?
+        
+        RestClient.shared.invoke(request: request) { (result) in
+            switch result {
+            case .success(let requestResponse, let requestUrlResponse):
+                response = requestResponse
+                urlResponse = requestUrlResponse
+                expectation.fulfill()
+                break
+            case .failure(let requestError):
+                
+                error = requestError as? NetworkError
+                expectation.fulfill()
+                break
+            }
+        }
+        
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNotNil(response)
+        XCTAssertNotNil(urlResponse)
+        XCTAssertNil(error)
+        
+        XCTAssertNil(urlCache?.cachedResponse(for: urlRequest))
+        
+        if let headers = response?["headers"] as? [String: String],
+           let cacheControl = headers["Cache-Control"] {
+            XCTAssertEqual(cacheControl, "no-store")
+        } else {
+            XCTFail("Unable to extract Cache-Control from response header")
+        }
+        
     }
 }
 
