@@ -2,7 +2,7 @@
 //  RestClientTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -125,5 +125,12 @@ class RestClientTests: FRBaseTestCase {
            break
        }
     }
+    
+    
+    func test_04_test_cache_control() {
+        
+        RestClient.shared.setURLSessionConfiguration(config: RestClient.defaultURLSessionConfiguration)
+        
+        XCTAssertNil(RestClient.shared._urlSession?.configuration.urlCache)
+    }
 }
-
