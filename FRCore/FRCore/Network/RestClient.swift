@@ -30,9 +30,11 @@ public class RestClient: NSObject {
     static var defaultURLSessionConfiguration: URLSessionConfiguration {
         get {
             let config = URLSessionConfiguration.default
+            // Setting `httpCookieStorage` to nil disables cookie storage
             config.httpCookieStorage = nil
             config.httpCookieAcceptPolicy = .never
             config.httpShouldSetCookies = false
+            // Setting `urlCache` to nil disables caching
             config.urlCache = nil
             return config
         }
