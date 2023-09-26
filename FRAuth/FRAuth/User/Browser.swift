@@ -2,7 +2,7 @@
 //  Browser.swift
 //  FRAuth
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -20,6 +20,9 @@ import SafariServices
     case nativeBrowserApp = 1
     case sfViewController = 2
     case authSession = 0
+    
+    @available(iOS 13, *)
+    case ephemeralAuthSession = 3
 }
 
 
@@ -127,8 +130,14 @@ import SafariServices
                 }
             }
             else {
+                var prefersEphemeralWebBrowserSession = false
+                if #available(iOS 13.0, *) {
+                    if self.browserType == .ephemeralAuthSession {
+                        prefersEphemeralWebBrowserSession = true
+                    }
+                }
                 if #available(iOS 12.0, *) {
-                    self.isInProgress = self.loginWithASWebSession(url: url, completion: completion)
+                    self.isInProgress = self.loginWithASWebSession(url: url, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, completion: completion)
                 }
                 else if #available(iOS 11.0, *) {
                     self.isInProgress = self.loginWithSFWebSession(url: url, completion: completion)
@@ -243,10 +252,11 @@ import SafariServices
     /// Performs authentication through /authorize endpoint using ASWebAuthenticationSession
     /// - Parameters:
     ///   - url: URL of /authorize including all URL query parameter
+    ///   - prefersEphemeralWebBrowserSession: (iOS 13 +) Indicates whether the session should ask the browser for an ephemeral session.
     ///   - completion: Completion callback to nofiy the result
     /// - Returns: Boolean indicator whether or not launching external user-agent was successful
     @available(iOS 12.0, *)
-    func loginWithASWebSession(url: URL, completion: @escaping UserCallback) -> Bool {
+    func loginWithASWebSession(url: URL, prefersEphemeralWebBrowserSession: Bool, completion: @escaping UserCallback) -> Bool {
         let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.scheme) { (url, error) in
 
             if let error = error {
@@ -269,6 +279,7 @@ import SafariServices
         //  Provide Context Provider with given viewController for iOS 13 or above
         if #available(iOS 13.0, *) {
             asWebAuthSession.presentationContextProvider = self
+            asWebAuthSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
         }
         self.currentSession = asWebAuthSession
         return asWebAuthSession.start()
