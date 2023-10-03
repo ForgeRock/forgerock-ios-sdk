@@ -49,8 +49,8 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
             XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
             XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
             XCTAssertEqual(messageDictionary[DBConstants.platform] as? String, DBConstants.ios)
-            XCTAssertGreaterThan(messageDictionary[DBConstants.iat] as! Int, Int(Date().timeIntervalSince1970) - 10)
-            XCTAssertGreaterThan(messageDictionary[DBConstants.nbf] as! Int, Int(Date().timeIntervalSince1970) - 10)
+            XCTAssertEqual(messageDictionary[DBConstants.iat] as! Int, Int(Date().timeIntervalSince1970), accuracy: 10)
+            XCTAssertEqual(messageDictionary[DBConstants.nbf] as! Int, Int(Date().timeIntervalSince1970), accuracy: 10)
             if let bundleIdentifier = Bundle.main.bundleIdentifier {
                 XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
             }
@@ -95,8 +95,8 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
             XCTAssertEqual(messageDictionary[DBConstants.challenge] as? String, challenge)
             XCTAssertEqual(messageDictionary[DBConstants.sub] as? String, userId)
             XCTAssertEqual(messageDictionary[DBConstants.exp] as? Int, Int(expiration.timeIntervalSince1970))
-            XCTAssertGreaterThan(messageDictionary[DBConstants.iat] as! Int, Int(Date().timeIntervalSince1970) - 10)
-            XCTAssertGreaterThan(messageDictionary[DBConstants.nbf] as! Int, Int(Date().timeIntervalSince1970) - 10)
+            XCTAssertEqual(messageDictionary[DBConstants.iat] as! Int, Int(Date().timeIntervalSince1970), accuracy: 10)
+            XCTAssertEqual(messageDictionary[DBConstants.nbf] as! Int, Int(Date().timeIntervalSince1970), accuracy: 10)
             if let bundleIdentifier = Bundle.main.bundleIdentifier {
                 XCTAssertEqual(messageDictionary[DBConstants.iss] as? String, bundleIdentifier)
             }
