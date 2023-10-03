@@ -2,7 +2,7 @@
 //  FRURLProtocolTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -52,7 +52,7 @@ class FRURLProtocolTests: FRAuthBaseTest {
         
         //  When
         let ex = self.expectation(description: "Making request")
-        urlSession.dataTask(with: URL(string: "https://httpbin.org/anything")!) { (data, response, error) in
+        urlSession.dataTask(with: URL(string: FRTestURL.anythingURL)!) { (data, response, error) in
             let response = Response(data: data, response: response, error: error).parseReponse()
             
             // Authorization header should have not been sent
@@ -92,13 +92,13 @@ class FRURLProtocolTests: FRAuthBaseTest {
         let urlSession: URLSession = URLSession(configuration: config)
         
         //  Set TokenManagementPolicy, but with different URL for validation
-        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: "https://httpbin.org/any")!], delegate: nil)
+        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: FRTestURL.anythingURL)!], delegate: nil)
         FRURLProtocol.authorizationPolicy = nil
         FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
         
         //  When
         let ex = self.expectation(description: "Making request")
-        urlSession.dataTask(with: URL(string: "https://httpbin.org/anything")!) { (data, response, error) in
+        urlSession.dataTask(with: URL(string: FRTestURL.anythingURL)!) { (data, response, error) in
             let response = Response(data: data, response: response, error: error).parseReponse()
             
             // Authorization header should have not been sent
@@ -137,13 +137,13 @@ class FRURLProtocolTests: FRAuthBaseTest {
         let urlSession: URLSession = URLSession(configuration: config)
         
         //  Set TokenManagementPolicy without delegate for default Authorization header, and validating URL
-        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: "https://httpbin.org/anything")!], delegate: nil)
+        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: FRTestURL.anythingURL)!], delegate: nil)
         FRURLProtocol.authorizationPolicy = nil
         FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
         
         //  When
         let ex = self.expectation(description: "Making request")
-        urlSession.dataTask(with: URL(string: "https://httpbin.org/anything")!) { (data, response, error) in
+        urlSession.dataTask(with: URL(string: FRTestURL.anythingURL)!) { (data, response, error) in
             let response = Response(data: data, response: response, error: error).parseReponse()
             
             // Authorization header should have been sent
@@ -183,13 +183,13 @@ class FRURLProtocolTests: FRAuthBaseTest {
         let urlSession: URLSession = URLSession(configuration: config)
         
         //  Set TokenManagementPolicy with delegate, and let delegation method to update request
-        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: "https://httpbin.org/anything")!], delegate: self)
+        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: FRTestURL.anythingURL)!], delegate: self)
         FRURLProtocol.authorizationPolicy = nil
         FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
         
         //  When
         let ex = self.expectation(description: "Making request")
-        urlSession.dataTask(with: URL(string: "https://httpbin.org/anything")!) { (data, response, error) in
+        urlSession.dataTask(with: URL(string: FRTestURL.anythingURL)!) { (data, response, error) in
             let response = Response(data: data, response: response, error: error).parseReponse()
             
             // Authorization header should have been sent with customized header name in delegation method
@@ -233,13 +233,13 @@ class FRURLProtocolTests: FRAuthBaseTest {
         
         //  Set TokenManagementPolicy with delegate, and let delegation method to update request
         self.evaluateTokenRefresh = true
-        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: "https://httpbin.org/anything")!], delegate: self)
+        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: FRTestURL.anythingURL)!], delegate: self)
         FRURLProtocol.authorizationPolicy = nil
         FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
         
         //  When
         let ex = self.expectation(description: "Making request")
-        urlSession.dataTask(with: URL(string: "https://httpbin.org/anything")!) { (data, response, error) in
+        urlSession.dataTask(with: URL(string: FRTestURL.anythingURL)!) { (data, response, error) in
             let response = Response(data: data, response: response, error: error).parseReponse()
             
             // Authorization header should have been sent with customized header name in delegation method
@@ -293,13 +293,13 @@ class FRURLProtocolTests: FRAuthBaseTest {
         let urlSession: URLSession = URLSession(configuration: config)
         
         //  Set TokenManagementPolicy with delegate, and let delegation method to handle evaluation for 401 status code
-        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: "https://httpbin.org/status/401")!], delegate: self)
+        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: FRTestURL.status401URL)!], delegate: self)
         FRURLProtocol.authorizationPolicy = nil
         FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
         
         //  When
         let ex = self.expectation(description: "Making request")
-        urlSession.dataTask(with: URL(string: "https://httpbin.org/status/401")!) { (data, response, error) in
+        urlSession.dataTask(with: URL(string: FRTestURL.status401URL)!) { (data, response, error) in
             let response = Response(data: data, response: response, error: error).parseReponse()
             
             // Request must fail with status code 401, even though evaluationRefreshToken policy satsifies, it must receive 401 if it keeps failing
