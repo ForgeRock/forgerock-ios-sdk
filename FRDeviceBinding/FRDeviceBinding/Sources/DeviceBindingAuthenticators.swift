@@ -57,14 +57,18 @@ public protocol DeviceAuthenticator {
     /// - Parameter prompt: Prompt containing the description for authentication
     func initialize(userId: String, prompt: Prompt)
     
-    
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     func initialize(userId: String)
     
-    
     /// Remove Keys
     func deleteKeys()
+    
+    /// Get the token signed issue time.
+    func issueTime() -> Date
+    
+    /// Get the token not before time.
+    func notBeforeTime() -> Date
 }
 
 
@@ -90,7 +94,7 @@ extension DeviceAuthenticator {
         header.jwkTyped = jwk
         
         //create payload
-        var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios]
+        var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios, DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))]
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
@@ -130,7 +134,7 @@ extension DeviceAuthenticator {
         header.typ = DBConstants.JWS
         
         //create payload
-        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))]
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
@@ -174,6 +178,18 @@ extension DeviceAuthenticator {
         if let cryptoAware = self as? CryptoAware {
             cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup))
         }
+    }
+    
+    
+    /// Get the token signed issue time.
+    public func issueTime() -> Date {
+        return Date()
+    }
+
+    
+    /// Get the token not before time.
+    public func notBeforeTime() -> Date {
+        return Date()
     }
 }
 
@@ -408,4 +424,6 @@ struct DBConstants {
     static let platform: String = "platform"
     static let ios: String = "ios"
     static let iss: String = "iss"
+    static let iat: String = "iat"
+    static let nbf: String = "nbf"
 }
