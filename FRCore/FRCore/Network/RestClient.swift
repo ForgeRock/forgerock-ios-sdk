@@ -2,7 +2,7 @@
 //  RestClient.swift
 //  FRCore
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -30,9 +30,12 @@ public class RestClient: NSObject {
     static var defaultURLSessionConfiguration: URLSessionConfiguration {
         get {
             let config = URLSessionConfiguration.default
+            // Setting `httpCookieStorage` to nil disables cookie storage
             config.httpCookieStorage = nil
             config.httpCookieAcceptPolicy = .never
             config.httpShouldSetCookies = false
+            // Setting `urlCache` to nil disables caching
+            config.urlCache = nil
             return config
         }
     }
