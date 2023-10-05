@@ -1,0 +1,11 @@
+framework module AuthenticatorBluetooth {
+  umbrella header "AuthenticatorBluetooth.h"
+  export *
+
+  module * { export * }
+}
+
+module AuthenticatorBluetooth.Swift {
+  header "AuthenticatorBluetooth-Swift.h"
+  requires objc
+}

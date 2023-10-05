@@ -3,10 +3,23 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B9DCE0E2ACF3919000E4395 /* ProximityOperationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B9DCE032ACF3919000E4395 /* ProximityOperationViewCell.xib */; };
+		1B9DCE0F2ACF3919000E4395 /* ProximityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE042ACF3919000E4395 /* ProximityManager.swift */; };
+		1B9DCE102ACF3919000E4395 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE052ACF3919000E4395 /* Log.swift */; };
+		1B9DCE112ACF3919000E4395 /* ProximityOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE062ACF3919000E4395 /* ProximityOperation.swift */; };
+		1B9DCE122ACF3919000E4395 /* ProximityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE072ACF3919000E4395 /* ProximityData.swift */; };
+		1B9DCE132ACF3919000E4395 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE082ACF3919000E4395 /* AppSession.swift */; };
+		1B9DCE142ACF3919000E4395 /* SDOTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE092ACF3919000E4395 /* SDOTokenHandler.swift */; };
+		1B9DCE152ACF3919000E4395 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE0A2ACF3919000E4395 /* NotificationsManager.swift */; };
+		1B9DCE162ACF3919000E4395 /* ProximityOperationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE0B2ACF3919000E4395 /* ProximityOperationViewCell.swift */; };
+		1B9DCE172ACF3919000E4395 /* DelegateCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE0C2ACF3919000E4395 /* DelegateCollection.swift */; };
+		1B9DCE192ACF3956000E4395 /* ProximityOperationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE182ACF3956000E4395 /* ProximityOperationsViewController.swift */; };
+		1B9DCE482ACF5C3F000E4395 /* AuthenticatorBluetooth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9DCE302ACF3B18000E4395 /* AuthenticatorBluetooth.xcframework */; };
+		1B9DCE492ACF5C3F000E4395 /* AuthenticatorBluetooth.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9DCE302ACF3B18000E4395 /* AuthenticatorBluetooth.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A53EA2832A829AD500BE2BA2 /* SDOTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53EA2822A829AD500BE2BA2 /* SDOTokenHandler.swift */; };
 		A53EA2852A829E6500BE2BA2 /* SDOSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53EA2842A829E6500BE2BA2 /* SDOSecureStorage.swift */; };
 		D50C7CA8247CE765009A4DF5 /* NotificationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */; };
@@ -72,6 +85,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1B9DCE492ACF5C3F000E4395 /* AuthenticatorBluetooth.xcframework in Embed Frameworks */,
 				D5A6581C248CD00D0062209B /* FRAuthenticator.framework in Embed Frameworks */,
 				D51A0960247C8BED0077DCF5 /* FRCore.framework in Embed Frameworks */,
 			);
@@ -81,6 +95,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B9DCE032ACF3919000E4395 /* ProximityOperationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProximityOperationViewCell.xib; sourceTree = "<group>"; };
+		1B9DCE042ACF3919000E4395 /* ProximityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityManager.swift; sourceTree = "<group>"; };
+		1B9DCE052ACF3919000E4395 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		1B9DCE062ACF3919000E4395 /* ProximityOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityOperation.swift; sourceTree = "<group>"; };
+		1B9DCE072ACF3919000E4395 /* ProximityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityData.swift; sourceTree = "<group>"; };
+		1B9DCE082ACF3919000E4395 /* AppSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
+		1B9DCE092ACF3919000E4395 /* SDOTokenHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDOTokenHandler.swift; sourceTree = "<group>"; };
+		1B9DCE0A2ACF3919000E4395 /* NotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
+		1B9DCE0B2ACF3919000E4395 /* ProximityOperationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityOperationViewCell.swift; sourceTree = "<group>"; };
+		1B9DCE0C2ACF3919000E4395 /* DelegateCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateCollection.swift; sourceTree = "<group>"; };
+		1B9DCE182ACF3956000E4395 /* ProximityOperationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityOperationsViewController.swift; sourceTree = "<group>"; };
+		1B9DCE302ACF3B18000E4395 /* AuthenticatorBluetooth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AuthenticatorBluetooth.xcframework; sourceTree = "<group>"; };
 		A53EA2822A829AD500BE2BA2 /* SDOTokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDOTokenHandler.swift; sourceTree = "<group>"; };
 		A53EA2842A829E6500BE2BA2 /* SDOSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDOSecureStorage.swift; sourceTree = "<group>"; };
 		D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequestViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B9DCE482ACF5C3F000E4395 /* AuthenticatorBluetooth.xcframework in Frameworks */,
 				D5A6581B248CD00D0062209B /* FRAuthenticator.framework in Frameworks */,
 				D51A095F247C8BED0077DCF5 /* FRCore.framework in Frameworks */,
 			);
@@ -129,6 +156,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B9DCE022ACF3919000E4395 /* BluetoothAuthenticator */ = {
+			isa = PBXGroup;
+			children = (
+				1B9DCE032ACF3919000E4395 /* ProximityOperationViewCell.xib */,
+				1B9DCE042ACF3919000E4395 /* ProximityManager.swift */,
+				1B9DCE052ACF3919000E4395 /* Log.swift */,
+				1B9DCE062ACF3919000E4395 /* ProximityOperation.swift */,
+				1B9DCE072ACF3919000E4395 /* ProximityData.swift */,
+				1B9DCE082ACF3919000E4395 /* AppSession.swift */,
+				1B9DCE092ACF3919000E4395 /* SDOTokenHandler.swift */,
+				1B9DCE0A2ACF3919000E4395 /* NotificationsManager.swift */,
+				1B9DCE0B2ACF3919000E4395 /* ProximityOperationViewCell.swift */,
+				1B9DCE0C2ACF3919000E4395 /* DelegateCollection.swift */,
+			);
+			path = BluetoothAuthenticator;
+			sourceTree = "<group>";
+		};
 		A53EA2812A829ABC00BE2BA2 /* SDO */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +185,7 @@
 		D51A0972247CBBF00077DCF5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1B9DCE182ACF3956000E4395 /* ProximityOperationsViewController.swift */,
 				D51A0973247CBBF00077DCF5 /* MainListViewController.swift */,
 				D51A0974247CBBF00077DCF5 /* QRCodeScannerViewController.swift */,
 				D51A0975247CBBF00077DCF5 /* Base */,
@@ -208,6 +253,7 @@
 		D524462F247C3BB00037779B /* FRAuthenticatorExample */ = {
 			isa = PBXGroup;
 			children = (
+				1B9DCE022ACF3919000E4395 /* BluetoothAuthenticator */,
 				D5799D64247CD67200EEC5CD /* FRAuthenticatorExample.entitlements */,
 				D51A0979247CBBF00077DCF5 /* Cell */,
 				D51A0972247CBBF00077DCF5 /* Controller */,
@@ -219,6 +265,7 @@
 				D5244639247C3BB20037779B /* Assets.xcassets */,
 				D524463B247C3BB20037779B /* LaunchScreen.storyboard */,
 				D524463E247C3BB20037779B /* Info.plist */,
+				1B9DCE302ACF3B18000E4395 /* AuthenticatorBluetooth.xcframework */,
 			);
 			path = FRAuthenticatorExample;
 			sourceTree = "<group>";
@@ -340,6 +387,7 @@
 				D53327152480710B002FF207 /* HOTPMechanismTableViewCell.xib in Resources */,
 				D5D7FE0C247F3CDE00B44CEE /* LoadingView.xib in Resources */,
 				D524463A247C3BB20037779B /* Assets.xcassets in Resources */,
+				1B9DCE0E2ACF3919000E4395 /* ProximityOperationViewCell.xib in Resources */,
 				D5244638247C3BB00037779B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,25 +399,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B9DCE132ACF3919000E4395 /* AppSession.swift in Sources */,
 				D53327142480710B002FF207 /* HOTPMechanismTableViewCell.swift in Sources */,
 				D50C7CAD247CEF7B009A4DF5 /* NotificationTableViewCell.swift in Sources */,
 				D5CA1717247CDAB7000224E6 /* FRUIImageView.swift in Sources */,
 				D51A098C247CC0460077DCF5 /* PushMechanismTableViewCell.swift in Sources */,
+				1B9DCE122ACF3919000E4395 /* ProximityData.swift in Sources */,
 				D51A097D247CBBF00077DCF5 /* BaseTableViewController.swift in Sources */,
 				A53EA2832A829AD500BE2BA2 /* SDOTokenHandler.swift in Sources */,
+				1B9DCE192ACF3956000E4395 /* ProximityOperationsViewController.swift in Sources */,
+				1B9DCE162ACF3919000E4395 /* ProximityOperationViewCell.swift in Sources */,
 				D5D7FE08247F3CD600B44CEE /* LoadingView.swift in Sources */,
 				D51A097C247CBBF00077DCF5 /* BaseViewController.swift in Sources */,
+				1B9DCE152ACF3919000E4395 /* NotificationsManager.swift in Sources */,
+				1B9DCE102ACF3919000E4395 /* Log.swift in Sources */,
 				A53EA2852A829E6500BE2BA2 /* SDOSecureStorage.swift in Sources */,
+				1B9DCE172ACF3919000E4395 /* DelegateCollection.swift in Sources */,
 				D50C7CAA247CEF3D009A4DF5 /* NotificationListTableViewController.swift in Sources */,
 				D51A097A247CBBF00077DCF5 /* MainListViewController.swift in Sources */,
 				D51A097B247CBBF00077DCF5 /* QRCodeScannerViewController.swift in Sources */,
 				D51A0994247CCB200077DCF5 /* AccountTableViewCell.swift in Sources */,
 				D50C7CA8247CE765009A4DF5 /* NotificationRequestViewController.swift in Sources */,
+				1B9DCE142ACF3919000E4395 /* SDOTokenHandler.swift in Sources */,
 				D51A0990247CC0640077DCF5 /* TOTPMechanismTableViewCell.swift in Sources */,
 				D5D03DD9247DDEC5003C5350 /* FRAStringUtil.swift in Sources */,
 				D51A097F247CBFFA0077DCF5 /* BaseTableViewCell.swift in Sources */,
+				1B9DCE0F2ACF3919000E4395 /* ProximityManager.swift in Sources */,
 				D5244631247C3BB00037779B /* AppDelegate.swift in Sources */,
 				D50C7CB0247CF9CA009A4DF5 /* AccountDetailTableViewController.swift in Sources */,
+				1B9DCE112ACF3919000E4395 /* ProximityOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,6 +16,8 @@ class MainListViewController: BaseTableViewController {
 
     var listData: [AnyObject] = []
     
+    private var proximityManager: ProximityManager = ProximiyManagerImpl.shared
+    
     //  MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,9 +39,13 @@ class MainListViewController: BaseTableViewController {
         //RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PushRequestInterceptor()])
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        proximityManager.addDelegate(self)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        proximityManager.removeDelegate(self)
     }
     
     
@@ -248,6 +254,16 @@ extension MainListViewController: QRCodeScannerDelegate {
     }
 }
 
+extension MainListViewController: ProximityManagerDelegate {
+
+    func proximityManagerDidStartOperation(_ proximityManager: ProximityManager, proximiyOperation: ProximityOperation) {
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc : ProximityOperationsViewController = storyboard.instantiateViewController(withIdentifier: "proximityOperations") as! ProximityOperationsViewController
+        let navigationController = UINavigationController(rootViewController: vc)
+        self.present(navigationController, animated: true, completion: nil)
+    }
+
+}
 
 /// This is an example http interceptor for testing purposes (SDKS-2545)
 class PushRequestInterceptor: RequestInterceptor {

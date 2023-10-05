@@ -75,6 +75,36 @@
             </objects>
             <point key="canvasLocation" x="-1336" y="729"/>
         </scene>
+        <!--Proximity Operations View Controller-->
+        <scene sceneID="DrN-t3-qNa">
+            <objects>
+                <viewController storyboardIdentifier="proximityOperations" id="6WN-4W-w7q" customClass="ProximityOperationsViewController" customModule="FRAuthenticatorExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oos-CJ-mSy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5Xu-iK-z9i">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ZHs-Ry-qy2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="5Xu-iK-z9i" firstAttribute="trailing" secondItem="ZHs-Ry-qy2" secondAttribute="trailing" id="CWi-Cg-5CS"/>
+                            <constraint firstItem="5Xu-iK-z9i" firstAttribute="top" secondItem="ZHs-Ry-qy2" secondAttribute="top" id="LeQ-9W-ctE"/>
+                            <constraint firstItem="5Xu-iK-z9i" firstAttribute="bottom" secondItem="ZHs-Ry-qy2" secondAttribute="bottom" id="iES-bf-Lm6"/>
+                            <constraint firstItem="5Xu-iK-z9i" firstAttribute="leading" secondItem="ZHs-Ry-qy2" secondAttribute="leading" id="vlv-Rb-a8f"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="5Xu-iK-z9i" id="M2d-li-hbj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="re0-mM-Kn2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-442.02898550724643" y="728.57142857142856"/>
+        </scene>
         <!--FRAuthenticator Sample-->
         <scene sceneID="kKK-lg-xBy">
             <objects>

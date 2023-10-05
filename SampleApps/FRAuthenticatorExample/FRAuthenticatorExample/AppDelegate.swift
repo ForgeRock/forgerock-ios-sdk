@@ -16,12 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var privacyScreen: UIImageView = UIImageView()
     var sdoTokenHandler = SDOTokenHandler()
-
+    var session: AppSession?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FRALog.setLogLevel(.all)
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in }
         application.registerForRemoteNotifications()
+        
+        session = AppSession()
         
         if let url = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             NSLog("App launched with deeplink: \(url.absoluteString)")
