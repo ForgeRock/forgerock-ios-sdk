@@ -13,7 +13,6 @@
 		1B9DCE112ACF3919000E4395 /* ProximityOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE062ACF3919000E4395 /* ProximityOperation.swift */; };
 		1B9DCE122ACF3919000E4395 /* ProximityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE072ACF3919000E4395 /* ProximityData.swift */; };
 		1B9DCE132ACF3919000E4395 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE082ACF3919000E4395 /* AppSession.swift */; };
-		1B9DCE142ACF3919000E4395 /* SDOTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE092ACF3919000E4395 /* SDOTokenHandler.swift */; };
 		1B9DCE152ACF3919000E4395 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE0A2ACF3919000E4395 /* NotificationsManager.swift */; };
 		1B9DCE162ACF3919000E4395 /* ProximityOperationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE0B2ACF3919000E4395 /* ProximityOperationViewCell.swift */; };
 		1B9DCE172ACF3919000E4395 /* DelegateCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DCE0C2ACF3919000E4395 /* DelegateCollection.swift */; };
@@ -101,7 +100,6 @@
 		1B9DCE062ACF3919000E4395 /* ProximityOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityOperation.swift; sourceTree = "<group>"; };
 		1B9DCE072ACF3919000E4395 /* ProximityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityData.swift; sourceTree = "<group>"; };
 		1B9DCE082ACF3919000E4395 /* AppSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
-		1B9DCE092ACF3919000E4395 /* SDOTokenHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDOTokenHandler.swift; sourceTree = "<group>"; };
 		1B9DCE0A2ACF3919000E4395 /* NotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		1B9DCE0B2ACF3919000E4395 /* ProximityOperationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityOperationViewCell.swift; sourceTree = "<group>"; };
 		1B9DCE0C2ACF3919000E4395 /* DelegateCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateCollection.swift; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 				1B9DCE062ACF3919000E4395 /* ProximityOperation.swift */,
 				1B9DCE072ACF3919000E4395 /* ProximityData.swift */,
 				1B9DCE082ACF3919000E4395 /* AppSession.swift */,
-				1B9DCE092ACF3919000E4395 /* SDOTokenHandler.swift */,
 				1B9DCE0A2ACF3919000E4395 /* NotificationsManager.swift */,
 				1B9DCE0B2ACF3919000E4395 /* ProximityOperationViewCell.swift */,
 				1B9DCE0C2ACF3919000E4395 /* DelegateCollection.swift */,
@@ -420,7 +417,6 @@
 				D51A097B247CBBF00077DCF5 /* QRCodeScannerViewController.swift in Sources */,
 				D51A0994247CCB200077DCF5 /* AccountTableViewCell.swift in Sources */,
 				D50C7CA8247CE765009A4DF5 /* NotificationRequestViewController.swift in Sources */,
-				1B9DCE142ACF3919000E4395 /* SDOTokenHandler.swift in Sources */,
 				D51A0990247CC0640077DCF5 /* TOTPMechanismTableViewCell.swift in Sources */,
 				D5D03DD9247DDEC5003C5350 /* FRAStringUtil.swift in Sources */,
 				D51A097F247CBFFA0077DCF5 /* BaseTableViewCell.swift in Sources */,

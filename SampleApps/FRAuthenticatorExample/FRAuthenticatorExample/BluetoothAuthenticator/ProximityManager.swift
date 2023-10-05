@@ -34,14 +34,17 @@ class ProximiyManagerImpl: ProximityManager, BluetoothManagerDelegate {
     
     let bluetoothManager: BluetoothManager
         
-    let proximityData: ProximityData
+    var proximityData: ProximityData?
     
     var proximityOperations: [ProximityOperation] = []
         
     private init(bluetoothManager: BluetoothManager, sdoTokenHandler: SDOTokenHandler) {
-        self.proximityData = ProximityData.from(token: sdoTokenHandler.token)
         self.bluetoothManager = bluetoothManager
         self.bluetoothManager.delegate = self
+        
+        if let token = sdoTokenHandler.getToken() {
+            self.proximityData = ProximityData.from(token: token)
+        }
     }
         
     func addDelegate(_ delegate: ProximityManagerDelegate) {
@@ -54,7 +57,7 @@ class ProximiyManagerImpl: ProximityManager, BluetoothManagerDelegate {
     }
    
     func approveAuth() {
-        if let index = proximityOperations.firstIndex(where: { $0.deviceId == proximityData.deviceId }) {
+        if let proximityData, let index = proximityOperations.firstIndex(where: { $0.deviceId == proximityData.deviceId }) {
             proximityOperations[index].state = .sendingApproved
             delegates.notify { $0.onProximityOperationsUpdate(self, proximityOperations: proximityOperations) }
 
@@ -63,7 +66,7 @@ class ProximiyManagerImpl: ProximityManager, BluetoothManagerDelegate {
     }
     
     func denyAuth() {
-        if let index = proximityOperations.firstIndex(where: { $0.deviceId == proximityData.deviceId }) {
+        if let proximityData, let index = proximityOperations.firstIndex(where: { $0.deviceId == proximityData.deviceId }) {
             proximityOperations[index].state = .sendingDenied
             delegates.notify { $0.onProximityOperationsUpdate(self, proximityOperations: proximityOperations) }
 
@@ -72,7 +75,11 @@ class ProximiyManagerImpl: ProximityManager, BluetoothManagerDelegate {
     }
     
     func deviceIdsForBluetoothManager(_ manager: AuthenticatorBluetooth.BluetoothManager) -> [String] {
-        return [proximityData.deviceId]
+        if let proximityData {
+            return [proximityData.deviceId]
+        } else {
+            return []
+        }
     }
     
     func bluetoothManager(_ manager: AuthenticatorBluetooth.BluetoothManager, didDiscoverDeviceWithId deviceId: String) {
