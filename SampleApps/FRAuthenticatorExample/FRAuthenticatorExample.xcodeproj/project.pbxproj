@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A53EA2832A829AD500BE2BA2 /* SDOTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53EA2822A829AD500BE2BA2 /* SDOTokenHandler.swift */; };
+		A53EA2852A829E6500BE2BA2 /* SDOSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53EA2842A829E6500BE2BA2 /* SDOSecureStorage.swift */; };
 		D50C7CA8247CE765009A4DF5 /* NotificationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */; };
 		D50C7CAA247CEF3D009A4DF5 /* NotificationListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CA9247CEF3D009A4DF5 /* NotificationListTableViewController.swift */; };
 		D50C7CAD247CEF7B009A4DF5 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CAB247CEF7B009A4DF5 /* NotificationTableViewCell.swift */; };
@@ -79,6 +81,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A53EA2822A829AD500BE2BA2 /* SDOTokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDOTokenHandler.swift; sourceTree = "<group>"; };
+		A53EA2842A829E6500BE2BA2 /* SDOSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDOSecureStorage.swift; sourceTree = "<group>"; };
 		D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequestViewController.swift; sourceTree = "<group>"; };
 		D50C7CA9247CEF3D009A4DF5 /* NotificationListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListTableViewController.swift; sourceTree = "<group>"; };
 		D50C7CAB247CEF7B009A4DF5 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
@@ -125,6 +129,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A53EA2812A829ABC00BE2BA2 /* SDO */ = {
+			isa = PBXGroup;
+			children = (
+				A53EA2822A829AD500BE2BA2 /* SDOTokenHandler.swift */,
+				A53EA2842A829E6500BE2BA2 /* SDOSecureStorage.swift */,
+			);
+			path = SDO;
+			sourceTree = "<group>";
+		};
 		D51A0972247CBBF00077DCF5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +213,7 @@
 				D51A0972247CBBF00077DCF5 /* Controller */,
 				D5CA1713247CDAAC000224E6 /* Extension */,
 				D51A0978247CBBF00077DCF5 /* View */,
+				A53EA2812A829ABC00BE2BA2 /* SDO */,
 				D5244630247C3BB00037779B /* AppDelegate.swift */,
 				D5244636247C3BB00037779B /* Main.storyboard */,
 				D5244639247C3BB20037779B /* Assets.xcassets */,
@@ -342,8 +356,10 @@
 				D5CA1717247CDAB7000224E6 /* FRUIImageView.swift in Sources */,
 				D51A098C247CC0460077DCF5 /* PushMechanismTableViewCell.swift in Sources */,
 				D51A097D247CBBF00077DCF5 /* BaseTableViewController.swift in Sources */,
+				A53EA2832A829AD500BE2BA2 /* SDOTokenHandler.swift in Sources */,
 				D5D7FE08247F3CD600B44CEE /* LoadingView.swift in Sources */,
 				D51A097C247CBBF00077DCF5 /* BaseViewController.swift in Sources */,
+				A53EA2852A829E6500BE2BA2 /* SDOSecureStorage.swift in Sources */,
 				D50C7CAA247CEF3D009A4DF5 /* NotificationListTableViewController.swift in Sources */,
 				D51A097A247CBBF00077DCF5 /* MainListViewController.swift in Sources */,
 				D51A097B247CBBF00077DCF5 /* QRCodeScannerViewController.swift in Sources */,

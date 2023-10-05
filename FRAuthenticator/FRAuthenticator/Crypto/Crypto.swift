@@ -2,7 +2,7 @@
 //  Crypto.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -84,6 +84,51 @@ struct Crypto {
     static func parseSecret(secret: String) -> Data? {
         return secret.base32Decode()
     }
+    
+    
+    /// Decriypt the text with given key and initialization vector
+    /// - Parameters:
+    ///   - key: key in bytes array
+    ///   - iv: initialization vector in byte array
+    ///   - cyphertext: encrypted text  in bytes array
+    /// - Returns: decrypted text in bytes array
+    /// - Throws: `QCCError`
+    static func QCCAESPadCBCDecrypt(key: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> [UInt8] {
+        // The key size must be 128, 192, or 256.
+        // The IV size must match the block size.
+        // The ciphertext must be a multiple of the block size.
+        guard
+            [kCCKeySizeAES128, kCCKeySizeAES192, kCCKeySizeAES256].contains(key.count),
+            iv.count == kCCBlockSizeAES128,
+            cyphertext.count.isMultiple(of: kCCBlockSizeAES128)
+        else {
+            throw QCCError(code: kCCParamError)
+        }
+        
+        // Padding can expand the data on encryption, but on decryption the data can
+        // only shrink so we use the cyphertext size as our plaintext size.
+        var plaintext = [UInt8](repeating: 0, count: cyphertext.count)
+        var plaintextCount = 0
+        let err = CCCrypt(
+            CCOperation(kCCDecrypt),
+            CCAlgorithm(kCCAlgorithmAES),
+            CCOptions(kCCOptionPKCS7Padding),
+            key, key.count,
+            iv,
+            cyphertext, cyphertext.count,
+            &plaintext, plaintext.count,
+            &plaintextCount
+        )
+        guard err == kCCSuccess else {
+            throw QCCError(code: err)
+        }
+        
+        // Trim any unused bytes off the plaintext.
+        assert(plaintextCount <= plaintext.count)
+        plaintext.removeLast(plaintext.count - plaintextCount)
+        
+        return plaintext
+    }
 }
 
 
@@ -95,3 +140,15 @@ extension UInt64 {
         return intData
     }
 }
+
+/// Wraps `CCCryptorStatus` for use in Swift.
+struct QCCError: Error {
+    var code: CCCryptorStatus
+}
+
+extension QCCError {
+    init(code: Int) {
+        self.init(code: CCCryptorStatus(code))
+    }
+}
+
