@@ -248,7 +248,7 @@ extension CBConstants {
 
 //  MARK: - AppIntegrity
 extension CBConstants {
-    static let assert = "assert"
+    static let attest = "attestToken"
     static let keyId = "keyId"
     static let clientData = "clientData"
 }

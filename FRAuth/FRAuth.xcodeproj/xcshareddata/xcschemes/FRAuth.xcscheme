@@ -59,10 +59,7 @@
             </BuildableReference>
             <SkippedTests>
                <Test
-                  Identifier = "AA_07_AppIntegrityTest/test_01_test_app_integrity()">
-               </Test>
-               <Test
-                  Identifier = "AA_07_AppIntegrityTest/test_01_test_app_integrity_failures()">
+                  Identifier = "AA_07_AppIntegrityTest">
                </Test>
             </SkippedTests>
          </TestableReference>

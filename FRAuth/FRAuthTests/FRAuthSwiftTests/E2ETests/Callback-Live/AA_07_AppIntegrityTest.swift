@@ -28,131 +28,131 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     var is14Available = false
     
     
-    override func setUp() {
-        super.setUp()
-        if #available(iOS 14.0, *) {
-            is14Available = true
-        }
-        do {
-            try FRAuth.start(options: options)
-        }
-        catch {
-            XCTFail("Fail to start the the SDK with custom config.")
-        }
-    }
-    
-    override func tearDown() {
-        FRSession.currentSession?.logout()
-        super.tearDown()
-    }
-    
-    func test_01_test_app_integrity_failures() throws {
-        
-        try XCTSkipIf(!self.isSimulator, "only run in the simulator , not in device")
-        
-        // Variable to capture the current Node object
-        var currentNode: Node
-        
-        do {
-            try currentNode = startTest()
-        } catch AuthError.invalidCallbackResponse {
-            XCTFail("Expected a App Integrity node, but got nothing!")
-            return
-        } catch {
-            XCTFail("Unexpected error occured!")
-            return
-        }
-        
-        // We expect App Integrity callback with default settings here. Assert its properties. . .
-        for callback in currentNode.callbacks {
-            if callback is FRAppIntegrityCallback, let integrityCallback = callback as? FRAppIntegrityCallback {
-                
-                var bindingResult = ""
-                let ex = self.expectation(description: "App Integrity")
-                
-                integrityCallback.attest { error in
-                    
-                    bindingResult = (error == nil) ? "Success" : "failure"
-                    ex.fulfill()
-                    
-                }
-                
-                waitForExpectations(timeout: 60, handler: nil)
-                
-                XCTAssertEqual(bindingResult, "failure")
-                
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        let ex = self.expectation(description: "Submit AppIntegrity callback and continue...")
-        currentNode.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(node)
-            XCTAssertNotNil(error)
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-    }
-    
+//    override func setUp() {
+//        super.setUp()
+//        if #available(iOS 14.0, *) {
+//            is14Available = true
+//        }
+//        do {
+//            try FRAuth.start(options: options)
+//        }
+//        catch {
+//            XCTFail("Fail to start the the SDK with custom config.")
+//        }
+//    }
+//    
+//    override func tearDown() {
+//        FRSession.currentSession?.logout()
+//        super.tearDown()
+//    }
+//    
+//    func test_01_test_app_integrity_failures() throws {
+//        
+//        try XCTSkipIf(!self.isSimulator, "only run in the simulator , not in device")
+//        
+//        // Variable to capture the current Node object
+//        var currentNode: Node
+//        
+//        do {
+//            try currentNode = startTest()
+//        } catch AuthError.invalidCallbackResponse {
+//            XCTFail("Expected a App Integrity node, but got nothing!")
+//            return
+//        } catch {
+//            XCTFail("Unexpected error occured!")
+//            return
+//        }
+//        
+//        // We expect App Integrity callback with default settings here. Assert its properties. . .
+//        for callback in currentNode.callbacks {
+//            if callback is FRAppIntegrityCallback, let integrityCallback = callback as? FRAppIntegrityCallback {
+//                
+//                var bindingResult = ""
+//                let ex = self.expectation(description: "App Integrity")
+//                
+//                integrityCallback.requestIntegrityToken { error in
+//                    
+//                    bindingResult = (error == nil) ? "Success" : "failure"
+//                    ex.fulfill()
+//                    
+//                }
+//                
+//                waitForExpectations(timeout: 60, handler: nil)
+//                
+//                XCTAssertEqual(bindingResult, "failure")
+//                
+//            }
+//            else {
+//                XCTFail("Received unexpected callback \(callback)")
+//            }
+//        }
+//        
+//        let ex = self.expectation(description: "Submit AppIntegrity callback and continue...")
+//        currentNode.next { (token: AccessToken?, node, error) in
+//            // Validate result
+//            XCTAssertNil(node)
+//            XCTAssertNotNil(error)
+//            ex.fulfill()
+//        }
+//        waitForExpectations(timeout: 60, handler: nil)
+//        
+//    }
+//    
     // This test is skipped , unskip when its ready in AM
-    func test_01_test_app_integrity() throws {
-        
-        try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "only run the device above iOS14, not in sumulator")
-        
-        // Variable to capture the current Node object
-        var currentNode: Node
-        
-        do {
-            try currentNode = startTest()
-        } catch AuthError.invalidCallbackResponse {
-            XCTFail("Expected a App Integrity node, but got nothing!")
-            return
-        } catch {
-            XCTFail("Unexpected error occured!")
-            return
-        }
-        
-        // We expect App Integrity callback with default settings here. Assert its properties. . .
-        for callback in currentNode.callbacks {
-            if callback is FRAppIntegrityCallback, let integrityCallback = callback as? FRAppIntegrityCallback {
-                
-                var bindingResult = ""
-                let ex = self.expectation(description: "App Integrity")
-                
-                integrityCallback.attest { error in
-                    
-                    bindingResult = (error == nil) ? "Success" : error?.localizedDescription ?? "error"
-                    ex.fulfill()
-                    
-                }
-                
-                waitForExpectations(timeout: 60, handler: nil)
-                
-                XCTAssertEqual(bindingResult, "Success")
-                
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        let ex = self.expectation(description: "Submit AppIntegrity callback and continue...")
-        currentNode.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(node)
-            XCTAssertNil(error)
-            XCTAssertNotNil(token)
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        XCTAssertNotNil(FRUser.currentUser)
-    }
-    
+//    func test_01_test_app_integrity() throws {
+//        
+//        try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "only run the device above iOS14, not in sumulator")
+//        
+//        // Variable to capture the current Node object
+//        var currentNode: Node
+//        
+//        do {
+//            try currentNode = startTest()
+//        } catch AuthError.invalidCallbackResponse {
+//            XCTFail("Expected a App Integrity node, but got nothing!")
+//            return
+//        } catch {
+//            XCTFail("Unexpected error occured!")
+//            return
+//        }
+//        
+//        // We expect App Integrity callback with default settings here. Assert its properties. . .
+//        for callback in currentNode.callbacks {
+//            if callback is FRAppIntegrityCallback, let integrityCallback = callback as? FRAppIntegrityCallback {
+//                
+//                var bindingResult = ""
+//                let ex = self.expectation(description: "App Integrity")
+//                
+//                integrityCallback.requestIntegrityToken { error in
+//                    
+//                    bindingResult = (error == nil) ? "Success" : error?.localizedDescription ?? "error"
+//                    ex.fulfill()
+//                    
+//                }
+//                
+//                waitForExpectations(timeout: 60, handler: nil)
+//                
+//                XCTAssertEqual(bindingResult, "Success")
+//                
+//            }
+//            else {
+//                XCTFail("Received unexpected callback \(callback)")
+//            }
+//        }
+//        
+//        let ex = self.expectation(description: "Submit AppIntegrity callback and continue...")
+//        currentNode.next { (token: AccessToken?, node, error) in
+//            // Validate result
+//            XCTAssertNil(node)
+//            XCTAssertNil(error)
+//            XCTAssertNotNil(token)
+//            ex.fulfill()
+//        }
+//        waitForExpectations(timeout: 60, handler: nil)
+//        
+//        XCTAssertNotNil(FRUser.currentUser)
+//    }
+//    
     /// Common steps for all test cases
     func startTest() throws -> Node  {
         var currentNode: Node?

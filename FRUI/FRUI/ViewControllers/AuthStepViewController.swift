@@ -203,7 +203,7 @@ class AuthStepViewController: UIViewController {
                     if #available(iOS 14.0, *) {
                         Task {
                             do {
-                                try await appIntegrity.attest()
+                                try await appIntegrity.requestIntegrityToken()
                                 alert.message = "Success"
                             }
                             catch let error {
@@ -211,7 +211,11 @@ class AuthStepViewController: UIViewController {
                             }
                             self.stopLoading()
                             await MainActor.run {
-                                self.present(alert, animated: true)
+                                if appIntegrity.isAttestationCompleted() {
+                                    self.present(alert, animated: true)
+                                } else {
+                                    self.submitCurrentNode()
+                                }
                             }
                         }
                     } else {

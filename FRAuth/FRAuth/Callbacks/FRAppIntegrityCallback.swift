@@ -15,20 +15,25 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
     /// The Challenge received from server in Output key
     public private(set) var challenge: String
     
-    /// Attestation token input key
+    /// The attest token received from server in Output key
     public private(set) var attestToken: String
     
-    /// Client Error input key
-    public private(set) var clientErrorKey: String
-    
-    /// Key Identifier input key
-    public private(set) var keyId: String
-    
-    /// Client Data input key
-    public private(set) var clientData: String
+    /// Attestation token input key
+    private var attestTokenKey: String
     
     /// Assertion token input key
-    public private(set) var assertToken: String
+    private var tokenKey: String
+    
+    /// Client Error input key
+    private var clientErrorKey: String
+    
+    /// Key Identifier input key
+    private var keyIdKey: String
+    
+    /// Client Data input key
+    private var clientDataKey: String
+    
+    public private(set) var appIntegritykeys: FRAppIntegrityKeys = FRAppIntegrityKeys()
         
     //  MARK: - Init
     
@@ -60,6 +65,17 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
         }
         self.challenge = challenge
         
+        guard let outputToken = outputDictionary[CBConstants.attest] as? String else {
+            throw AuthError.invalidCallbackResponse("Missing Token")
+        }
+        
+        self.attestToken = outputToken
+    
+        if !outputToken.isEmpty {
+            FRLog.e("Persist the attestation reference")
+            appIntegritykeys.updateKey(value: outputToken)
+        }
+        
         //parse inputs
         var inputNames = [String]()
         for input in inputs {
@@ -69,10 +85,10 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
             inputNames.append(inputName)
         }
         
-        guard let attestKey = inputNames.filter({ $0.contains(CBConstants.token) }).first else {
+        guard let attestKey = inputNames.filter({ $0.contains(CBConstants.attest) }).first else {
             throw AuthError.invalidCallbackResponse("Missing deviceIdKey")
         }
-        self.attestToken = attestKey
+        self.attestTokenKey = attestKey
         
         guard let clientErrorKey = inputNames.filter({ $0.contains(CBConstants.clientError) }).first else {
             throw AuthError.invalidCallbackResponse("Missing clientErrorKey")
@@ -82,17 +98,17 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
         guard let keyId = inputNames.filter({ $0.contains(CBConstants.keyId) }).first else {
             throw AuthError.invalidCallbackResponse("Missing keyId")
         }
-        self.keyId = keyId
+        self.keyIdKey = keyId
         
-        guard let assertKey = inputNames.filter({ $0.contains(CBConstants.assert) }).first else {
+        guard let assertKey = inputNames.filter({ $0.contains(CBConstants.token) }).first else {
             throw AuthError.invalidCallbackResponse("Missing appVerification")
         }
-        self.assertToken = assertKey
+        self.tokenKey = assertKey
         
         guard let clientData = inputNames.filter({ $0.contains(CBConstants.clientData) }).first else {
             throw AuthError.invalidCallbackResponse("Missing clientData")
         }
-        self.clientData = clientData
+        self.clientDataKey = clientData
         
         try super.init(json: json)
         type = callbackType
@@ -105,7 +121,7 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
     /// Sets `token` value in callback response
     /// - Parameter token: Base64 String value of attestation
     public func setAttestation(_ token: String) {
-        self.inputValues[self.attestToken] = token
+        self.inputValues[self.attestTokenKey] = token
     }
     
     /// Sets `error` value in callback response
@@ -117,32 +133,35 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
     /// Sets `keyId` value in callback response
     /// - Parameter keyId: Base64 String value of keyId
     public func setkeyId(_ keyId: String) {
-        self.inputValues[self.keyId] = keyId
+        self.inputValues[self.keyIdKey] = keyId
     }
     
     /// Sets `token` value in callback response
     /// - Parameter token: Base64 String value of verification
-    public func setVerification(_ token: String) {
-        self.inputValues[self.assertToken] = token
+    public func setAssertion(_ token: String) {
+        self.inputValues[self.tokenKey] = token
     }
     
     /// Sets `clientData` value in callback response
     /// - Parameter clientData: Base64 String value of clientData
     public func setClientData(_ clientData: String) {
-        self.inputValues[self.clientData] = clientData
+        self.inputValues[self.clientDataKey] = clientData
     }
     
     /// Attest the device for iOS14 and above devices
     /// - Throws: `FRDeviceCheckAPIFailure`
     /// - Parameter attestation: Optional Protocol for providing a ``FRAppAttestation`` to implement own attestation
     @available(iOS 14.0, *)
-    public func attest() async throws {
+    open func requestIntegrityToken() async throws {
         do {
-            let result = try await FRAppAttestDomainModal.shared.attest(challenge: challenge)
-            self.setAttestation(result.attestKey)
-            self.setVerification(result.assertKey)
+            let result = try await FRAppAttestDomainModal.shared.requestIntegrityToken(challenge: challenge)
+            self.setAttestation(result.appAttestKey)
+            if let assertkey = result.assertKey {
+                self.setAssertion(assertkey)
+            }
             self.setkeyId(result.keyIdentifier)
             self.setClientData(result.clientDataHash)
+            self.appIntegritykeys = result
         }
         catch {
             FRLog.e("Error: \(error.localizedDescription)")
@@ -154,12 +173,12 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
     
     /// Attest the device
     /// - Parameter completionHandler: Returns FRAppIntegrityFailure for Error and nil if there are no errors
-    public func attest(completionHandler: @escaping (Error?) -> (Void)) {
+    open func requestIntegrityToken(completionHandler: @escaping (Error?) -> (Void)) {
         do {
             if #available(iOS 14.0, *) {
                 Task {
                     do {
-                        try await attest()
+                        try await requestIntegrityToken()
                         completionHandler(nil)
                     }
                     catch {
@@ -173,5 +192,11 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
                 completionHandler(error)
             }
         }
+    }
+    
+    /// verify the attestation completed or not
+    /// - Returns: true or false if the attestation key exist
+    public func isAttestationCompleted() -> Bool {
+        return appIntegritykeys.isAttestationCompleted()
     }
 }
