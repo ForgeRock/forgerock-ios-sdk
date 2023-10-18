@@ -1,3 +1,7 @@
+# Unreleased
+#### Added
+- Implement Export and Import functions for OTP accounts in Authenticator module [SDKS-2730]
+
 # Version 4.1.1
 
 ## [4.1.1]
