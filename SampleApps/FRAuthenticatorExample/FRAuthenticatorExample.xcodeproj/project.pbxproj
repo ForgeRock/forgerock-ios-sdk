@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5FDBAB72AE209CB009679C6 /* ExportAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FDBAB62AE209CB009679C6 /* ExportAccountsViewController.swift */; };
 		D50C7CA8247CE765009A4DF5 /* NotificationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */; };
 		D50C7CAA247CEF3D009A4DF5 /* NotificationListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CA9247CEF3D009A4DF5 /* NotificationListTableViewController.swift */; };
 		D50C7CAD247CEF7B009A4DF5 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50C7CAB247CEF7B009A4DF5 /* NotificationTableViewCell.swift */; };
@@ -79,6 +80,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A5FDBAB62AE209CB009679C6 /* ExportAccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountsViewController.swift; sourceTree = "<group>"; };
 		D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequestViewController.swift; sourceTree = "<group>"; };
 		D50C7CA9247CEF3D009A4DF5 /* NotificationListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListTableViewController.swift; sourceTree = "<group>"; };
 		D50C7CAB247CEF7B009A4DF5 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				D50C7CA7247CE765009A4DF5 /* NotificationRequestViewController.swift */,
 				D50C7CA9247CEF3D009A4DF5 /* NotificationListTableViewController.swift */,
 				D50C7CAF247CF9CA009A4DF5 /* AccountDetailTableViewController.swift */,
+				A5FDBAB62AE209CB009679C6 /* ExportAccountsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				D51A097B247CBBF00077DCF5 /* QRCodeScannerViewController.swift in Sources */,
 				D51A0994247CCB200077DCF5 /* AccountTableViewCell.swift in Sources */,
 				D50C7CA8247CE765009A4DF5 /* NotificationRequestViewController.swift in Sources */,
+				A5FDBAB72AE209CB009679C6 /* ExportAccountsViewController.swift in Sources */,
 				D51A0990247CC0640077DCF5 /* TOTPMechanismTableViewCell.swift in Sources */,
 				D5D03DD9247DDEC5003C5350 /* FRAStringUtil.swift in Sources */,
 				D51A097F247CBFFA0077DCF5 /* BaseTableViewCell.swift in Sources */,
