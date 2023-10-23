@@ -67,9 +67,9 @@ extension AccountMigrationError: CustomNSError {
     public var errorUserInfo: [String : Any] {
         switch self {
         case .invalidScheme:
-            return [NSLocalizedDescriptionKey: "Invalid schem in url given for Account Migration"]
+            return [NSLocalizedDescriptionKey: "Invalid scheme in url given for Account Migration"]
         case .invalidHost:
-            return [NSLocalizedDescriptionKey: "Invalid schem in url given for Account Migration"]
+            return [NSLocalizedDescriptionKey: "Invalid host in url given for Account Migration"]
         case .missingData:
             return [NSLocalizedDescriptionKey: "Missing data parameter in url given for Account Migration"]
         case .failToDecodeData:

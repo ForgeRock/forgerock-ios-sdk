@@ -11,10 +11,11 @@
 
 import Foundation
 
+/// AccountMigrationManager provides static methods for conveniently encoding to and decoding from otp accounts migration URL (QR Code)
 public struct AccountMigrationManager {
     
-    /// Decodes given OTPAauth Migration `URL` to `OathMechanism`s
-    /// - Parameter url: OTPAauth Migration `URL` with otpauth-migration scheme
+    /// Decodes given OTPAuth Migration `URL` to `OathMechanism`s
+    /// - Parameter url: OTPAuth Migration `URL` with otpauth-migration scheme
     /// - Returns: Array of `OathMechanism`s of types of hotp or totp
     /// - Throws: AccountMigrationError
     public static func decodeToMechanisms(url: URL) throws -> [OathMechanism] {
@@ -62,8 +63,8 @@ public struct AccountMigrationManager {
     }
     
     
-    /// Decodes given OTPAauth Migration `URL` to otpauth `URL`s
-    /// - Parameter url: OTPAauth Migration `URL` with otpauth-migration scheme
+    /// Decodes given OTPAuth Migration `URL` to otpauth `URL`s
+    /// - Parameter url: OTPAuth Migration `URL` with otpauth-migration scheme
     /// - Returns: Array of otpauth `URL` of types of hotp or totp
     /// - Throws: AccountMigrationError
     public static func decodeToURLs(url: URL) throws -> [URL] {
@@ -72,9 +73,9 @@ public struct AccountMigrationManager {
     }
     
     
-    /// Encodes given `OathMechanism`s into an OTPAauth Migration `URL`
+    /// Encodes given `OathMechanism`s into an OTPAuth Migration `URL`
     /// - Parameter mechanisms: Array of `OathMechanism`s of types of hotp or totp
-    /// - Returns:  OTPAauth Migration `URL` with otpauth-migration scheme
+    /// - Returns:  OTPAuth Migration `URL` with otpauth-migration scheme
     /// - Throws: BinaryEncodingError
     public static func encode(mechanisms: [OathMechanism]) throws -> URL? {
         var migrationPayload =  MigrationPayload()
@@ -115,9 +116,10 @@ public struct AccountMigrationManager {
     }
     
     
-    /// Encodes given otpauth `URL`s into an OTPAauth Migration `URL`
-    /// - Parameter urls: Array of otpauth `URL` of types of hotp or totp
-    /// - Returns:  OTPAauth Migration `URL` with otpauth-migration scheme
+    /// Encodes given otpauth `URL`s into an OTPAuth Migration `URL`.
+    /// For an array of more than 10 items the returned URL might be too long when generating a QR Code. In this case generating multiple migration urls(QR codes) is advised
+    /// - Parameter urls: Array of otpauth `URL` of types of hotp or totp.
+    /// - Returns:  OTPAuth Migration `URL` with otpauth-migration scheme
     /// - Throws: BinaryEncodingError
     public static func encode(urls: [URL]) throws -> URL? {
         let mechanisms: [OathMechanism] = urls.compactMap { createMechanism(url:$0) }
@@ -128,6 +130,7 @@ public struct AccountMigrationManager {
     
     
     /// Constructs a URL for QR Code from  a given `OathMechanism`
+    /// For an array of more than 10 items the returned URL might be too long when generating a QR Code. In this case generating multiple migration urls(QR codes) is advised
     /// - Parameter mechanism: `OathMechanism` to be converted to url
     /// - Returns: QR Code `URL` from the mechanism
     static func createUrl(mechanism: OathMechanism) -> URL? {
