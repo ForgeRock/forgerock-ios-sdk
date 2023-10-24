@@ -118,7 +118,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_01_07_test_decodeToURLs_invalid_data() {
         do {
-            let _ = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm\\dlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm_dlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to invalid data")
         } catch AccountMigrationError.failToDecodeData {
@@ -202,7 +202,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_02_06_test_decodeToMechanisms_invalid_data() {
         do {
-            let _ = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm\\dlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm_dlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to invalid data")
         } catch AccountMigrationError.failToDecodeData {
@@ -316,7 +316,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_03_04_test_encode_urls_some_invalid() {
         do {
-            let migrationUri = try AccountMigrationManager.encode(urls: [URL(string:"otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!, URL(string:"otpauth://totp/Forgerock1:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock1&digits=6&period=30")!, URL(string:"otpauth://hofffftp/Forgerock2:demo2?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock2&counter=4&algorithm=SHA256")!, URL(string:"otpauth://hotp/Forgerock3:demo3?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock3&algorithm=sha256")!, URL(string:"otpauth://hotp/Forgerock4:demo4?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock4&algorithm=md5")!, URL(string:"otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!, URL(string:"otpaufffffth://totp/Forgerock1:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock1&digits=6&period=30")!, URL(string:"otpauth://hotp/Forgerock2:demo2?secret=IJQWI\\Z3FOIQUEYLE&issuer=Forgerock2&counter=4&algorithm=SHA256")!, URL(string:"otpauth://hotp/Forgerock3:demo3?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock3&algorithm=sha256")!, URL(string:"otpauth://hotp/Forgerock4:demo4?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock4&algorithm=md5")!])
+            let migrationUri = try AccountMigrationManager.encode(urls: [URL(string:"otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!, URL(string:"otpauth://totp/Forgerock1:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock1&digits=6&period=30")!, URL(string:"otpauth://hofffftp/Forgerock2:demo2?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock2&counter=4&algorithm=SHA256")!, URL(string:"otpauth://hotp/Forgerock3:demo3?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock3&algorithm=sha256")!, URL(string:"otpauth://hotp/Forgerock4:demo4?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock4&algorithm=md5")!, URL(string:"otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!, URL(string:"otpaufffffth://totp/Forgerock1:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock1&digits=6&period=30")!, URL(string:"otpauth://hotp/Forgerock2:demo2?secret=IJQWI_Z3FOIQUEYLE&issuer=Forgerock2&counter=4&algorithm=SHA256")!, URL(string:"otpauth://hotp/Forgerock3:demo3?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock3&algorithm=sha256")!, URL(string:"otpauth://hotp/Forgerock4:demo4?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock4&algorithm=md5")!])
             
             XCTAssertNotNil(migrationUri)
             XCTAssertEqual(migrationUri?.scheme, "otpauth-migration")
@@ -492,7 +492,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_05_04_createMechanism_with_url_wrong_scheme() {
         
-        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "otpauth://totp/ForgeRock:demo?\\secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
+        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "otpauth://totp/ForgeRock:demo?_secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
         
         XCTAssertNil(mechanism)
     }
