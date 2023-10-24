@@ -2,7 +2,7 @@
 //  TelephonyCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -17,6 +17,7 @@ public class TelephonyCollector: DeviceCollector {
     /// Name of current collector
     public var name: String = "telephony"
     
+    typealias CarrierInfo = (carrierName: String?, isoCountryCode: String?)
     /// Initializes TelephonyCollector instance
     public init() { }
     
@@ -28,35 +29,53 @@ public class TelephonyCollector: DeviceCollector {
         var result: [String: Any] = [:]
         
         let networkInfo = CTTelephonyNetworkInfo()
-        var carrier: CTCarrier?
+        var carrier: CarrierInfo?
         
-        if #available(iOS 12.0, *) {
-            if let providers = networkInfo.serviceSubscriberCellularProviders, providers.keys.count > 0 {
-                for (_, thisCarrier) in providers{
-                    carrier = thisCarrier
-                    break
-                }
+        
+        if let providers = networkInfo.serviceSubscriberCellularProviders, providers.keys.count > 0 {
+            var carriers = [CarrierInfo]()
+            for (_, thisCarrier) in providers{
+                carriers.append((carrierName: thisCarrier.carrierName , isoCountryCode: thisCarrier.isoCountryCode ))
             }
-        }
-        else {
-            carrier = networkInfo.subscriberCellularProvider
+            carrier = TelephonyCollector.firstElementInCustomSortedArray(array: carriers)
         }
         
         if let thisCarrier = carrier {
             result["carrierName"] = thisCarrier.carrierName ?? "Unknown"
             result["networkCountryIso"] = thisCarrier.isoCountryCode ?? "Unknown"
-//            result["mobileNetworkCode"] = thisCarrier.mobileNetworkCode ?? "Unknown"
-//            result["mobileCountryCode"] = thisCarrier.mobileCountryCode ?? "Unknown"
-//            result["voipEnabled"] = thisCarrier.allowsVOIP
         }
         else {
             result["carrierName"] = "Unknown"
             result["networkCountryIso"] = "Unknown"
-//            result["mobileNetworkCode"] = "Unknown"
-//            result["mobileCountryCode"] = "Unknown"
-//            result["voipEnabled"] = false
         }
         
         completion(result)
+    }
+}
+
+
+/// Helper Methods
+extension TelephonyCollector {
+    static func firstElementInCustomSortedArray(array: [CarrierInfo]) -> CarrierInfo? {
+        
+        let result =  array.sorted {
+            if $0.carrierName == nil && $1.carrierName == nil {
+                if $0.isoCountryCode == nil {
+                    return false
+                } else if $1.isoCountryCode == nil {
+                    return true
+                } else {
+                    return $0.isoCountryCode ?? "" < $1.isoCountryCode ?? ""
+                }
+            } else if $0.carrierName == nil {
+                return false
+            } else if $1.carrierName == nil {
+                return true
+            } else {
+                return $0.carrierName ?? "" < $1.carrierName ?? ""
+            }
+        }
+        
+        return result.first
     }
 }
