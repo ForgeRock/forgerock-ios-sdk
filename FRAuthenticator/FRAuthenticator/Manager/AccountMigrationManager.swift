@@ -74,6 +74,7 @@ public struct AccountMigrationManager {
     
     
     /// Encodes given `OathMechanism`s into an OTPAuth Migration `URL`
+    /// For an array of more than 10 items the returned URL might be too long when generating a QR Code. In this case generating multiple migration urls(QR codes) is advised
     /// - Parameter mechanisms: Array of `OathMechanism`s of types of hotp or totp
     /// - Returns:  OTPAuth Migration `URL` with otpauth-migration scheme
     /// - Throws: BinaryEncodingError
@@ -130,7 +131,6 @@ public struct AccountMigrationManager {
     
     
     /// Constructs a URL for QR Code from  a given `OathMechanism`
-    /// For an array of more than 10 items the returned URL might be too long when generating a QR Code. In this case generating multiple migration urls(QR codes) is advised
     /// - Parameter mechanism: `OathMechanism` to be converted to url
     /// - Returns: QR Code `URL` from the mechanism
     static func createUrl(mechanism: OathMechanism) -> URL? {
