@@ -129,15 +129,17 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    //  MARK: - AccountMigrationManager.decodeToMechanisms(url:) tests
+    //  MARK: - AccountMigrationManager.decodeToAccounts(url:) tests
     
-    func test_02_01_test_decodeToMechanisms_single_mechanism() {
+    func test_02_01_test_decodeToAccounts_single_accounts() {
         do {
-            let mechanisms = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let accounts = try AccountMigrationManager.decodeToAccounts(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
-            XCTAssertEqual(mechanisms.count, 1)
             
-            let mechanism = mechanisms.first!
+            XCTAssertEqual(accounts.count, 1)
+            XCTAssertEqual(accounts.first?.mechanisms.count, 1)
+            
+            let mechanism = accounts.first!.mechanisms.first! as! OathMechanism
             
             XCTAssertEqual(mechanism.type, AuthType.hotp.rawValue)
             XCTAssertEqual(mechanism.secret, "IJQWIZ3FOIQUEYLE")
@@ -149,11 +151,12 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_02_02_test_decodeToMechanisms_ten_mechanisms() {
+    func test_02_02_test_decodeToAccounts_ten_accounts() {
         do {
-            let mechanisms = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgECiUKCp/khBHzymEByEESBWRlbW8xGgpGb3JnZVJvY2sxIAEoATACCicKCkJhZGdlciFCYWQSBWRlbW8yGgpGb3JnZXJvY2syIAIoATABOAQKJQoKQmFkZ2VyIUJhZBIFZGVtbzMaCkZvcmdlcm9jazMgAigBMAEKJQoKQmFkZ2VyIUJhZBIFZGVtbzQaCkZvcmdlcm9jazQgBCgBMAEKJQoKQmFkZ2VyIUJhZBIEZGVtbxoJRm9yZ2Vyb2NrIAIoATABOAQKJQoKn+SEEfPKYQHIQRIFZGVtbzEaCkZvcmdlUm9jazEgASgBMAIKJwoKQmFkZ2VyIUJhZBIFZGVtbzIaCkZvcmdlcm9jazIgAigBMAE4BAolCgpCYWRnZXIhQmFkEgVkZW1vMxoKRm9yZ2Vyb2NrMyACKAEwAQolCgpCYWRnZXIhQmFkEgVkZW1vNBoKRm9yZ2Vyb2NrNCAEKAEwAQ%3D%3D")!)
+            let accounts = try AccountMigrationManager.decodeToAccounts(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgECiUKCp/khBHzymEByEESBWRlbW8xGgpGb3JnZVJvY2sxIAEoATACCicKCkJhZGdlciFCYWQSBWRlbW8yGgpGb3JnZXJvY2syIAIoATABOAQKJQoKQmFkZ2VyIUJhZBIFZGVtbzMaCkZvcmdlcm9jazMgAigBMAEKJQoKQmFkZ2VyIUJhZBIFZGVtbzQaCkZvcmdlcm9jazQgBCgBMAEKJQoKQmFkZ2VyIUJhZBIEZGVtbxoJRm9yZ2Vyb2NrIAIoATABOAQKJQoKn+SEEfPKYQHIQRIFZGVtbzEaCkZvcmdlUm9jazEgASgBMAIKJwoKQmFkZ2VyIUJhZBIFZGVtbzIaCkZvcmdlcm9jazIgAigBMAE4BAolCgpCYWRnZXIhQmFkEgVkZW1vMxoKRm9yZ2Vyb2NrMyACKAEwAQolCgpCYWRnZXIhQmFkEgVkZW1vNBoKRm9yZ2Vyb2NrNCAEKAEwAQ%3D%3D")!)
             
-            XCTAssertEqual(mechanisms.count, 10)
+            XCTAssertEqual(accounts.count, 10)
+            XCTAssertEqual(accounts.map{ $0.mechanisms }.flatMap{ $0 }.count, 10)
             
         } catch {
             XCTFail("AccountMigrationManager.decodeToURLs(url:) failed with unexpected reason")
@@ -161,9 +164,9 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_02_03_test_decodeToMechanisms_wrong_scheme() {
+    func test_02_03_test_decodeToAccounts_wrong_scheme() {
         do {
-            let _ = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migrationxxx://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decodeToAccounts(url: URL(string: "otpauth-migrationxxx://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to wrong scheme")
         } catch AccountMigrationError.invalidScheme {
@@ -174,9 +177,9 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_02_04_test_decodeToMechanisms_wrong_host() {
+    func test_02_04_test_decodeToAccounts_wrong_host() {
         do {
-            let _ = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offlinexxx?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decodeToAccounts(url: URL(string: "otpauth-migration://offlinexxx?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to wrong host")
         } catch AccountMigrationError.invalidHost {
@@ -187,9 +190,9 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_02_05_test_decodeToMechanisms_missing_data() {
+    func test_02_05_test_decodeToAccounts_missing_data() {
         do {
-            let _ = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offline?Missingdata=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decodeToAccounts(url: URL(string: "otpauth-migration://offline?Missingdata=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to missing data")
         } catch AccountMigrationError.missingData {
@@ -200,9 +203,9 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_02_06_test_decodeToMechanisms_invalid_data() {
+    func test_02_06_test_decodeToAccounts_invalid_data() {
         do {
-            let _ = try AccountMigrationManager.decodeToMechanisms(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm_dlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decodeToAccounts(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm_dlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to invalid data")
         } catch AccountMigrationError.failToDecodeData {
@@ -251,7 +254,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_03_02_test_encode_urls_multiple_urls() {
         do {
-            let migrationUri = try AccountMigrationManager.encode(urls: [URL(string:"otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!, URL(string:"otpauth://totp/Forgerock1:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock1&digits=6&period=30")!, URL(string:"otpauth://hotp/Forgerock2:demo2?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock2&counter=4&algorithm=SHA256")!, URL(string:"otpauth://hotp/Forgerock3:demo3?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock3&algorithm=sha256")!, URL(string:"otpauth://hotp/Forgerock4:demo4?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock4&algorithm=md5")!])
+            let migrationUri = try AccountMigrationManager.encode(urls: [URL(string:"otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!, URL(string:"otpauth://totp/Forgerock1:demo1?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock1&digits=6&period=60")!, URL(string:"otpauth://hotp/Forgerock2:demo2?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock2&counter=4&algorithm=SHA256")!, URL(string:"otpauth://hotp/Forgerock3:demo3?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock3&algorithm=sha256")!, URL(string:"otpauth://hotp/Forgerock4:demo4?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock4&algorithm=md5")!])
             
             XCTAssertNotNil(migrationUri)
             XCTAssertEqual(migrationUri?.scheme, "otpauth-migration")
@@ -277,6 +280,7 @@ final class AccountMigrationManagerTests: XCTestCase {
             
             XCTAssertEqual(otpParameters[0].name, "demo")
             XCTAssertEqual(otpParameters[1].digits, MigrationPayload.DigitCount.six)
+            XCTAssertEqual(otpParameters[1].period, 60)
             XCTAssertEqual(otpParameters[2].secret, "IJQWIZ3FOIQUEYLE".base32Decode())
             XCTAssertEqual(otpParameters[2].counter, 4)
             XCTAssertEqual(otpParameters[3].issuer, "Forgerock3")
@@ -341,12 +345,14 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    //  MARK: - AccountMigrationManager.encode(mechanisms:) tests
+    //  MARK: - AccountMigrationManager.encode(accounts:) tests
     
-    func test_04_01_test_encode_mechanisms_single_mechanism() {
+    func test_04_01_test_encode_accounts_single_accounts() {
         do {
             let hotpMechanism = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", counter: 6, digits: 6)
-            let migrationUri = try AccountMigrationManager.encode(mechanisms: [hotpMechanism])
+            let account = Account(issuer: hotpMechanism.issuer, accountName: hotpMechanism.accountName)
+            account.mechanisms.append(hotpMechanism)
+            let migrationUri = try AccountMigrationManager.encode(accounts: [account])
             
             XCTAssertNotNil(migrationUri)
             XCTAssertEqual(migrationUri?.scheme, "otpauth-migration")
@@ -379,14 +385,29 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_04_02_test_encode_mechanisms_multiple_mechanisms() {
+    func test_04_02_test_encode_accounts_multiple_accounts() {
         do {
-            let hotpMechanism1 = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", counter: 6, digits: 6)
-            let totpMechanism1 = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 30, digits: 6)
-            let hotpMechanism2 = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", counter: 6, digits: 8)
-            let totpMechanism2 = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", period: 30, digits: 8)
+            let hotpMechanism1 = HOTPMechanism(issuer: "Forgerock1", accountName: "demo1", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", counter: 6, digits: 6)
+            let account1 = Account(issuer: hotpMechanism1.issuer, accountName: hotpMechanism1.accountName)
+            account1.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account1.mechanisms.append(hotpMechanism1)
             
-            let migrationUri = try AccountMigrationManager.encode(mechanisms: [hotpMechanism1, totpMechanism1, hotpMechanism2, totpMechanism2])
+            let totpMechanism1 = TOTPMechanism(issuer: "Forgerock2", accountName: "demo2", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 60, digits: 6)
+            let account2 = Account(issuer: totpMechanism1.issuer, accountName: totpMechanism1.accountName)
+            account2.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account2.mechanisms.append(totpMechanism1)
+            
+            let hotpMechanism2 = HOTPMechanism(issuer: "Forgerock3", accountName: "demo4", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", counter: 6, digits: 8)
+            let account3 = Account(issuer: hotpMechanism2.issuer, accountName: hotpMechanism2.accountName)
+            account3.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account3.mechanisms.append(hotpMechanism2)
+            
+            let totpMechanism2 = TOTPMechanism(issuer: "Forgerock4", accountName: "demo4", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", period: 10, digits: 8)
+            let account4 = Account(issuer: totpMechanism2.issuer, accountName: totpMechanism2.accountName)
+            account4.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account4.mechanisms.append(totpMechanism2)
+            
+            let migrationUri = try AccountMigrationManager.encode(accounts: [account1, account2, account3, account4])
             
             XCTAssertNotNil(migrationUri)
             XCTAssertEqual(migrationUri?.scheme, "otpauth-migration")
@@ -410,15 +431,34 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_04_03_test_encode_mechanisms_some_invalid() {
+    func test_04_03_test_encode_accounts_some_invalid() {
         do {
             let hotpMechanism1 = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", counter: 6, digits: 6)
-            let totpMechanism1 = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 30, digits: 6)
-            let hotpMechanism2 = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", counter: 6, digits: 8)
-            let totpMechanism2 = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", period: 30, digits: 8)
-            let mechanism = OathMechanism(type: "someType", issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256")
+            let account1 = Account(issuer: hotpMechanism1.issuer, accountName: hotpMechanism1.accountName)
+            account1.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account1.mechanisms.append(hotpMechanism1)
             
-            let migrationUri = try AccountMigrationManager.encode(mechanisms: [hotpMechanism1, totpMechanism1, hotpMechanism2, totpMechanism2, mechanism])
+            let totpMechanism1 = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 30, digits: 6)
+            let account2 = Account(issuer: totpMechanism1.issuer, accountName: totpMechanism1.accountName)
+            account2.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account2.mechanisms.append(totpMechanism1)
+            
+            let hotpMechanism2 = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", counter: 6, digits: 8)
+            let account3 = Account(issuer: hotpMechanism2.issuer, accountName: hotpMechanism2.accountName)
+            account3.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account3.mechanisms.append(hotpMechanism2)
+            
+            let totpMechanism2 = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "IJQWIZ3FOIQUEYLE", algorithm: "sha256", period: 30, digits: 8)
+            let account4 = Account(issuer: totpMechanism2.issuer, accountName: totpMechanism2.accountName)
+            account4.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account4.mechanisms.append(totpMechanism2)
+            
+            let mechanism = OathMechanism(type: "someType", issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256")
+            let account = Account(issuer: mechanism.issuer, accountName: mechanism.accountName)
+            account.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+            account.mechanisms.append(mechanism)
+            
+            let migrationUri = try AccountMigrationManager.encode(accounts: [account, account1, account2, account3, account4])
             
             XCTAssertNotNil(migrationUri)
             XCTAssertEqual(migrationUri?.scheme, "otpauth-migration")
@@ -443,15 +483,16 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    //  MARK: - AccountMigrationManager.createMechanism(url:) tests
+    //  MARK: - AccountMigrationManager.createAccount(url:) tests
     
-    func test_05_01_createMechanism_with_url_hotp() {
+    func test_05_01_createAccount_with_url_hotp() {
         
-        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!)
+        let account = AccountMigrationManager.createAccount(url: URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=4&algorithm=SHA256")!)
         
-        XCTAssertNotNil(mechanism)
+        XCTAssertNotNil(account)
+        XCTAssertNotNil(account?.mechanisms.first)
         
-        let hotpMechanism = mechanism as? HOTPMechanism
+        let hotpMechanism = account?.mechanisms.first as? HOTPMechanism
         XCTAssertNotNil(hotpMechanism)
         
         XCTAssertEqual(hotpMechanism?.type, "hotp")
@@ -463,13 +504,14 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_05_02_createMechanism_with_url_totp() {
+    func test_05_02_createAccount_with_url_totp() {
         
-        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
+        let account = AccountMigrationManager.createAccount(url: URL(string: "otpauth://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
         
-        XCTAssertNotNil(mechanism)
+        XCTAssertNotNil(account)
+        XCTAssertNotNil(account?.mechanisms.first)
         
-        let totpMechanism = mechanism as? TOTPMechanism
+        let totpMechanism = account?.mechanisms.first as? TOTPMechanism
         XCTAssertNotNil(totpMechanism)
         
         XCTAssertEqual(totpMechanism?.type, "totp")
@@ -482,27 +524,27 @@ final class AccountMigrationManagerTests: XCTestCase {
     }
     
     
-    func test_05_03_createMechanism_with_url_wrong_host() {
+    func test_05_03_createAcccount_with_url_wrong_host() {
         
-        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "otpauth://someHost/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
+        let account = AccountMigrationManager.createAccount(url: URL(string: "otpauth://someHost/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
         
-        XCTAssertNil(mechanism)
+        XCTAssertNil(account)
     }
     
     
-    func test_05_04_createMechanism_with_url_wrong_scheme() {
+    func test_05_04_createAccount_with_url_wrong_scheme() {
         
-        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "otpauth://totp/ForgeRock:demo?_secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
+        let account = AccountMigrationManager.createAccount(url: URL(string: "otpauth://totp/ForgeRock:demo?_secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
         
-        XCTAssertNil(mechanism)
+        XCTAssertNil(account)
     }
     
     
-    func test_05_05_createMechanism_with_url_wrong_url() {
+    func test_05_05_createAccount_with_url_wrong_url() {
         
-        let mechanism = AccountMigrationManager.createMechanism(url: URL(string: "someScheme://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
+        let account = AccountMigrationManager.createAccount(url: URL(string: "someScheme://totp/ForgeRock:demo?secret=T7SIIEPTZJQQDSCB&issuer=ForgeRock&digits=8&period=45&algorithm=SHA256")!)
         
-        XCTAssertNil(mechanism)
+        XCTAssertNil(account)
     }
     
     
@@ -511,8 +553,9 @@ final class AccountMigrationManagerTests: XCTestCase {
     func test_06_01_createUrl_with_mechanism_hotp(){
         
         let hotpMechanism = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", counter: 6, digits: 4)
+        let imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
         
-        let url = AccountMigrationManager.createUrl(mechanism: hotpMechanism)
+        let url = AccountMigrationManager.createUrl(mechanism: hotpMechanism, imageUrl: imageUrl)
         
         XCTAssertNotNil(url)
         
@@ -523,14 +566,16 @@ final class AccountMigrationManagerTests: XCTestCase {
         XCTAssertEqual(url?.valueOf("algorithm"), hotpMechanism.algorithm.rawValue)
         XCTAssertEqual(url?.valueOf("counter"), String(hotpMechanism.counter))
         XCTAssertEqual(url?.valueOf("digits"), String(hotpMechanism.digits))
+        XCTAssertEqual(url?.valueOf("image"), imageUrl.base64URLSafeEncoded())
     }
     
     
     func test_06_02_createUrl_with_mechanism_totp() {
         
-        let totpMechanism = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 30, digits: 4)
+        let totpMechanism = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 90, digits: 4)
+        let imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
         
-        let url = AccountMigrationManager.createUrl(mechanism: totpMechanism)
+        let url = AccountMigrationManager.createUrl(mechanism: totpMechanism, imageUrl: imageUrl)
         
         XCTAssertNotNil(url)
         
@@ -541,6 +586,7 @@ final class AccountMigrationManagerTests: XCTestCase {
         XCTAssertEqual(url?.valueOf("algorithm"), totpMechanism.algorithm.rawValue)
         XCTAssertEqual(url?.valueOf("period"), String(totpMechanism.period))
         XCTAssertEqual(url?.valueOf("digits"), String(totpMechanism.digits))
+        XCTAssertEqual(url?.valueOf("image"), imageUrl.base64URLSafeEncoded())
     }
     
     
@@ -548,7 +594,75 @@ final class AccountMigrationManagerTests: XCTestCase {
         
         let mechanism = OathMechanism(type: "someType", issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256")
         
-        let url = AccountMigrationManager.createUrl(mechanism: mechanism)
+        let url = AccountMigrationManager.createUrl(mechanism: mechanism, imageUrl: nil)
         XCTAssertNil(url)
+    }
+    
+    
+    //  MARK: - AccountMigrationManager.createUrls(account:) tests
+    
+    func test_07_01_createUrls_with_account_hotp(){
+        
+        let hotpMechanism = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", counter: 6, digits: 4)
+        let imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+        
+        let account = Account(issuer: hotpMechanism.issuer, accountName: hotpMechanism.accountName)
+        account.imageUrl = imageUrl
+        account.mechanisms.append(hotpMechanism)
+        
+        let urls = AccountMigrationManager.createUrls(account: account)
+        
+        XCTAssertEqual(urls.count, 1)
+        XCTAssertNotNil(urls.first)
+        
+        let url = urls.first
+        
+        XCTAssertEqual(url?.scheme, "otpauth")
+        XCTAssertEqual(url?.host, hotpMechanism.type)
+        XCTAssertEqual(url?.valueOf("secret"), hotpMechanism.secret)
+        XCTAssertEqual(url?.valueOf("issuer"), hotpMechanism.issuer)
+        XCTAssertEqual(url?.valueOf("algorithm"), hotpMechanism.algorithm.rawValue)
+        XCTAssertEqual(url?.valueOf("counter"), String(hotpMechanism.counter))
+        XCTAssertEqual(url?.valueOf("digits"), String(hotpMechanism.digits))
+        XCTAssertEqual(url?.valueOf("image"), imageUrl.base64URLSafeEncoded())
+    }
+    
+    
+    func test_07_02_createUrl_with_account_totp() {
+        
+        let totpMechanism = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256", period: 90, digits: 4)
+        let imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e5/Forgerock_Logo_190px.png"
+        
+        let account = Account(issuer: totpMechanism.issuer, accountName: totpMechanism.accountName)
+        account.imageUrl = imageUrl
+        account.mechanisms.append(totpMechanism)
+        
+        let urls = AccountMigrationManager.createUrls(account: account)
+        
+        XCTAssertEqual(urls.count, 1)
+        XCTAssertNotNil(urls.first)
+        
+        let url = urls.first
+        
+        XCTAssertEqual(url?.scheme, "otpauth")
+        XCTAssertEqual(url?.host, totpMechanism.type)
+        XCTAssertEqual(url?.valueOf("secret"), totpMechanism.secret)
+        XCTAssertEqual(url?.valueOf("issuer"), totpMechanism.issuer)
+        XCTAssertEqual(url?.valueOf("algorithm"), totpMechanism.algorithm.rawValue)
+        XCTAssertEqual(url?.valueOf("period"), String(totpMechanism.period))
+        XCTAssertEqual(url?.valueOf("digits"), String(totpMechanism.digits))
+        XCTAssertEqual(url?.valueOf("image"), imageUrl.base64URLSafeEncoded())
+    }
+    
+    
+    func test_07_03_createUrl_with_account_wrong_type() {
+        
+        let mechanism = OathMechanism(type: "someType", issuer: "Forgerock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", algorithm: "sha256")
+        
+        let account = Account(issuer: mechanism.issuer, accountName: mechanism.accountName)
+        account.mechanisms.append(mechanism)
+        
+        let urls = AccountMigrationManager.createUrls(account: account)
+        XCTAssertNil(urls.first)
     }
 }

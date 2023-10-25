@@ -101,22 +101,13 @@ class MainListViewController: BaseTableViewController {
     @IBAction func exportAccounts(sender: UIBarButtonItem) {
         
         let accounts = FRAClient.shared?.getAllAccounts() ?? []
-        
-        var oathMechanisms: [OathMechanism] = []
-        for account in accounts {
-            for mechanism in account.mechanisms {
-                if let oathMechanism = mechanism as? OathMechanism {
-                    oathMechanisms.append(oathMechanism)
-                }
-            }
-        }
-        
-        guard oathMechanisms.count > 0 else {
-            displayAlert(title: "Account Export Error", message: "No HOTP or TOTP accounts found")
+              
+        guard accounts.count > 0 else {
+            displayAlert(title: "Account Export Error", message: "No accounts found")
             return
         }
         
-        guard let qrCode = try? AccountMigrationManager.encode(mechanisms: oathMechanisms) else {
+        guard let qrCode = try? AccountMigrationManager.encode(accounts: accounts) else {
             displayAlert(title: "Account Export Error", message: "Unable to generate a QR Code")
             return
         }

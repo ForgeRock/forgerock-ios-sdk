@@ -155,6 +155,10 @@ struct MigrationPayload {
 
     var counter: Int64 = 0
 
+    var period: Int64 = 0
+
+    var image: String = String()
+
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
@@ -298,6 +302,8 @@ extension MigrationPayload.OtpParameters: SwiftProtobuf.Message, SwiftProtobuf._
     5: .same(proto: "digits"),
     6: .same(proto: "type"),
     7: .same(proto: "counter"),
+    8: .same(proto: "period"),
+    9: .same(proto: "image"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -313,6 +319,8 @@ extension MigrationPayload.OtpParameters: SwiftProtobuf.Message, SwiftProtobuf._
       case 5: try { try decoder.decodeSingularEnumField(value: &self.digits) }()
       case 6: try { try decoder.decodeSingularEnumField(value: &self.type) }()
       case 7: try { try decoder.decodeSingularInt64Field(value: &self.counter) }()
+      case 8: try { try decoder.decodeSingularInt64Field(value: &self.period) }()
+      case 9: try { try decoder.decodeSingularStringField(value: &self.image) }()
       default: break
       }
     }
@@ -340,6 +348,12 @@ extension MigrationPayload.OtpParameters: SwiftProtobuf.Message, SwiftProtobuf._
     if self.counter != 0 {
       try visitor.visitSingularInt64Field(value: self.counter, fieldNumber: 7)
     }
+    if self.period != 0 {
+      try visitor.visitSingularInt64Field(value: self.period, fieldNumber: 8)
+    }
+    if !self.image.isEmpty {
+      try visitor.visitSingularStringField(value: self.image, fieldNumber: 9)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -351,6 +365,8 @@ extension MigrationPayload.OtpParameters: SwiftProtobuf.Message, SwiftProtobuf._
     if lhs.digits != rhs.digits {return false}
     if lhs.type != rhs.type {return false}
     if lhs.counter != rhs.counter {return false}
+    if lhs.period != rhs.period {return false}
+    if lhs.image != rhs.image {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
