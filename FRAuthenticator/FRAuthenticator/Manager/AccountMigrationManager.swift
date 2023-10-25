@@ -50,7 +50,7 @@ public struct AccountMigrationManager {
                 continue
             }
             let account = Account(issuer: otpParameter.issuer, accountName: otpParameter.name)
-            account.imageUrl = otpParameter.image == "" ? nil : otpParameter.image.base64Decoded()
+            account.imageUrl = otpParameter.image == "" ? nil : otpParameter.image.urlSafeDecoding().base64Decoded()
             if otpParameter.type == .hotp {
                 let hotpMechanism = HOTPMechanism(issuer: otpParameter.issuer, accountName: otpParameter.name, secret: secret , algorithm: otpParameter.algorithm.stringValue, counter:  Int(truncatingIfNeeded: otpParameter.counter), digits: otpParameter.digits.intValue)
                 account.mechanisms.append(hotpMechanism)
@@ -205,7 +205,7 @@ public struct AccountMigrationManager {
             return nil
         }
         let account = Account(issuer: parser.issuer, accountName: parser.label)
-        account.imageUrl = parser.image?.base64Decoded()
+        account.imageUrl = parser.image
         
         if authType == .hotp {
             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
