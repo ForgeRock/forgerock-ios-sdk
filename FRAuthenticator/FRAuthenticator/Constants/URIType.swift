@@ -15,5 +15,6 @@ enum URIType: String {
     case otpauth = "otpauth"
     case pushauth = "pushauth"
     case mfauth = "mfauth"
+    case otpauthMigration = "otpauth-migration"
     case unknown
 }

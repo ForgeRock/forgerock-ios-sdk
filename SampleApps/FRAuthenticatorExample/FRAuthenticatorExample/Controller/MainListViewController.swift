@@ -2,7 +2,7 @@
 //  MainListViewController.swift
 //  FRAuthenticatorExample
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -98,6 +98,28 @@ class MainListViewController: BaseTableViewController {
         self.present(viewController, animated: true, completion: nil)
     }
     
+    @IBAction func exportAccounts(sender: UIBarButtonItem) {
+        
+        let accounts = FRAClient.shared?.getAllAccounts() ?? []
+              
+        guard accounts.count > 0 else {
+            displayAlert(title: "Account Export Error", message: "No accounts found")
+            return
+        }
+        
+        guard let qrCode = try? AccountMigrationManager.encode(accounts: accounts) else {
+            displayAlert(title: "Account Export Error", message: "Unable to generate a QR Code")
+            return
+        }
+        
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = sb.instantiateViewController(withIdentifier: "exportAccountsViewController")
+        
+        if let exportAccountsViewController = viewController as? ExportAccountsViewController {
+            exportAccountsViewController.qrCode = qrCode.absoluteString
+        }
+        self.present(viewController, animated: true, completion: nil)
+    }
     
     // MARK: - TableView DataSource / Delegate
     
@@ -222,7 +244,31 @@ extension MainListViewController: QRCodeScannerDelegate {
             self.displayAlert(title: "Error", message: "Invalid QR Code: QR Code data is not in URL format.")
             return
         }
-    
+        
+        // Check if it's an account migration URL
+        if url.scheme == "otpauth-migration" {
+            if let uris = try? AccountMigrationManager.decode(url: url) {
+                var successfulyImportedAccountsCount = 0
+                for uri in uris {
+                    FRAClient.shared?.createMechanismFromUri(uri: uri, onSuccess: { (mechanism) in
+                        successfulyImportedAccountsCount += 1
+                    }, onError: { (error) in
+                        self.displayAlert(title: "Error", message: error.localizedDescription)
+                    })
+                }
+                if successfulyImportedAccountsCount > 0 {
+                    DispatchQueue.main.async {
+                        self.reload()
+                    }
+                    self.displayAlert(title: "Import Complete", message: "\(successfulyImportedAccountsCount) accounts have been successfully imported")
+                    
+                } else {
+                    self.displayAlert(title: "Import Failed", message: "Unable to import any accounts")
+                }
+            }
+            return
+        }
+        
         //  Create and store Mechanism object from QR Code URL
         FRAClient.shared?.createMechanismFromUri(uri: url, onSuccess: { (mechanism) in
             // Reload tableView
