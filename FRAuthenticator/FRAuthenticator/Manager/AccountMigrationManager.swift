@@ -70,7 +70,7 @@ public struct AccountMigrationManager {
     /// - Parameter url: OTPAuth Migration `URL` with otpauth-migration scheme
     /// - Returns: Array of otpauth `URL` of types of hotp or totp
     /// - Throws: AccountMigrationError
-    public static func decodeToURLs(url: URL) throws -> [URL] {
+    public static func decode(url: URL) throws -> [URL] {
         let accounts: [Account] = try decodeToAccounts(url: url)
         return accounts.map{ createUrls(account: $0) }.flatMap { $0 }
     }

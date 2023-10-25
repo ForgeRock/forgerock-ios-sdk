@@ -247,7 +247,7 @@ extension MainListViewController: QRCodeScannerDelegate {
         
         // Check if it's an account migration URL
         if url.scheme == "otpauth-migration" {
-            if let uris = try? AccountMigrationManager.decodeToURLs(url: url) {
+            if let uris = try? AccountMigrationManager.decode(url: url) {
                 var successfulyImportedAccountsCount = 0
                 for uri in uris {
                     FRAClient.shared?.createMechanismFromUri(uri: uri, onSuccess: { (mechanism) in

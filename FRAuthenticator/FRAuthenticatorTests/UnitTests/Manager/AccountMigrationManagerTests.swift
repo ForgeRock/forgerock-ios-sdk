@@ -14,11 +14,11 @@ import XCTest
 
 final class AccountMigrationManagerTests: XCTestCase {
     
-    //  MARK: - AccountMigrationManager.decodeToURLs(url:) tests
+    //  MARK: - AccountMigrationManager.decode(url:) tests
     
     func test_01_01_test_decodeToURLs_single_url() {
         do {
-            let urls = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let urls = try AccountMigrationManager.decode(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTAssertEqual(urls.count, 1)
             
@@ -31,14 +31,14 @@ final class AccountMigrationManagerTests: XCTestCase {
             XCTAssertEqual(url.valueOf("counter"), "4")
             XCTAssertEqual(url.valueOf("algorithm"), "sha256")
         } catch {
-            XCTFail("AccountMigrationManager.decodeToURLs(url:) failed with unexpected reason")
+            XCTFail("AccountMigrationManager.decode(url:) failed with unexpected reason")
         }
     }
     
     
     func test_01_02_test_decodeToURLs_two_different_types() {
         do {
-            let urls = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgECiMKCp/khBHzymEByEESBGRlbW8aCUZvcmdlUm9jayABKAEwAg%3D%3D")!)
+            let urls = try AccountMigrationManager.decode(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgECiMKCp/khBHzymEByEESBGRlbW8aCUZvcmdlUm9jayABKAEwAg%3D%3D")!)
             
             XCTAssertEqual(urls.count, 2)
             
@@ -60,26 +60,26 @@ final class AccountMigrationManagerTests: XCTestCase {
             XCTAssertEqual(totpUrl.valueOf("period"), "30")
             
         } catch {
-            XCTFail("AccountMigrationManager.decodeToURLs(url:) failed with unexpected reason")
+            XCTFail("AccountMigrationManager.decode(url:) failed with unexpected reason")
         }
     }
     
     
     func test_01_03_test_decodeToURLs_ten_urls() {
         do {
-            let urls = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgECiUKCp/khBHzymEByEESBWRlbW8xGgpGb3JnZVJvY2sxIAEoATACCicKCkJhZGdlciFCYWQSBWRlbW8yGgpGb3JnZXJvY2syIAIoATABOAQKJQoKQmFkZ2VyIUJhZBIFZGVtbzMaCkZvcmdlcm9jazMgAigBMAEKJQoKQmFkZ2VyIUJhZBIFZGVtbzQaCkZvcmdlcm9jazQgBCgBMAEKJQoKQmFkZ2VyIUJhZBIEZGVtbxoJRm9yZ2Vyb2NrIAIoATABOAQKJQoKn+SEEfPKYQHIQRIFZGVtbzEaCkZvcmdlUm9jazEgASgBMAIKJwoKQmFkZ2VyIUJhZBIFZGVtbzIaCkZvcmdlcm9jazIgAigBMAE4BAolCgpCYWRnZXIhQmFkEgVkZW1vMxoKRm9yZ2Vyb2NrMyACKAEwAQolCgpCYWRnZXIhQmFkEgVkZW1vNBoKRm9yZ2Vyb2NrNCAEKAEwAQ%3D%3D")!)
+            let urls = try AccountMigrationManager.decode(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgECiUKCp/khBHzymEByEESBWRlbW8xGgpGb3JnZVJvY2sxIAEoATACCicKCkJhZGdlciFCYWQSBWRlbW8yGgpGb3JnZXJvY2syIAIoATABOAQKJQoKQmFkZ2VyIUJhZBIFZGVtbzMaCkZvcmdlcm9jazMgAigBMAEKJQoKQmFkZ2VyIUJhZBIFZGVtbzQaCkZvcmdlcm9jazQgBCgBMAEKJQoKQmFkZ2VyIUJhZBIEZGVtbxoJRm9yZ2Vyb2NrIAIoATABOAQKJQoKn+SEEfPKYQHIQRIFZGVtbzEaCkZvcmdlUm9jazEgASgBMAIKJwoKQmFkZ2VyIUJhZBIFZGVtbzIaCkZvcmdlcm9jazIgAigBMAE4BAolCgpCYWRnZXIhQmFkEgVkZW1vMxoKRm9yZ2Vyb2NrMyACKAEwAQolCgpCYWRnZXIhQmFkEgVkZW1vNBoKRm9yZ2Vyb2NrNCAEKAEwAQ%3D%3D")!)
             
             XCTAssertEqual(urls.count, 10)
             
         } catch {
-            XCTFail("AccountMigrationManager.decodeToURLs(url:) failed with unexpected reason")
+            XCTFail("AccountMigrationManager.decode(url:) failed with unexpected reason")
         }
     }
     
     
     func test_01_04_test_decodeToURLs_wrong_scheme() {
         do {
-            let _ = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migrationxxx://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decode(url: URL(string: "otpauth-migrationxxx://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to wrong scheme")
         } catch AccountMigrationError.invalidScheme {
@@ -92,7 +92,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_01_05_test_decodeToURLs_wrong_host() {
         do {
-            let _ = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offlinexxx?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decode(url: URL(string: "otpauth-migration://offlinexxx?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to wrong host")
         } catch AccountMigrationError.invalidHost {
@@ -105,7 +105,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_01_06_test_decodeToURLs_missing_data() {
         do {
-            let _ = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?Missingdata=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decode(url: URL(string: "otpauth-migration://offline?Missingdata=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcmdlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to missing data")
         } catch AccountMigrationError.missingData {
@@ -118,7 +118,7 @@ final class AccountMigrationManagerTests: XCTestCase {
     
     func test_01_07_test_decodeToURLs_invalid_data() {
         do {
-            let _ = try AccountMigrationManager.decodeToURLs(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm_dlcm9jayACKAEwATgE")!)
+            let _ = try AccountMigrationManager.decode(url: URL(string: "otpauth-migration://offline?data=CiUKCkJhZGdlciFCYWQSBGRlbW8aCUZvcm_dlcm9jayACKAEwATgE")!)
             
             XCTFail("Decoding should have failed due to invalid data")
         } catch AccountMigrationError.failToDecodeData {
@@ -146,7 +146,7 @@ final class AccountMigrationManagerTests: XCTestCase {
             XCTAssertEqual(mechanism.issuer, "Forgerock")
             XCTAssertEqual(mechanism.algorithm, OathAlgorithm.sha256)
         } catch {
-            XCTFail("AccountMigrationManager.decodeToURLs(url:) failed with unexpected reason")
+            XCTFail("AccountMigrationManager.decode(url:) failed with unexpected reason")
         }
     }
     
@@ -159,7 +159,7 @@ final class AccountMigrationManagerTests: XCTestCase {
             XCTAssertEqual(accounts.map{ $0.mechanisms }.flatMap{ $0 }.count, 10)
             
         } catch {
-            XCTFail("AccountMigrationManager.decodeToURLs(url:) failed with unexpected reason")
+            XCTFail("AccountMigrationManager.decode(url:) failed with unexpected reason")
         }
     }
     
