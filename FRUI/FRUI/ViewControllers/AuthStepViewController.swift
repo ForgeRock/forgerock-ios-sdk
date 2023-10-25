@@ -185,6 +185,48 @@ class AuthStepViewController: UIViewController {
                     }
                 }
                 
+                
+                
+                var appIntegrity: FRAppIntegrityCallback?
+                for (_, callback) in self.authCallbacks.enumerated() {
+                    //  DeviceBindingCallback handling
+                    if let thisCallback = callback as? FRAppIntegrityCallback {
+                        appIntegrity = thisCallback
+                    }
+                }
+                
+                if let appIntegrity = appIntegrity {
+                    let alert = UIAlertController(title: "App Attestation Result", message: nil, preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in })
+                    alert.addAction(action)
+                    self.startLoading()
+                    if #available(iOS 14.0, *) {
+                        Task {
+                            do {
+                                try await appIntegrity.requestIntegrityToken()
+                                alert.message = "Success"
+                            }
+                            catch let error {
+                                alert.message = (error as? FRDeviceCheckAPIFailure)?.rawValue
+                            }
+                            self.stopLoading()
+                            await MainActor.run {
+                                if appIntegrity.isAttestationCompleted() {
+                                    self.present(alert, animated: true)
+                                } else {
+                                    self.submitCurrentNode()
+                                }
+                            }
+                        }
+                    } else {
+                        alert.message = "Unsupported"
+                        appIntegrity.setClientError(FRDeviceCheckAPIFailure.featureUnsupported.rawValue)
+                        self.stopLoading()
+                        self.present(alert, animated: true)
+                    }
+                }
+                
+                //
                 var deviceBindingCallback: DeviceBindingCallback?
                 for (index, callback) in self.authCallbacks.enumerated() {
                     //  DeviceBindingCallback handling
