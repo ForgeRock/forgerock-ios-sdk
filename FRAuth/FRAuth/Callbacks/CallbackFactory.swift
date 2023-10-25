@@ -79,7 +79,8 @@ public class CallbackFactory: NSObject {
             CallbackType.WebAuthnRegistrationCallback.rawValue: WebAuthnRegistrationCallback.self,
             CallbackType.IdPCallback.rawValue: IdPCallback.self,
             CallbackType.SelectIdPCallback.rawValue: SelectIdPCallback.self,
-        ] 
+            CallbackType.FRAppIntegrityCallback.rawValue: FRAppIntegrityCallback.self,
+        ]
     }
     
     

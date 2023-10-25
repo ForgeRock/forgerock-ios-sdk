@@ -93,6 +93,7 @@ enum CallbackType: String {
     case SelectIdPCallback = "SelectIdPCallback"
     case DeviceBindingCallback = "DeviceBindingCallback"
     case DeviceSigningVerifierCallback = "DeviceSigningVerifierCallback"
+    case FRAppIntegrityCallback = "AppIntegrityCallback"
 }
 
 /// CBConstants is mainly responsible to maintain all constant values related to Callback implementation
@@ -243,4 +244,11 @@ extension CBConstants {
     static let deviceName: String = "deviceName"
     static let deviceId: String = "deviceId"
     static let clientError: String = "clientError"
+}
+
+//  MARK: - AppIntegrity
+extension CBConstants {
+    static let attest = "attestToken"
+    static let keyId = "keyId"
+    static let clientData = "clientData"
 }

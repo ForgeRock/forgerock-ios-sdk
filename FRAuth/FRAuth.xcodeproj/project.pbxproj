@@ -9,13 +9,19 @@
 /* Begin PBXBuildFile section */
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
-
+		3A3E785B2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E785A2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift */; };
+		3A3E78632AAF764F007962B7 /* FRAppAttestDomainModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E78622AAF764F007962B7 /* FRAppAttestDomainModal.swift */; };
+		3A3E78652AAF9919007962B7 /* FRAppAttestServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E78642AAF9919007962B7 /* FRAppAttestServiceImpl.swift */; };
+		3A3E78682AB0D642007962B7 /* FRAppAttestDomainModalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E78672AB0D642007962B7 /* FRAppAttestDomainModalTests.swift */; };
+		3A4B46DC2AB2D149009E7171 /* FRAppAttestServiceImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4B46DB2AB2D149009E7171 /* FRAppAttestServiceImplTests.swift */; };
+		3A4B46DE2AB38BA6009E7171 /* FRAppIntegrityCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4B46DD2AB38BA6009E7171 /* FRAppIntegrityCallbackTests.swift */; };
+		3A4B46E42AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4B46E32AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift */; };
 		3A53E4DA2A153AF200E17DDF /* PolicyAdviceCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53E4D92A153AF200E17DDF /* PolicyAdviceCreatorTests.swift */; };
+		3A67B8832AD83946003331C5 /* FRAppIntegrityKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A67B8822AD83946003331C5 /* FRAppIntegrityKeys.swift */; };
 		3A6D26672A1345400099D877 /* PolicyAdviceCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D26662A1345400099D877 /* PolicyAdviceCreator.swift */; };
-
+		3AB062FA2AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB062F92AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
 		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
-
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
@@ -328,13 +334,19 @@
 /* Begin PBXFileReference section */
 		3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionary.swift; sourceTree = "<group>"; };
 		3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicDictionaryTests.swift; sourceTree = "<group>"; };
-
+		3A3E785A2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppIntegrityCallback.swift; sourceTree = "<group>"; };
+		3A3E78622AAF764F007962B7 /* FRAppAttestDomainModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppAttestDomainModal.swift; sourceTree = "<group>"; };
+		3A3E78642AAF9919007962B7 /* FRAppAttestServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppAttestServiceImpl.swift; sourceTree = "<group>"; };
+		3A3E78672AB0D642007962B7 /* FRAppAttestDomainModalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppAttestDomainModalTests.swift; sourceTree = "<group>"; };
+		3A4B46DB2AB2D149009E7171 /* FRAppAttestServiceImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppAttestServiceImplTests.swift; sourceTree = "<group>"; };
+		3A4B46DD2AB38BA6009E7171 /* FRAppIntegrityCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppIntegrityCallbackTests.swift; sourceTree = "<group>"; };
+		3A4B46E32AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_07_AppIntegrityTest.swift; sourceTree = "<group>"; };
 		3A53E4D92A153AF200E17DDF /* PolicyAdviceCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceCreatorTests.swift; sourceTree = "<group>"; };
+		3A67B8822AD83946003331C5 /* FRAppIntegrityKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppIntegrityKeys.swift; sourceTree = "<group>"; };
 		3A6D26662A1345400099D877 /* PolicyAdviceCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceCreator.swift; sourceTree = "<group>"; };
-
+		3AB062F92AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppIntegrityKeysTests.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
 		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
-
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -625,6 +637,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A3E78612AAF6DA3007962B7 /* AppIntegrity */ = {
+			isa = PBXGroup;
+			children = (
+				3A3E78622AAF764F007962B7 /* FRAppAttestDomainModal.swift */,
+				3A3E78642AAF9919007962B7 /* FRAppAttestServiceImpl.swift */,
+				3A67B8822AD83946003331C5 /* FRAppIntegrityKeys.swift */,
+			);
+			path = AppIntegrity;
+			sourceTree = "<group>";
+		};
+		3A3E78662AB0D602007962B7 /* AppIntegrity */ = {
+			isa = PBXGroup;
+			children = (
+				3A3E78672AB0D642007962B7 /* FRAppAttestDomainModalTests.swift */,
+				3A4B46DB2AB2D149009E7171 /* FRAppAttestServiceImplTests.swift */,
+				3AB062F92AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift */,
+			);
+			path = AppIntegrity;
+			sourceTree = "<group>";
+		};
 		A5950A2827EA200200EDEFE4 /* SSL Pinning */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,6 +688,7 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				3A3E78662AB0D602007962B7 /* AppIntegrity */,
 				EC0BA2F72863323A00F8326E /* FROptions */,
 				A5950A2827EA200200EDEFE4 /* SSL Pinning */,
 				D53A806126278A410093B1CA /* WebAuthn */,
@@ -779,6 +812,7 @@
 				D58BC3892602A45500254654 /* SelectIdPCallbackTests.swift */,
 				D58BC38E2602A47600254654 /* IdPCallbackTests.swift */,
 				D588649126312D2000EAFE4E /* CallbackConstantsTests.swift */,
+				3A4B46DD2AB38BA6009E7171 /* FRAppIntegrityCallbackTests.swift */,
 			);
 			path = Callback;
 			sourceTree = "<group>";
@@ -906,6 +940,7 @@
 		D55462FA22A6DF720096C7A4 /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				3A3E78612AAF6DA3007962B7 /* AppIntegrity */,
 				D5723C3823F4C65800557AA8 /* Authentication */,
 				D5723C3B23F4C65800557AA8 /* Authorization */,
 				D586CF4023358EDF007A2194 /* Callbacks */,
@@ -1036,6 +1071,7 @@
 				D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */,
 				D5B2061325FFE0E500DABB9B /* SelectIdPCallback.swift */,
 				D5B2061725FFE0F300DABB9B /* IdPCallback.swift */,
+				3A3E785A2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift */,
 			);
 			path = Callbacks;
 			sourceTree = "<group>";
@@ -1150,6 +1186,7 @@
 				D5888C2025664E920041FD94 /* AA_04_NumberAttributeInputCallbackTest.swift */,
 				959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */,
 				95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */,
+				3A4B46E32AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift */,
 			);
 			path = "Callback-Live";
 			sourceTree = "<group>";
@@ -1729,6 +1766,7 @@
 				EC13ABAA29A380920069AC41 /* FRWebAuthnManager.swift in Sources */,
 				D53A8058262789E40093B1CA /* WebAuthnRegistrationCallback.swift in Sources */,
 				D53A8039262789BD0093B1CA /* COSE.swift in Sources */,
+				3A3E78652AAF9919007962B7 /* FRAppAttestServiceImpl.swift in Sources */,
 				D5B2061025FFDDD200DABB9B /* IdPClient.swift in Sources */,
 				D5B2A38023FCA9A600764370 /* DeviceProfileCallback.swift in Sources */,
 				D586CF8D23358EE0007A2194 /* NetworkReachabilityMonitor.swift in Sources */,
@@ -1752,6 +1790,7 @@
 				D586CF9623358EE0007A2194 /* PollingWaitCallback.swift in Sources */,
 				D53A8056262789E40093B1CA /* WebAuthnAuthenticationCallback.swift in Sources */,
 				D5B2A37E23FC951700764370 /* HiddenValueCallback.swift in Sources */,
+				3A67B8832AD83946003331C5 /* FRAppIntegrityKeys.swift in Sources */,
 				D53A8040262789BD0093B1CA /* PlatformAuthenticatorGetAssertionSession.swift in Sources */,
 				D5B2A38923FCB25E00764370 /* ActionCallback.swift in Sources */,
 				D5B2061425FFE0E500DABB9B /* SelectIdPCallback.swift in Sources */,
@@ -1773,6 +1812,7 @@
 				D586CFB223358EE0007A2194 /* CallbackConstants.swift in Sources */,
 				D586CF9023358EE0007A2194 /* PKCE.swift in Sources */,
 				D586CFBB23358EE0007A2194 /* NetworkCollector.swift in Sources */,
+				3A3E78632AAF764F007962B7 /* FRAppAttestDomainModal.swift in Sources */,
 				D53A803F262789BD0093B1CA /* WAKLogger.swift in Sources */,
 				D53A8046262789BD0093B1CA /* CredentialStore.swift in Sources */,
 				D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */,
@@ -1798,6 +1838,7 @@
 				D53A803C262789BD0093B1CA /* JSON.swift in Sources */,
 				D586CF9B23358EE0007A2194 /* ReCaptchaCallback.swift in Sources */,
 				D53A8049262789BD0093B1CA /* Attestation.swift in Sources */,
+				3A3E785B2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift in Sources */,
 				D5B2061825FFE0F300DABB9B /* IdPCallback.swift in Sources */,
 				D586CF9323358EE0007A2194 /* NameCallback.swift in Sources */,
 				D586CF9F23358EE0007A2194 /* ChoiceCallback.swift in Sources */,
@@ -1830,12 +1871,14 @@
 				EC0BA2FA2863325B00F8326E /* FROptionsTests.swift in Sources */,
 				D5791BA325F87DE7004B487A /* AA_04_DeviceProfileCallbackTest.swift in Sources */,
 				D5791BA425F87DE7004B487A /* AA_04_StringAttributeInputCallbackTest.swift in Sources */,
+				3A4B46E42AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift in Sources */,
 				D5791BA525F87DE7004B487A /* AA_04_PollingWaitCallbackTest.swift in Sources */,
 				D5791BA625F87DE7004B487A /* CallbackBaseTest.swift in Sources */,
 				D53A806526278A410093B1CA /* WebAuthnRegistrationTests.swift in Sources */,
 				D5791BA725F87DE7004B487A /* AA_04_PageCallback65Test.swift in Sources */,
 				D58BC39A2602B65100254654 /* SocialLoginErrorTests.swift in Sources */,
 				D5791BA825F87DE7004B487A /* AA_04_ChoiceCallbackTest.swift in Sources */,
+				3A4B46DC2AB2D149009E7171 /* FRAppAttestServiceImplTests.swift in Sources */,
 				D5791BA925F87DE7004B487A /* AA_04_ReCaptchaCallbackTest.swift in Sources */,
 				D5791BAA25F87DE7004B487A /* AA_04_KbaCreateCallbackTest.swift in Sources */,
 				D5791BAB25F87DE7004B487A /* AA_04_NumberAttributeInputCallbackTest.swift in Sources */,
@@ -1857,6 +1900,7 @@
 				D58BC3A926030A5A00254654 /* IdPHandlerTests.swift in Sources */,
 				D588649226312D2000EAFE4E /* CallbackConstantsTests.swift in Sources */,
 				D5791BBA25F87DE8004B487A /* NodeFlowTests.swift in Sources */,
+				3A4B46DE2AB38BA6009E7171 /* FRAppIntegrityCallbackTests.swift in Sources */,
 				D5791BBB25F87DE8004B487A /* ChoiceCallbackTests.swift in Sources */,
 				D5791BBC25F87DE8004B487A /* AbstractValidatedCallbackTests.swift in Sources */,
 				D5791BBD25F87DE8004B487A /* PasswordCallbackTests.swift in Sources */,
@@ -1872,6 +1916,7 @@
 				D5791BC625F87DE8004B487A /* ConfirmationCallbackTests.swift in Sources */,
 				D5791BC725F87DE8004B487A /* DeviceProfileCallbackTests.swift in Sources */,
 				D53A806F26278A5C0093B1CA /* WebAuthnRegistrationCallbackTests.swift in Sources */,
+				3AB062FA2AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift in Sources */,
 				D5791BC825F87DE8004B487A /* MetadataCallbackTests.swift in Sources */,
 				D5791BC925F87DE8004B487A /* FailedPolicyTests.swift in Sources */,
 				D5791BCA25F87DE8004B487A /* BooleanAttributeInputCallbackTests.swift in Sources */,
@@ -1897,17 +1942,15 @@
 				D5791BDD25F87DE8004B487A /* TokenTests.swift in Sources */,
 				D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */,
 				D58BC39F2602FB7700254654 /* IdPValueTests.swift in Sources */,
-
 				3A53E4DA2A153AF200E17DDF /* PolicyAdviceCreatorTests.swift in Sources */,
-
 				959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */,
-
 				ECDF5F4C296851DD007BB721 /* FRWebAuthnTests.swift in Sources */,
 				D5791BDF25F87DE8004B487A /* AccessTokenTests.swift in Sources */,
 				D5791BE025F87DE8004B487A /* FRUserTests.swift in Sources */,
 				D5791BE125F87DE8004B487A /* FRUserBrowserTests.swift in Sources */,
 				D5791BE225F87DE8004B487A /* NetworkReachabilityMonitorTests.swift in Sources */,
 				D58BC38F2602A47600254654 /* IdPCallbackTests.swift in Sources */,
+				3A3E78682AB0D642007962B7 /* FRAppAttestDomainModalTests.swift in Sources */,
 				D5791BE325F87DE8004B487A /* FRBaseTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2075,7 +2118,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
@@ -2112,7 +2155,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
@@ -2132,6 +2175,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2146,7 +2191,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -2162,6 +2206,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2176,7 +2222,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;

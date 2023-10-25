@@ -780,7 +780,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -803,7 +803,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -933,7 +933,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -946,7 +946,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -960,7 +960,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -973,7 +973,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
