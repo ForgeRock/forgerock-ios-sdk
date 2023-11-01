@@ -25,6 +25,8 @@ class LoginViewController: UIViewController {
     private var textFieldArray = [UITextField]()
     private let hud = JGProgressHUD()
     
+    private var useCentral = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -61,12 +63,40 @@ class LoginViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    private func performCentralizedLogin() {
+        FRUser.browser()?
+            .set(presentingViewController: self)
+            .set(browserType: .authSession)
+            .setCustomParam(key: "acr_values", value: "biometrics")
+            .build().login { [weak self] (user, error) in
+                guard let `self` = self else { return }
+                print("User: \(String(describing: user)) || Error: \(String(describing: error))")
+                DispatchQueue.main.async {
+                    if let _ = user {
+                        self.updateStatus()
+                        self.goToNext()
+                    }
+                }
+            }
+        return
+    }
+    
     private func beginAuthentication() {
+        //Implement Client side local biometrics ask for biometric user presence.
+        //If success -> call FRUser.currentUser -> carry on to protected space
+        //If failure -> call FRUser.currentUser?.logout()
         if let _ = FRUser.currentUser {
+            //Implement Client side local biometrics ask for biometric user presence.
+            //If success -> carry on to protected space
+            //If failure -> call FRUser.currentUser?.logout()
             self.updateStatus()
             self.goToNext()
         } else {
             if currentNode == nil {
+                if self.useCentral == true {
+                    self.performCentralizedLogin()
+                    return
+                }
                 self.hud.textLabel.text = "Calling journey"
                 // Call the default Login Journey or the Biometrics Journey
                 let journeyName =  (UserDefaults.standard.object(forKey: PebbleBankUtilities.biometricsEnabledKey) as? Bool ?? false) ? PebbleBankUtilities.biometricsAuthenticationJourney : PebbleBankUtilities.mainAuthenticationJourney

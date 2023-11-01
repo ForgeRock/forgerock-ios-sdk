@@ -23,17 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    //  This method is one of AppDelegate protocol that is invoked when iOS tries to open the app using the app's dedicated URL
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        let resumeURL = url // validate the resumeURI contains 'suspendedId' parameter
-        
-        //  With given resumeURI, use FRSession to resume authenticate flow
-        FRSession.authenticate(resumeURI: resumeURL) { (token: Token?, node, error) in
-            //  Handle Node, or the result of continuing the the authentication flow
-        }
-        
-        return true
+        // Parse and validate URL, extract authorization code, and continue the flow:
+        return Browser.validateBrowserLogin(url: url)
     }
     
     
