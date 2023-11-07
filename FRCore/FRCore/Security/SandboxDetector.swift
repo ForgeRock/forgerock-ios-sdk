@@ -9,11 +9,6 @@
 //
 
 import Foundation
-#if SWIFT_PACKAGE
-import cFRCore
-#else
-import FRCore
-#endif
 
 /// SandboxDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class SandboxDetector: JailbreakDetector {
@@ -26,11 +21,26 @@ public class SandboxDetector: JailbreakDetector {
     /// - Returns: returns 1.0 when the device can successfully use fork() and return pid; otherwise returns 0.0
     public func analyze() -> Double {
         Log.v("\(self) analyzing")
-        let result = validate_sandbox()
-        if result {
+        
+        if isSimulator() {
+            Log.v("Running on simulator, skipping \(self) analyzing")
+            return 0.0
+        }
+        
+        let pointerToFork = UnsafeMutableRawPointer(bitPattern: -2)
+        let forkPtr = dlsym(pointerToFork, "fork")
+        typealias ForkType = @convention(c) () -> pid_t
+        let fork = unsafeBitCast(forkPtr, to: ForkType.self)
+        let forkResult = fork()
+        
+        if forkResult >= 0 {
+            if forkResult > 0 {
+                kill(forkResult, SIGTERM)
+            }
             Log.w("Security Warning: \(self) is returning 1.0")
             return 1.0
         }
+        
         return 0.0
     }
 }
