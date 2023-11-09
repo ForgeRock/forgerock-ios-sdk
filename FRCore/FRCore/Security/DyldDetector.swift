@@ -9,11 +9,7 @@
 //
 
 import Foundation
-#if SWIFT_PACKAGE
-import cFRCore
-#else
-import FRCore
-#endif
+import MachO
 
 /// DyldDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
 public class DyldDetector: JailbreakDetector {
@@ -23,16 +19,50 @@ public class DyldDetector: JailbreakDetector {
     
     /// Analyzes whether dynamically loaded libraries contain any one of commonly known libraries from Jailbreak process
     ///
-    /// - NOTE: MobileSubstrate is commonly used library in Jailbroken device, and by loading all dynamic library, and checking whether the library was loaded or not is used in this validation.
-    ///
-    /// - Returns: return 1.0 if MobileSubstrate library was loaded; ohterwise returns 0.0
+    /// - Returns: return 1.0 if any one of commonly known libraries from Jailbreak process  was loaded; ohterwise returns 0.0
     public func analyze() -> Double {
         Log.v("\(self) analyzing")
-        let result = validate_dyld()
-        if result {
-            Log.w("Security Warning: \(self) is returning 1.0")
-            return 1.0
+        
+        let suspiciousLibraries: Set<String> = [
+            "SubstrateLoader.dylib",
+            "SSLKillSwitch2.dylib",
+            "SSLKillSwitch.dylib",
+            "MobileSubstrate.dylib",
+            "TweakInject.dylib",
+            "CydiaSubstrate",
+            "cynject",
+            "CustomWidgetIcons",
+            "PreferenceLoader",
+            "RocketBootstrap",
+            "WeeLoader",
+            "/.file", // HideJB (2.1.1) changes full paths of the suspicious libraries to "/.file"
+            "libhooker",
+            "SubstrateInserter",
+            "SubstrateBootstrap",
+            "ABypass",
+            "FlyJB",
+            "Substitute",
+            "Cephei",
+            "Electra",
+            "AppSyncUnified-FrontBoard.dylib",
+            "Shadow",
+            "FridaGadget",
+            "frida",
+            "libcycript"
+        ]
+        for libraryIndex in 0..<_dyld_image_count() {
+            
+            // _dyld_get_image_name returns const char * that needs to be casted to Swift String
+            guard let loadedLibrary = String(validatingUTF8: _dyld_get_image_name(libraryIndex)) else { continue }
+            
+            for suspiciousLibrary in suspiciousLibraries {
+                if loadedLibrary.lowercased().contains(suspiciousLibrary.lowercased()) {
+                    Log.w("Security Warning: \(self) is returning 1.0")
+                    return 1.0
+                }
+            }
         }
+        
         return 0.0
     }
 }

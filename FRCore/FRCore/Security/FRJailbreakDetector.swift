@@ -49,15 +49,14 @@ public class FRJailbreakDetector: NSObject {
     /// Private initialization method which initializes default array of JailbreakDetector
     @objc
     public override init() {
-        detectors = [CydiaDetector(),
-                     CydiaSubstrateDetector(),
-                     SSHDetector(),
-                     BashDetector(),
-                     AptDetector(),
-                     PrivateFileWritableDetector(),
+        detectors = [SuspiciousFilesExistenceDetector(),
+                     SuspiciousFilesAccessibleDetector(),
+                     URLSchemeDetector(),
+                     RestrictedDirectoriesWritableDetector(),
                      SymbolicLinkDetector(),
                      DyldDetector(),
-                     SandboxDetector()]
+                     SandboxDetector(),
+                     SuspiciousObjCClassesDetector()]
     }
     
     /// Analyzes and returns the result of given JailbreakDetector
