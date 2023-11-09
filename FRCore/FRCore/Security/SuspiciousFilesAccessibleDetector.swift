@@ -29,7 +29,8 @@ public class SuspiciousFilesAccessibleDetector: JailbreakDetector {
             "/Applications/Cydia.app",
             "/Library/MobileSubstrate/MobileSubstrate.dylib",
             "/etc/apt",
-            "/var/log/apt"
+            "/var/log/apt",
+            "/var/jb/"
         ]
         
         // These files can give false positive in the emulator

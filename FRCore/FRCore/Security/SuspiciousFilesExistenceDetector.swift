@@ -93,7 +93,8 @@ public class SuspiciousFilesExistenceDetector: JailbreakDetector {
             "/Library/MobileSubstrate/DynamicLibraries", // DynamicLibraries directory in general
             "/var/mobile/Library/Preferences/me.jjolano.shadow.plist",
             "/Applications/Snoop-itConfig.app",
-            "/tmp/palera1n/"
+            "/tmp/palera1n/",
+            "/var/jb/"
         ]
         
         // These files can give false positive in the simulator
