@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,13 +18,8 @@
 		1BB34B44299704A300729300 /* AccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B43299704A300729300 /* AccountError.swift */; };
 		1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */; };
 		1BB34B48299AE08300729300 /* URIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B47299AE08300729300 /* URIType.swift */; };
-		A5285C122AD885DE00A8CE01 /* otpauth-migration.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5285C102AD885DE00A8CE01 /* otpauth-migration.pb.swift */; };
 		A56A46EF2A4A5601000C1055 /* RequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */; };
-		A5B7D8362AD703C400972032 /* AccountMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B7D8352AD703C400972032 /* AccountMigrationManager.swift */; };
 		A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */; };
-		A5FDBA9E2ADEBAF0009679C6 /* AccountMigrationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FDBA9D2ADEBAF0009679C6 /* AccountMigrationError.swift */; };
-		A5FDBAA12ADF333C009679C6 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = A5FDBAA02ADF333C009679C6 /* SwiftProtobuf */; };
-		A5FDBAA52ADF35F6009679C6 /* AccountMigrationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FDBAA42ADF35F6009679C6 /* AccountMigrationManagerTests.swift */; };
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
 		D525BE01256765190012CE33 /* FRCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; };
 		D525BE02256765190012CE33 /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D525BDFC2567650B0012CE33 /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -207,12 +202,8 @@
 		1BB34B43299704A300729300 /* AccountError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountError.swift; sourceTree = "<group>"; };
 		1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidFakePolicy.swift; sourceTree = "<group>"; };
 		1BB34B47299AE08300729300 /* URIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URIType.swift; sourceTree = "<group>"; };
-		A5285C102AD885DE00A8CE01 /* otpauth-migration.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "otpauth-migration.pb.swift"; sourceTree = "<group>"; };
 		A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorTests.swift; sourceTree = "<group>"; };
-		A5B7D8352AD703C400972032 /* AccountMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMigrationManager.swift; sourceTree = "<group>"; };
 		A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthentication.swift; sourceTree = "<group>"; };
-		A5FDBA9D2ADEBAF0009679C6 /* AccountMigrationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMigrationError.swift; sourceTree = "<group>"; };
-		A5FDBAA42ADF35F6009679C6 /* AccountMigrationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMigrationManagerTests.swift; sourceTree = "<group>"; };
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
 		D525BDF62567650B0012CE33 /* FRCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCore.xcodeproj; path = ../FRCore/FRCore.xcodeproj; sourceTree = "<group>"; };
 		D52D5C372412ECA800835035 /* MechanismError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MechanismError.swift; sourceTree = "<group>"; };
@@ -335,7 +326,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D525BE01256765190012CE33 /* FRCore.framework in Frameworks */,
-				A5FDBAA12ADF333C009679C6 /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,22 +375,6 @@
 			path = Biometric;
 			sourceTree = "<group>";
 		};
-		A5FDBAA22ADF3583009679C6 /* OTPAuthMigration */ = {
-			isa = PBXGroup;
-			children = (
-				A5285C102AD885DE00A8CE01 /* otpauth-migration.pb.swift */,
-			);
-			path = OTPAuthMigration;
-			sourceTree = "<group>";
-		};
-		A5FDBAA32ADF35D3009679C6 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				A5FDBAA42ADF35F6009679C6 /* AccountMigrationManagerTests.swift */,
-			);
-			path = Manager;
-			sourceTree = "<group>";
-		};
 		D525BDF72567650B0012CE33 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,7 +401,6 @@
 				D5B55C1A2432870600B49320 /* OathError.swift */,
 				D5FFA03A245F52E8003680C1 /* PushNotificationError.swift */,
 				D5FFA045245F5560003680C1 /* CryptoError.swift */,
-				A5FDBA9D2ADEBAF0009679C6 /* AccountMigrationError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -469,7 +442,6 @@
 		D52D5C65241333D500835035 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				A5FDBAA32ADF35D3009679C6 /* Manager */,
 				D5D0A51A24621C0700BA9FE0 /* Crypto */,
 				D5CC1DC52460C9EC00D0CB94 /* JWT */,
 				D541AC072432B8090057A060 /* Error */,
@@ -799,7 +771,6 @@
 		D5C3549A2412EC0600695A84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A5FDBAA22ADF3583009679C6 /* OTPAuthMigration */,
 				D5C354A12412EC0600695A84 /* Account */,
 				D5C3549B2412EC0600695A84 /* Mechanism */,
 				D5C3549F2412EC0600695A84 /* Notification */,
@@ -838,7 +809,6 @@
 			isa = PBXGroup;
 			children = (
 				D5C9A1AF24636A73004D5941 /* AuthenticatorManager.swift */,
-				A5B7D8352AD703C400972032 /* AccountMigrationManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -960,9 +930,6 @@
 				D525BE00256765130012CE33 /* PBXTargetDependency */,
 			);
 			name = FRAuthenticator;
-			packageProductDependencies = (
-				A5FDBAA02ADF333C009679C6 /* SwiftProtobuf */,
-			);
 			productName = FRAuthenticator;
 			productReference = D5C354802412EBF800695A84 /* FRAuthenticator.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1013,9 +980,6 @@
 				Base,
 			);
 			mainGroup = D5C354762412EBF800695A84;
-			packageReferences = (
-				A5FDBA9F2ADF31A0009679C6 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
-			);
 			productRefGroup = D5C354812412EBF800695A84 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -1116,7 +1080,6 @@
 				D5E3089F2473942300724502 /* OathTokenCode.swift in Sources */,
 				D5C9A1B024636A73004D5941 /* AuthenticatorManager.swift in Sources */,
 				D5B55C1F24329ABA00B49320 /* Base32.swift in Sources */,
-				A5285C122AD885DE00A8CE01 /* otpauth-migration.pb.swift in Sources */,
 				D5D9147A242E844600E24ECA /* OathCodeGenerator.swift in Sources */,
 				D52D5C52241318F000835035 /* PushQRCodeParser.swift in Sources */,
 				D5FFA05A245FB319003680C1 /* CodableValue.swift in Sources */,
@@ -1134,9 +1097,7 @@
 				1BB34B3629957D8F00729300 /* BiometricAvailablePolicy.swift in Sources */,
 				D5C354A32412EC0600695A84 /* Mechanism.swift in Sources */,
 				D52D5C5A24131B3700835035 /* TOTPMechanism.swift in Sources */,
-				A5FDBA9E2ADEBAF0009679C6 /* AccountMigrationError.swift in Sources */,
 				D542AA3D2416B41900ECBFC1 /* StorageClient.swift in Sources */,
-				A5B7D8362AD703C400972032 /* AccountMigrationManager.swift in Sources */,
 				D5E308982473821000724502 /* OathMechanism.swift in Sources */,
 				D5B55C1B2432870600B49320 /* OathError.swift in Sources */,
 				D5FFA046245F5560003680C1 /* CryptoError.swift in Sources */,
@@ -1165,7 +1126,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5FDBAA52ADF35F6009679C6 /* AccountMigrationManagerTests.swift in Sources */,
 				D5791C1125F88393004B487A /* FRBaseTestCase.swift in Sources */,
 				D5791C1225F88393004B487A /* FRTestLogger.swift in Sources */,
 				D5791C1325F88393004B487A /* FRTestStubResponseParser.swift in Sources */,
@@ -1497,25 +1457,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A5FDBA9F2ADF31A0009679C6 /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-protobuf.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.24.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A5FDBAA02ADF333C009679C6 /* SwiftProtobuf */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A5FDBA9F2ADF31A0009679C6 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
-			productName = SwiftProtobuf;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D5C354772412EBF800695A84 /* Project object */;
 }
