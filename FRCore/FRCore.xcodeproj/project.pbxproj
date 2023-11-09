@@ -30,6 +30,18 @@
 		A52873F92AFAB779002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */; };
 		A52873FA2AFAB77B002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */; };
 		A52873FB2AFAB77E002424C0 /* SuspiciousObjCClassesDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */; };
+		A52873FF2AFD3479002424C0 /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873FE2AFD3479002424C0 /* AptDetector.swift */; };
+		A52874002AFD3479002424C0 /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873FE2AFD3479002424C0 /* AptDetector.swift */; };
+		A52874022AFD3482002424C0 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874012AFD3482002424C0 /* BashDetector.swift */; };
+		A52874032AFD3482002424C0 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874012AFD3482002424C0 /* BashDetector.swift */; };
+		A52874052AFD3489002424C0 /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874042AFD3488002424C0 /* CydiaDetector.swift */; };
+		A52874062AFD3489002424C0 /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874042AFD3488002424C0 /* CydiaDetector.swift */; };
+		A52874082AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */; };
+		A52874092AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */; };
+		A528740B2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */; };
+		A528740C2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */; };
+		A528740E2AFD34A5002424C0 /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740D2AFD34A5002424C0 /* SSHDetector.swift */; };
+		A528740F2AFD34A5002424C0 /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740D2AFD34A5002424C0 /* SSHDetector.swift */; };
 		A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */; };
 		A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C229497F6E007237C1 /* CryptoKey.swift */; };
 		A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C5294A8747007237C1 /* CryptoKeyTests.swift */; };
@@ -140,6 +152,12 @@
 		A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousFilesExistenceDetector.swift; sourceTree = "<group>"; };
 		A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousFilesAccessibleDetector.swift; sourceTree = "<group>"; };
 		A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousObjCClassesDetector.swift; sourceTree = "<group>"; };
+		A52873FE2AFD3479002424C0 /* AptDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AptDetector.swift; sourceTree = "<group>"; };
+		A52874012AFD3482002424C0 /* BashDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashDetector.swift; sourceTree = "<group>"; };
+		A52874042AFD3488002424C0 /* CydiaDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaDetector.swift; sourceTree = "<group>"; };
+		A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaSubstrateDetector.swift; sourceTree = "<group>"; };
+		A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateFileWritableDetector.swift; sourceTree = "<group>"; };
+		A528740D2AFD34A5002424C0 /* SSHDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHDetector.swift; sourceTree = "<group>"; };
 		A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticator.swift; sourceTree = "<group>"; };
 		A56338C229497F6E007237C1 /* CryptoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKey.swift; sourceTree = "<group>"; };
 		A56338C5294A8747007237C1 /* CryptoKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeyTests.swift; sourceTree = "<group>"; };
@@ -264,6 +282,12 @@
 				A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */,
 				A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */,
 				A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */,
+				A52873FE2AFD3479002424C0 /* AptDetector.swift */,
+				A52874012AFD3482002424C0 /* BashDetector.swift */,
+				A52874042AFD3488002424C0 /* CydiaDetector.swift */,
+				A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */,
+				A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */,
+				A528740D2AFD34A5002424C0 /* SSHDetector.swift */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -670,6 +694,7 @@
 			files = (
 				D5C979B82409DF9700DA380A /* Result.swift in Sources */,
 				1BA471442993472500E657DA /* RestrictedDirectoriesWritableDetector.swift in Sources */,
+				A52873FF2AFD3479002424C0 /* AptDetector.swift in Sources */,
 				D5C979BA2409DF9700DA380A /* Request.swift in Sources */,
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
 				D5E86BC12481E6D700DFD5E0 /* FRURLUtil.swift in Sources */,
@@ -683,20 +708,25 @@
 				A52873D72AF1EEA3002424C0 /* URLSchemeDetector.swift in Sources */,
 				D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				1B5D4CFF299416DE003D96F1 /* JBUtil.c in Sources */,
+				A528740B2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */,
 				D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */,
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
 				A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
+				A52874022AFD3482002424C0 /* BashDetector.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
 				D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */,
 				D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */,
 				A52873DB2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */,
 				D5D21498247843C900B26403 /* Action.swift in Sources */,
+				A528740E2AFD34A5002424C0 /* SSHDetector.swift in Sources */,
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
 				EC5F792527A8091F0004A982 /* FRSecurityConfiguration.swift in Sources */,
 				1BA471472993472500E657DA /* JailbreakDetector.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
+				A52874052AFD3489002424C0 /* CydiaDetector.swift in Sources */,
+				A52874082AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */,
 				A52873D92AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */,
 				A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */,
 				D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */,
@@ -709,6 +739,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A528740F2AFD34A5002424C0 /* SSHDetector.swift in Sources */,
 				D5D2149D2478575900B26403 /* FRStringUtil.swift in Sources */,
 				D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */,
 				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
@@ -716,12 +747,15 @@
 				A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */,
 				A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */,
 				D5D2149F2478575900B26403 /* Action.swift in Sources */,
+				A52874062AFD3489002424C0 /* CydiaDetector.swift in Sources */,
 				D5E7B1C5256C609200DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5CBC24424102BB100F9B6EA /* FRError.swift in Sources */,
 				1BA471552993472500E657DA /* SandboxDetector.swift in Sources */,
 				D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */,
 				D5CBC24524102BB100F9B6EA /* NetworkError.swift in Sources */,
+				A52874032AFD3482002424C0 /* BashDetector.swift in Sources */,
+				A528740C2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */,
 				A5950A1D27E9497A00EDEFE4 /* FRSecurityConfiguration.swift in Sources */,
 				D5CBC24624102BB100F9B6EA /* KeychainService.swift in Sources */,
 				D5EE06F1255FA1CC00C2D1BC /* FRTestStubResponseParser.swift in Sources */,
@@ -732,6 +766,7 @@
 				D5CBC24824102BB100F9B6EA /* Log.swift in Sources */,
 				A52873F82AFAB775002424C0 /* URLSchemeDetector.swift in Sources */,
 				1BA4714F2993472500E657DA /* RestrictedDirectoriesWritableDetector.swift in Sources */,
+				A52874002AFD3479002424C0 /* AptDetector.swift in Sources */,
 				D5CBC24924102BB100F9B6EA /* FRConsoleLogger.swift in Sources */,
 				D5EE06F0255FA1CC00C2D1BC /* FRBaseTestCase.swift in Sources */,
 				A5950A2527E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift in Sources */,
@@ -746,6 +781,7 @@
 				D5CBC24C24102BB200F9B6EA /* Response.swift in Sources */,
 				D5CBC24D24102BB200F9B6EA /* Request.swift in Sources */,
 				D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */,
+				A52874092AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */,
 				D5CBC24E24102BB200F9B6EA /* RestClient.swift in Sources */,
 				D5CBC24324102B8800F9B6EA /* RestClientTests.swift in Sources */,
 				D5D214AF24786EA800B26403 /* RequestInterceptorTests.swift in Sources */,
