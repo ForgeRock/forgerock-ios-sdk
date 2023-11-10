@@ -46,12 +46,6 @@ class JailbreakDetectorTests: FRBaseTestCase {
         for detector in jbDetector.detectors {
             var expectedResult: Double = 0.0
             
-            #if targetEnvironment(simulator)
-            if detector is SSHDetector || detector is BashDetector {
-                expectedResult = 1.0
-            }
-            #endif
-            
             #if !targetEnvironment(simulator)
             XCTAssertEqual(detector.analyze(), expectedResult, "Detector comparison failed for \(String(describing: detector))")
             #else

@@ -39,4 +39,20 @@ extension JailbreakDetector {
         fclose(file)
         return true
     }
+    
+    func isSimulator() -> Bool {
+        return checkCompile() || checkRuntime()
+    }
+    
+    func checkRuntime() -> Bool {
+        return ProcessInfo().environment["SIMULATOR_DEVICE_NAME"] != nil
+    }
+
+    func checkCompile() -> Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
+    }
 }

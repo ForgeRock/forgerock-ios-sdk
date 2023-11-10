@@ -1,3 +1,7 @@
+# Unreleased
+#### Added
+- Update Jailbreak Detectors [SDKS-2796]
+
 # Version 4.1.1
 
 ## [4.1.1]

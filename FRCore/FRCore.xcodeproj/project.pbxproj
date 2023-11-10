@@ -7,35 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B5D4CFE299416DB003D96F1 /* JBUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA471592994162E00E657DA /* JBUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B5D4CFF299416DE003D96F1 /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA4715B2994162E00E657DA /* JBUtil.c */; };
+		1BA47141299346C100E657DA /* JailbreakDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA47140299346C100E657DA /* JailbreakDetectorTests.swift */; };
+		1BA471432993472500E657DA /* DyldDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C94299343CB0068D6E8 /* DyldDetector.swift */; };
+		1BA471442993472500E657DA /* RestrictedDirectoriesWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C99299343CB0068D6E8 /* RestrictedDirectoriesWritableDetector.swift */; };
+		1BA471472993472500E657DA /* JailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */; };
+		1BA471492993472500E657DA /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */; };
+		1BA4714A2993472500E657DA /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */; };
+		1BA4714C2993472500E657DA /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */; };
+		1BA4714E2993472500E657DA /* DyldDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C94299343CB0068D6E8 /* DyldDetector.swift */; };
+		1BA4714F2993472500E657DA /* RestrictedDirectoriesWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C99299343CB0068D6E8 /* RestrictedDirectoriesWritableDetector.swift */; };
+		1BA471522993472500E657DA /* JailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */; };
+		1BA471542993472500E657DA /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */; };
+		1BA471552993472500E657DA /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */; };
+		1BA471572993472500E657DA /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */; };
+		A52873D72AF1EEA3002424C0 /* URLSchemeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D62AF1EEA3002424C0 /* URLSchemeDetector.swift */; };
+		A52873D92AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */; };
+		A52873DB2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */; };
+		A52873DD2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */; };
+		A52873F82AFAB775002424C0 /* URLSchemeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D62AF1EEA3002424C0 /* URLSchemeDetector.swift */; };
+		A52873F92AFAB779002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */; };
+		A52873FA2AFAB77B002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */; };
+		A52873FB2AFAB77E002424C0 /* SuspiciousObjCClassesDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */; };
+		A52873FF2AFD3479002424C0 /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873FE2AFD3479002424C0 /* AptDetector.swift */; };
+		A52874002AFD3479002424C0 /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873FE2AFD3479002424C0 /* AptDetector.swift */; };
+		A52874022AFD3482002424C0 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874012AFD3482002424C0 /* BashDetector.swift */; };
+		A52874032AFD3482002424C0 /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874012AFD3482002424C0 /* BashDetector.swift */; };
+		A52874052AFD3489002424C0 /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874042AFD3488002424C0 /* CydiaDetector.swift */; };
+		A52874062AFD3489002424C0 /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874042AFD3488002424C0 /* CydiaDetector.swift */; };
+		A52874082AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */; };
+		A52874092AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */; };
+		A528740B2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */; };
+		A528740C2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */; };
+		A528740E2AFD34A5002424C0 /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740D2AFD34A5002424C0 /* SSHDetector.swift */; };
+		A528740F2AFD34A5002424C0 /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A528740D2AFD34A5002424C0 /* SSHDetector.swift */; };
 		A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */; };
 		A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C229497F6E007237C1 /* CryptoKey.swift */; };
 		A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338C5294A8747007237C1 /* CryptoKeyTests.swift */; };
 		A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */; };
-		1B5D4CFE299416DB003D96F1 /* JBUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA471592994162E00E657DA /* JBUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B5D4CFF299416DE003D96F1 /* JBUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA4715B2994162E00E657DA /* JBUtil.c */; };
-		1BA47141299346C100E657DA /* JailbreakDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA47140299346C100E657DA /* JailbreakDetectorTests.swift */; };
-		1BA471422993472500E657DA /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C90299343CB0068D6E8 /* CydiaDetector.swift */; };
-		1BA471432993472500E657DA /* DyldDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C94299343CB0068D6E8 /* DyldDetector.swift */; };
-		1BA471442993472500E657DA /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C99299343CB0068D6E8 /* PrivateFileWritableDetector.swift */; };
-		1BA471452993472500E657DA /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C9A299343CB0068D6E8 /* BashDetector.swift */; };
-		1BA471462993472500E657DA /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C95299343CB0068D6E8 /* AptDetector.swift */; };
-		1BA471472993472500E657DA /* JailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */; };
-		1BA471482993472500E657DA /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C96299343CB0068D6E8 /* SSHDetector.swift */; };
-		1BA471492993472500E657DA /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */; };
-		1BA4714A2993472500E657DA /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */; };
-		1BA4714B2993472500E657DA /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C93299343CB0068D6E8 /* CydiaSubstrateDetector.swift */; };
-		1BA4714C2993472500E657DA /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */; };
-		1BA4714D2993472500E657DA /* CydiaDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C90299343CB0068D6E8 /* CydiaDetector.swift */; };
-		1BA4714E2993472500E657DA /* DyldDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C94299343CB0068D6E8 /* DyldDetector.swift */; };
-		1BA4714F2993472500E657DA /* PrivateFileWritableDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C99299343CB0068D6E8 /* PrivateFileWritableDetector.swift */; };
-		1BA471502993472500E657DA /* BashDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C9A299343CB0068D6E8 /* BashDetector.swift */; };
-		1BA471512993472500E657DA /* AptDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C95299343CB0068D6E8 /* AptDetector.swift */; };
-		1BA471522993472500E657DA /* JailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */; };
-		1BA471532993472500E657DA /* SSHDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C96299343CB0068D6E8 /* SSHDetector.swift */; };
-		1BA471542993472500E657DA /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */; };
-		1BA471552993472500E657DA /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */; };
-		1BA471562993472500E657DA /* CydiaSubstrateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C93299343CB0068D6E8 /* CydiaSubstrateDetector.swift */; };
-		1BA471572993472500E657DA /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */; };
 		A5950A1C27E9497800EDEFE4 /* FRURLSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792427A8091F0004A982 /* FRURLSessionHandler.swift */; };
 		A5950A1D27E9497A00EDEFE4 /* FRSecurityConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5F792327A8090F0004A982 /* FRSecurityConfiguration.swift */; };
 		A5950A2527E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2427E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift */; };
@@ -128,25 +138,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticator.swift; sourceTree = "<group>"; };
-		A56338C229497F6E007237C1 /* CryptoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKey.swift; sourceTree = "<group>"; };
-		A56338C5294A8747007237C1 /* CryptoKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeyTests.swift; sourceTree = "<group>"; };
-		A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticatorTests.swift; sourceTree = "<group>"; };
 		1BA47140299346C100E657DA /* JailbreakDetectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetectorTests.swift; sourceTree = "<group>"; };
 		1BA471582994162E00E657DA /* FRCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = FRCore.modulemap; sourceTree = "<group>"; };
 		1BA471592994162E00E657DA /* JBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBUtil.h; sourceTree = "<group>"; };
 		1BA4715B2994162E00E657DA /* JBUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = JBUtil.c; sourceTree = "<group>"; };
-		1BCF4C90299343CB0068D6E8 /* CydiaDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaDetector.swift; sourceTree = "<group>"; };
 		1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SandboxDetector.swift; sourceTree = "<group>"; };
 		1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolicLinkDetector.swift; sourceTree = "<group>"; };
-		1BCF4C93299343CB0068D6E8 /* CydiaSubstrateDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaSubstrateDetector.swift; sourceTree = "<group>"; };
 		1BCF4C94299343CB0068D6E8 /* DyldDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DyldDetector.swift; sourceTree = "<group>"; };
-		1BCF4C95299343CB0068D6E8 /* AptDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AptDetector.swift; sourceTree = "<group>"; };
-		1BCF4C96299343CB0068D6E8 /* SSHDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHDetector.swift; sourceTree = "<group>"; };
 		1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetector.swift; sourceTree = "<group>"; };
 		1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRJailbreakDetector.swift; sourceTree = "<group>"; };
-		1BCF4C99299343CB0068D6E8 /* PrivateFileWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateFileWritableDetector.swift; sourceTree = "<group>"; };
-		1BCF4C9A299343CB0068D6E8 /* BashDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashDetector.swift; sourceTree = "<group>"; };
+		1BCF4C99299343CB0068D6E8 /* RestrictedDirectoriesWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestrictedDirectoriesWritableDetector.swift; sourceTree = "<group>"; };
+		A52873D62AF1EEA3002424C0 /* URLSchemeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeDetector.swift; sourceTree = "<group>"; };
+		A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousFilesExistenceDetector.swift; sourceTree = "<group>"; };
+		A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousFilesAccessibleDetector.swift; sourceTree = "<group>"; };
+		A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousObjCClassesDetector.swift; sourceTree = "<group>"; };
+		A52873FE2AFD3479002424C0 /* AptDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AptDetector.swift; sourceTree = "<group>"; };
+		A52874012AFD3482002424C0 /* BashDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashDetector.swift; sourceTree = "<group>"; };
+		A52874042AFD3488002424C0 /* CydiaDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaDetector.swift; sourceTree = "<group>"; };
+		A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CydiaSubstrateDetector.swift; sourceTree = "<group>"; };
+		A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateFileWritableDetector.swift; sourceTree = "<group>"; };
+		A528740D2AFD34A5002424C0 /* SSHDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHDetector.swift; sourceTree = "<group>"; };
+		A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticator.swift; sourceTree = "<group>"; };
+		A56338C229497F6E007237C1 /* CryptoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKey.swift; sourceTree = "<group>"; };
+		A56338C5294A8747007237C1 /* CryptoKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeyTests.swift; sourceTree = "<group>"; };
+		A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPinAuthenticatorTests.swift; sourceTree = "<group>"; };
 		A5950A2427E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRSecurityConfigurationTests.swift; sourceTree = "<group>"; };
 		A5950A2627E9759300EDEFE4 /* httpbin_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = httpbin_cert.der; sourceTree = "<group>"; };
 		D50115CE2410472F00219761 /* SecuredKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredKeyTests.swift; sourceTree = "<group>"; };
@@ -220,24 +235,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A56338BD29497E75007237C1 /* Authenticator */ = {
-			isa = PBXGroup;
-			children = (
-				A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */,
-				A56338C229497F6E007237C1 /* CryptoKey.swift */,
-			);
-			path = Authenticator;
-			sourceTree = "<group>";
-		};
-		A56338C4294A8716007237C1 /* Authenticator */ = {
-			isa = PBXGroup;
-			children = (
-				A56338C5294A8747007237C1 /* CryptoKeyTests.swift */,
-				A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */,
-			);
-			path = Authenticator;
-            sourceTree = "<group>";
-        };
 		1BA4713F299346C100E657DA /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,19 +272,42 @@
 		1BCF4C9B299343CB0068D6E8 /* Security */ = {
 			isa = PBXGroup;
 			children = (
-				1BCF4C90299343CB0068D6E8 /* CydiaDetector.swift */,
 				1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */,
 				1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */,
-				1BCF4C93299343CB0068D6E8 /* CydiaSubstrateDetector.swift */,
 				1BCF4C94299343CB0068D6E8 /* DyldDetector.swift */,
-				1BCF4C95299343CB0068D6E8 /* AptDetector.swift */,
-				1BCF4C96299343CB0068D6E8 /* SSHDetector.swift */,
 				1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */,
 				1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */,
-				1BCF4C99299343CB0068D6E8 /* PrivateFileWritableDetector.swift */,
-				1BCF4C9A299343CB0068D6E8 /* BashDetector.swift */,
+				1BCF4C99299343CB0068D6E8 /* RestrictedDirectoriesWritableDetector.swift */,
+				A52873D62AF1EEA3002424C0 /* URLSchemeDetector.swift */,
+				A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */,
+				A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */,
+				A52873DC2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift */,
+				A52873FE2AFD3479002424C0 /* AptDetector.swift */,
+				A52874012AFD3482002424C0 /* BashDetector.swift */,
+				A52874042AFD3488002424C0 /* CydiaDetector.swift */,
+				A52874072AFD3490002424C0 /* CydiaSubstrateDetector.swift */,
+				A528740A2AFD349C002424C0 /* PrivateFileWritableDetector.swift */,
+				A528740D2AFD34A5002424C0 /* SSHDetector.swift */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		A56338BD29497E75007237C1 /* Authenticator */ = {
+			isa = PBXGroup;
+			children = (
+				A56338BE29497E85007237C1 /* AppPinAuthenticator.swift */,
+				A56338C229497F6E007237C1 /* CryptoKey.swift */,
+			);
+			path = Authenticator;
+			sourceTree = "<group>";
+		};
+		A56338C4294A8716007237C1 /* Authenticator */ = {
+			isa = PBXGroup;
+			children = (
+				A56338C5294A8747007237C1 /* CryptoKeyTests.swift */,
+				A56338CA294AA0AD007237C1 /* AppPinAuthenticatorTests.swift */,
+			);
+			path = Authenticator;
 			sourceTree = "<group>";
 		};
 		D512CD49240DCD3200AF520E /* Error */ = {
@@ -673,36 +693,41 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5C979B82409DF9700DA380A /* Result.swift in Sources */,
-				1BA471442993472500E657DA /* PrivateFileWritableDetector.swift in Sources */,
+				1BA471442993472500E657DA /* RestrictedDirectoriesWritableDetector.swift in Sources */,
+				A52873FF2AFD3479002424C0 /* AptDetector.swift in Sources */,
 				D5C979BA2409DF9700DA380A /* Request.swift in Sources */,
 				D5C979B32409DF9700DA380A /* KeychainService.swift in Sources */,
-				1BA471482993472500E657DA /* SSHDetector.swift in Sources */,
 				D5E86BC12481E6D700DFD5E0 /* FRURLUtil.swift in Sources */,
 				1BA471432993472500E657DA /* DyldDetector.swift in Sources */,
 				EC5F792627A8091F0004A982 /* FRURLSessionHandler.swift in Sources */,
-				1BA4714B2993472500E657DA /* CydiaSubstrateDetector.swift in Sources */,
 				1BA471492993472500E657DA /* FRJailbreakDetector.swift in Sources */,
 				1BA4714A2993472500E657DA /* SandboxDetector.swift in Sources */,
+				A52873DD2AFA9213002424C0 /* SuspiciousObjCClassesDetector.swift in Sources */,
 				D5C979B72409DF9700DA380A /* FRLogger.swift in Sources */,
 				D5D21496247843BB00B26403 /* RequestInterceptor.swift in Sources */,
+				A52873D72AF1EEA3002424C0 /* URLSchemeDetector.swift in Sources */,
 				D5D2149A247843F100B26403 /* RequestInterceptorRegistry.swift in Sources */,
-				1BA471422993472500E657DA /* CydiaDetector.swift in Sources */,
 				1B5D4CFF299416DE003D96F1 /* JBUtil.c in Sources */,
+				A528740B2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */,
 				D5C979BB2409DF9700DA380A /* RestClient.swift in Sources */,
 				D52D5C432413002100835035 /* FRStringUtil.swift in Sources */,
-				1BA471452993472500E657DA /* BashDetector.swift in Sources */,
 				D5C979B52409DF9700DA380A /* Log.swift in Sources */,
 				A56338BF29497E85007237C1 /* AppPinAuthenticator.swift in Sources */,
 				D5C979B42409DF9700DA380A /* SecuredKey.swift in Sources */,
+				A52874022AFD3482002424C0 /* BashDetector.swift in Sources */,
 				D5C979B62409DF9700DA380A /* FRConsoleLogger.swift in Sources */,
 				D5B6F34225AEE215000A1A88 /* FRDataUtil.swift in Sources */,
 				D512CD4B240DCD4F00AF520E /* FRError.swift in Sources */,
+				A52873DB2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */,
 				D5D21498247843C900B26403 /* Action.swift in Sources */,
+				A528740E2AFD34A5002424C0 /* SSHDetector.swift in Sources */,
 				D5F01B19240EFB1400BD48AA /* NetworkError.swift in Sources */,
-				1BA471462993472500E657DA /* AptDetector.swift in Sources */,
 				EC5F792527A8091F0004A982 /* FRSecurityConfiguration.swift in Sources */,
 				1BA471472993472500E657DA /* JailbreakDetector.swift in Sources */,
 				D5C979B92409DF9700DA380A /* Response.swift in Sources */,
+				A52874052AFD3489002424C0 /* CydiaDetector.swift in Sources */,
+				A52874082AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */,
+				A52873D92AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */,
 				A56338C329497F6E007237C1 /* CryptoKey.swift in Sources */,
 				D5B6F34625AEE21B000A1A88 /* EC2PrimeRandomKey.swift in Sources */,
 				D5D1FBF925B1373E00771278 /* SecurityError.swift in Sources */,
@@ -714,7 +739,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BA471562993472500E657DA /* CydiaSubstrateDetector.swift in Sources */,
+				A528740F2AFD34A5002424C0 /* SSHDetector.swift in Sources */,
 				D5D2149D2478575900B26403 /* FRStringUtil.swift in Sources */,
 				D5D2149E2478575900B26403 /* RequestInterceptor.swift in Sources */,
 				D5D214AB24786B7E00B26403 /* RequestInterceptorFactoryTests.swift in Sources */,
@@ -722,22 +747,26 @@
 				A56338CB294AA0AD007237C1 /* AppPinAuthenticatorTests.swift in Sources */,
 				A56338C6294A8747007237C1 /* CryptoKeyTests.swift in Sources */,
 				D5D2149F2478575900B26403 /* Action.swift in Sources */,
+				A52874062AFD3489002424C0 /* CydiaDetector.swift in Sources */,
 				D5E7B1C5256C609200DF2AB6 /* FRTestLogger.swift in Sources */,
 				D5D214A02478575900B26403 /* RequestInterceptorRegistry.swift in Sources */,
 				D5CBC24424102BB100F9B6EA /* FRError.swift in Sources */,
-				1BA471512993472500E657DA /* AptDetector.swift in Sources */,
 				1BA471552993472500E657DA /* SandboxDetector.swift in Sources */,
 				D5D214B224786FAA00B26403 /* FRCoreRequestCaptureProtocol.swift in Sources */,
 				D5CBC24524102BB100F9B6EA /* NetworkError.swift in Sources */,
+				A52874032AFD3482002424C0 /* BashDetector.swift in Sources */,
+				A528740C2AFD349D002424C0 /* PrivateFileWritableDetector.swift in Sources */,
 				A5950A1D27E9497A00EDEFE4 /* FRSecurityConfiguration.swift in Sources */,
 				D5CBC24624102BB100F9B6EA /* KeychainService.swift in Sources */,
 				D5EE06F1255FA1CC00C2D1BC /* FRTestStubResponseParser.swift in Sources */,
-				1BA471502993472500E657DA /* BashDetector.swift in Sources */,
 				D5CBC24724102BB100F9B6EA /* SecuredKey.swift in Sources */,
 				D5D214A52478581D00B26403 /* NetworkErrorTests.swift in Sources */,
 				1BA471522993472500E657DA /* JailbreakDetector.swift in Sources */,
+				A52873FB2AFAB77E002424C0 /* SuspiciousObjCClassesDetector.swift in Sources */,
 				D5CBC24824102BB100F9B6EA /* Log.swift in Sources */,
-				1BA4714F2993472500E657DA /* PrivateFileWritableDetector.swift in Sources */,
+				A52873F82AFAB775002424C0 /* URLSchemeDetector.swift in Sources */,
+				1BA4714F2993472500E657DA /* RestrictedDirectoriesWritableDetector.swift in Sources */,
+				A52874002AFD3479002424C0 /* AptDetector.swift in Sources */,
 				D5CBC24924102BB100F9B6EA /* FRConsoleLogger.swift in Sources */,
 				D5EE06F0255FA1CC00C2D1BC /* FRBaseTestCase.swift in Sources */,
 				A5950A2527E95A0F00EDEFE4 /* FRSecurityConfigurationTests.swift in Sources */,
@@ -745,20 +774,21 @@
 				D5CBC24A24102BB100F9B6EA /* FRLogger.swift in Sources */,
 				D5EE06F3255FA1CC00C2D1BC /* FRTestNetworkStubProtocol.swift in Sources */,
 				1BA47141299346C100E657DA /* JailbreakDetectorTests.swift in Sources */,
+				A52873F92AFAB779002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */,
 				1BA471572993472500E657DA /* SymbolicLinkDetector.swift in Sources */,
 				D50115CF2410472F00219761 /* SecuredKeyTests.swift in Sources */,
 				D5CBC24B24102BB100F9B6EA /* Result.swift in Sources */,
 				D5CBC24C24102BB200F9B6EA /* Response.swift in Sources */,
 				D5CBC24D24102BB200F9B6EA /* Request.swift in Sources */,
 				D5EC34ED247B2E4B0005A50C /* FRStringUtilTests.swift in Sources */,
+				A52874092AFD3490002424C0 /* CydiaSubstrateDetector.swift in Sources */,
 				D5CBC24E24102BB200F9B6EA /* RestClient.swift in Sources */,
 				D5CBC24324102B8800F9B6EA /* RestClientTests.swift in Sources */,
 				D5D214AF24786EA800B26403 /* RequestInterceptorTests.swift in Sources */,
-				1BA471532993472500E657DA /* SSHDetector.swift in Sources */,
 				1BA4714E2993472500E657DA /* DyldDetector.swift in Sources */,
 				D5D214AD24786DBE00B26403 /* ActionTests.swift in Sources */,
-				1BA4714D2993472500E657DA /* CydiaDetector.swift in Sources */,
 				D5CBC24224102B8800F9B6EA /* RequestTests.swift in Sources */,
+				A52873FA2AFAB77B002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */,
 				D5BD3207264DE6D50078D51C /* Config.swift in Sources */,
 				A5950A1C27E9497800EDEFE4 /* FRURLSessionHandler.swift in Sources */,
 				D5EE06F2255FA1CC00C2D1BC /* FRTestUtils.swift in Sources */,
@@ -921,7 +951,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRCore/SharedC/FRCore.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
@@ -955,7 +985,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1-beta1;
+				MARKETING_VERSION = "4.1.1-beta1";
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRCore/SharedC/FRCore.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
@@ -974,8 +1004,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRCoreTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -987,7 +1018,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -1001,8 +1031,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				INFOPLIST_FILE = FRCoreTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1014,7 +1045,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
