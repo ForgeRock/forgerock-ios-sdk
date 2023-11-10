@@ -2,7 +2,7 @@
 //  Base32.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -58,32 +58,5 @@ extension String {
         }
         
         return Data.init(bytes: decoded, count: Int(result))
-    }
-}
-
-
-extension Data {
-    
-    /// Base32-encodes current Data and returns encoded value in String
-    func base32Encode() -> String? {
-        if let encodedData: Data = self.base32Encode() {
-            return String(bytes: encodedData, encoding: .utf8)
-        }
-        return nil
-    }
-    
-    
-    /// Base32-encodes current Data and returns encoded value in bytes
-    func base32Encode() -> Data? {
-        let encoded = UnsafeMutablePointer<Int8>.allocate(capacity: 4096)
-        
-        let result = self.withUnsafeBytes({ (ptr : UnsafeRawBufferPointer) in
-            base32_encode(ptr.baseAddress!, Int32(ptr.count), encoded, 4096)
-        })
-        if result < 0 {
-            return nil
-        }
-        
-        return Data.init(bytes: encoded, count: Int(result))
     }
 }

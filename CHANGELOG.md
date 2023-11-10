@@ -1,6 +1,5 @@
 # Unreleased
 #### Added
-- Implement Export and Import functions for OTP accounts in Authenticator module [SDKS-2730]
 - Update Jailbreak Detectors [SDKS-2796]
 
 # Version 4.1.1
