@@ -455,4 +455,166 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             //all good, do nothing
         }
     }
+    
+    
+    func test_14_ValidateCustomClaims_valid() {
+        
+        let authenticator = None()
+        let valid = authenticator.validateCustomClaims(["name": "demo", "email_verified": true])
+        
+        XCTAssertTrue(valid)
+    }
+    
+    
+    func test_15_ValidateCustomClaims_invalid() {
+        
+        let authenticator = None()
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.sub: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.challenge: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.exp: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iat: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.nbf: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.platform: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iss: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iss: "demo", DBConstants.exp: Date()]))
+        
+    }
+    
+    
+    func test_16_None_sign_with_valid_custom_cliams() {
+        let userId = "Test User Id 16"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let kid = UUID().uuidString
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["deviceId": "DEVICE_ID", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration, customClaims: customClaims)
+            
+            //verify signature
+            let jws = try JWS(compactSerialization: jwsString)
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+                XCTFail("Failed to create Verifier")
+                return
+            }
+            
+            let _ = try jws.validate(using: verifier)
+            let payload = jws.payload
+            let message = String(data: payload.data(), encoding: .utf8)!
+            
+            let messageDictionary = FRTestUtils.parseStringToDictionary(message)
+            
+            XCTAssertEqual(messageDictionary["deviceId"] as? String, "DEVICE_ID")
+            XCTAssertEqual(messageDictionary["isCompanyPhone"] as? Int, 1)
+            XCTAssertEqual(messageDictionary["lastUpdated"] as? Int, Int(lastUpdatedDate.timeIntervalSince1970))
+            
+        } catch {
+            XCTFail("Failed to verify JWS signature with custom claims")
+        }
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
+    }
+    
+    
+    func test_17_None_sign_with_invalid_custom_cliams() {
+        let userId = "Test User Id 17"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let kid = UUID().uuidString
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["platform": "iOS", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let jwsString = try authenticator.sign(keyPair: keyPair, kid: kid, userId: userId, challenge: challenge, expiration: expiration, customClaims: customClaims)
+            
+            XCTFail("Signing should have failed with invalid custom cliams")
+        } catch {
+            //all good, do nothing
+        }
+        
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
+    }
+    
+    
+    func test_18_None_sign_with_userKey_with_valid_custom_cliams() {
+        let userId = "Test User Id 18"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let kid = UUID().uuidString
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["deviceId": "DEVICE_ID", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let userKey = UserKey(id: CryptoKey.getKeyAlias(keyName: userId), userId: userId, userName: "username", kid: kid, authType: .none, createdAt: Date().timeIntervalSince1970)
+            let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration, customClaims: customClaims)
+            
+            //verify signature
+            let jws = try JWS(compactSerialization: jwsString)
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+                XCTFail("Failed to create Verifier")
+                return
+            }
+            
+            let _ = try jws.validate(using: verifier)
+            let payload = jws.payload
+            let message = String(data: payload.data(), encoding: .utf8)!
+            let messageDictionary = FRTestUtils.parseStringToDictionary(message)
+            
+            XCTAssertEqual(messageDictionary["deviceId"] as? String, "DEVICE_ID")
+            XCTAssertEqual(messageDictionary["isCompanyPhone"] as? Int, 1)
+            XCTAssertEqual(messageDictionary["lastUpdated"] as? Int, Int(lastUpdatedDate.timeIntervalSince1970))
+        } catch {
+            XCTFail("Failed to verify JWS signature")
+        }
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
+    }
+    
+    
+    func test_19_None_sign_with_userKey_with_invalid_custom_cliams() {
+        let userId = "Test User Id 19"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        let kid = UUID().uuidString
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["platform": "iOS", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        let authenticator = None()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        do {
+            let keyPair = try authenticator.generateKeys()
+            let userKey = UserKey(id: CryptoKey.getKeyAlias(keyName: userId), userId: userId, userName: "username", kid: kid, authType: .none, createdAt: Date().timeIntervalSince1970)
+            let jwsString = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration, customClaims: customClaims)
+            
+            XCTFail("Signing should have failed with invalid custom cliams")
+        } catch {
+            //all good, do nothing
+        }
+        
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
+    }
 }

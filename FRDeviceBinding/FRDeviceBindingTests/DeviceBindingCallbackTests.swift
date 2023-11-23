@@ -851,7 +851,7 @@ struct CustomAuthenticatorSignFailed: DeviceAuthenticator {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         throw NSError(domain: "domain", code: 1)
     }
     
@@ -884,7 +884,7 @@ struct CustomAuthenticatorAborted: DeviceAuthenticator {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         throw JOSESwiftError.localAuthenticationFailed(errorCode: 1)
     }
     
@@ -917,11 +917,11 @@ struct CustomDeviceAuthenticator: DeviceAuthenticator {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
