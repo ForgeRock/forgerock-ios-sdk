@@ -274,24 +274,27 @@ public class Node: NSObject {
                     let token = Token(tokenId)
                     if let keychainManager = self.keychainManager {
                         let currentSessionToken = keychainManager.getSSOToken()
-                        if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
-                            FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
-                            if let tokenManager = self.tokenManager {
-                                tokenManager.revokeAndEndSession { (error) in
-                                    FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                        //If the `currentSessionToken` is nil, it means the user did a Centralized Login flow to authenticate initially. Ignore the new token and just return.
+                        if currentSessionToken != nil {
+                            if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
+                                FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
+                                if let tokenManager = self.tokenManager {
+                                    tokenManager.revokeAndEndSession { (error) in
+                                        FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
+                                    }
+                                }
+                                else {
+                                    FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
+                                    do {
+                                        try keychainManager.setAccessToken(token: nil)
+                                    }
+                                    catch {
+                                        FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                                    }
                                 }
                             }
-                            else {
-                                FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
-                                do {
-                                    try keychainManager.setAccessToken(token: nil)
-                                }
-                                catch {
-                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
-                                }
-                            }
+                            keychainManager.setSSOToken(ssoToken: token)
                         }
-                        keychainManager.setSSOToken(ssoToken: token)
                     }
                     
                     completion(token, nil, nil)
