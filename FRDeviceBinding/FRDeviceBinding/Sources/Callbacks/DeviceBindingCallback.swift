@@ -180,6 +180,11 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             return
         }
         
+        guard authInterface.validateCustomClaims(customClaims) else {
+            handleException(status: .unsupported(errorMessage: "Invalid custom claims"), completion: completion)
+            return
+        }
+        
         let startTime = Date()
         let timeout = timeout ?? 60
         

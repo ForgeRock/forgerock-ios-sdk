@@ -92,9 +92,6 @@ extension DeviceAuthenticator {
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
-        guard customClaims.isEmpty || validateCustomClaims(customClaims) else {
-            throw DeviceBindingStatus.unsupported(errorMessage: "Invalid custom claims")
-        }
         
         let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: DBConstants.sig, JWKParameter.algorithm.rawValue: DBConstants.ES256, JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
@@ -136,9 +133,6 @@ extension DeviceAuthenticator {
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
-        guard customClaims.isEmpty || validateCustomClaims(customClaims) else {
-            throw DeviceBindingStatus.unsupported(errorMessage: "Invalid custom claims")
-        }
         
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
         guard let keyStoreKey = cryptoKey.getSecureKey() else {
