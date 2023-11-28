@@ -252,6 +252,10 @@ public class AuthService: NSObject {
                                 }
                             }
                             keychainManager.setSSOToken(ssoToken: token)
+                        } else {
+                            if (try? keychainManager.getAccessToken()) == nil {
+                                keychainManager.setSSOToken(ssoToken: token)
+                            }
                         }
                     }
                     
