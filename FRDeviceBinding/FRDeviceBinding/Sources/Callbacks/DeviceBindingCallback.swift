@@ -152,7 +152,13 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
                    completion: @escaping DeviceBindingResultCallback) {
         
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
+        
+        guard authInterface.validateCustomClaims(customClaims) else {
+            handleException(status: .invalidCustomClaims, completion: completion)
+            return
+        }
+        
+        let dispatchQueue = DispatchQueue(label: "com.forgerock.serialQueue", qos: .userInitiated)
         dispatchQueue.async {
             self.execute(authInterface: authInterface, customClaims: customClaims, completion)
         }
@@ -177,11 +183,6 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
-            return
-        }
-        
-        guard authInterface.validateCustomClaims(customClaims) else {
-            handleException(status: .unsupported(errorMessage: "Invalid custom claims"), completion: completion)
             return
         }
         

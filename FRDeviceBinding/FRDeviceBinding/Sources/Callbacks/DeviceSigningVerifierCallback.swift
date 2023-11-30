@@ -182,7 +182,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         }
         
         guard authInterface.validateCustomClaims(customClaims) else {
-            handleException(status: .unsupported(errorMessage: "Invalid custom claims"), completion: completion)
+            handleException(status: .invalidCustomClaims, completion: completion)
             return
         }
         

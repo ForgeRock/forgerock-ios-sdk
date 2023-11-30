@@ -693,7 +693,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unsupported(errorMessage: "Invalid custom claims").clientError)
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.invalidCustomClaims.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
@@ -828,7 +828,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                     XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
                 case .failure(let error):
                     // even though we don't overrid any of the existing claims, it fails as validateCustomClaims method always returns false
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.unsupported(errorMessage: "Invalid custom claims").clientError)
+                    XCTAssertEqual(error, DeviceBindingStatus.invalidCustomClaims)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
                 expectation.fulfill()
