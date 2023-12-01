@@ -215,9 +215,7 @@ extension DeviceAuthenticator {
                               DBConstants.nbf,
                               DBConstants.platform,
                               DBConstants.iss]
-        let customKeys: [String] = Array(customClaims.keys)
-        let conflictingKeys = customKeys.filter { registeredKeys.contains($0) }
-        return conflictingKeys.isEmpty
+        return customClaims.keys.filter { registeredKeys.contains($0) }.isEmpty
     }
 }
 
