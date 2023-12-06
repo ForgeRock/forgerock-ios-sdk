@@ -39,6 +39,17 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     }
     
     override func tearDown() {
+        let userKeys = FRUserKeys().loadAll()
+        
+        for (_, userKey) in userKeys.enumerated()
+        {
+            do {
+                try FRUserKeys().delete(userKey: userKey, forceDelete: true)
+            }
+            catch {
+                FRLog.w("Failed to delete device binding keys.")
+            }
+        }
         FRSession.currentSession?.logout()
         super.tearDown()
     }
