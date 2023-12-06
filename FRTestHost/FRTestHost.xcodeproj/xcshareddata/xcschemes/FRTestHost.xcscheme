@@ -187,14 +187,6 @@
                BlueprintName = "FRAuthTests"
                ReferencedContainer = "container:../FRAuth/FRAuth.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "AA_05_DeviceBindingCallbackTest">
-               </Test>
-               <Test
-                  Identifier = "AA_06_DeviceSigningVerifierCallbackTest">
-               </Test>
-            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">

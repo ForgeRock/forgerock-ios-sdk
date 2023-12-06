@@ -221,7 +221,7 @@ class AuthorizationPolicyTests: FRAuthBaseTest {
         let policy = AuthorizationPolicy(validatingURL: [URL(string: "https://openam.example.com/anything")!], delegate: self)
         self.policyAdvice = PolicyAdvice(type: "TransactionConditionAdvice", value: "5afff42a-2715-40c8-98e7-919abc1b2dfc")
         let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: URL(string: "https://httpbin.org/anything")!)
+        let task = session.dataTask(with: URL(string: FRTestURL.anythingURL)!)
         let advice = policy.evaluateAuthorizationPolicyWithRedirect(responseData: nil, session: URLSession(), task: task, willPerformHTTPRedirection: HTTPURLResponse(), newRequest: URLRequest(url: URL(string: "https://www.forgerock.com")!))
         XCTAssertEqual(advice, self.policyAdvice)
         XCTAssertEqual(self.list.count, 1)
