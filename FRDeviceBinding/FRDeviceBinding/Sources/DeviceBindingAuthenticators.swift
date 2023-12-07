@@ -36,9 +36,10 @@ public protocol DeviceAuthenticator {
     /// - Parameter userKey: user Information
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
+    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String
     
     /// Check if authentication is supported
     func isSupported() -> Bool
@@ -69,6 +70,11 @@ public protocol DeviceAuthenticator {
     
     /// Get the token not before time.
     func notBeforeTime() -> Date
+    
+    /// Validate custom claims
+    /// - Parameter customClaims: A dictionary of custom claims to be validated
+    /// - Returns: Bool value indicating whether the custom claims are valid or not
+    func validateCustomClaims(_ customClaims: [String: Any]) -> Bool
 }
 
 
@@ -84,6 +90,7 @@ extension DeviceAuthenticator {
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
     public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+        
         let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: DBConstants.sig, JWKParameter.algorithm.rawValue: DBConstants.ES256, JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
         
@@ -95,6 +102,7 @@ extension DeviceAuthenticator {
         
         //create payload
         var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios, DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))]
+        
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
@@ -119,9 +127,11 @@ extension DeviceAuthenticator {
     /// - Parameter userKey: user Information
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
+    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+    public func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
+        
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
         guard let keyStoreKey = cryptoKey.getSecureKey() else {
             throw DeviceBindingStatus.clientNotRegistered
@@ -134,7 +144,7 @@ extension DeviceAuthenticator {
         header.typ = DBConstants.JWS
         
         //create payload
-        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))].merging(customClaims) { (current, _) in current }
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
@@ -190,6 +200,19 @@ extension DeviceAuthenticator {
     /// Get the token not before time.
     public func notBeforeTime() -> Date {
         return Date()
+    }
+    
+    /// Validate custom claims
+    /// - Parameter customClaims: A dictionary of custom claims to be validated
+    /// - Returns: Bool value indicating whether the custom claims are valid or not
+    public func validateCustomClaims(_ customClaims: [String: Any]) -> Bool {
+        let registeredKeys = [DBConstants.sub,
+                              DBConstants.challenge,
+                              DBConstants.exp,
+                              DBConstants.iat,
+                              DBConstants.nbf,
+                              DBConstants.iss]
+        return customClaims.keys.filter { registeredKeys.contains($0) }.isEmpty
     }
 }
 

@@ -150,7 +150,8 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
                    completion: @escaping DeviceBindingResultCallback) {
         
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
+        
+        let dispatchQueue = DispatchQueue(label: "com.forgerock.serialQueue", qos: .userInitiated)
         dispatchQueue.async {
             self.execute(authInterface: authInterface, completion)
         }

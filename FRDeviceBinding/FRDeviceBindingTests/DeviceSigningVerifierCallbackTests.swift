@@ -625,9 +625,306 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
+    func test_19_execute_single_success_with_valid_custom_claims() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["deviceId": "DEVICE_ID", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            let userKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), customClaims: customClaims) { result in
+                switch result {
+                case .success:
+                    XCTAssertTrue(callback.inputValues.count == 1)
+                case .failure(let error):
+                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                }
+            }
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
+    func test_20_execute_single_success_with_invalid_custom_claims() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["challenge": "xxx", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            let userKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), customClaims: customClaims) { result in
+                switch result {
+                case .success:
+                    XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
+                case .failure(let error):
+                    XCTAssertEqual(error.clientError, DeviceBindingStatus.invalidCustomClaims.clientError)
+                    XCTAssertTrue(callback.inputValues.count == 1)
+                }
+            }
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
+    func test_21_execute_single_success_with_empty_custom_claims() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let customClaims: [String : Any] = [:]
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            let userKeyService = UserDeviceKeyService(localDeviceBindingRepository: deviceRepository)
+            callback.execute(userKeyService: userKeyService, userKeySelector: CustomUserKeySelector(), customClaims: customClaims) { result in
+                switch result {
+                case .success:
+                    XCTAssertTrue(callback.inputValues.count == 1)
+                case .failure(let error):
+                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                }
+            }
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
+    func test_22_sign_CustomDeviceAuthenticatorCustomClaimsAlwaysValid() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["platform": "iOS", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            
+            let customDeviceBindingIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator =  { type in
+                return CustomDeviceAuthenticatorCustomClaimsAlwaysValid(cryptoKey: CryptoKey(keyId: "User Id 1"))
+            }
+            let expectation = self.expectation(description: "Device Signing")
+            
+            callback.sign(userKeySelector: CustomUserKeySelector(),
+                          deviceAuthenticator: customDeviceBindingIdentifier, 
+                          customClaims: customClaims) { result in
+                switch result {
+                case .success:
+                    // even though it overrids one of the existing claims, it succeeds as validateCustomClaims method always returns true
+                    XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
+                case .failure(let error):
+                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                }
+                expectation.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
+    func test_23_sign_CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let lastUpdatedDate = Date()
+        let customClaims: [String : Any] = ["deviceId": "DEVICE_ID", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            
+            let customDeviceBindingIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator =  { type in
+                return CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid(cryptoKey: CryptoKey(keyId: "User Id 1"))
+            }
+            let expectation = self.expectation(description: "Device Signing")
+            
+            callback.sign(userKeySelector: CustomUserKeySelector(),
+                          deviceAuthenticator: customDeviceBindingIdentifier,
+                          customClaims: customClaims) { result in
+                switch result {
+                case .success:
+                    XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
+                case .failure(let error):
+                    // even though we don't overrid any of the existing claims, it fails as validateCustomClaims method always returns false
+                    XCTAssertEqual(error, DeviceBindingStatus.invalidCustomClaims)
+                    XCTAssertTrue(callback.inputValues.count == 1)
+                }
+                expectation.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
     class CustomUserKeySelector: UserKeySelector {
         func selectUserKey(userKeys: [UserKey], selectionCallback: @escaping UserKeySelectorCallback) {
             selectionCallback(userKeys.first)
         }
+    }
+}
+
+struct CustomDeviceAuthenticatorCustomClaimsAlwaysValid: DeviceAuthenticator {
+    var cryptoKey: CryptoKey
+    
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    func generateKeys() throws -> KeyPair {
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+    }
+    func isSupported() -> Bool {
+        return true
+    }
+    
+    func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
+    
+    func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
+        return true
+    }
+}
+
+
+struct CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid: DeviceAuthenticator {
+    var cryptoKey: CryptoKey
+    
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    func generateKeys() throws -> KeyPair {
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+    }
+    func isSupported() -> Bool {
+        return true
+    }
+    
+    func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
+    
+    func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
+        return false
     }
 }

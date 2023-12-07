@@ -921,7 +921,7 @@ struct CustomDeviceAuthenticator: DeviceAuthenticator {
         return "CUSTOM_JWS"
     }
     
-    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
