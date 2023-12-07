@@ -28,10 +28,9 @@ public protocol DeviceAuthenticator {
     /// - Parameter userId: user Id received from server
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
-    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String
     
     /// Sign the challenge sent from the server and generate signed JWT
     /// - Parameter userKey: user Information
@@ -88,10 +87,9 @@ extension DeviceAuthenticator {
     /// - Parameter userId: user Id received from server
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
-    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
+    public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         
         let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: DBConstants.sig, JWKParameter.algorithm.rawValue: DBConstants.ES256, JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
@@ -103,7 +101,7 @@ extension DeviceAuthenticator {
         header.jwkTyped = jwk
         
         //create payload
-        var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios, DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))].merging(customClaims) { (current, _) in current }
+        var params: [String: Any] = [DBConstants.sub: userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.platform : DBConstants.ios, DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))]
         
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
@@ -213,7 +211,6 @@ extension DeviceAuthenticator {
                               DBConstants.exp,
                               DBConstants.iat,
                               DBConstants.nbf,
-                              DBConstants.platform,
                               DBConstants.iss]
         return customClaims.keys.filter { registeredKeys.contains($0) }.isEmpty
     }

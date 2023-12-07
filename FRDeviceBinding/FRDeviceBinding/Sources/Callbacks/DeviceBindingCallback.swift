@@ -145,22 +145,15 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     /// Bind the device.
     /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - defaults value is `deviceAuthenticatorIdentifier`
-    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Parameter completion: Completion block for Device binding result callback
     open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
-                   customClaims: [String: Any] = [:],
                    completion: @escaping DeviceBindingResultCallback) {
         
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
         
-        guard authInterface.validateCustomClaims(customClaims) else {
-            handleException(status: .invalidCustomClaims, completion: completion)
-            return
-        }
-        
         let dispatchQueue = DispatchQueue(label: "com.forgerock.serialQueue", qos: .userInitiated)
         dispatchQueue.async {
-            self.execute(authInterface: authInterface, customClaims: customClaims, completion)
+            self.execute(authInterface: authInterface, completion)
         }
     }
     
@@ -169,12 +162,10 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
     /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
     /// - Parameter deviceRepository: Storage for user keys - default value is ``LocalDeviceBindingRepository()``
-    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Parameter completion: Completion block for Device binding result callback
     internal func execute(authInterface: DeviceAuthenticator? = nil,
                           deviceId: String? = nil,
                           deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
-                          customClaims: [String: Any] = [:],
                           _ completion: @escaping DeviceBindingResultCallback) {
 
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
@@ -194,7 +185,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             let userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
             try deviceRepository.persist(userKey: userKey)
             // Authentication will be triggered during signing if necessary
-            let jws = try authInterface.sign(keyPair: keyPair, kid: userKey.kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout), customClaims: customClaims)
+            let jws = try authInterface.sign(keyPair: keyPair, kid: userKey.kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
             
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)

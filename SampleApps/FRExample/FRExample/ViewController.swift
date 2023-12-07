@@ -294,7 +294,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         self.present(alert, animated: true, completion: nil)
                         return
                     } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
-                        deviceBindingCallback.bind(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)]) { result in
+                        deviceBindingCallback.bind() { result in
                             DispatchQueue.main.async {
                                 var bindingResult = ""
                                 switch result {

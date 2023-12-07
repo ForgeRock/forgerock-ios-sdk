@@ -673,7 +673,7 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         let lastUpdatedDate = Date()
-        let customClaims: [String : Any] = ["platform": "iOS", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
+        let customClaims: [String : Any] = ["challenge": "xxx", "isCompanyPhone": true, "lastUpdated": Int(lastUpdatedDate.timeIntervalSince1970)]
         
         do {
             let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
@@ -845,5 +845,86 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
         func selectUserKey(userKeys: [UserKey], selectionCallback: @escaping UserKeySelectorCallback) {
             selectionCallback(userKeys.first)
         }
+    }
+}
+
+struct CustomDeviceAuthenticatorCustomClaimsAlwaysValid: DeviceAuthenticator {
+    var cryptoKey: CryptoKey
+    
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    func generateKeys() throws -> KeyPair {
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+    }
+    func isSupported() -> Bool {
+        return true
+    }
+    
+    func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
+    
+    func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
+        return true
+    }
+}
+
+
+struct CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid: DeviceAuthenticator {
+    var cryptoKey: CryptoKey
+    
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    func generateKeys() throws -> KeyPair {
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+    }
+    func isSupported() -> Bool {
+        return true
+    }
+    
+    func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+        return "CUSTOM_JWS"
+    }
+    
+    func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
+    
+    func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
+        return false
     }
 }

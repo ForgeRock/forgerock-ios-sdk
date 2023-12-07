@@ -480,8 +480,6 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         
         XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.nbf: "demo"]))
         
-        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.platform: "demo"]))
-        
         XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iss: "demo"]))
         
         XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iss: "demo", DBConstants.exp: Date()]))
