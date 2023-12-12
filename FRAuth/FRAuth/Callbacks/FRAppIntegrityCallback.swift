@@ -72,7 +72,7 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
         self.attestToken = outputToken
     
         if !outputToken.isEmpty {
-            FRLog.e("Persist the attestation reference")
+            FRLog.i("Persist the attestation reference")
             appIntegritykeys.updateKey(value: outputToken)
         }
         

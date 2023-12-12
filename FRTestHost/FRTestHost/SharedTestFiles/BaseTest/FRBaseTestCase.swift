@@ -15,6 +15,7 @@ import XCTest
 class FRBaseTestCase: XCTestCase {
     
     static let biometricTestsSupported = false
+    static let isRegisteredDeveloperDevice = false
     var isSimulator = false
     
     //  MARK: - Properties
