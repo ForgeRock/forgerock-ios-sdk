@@ -220,7 +220,7 @@ class AuthStepViewController: UIViewController {
                         }
                     } else {
                         alert.message = "Unsupported"
-                        appIntegrity.setClientError(FRDeviceCheckAPIFailure.featureUnsupported.rawValue)
+                        appIntegrity.setClientError(FRAppIntegrityClientError.unSupported.rawValue)
                         self.stopLoading()
                         self.present(alert, animated: true)
                     }
