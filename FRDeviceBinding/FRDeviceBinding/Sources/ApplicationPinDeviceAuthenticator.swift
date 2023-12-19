@@ -86,9 +86,10 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     /// - Parameter userKey: user Information
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
+    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+    public func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
         guard let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot retrive keys, missing prompt")
         }
@@ -108,7 +109,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         header.typ = DBConstants.JWS
         
         //create payload
-        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))].merging(customClaims) { (current, _) in current }
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }
