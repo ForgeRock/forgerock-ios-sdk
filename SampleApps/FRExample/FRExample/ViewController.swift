@@ -322,7 +322,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
                                     signingResult = "Success"
                                 case .failure(let error):
                                     if error == .invalidCustomClaims {
-                                        self.showErrorAlert(title: "Device Binding Error", message: error.errorMessage)
+                                        self.showErrorAlert(title: "Device Signing Error", message: error.errorMessage)
                                         return
                                     }
                                     signingResult = error.errorMessage
@@ -883,7 +883,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 15:
+        case 16:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
