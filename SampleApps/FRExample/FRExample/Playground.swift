@@ -1,5 +1,5 @@
-// 
-//  AccessLevelValidation.swift
+//
+//  Playground.swift
 //  FRExample
 //
 //  Copyright (c) 2023 ForgeRock. All rights reserved.
@@ -29,16 +29,16 @@ class AccessLevelValidation {
         // custom application pin UI
         deviceBindingCallback.bind(deviceAuthenticator: { type in
             switch type {
-                case .applicationPin:
-                    return ApplicationPinDeviceAuthenticator(pinCollector: CustomPinCollector())
-                default:
-                    return deviceBindingCallback.getDeviceAuthenticator(type: type)
+            case .applicationPin:
+                return ApplicationPinDeviceAuthenticator(pinCollector: CustomPinCollector())
+            default:
+                return deviceBindingCallback.getDeviceAuthenticator(type: type)
             }
         }, completion: { result in
             switch result {
-                case .success:
-                    print("Success")
-                case .failure(let error):
+            case .success:
+                print("Success")
+            case .failure(let error):
                 print(error.localizedDescription)
             }
         })
@@ -46,17 +46,16 @@ class AccessLevelValidation {
         //error handling
         deviceBindingCallback.bind() { result in
             switch result {
-                case .success:
+            case .success:
                 print("Success")
-                case .failure(let error):
-                    // Custom Error
+            case .failure(let error):
+                // Custom Error
                 if error == DeviceBindingStatus.unAuthorize {
-                        deviceBindingCallback.setClientError("CustomUnAuthorize")
-                    }
+                    deviceBindingCallback.setClientError("CustomUnAuthorize")
+                }
             }
         }
     }
-    
     
     func validateDeviceSigningVerifierCallback() {
         let deviceSigningVerifierCallback = try! DeviceSigningVerifierCallback(json: [:])
@@ -65,35 +64,34 @@ class AccessLevelValidation {
         //custom key selection UI
         deviceSigningVerifierCallback.sign(userKeySelector: CustomUserKeySelector()) { result in
             switch result {
-                case .success:
-                    print("Success")
-                case .failure(let error):
+            case .success:
+                print("Success")
+            case .failure(let error):
                 print(error.errorMessage)
             }
         }
         
         //custom claims
         deviceSigningVerifierCallback.sign(
-          customClaims: [
-            "platform": "iOS",
-            "isCompanyPhone": true,
-            "lastUpdated": Int(Date().timeIntervalSince1970)
-          ]
+            customClaims: [
+                "platform": "iOS",
+                "isCompanyPhone": true,
+                "lastUpdated": Int(Date().timeIntervalSince1970)
+            ]
         ) { result in
-              switch result
-              {
-                  case .success:
-                  print("Success")
-                  case .failure(let error):
-                      // Handle the error and proceed to the next node
-                      if error == .invalidCustomClaims {
-                          // Fix the invalid custom claims
-                          print(error.errorMessage)
-                          return
-                      }
-              }
-          }
-        
+            switch result
+            {
+            case .success:
+                print("Success")
+            case .failure(let error):
+                // Handle the error and proceed to the next node
+                if error == .invalidCustomClaims {
+                    // Fix the invalid custom claims
+                    print(error.errorMessage)
+                    return
+                }
+            }
+        }
     }
     
     func validateCustomDeviceAuthenticators() {
@@ -115,8 +113,9 @@ class AccessLevelValidation {
         
         let _ = ApplicationPinDeviceAuthenticator(pinCollector: CustomPinCollector())
     }
-    
 }
+
+
 class CustomPinCollector: PinCollector {
     func collectPin(prompt: Prompt, completion: @escaping (String?) -> Void) {
         // Implement your custom app PIN UI...
@@ -124,11 +123,13 @@ class CustomPinCollector: PinCollector {
     }
 }
 
+
 class CustomUserKeySelector: UserKeySelector {
     func selectUserKey(userKeys: [UserKey], selectionCallback: @escaping UserKeySelectorCallback) {
         selectionCallback(userKeys.first)
     }
 }
+
 
 class CustomNone: None {
     func issueTime() -> Date {
@@ -139,6 +140,7 @@ class CustomNone: None {
         return Date()
     }
 }
+
 
 class CustomBiometricAndDeviceCredential: BiometricAndDeviceCredential {
     override init() {
@@ -153,6 +155,7 @@ class CustomBiometricAndDeviceCredential: BiometricAndDeviceCredential {
         return Date()
     }
 }
+
 
 class CustomBiometricOnly: BiometricOnly {
     override init() {
@@ -172,6 +175,7 @@ class CustomBiometricOnly: BiometricOnly {
     }
 }
 
+
 class CustomApplicationPinDeviceAuthenticator: ApplicationPinDeviceAuthenticator {
     override init(pinCollector: PinCollector = DefaultPinCollector()) {
         super.init(pinCollector: pinCollector)
@@ -189,4 +193,3 @@ class CustomApplicationPinDeviceAuthenticator: ApplicationPinDeviceAuthenticator
         return Date()
     }
 }
-
