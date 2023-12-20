@@ -248,7 +248,7 @@ open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
     
     
     /// Initializes BiometricOnly with the right LAPolicy
-    override init() {
+    public override init() {
         policy = .deviceOwnerAuthenticationWithBiometrics
     }
     
@@ -306,7 +306,7 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthentic
     
     
     /// Initializes BiometricOnly with the rightLAPolicy
-    override init() {
+    public override init() {
         policy = .deviceOwnerAuthentication
     }
     
@@ -362,6 +362,8 @@ open class None: DeviceAuthenticator, CryptoAware {
     
     /// cryptoKey for key pair generation
     var cryptoKey: CryptoKey?
+    
+    public init() { }
     
     /// Generate public and private key pair
     open func generateKeys() throws -> KeyPair {

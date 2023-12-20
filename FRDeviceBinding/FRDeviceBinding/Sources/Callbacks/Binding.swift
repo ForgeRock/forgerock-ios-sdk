@@ -13,7 +13,7 @@ import Foundation
 
 
 /// Device Binding protocol to provide utility methods for ``DeviceBindingCallback`` and ``DeviceSigningVerifierCallback``
-protocol Binding {
+public protocol Binding {
     
     /// Create the interface for the authentication type
     /// - Parameter type: The Device Binding Authentication Type
@@ -30,16 +30,16 @@ protocol Binding {
 
 
 extension Binding {
-    func getDeviceAuthenticator(type: DeviceBindingAuthenticationType) -> DeviceAuthenticator {
+    public func getDeviceAuthenticator(type: DeviceBindingAuthenticationType) -> DeviceAuthenticator {
         return type.getAuthType()
     }
     
     
-    func getExpiration(timeout: Int?) -> Date {
+    public func getExpiration(timeout: Int?) -> Date {
         return Date().addingTimeInterval(Double(timeout ?? 60))
     }
     
-    var deviceAuthenticatorIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator {
+    public var deviceAuthenticatorIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator {
         get {
             return getDeviceAuthenticator(type:)
         }
