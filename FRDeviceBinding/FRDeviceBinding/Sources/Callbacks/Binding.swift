@@ -27,21 +27,3 @@ public protocol Binding {
     /// Default property(method) to identify ``DeviceAuthenticator``
     var deviceAuthenticatorIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator { get }
 }
-
-
-extension Binding {
-    public func getDeviceAuthenticator(type: DeviceBindingAuthenticationType) -> DeviceAuthenticator {
-        return type.getAuthType()
-    }
-    
-    
-    public func getExpiration(timeout: Int?) -> Date {
-        return Date().addingTimeInterval(Double(timeout ?? 60))
-    }
-    
-    public var deviceAuthenticatorIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator {
-        get {
-            return getDeviceAuthenticator(type:)
-        }
-    }
-}

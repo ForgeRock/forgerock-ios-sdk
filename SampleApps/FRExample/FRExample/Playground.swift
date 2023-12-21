@@ -132,11 +132,11 @@ class CustomUserKeySelector: UserKeySelector {
 
 
 class CustomNone: None {
-    func issueTime() -> Date {
+    override func issueTime() -> Date {
         return Date()
     }
     
-    func notBeforeTime() -> Date {
+    override func notBeforeTime() -> Date {
         return Date()
     }
 }
@@ -147,31 +147,23 @@ class CustomBiometricAndDeviceCredential: BiometricAndDeviceCredential {
         super.init()
     }
     
-    func issueTime() -> Date {
+    override func issueTime() -> Date {
         return Date()
     }
     
-    func notBeforeTime() -> Date {
+    override func notBeforeTime() -> Date {
         return Date()
     }
 }
 
 
 class CustomBiometricOnly: BiometricOnly {
-    override init() {
-        super.init()
+    override func issueTime() -> Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: Date())!
     }
     
-    override func isSupported() -> Bool {
-        return true
-    }
-    
-    func issueTime() -> Date {
-        return Date()
-    }
-    
-    func notBeforeTime() -> Date {
-        return Date()
+    override func notBeforeTime() -> Date {
+        return Calendar.current.date(byAdding: .day, value: 2, to: Date())!
     }
 }
 
@@ -185,11 +177,11 @@ class CustomApplicationPinDeviceAuthenticator: ApplicationPinDeviceAuthenticator
         return true
     }
     
-    func issueTime() -> Date {
+    override func issueTime() -> Date {
         return Date()
     }
     
-    func notBeforeTime() -> Date {
+    override func notBeforeTime() -> Date {
         return Date()
     }
 }

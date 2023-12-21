@@ -848,83 +848,85 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
 }
 
-struct CustomDeviceAuthenticatorCustomClaimsAlwaysValid: DeviceAuthenticator {
+class CustomDeviceAuthenticatorCustomClaimsAlwaysValid: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    
+    override func isSupported() -> Bool {
         return true
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+    override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
     
-    func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
+    override func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
         return true
     }
 }
 
 
-struct CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid: DeviceAuthenticator {
+class CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    
+    override func isSupported() -> Bool {
         return true
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+    override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
     
-    func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
+    override func validateCustomClaims(_ customClaims: [String : Any]) -> Bool {
         return false
     }
 }

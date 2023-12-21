@@ -78,7 +78,30 @@ public protocol DeviceAuthenticator {
 }
 
 
-extension DeviceAuthenticator {
+open class DefaultDeviceAuthenticator: DeviceAuthenticator {
+    /// Generate public and private key pair
+    open func generateKeys() throws -> FRCore.KeyPair {
+         throw DeviceBindingStatus.unsupported(errorMessage: "Cannot use DefaultDeviceAuthenticator. Must be subclassed")
+    }
+    
+    /// Check if authentication is supported
+    open func isSupported() -> Bool {
+        return false
+    }
+    
+    /// Access Control for the authetication type
+    open func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    /// Get the Device Binding Authentication Type
+    open func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    /// Remove Keys
+    open func deleteKeys() { }
+    
     
     /// Default implemention
     /// Sign the challenge sent from the server and generate signed JWT
@@ -89,7 +112,7 @@ extension DeviceAuthenticator {
     /// - Parameter expiration: experation Date of jws
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    public func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    open func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         
         let jwk = try ECPublicKey(publicKey: keyPair.publicKey, additionalParameters: [JWKParameter.keyUse.rawValue: DBConstants.sig, JWKParameter.algorithm.rawValue: DBConstants.ES256, JWKParameter.keyIdentifier.rawValue: kid])
         let algorithm = SignatureAlgorithm.ES256
@@ -130,7 +153,7 @@ extension DeviceAuthenticator {
     /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    public func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
+    open func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
         
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
         guard let keyStoreKey = cryptoKey.getSecureKey() else {
@@ -166,7 +189,7 @@ extension DeviceAuthenticator {
     
     
     /// Set the Authentication Prompt
-    public func setPrompt(_ prompt: Prompt) {
+    open func setPrompt(_ prompt: Prompt) {
         //Do Nothing
     }
     
@@ -174,7 +197,7 @@ extension DeviceAuthenticator {
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
-    public func initialize(userId: String, prompt: Prompt) {
+    open func initialize(userId: String, prompt: Prompt) {
         
         setPrompt(prompt)
         initialize(userId: userId)
@@ -183,7 +206,7 @@ extension DeviceAuthenticator {
     
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
-    public func initialize(userId: String) {
+    open func initialize(userId: String) {
         
         if let cryptoAware = self as? CryptoAware {
             cryptoAware.setKey(cryptoKey: CryptoKey(keyId: userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup))
@@ -192,20 +215,20 @@ extension DeviceAuthenticator {
     
     
     /// Get the token signed issue time.
-    public func issueTime() -> Date {
+    open func issueTime() -> Date {
         return Date()
     }
 
     
     /// Get the token not before time.
-    public func notBeforeTime() -> Date {
+    open func notBeforeTime() -> Date {
         return Date()
     }
     
     /// Validate custom claims
     /// - Parameter customClaims: A dictionary of custom claims to be validated
     /// - Returns: Bool value indicating whether the custom claims are valid or not
-    public func validateCustomClaims(_ customClaims: [String: Any]) -> Bool {
+    open func validateCustomClaims(_ customClaims: [String: Any]) -> Bool {
         let registeredKeys = [DBConstants.sub,
                               DBConstants.challenge,
                               DBConstants.exp,
@@ -217,7 +240,7 @@ extension DeviceAuthenticator {
 }
 
 
-open class BiometricAuthenticator: CryptoAware {
+open class BiometricAuthenticator: DefaultDeviceAuthenticator, CryptoAware {
     
     /// prompt  for authentication promp if applicable
     var prompt: Prompt?
@@ -230,19 +253,20 @@ open class BiometricAuthenticator: CryptoAware {
     }
     
     
-    open func setPrompt(_ prompt: Prompt) {
+    open override func setPrompt(_ prompt: Prompt) {
         self.prompt = prompt
     }
     
     /// Remove keys
-    open func deleteKeys() {
+    open override func deleteKeys() {
         cryptoKey?.deleteKeys()
     }
+    
 }
 
 
 /// DeviceAuthenticator adoption for biometric only authentication
-open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
+open class BiometricOnly: BiometricAuthenticator {
     /// local authentication policy for authentication
     var policy: LAPolicy
     
@@ -254,7 +278,7 @@ open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
     
     
     /// Generate public and private key pair
-    open func generateKeys() throws -> KeyPair {
+    open override func generateKeys() throws -> KeyPair {
         guard let cryptoKey = cryptoKey, let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing cryptoKey or prompt")
         }
@@ -276,7 +300,7 @@ open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
     
     
     /// Check if authentication is supported
-    open func isSupported() -> Bool {
+    open override func isSupported() -> Bool {
         let laContext = LAContext()
         var evalError: NSError?
         return laContext.canEvaluatePolicy(policy, error: &evalError)
@@ -284,7 +308,7 @@ open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
     
     
     /// Access Control for the authetication type
-    open func accessControl() -> SecAccessControl? {
+    open override func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .privateKeyUsage], nil)
 #else
@@ -293,14 +317,14 @@ open class BiometricOnly: BiometricAuthenticator, DeviceAuthenticator {
     }
     
     
-    open func type() -> DeviceBindingAuthenticationType {
+    open override func type() -> DeviceBindingAuthenticationType {
         return .biometricOnly
     }
 }
 
 
 /// DeviceAuthenticator adoption for biometric and Device Credential authentication
-open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthenticator {
+open class BiometricAndDeviceCredential: BiometricAuthenticator {
     /// local authentication policy for authentication
     var policy: LAPolicy
     
@@ -312,7 +336,7 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthentic
     
     
     /// Generate public and private key pair
-    open func generateKeys() throws -> KeyPair {
+    open override func generateKeys() throws -> KeyPair {
         guard let cryptoKey = cryptoKey, let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing cryptoKey or prompt")
         }
@@ -335,7 +359,7 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthentic
     
     
     /// Check if authentication is supported
-    open func isSupported() -> Bool {
+    open override func isSupported() -> Bool {
         let laContext = LAContext()
         var evalError: NSError?
         return laContext.canEvaluatePolicy(policy, error: &evalError)
@@ -343,7 +367,7 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthentic
     
     
     /// Access Control for the authetication type
-    open func accessControl() -> SecAccessControl? {
+    open override func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence, .privateKeyUsage], nil)
 #else
@@ -352,21 +376,21 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator, DeviceAuthentic
     }
     
     
-    open func type() -> DeviceBindingAuthenticationType {
+    open override func type() -> DeviceBindingAuthenticationType {
         return .biometricAllowFallback
     }
 }
 
 
-open class None: DeviceAuthenticator, CryptoAware {
+open class None: DefaultDeviceAuthenticator, CryptoAware {
     
     /// cryptoKey for key pair generation
     var cryptoKey: CryptoKey?
     
-    public init() { }
+    public override init() { }
     
     /// Generate public and private key pair
-    open func generateKeys() throws -> KeyPair {
+    open override func generateKeys() throws -> KeyPair {
         guard let cryptoKey = cryptoKey else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing cryptoKey")
         }
@@ -381,18 +405,18 @@ open class None: DeviceAuthenticator, CryptoAware {
     
     
     /// Check if authentication is supported
-    open func isSupported() -> Bool {
+    open override func isSupported() -> Bool {
         return true
     }
     
     
     /// Access Control for the authetication type
-    open func accessControl() -> SecAccessControl? {
+    open override func accessControl() -> SecAccessControl? {
         return nil
     }
     
     
-    open func type() -> DeviceBindingAuthenticationType {
+    open override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
@@ -402,7 +426,7 @@ open class None: DeviceAuthenticator, CryptoAware {
     }
     
     
-    open func deleteKeys() {
+    open override func deleteKeys() {
         cryptoKey?.deleteKeys()
     }
 }

@@ -775,161 +775,165 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
 }
 
 
-struct CustomAuthenticatorUnsupported: DeviceAuthenticator {
+class CustomAuthenticatorUnsupported: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    override func isSupported() -> Bool {
         return false
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
 
 
-struct CustomAuthenticatorGenerateKeysFailed: DeviceAuthenticator {
+class CustomAuthenticatorGenerateKeysFailed: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
-        throw NSError(domain: "domain", code: 1)
-    }
-    func isSupported() -> Bool {
-        return true
-    }
-    
-    func accessControl() -> SecAccessControl? {
-        return nil
-    }
-    
-    func type() -> DeviceBindingAuthenticationType {
-        return .none
-    }
-    
-    func deleteKeys() {
-        cryptoKey.deleteKeys()
-    }
-}
-
-
-struct CustomAuthenticatorSignFailed: DeviceAuthenticator {
-    var cryptoKey: CryptoKey
-    
-    init(cryptoKey: CryptoKey) {
-        self.cryptoKey = cryptoKey
-    }
-    
-    func generateKeys() throws -> KeyPair {
-        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
-        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
-    }
-    func isSupported() -> Bool {
-        return true
-    }
-    
-    func accessControl() -> SecAccessControl? {
-        return nil
-    }
-    
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func generateKeys() throws -> KeyPair {
         throw NSError(domain: "domain", code: 1)
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func isSupported() -> Bool {
+        return true
+    }
+    
+    override func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
 
 
-struct CustomAuthenticatorAborted: DeviceAuthenticator {
+class CustomAuthenticatorSignFailed: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    
+    override func isSupported() -> Bool {
         return true
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+        throw NSError(domain: "domain", code: 1)
+    }
+    
+    override func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    override func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
+}
+
+
+class CustomAuthenticatorAborted: DefaultDeviceAuthenticator {
+    var cryptoKey: CryptoKey
+    
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    override func generateKeys() throws -> KeyPair {
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+    }
+    
+    override func isSupported() -> Bool {
+        return true
+    }
+    
+    override func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         throw JOSESwiftError.localAuthenticationFailed(errorCode: 1)
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
 
 
-struct CustomDeviceAuthenticator: DeviceAuthenticator {
+class CustomDeviceAuthenticator: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    
+    override func isSupported() -> Bool {
         return true
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
+    override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
