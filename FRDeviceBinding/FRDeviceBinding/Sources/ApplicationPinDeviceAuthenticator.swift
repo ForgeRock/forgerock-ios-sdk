@@ -26,7 +26,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     /// PinCollector for collecting the Pin
     public var pinCollector: PinCollector
     
-    init(pinCollector: PinCollector = DefaultPinCollector()) {
+    public init(pinCollector: PinCollector = DefaultPinCollector()) {
         self.pinCollector = pinCollector
     }
     
