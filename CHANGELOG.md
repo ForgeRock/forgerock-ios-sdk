@@ -10,9 +10,10 @@
 - Updated Jailbreak Detectors [SDKS-2796]
 - Fixed an issue related to Inadequate Cache Control [SDKS-2700]
 - Fixed the issue when sfViewController setting in Centralized login had the "entersReaderIfAvailable" as true [SDKS-2746] 
-- Fix the issue with DeviceProfile Collector affecting phones with dual sim cards in iOS 16.3 and earlier [SDKS-2776]
-- Improve unit and e2e tests [SDKS-2637]
-- Fix the issue with device binding api access level [SDKS-2886]
+- Fixed the issue with DeviceProfile Collector affecting phones with dual sim cards in iOS 16.3 and earlier [SDKS-2776]
+- Improved unit and e2e tests [SDKS-2637]
+- Fixed the issue with device binding api access level [SDKS-2886]
+- Fixed the issue with removing userkey from local device repo [SDKS-2887]
 
 ## [4.1.0]
 #### Added

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRProximity'
-  s.version          = '4.1.1-beta1'
+  s.version          = '4.3.0'
   s.summary          = 'ForgeRock Auth Proximity SDK for iOS'
   s.description      = <<-DESC
   FRProximity is a SDK that allows you to additionally collect device information with FRDeviceCollector in FRAuth. FRProximity SDK leverages functionalities in iOS that requires user's consent. You must properly set privacy consent in the application's Info.plist.
@@ -29,5 +29,5 @@ Pod::Spec.new do |s|
 
   base_dir = "FRProximity/FRProximity"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRAuth', '~> 4.1.1-beta1'
+  s.ios.dependency 'FRAuth', '~> 4.3.0'
 end
