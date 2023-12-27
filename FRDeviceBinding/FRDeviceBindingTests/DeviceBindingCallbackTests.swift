@@ -627,6 +627,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -653,6 +656,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -679,6 +685,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -705,6 +714,10 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
+            
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -731,6 +744,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")

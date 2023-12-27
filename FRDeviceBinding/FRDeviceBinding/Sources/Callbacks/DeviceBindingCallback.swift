@@ -179,10 +179,14 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         let startTime = Date()
         let timeout = timeout ?? 60
+        var userKey: UserKey? = nil
         
         do {
             let keyPair = try authInterface.generateKeys()
-            let userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            guard let userKey = userKey else {
+                throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create userKey")
+            }
             try deviceRepository.persist(userKey: userKey)
             // Authentication will be triggered during signing if necessary
             let jws = try authInterface.sign(keyPair: keyPair, kid: userKey.kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
@@ -190,7 +194,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
-                authInterface.deleteKeys()
+                deleteUserKey()
                 handleException(status: .timeout, completion: completion)
                 return
             }
@@ -202,14 +206,21 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             }
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
-            authInterface.deleteKeys()
+            deleteUserKey()
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {
-            authInterface.deleteKeys()
+            deleteUserKey()
             handleException(status: error, completion: completion)
         } catch {
-            authInterface.deleteKeys()
+            deleteUserKey()
             handleException(status: .abort, completion: completion)
+        }
+        
+        func deleteUserKey() {
+            if let userKey = userKey {
+                try? deviceRepository.delete(userKey: userKey)
+            }
+            authInterface.deleteKeys()
         }
     }
     
