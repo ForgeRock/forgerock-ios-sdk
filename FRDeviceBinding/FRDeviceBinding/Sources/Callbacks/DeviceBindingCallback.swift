@@ -252,4 +252,18 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     public func setClientError(_ clientError: String) {
         self.inputValues[self.clientErrorKey] = clientError
     }
+    
+    open func getDeviceAuthenticator(type: DeviceBindingAuthenticationType) -> DeviceAuthenticator {
+        return type.getAuthType()
+    }
+    
+    open func getExpiration(timeout: Int?) -> Date {
+        return Date().addingTimeInterval(Double(timeout ?? 60))
+    }
+    
+    open var deviceAuthenticatorIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator {
+        get {
+            return getDeviceAuthenticator(type:)
+        }
+    }
 }
