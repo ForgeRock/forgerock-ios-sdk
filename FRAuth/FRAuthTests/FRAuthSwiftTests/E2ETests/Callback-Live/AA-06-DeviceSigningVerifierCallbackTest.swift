@@ -17,7 +17,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     static var USERNAME: String = "sdkuser"
     static var APPLICATION_PIN: String = "1111"
     
-    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-sdks.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "afef1acb448a873",
@@ -41,6 +41,17 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     }
     
     override func tearDown() {
+        let userKeys = FRUserKeys().loadAll()
+        
+        for (_, userKey) in userKeys.enumerated()
+        {
+            do {
+                try FRUserKeys().delete(userKey: userKey, forceDelete: true)
+            }
+            catch {
+                FRLog.w("Failed to delete device binding keys.")
+            }
+        }
         FRUser.currentUser?.logout()
         super.tearDown()
     }

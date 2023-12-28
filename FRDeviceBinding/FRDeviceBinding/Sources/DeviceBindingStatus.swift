@@ -20,6 +20,7 @@ public enum DeviceBindingStatus: LocalizedError, Equatable {
     case unsupported(errorMessage: String?)
     case clientNotRegistered
     case unAuthorize
+    case invalidCustomClaims
 }
 
 struct BindingStatusConstants {
@@ -48,6 +49,8 @@ public extension DeviceBindingStatus {
             return BindingStatusConstants.clientNotRegistered
         case .unAuthorize:
             return BindingStatusConstants.abort
+        case .invalidCustomClaims:
+            return BindingStatusConstants.abort
         }
     }
     
@@ -65,6 +68,8 @@ public extension DeviceBindingStatus {
             return "PublicKey or PrivateKey Not found in Device"
         case .unAuthorize:
             return "Invalid Credentials"
+        case .invalidCustomClaims:
+            return "Invalid Custom Claims"
         }
     }
 }

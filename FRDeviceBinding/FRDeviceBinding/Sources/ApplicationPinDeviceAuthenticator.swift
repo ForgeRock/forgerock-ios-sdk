@@ -16,7 +16,7 @@ import JOSESwift
 
 
 /// DeviceAuthenticator adoption for Application Pin authentication
-open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
+open class ApplicationPinDeviceAuthenticator: DefaultDeviceAuthenticator, CryptoAware {
     /// prompt  for authentication promp if applicable
     var prompt: Prompt?
     /// cryptoKey for key pair generation
@@ -26,12 +26,12 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     /// PinCollector for collecting the Pin
     public var pinCollector: PinCollector
     
-    init(pinCollector: PinCollector = DefaultPinCollector()) {
+    public init(pinCollector: PinCollector = DefaultPinCollector()) {
         self.pinCollector = pinCollector
     }
     
     /// Generate public and private key pair
-    open func generateKeys() throws -> KeyPair {
+    open override func generateKeys() throws -> KeyPair {
         guard let appPinAuthenticator = appPinAuthenticator, let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot generate keys, missing appPinAuthenticator or prompt")
         }
@@ -49,18 +49,18 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     
     
     /// Check if authentication is supported
-    open func isSupported() -> Bool {
+    open override func isSupported() -> Bool {
         return true
     }
     
     
     /// Access Control for the authetication type
-    open func accessControl() -> SecAccessControl? {
+    open override func accessControl() -> SecAccessControl? {
         return appPinAuthenticator?.accessControl()
     }
     
     
-    open func type() -> DeviceBindingAuthenticationType {
+    open override func type() -> DeviceBindingAuthenticationType {
         return .applicationPin
     }
     
@@ -71,12 +71,12 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     }
     
     
-    open func setPrompt(_ prompt: Prompt) {
+    open override func setPrompt(_ prompt: Prompt) {
         self.prompt = prompt
     }
     
     
-    public func deleteKeys() {
+    public override func deleteKeys() {
         cryptoKey?.deleteKeys()
     }
     
@@ -86,9 +86,10 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
     /// - Parameter userKey: user Information
     /// - Parameter challenge: challenge received from server
     /// - Parameter expiration: experation Date of jws
+    /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
     /// - Returns: compact serialized jws
     /// - Throws: `DeviceBindingStatus` if any error occurs while signing
-    public func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+    public override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
         guard let prompt = prompt else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot retrive keys, missing prompt")
         }
@@ -108,7 +109,7 @@ open class ApplicationPinDeviceAuthenticator: DeviceAuthenticator, CryptoAware {
         header.typ = DBConstants.JWS
         
         //create payload
-        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970))]
+        var params: [String: Any] = [DBConstants.sub: userKey.userId, DBConstants.challenge: challenge, DBConstants.exp: (Int(expiration.timeIntervalSince1970)), DBConstants.iat: (Int(issueTime().timeIntervalSince1970)), DBConstants.nbf: (Int(notBeforeTime().timeIntervalSince1970))].merging(customClaims) { (current, _) in current }
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Bundle Identifier is missing")
         }

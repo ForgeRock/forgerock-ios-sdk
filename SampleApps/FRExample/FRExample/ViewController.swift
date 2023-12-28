@@ -16,7 +16,7 @@ import CoreLocation
 import QuartzCore
 import FRDeviceBinding
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ErrorAlertShowing {
 
     // MARK: - Properties
     @IBOutlet weak var loggingView: UITextView?
@@ -301,6 +301,10 @@ class ViewController: UIViewController {
                                 case .success:
                                     bindingResult = "Success"
                                 case .failure(let error):
+                                    if error == .invalidCustomClaims {
+                                        self.showErrorAlert(title: "Device Binding Error", message: error.errorMessage)
+                                        return
+                                    }
                                     bindingResult = error.errorMessage
                                 }
                                 
@@ -310,13 +314,17 @@ class ViewController: UIViewController {
                         }
                         return
                     } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
-                        deviceSigningVerifierCallback.sign() { result in
+                        deviceSigningVerifierCallback.sign(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)]) { result in
                             DispatchQueue.main.async {
                                 var signingResult = ""
                                 switch result {
                                 case .success:
                                     signingResult = "Success"
                                 case .failure(let error):
+                                    if error == .invalidCustomClaims {
+                                        self.showErrorAlert(title: "Device Signing Error", message: error.errorMessage)
+                                        return
+                                    }
                                     signingResult = error.errorMessage
                                 }
                                 
@@ -875,7 +883,7 @@ class ViewController: UIViewController {
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 15:
+        case 16:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
@@ -1071,7 +1079,7 @@ class WebAuthnCredentialsTableViewController: UITableViewController {
 }
 
 
-class UserKeysTableViewController: UITableViewController {
+class UserKeysTableViewController: UITableViewController, ErrorAlertShowing {
     let identifier = "cell"
     let frUserKeys = FRUserKeys()
     var userKeys: [UserKey] = []
@@ -1167,8 +1175,14 @@ class UserKeysTableViewController: UITableViewController {
 
         self.present(alert, animated: true, completion: nil)
     }
-    
-    private func showErrorAlert(title: String, message: String) {
+}
+
+protocol ErrorAlertShowing: UIViewController {
+    func showErrorAlert(title: String, message: String)
+}
+
+extension ErrorAlertShowing {
+    func showErrorAlert(title: String, message: String) {
         let errorAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
         errorAlert.addAction(cancelAction)

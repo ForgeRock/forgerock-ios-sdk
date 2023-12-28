@@ -2,7 +2,7 @@
 //  FRBaseTestCase.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -15,6 +15,7 @@ import XCTest
 class FRBaseTestCase: XCTestCase {
     
     static let biometricTestsSupported = false
+    static let isRegisteredDeveloperDevice = false
     var isSimulator = false
     
     //  MARK: - Properties
@@ -156,3 +157,12 @@ class InternalRequestInterceptor: RequestInterceptor {
         return request
     }
 }
+
+public enum FRTestURL {
+    static let baseURL = "https://httpbin.org"
+    static let imageURL = baseURL + "/image"
+    static let anythingURL = baseURL + "/anything"
+    static let getURL = baseURL + "/get"
+    static let status401URL = baseURL + "/status/401"
+}
+

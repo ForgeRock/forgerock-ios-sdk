@@ -11,6 +11,7 @@
 import Foundation
 
 /// AptDetector is a JailbreakDetector class, and is used as one of default JailbreakDetector's detectors to determine whether the device is Jailbroken or not
+@available(*, deprecated, message: "Use SuspiciousFilesExistenceDetector and SuspiciousFilesAccessibleDetector instead")
 public class AptDetector: JailbreakDetector {
     
     /// Initializes AptDetector instance

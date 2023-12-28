@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A52B848A2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
+		A52B848B2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; };
@@ -233,6 +235,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A52B84892B339571001FBA2C /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -343,6 +346,7 @@
 				D5E080C623DA58310025EA17 /* Customization */,
 				D5FE5E5B23190A0000E04658 /* Configs */,
 				D5FE5E5E23190A0000E04658 /* Supporting Files */,
+				A52B84892B339571001FBA2C /* Playground.swift */,
 				D554632F22A6EF950096C7A4 /* AppDelegate.swift */,
 				D554633122A6EF950096C7A4 /* ViewController.swift */,
 				D554633322A6EF950096C7A4 /* Main.storyboard */,
@@ -686,6 +690,7 @@
 			files = (
 				D521A2062303644300EDD28E /* ViewController.swift in Sources */,
 				D521A2082303644300EDD28E /* AppDelegate.swift in Sources */,
+				A52B848B2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +703,7 @@
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
+				A52B848A2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,7 +786,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -803,7 +809,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -933,7 +939,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -946,7 +952,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -960,7 +966,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -973,7 +979,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

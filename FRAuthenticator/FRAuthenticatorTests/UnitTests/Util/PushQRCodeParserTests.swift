@@ -88,7 +88,7 @@ class PushQRCodeParserTests: FRABaseTests {
             XCTAssertNotNil(parser.issuer)
             XCTAssertNotNil(parser.label)
             XCTAssertEqual(parser.label, "demo")
-            XCTAssertEqual(parser.issuer, "")
+            XCTAssertEqual(parser.issuer, "Forgerock")
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -155,7 +155,7 @@ class PushQRCodeParserTests: FRABaseTests {
             
             XCTAssertEqual(parser.scheme, "mfauth")
             XCTAssertEqual(parser.type, "totp")
-            XCTAssertEqual(parser.issuer, "Test")
+            XCTAssertEqual(parser.issuer, "Forgerock")
             XCTAssertEqual(parser.label, "demo")
             XCTAssertEqual(parser.loadBalancer, "amlbcookie=01")
             XCTAssertEqual(parser.challenge, "Daf8vrc8onKu+dcptwCRS9UHmdui5u16vAdG2HMU4w0")

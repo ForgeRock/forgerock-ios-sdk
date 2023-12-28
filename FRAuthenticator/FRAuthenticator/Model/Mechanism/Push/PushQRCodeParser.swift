@@ -98,6 +98,10 @@ struct PushQRCodeParser {
               throw MechanismError.missingInformation("s, r, a, m, or c")
         }
         
+        if let issuer = params["issuer"], let decodedVal = issuer.base64Decoded() {
+            self.issuer = decodedVal
+        }
+        
         guard let regUrlData = registrationEndpoint.decodeURL(), let regUrlStr = String(data: regUrlData, encoding: .utf8), let regURL = URL(string: regUrlStr), let authUrlData = authenticationEndpoint.decodeURL(), let authUrlStr = String(data: authUrlData, encoding: .utf8), let authURL = URL(string: authUrlStr) else {
                 throw MechanismError.invalidInformation("registration and/or authentication URL")
         }

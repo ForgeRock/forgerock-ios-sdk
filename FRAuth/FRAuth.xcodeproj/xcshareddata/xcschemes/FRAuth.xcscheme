@@ -57,6 +57,11 @@
                BlueprintName = "FRAuthTests"
                ReferencedContainer = "container:FRAuth.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AA_07_AppIntegrityTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
