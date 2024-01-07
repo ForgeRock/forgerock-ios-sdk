@@ -2,7 +2,7 @@
 //  FRAppIntegrityCallbackTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023- 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -169,7 +169,7 @@ class MockAttestation: FRAppAttestation {
         self.exception = exception
     }
     
-    func requestIntegrityToken(challenge: String) async throws -> FRAppIntegrityKeys {
+    func requestIntegrityToken(challenge: String, payload: String?) async throws -> FRAppIntegrityKeys {
         if let exp = exception {
             throw exp
         }
