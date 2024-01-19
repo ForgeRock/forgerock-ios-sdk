@@ -151,8 +151,8 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
         self.inputValues[self.clientDataKey] = clientData
     }
     
-    ///  Sets `Payload` value to assert
-    /// - Parameter Payload: Assertion payload to Sign
+    ///  Sets `payload` value to assert
+    /// - Parameter payload: Assertion payload to sign
     public func setPayload(_ payload: String) {
         self.payload = payload
     }
@@ -160,7 +160,6 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
     
     /// Attest the device for iOS14 and above devices
     /// - Throws: `FRDeviceCheckAPIFailure`
-    /// - Parameter attestation: Optional Protocol for providing a ``FRAppAttestation`` to implement own attestation                                                                                                                              
     @available(iOS 14.0, *)
     open func requestIntegrityToken() async throws {
         do {

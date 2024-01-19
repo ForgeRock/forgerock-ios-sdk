@@ -2,7 +2,7 @@
 //  AA_07_APPINTEGRITYTEST.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -45,166 +45,11 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_01_test_app_integrity_success() throws {
-        try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
-        
-        try XCTSkipIf(!Self.isRegisteredDeveloperDevice, "This test requires device to be refgistered with the ForgeRock developer account.")
-        
-        var currentNode: Node?
-        
-        do {
-            try currentNode = startTest(testConfiguration: "default") /// Provide username and select "default" test configuration
-        } catch AuthError.invalidCallbackResponse {
-            XCTFail("Expected a App Integrity node, but got nothing!")
-            return
-        } catch {
-            XCTFail("Unexpected error occurred!")
-            return
-        }
-        
-        // We expect App Integrity callback (1st round...)
-        var integrityCallback1: FRAppIntegrityCallback? = nil
-        var attestToken1: String = String()
-        var assertionToken1: String = String()
-        var keyId1: String = String()
-        var clientData1: String = String()
-        
-        for callback in currentNode!.callbacks {
-            if callback is FRAppIntegrityCallback {
-                integrityCallback1 = (callback as! FRAppIntegrityCallback)
-                
-                /// Make sure that the App Integrity node sends a challenge in the first callback
-                XCTAssertNotEqual(integrityCallback1?.challenge, "")
-                XCTAssertEqual(integrityCallback1?.attestToken, "") /// The attestation token from AM should be empty
-                
-                var integrityResult = ""
-                let ex = self.expectation(description: "App Integrity Success")
-                
-                integrityCallback1!.requestIntegrityToken { error in
-                    integrityResult = (error == nil) ? "Success" : "Error"
-                    ex.fulfill()
-                }
-                
-                waitForExpectations(timeout: 60, handler: nil)
-                
-                XCTAssertEqual(integrityResult, "Success")
-                attestToken1 = (integrityCallback1?.inputValues["IDToken1attestToken"] as? String ?? "")
-                keyId1 = (integrityCallback1?.inputValues["IDToken1keyId"] as? String ?? "")
-                clientData1 = (integrityCallback1?.inputValues["IDToken1clientData"] as? String ?? "")
-                assertionToken1 = (integrityCallback1?.inputValues["IDToken1token"] as? String ?? "")
-                
-                /// Make sure that the SDK sends attestation object, keyId and clientData to AM:
-                XCTAssertNotEqual(attestToken1, "")
-                XCTAssertNotEqual(keyId1, "")
-                XCTAssertNotEqual(clientData1, "")
-                
-                /// Make sure that the assertion token input sent to AM is an empty string...
-                XCTAssertEqual(assertionToken1, "")
-                
-                /// NB:
-                /// keyId example: A1O8PV66FLxbCepSY62GVQUyqQ8tGfDJdDc4yPQcxXI=
-                /// clientData eample: {"challenge":"S2cMzGG3t6mcqI90AOCC131KKN47dSrDvoYEoHjLwqc","bundleId":"com.forgerock.FRTestHost"}
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        var ex = self.expectation(description: "Submit the AppIntegrity callback and continue...")
-        currentNode?.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(token)
-            XCTAssertNil(error)
-            XCTAssertNotNil(node)
-            currentNode = node
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        guard let node = currentNode else {
-            XCTFail("Test Failed: Expected AppIntegrity callback, but got nothing...")
-            return
-        }
-        
-        /// We expect 2nd App Integrity callback...
-        /// This is when the SDK generates an assertion token and AM will validate it...
-        var integrityCallback2: FRAppIntegrityCallback
-        var assertionToken2: String = String()
-        
-        for callback in node.callbacks {
-            if callback is FRAppIntegrityCallback {
-                integrityCallback2 = callback as! FRAppIntegrityCallback
-            
-                /// Expecting same challenge value as the first pass
-                XCTAssertEqual(integrityCallback1!.challenge, integrityCallback2.challenge)
-                
-                /// attestToken should not be empty string on second pass... should be equal to "<keyId>::<attestToken>"
-                XCTAssertEqual(integrityCallback2.attestToken, "\(keyId1)::\(attestToken1)")
-                
-                var integrityResult = ""
-                let ex = self.expectation(description: "App Integrity Success")
-                
-                integrityCallback2.requestIntegrityToken { error in
-                    integrityResult = (error == nil) ? "Success" : "Error"
-                    ex.fulfill()
-                }
-                
-                waitForExpectations(timeout: 60, handler: nil)
-                
-                /// The request of the integrity token on client side should succeed. But will fail on server side, due to challenge mismatch...
-                XCTAssertEqual(integrityResult, "Success")
-                
-                /// Test and ensure that the SDK generates an assertion token
-                assertionToken2 = (integrityCallback2.inputValues["IDToken1token"] as? String ?? "")
-                XCTAssertNotEqual(assertionToken2, "")
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        ex = self.expectation(description: "Submit AppIntegrity callback and continue...")
-        currentNode?.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(token)
-            XCTAssertNil(error)
-            XCTAssertNotNil(node)
-            currentNode = node
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        guard let node = currentNode else {
-            XCTFail("Test Failed: Expected TextOutputCallback and ConfirmationCallback (returned by Message node), but got nothing...")
-            return
-        }
-        
-        /// Make sure that the authentication journey finishes with "success" and provide input value for the TextOutputCallback callback
-        for callback in node.callbacks {
-            if callback is TextOutputCallback, let textOutputCallback = callback as? TextOutputCallback {
-                // Make sure that the App Integriry node has triggered the "Success" outcome...
-                XCTAssertEqual(textOutputCallback.message, "Success")
-            }
-            else if callback is ConfirmationCallback, let confirmationCallback = callback as? ConfirmationCallback {
-                confirmationCallback.value = 0
-            }
-            else {
-                XCTFail("Received unexpected callback \(callback)")
-            }
-        }
-        
-        ex = self.expectation(description: "Submit value for the ConfirmationCallback and continue...")
-        
-        currentNode?.next { (token: AccessToken?, node, error) in
-            // Validate result
-            XCTAssertNil(node)
-            XCTAssertNil(error)
-            XCTAssertNotNil(token)
-            ex.fulfill()
-        }
-        waitForExpectations(timeout: 60, handler: nil)
-        
-        /// At the end verify that the user has been successfully authenticated
-        XCTAssertNotNil(FRUser.currentUser)
+        try app_integrity_success()
+    }
+    
+    func test_01a_test_integrity_token_with_custom_payload() throws {
+        try app_integrity_success(payload: "custom payload")
     }
     
     func test_02_test_app_integrity_fail_invalid_challenge() throws {
@@ -974,5 +819,175 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
             throw AuthError.invalidCallbackResponse("Expected at least one more node, but got nothing...")
         }
         return currentNode!
-    }   
+    }
+    
+    func app_integrity_success(payload: String? = nil) throws {
+        try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
+        
+        try XCTSkipIf(!Self.isRegisteredDeveloperDevice, "This test requires device to be refgistered with the ForgeRock developer account.")
+        
+        var currentNode: Node?
+        
+        do {
+            try currentNode = startTest(testConfiguration: "default") /// Provide username and select "default" test configuration
+        } catch AuthError.invalidCallbackResponse {
+            XCTFail("Expected a App Integrity node, but got nothing!")
+            return
+        } catch {
+            XCTFail("Unexpected error occurred!")
+            return
+        }
+        
+        // We expect App Integrity callback (1st round...)
+        var integrityCallback1: FRAppIntegrityCallback? = nil
+        var attestToken1: String = String()
+        var assertionToken1: String = String()
+        var keyId1: String = String()
+        var clientData1: String = String()
+        
+        for callback in currentNode!.callbacks {
+            if callback is FRAppIntegrityCallback {
+                integrityCallback1 = (callback as! FRAppIntegrityCallback)
+                
+                /// Make sure that the App Integrity node sends a challenge in the first callback
+                XCTAssertNotEqual(integrityCallback1?.challenge, "")
+                XCTAssertEqual(integrityCallback1?.attestToken, "") /// The attestation token from AM should be empty
+                
+                var integrityResult = ""
+                let ex = self.expectation(description: "App Integrity Success")
+                
+                /// Set custom payload if provided...
+                if ((payload) != nil) {
+                    integrityCallback1?.setPayload(payload!)
+                }
+                
+                integrityCallback1!.requestIntegrityToken { error in
+                    integrityResult = (error == nil) ? "Success" : "Error"
+                    ex.fulfill()
+                }
+                
+                waitForExpectations(timeout: 60, handler: nil)
+                
+                XCTAssertEqual(integrityResult, "Success")
+                attestToken1 = (integrityCallback1?.inputValues["IDToken1attestToken"] as? String ?? "")
+                keyId1 = (integrityCallback1?.inputValues["IDToken1keyId"] as? String ?? "")
+                clientData1 = (integrityCallback1?.inputValues["IDToken1clientData"] as? String ?? "")
+                assertionToken1 = (integrityCallback1?.inputValues["IDToken1token"] as? String ?? "")
+                
+                /// Make sure that the SDK sends attestation object, keyId and clientData to AM:
+                XCTAssertNotEqual(attestToken1, "")
+                XCTAssertNotEqual(keyId1, "")
+                XCTAssertNotEqual(clientData1, "")
+                
+                /// Make sure that the assertion token input sent to AM is an empty string...
+                XCTAssertEqual(assertionToken1, "")
+                
+                let decodedClientData1 = String(decoding: Data(base64Encoded: clientData1)!, as: Unicode.UTF8.self)
+                XCTAssertTrue(decodedClientData1.contains("\"payload\":\"\(payload ?? "")\""))
+                /// NB:
+                /// keyId example: A1O8PV66FLxbCepSY62GVQUyqQ8tGfDJdDc4yPQcxXI=
+                /// clientData eample: {"payload":"custom payalod","challenge":"RSMeN37WZJi-XIzYI_l_l5fiWVu3nPEWCKKVBtFIi-Y","bundleId":"com.forgerock.FRTestHost"}
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        var ex = self.expectation(description: "Submit the AppIntegrity callback and continue...")
+        currentNode?.next { (token: AccessToken?, node, error) in
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Test Failed: Expected AppIntegrity callback, but got nothing...")
+            return
+        }
+        
+        /// We expect 2nd App Integrity callback...
+        /// This is when the SDK generates an assertion token and AM will validate it...
+        var integrityCallback2: FRAppIntegrityCallback
+        var assertionToken2: String = String()
+        
+        for callback in node.callbacks {
+            if callback is FRAppIntegrityCallback {
+                integrityCallback2 = callback as! FRAppIntegrityCallback
+            
+                /// Expecting same challenge value as the first pass
+                XCTAssertEqual(integrityCallback1!.challenge, integrityCallback2.challenge)
+                
+                /// attestToken should not be empty string on second pass... should be equal to "<keyId>::<attestToken>"
+                XCTAssertEqual(integrityCallback2.attestToken, "\(keyId1)::\(attestToken1)")
+                
+                var integrityResult = ""
+                let ex = self.expectation(description: "App Integrity Success")
+                
+                integrityCallback2.requestIntegrityToken { error in
+                    integrityResult = (error == nil) ? "Success" : "Error"
+                    ex.fulfill()
+                }
+                
+                waitForExpectations(timeout: 60, handler: nil)
+                
+                /// The request of the integrity token on client side should succeed. But will fail on server side, due to challenge mismatch...
+                XCTAssertEqual(integrityResult, "Success")
+                
+                /// Test and ensure that the SDK generates an assertion token
+                assertionToken2 = (integrityCallback2.inputValues["IDToken1token"] as? String ?? "")
+                XCTAssertNotEqual(assertionToken2, "")
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Submit AppIntegrity callback and continue...")
+        currentNode?.next { (token: AccessToken?, node, error) in
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Test Failed: Expected TextOutputCallback and ConfirmationCallback (returned by Message node), but got nothing...")
+            return
+        }
+        
+        /// Make sure that the authentication journey finishes with "success" and provide input value for the TextOutputCallback callback
+        for callback in node.callbacks {
+            if callback is TextOutputCallback, let textOutputCallback = callback as? TextOutputCallback {
+                // Make sure that the App Integriry node has triggered the "Success" outcome...
+                XCTAssertEqual(textOutputCallback.message, "Success")
+            }
+            else if callback is ConfirmationCallback, let confirmationCallback = callback as? ConfirmationCallback {
+                confirmationCallback.value = 0
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Submit value for the ConfirmationCallback and continue...")
+        
+        currentNode?.next { (token: AccessToken?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        /// At the end verify that the user has been successfully authenticated
+        XCTAssertNotNil(FRUser.currentUser)
+    }
 }

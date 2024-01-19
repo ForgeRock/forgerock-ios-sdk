@@ -16,8 +16,8 @@ import DeviceCheck
 @available(iOS 14.0, *)
 public protocol FRAppAttestation {
     /// Handle attestation and assertion
-    /// - Parameter challenge: Challenge Received from server
-    /// - Parameter payload: Payload to be signed
+    /// - Parameter challenge: challenge Received from server
+    /// - Parameter payload: payload to be signed
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
     /// - Returns: FRAppIntegrityKeys for attestation and assertion
     func requestIntegrityToken(challenge: String,
@@ -63,8 +63,8 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     }
     
     /// Handle attestation and assertion
-    /// - Parameter challenge: Challenge Received from server
-    /// - Parameter payload: Payload to be signed
+    /// - Parameter challenge: challenge Received from server
+    /// - Parameter payload: payload to be signed
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
     /// - Returns: FRAppIntegrityKeys for attestation and assertion
     func requestIntegrityToken(challenge: String,
@@ -98,10 +98,10 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     
     /// Handle validation
     ///
-    /// - Parameter challenge: Challenge Received from server
-    /// - Parameter payload: Payload to be signed
+    /// - Parameter challenge: challenge Received from server
+    /// - Parameter payload: payload to be signed
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
-    /// - Returns: Challenge and userClientData
+    /// - Returns: challenge and userClientData
     private func validate(challenge: String,
                           payload: String? = nil) throws -> (Data, Data) {
         
@@ -131,7 +131,7 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     
     /// attestation
     ///
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
     /// - Parameter jsonData: jsonData Received from server
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
     /// - Returns: FRAppIntegrityKeys
@@ -148,7 +148,7 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     
     /// assertion
     ///
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
     /// - Parameter jsonData: jsonData Received from server
     /// - Parameter keyIdValue: keyIdValue from keychain
     /// - Parameter attestationValue: attestationValue from keychain
