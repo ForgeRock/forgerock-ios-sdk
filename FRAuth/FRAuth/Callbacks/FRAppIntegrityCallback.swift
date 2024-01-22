@@ -2,7 +2,7 @@
 //  FRAppIntegrityCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023 - 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -32,6 +32,9 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
     
     /// Client Data input key
     private var clientDataKey: String
+    
+    /// Payload to sign
+    public private(set) var payload: String? = nil
     
     public private(set) var appIntegritykeys: FRAppIntegrityKeys = FRAppIntegrityKeys()
         
@@ -148,13 +151,20 @@ public class FRAppIntegrityCallback: MultipleValuesCallback {
         self.inputValues[self.clientDataKey] = clientData
     }
     
+    ///  Sets `payload` value to assert
+    /// - Parameter payload: Assertion payload to sign
+    public func setPayload(_ payload: String) {
+        self.payload = payload
+    }
+    
+    
     /// Attest the device for iOS14 and above devices
     /// - Throws: `FRDeviceCheckAPIFailure`
-    /// - Parameter attestation: Optional Protocol for providing a ``FRAppAttestation`` to implement own attestation
     @available(iOS 14.0, *)
     open func requestIntegrityToken() async throws {
         do {
-            let result = try await FRAppAttestDomainModal.shared.requestIntegrityToken(challenge: challenge)
+            let result = try await FRAppAttestDomainModal.shared
+                .requestIntegrityToken(challenge: challenge, payload: payload)
             self.setAttestation(result.appAttestKey)
             if let assertkey = result.assertKey {
                 self.setAssertion(assertkey)

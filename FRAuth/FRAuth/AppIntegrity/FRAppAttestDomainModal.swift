@@ -2,7 +2,7 @@
 //  FRAppIntegrityDomainModal.swift
 //  FRAuth
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023 - 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -16,11 +16,13 @@ import DeviceCheck
 @available(iOS 14.0, *)
 public protocol FRAppAttestation {
     /// Handle attestation and assertion
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
+    /// - Parameter payload: payload to be signed
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
     /// - Returns: FRAppIntegrityKeys for attestation and assertion
-    func requestIntegrityToken(challenge: String) async throws -> FRAppIntegrityKeys
-    
+    func requestIntegrityToken(challenge: String,
+                               payload: String?) async throws -> FRAppIntegrityKeys
+        
 }
 
 /// Attestation modal to fetch the result for the given callback
@@ -33,6 +35,7 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     private var appIntegrityKeys: FRAppIntegrityKeys
     private let challengeKey = "challenge"
     private let bundleIdKey = "bundleId"
+    private let payloadKey = "payload"
     private let delimiter = "::";
     
     // Create a static property to hold the shared instance
@@ -60,12 +63,14 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     }
     
     /// Handle attestation and assertion
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
+    /// - Parameter payload: payload to be signed
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
     /// - Returns: FRAppIntegrityKeys for attestation and assertion
-    func requestIntegrityToken(challenge: String) async throws -> FRAppIntegrityKeys {
+    func requestIntegrityToken(challenge: String,
+                               payload: String? = nil) async throws -> FRAppIntegrityKeys {
         do {
-            let result = try validate(challenge: challenge)
+            let result = try validate(challenge: challenge, payload: payload)
             guard let unwrapIdentifier = self.appIntegrityKeys.getKey() else {
                 return try await attestation(challenge: result.0, jsonData: result.1)
             }
@@ -93,10 +98,12 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     
     /// Handle validation
     ///
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
+    /// - Parameter payload: payload to be signed
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
-    /// - Returns: Challenge and userClientData
-    private func validate(challenge: String) throws -> (Data, Data) {
+    /// - Returns: challenge and userClientData
+    private func validate(challenge: String,
+                          payload: String? = nil) throws -> (Data, Data) {
         
         if !service.isSupported() {
             throw FRDeviceCheckAPIFailure.featureUnsupported
@@ -111,7 +118,8 @@ struct FRAppAttestDomainModal: FRAppAttestation {
         }
         
         let userClientData = [challengeKey: challenge,
-                               bundleIdKey: bundleIdentifier]
+                               bundleIdKey: bundleIdentifier,
+                                payloadKey: payload ?? ""]
         
         guard let jsonData = try? encoder.encode(userClientData) else {
             throw FRDeviceCheckAPIFailure.invalidClientData
@@ -123,7 +131,7 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     
     /// attestation
     ///
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
     /// - Parameter jsonData: jsonData Received from server
     /// - Throws: `FRDeviceCheckAPIFailure and Error`
     /// - Returns: FRAppIntegrityKeys
@@ -140,7 +148,7 @@ struct FRAppAttestDomainModal: FRAppAttestation {
     
     /// assertion
     ///
-    /// - Parameter challenge: Challenge Received from server
+    /// - Parameter challenge: challenge Received from server
     /// - Parameter jsonData: jsonData Received from server
     /// - Parameter keyIdValue: keyIdValue from keychain
     /// - Parameter attestationValue: attestationValue from keychain
@@ -152,7 +160,7 @@ struct FRAppAttestDomainModal: FRAppAttestation {
                            attestationValue: String) async throws -> FRAppIntegrityKeys {
         do {
             let assertion = try await withRetry {
-                try await service.generateAssertion(keyIdentifier: keyIdValue, clientDataHash: Data(SHA256.hash(data: challenge))).base64EncodedString()
+                try await service.generateAssertion(keyIdentifier: keyIdValue, clientDataHash: Data(SHA256.hash(data: jsonData))).base64EncodedString()
             }
             return FRAppIntegrityKeys(attestKey: attestationValue,
                                       assertKey: assertion,
