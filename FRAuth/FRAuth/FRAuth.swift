@@ -96,6 +96,13 @@ public final class FRAuth: NSObject {
             FRLog.i("FRDeviceBinding SDK found; registering callbacks")
             c.perform(Selector(("registerCallbacks")))
         }
+        
+        // If PingProtect module is present, invoke PIProtect.registerCallbacks()
+               // This adds PingProtect's callbacks to CallbackFactory's supportedCallbacks list
+               if let c: NSObject.Type = NSClassFromString("PingProtect.PIProtect") as? NSObject.Type {
+                   FRLog.i("PingProtect SDK found; registering callbacks")
+                   c.perform(Selector(("registerCallbacks")))
+               }
     }
     
     //  MARK: - Private Init

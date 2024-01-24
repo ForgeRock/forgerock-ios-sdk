@@ -15,6 +15,7 @@ import FRUI
 import CoreLocation
 import QuartzCore
 import FRDeviceBinding
+import PingProtect
 
 class ViewController: UIViewController, ErrorAlertShowing {
 
@@ -333,8 +334,38 @@ class ViewController: UIViewController, ErrorAlertShowing {
                             }
                         }
                         return
-                    }
-                    else {
+                    } else if callback.type == "PingOneProtectInitializeCallback", let pingOneProtectInitCallback = callback as? PingOneProtectInitializeCallback {
+                        pingOneProtectInitCallback.initialize { result in
+                            DispatchQueue.main.async {
+                                var signalsResult = ""
+                                switch result {
+                                case .success:
+                                    signalsResult = "Success"
+                                case .failure:
+                                    
+                                    signalsResult = "Failure"
+                                }
+                                self.displayLog("PingOne Protect Initialize Result: \n\(signalsResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else if callback.type == "PingOneProtectEvaluationCallback", let pingOneProtectEvaluationCallback = callback as? PingOneProtectEvaluationCallback {
+                        pingOneProtectEvaluationCallback.getSignals{ result in
+                            DispatchQueue.main.async {
+                                var signalsResult = ""
+                                switch result {
+                                case .success:
+                                    signalsResult = "Success"
+                                case .failure:
+                                    signalsResult = "Failure"
+                                }
+                                self.displayLog("PingOne Protect Evaluation Result: \n\(signalsResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else {
                         let errorAlert = UIAlertController(title: "Invalid Callback", message: "\(callback.type) is not supported.", preferredStyle: .alert)
                         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
                         errorAlert.addAction(cancelAction)
