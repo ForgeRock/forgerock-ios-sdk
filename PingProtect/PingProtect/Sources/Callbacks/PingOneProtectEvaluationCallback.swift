@@ -91,8 +91,8 @@ open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
                     PIProtect.pauseBehavioralData()
                 }
                 completion(.success)
-            } else if let error = error {
-                self.setClientError("Unable to get signals data")
+            } else if let error = error as? NSError {
+                self.setClientError(error.localizedDescription)
                 completion(.failure(error))
             }
         }
@@ -120,6 +120,6 @@ public typealias ProtectResultCallback = (_ result: ProtectResult) -> Void
 /// Result enum for Protect
 public enum ProtectResult {
     case success
-    case failure(Error)
+    case failure(NSError)
 }
 

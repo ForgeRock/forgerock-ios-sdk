@@ -116,8 +116,8 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
                                       lazyMetadata: lazyMetadata,
                                       behavioralDataCollection: behavioralDataCollection)
         PIProtect.initSDK(initParams: initParams) { error in
-            if let error = error {
-                self.setClientError("Protect SDK Initialization failed")
+            if let error = error as? NSError {
+                self.setClientError(error.localizedDescription)
                 completion(.failure(error))
             } else {
                 completion(.success)
