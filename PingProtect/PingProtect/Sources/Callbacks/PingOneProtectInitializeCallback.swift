@@ -117,8 +117,8 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
                                       behavioralDataCollection: behavioralDataCollection)
         PIProtect.initSDK(initParams: initParams) { error in
             if let error = error {
-                completion(.failure)
                 self.setClientError("Protect SDK Initialization failed")
+                completion(.failure(error))
             } else {
                 completion(.success)
             }

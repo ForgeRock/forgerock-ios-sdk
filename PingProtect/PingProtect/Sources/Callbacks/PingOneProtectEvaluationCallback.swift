@@ -92,7 +92,8 @@ open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
                 }
                 completion(.success)
             } else if let error = error {
-                completion(.failure)
+                self.setClientError("Unable to get signals data")
+                completion(.failure(error))
             }
         }
     }
@@ -119,6 +120,6 @@ public typealias ProtectResultCallback = (_ result: ProtectResult) -> Void
 /// Result enum for Protect
 public enum ProtectResult {
     case success
-    case failure
+    case failure(Error)
 }
 
