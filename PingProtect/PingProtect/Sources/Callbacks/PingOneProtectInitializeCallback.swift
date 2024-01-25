@@ -107,7 +107,7 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
     
     /// Initialize Ping Protect SDK
     /// - Parameter completion: Completion block for initialization result
-    open func initialize(completion: @escaping PIProtectResultCallback) {
+    open func initialize(completion: @escaping ProtectResultCallback) {
         // If PIProtect.initSDK has been called in the project already, the following call will have no effect
         let initParams = PIInitParams(envId: envId,
                                       deviceAttributesToIgnore: deviceAttributesToIgnore,

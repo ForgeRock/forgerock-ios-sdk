@@ -15,12 +15,12 @@ import PingOneSignals
 /// Parameters for starting PIProtect SDK
 public struct PIInitParams {
     
-    var envId: String?
-    var deviceAttributesToIgnore: [String]?
-    var consoleLogEnabled: Bool
-    var customHost: String?
-    var lazyMetadata: Bool
-    var behavioralDataCollection: Bool
+    var envId: String? = nil
+    var deviceAttributesToIgnore: [String]? = nil
+    var consoleLogEnabled: Bool = false
+    var customHost: String? = nil
+    var lazyMetadata: Bool = false
+    var behavioralDataCollection: Bool = true
     
     func getPOInitParams() -> POInitParams {
         let poInitParams = POInitParams()
