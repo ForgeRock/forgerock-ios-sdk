@@ -104,6 +104,20 @@
                ReferencedContainer = "container:../FRDeviceBinding/FRDeviceBinding.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A52761142B60209000F8BDF7"
+               BuildableName = "PingProtectTests.xctest"
+               BlueprintName = "PingProtectTests"
+               ReferencedContainer = "container:../PingProtect/PingProtect.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -216,6 +230,16 @@
                BuildableName = "FRDeviceBindingTests.xctest"
                BlueprintName = "FRDeviceBindingTests"
                ReferencedContainer = "container:../FRDeviceBinding/FRDeviceBinding.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A52761142B60209000F8BDF7"
+               BuildableName = "PingProtectTests.xctest"
+               BlueprintName = "PingProtectTests"
+               ReferencedContainer = "container:../PingProtect/PingProtect.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

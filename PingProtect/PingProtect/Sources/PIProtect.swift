@@ -13,7 +13,7 @@ import FRAuth
 import PingOneSignals
 
 /*
- PIProtect is for initializing and interacting with Ping Portect SDK
+ PIProtect is for initializing and interacting with Ping Protect SDK
  */
 public final class PIProtect: NSObject {
     
@@ -42,6 +42,10 @@ public final class PIProtect: NSObject {
     /// Get signals data
     /// - Parameter callback: Callback containing ether the signals or an error
     internal static func getData(callback: @escaping (String?, Error?) -> Void) {
+        guard let sharedInstace = PingOneSignals.sharedInstance() else {
+            callback(nil, NSError(domain: "com.forgerock.ios.PingProtect", code: 1, userInfo: [NSLocalizedDescriptionKey: "SDK is not initialized"]))
+            return
+        }
         PingOneSignals.sharedInstance()?.getData(callback)
     }
     
