@@ -341,9 +341,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
                                 switch result {
                                 case .success:
                                     signalsResult = "Success"
-                                case .failure:
-                                    
-                                    signalsResult = "Failure"
+                                case .failure(let error):
+                                    signalsResult = "Error: \(error.localizedDescription)"
                                 }
                                 self.displayLog("PingOne Protect Initialize Result: \n\(signalsResult)")
                                 handleNode(node)
@@ -351,14 +350,14 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         }
                         return
                     } else if callback.type == "PingOneProtectEvaluationCallback", let pingOneProtectEvaluationCallback = callback as? PingOneProtectEvaluationCallback {
-                        pingOneProtectEvaluationCallback.getSignals{ result in
+                        pingOneProtectEvaluationCallback.getData{ result in
                             DispatchQueue.main.async {
                                 var signalsResult = ""
                                 switch result {
                                 case .success:
                                     signalsResult = "Success"
-                                case .failure:
-                                    signalsResult = "Failure"
+                                case .failure(let error):
+                                    signalsResult = "Error: \(error.localizedDescription)"
                                 }
                                 self.displayLog("PingOne Protect Evaluation Result: \n\(signalsResult)")
                                 handleNode(node)

@@ -201,7 +201,7 @@ final class PingOneProtectEvaluationCallbackTests: FRAuthBaseTest {
             waitForExpectations(timeout: 60, handler: nil)
             
             let expectation = self.expectation(description: "PingOne Protect get signal")
-            callback.getSignals { result in
+            callback.getData { result in
                 switch result {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)

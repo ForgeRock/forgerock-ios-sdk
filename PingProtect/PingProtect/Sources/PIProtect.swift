@@ -46,7 +46,7 @@ public final class PIProtect: NSObject {
             callback(nil, NSError(domain: "com.forgerock.ios.PingProtect", code: 1, userInfo: [NSLocalizedDescriptionKey: "SDK is not initialized"]))
             return
         }
-        PingOneSignals.sharedInstance()?.getData(callback)
+        sharedInstace.getData(callback)
     }
     
 }

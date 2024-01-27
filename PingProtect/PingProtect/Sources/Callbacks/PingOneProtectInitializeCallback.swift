@@ -127,6 +127,8 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
         // We always want to resume Behavioral Data collection if `behavioralDataCollection` is set to TRUE on the server node
         if behavioralDataCollection {
             PIProtect.resumeBehavioralData()
+        } else {
+            PIProtect.pauseBehavioralData()
         }
     }
     

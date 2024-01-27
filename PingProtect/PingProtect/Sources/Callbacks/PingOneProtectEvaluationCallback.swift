@@ -79,9 +79,9 @@ open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
     }
     
     
-    /// Get Signals from the device
+    /// Get Signals data from the device
     /// - Parameter completion: Completion block for signals result
-    open func getSignals(completion: @escaping ProtectResultCallback) {
+    open func getData(completion: @escaping ProtectResultCallback) {
         
         PIProtect.getData { data, error in
             if let data = data {
