@@ -22,7 +22,7 @@ public final class PIProtect: NSObject {
     /// - Parameters:
     ///   - initParams: `PIInitParams` containing parameters for the init
     ///   - callback: Result callback of the init
-    public static func initSDK(initParams: PIInitParams? = nil, callback: @escaping (Error?) -> Void) {
+    public static func start(initParams: PIInitParams? = nil, callback: @escaping (Error?) -> Void) {
         
         let signalsInitParams = initParams != nil ? initParams!.getPOInitParams() : POInitParams()
         let pingOneSignals = PingOneSignals.initSDK(initParams: signalsInitParams)

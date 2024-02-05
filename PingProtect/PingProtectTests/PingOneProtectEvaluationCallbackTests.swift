@@ -193,7 +193,7 @@ final class PingOneProtectEvaluationCallbackTests: FRAuthBaseTest {
             XCTAssertNotNil(callback)
             
             let ex = self.expectation(description: "SDK initialized")
-            PIProtect.initSDK { error in
+            PIProtect.start { error in
                 XCTAssertNil(error)
                 ex.fulfill()
             }

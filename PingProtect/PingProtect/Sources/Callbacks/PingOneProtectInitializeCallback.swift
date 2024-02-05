@@ -115,7 +115,7 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
                                       customHost: customHost,
                                       lazyMetadata: lazyMetadata,
                                       behavioralDataCollection: behavioralDataCollection)
-        PIProtect.initSDK(initParams: initParams) { error in
+        PIProtect.start(initParams: initParams) { error in
             if let error = error as? NSError {
                 self.setClientError(error.localizedDescription)
                 completion(.failure(error))

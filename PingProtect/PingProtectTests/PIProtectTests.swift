@@ -29,7 +29,7 @@ final class PIProtectTests: XCTestCase {
     func test_01_initSDK_success() {
         
         let ex = self.expectation(description: "SDK initialized")
-        PIProtect.initSDK { error in
+        PIProtect.start { error in
             XCTAssertNil(error)
             ex.fulfill()
         }
@@ -40,7 +40,7 @@ final class PIProtectTests: XCTestCase {
     func test_02_getData_success() {
         
         let ex = self.expectation(description: "SDK initialized")
-        PIProtect.initSDK { error in
+        PIProtect.start { error in
             XCTAssertNil(error)
             ex.fulfill()
         }
