@@ -325,7 +325,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             XCTAssertNotNil(callback)
             
             let expectation = self.expectation(description: "PingOne Protect Initialized")
-            callback.initialize { result in
+            callback.start { result in
                 switch result {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 0)

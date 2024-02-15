@@ -335,7 +335,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         }
                         return
                     } else if callback.type == "PingOneProtectInitializeCallback", let pingOneProtectInitCallback = callback as? PingOneProtectInitializeCallback {
-                        pingOneProtectInitCallback.initialize { result in
+                        pingOneProtectInitCallback.start { result in
                             DispatchQueue.main.async {
                                 var signalsResult = ""
                                 switch result {
