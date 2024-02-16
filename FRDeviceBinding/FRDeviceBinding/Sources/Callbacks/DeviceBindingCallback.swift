@@ -148,7 +148,6 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter completion: Completion block for Device binding result callback
     open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                    completion: @escaping DeviceBindingResultCallback) {
-        
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
         
         let dispatchQueue = DispatchQueue(label: "com.forgerock.serialQueue", qos: .userInitiated)
@@ -167,7 +166,11 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
                           deviceId: String? = nil,
                           deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
                           _ completion: @escaping DeviceBindingResultCallback) {
-
+#if targetEnvironment(simulator)
+        // DeviceBinding/Signing is not supported on the iOS Simulator
+        handleException(status: .abort, completion: completion)
+        return
+#endif
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
         authInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()

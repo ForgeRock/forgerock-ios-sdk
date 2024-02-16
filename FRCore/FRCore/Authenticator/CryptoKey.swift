@@ -98,7 +98,7 @@ public struct CryptoKey {
         query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = keyAlias
         
-#if !targetEnvironment(simulator)
+
         if let pin = pin {
             let context = LAContext()
             let credentialIsSet = context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
@@ -106,7 +106,7 @@ public struct CryptoKey {
             context.interactionNotAllowed = false
             query[kSecUseAuthenticationContext as String] = context
         }
-#endif
+
         
         if let accessGroup = accessGroup {
             query[String(kSecAttrAccessGroup)] = accessGroup

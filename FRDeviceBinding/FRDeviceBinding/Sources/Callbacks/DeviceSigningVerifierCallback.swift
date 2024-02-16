@@ -174,7 +174,11 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
                                authInterface: DeviceAuthenticator,
                                customClaims: [String: Any] = [:],
                                _ completion: @escaping DeviceSigningResultCallback) {
-        
+#if targetEnvironment(simulator)
+        // DeviceBinding/Signing is not supported on the iOS Simulator
+        handleException(status: .abort, completion: completion)
+        return
+#endif
         authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
