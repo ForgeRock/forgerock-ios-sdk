@@ -168,7 +168,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
                           _ completion: @escaping DeviceBindingResultCallback) {
 #if targetEnvironment(simulator)
         // DeviceBinding/Signing is not supported on the iOS Simulator
-        handleException(status: .abort, completion: completion)
+        handleException(status: .unsupported(errorMessage: "DeviceBinding/Signing is not supported on the iOS Simulator"), completion: completion)
         return
 #endif
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
