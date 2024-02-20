@@ -176,7 +176,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     }
     
     func test_03_test_device_binding_bind() {
-        
+#if !targetEnvironment(simulator)
         // Variable to capture the current Node object
         var currentNode: Node
         
@@ -226,6 +226,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
+#endif
     }
     
     func test_04_test_device_binding_exceed() {
@@ -268,6 +269,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     }
     
     func test_05_test_device_binding_wrong_app_id() {
+#if !targetEnvironment(simulator)
         var currentNode: Node
         
         do {
@@ -317,6 +319,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNil(FRUser.currentUser)
+#endif
     }
     
     /// Common steps for all test cases
