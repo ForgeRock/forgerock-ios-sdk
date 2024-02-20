@@ -22,6 +22,17 @@ public struct PIInitParams {
     var lazyMetadata: Bool = false
     var behavioralDataCollection: Bool = true
     
+    /// Memberwise Initializer
+    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true) {
+        self.envId = envId
+        self.deviceAttributesToIgnore = deviceAttributesToIgnore
+        self.consoleLogEnabled = consoleLogEnabled
+        self.customHost = customHost
+        self.lazyMetadata = lazyMetadata
+        self.behavioralDataCollection = behavioralDataCollection
+    }
+    
+    
     func getPOInitParams() -> POInitParams {
         let poInitParams = POInitParams()
         poInitParams.envId = envId
