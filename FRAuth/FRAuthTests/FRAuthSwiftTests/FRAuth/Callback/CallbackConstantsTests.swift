@@ -2,7 +2,7 @@
 //  CallbackConstantsTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -59,6 +59,10 @@ class CallbackConstantsTests: FRBaseTestCase {
         XCTAssertEqual(callbackType.rawValue, "IdPCallback")
         callbackType = .SelectIdPCallback
         XCTAssertEqual(callbackType.rawValue, "SelectIdPCallback")
+        callbackType = .FRAppIntegrityCallback
+        XCTAssertEqual(callbackType.rawValue, "AppIntegrityCallback")
+        callbackType = .TextInputCallback
+        XCTAssertEqual(callbackType.rawValue, "TextInputCallback")
     }
     
     
