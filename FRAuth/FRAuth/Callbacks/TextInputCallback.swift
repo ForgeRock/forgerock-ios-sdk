@@ -34,7 +34,7 @@ public class TextInputCallback: SingleValueCallback {
         
         if let outputs = json[CBConstants.output] as? [[String: Any]] {
             for output in outputs {
-                if let outputName = output[CBConstants.name] as? String, let outputValue = output[CBConstants.value] as? String, outputName == "defaultText" {
+                if let outputName = output[CBConstants.name] as? String, let outputValue = output[CBConstants.value] as? String, outputName == CBConstants.defaultText {
                     self.defaultText = outputValue
                 }
             }

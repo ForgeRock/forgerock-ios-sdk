@@ -253,3 +253,8 @@ extension CBConstants {
     static let keyId = "keyId"
     static let clientData = "clientData"
 }
+
+//  MARK: - TextInputCallback
+extension CBConstants {
+    static let defaultText: String = "defaultText"
+}
