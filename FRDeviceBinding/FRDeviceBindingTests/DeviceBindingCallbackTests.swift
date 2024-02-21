@@ -574,9 +574,6 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_20_execute_success() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -594,7 +591,11 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 2)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
@@ -607,10 +608,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_21_execute_fail_timeout() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
-        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+       // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
         
@@ -627,6 +625,10 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
                 case .failure(let error):
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                        return
+                    }
                     XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
@@ -673,9 +675,6 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_23_execute_custom_generate_keys_failed() throws{
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -688,8 +687,12 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
@@ -705,9 +708,6 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_24_execute_custom_sign_failed() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -720,8 +720,12 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
@@ -738,9 +742,6 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_25_execute_custom_aborted() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -753,8 +754,12 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of aborted")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
@@ -770,9 +775,6 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_26_bind_customDeviceBindingIdentifier() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -794,7 +796,11 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }

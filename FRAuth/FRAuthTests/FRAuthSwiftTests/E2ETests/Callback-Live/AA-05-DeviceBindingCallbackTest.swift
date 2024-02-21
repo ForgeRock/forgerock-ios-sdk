@@ -177,9 +177,6 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     }
     
     func test_03_test_device_binding_bind() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Variable to capture the current Node object
         var currentNode: Node
         
@@ -209,6 +206,10 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
                         ex.fulfill()
                     })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    return
+                }
                 
                 XCTAssertEqual(bindingResult, "Success")
 
@@ -271,9 +272,6 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     }
     
     func test_05_test_device_binding_wrong_app_id() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         var currentNode: Node
         
         do {
@@ -303,6 +301,10 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
                     })
                 waitForExpectations(timeout: 60, handler: nil)
                 
+                if isSimulator {
+                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    return
+                }
                 XCTAssertEqual(bindingResult, "Success")
 
             }

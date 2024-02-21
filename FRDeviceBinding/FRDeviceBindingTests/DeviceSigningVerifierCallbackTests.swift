@@ -436,9 +436,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_17_execute_singleKeyFound() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -464,7 +461,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -537,7 +538,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -548,9 +553,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_20_execute_fail_timeout() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -576,8 +578,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
         }
@@ -588,9 +594,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_18_sign_customDeviceBindingIdentifier() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -622,7 +625,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }
@@ -635,9 +642,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_19_execute_single_success_with_valid_custom_claims() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -666,7 +670,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -677,9 +685,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_20_execute_single_success_with_invalid_custom_claims() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -708,8 +713,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.invalidCustomClaims.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.invalidCustomClaims.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
         }
@@ -720,9 +729,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_21_execute_single_success_with_empty_custom_claims() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -750,7 +756,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -761,9 +771,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_22_sign_CustomDeviceAuthenticatorCustomClaimsAlwaysValid() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -800,7 +807,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                     // even though it overrids one of the existing claims, it succeeds as validateCustomClaims method always returns true
                     XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }
@@ -813,9 +824,6 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     
     
     func test_23_sign_CustomDeviceAuthenticatorCustomClaimsAlwaysInvalid() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -852,8 +860,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                     XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
                 case .failure(let error):
                     // even though we don't overrid any of the existing claims, it fails as validateCustomClaims method always returns false
-                    XCTAssertEqual(error, DeviceBindingStatus.invalidCustomClaims)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error, DeviceBindingStatus.invalidCustomClaims)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
                 expectation.fulfill()
             }

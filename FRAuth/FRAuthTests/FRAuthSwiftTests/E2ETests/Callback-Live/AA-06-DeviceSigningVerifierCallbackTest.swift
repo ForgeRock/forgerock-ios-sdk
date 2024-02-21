@@ -197,9 +197,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     }
     
     func test_03_test_device_signing_verifier_with_username_collector() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Bind the device with authentication type "None"
         try bindDevice(nodeConfiguration: "bind")
         
@@ -222,6 +219,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Success")
             }
             else {
@@ -271,9 +272,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     }
     
     func test_04_test_device_signing_verifier_usernameless() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Bind the device with authentication type "None"
         try bindDevice(nodeConfiguration: "bind")
         
@@ -296,6 +294,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Success")
             }
             else {
@@ -345,9 +347,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     }
     
     func test_05_test_device_signing_verifier_timout() throws {
-        // Not supported on the simulator
-        try XCTSkipIf(isSimulator, "Not supported on the simulator")
-        
         // Bind the device with authentication type "None"
         try bindDevice(nodeConfiguration: "bind")
         
@@ -371,6 +370,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Authentication Timeout")
             }
             else {
@@ -716,7 +719,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                         ex.fulfill()
                     })
                 waitForExpectations(timeout: 60, handler: nil)
-
+                if isSimulator {
+                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    return
+                }
                 XCTAssertEqual(bindingResult, "Success")
             }
             else {
