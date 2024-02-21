@@ -22,6 +22,7 @@
 		3A67B8832AD83946003331C5 /* FRAppIntegrityKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A67B8822AD83946003331C5 /* FRAppIntegrityKeys.swift */; };
 		3A6D26672A1345400099D877 /* PolicyAdviceCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D26662A1345400099D877 /* PolicyAdviceCreator.swift */; };
 		3AB062FA2AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB062F92AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift */; };
+		9536C56C2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
 		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
 		A53723D12AE80A5D0047B809 /* TelephonyCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */; };
@@ -350,6 +351,7 @@
 		3A67B8822AD83946003331C5 /* FRAppIntegrityKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppIntegrityKeys.swift; sourceTree = "<group>"; };
 		3A6D26662A1345400099D877 /* PolicyAdviceCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyAdviceCreator.swift; sourceTree = "<group>"; };
 		3AB062F92AE6224D00C4B47C /* FRAppIntegrityKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAppIntegrityKeysTests.swift; sourceTree = "<group>"; };
+		9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_08_TextInputCallbackTest.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
 		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
 		A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelephonyCollectorTests.swift; sourceTree = "<group>"; };
@@ -1196,6 +1198,7 @@
 				959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */,
 				95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */,
 				3A4B46E32AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift */,
+				9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */,
 			);
 			path = "Callback-Live";
 			sourceTree = "<group>";
@@ -1945,6 +1948,7 @@
 				D5791BD425F87DE8004B487A /* TokenErrorTests.swift in Sources */,
 				D5791BD525F87DE8004B487A /* AuthApiErrorTests.swift in Sources */,
 				D5791BD625F87DE8004B487A /* BrowserErrorTests.swift in Sources */,
+				9536C56C2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift in Sources */,
 				D5791BD725F87DE8004B487A /* OAuth2ErrorTests.swift in Sources */,
 				1B85DA132B85208C0023E953 /* TextInputCallbackTests.swift in Sources */,
 				D5791BD825F87DE8004B487A /* FRAuthTests.swift in Sources */,
