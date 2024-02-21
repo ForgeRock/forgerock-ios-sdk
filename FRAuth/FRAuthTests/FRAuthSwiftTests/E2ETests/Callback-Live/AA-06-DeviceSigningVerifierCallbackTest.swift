@@ -2,7 +2,7 @@
 //  AA-06-DeviceSigningVerifierCallbackTest.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -197,7 +197,9 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     }
     
     func test_03_test_device_signing_verifier_with_username_collector() throws {
-#if !targetEnvironment(simulator)
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Bind the device with authentication type "None"
         try bindDevice(nodeConfiguration: "bind")
         
@@ -266,11 +268,12 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
-#endif
     }
     
     func test_04_test_device_signing_verifier_usernameless() throws {
-#if !targetEnvironment(simulator)
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Bind the device with authentication type "None"
         try bindDevice(nodeConfiguration: "bind")
         
@@ -339,11 +342,12 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
-#endif
     }
     
     func test_05_test_device_signing_verifier_timout() throws {
-#if !targetEnvironment(simulator)
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Bind the device with authentication type "None"
         try bindDevice(nodeConfiguration: "bind")
         
@@ -413,7 +417,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
-#endif
     }
     
     func test_06_test_device_signing_verifier_pin() throws {
@@ -589,7 +592,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     /// Bind a device
     /// Possible values for nodeConfiguration are "bind" or "bind-pin"
     func bindDevice(nodeConfiguration: String) throws {
-#if !targetEnvironment(simulator)
         var currentNode: Node?
         
         // Process ChoiceCollector node... (first node)
@@ -736,7 +738,6 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
         
         // Logout the user
         FRUser.currentUser?.logout()
-#endif
     }
     
     /// Helper function for processing common steps in test cases

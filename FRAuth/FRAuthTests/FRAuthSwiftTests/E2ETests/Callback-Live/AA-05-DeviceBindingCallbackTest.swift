@@ -2,7 +2,7 @@
 //  AA-05-DeviceBindingCallbackTest.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -30,6 +30,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
 
 
     override func setUp() {
+        super.setUp()
         do {
             try FRAuth.start(options: options)
         }
@@ -175,8 +176,10 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         XCTAssertNotNil(FRUser.currentUser)
     }
     
-    func test_03_test_device_binding_bind() {
-#if !targetEnvironment(simulator)
+    func test_03_test_device_binding_bind() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Variable to capture the current Node object
         var currentNode: Node
         
@@ -226,7 +229,6 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNotNil(FRUser.currentUser)
-#endif
     }
     
     func test_04_test_device_binding_exceed() {
@@ -268,8 +270,10 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         XCTAssertNotNil(FRUser.currentUser)
     }
     
-    func test_05_test_device_binding_wrong_app_id() {
-#if !targetEnvironment(simulator)
+    func test_05_test_device_binding_wrong_app_id() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         var currentNode: Node
         
         do {
@@ -319,7 +323,6 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         XCTAssertNil(FRUser.currentUser)
-#endif
     }
     
     /// Common steps for all test cases

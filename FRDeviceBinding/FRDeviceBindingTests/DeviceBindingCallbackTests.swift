@@ -2,7 +2,7 @@
 //  DeviceBindingCallbackTests.swift
 //  FRDeviceBindingTests
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -574,6 +574,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_20_execute_success() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -604,6 +607,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_21_execute_fail_timeout() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
@@ -666,7 +672,10 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_23_execute_custom_generate_keys_failed() {
+    func test_23_execute_custom_generate_keys_failed() throws{
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -695,7 +704,10 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_24_execute_custom_sign_failed() {
+    func test_24_execute_custom_sign_failed() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -725,7 +737,10 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_25_execute_custom_aborted() {
+    func test_25_execute_custom_aborted() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -755,6 +770,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_26_bind_customDeviceBindingIdentifier() throws {
+        // Not supported on the simulator
+        try XCTSkipIf(isSimulator, "Not supported on the simulator")
+        
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
