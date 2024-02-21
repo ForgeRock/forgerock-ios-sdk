@@ -2,7 +2,7 @@
 //  ViewController.m
 //  FRexampleObjC
 //
-//  Copyright (c) 2019 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -356,6 +356,7 @@ alpha:1.0]
             for (id callback in node.callbacks) {
                 
                 if ([callback isKindOfClass:[FRNameCallback class]] ||
+                    [callback isKindOfClass:[FRTextInputCallback class]] ||
                     [callback isKindOfClass:[FRValidatedCreateUsernameCallback class]] ||
                     [callback isKindOfClass:[FRPasswordCallback class]] ||
                     [callback isKindOfClass:[FRValidatedCreatePasswordCallback class]]) {

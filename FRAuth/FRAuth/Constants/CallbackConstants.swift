@@ -2,7 +2,7 @@
 //  CallbackConstants.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -94,6 +94,7 @@ enum CallbackType: String {
     case DeviceBindingCallback = "DeviceBindingCallback"
     case DeviceSigningVerifierCallback = "DeviceSigningVerifierCallback"
     case FRAppIntegrityCallback = "AppIntegrityCallback"
+    case TextInputCallback = "TextInputCallback"
 }
 
 /// CBConstants is mainly responsible to maintain all constant values related to Callback implementation
@@ -251,4 +252,9 @@ extension CBConstants {
     static let attest = "attestToken"
     static let keyId = "keyId"
     static let clientData = "clientData"
+}
+
+//  MARK: - TextInputCallback
+extension CBConstants {
+    static let defaultText: String = "defaultText"
 }
