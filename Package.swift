@@ -14,12 +14,14 @@ let package = Package (
         .library(name: "FRUI", targets: ["FRUI"]),
         .library(name: "FRFacebookSignIn", targets: ["FRFacebookSignIn"]),
         .library(name: "FRGoogleSignIn", targets: ["FRGoogleSignIn"]),
-        .library(name: "FRDeviceBinding", targets: ["FRDeviceBinding"])
+        .library(name: "FRDeviceBinding", targets: ["FRDeviceBinding"]),
+        .library(name: "PingProtect", targets: ["PingProtect"])
     ],
     dependencies: [
         .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("16.0.1")),
         .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("7.0.0")),
-        .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .exact("2.4.0"))
+        .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .exact("2.4.0")),
+        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .exact("5.2.0"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),
@@ -31,6 +33,7 @@ let package = Package (
         .target(name: "FRUI", dependencies: [.target(name: "FRDeviceBinding")], path: "FRUI/FRUI", exclude: ["Info.plist", "FRUI.h"]),
         .target(name: "FRFacebookSignIn", dependencies: [.target(name: "FRAuth"), .product(name: "FacebookLogin", package: "Facebook")], path: "FRFacebookSignIn/FRFacebookSignIn/Sources"),
         .target(name: "FRGoogleSignIn", dependencies: [.target(name: "FRAuth"), .product(name: "GoogleSignIn", package: "GoogleSignIn")], path: "FRGoogleSignIn/FRGoogleSignIn/Sources"),
-        .target(name: "FRDeviceBinding", dependencies: [.target(name: "FRAuth"), .product(name: "JOSESwift", package: "JOSESwift")], path: "FRDeviceBinding/FRDeviceBinding/Sources")
+        .target(name: "FRDeviceBinding", dependencies: [.target(name: "FRAuth"), .product(name: "JOSESwift", package: "JOSESwift")], path: "FRDeviceBinding/FRDeviceBinding/Sources"),
+        .target(name: "PingProtect", dependencies: [.target(name: "FRAuth"), .product(name: "PingOneSignals", package: "PingOneSignals")], path: "PingProtect/PingProtect/Sources")
     ]
 )

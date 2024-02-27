@@ -49,6 +49,7 @@ pod 'FRAuthenticator' // Authenticator module that generates HOTP, TOTP, and Pus
 pod 'FRGoogleSignIn' // Social Login module for Google Sign In
 pod 'FRFacebookSignIn' // Social Login module for Facebook Login
 pod 'FRDeviceBinding' // Add-on for Device Binding feature
+pod 'PingProtect' // Add-on for Ping Protect feature
 ```
 
 ### Swift Package Manager
@@ -167,6 +168,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-&copy; Copyright 2022 ForgeRock AS. All Rights Reserved
+&copy; Copyright 2024 ForgeRock AS. All Rights Reserved
 
 [forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg "ForgeRock Logo"
