@@ -2,7 +2,7 @@
 //  CryptoKey.swift
 //  FRCore
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -98,7 +98,7 @@ public struct CryptoKey {
         query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = keyAlias
         
-#if !targetEnvironment(simulator)
+
         if let pin = pin {
             let context = LAContext()
             let credentialIsSet = context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
@@ -106,7 +106,7 @@ public struct CryptoKey {
             context.interactionNotAllowed = false
             query[kSecUseAuthenticationContext as String] = context
         }
-#endif
+
         
         if let accessGroup = accessGroup {
             query[String(kSecAttrAccessGroup)] = accessGroup

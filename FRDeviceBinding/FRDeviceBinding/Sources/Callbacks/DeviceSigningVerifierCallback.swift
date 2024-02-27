@@ -2,7 +2,7 @@
 //  DeviceSigningVerifierCallback.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -174,7 +174,11 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
                                authInterface: DeviceAuthenticator,
                                customClaims: [String: Any] = [:],
                                _ completion: @escaping DeviceSigningResultCallback) {
-        
+#if targetEnvironment(simulator)
+        // DeviceBinding/Signing is not supported on the iOS Simulator
+        handleException(status: .unsupported(errorMessage: "DeviceBinding/Signing is not supported on the iOS Simulator"), completion: completion)
+        return
+#endif
         authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)

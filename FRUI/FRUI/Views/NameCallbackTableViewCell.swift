@@ -36,6 +36,10 @@ class NameCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
         self.callback = callback as? SingleValueCallback
         self.textField?.placeholder = self.callback?.prompt
         
+        if callback is TextInputCallback, let textInputCallback = callback as? TextInputCallback {
+            self.textField?.text = textInputCallback.getDefaultText()
+        }
+        
         if callback is AbstractValidatedCallback, let validatedCallback = callback as? AbstractValidatedCallback {
             self.textField?.text = validatedCallback.getValue() as? String
             if let failedPolicies = validatedCallback.failedPolicies {
