@@ -14,10 +14,10 @@ import XCTest
 final class AA_07_AppIntegrityTest: CallbackBaseTest {
     
     static var USERNAME: String = "sdkuser"
-    let options = FROptions(url: "https://localam.petrov.ca/openam",
-                            realm: "root",
+    let options = FROptions(url: "https://openam-integrity1.forgeblocks.com/am",
+                            realm: "alpha",
                             enableCookie: true,
-                            cookieName: "iPlanetDirectoryPro",
+                            cookieName: "6351f4b87415d3e",
                             authServiceName: "integrity",
                             oauthClientId: "iosclient",
                             oauthRedirectUri: "http://localhost:8081",
