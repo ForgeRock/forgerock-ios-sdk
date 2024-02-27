@@ -73,7 +73,7 @@ final class PingOneProtectEvaluationCallbackTests: FRAuthBaseTest {
             let callback = try PingOneProtectEvaluationCallback(json: callbackResponse)
             
             XCTAssertNotNil(callback)
-            XCTAssertEqual(String(callback.pauseBehavioralData!), pauseBehavioralData)
+            XCTAssertEqual(String(callback.pauseBehavioralData), pauseBehavioralData)
             
             XCTAssertTrue(callback.inputNames.contains(signalsKey))
             XCTAssertTrue(callback.inputNames.contains(clientErrorKey))

@@ -18,7 +18,7 @@ import FRAuth
 open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
     
     /// The pauseBehavioralData received from server
-    public private(set) var pauseBehavioralData: Bool?
+    public private(set) var pauseBehavioralData: Bool
     
     /// Signals input key in callback response
     private var signalsKey: String
@@ -87,7 +87,7 @@ open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
             if let data = data {
                 self.setSignals(data)
                 // Pause behavioral data collection if `pauseBehavioralData` is set to FALSE on the server node
-                if let pauseBehavioralData = self.pauseBehavioralData, pauseBehavioralData == true {
+                if self.pauseBehavioralData {
                     PIProtect.pauseBehavioralData()
                 }
                 completion(.success)
