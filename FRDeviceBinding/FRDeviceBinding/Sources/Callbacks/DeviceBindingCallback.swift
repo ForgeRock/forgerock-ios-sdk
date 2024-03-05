@@ -145,14 +145,16 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     /// Bind the device.
     /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - defaults value is `deviceAuthenticatorIdentifier`
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device binding result callback
     open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
+                   prompt: Prompt? = nil,
                    completion: @escaping DeviceBindingResultCallback) {
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
         
         let dispatchQueue = DispatchQueue(label: "com.forgerock.serialQueue", qos: .userInitiated)
         dispatchQueue.async {
-            self.execute(authInterface: authInterface, completion)
+            self.execute(authInterface: authInterface, prompt: prompt, completion)
         }
     }
     
@@ -161,10 +163,12 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
     /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
     /// - Parameter deviceRepository: Storage for user keys - default value is ``LocalDeviceBindingRepository()``
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device binding result callback
     internal func execute(authInterface: DeviceAuthenticator? = nil,
                           deviceId: String? = nil,
                           deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
+                          prompt: Prompt? = nil,
                           _ completion: @escaping DeviceBindingResultCallback) {
 #if targetEnvironment(simulator)
         // DeviceBinding/Signing is not supported on the iOS Simulator
@@ -172,7 +176,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         return
 #endif
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
-        authInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        authInterface.initialize(userId: userId, prompt: prompt ?? Prompt(title: title, subtitle: subtitle, description: promptDescription))
         let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
         
         guard authInterface.isSupported() else {

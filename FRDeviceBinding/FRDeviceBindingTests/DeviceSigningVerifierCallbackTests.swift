@@ -877,6 +877,60 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     }
     
     
+    func test_24_sign_customPrompt() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let authenticator = BiometricAndDeviceCredential()
+        let customDeviceBindingIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator =  { type in
+            return authenticator
+        }
+        
+        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            
+            let expectation = self.expectation(description: "Device Signing")
+            callback.sign(userKeySelector: CustomUserKeySelector(),
+                          deviceAuthenticator: customDeviceBindingIdentifier,
+                          prompt: customPrompt) { result in
+                switch result {
+                case .success:
+                    XCTAssertEqual(authenticator.prompt?.title, customPrompt.title)
+                    XCTAssertEqual(authenticator.prompt?.subtitle, customPrompt.subtitle)
+                    XCTAssertEqual(authenticator.prompt?.description, customPrompt.description)
+                case .failure(let error):
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
+                }
+                expectation.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
     class CustomUserKeySelector: UserKeySelector {
         func selectUserKey(userKeys: [UserKey], selectionCallback: @escaping UserKeySelectorCallback) {
             selectionCallback(userKeys.first)

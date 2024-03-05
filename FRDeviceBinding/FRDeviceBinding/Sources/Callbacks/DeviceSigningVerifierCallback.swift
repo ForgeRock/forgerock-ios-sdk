@@ -117,15 +117,17 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is `DefaultUserKeySelector()`
     /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` -default value is `deviceAuthenticatorIdentifier`
     /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device binding result callback
     open func sign(userKeySelector: UserKeySelector = DefaultUserKeySelector(),
                    deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                    customClaims: [String: Any] = [:],
+                   prompt: Prompt? = nil,
                    completion: @escaping DeviceSigningResultCallback) {
         
         let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
         dispatchQueue.async {
-            self.execute(userKeySelector: userKeySelector, deviceAuthenticator: deviceAuthenticator, customClaims: customClaims, completion)
+            self.execute(userKeySelector: userKeySelector, deviceAuthenticator: deviceAuthenticator, customClaims: customClaims, prompt: prompt, completion)
         }
     }
     
@@ -135,11 +137,13 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     /// - Parameter userKeySelector: ``UserKeySelector`` implementation - default value is  `DefaultUserKeySelector()`
     /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - default value is `deviceAuthenticatorIdentifier`
     /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device signing result callback
     internal func execute(userKeyService: UserKeyService = UserDeviceKeyService(),
                           userKeySelector: UserKeySelector = DefaultUserKeySelector(),
                           deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
                           customClaims: [String: Any] = [:],
+                          prompt: Prompt? = nil,
                           _ completion: @escaping DeviceSigningResultCallback) {
         
         let deviceAuthenticator = deviceAuthenticator ?? deviceAuthenticatorIdentifier
@@ -147,12 +151,12 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
         
         switch status {
         case .singleKeyFound(key: let key):
-            authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), customClaims: customClaims, completion)
+            authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), customClaims: customClaims, prompt: prompt, completion)
         case .multipleKeysFound(keys: _):
             userKeySelector.selectUserKey(userKeys: userKeyService.getAll()) { key in
                 if let key = key {
                     self.dispatchQueue.async {
-                        self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), customClaims: customClaims, completion)
+                        self.authenticate(userKey: key, authInterface: deviceAuthenticator(key.authType), customClaims: customClaims, prompt: prompt, completion)
                     }
                 } else {
                     self.handleException(status: .abort, completion: completion)
@@ -169,17 +173,19 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
     /// - Parameter userKey: User Information
     /// - Parameter authInterface: Interface to find the Authentication Type
     /// - Parameter customClaims: A dictionary of custom claims to be added to the jws payload
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device binding result callback
     internal func authenticate(userKey: UserKey,
                                authInterface: DeviceAuthenticator,
                                customClaims: [String: Any] = [:],
+                               prompt: Prompt? = nil,
                                _ completion: @escaping DeviceSigningResultCallback) {
 #if targetEnvironment(simulator)
         // DeviceBinding/Signing is not supported on the iOS Simulator
         handleException(status: .unsupported(errorMessage: "DeviceBinding/Signing is not supported on the iOS Simulator"), completion: completion)
         return
 #endif
-        authInterface.initialize(userId: userKey.userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        authInterface.initialize(userId: userKey.userId, prompt: prompt ?? Prompt(title: title, subtitle: subtitle, description: promptDescription))
         guard authInterface.isSupported() else {
             handleException(status: .unsupported(errorMessage: nil), completion: completion)
             return
