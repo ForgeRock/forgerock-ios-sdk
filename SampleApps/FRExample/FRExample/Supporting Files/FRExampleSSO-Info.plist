@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>FaceID is required for biometric authentication</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -22,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.forgerock.ios.central</string>
+			<string>com.forgerock.ios.sso</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>frauthcentral</string>
+				<string>frauthsso</string>
 			</array>
 		</dict>
 	</array>
@@ -39,8 +41,6 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>FRExample app uses BLE to collect device information</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>FaceID is required for biometric authentication</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FRExample app uses geo-location service to collect device information</string>
 	<key>UILaunchStoryboardName</key>
