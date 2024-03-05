@@ -34,7 +34,7 @@ class MainListViewController: BaseTableViewController {
         
         // - MARK: PushRequestInterceptor example
         /// Uncomment the next line to test the http request interceptor...
-        //RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PushRequestInterceptor()])
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PushRequestInterceptor()])
     }
     
     

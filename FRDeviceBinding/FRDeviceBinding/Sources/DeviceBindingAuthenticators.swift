@@ -159,7 +159,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     open func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
         
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
-        guard let keyStoreKey = cryptoKey.getSecureKey(reason: prompt?.description ?? nil) else {
+        guard let keyStoreKey = cryptoKey.getSecureKey(reason: prompt?.description) else {
             throw DeviceBindingStatus.clientNotRegistered
         }
         let algorithm = SignatureAlgorithm.ES256

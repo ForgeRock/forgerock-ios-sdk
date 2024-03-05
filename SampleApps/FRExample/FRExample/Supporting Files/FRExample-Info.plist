@@ -28,9 +28,29 @@
 				<string>frauth</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.684644441808-44ecssta9g7m70umr3unkeb0v7iumahj</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb224359139892846</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>224359139892846</string>
+	<key>FacebookClientToken</key>
+	<string>f462dada4af0c238e42a1026c8f9759f</string>
+	<key>FacebookDisplayName</key>
+	<string>ForgeRock Social Login</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>

@@ -5,30 +5,30 @@
 	<key>forgerock_ssl_pinning_public_key_hashes</key>
 	<array/>
 	<key>forgerock_cookie_name</key>
-	<string>iPlanetDirectoryPro</string>
+	<string>d8ef0f6bfe45ee8</string>
 	<key>forgerock_enable_cookie</key>
 	<true/>
 	<key>forgerock_oauth_client_id</key>
-	<string>testclient</string>
+	<string>iosclient</string>
 	<key>forgerock_oauth_redirect_uri</key>
-	<string>http://www.example.com</string>
+	<string>frauth://com.forgerock.ios.frexample</string>
 	<key>forgerock_oauth_scope</key>
 	<string>openid profile email address</string>
 	<key>forgerock_oauth_url</key>
-	<string>https://default.iam.example.com/am</string>
+	<string>https://openam-forgerock-vahan.forgeblocks.com/am</string>
 	<key>forgerock_oauth_threshold</key>
-	<string>60</string>
+	<string>5</string>
 	<key>forgerock_url</key>
-	<string>https://default.iam.example.com/am</string>
+	<string>https://openam-forgerock-vahan.forgeblocks.com/am</string>
 	<key>forgerock_realm</key>
-	<string>root</string>
+	<string>alpha</string>
 	<key>forgerock_timeout</key>
 	<string>60</string>
-	<key>forgerock_keychain_access_group</key>
-	<string>com.forgerock.sso</string>
 	<key>forgerock_auth_service_name</key>
-	<string>Login</string>
+	<string>Binding</string>
 	<key>forgerock_registration_service_name</key>
 	<string>Registration</string>
+	<key>forgerock_keychain_access_group</key>
+	<string>com.forgerock.sso</string>
 </dict>
 </plist>

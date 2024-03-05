@@ -35,7 +35,7 @@ class WebAuthnCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
         if let webAuthnRegistration = callback as? WebAuthnRegistrationCallback {
             self.messageLabel?.text = "WebAuthn Registration Process"
             webAuthnRegistration.delegate = self
-            webAuthnRegistration.register(node: node, onSuccess: { (attestation) in
+            webAuthnRegistration.register(node: node, usePasskeysIfAvailable: false, onSuccess: { (attestation) in
                 DispatchQueue.main.async {
                     self.delegate?.submitNode()
                 }
@@ -49,7 +49,7 @@ class WebAuthnCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
         else if let webAuthnAuthentication = callback as? WebAuthnAuthenticationCallback {
             self.messageLabel?.text = "WebAuthn Authentication Process"
             webAuthnAuthentication.delegate = self
-            webAuthnAuthentication.authenticate(node: node, onSuccess: { (assertion) in
+            webAuthnAuthentication.authenticate(node: node, usePasskeysIfAvailable: false, onSuccess: { (assertion) in
                 DispatchQueue.main.async {
                     self.delegate?.submitNode()
                 }
