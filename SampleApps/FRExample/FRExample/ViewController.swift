@@ -304,7 +304,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         self.present(alert, animated: true, completion: nil)
                         return
                     } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
-                        deviceBindingCallback.bind() { result in
+                        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+                        deviceBindingCallback.bind(prompt: customPrompt) { result in
                             DispatchQueue.main.async {
                                 var bindingResult = ""
                                 switch result {
@@ -324,7 +325,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         }
                         return
                     } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
-                        deviceSigningVerifierCallback.sign(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)]) { result in
+                        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+                        deviceSigningVerifierCallback.sign(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)], prompt: customPrompt) { result in
                             DispatchQueue.main.async {
                                 var signingResult = ""
                                 switch result {
