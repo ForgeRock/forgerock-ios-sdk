@@ -461,6 +461,12 @@ public struct Prompt {
     var subtitle: String
     var description: String
     
+    
+    /// Memberwise initializer
+    /// - Parameters:
+    ///   - title: title for the prompt
+    ///   - subtitle: subtitle for the promp
+    ///   - description: description for the prompt
     public init(title: String, subtitle: String, description: String) {
         self.title = title
         self.subtitle = subtitle

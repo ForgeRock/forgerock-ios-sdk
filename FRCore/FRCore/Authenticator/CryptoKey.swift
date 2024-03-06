@@ -89,6 +89,7 @@ public struct CryptoKey {
     
     /// Get the private key from the Keychain for given key alias
     /// - Parameter pin: password for the private key credential if applies
+    /// - Parameter reason: localized reason for the authentication screen
     /// - Returns: private key for the given key alias
     public func getSecureKey(pin: String? = nil, reason: String? = nil) -> SecKey? {
         
