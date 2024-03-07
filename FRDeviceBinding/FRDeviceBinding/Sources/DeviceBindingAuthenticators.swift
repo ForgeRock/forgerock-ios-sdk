@@ -2,7 +2,7 @@
 //  DeviceBindingAuthenticators.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -79,6 +79,9 @@ public protocol DeviceAuthenticator {
 
 
 open class DefaultDeviceAuthenticator: DeviceAuthenticator {
+    /// prompt  for authentication if applicable
+    var prompt: Prompt?
+    
     /// Generate public and private key pair
     open func generateKeys() throws -> FRCore.KeyPair {
          throw DeviceBindingStatus.unsupported(errorMessage: "Cannot use DefaultDeviceAuthenticator. Must be subclassed")
@@ -156,7 +159,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     open func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
         
         let cryptoKey = CryptoKey(keyId: userKey.userId, accessGroup: FRAuth.shared?.options?.keychainAccessGroup)
-        guard let keyStoreKey = cryptoKey.getSecureKey() else {
+        guard let keyStoreKey = cryptoKey.getSecureKey(reason: prompt?.description) else {
             throw DeviceBindingStatus.clientNotRegistered
         }
         let algorithm = SignatureAlgorithm.ES256
@@ -242,8 +245,6 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
 
 open class BiometricAuthenticator: DefaultDeviceAuthenticator, CryptoAware {
     
-    /// prompt  for authentication promp if applicable
-    var prompt: Prompt?
     /// cryptoKey for key pair generation
     var cryptoKey: CryptoKey?
     
@@ -459,6 +460,17 @@ public struct Prompt {
     var title: String
     var subtitle: String
     var description: String
+    
+    /// Memberwise initializer
+    /// - Parameters:
+    ///   - title: title for the prompt
+    ///   - subtitle: subtitle for the promp
+    ///   - description: description for the prompt
+    public init(title: String, subtitle: String, description: String) {
+        self.title = title
+        self.subtitle = subtitle
+        self.description = description
+    }
 }
 
 //  MARK: - Device Binding Constants
