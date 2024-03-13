@@ -2,7 +2,7 @@
 //  RequestTest.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -85,6 +85,8 @@ class RequestTests: FRBaseTestCase {
         
         XCTAssertEqual(headerValues!["header1"], "headerone")
         XCTAssertEqual(headerValues!["header2"], "headertwo")
+        XCTAssertEqual(headerValues![RequestConstants.xRequestedWith], RequestConstants.forgerockSdk)
+        XCTAssertEqual(headerValues![RequestConstants.xRequestedPlatform], RequestConstants.ios)
     }
     
     /// Tests URLRequest creation with body parameter of Dictionary
@@ -128,5 +130,12 @@ class RequestTests: FRBaseTestCase {
         let request = Request(url: self.testURL, method: .GET, bodyParams: ["Test": "Test"])
         let urlRequest = request.build()
         XCTAssertNil(urlRequest?.httpBody)
+    }
+
+    func testRequestForPlatformIdentifyingHeaders() {
+        let request = Request(url: self.testURL, method: .GET).build()
+        XCTAssertNotNil(request?.allHTTPHeaderFields)
+        XCTAssertEqual(request?.allHTTPHeaderFields?[RequestConstants.xRequestedWith], RequestConstants.forgerockSdk)
+        XCTAssertEqual(request?.allHTTPHeaderFields?[RequestConstants.xRequestedPlatform], RequestConstants.ios)
     }
 }

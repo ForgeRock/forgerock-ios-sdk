@@ -2,7 +2,7 @@
 //  Request.swift
 //  FRCore
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -122,12 +122,16 @@ public struct Request {
         thisRequest.httpMethod = self.method.rawValue
                
         //  Set Content-Type, and Accept headers based on request/response types
-        thisRequest.setValue(self.requestType.rawValue, forHTTPHeaderField: "Content-Type")
+        thisRequest.setValue(self.requestType.rawValue, forHTTPHeaderField: RequestConstants.contentType)
         if let responseType = self.responseType {
-            thisRequest.setValue(responseType.rawValue, forHTTPHeaderField: "Accept")
+            thisRequest.setValue(responseType.rawValue, forHTTPHeaderField: RequestConstants.accept)
         }
         //  Add additional headers
         self.headers.forEach{ thisRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
+        
+        // Set platform idnetifying headers, that cannot be overriden by interceptors
+        thisRequest.setValue(RequestConstants.forgerockSdk, forHTTPHeaderField: RequestConstants.xRequestedWith)
+        thisRequest.setValue(RequestConstants.ios, forHTTPHeaderField: RequestConstants.xRequestedPlatform)
         //  Build http body content
         // TODO: dynamically handle more content-type
         if self.bodyParams.keys.count > 0 {
@@ -196,3 +200,11 @@ extension String {
     }
 }
 
+enum RequestConstants {
+    static let contentType = "Content-Type"
+    static let accept = "Accept"
+    static let xRequestedWith = "x-requested-with"
+    static let xRequestedPlatform = "x-requested-platform"
+    static let forgerockSdk = "forgerock-sdk"
+    static let ios = "ios"
+}

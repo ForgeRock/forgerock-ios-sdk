@@ -2,7 +2,7 @@
 //  RestClientTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -132,5 +132,40 @@ class RestClientTests: FRBaseTestCase {
         RestClient.shared.setURLSessionConfiguration(config: RestClient.defaultURLSessionConfiguration)
         
         XCTAssertNil(RestClient.shared._urlSession?.configuration.urlCache)
+    }
+
+    func test_05_test_response_headers_for_platform_identifiers() {
+
+        let request = Request(url: FRTestURL.getURL, method: .GET)
+        let expectation = self.expectation(description: "GET request: \(request.debugDescription)")
+
+        var response:[String: Any]?, urlResponse: URLResponse?, error: NetworkError?
+
+        RestClient.shared.invoke(request: request) { (result) in
+
+            switch result {
+            case .success(let requestResponse, let requestUrlResponse):
+                response = requestResponse
+                urlResponse = requestUrlResponse
+                expectation.fulfill()
+                break
+            case .failure(let requestError):
+
+                error = requestError as? NetworkError
+                expectation.fulfill()
+                break
+            }
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        let headers = response?["headers"] as? [String: String]
+
+        XCTAssertNotNil(headers)
+        XCTAssertEqual(headers?["X-Requested-With"], RequestConstants.forgerockSdk)
+        XCTAssertEqual(headers?["X-Requested-Platform"], RequestConstants.ios)
+
+        XCTAssertNotNil(response)
+        XCTAssertNotNil(urlResponse)
+        XCTAssertNil(error)
     }
 }
