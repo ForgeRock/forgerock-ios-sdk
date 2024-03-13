@@ -2,7 +2,7 @@
 //  CryptoKey.swift
 //  FRCore
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -89,8 +89,9 @@ public struct CryptoKey {
     
     /// Get the private key from the Keychain for given key alias
     /// - Parameter pin: password for the private key credential if applies
+    /// - Parameter reason: localized reason for the authentication screen
     /// - Returns: private key for the given key alias
-    public func getSecureKey(pin: String? = nil) -> SecKey? {
+    public func getSecureKey(pin: String? = nil, reason: String? = nil) -> SecKey? {
         
         var query = [String: Any]()
         query[String(kSecClass)] = kSecClassKey
@@ -98,15 +99,19 @@ public struct CryptoKey {
         query[String(kSecReturnRef)] = true
         query[String(kSecAttrApplicationTag)] = keyAlias
         
-#if !targetEnvironment(simulator)
+        let context = LAContext()
         if let pin = pin {
-            let context = LAContext()
             let credentialIsSet = context.setCredential(pin.data(using: .utf8), type: .applicationPassword)
             guard credentialIsSet == true else { return nil }
             context.interactionNotAllowed = false
+        }
+        if let reason = reason {
+            context.localizedReason = reason
+        }
+        //Add LAContext to the query only if any of it's parameters is set
+        if pin != nil || reason != nil {
             query[kSecUseAuthenticationContext as String] = context
         }
-#endif
         
         if let accessGroup = accessGroup {
             query[String(kSecAttrAccessGroup)] = accessGroup

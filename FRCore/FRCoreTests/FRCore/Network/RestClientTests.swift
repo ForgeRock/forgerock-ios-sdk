@@ -59,7 +59,7 @@ class RestClientTests: FRBaseTestCase {
     
     func test_02_test_200_get_request() {
         
-        let request = Request(url: "https://httpbin.org/get", method: .GET)
+        let request = Request(url: FRTestURL.getURL, method: .GET)
         let expectation = self.expectation(description: "GET request: \(request.debugDescription)")
         
         var response:[String: Any]?, urlResponse: URLResponse?, error: NetworkError?
@@ -88,7 +88,7 @@ class RestClientTests: FRBaseTestCase {
     
     func test_03_test_invalid_response_image() {
            
-       let request = Request(url: "https://httpbin.org/image", method: .GET, headers: ["accept":"image/webp"])
+       let request = Request(url: FRTestURL.imageURL, method: .GET, headers: ["accept":"image/webp"])
        let expectation = self.expectation(description: "GET request: \(request.debugDescription)")
        
        var response:[String: Any]?, urlResponse: URLResponse?, error: NetworkError?

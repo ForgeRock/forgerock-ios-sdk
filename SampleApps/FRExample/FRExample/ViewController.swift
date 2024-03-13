@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -15,8 +15,9 @@ import FRUI
 import CoreLocation
 import QuartzCore
 import FRDeviceBinding
+import PingProtect
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ErrorAlertShowing {
 
     // MARK: - Properties
     @IBOutlet weak var loggingView: UITextView?
@@ -251,6 +252,15 @@ class ViewController: UIViewController {
                             textField.autocapitalizationType = .none
                         })
                     }
+                    else if callback.type == "TextInputCallback", let textInputCallback = callback as? TextInputCallback {
+                        
+                        alert.addTextField(configurationHandler: { (textField) in
+                            textField.placeholder = textInputCallback.prompt
+                            textField.autocorrectionType = .no
+                            textField.autocapitalizationType = .none
+                            textField.text = textInputCallback.getDefaultText()
+                        })
+                    }
                     else if callback.type == "PasswordCallback", let passwordCallback = callback as? PasswordCallback {
                         alert.addTextField(configurationHandler: { (textField) in
                             textField.placeholder = passwordCallback.prompt
@@ -294,13 +304,18 @@ class ViewController: UIViewController {
                         self.present(alert, animated: true, completion: nil)
                         return
                     } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
-                        deviceBindingCallback.bind() { result in
+                        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+                        deviceBindingCallback.bind(prompt: customPrompt) { result in
                             DispatchQueue.main.async {
                                 var bindingResult = ""
                                 switch result {
                                 case .success:
                                     bindingResult = "Success"
                                 case .failure(let error):
+                                    if error == .invalidCustomClaims {
+                                        self.showErrorAlert(title: "Device Binding Error", message: error.errorMessage)
+                                        return
+                                    }
                                     bindingResult = error.errorMessage
                                 }
                                 
@@ -310,13 +325,18 @@ class ViewController: UIViewController {
                         }
                         return
                     } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
-                        deviceSigningVerifierCallback.sign() { result in
+                        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+                        deviceSigningVerifierCallback.sign(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)], prompt: customPrompt) { result in
                             DispatchQueue.main.async {
                                 var signingResult = ""
                                 switch result {
                                 case .success:
                                     signingResult = "Success"
                                 case .failure(let error):
+                                    if error == .invalidCustomClaims {
+                                        self.showErrorAlert(title: "Device Signing Error", message: error.errorMessage)
+                                        return
+                                    }
                                     signingResult = error.errorMessage
                                 }
                                 
@@ -325,8 +345,37 @@ class ViewController: UIViewController {
                             }
                         }
                         return
-                    }
-                    else {
+                    } else if callback.type == "PingOneProtectInitializeCallback", let pingOneProtectInitCallback = callback as? PingOneProtectInitializeCallback {
+                        pingOneProtectInitCallback.start { result in
+                            DispatchQueue.main.async {
+                                var signalsResult = ""
+                                switch result {
+                                case .success:
+                                    signalsResult = "Success"
+                                case .failure(let error):
+                                    signalsResult = "Error: \(error.localizedDescription)"
+                                }
+                                self.displayLog("PingOne Protect Initialize Result: \n\(signalsResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else if callback.type == "PingOneProtectEvaluationCallback", let pingOneProtectEvaluationCallback = callback as? PingOneProtectEvaluationCallback {
+                        pingOneProtectEvaluationCallback.getData{ result in
+                            DispatchQueue.main.async {
+                                var signalsResult = ""
+                                switch result {
+                                case .success:
+                                    signalsResult = "Success"
+                                case .failure(let error):
+                                    signalsResult = "Error: \(error.localizedDescription)"
+                                }
+                                self.displayLog("PingOne Protect Evaluation Result: \n\(signalsResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else {
                         let errorAlert = UIAlertController(title: "Invalid Callback", message: "\(callback.type) is not supported.", preferredStyle: .alert)
                         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
                         errorAlert.addAction(cancelAction)
@@ -875,7 +924,7 @@ class ViewController: UIViewController {
             // Login for FRUser without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
             break
-        case 15:
+        case 16:
             // Login for AccessToken without UI
             self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
             break
@@ -1071,7 +1120,7 @@ class WebAuthnCredentialsTableViewController: UITableViewController {
 }
 
 
-class UserKeysTableViewController: UITableViewController {
+class UserKeysTableViewController: UITableViewController, ErrorAlertShowing {
     let identifier = "cell"
     let frUserKeys = FRUserKeys()
     var userKeys: [UserKey] = []
@@ -1167,8 +1216,14 @@ class UserKeysTableViewController: UITableViewController {
 
         self.present(alert, animated: true, completion: nil)
     }
-    
-    private func showErrorAlert(title: String, message: String) {
+}
+
+protocol ErrorAlertShowing: UIViewController {
+    func showErrorAlert(title: String, message: String)
+}
+
+extension ErrorAlertShowing {
+    func showErrorAlert(title: String, message: String) {
         let errorAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
         errorAlert.addAction(cancelAction)

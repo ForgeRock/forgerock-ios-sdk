@@ -2,7 +2,7 @@
 //  CallbackTableViewCellFactory.swift
 //  FRUI
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -43,6 +43,7 @@ public class CallbackTableViewCellFactory: NSObject {
         self.talbeViewCellForCallbacks = [
             "NameCallback": NameCallbackTableViewCell.self,
             "StringAttributeInputCallback": NameCallbackTableViewCell.self,
+            "TextInputCallback": NameCallbackTableViewCell.self,
             "ValidatedCreateUsernameCallback": NameCallbackTableViewCell.self,
             "PasswordCallback": PasswordCallbackTableViewCell.self,
             "ValidatedCreatePasswordCallback": PasswordCallbackTableViewCell.self,
@@ -64,6 +65,7 @@ public class CallbackTableViewCellFactory: NSObject {
         self.tableViewCellNibForCallbacks = [
             "NameCallback": "NameCallbackTableViewCell",
             "StringAttributeInputCallback": "NameCallbackTableViewCell",
+            "TextInputCallback": "NameCallbackTableViewCell",
             "ValidatedCreateUsernameCallback": "NameCallbackTableViewCell",
             "PasswordCallback": "PasswordCallbackTableViewCell",
             "ValidatedCreatePasswordCallback": "PasswordCallbackTableViewCell",

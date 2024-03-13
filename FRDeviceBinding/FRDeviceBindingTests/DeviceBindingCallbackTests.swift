@@ -2,7 +2,7 @@
 //  DeviceBindingCallbackTests.swift
 //  FRDeviceBindingTests
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -591,7 +591,11 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 2)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
@@ -604,7 +608,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     
     
     func test_21_execute_fail_timeout() throws {
-        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+       // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
         try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
         
@@ -621,12 +625,19 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
                 case .failure(let error):
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                        return
+                    }
                     XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -653,6 +664,9 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -660,7 +674,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_23_execute_custom_generate_keys_failed() {
+    func test_23_execute_custom_generate_keys_failed() throws{
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -673,12 +687,19 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -686,7 +707,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_24_execute_custom_sign_failed() {
+    func test_24_execute_custom_sign_failed() throws {
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -699,12 +720,20 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of unsupported")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
+            
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -712,7 +741,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
     }
     
     
-    func test_25_execute_custom_aborted() {
+    func test_25_execute_custom_aborted() throws {
         let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -725,12 +754,19 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of aborted")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.abort.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
             let cryptoKey = CryptoKey(keyId: callback.userId)
             cryptoKey.deleteKeys()
+            
+            let key = LocalDeviceBindingRepository().getAllKeys().filter { $0.userId == callback.userId}.first
+            XCTAssertNil(key, "Key must be deleted from local Repo")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -760,7 +796,55 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
+                }
+                expectation.fulfill()
+            }
+            let cryptoKey = CryptoKey(keyId: callback.userId)
+            cryptoKey.deleteKeys()
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
+    func test_27_bind_customPrompt() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString(authenticationType: .biometricAllowFallback)
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        do {
+            let callback = try DeviceBindingCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            let authenticator = BiometricAndDeviceCredential()
+            let customDeviceBindingIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator =  { type in
+                return authenticator
+            }
+            
+            let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+            
+            let expectation = self.expectation(description: "Device Binding")
+            callback.bind(deviceAuthenticator: customDeviceBindingIdentifier, prompt: customPrompt) { result in
+                switch result {
+                case .success:
+                    XCTAssertEqual(authenticator.prompt?.title, customPrompt.title)
+                    XCTAssertEqual(authenticator.prompt?.subtitle, customPrompt.subtitle)
+                    XCTAssertEqual(authenticator.prompt?.description, customPrompt.description)
+                case .failure(let error):
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }
@@ -775,161 +859,165 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
 }
 
 
-struct CustomAuthenticatorUnsupported: DeviceAuthenticator {
+class CustomAuthenticatorUnsupported: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    override func isSupported() -> Bool {
         return false
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
 
 
-struct CustomAuthenticatorGenerateKeysFailed: DeviceAuthenticator {
+class CustomAuthenticatorGenerateKeysFailed: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
-        throw NSError(domain: "domain", code: 1)
-    }
-    func isSupported() -> Bool {
-        return true
-    }
-    
-    func accessControl() -> SecAccessControl? {
-        return nil
-    }
-    
-    func type() -> DeviceBindingAuthenticationType {
-        return .none
-    }
-    
-    func deleteKeys() {
-        cryptoKey.deleteKeys()
-    }
-}
-
-
-struct CustomAuthenticatorSignFailed: DeviceAuthenticator {
-    var cryptoKey: CryptoKey
-    
-    init(cryptoKey: CryptoKey) {
-        self.cryptoKey = cryptoKey
-    }
-    
-    func generateKeys() throws -> KeyPair {
-        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
-        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
-    }
-    func isSupported() -> Bool {
-        return true
-    }
-    
-    func accessControl() -> SecAccessControl? {
-        return nil
-    }
-    
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func generateKeys() throws -> KeyPair {
         throw NSError(domain: "domain", code: 1)
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func isSupported() -> Bool {
+        return true
+    }
+    
+    override func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
 
 
-struct CustomAuthenticatorAborted: DeviceAuthenticator {
+class CustomAuthenticatorSignFailed: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    
+    override func isSupported() -> Bool {
         return true
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+        throw NSError(domain: "domain", code: 1)
+    }
+    
+    override func type() -> DeviceBindingAuthenticationType {
+        return .none
+    }
+    
+    override func deleteKeys() {
+        cryptoKey.deleteKeys()
+    }
+}
+
+
+class CustomAuthenticatorAborted: DefaultDeviceAuthenticator {
+    var cryptoKey: CryptoKey
+    
+    init(cryptoKey: CryptoKey) {
+        self.cryptoKey = cryptoKey
+    }
+    
+    override func generateKeys() throws -> KeyPair {
+        let keyBuilderQuery = cryptoKey.keyBuilderQuery()
+        return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
+    }
+    
+    override func isSupported() -> Bool {
+        return true
+    }
+    
+    override func accessControl() -> SecAccessControl? {
+        return nil
+    }
+    
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         throw JOSESwiftError.localAuthenticationFailed(errorCode: 1)
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }
 
 
-struct CustomDeviceAuthenticator: DeviceAuthenticator {
+class CustomDeviceAuthenticator: DefaultDeviceAuthenticator {
     var cryptoKey: CryptoKey
     
     init(cryptoKey: CryptoKey) {
         self.cryptoKey = cryptoKey
     }
     
-    func generateKeys() throws -> KeyPair {
+    override func generateKeys() throws -> KeyPair {
         let keyBuilderQuery = cryptoKey.keyBuilderQuery()
         return try cryptoKey.createKeyPair(builderQuery: keyBuilderQuery)
     }
-    func isSupported() -> Bool {
+    
+    override func isSupported() -> Bool {
         return true
     }
     
-    func accessControl() -> SecAccessControl? {
+    override func accessControl() -> SecAccessControl? {
         return nil
     }
     
-    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
+    override func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func sign(userKey: UserKey, challenge: String, expiration: Date) throws -> String {
+    override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String {
         return "CUSTOM_JWS"
     }
     
-    func type() -> DeviceBindingAuthenticationType {
+    override func type() -> DeviceBindingAuthenticationType {
         return .none
     }
     
-    func deleteKeys() {
+    override func deleteKeys() {
         cryptoKey.deleteKeys()
     }
 }

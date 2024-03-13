@@ -2,7 +2,7 @@
 //  RequestInterceptorTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -36,7 +36,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     func test_01_request_captured_and_processed_interceptor() {
         
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [StartAuthenticateInterceptor()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request, action: Action(type: .START_AUTHENTICATE)) { (result) in
@@ -66,7 +66,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     func test_02_request_captured_and_should_not_process_interceptor_for_different_action() {
         
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [StartAuthenticateInterceptor()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request, action: Action(type: .AUTHORIZE)) { (result) in
@@ -96,7 +96,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     func test_03_request_captured_and_should_process_interceptors_in_order() {
         
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyOne(), DummyTwo(), DummyThree(), DummyFour()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request, action: Action(type: .AUTHORIZE)) { (result) in
@@ -132,7 +132,7 @@ class RequestInterceptorTests: FRBaseTestCase {
 
     func test_04_request_captured_and_should_not_process_interceptor_for_different_action_sync() {
         
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [StartAuthenticateInterceptor()])
         let _ = RestClient.shared.invokeSync(request: request, action: Action(type: .AUTHORIZE))
         
@@ -152,7 +152,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     func test_05_request_captured_and_should_process_interceptors_in_order_sync() {
         
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyOne(), DummyTwo(), DummyThree(), DummyFour()])
         let _ = RestClient.shared.invokeSync(request: request, action: Action(type: .AUTHORIZE))
         
@@ -177,7 +177,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     
     func test_06_request_not_captured_when_no_action_defined() {
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DummyOne(), DummyTwo(), DummyThree(), DummyFour()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request) { (result) in
@@ -211,7 +211,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     func test_07_request_captured_and_invoke_different_url() {
         
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DifferentURLInterceptor()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request, action: Action(type: .AUTHENTICATE)) { (result) in
@@ -241,7 +241,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     
     func test_08_request_captured_in_seuqence_and_get_updated_request() {
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [InterceptorSequenceOne(), InterceptorSequenceTwo(), InterceptorSequenceThree()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request, action: Action(type: .AUTHENTICATE)) { (result) in
@@ -275,7 +275,7 @@ class RequestInterceptorTests: FRBaseTestCase {
     
     
     func test_09_action_with_payload() {
-        let request = Request(url: "https://httpbin.org/anything", method: .GET)
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
         RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PayloadInterceptor()])
         let ex = self.expectation(description: "Request submit")
         RestClient.shared.invoke(request: request, action: Action(type: .AUTHENTICATE, payload: ["testKey":"testVal"])) { (result) in

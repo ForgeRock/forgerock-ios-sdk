@@ -53,6 +53,15 @@
         "revision" : "10ed3b6736def7c26eb87135466b1cb46ea7e37f",
         "version" : "2.4.0"
       }
+    },
+    {
+      "identity" : "pingone-signals-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pingidentity/pingone-signals-sdk-ios",
+      "state" : {
+        "revision" : "5f5d11a99746eec06f496e0302bc86673be573a2",
+        "version" : "5.2.0"
+      }
     }
   ],
   "version" : 2

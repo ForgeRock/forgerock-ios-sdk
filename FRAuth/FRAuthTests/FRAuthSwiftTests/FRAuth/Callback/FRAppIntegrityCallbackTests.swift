@@ -2,7 +2,7 @@
 //  FRAppIntegrityCallbackTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023- 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -34,6 +34,8 @@ final class FRAppIntegrityCallbackTests: FRAuthBaseTest {
             // Then
             XCTAssertEqual(callback.challenge, "x2AMmYOIP7CFCkp0tbXkr69NDBaP1dUypxioQTbdnfM=")
             XCTAssertEqual(callback.type, "AppIntegrityCallback")
+            XCTAssertEqual(callback.payload, nil)
+    
         } catch let error {
             XCTFail("Failed while expecting success: \(error)")
         }
@@ -59,6 +61,38 @@ final class FRAppIntegrityCallbackTests: FRAuthBaseTest {
             XCTFail("Failed while expecting success: \(error)")
         }
     }
+    
+    func test_01_Public_Methods() throws {
+        let jsonStr = """
+        {"type":"AppIntegrityCallback","output":[{"name":"challenge","value":"x2AMmYOIP7CFCkp0tbXkr69NDBaP1dUypxioQTbdnfM="}, {"name":"attestToken","value":""}],"input":[{"name":"IDToken1clientError","value":""},{"name":"IDToken1attestToken","value":""},{"name":"IDToken1token","value":""},{"name":"IDToken1clientData","value":""},{"name":"IDToken1keyId","value":""}]}
+        """
+        
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        // Try
+        do {
+            let callback = try FRAppIntegrityCallback(json: callbackResponse)
+            
+            callback.setClientError("test")
+            callback.setkeyId("keyId")
+            callback.setPayload("payload")
+            callback.setAssertion("assert")
+            callback.setAttestation("attest")
+            callback.setClientData("clientData")
+            
+            // Then
+            XCTAssertEqual(callback.challenge, "x2AMmYOIP7CFCkp0tbXkr69NDBaP1dUypxioQTbdnfM=")
+            XCTAssertEqual(callback.type, "AppIntegrityCallback")
+            
+            let expectedValue = ["IDToken1keyId": "keyId", "IDToken1clientData":"clientData", "IDToken1token":"assert", "IDToken1attestToken": "attest", "IDToken1clientError": "test"]
+            
+            XCTAssertTrue(expectedValue == callback.inputValues)
+         
+        } catch let error {
+            XCTFail("Failed while expecting success: \(error)")
+        }
+    }
+    
     
     @available(iOS 14.0, *)
     func test_02_InputConstruction_Successful() async throws {
@@ -169,7 +203,7 @@ class MockAttestation: FRAppAttestation {
         self.exception = exception
     }
     
-    func requestIntegrityToken(challenge: String) async throws -> FRAppIntegrityKeys {
+    func requestIntegrityToken(challenge: String, payload: String?) async throws -> FRAppIntegrityKeys {
         if let exp = exception {
             throw exp
         }

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A52B848A2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
+		A52B848B2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
+		A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A52761332B60209100F8BDF7 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A59506F42B6070DD00E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A52761332B60209100F8BDF7 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; };
@@ -53,6 +57,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A52761322B60209100F8BDF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A527610D2B60209000F8BDF7;
+			remoteInfo = PingProtect;
+		};
+		A52761342B60209100F8BDF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A52761152B60209000F8BDF7;
+			remoteInfo = PingProtectTests;
+		};
 		A5D1C39229E59FC30096039E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */;
@@ -202,6 +220,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A59506F42B6070DD00E366F9 /* PingProtect.framework in Embed Frameworks */,
 				A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */,
 				D58BC3E926031C3200254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				EC2FF36928B8DB800095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */,
@@ -219,6 +238,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */,
 				A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */,
 				D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				EC2FF36328B8DB780095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */,
@@ -233,6 +253,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PingProtect.xcodeproj; path = ../../PingProtect/PingProtect.xcodeproj; sourceTree = "<group>"; };
+		A52B84892B339571001FBA2C /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -294,6 +316,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A52761262B60209000F8BDF7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A52761332B60209100F8BDF7 /* PingProtect.framework */,
+				A52761352B60209100F8BDF7 /* PingProtectTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A5D1C38D29E59FC30096039E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +346,7 @@
 		D554632322A6EF950096C7A4 = {
 			isa = PBXGroup;
 			children = (
+				A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */,
 				A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */,
 				D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */,
 				D58BC3CB26031BE500254654 /* FRGoogleSignIn.xcodeproj */,
@@ -343,6 +375,7 @@
 				D5E080C623DA58310025EA17 /* Customization */,
 				D5FE5E5B23190A0000E04658 /* Configs */,
 				D5FE5E5E23190A0000E04658 /* Supporting Files */,
+				A52B84892B339571001FBA2C /* Playground.swift */,
 				D554632F22A6EF950096C7A4 /* AppDelegate.swift */,
 				D554633122A6EF950096C7A4 /* ViewController.swift */,
 				D554633322A6EF950096C7A4 /* Main.storyboard */,
@@ -557,6 +590,10 @@
 					ProductGroup = D5E6F449233AC39E00D18DF1 /* Products */;
 					ProjectRef = D5E6F448233AC39E00D18DF1 /* FRUI.xcodeproj */;
 				},
+				{
+					ProductGroup = A52761262B60209000F8BDF7 /* Products */;
+					ProjectRef = A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -567,6 +604,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		A52761332B60209100F8BDF7 /* PingProtect.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PingProtect.framework;
+			remoteRef = A52761322B60209100F8BDF7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A52761352B60209100F8BDF7 /* PingProtectTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PingProtectTests.xctest;
+			remoteRef = A52761342B60209100F8BDF7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -686,6 +737,7 @@
 			files = (
 				D521A2062303644300EDD28E /* ViewController.swift in Sources */,
 				D521A2082303644300EDD28E /* AppDelegate.swift in Sources */,
+				A52B848B2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +750,7 @@
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
+				A52B848A2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,7 +833,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.1.1-beta1";
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -803,7 +856,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.1.1-beta1";
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -946,7 +999,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.1.1-beta1";
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -973,7 +1026,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "4.1.1-beta1";
+				MARKETING_VERSION = 4.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

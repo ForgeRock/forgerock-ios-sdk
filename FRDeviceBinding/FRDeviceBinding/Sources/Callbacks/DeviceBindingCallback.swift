@@ -2,7 +2,7 @@
 //  DeviceBindingCallback.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -145,14 +145,16 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     
     /// Bind the device.
     /// - Parameter deviceAuthenticator: method for providing a ``DeviceAuthenticator`` from ``DeviceBindingAuthenticationType`` - defaults value is `deviceAuthenticatorIdentifier`
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device binding result callback
     open func bind(deviceAuthenticator: ((DeviceBindingAuthenticationType) -> DeviceAuthenticator)? = nil,
+                   prompt: Prompt? = nil,
                    completion: @escaping DeviceBindingResultCallback) {
-        
         let authInterface = deviceAuthenticator?(deviceBindingAuthenticationType) ?? deviceAuthenticatorIdentifier(deviceBindingAuthenticationType)
-        let dispatchQueue = DispatchQueue(label: "com.forgerock.concurrentQueue", qos: .userInitiated)
+        
+        let dispatchQueue = DispatchQueue(label: "com.forgerock.serialQueue", qos: .userInitiated)
         dispatchQueue.async {
-            self.execute(authInterface: authInterface, completion)
+            self.execute(authInterface: authInterface, prompt: prompt, completion)
         }
     }
     
@@ -161,14 +163,20 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter authInterface: Interface to find the Authentication Type - default value is ``getDeviceAuthenticator(type: deviceBindingAuthenticationType)``
     /// - Parameter deviceId: Interface to find the Authentication Type - default value is `FRDevice.currentDevice?.identifier.getIdentifier()`
     /// - Parameter deviceRepository: Storage for user keys - default value is ``LocalDeviceBindingRepository()``
+    /// - Parameter prompt: Biometric prompt to override the server values
     /// - Parameter completion: Completion block for Device binding result callback
     internal func execute(authInterface: DeviceAuthenticator? = nil,
                           deviceId: String? = nil,
                           deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
+                          prompt: Prompt? = nil,
                           _ completion: @escaping DeviceBindingResultCallback) {
-
+#if targetEnvironment(simulator)
+        // DeviceBinding/Signing is not supported on the iOS Simulator
+        handleException(status: .unsupported(errorMessage: "DeviceBinding/Signing is not supported on the iOS Simulator"), completion: completion)
+        return
+#endif
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
-        authInterface.initialize(userId: userId, prompt: Prompt(title: title, subtitle: subtitle, description: promptDescription))
+        authInterface.initialize(userId: userId, prompt: prompt ?? Prompt(title: title, subtitle: subtitle, description: promptDescription))
         let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()
         
         guard authInterface.isSupported() else {
@@ -178,10 +186,14 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         let startTime = Date()
         let timeout = timeout ?? 60
+        var userKey: UserKey? = nil
         
         do {
             let keyPair = try authInterface.generateKeys()
-            let userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            guard let userKey = userKey else {
+                throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create userKey")
+            }
             try deviceRepository.persist(userKey: userKey)
             // Authentication will be triggered during signing if necessary
             let jws = try authInterface.sign(keyPair: keyPair, kid: userKey.kid, userId: userId, challenge: challenge, expiration: getExpiration(timeout: timeout))
@@ -189,7 +201,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             // Check for timeout
             let delta = Date().timeIntervalSince(startTime)
             if(delta > Double(timeout)) {
-                authInterface.deleteKeys()
+                deleteUserKey()
                 handleException(status: .timeout, completion: completion)
                 return
             }
@@ -201,14 +213,21 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
             }
             completion(.success)
         } catch JOSESwiftError.localAuthenticationFailed {
-            authInterface.deleteKeys()
+            deleteUserKey()
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {
-            authInterface.deleteKeys()
+            deleteUserKey()
             handleException(status: error, completion: completion)
         } catch {
-            authInterface.deleteKeys()
+            deleteUserKey()
             handleException(status: .abort, completion: completion)
+        }
+        
+        func deleteUserKey() {
+            if let userKey = userKey {
+                try? deviceRepository.delete(userKey: userKey)
+            }
+            authInterface.deleteKeys()
         }
     }
     
@@ -250,5 +269,19 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
     /// - Parameter clientError: String value of `clientError`]
     public func setClientError(_ clientError: String) {
         self.inputValues[self.clientErrorKey] = clientError
+    }
+    
+    open func getDeviceAuthenticator(type: DeviceBindingAuthenticationType) -> DeviceAuthenticator {
+        return type.getAuthType()
+    }
+    
+    open func getExpiration(timeout: Int?) -> Date {
+        return Date().addingTimeInterval(Double(timeout ?? 60))
+    }
+    
+    open var deviceAuthenticatorIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator {
+        get {
+            return getDeviceAuthenticator(type:)
+        }
     }
 }

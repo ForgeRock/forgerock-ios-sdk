@@ -2,7 +2,7 @@
 //  FRSecurityConfigurationTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -40,7 +40,7 @@ class FRSecurityConfigurationTests: FRBaseTestCase  {
         //Validate with the correct public key hash
         let frSecurityConfiguration1 = FRSecurityConfiguration(hashes: ["+KSzREQbAh9gqYLLGpfCG+cAy7Px3/Qmk/e8Egwyd7o="])
         
-        let validated1 = frSecurityConfiguration1.validate(serverTrust: trust, domain: "https://httpbin.org/")
+        let validated1 = frSecurityConfiguration1.validate(serverTrust: trust, domain: FRTestURL.baseURL)
         
         XCTAssertTrue(validated1, "Certificate failed to validate with the correct public key hash")
     
@@ -66,7 +66,8 @@ class FRSecurityConfigurationTests: FRBaseTestCase  {
         //Validate with a wrong public key hash
         let frSecurityConfiguration2 = FRSecurityConfiguration(hashes: ["GSHJImFNL2AkwaL7xE1K+LVGj/V4Dgl7QYrNHKF5g0U="])
         
-        let validated2 = frSecurityConfiguration2.validate(serverTrust: trust, domain: "https://httpbin.org/")
+        let validated2 = frSecurityConfiguration2.validate(serverTrust: trust, domain: FRTestURL.baseURL
+        )
         
         XCTAssertFalse(validated2, "Certificate successfully validated with a wrong public key hash")
     }

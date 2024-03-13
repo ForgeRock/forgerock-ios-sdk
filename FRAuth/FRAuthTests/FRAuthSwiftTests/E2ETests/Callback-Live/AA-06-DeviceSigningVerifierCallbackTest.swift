@@ -2,7 +2,7 @@
 //  AA-06-DeviceSigningVerifierCallbackTest.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -17,7 +17,7 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     static var USERNAME: String = "sdkuser"
     static var APPLICATION_PIN: String = "1111"
     
-    let options = FROptions(url: "https://openam-dbind.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-sdks.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "afef1acb448a873",
@@ -41,6 +41,17 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
     }
     
     override func tearDown() {
+        let userKeys = FRUserKeys().loadAll()
+        
+        for (_, userKey) in userKeys.enumerated()
+        {
+            do {
+                try FRUserKeys().delete(userKey: userKey, forceDelete: true)
+            }
+            catch {
+                FRLog.w("Failed to delete device binding keys.")
+            }
+        }
         FRUser.currentUser?.logout()
         super.tearDown()
     }
@@ -208,6 +219,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Success")
             }
             else {
@@ -279,6 +294,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Success")
             }
             else {
@@ -351,6 +370,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Authentication Timeout")
             }
             else {
@@ -696,7 +719,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                         ex.fulfill()
                     })
                 waitForExpectations(timeout: 60, handler: nil)
-
+                if isSimulator {
+                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    return
+                }
                 XCTAssertEqual(bindingResult, "Success")
             }
             else {

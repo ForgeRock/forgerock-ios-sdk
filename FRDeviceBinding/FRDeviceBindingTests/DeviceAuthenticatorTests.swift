@@ -455,4 +455,44 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             //all good, do nothing
         }
     }
+    
+    
+    func test_14_ValidateCustomClaims_valid() {
+        
+        let authenticator = None()
+        let valid = authenticator.validateCustomClaims(["name": "demo", "email_verified": true])
+        
+        XCTAssertTrue(valid)
+    }
+    
+    
+    func test_15_ValidateCustomClaims_invalid() {
+        
+        let authenticator = None()
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.sub: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.challenge: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.exp: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iat: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.nbf: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iss: "demo"]))
+        
+        XCTAssertFalse(authenticator.validateCustomClaims([DBConstants.iss: "demo", DBConstants.exp: Date()]))
+        
+    }
+    
+    
+    func test_14_ValidateCustomClaims_empty() {
+        
+        let authenticator = None()
+        let valid = authenticator.validateCustomClaims([:])
+        
+        XCTAssertTrue(valid)
+    }
+    
 }

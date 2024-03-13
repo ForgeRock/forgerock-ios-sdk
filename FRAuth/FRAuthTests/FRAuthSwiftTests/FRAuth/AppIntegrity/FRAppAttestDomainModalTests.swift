@@ -2,7 +2,7 @@
 //  FRAppAttestModal.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023- 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -51,7 +51,7 @@ final class FRAppAttestModalTests: FRAuthBaseTest {
         let testObject = FRAppAttestDomainModal(service: service)
         FRAppIntegrityKeys().updateKey(value: "keyid::attest")
         do {
-            let result = try await testObject.requestIntegrityToken(challenge: "1234")
+            let result = try await testObject.requestIntegrityToken(challenge: "1234", payload: "payloadValue")
             XCTAssertNotNil(result.assertKey)
             XCTAssertNotNil(result.appAttestKey)
             XCTAssertNotNil(result.keyIdentifier)
@@ -59,6 +59,9 @@ final class FRAppAttestModalTests: FRAuthBaseTest {
             XCTAssertTrue(service.assertKeyCalled)
             XCTAssertFalse(service.attestKeyCalled)
             XCTAssertFalse(service.generateKeyCalled)
+            XCTAssertTrue(result.clientDataHash.base64Decoded()!.contains("com.forgerock.FRTestHost"))
+            XCTAssertTrue(result.clientDataHash.base64Decoded()!.contains("payloadValue"))
+            XCTAssertTrue(result.clientDataHash.base64Decoded()!.contains("1234"))
             XCTAssertEqual(service.assertKeyCalledTimes, 1)
             XCTAssertEqual(service.attestKeyCalledTimes, 0)
             XCTAssertEqual(service.geenrateKeyCalledTimes,0)
