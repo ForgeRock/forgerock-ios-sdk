@@ -283,6 +283,7 @@
 		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
+		EC03A7902BA1F8AE00BF9711 /* NextProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC03A78F2BA1F8AE00BF9711 /* NextProtocol.swift */; };
 		EC0BA2E7285B8F8F00F8326E /* FROptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2E6285B8F8F00F8326E /* FROptions.swift */; };
 		EC0BA2FA2863325B00F8326E /* FROptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2F92863325B00F8326E /* FROptionsTests.swift */; };
 		EC13ABAA29A380920069AC41 /* FRWebAuthnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ABA929A380920069AC41 /* FRWebAuthnManager.swift */; };
@@ -620,6 +621,7 @@
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
+		EC03A78F2BA1F8AE00BF9711 /* NextProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextProtocol.swift; sourceTree = "<group>"; };
 		EC0BA2E6285B8F8F00F8326E /* FROptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptions.swift; sourceTree = "<group>"; };
 		EC0BA2F92863325B00F8326E /* FROptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptionsTests.swift; sourceTree = "<group>"; };
 		EC13ABA929A380920069AC41 /* FRWebAuthnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRWebAuthnManager.swift; sourceTree = "<group>"; };
@@ -1002,6 +1004,7 @@
 			children = (
 				D5723C3923F4C65800557AA8 /* AuthService.swift */,
 				D5723C3A23F4C65800557AA8 /* Node.swift */,
+				EC03A78F2BA1F8AE00BF9711 /* NextProtocol.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -1202,7 +1205,7 @@
 				959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */,
 				95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */,
 				3A4B46E32AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift */,
-        9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */,
+				9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */,
 				95EB7E4C2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift */,
 				95EB7E522B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift */,
 			);
@@ -1771,6 +1774,7 @@
 				D53A8044262789BD0093B1CA /* PlatformAuthenticatorConfig.swift in Sources */,
 				EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */,
 				D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */,
+				EC03A7902BA1F8AE00BF9711 /* NextProtocol.swift in Sources */,
 				D586CF9D23358EE0007A2194 /* AbstractValidatedCallback.swift in Sources */,
 				D586CFBD23358EE0007A2194 /* FRDeviceIdentifier.swift in Sources */,
 				D586CF9723358EE0007A2194 /* SingleValueCallback.swift in Sources */,
