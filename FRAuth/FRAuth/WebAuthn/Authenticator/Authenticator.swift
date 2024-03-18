@@ -50,6 +50,7 @@ protocol AuthenticatorGetAssertionSession {
         // extensions: []
     )
     
+    func selectCredentialsFromSources(sources: [String: PublicKeyCredentialSource], callback: @escaping WebAuthnCredentialsSelectionCallback)
     func canPerformUserVerification() -> Bool
     
     func start()
