@@ -283,7 +283,8 @@
 		D5F3E10324D20FBF00536EA0 /* SuspendedTextOutputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3E10224D20FBF00536EA0 /* SuspendedTextOutputCallback.swift */; };
 		D5F8F9EE24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9ED24B7D50600EC9AEB /* BooleanAttributeInputCallback.swift */; };
 		D5F8F9F024B7D85600EC9AEB /* NumberAttributeInputCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */; };
-		EC03A7902BA1F8AE00BF9711 /* NextProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC03A78F2BA1F8AE00BF9711 /* NextProtocol.swift */; };
+		EC03A7902BA1F8AE00BF9711 /* NodeNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC03A78F2BA1F8AE00BF9711 /* NodeNext.swift */; };
+		EC03A7CB2BAB1C8200BF9711 /* PolicyAdviceUsernameNode.json in Resources */ = {isa = PBXBuildFile; fileRef = EC03A7C92BAB1C8200BF9711 /* PolicyAdviceUsernameNode.json */; };
 		EC0BA2E7285B8F8F00F8326E /* FROptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2E6285B8F8F00F8326E /* FROptions.swift */; };
 		EC0BA2FA2863325B00F8326E /* FROptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0BA2F92863325B00F8326E /* FROptionsTests.swift */; };
 		EC13ABAA29A380920069AC41 /* FRWebAuthnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ABA929A380920069AC41 /* FRWebAuthnManager.swift */; };
@@ -621,7 +622,8 @@
 		D5F8F9EF24B7D85600EC9AEB /* NumberAttributeInputCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallback.swift; sourceTree = "<group>"; };
 		D5FBD8A224B930E30005DD0F /* BooleanAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
 		D5FBD8A524B930F00005DD0F /* NumberAttributeInputCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAttributeInputCallbackTests.swift; sourceTree = "<group>"; };
-		EC03A78F2BA1F8AE00BF9711 /* NextProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextProtocol.swift; sourceTree = "<group>"; };
+		EC03A78F2BA1F8AE00BF9711 /* NodeNext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeNext.swift; sourceTree = "<group>"; };
+		EC03A7C92BAB1C8200BF9711 /* PolicyAdviceUsernameNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PolicyAdviceUsernameNode.json; sourceTree = "<group>"; };
 		EC0BA2E6285B8F8F00F8326E /* FROptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptions.swift; sourceTree = "<group>"; };
 		EC0BA2F92863325B00F8326E /* FROptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FROptionsTests.swift; sourceTree = "<group>"; };
 		EC13ABA929A380920069AC41 /* FRWebAuthnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRWebAuthnManager.swift; sourceTree = "<group>"; };
@@ -1004,7 +1006,7 @@
 			children = (
 				D5723C3923F4C65800557AA8 /* AuthService.swift */,
 				D5723C3A23F4C65800557AA8 /* Node.swift */,
-				EC03A78F2BA1F8AE00BF9711 /* NextProtocol.swift */,
+				EC03A78F2BA1F8AE00BF9711 /* NodeNext.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -1348,6 +1350,7 @@
 				D5888C6C25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json */,
 				D5888C6D25664EDF0041FD94 /* AuthTree_LoginNode.json */,
 				D5888C6E25664EDF0041FD94 /* AuthTree_UsernamePasswordNode.json */,
+				EC03A7C92BAB1C8200BF9711 /* PolicyAdviceUsernameNode.json */,
 				D5888C6F25664EDF0041FD94 /* AM_Push_Authentication_Successful.json */,
 				D5888C7025664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json */,
 				D5888C7125664EDF0041FD94 /* AuthTree_RegistrationNode.json */,
@@ -1689,6 +1692,7 @@
 				D5888CA425664EDF0041FD94 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
 				D5888C9E25664EDF0041FD94 /* AuthTree_SSOToken_Success2.json in Resources */,
 				D5888C9B25664EDF0041FD94 /* OAuth2_EndSession_Failure.json in Resources */,
+				EC03A7CB2BAB1C8200BF9711 /* PolicyAdviceUsernameNode.json in Resources */,
 				D5888C9725664EDF0041FD94 /* OAuth2_UserInfo_Failure.json in Resources */,
 				D5888CAB25664EDF0041FD94 /* AuthTree_LoginNode.json in Resources */,
 				D5888CA225664EDF0041FD94 /* AM_Push_Authentication_Fail.json in Resources */,
@@ -1774,7 +1778,7 @@
 				D53A8044262789BD0093B1CA /* PlatformAuthenticatorConfig.swift in Sources */,
 				EC7EA0F427D10FA70003F878 /* AppleSignInUserStructs.swift in Sources */,
 				D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */,
-				EC03A7902BA1F8AE00BF9711 /* NextProtocol.swift in Sources */,
+				EC03A7902BA1F8AE00BF9711 /* NodeNext.swift in Sources */,
 				D586CF9D23358EE0007A2194 /* AbstractValidatedCallback.swift in Sources */,
 				D586CFBD23358EE0007A2194 /* FRDeviceIdentifier.swift in Sources */,
 				D586CF9723358EE0007A2194 /* SingleValueCallback.swift in Sources */,

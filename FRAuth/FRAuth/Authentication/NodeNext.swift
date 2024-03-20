@@ -12,7 +12,7 @@
 import Foundation
 import FRCore
 
-public class NextProtocol: NSObject {
+public class NodeNext: NSObject {
     
     /// A list of Callback for the state
     @objc public var callbacks: [Callback] = []
@@ -157,8 +157,8 @@ public class NextProtocol: NSObject {
                         //If the `currentSessionToken` is nil and have OAuth2.0 tokens it means the user did a Centralized Login flow to authenticate initially. The token is now returned from either a Policy Advice and should be the same one as originaly created, or from a new authentication
                         if ((currentSessionToken == nil) && (try? keychainManager.getAccessToken()) != nil) && authIndexType == "composite_advice" {
                             // In this case we are running a transactional authorization flow, the new SSO Token is the same as the originally created one. When running Centralised login, this lived in the browser cookie storage and is unaccesssible from the app
-                            // Save the SSO Token in the storage and return
-                            keychainManager.setSSOToken(ssoToken: token)
+                            completion(token, nil, nil)
+                            return
                         }
                         else if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
                             FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
