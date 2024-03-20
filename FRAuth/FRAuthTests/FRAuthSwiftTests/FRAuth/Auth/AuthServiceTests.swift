@@ -35,12 +35,12 @@ class AuthServiceTests: FRAuthBaseTest {
         
         // Then
         XCTAssertEqual(authService.serviceName, self.authServiceName)
-        XCTAssertEqual(authService.serverConfig.baseURL.absoluteString, self.serverURL)
-        XCTAssertEqual(authService.serverConfig.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
-        XCTAssertEqual(authService.serverConfig.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
-        XCTAssertEqual(authService.serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
-        XCTAssertEqual(authService.serverConfig.timeout, 90)
-        XCTAssertEqual(authService.serverConfig.realm, self.realm)
+        XCTAssertEqual(authService.serverConfig?.baseURL.absoluteString, self.serverURL)
+        XCTAssertEqual(authService.serverConfig?.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
+        XCTAssertEqual(authService.serverConfig?.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
+        XCTAssertEqual(authService.serverConfig?.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
+        XCTAssertEqual(authService.serverConfig?.timeout, 90)
+        XCTAssertEqual(authService.serverConfig?.realm, self.realm)
         XCTAssertNil(authService.oAuth2Config)
     }
     
@@ -52,12 +52,12 @@ class AuthServiceTests: FRAuthBaseTest {
         
         // Then
         XCTAssertEqual(authService.serviceName, self.authServiceName)
-        XCTAssertEqual(authService.serverConfig.baseURL.absoluteString, self.serverURL)
-        XCTAssertEqual(authService.serverConfig.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
-        XCTAssertEqual(authService.serverConfig.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
-        XCTAssertEqual(authService.serverConfig.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
-        XCTAssertEqual(authService.serverConfig.timeout, 90)
-        XCTAssertEqual(authService.serverConfig.realm, "customRealm")
+        XCTAssertEqual(authService.serverConfig?.baseURL.absoluteString, self.serverURL)
+        XCTAssertEqual(authService.serverConfig?.authenticateURL, self.serverURL + "/json/realms/\(self.realm)/authenticate")
+        XCTAssertEqual(authService.serverConfig?.tokenURL, self.serverURL + "/oauth2/realms/\(self.realm)/access_token")
+        XCTAssertEqual(authService.serverConfig?.authorizeURL, self.serverURL + "/oauth2/realms/\(self.realm)/authorize")
+        XCTAssertEqual(authService.serverConfig?.timeout, 90)
+        XCTAssertEqual(authService.serverConfig?.realm, "customRealm")
         XCTAssertNotNil(authService.oAuth2Config)
         XCTAssertEqual(authService.oAuth2Config?.clientId, self.clientId)
         XCTAssertEqual(authService.oAuth2Config?.redirectUri.absoluteString, self.redirectUri)
@@ -135,8 +135,8 @@ class AuthServiceTests: FRAuthBaseTest {
         XCTAssertEqual(authService.authIndexType, "suspendedId")
         XCTAssertEqual(authService.serviceName, "6IIIUln3ajONR4ySwZt15qzh8X4")
         
-        let request = authService.buildAuthServiceRequest()
-        let urlRequest = request.build()
+        let request = try? authService.buildAuthServiceRequest()
+        let urlRequest = request?.build()
         let urlStr = urlRequest?.url?.absoluteString
         XCTAssertNotNil(urlRequest)
         XCTAssertNotNil(urlStr)

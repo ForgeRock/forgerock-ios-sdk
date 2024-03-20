@@ -2,7 +2,7 @@
 //  FRSessionTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -519,6 +519,215 @@ class FRSessionTests: FRAuthBaseTest {
         XCTAssertNotNil(FRSession.currentSession?.sessionToken)
         XCTAssertNotNil(FRSession.currentSession?.sessionToken?.value)
     }
+    
+    func test_11_frsession_authenticate_with_policyAdvice_with_session() {
+        
+        // Start SDK
+        self.startSDK()
+        super.setUp()
+        
+        // Authenticate user and get a session
+        self.authenticateUser()
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken)
+        
+        // Set mock responses
+        self.loadMockResponses(["PolicyAdviceUsernameNode",
+                                "AuthTree_SSOToken_Success"])
+        
+        
+        
+        let policyAdvice = PolicyAdvice(type: "TransactionConditionAdvice", value: "5afff42a-2715-40c8-98e7-919abc1b2dfc")
+        var currentNode: Node?
+        
+        var ex = self.expectation(description: "First Node submit - again")
+        FRSession.authenticate(policyAdvice: policyAdvice!) { token, node, error in
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        // Provide input value for callbacks
+        for callback in node.callbacks {
+            if callback is NameCallback, let nameCallback = callback as? NameCallback {
+                nameCallback.setValue(config.username)
+            }
+            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
+                passwordCallback.setValue(config.password)
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Second Node submit")
+        node.next { (token: Token?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        //Check that the Session is still there
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken)
+    }
+    
+    func test_12_frsession_authenticate_with_policyAdvice_with_IDToken() {
+        
+        // Start SDK
+        self.startSDK()
+        super.setUp()
+        
+        // Authenticate user and get a session
+        self.authenticateUser()
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken)
+        FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [IDTokenForSessionInterceptor()])
+        //Get access token
+        // Set mock responses
+        self.loadMockResponses(["OAuth2_AuthorizeRedirect_Success",
+                                "OAuth2_Token_Success"])
+        
+        // Get AccessToken with newly grnated Session Token for next test
+        var ex = self.expectation(description: "Get Access Token")
+        FRUser.currentUser?.getAccessToken() { (user, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(user)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNotNil(FRUser.currentUser?.token)
+        let currentAccessToken = FRUser.currentUser?.token
+        // Simulate Centralized Login state by removing SSO Token from storage and the Token Object
+        // Deletes SSO token from Keychain Service
+        let keychainManager = FRAuth.shared?.keychainManager
+        keychainManager?.setSSOToken(ssoToken: nil)
+        let newAccessToken = AccessToken(token: currentAccessToken?.value, expiresIn: currentAccessToken?.expiresIn, scope: currentAccessToken?.scope, tokenType: currentAccessToken?.tokenType, refreshToken: currentAccessToken?.refreshToken, idToken: currentAccessToken?.idToken, authenticatedTimestamp: currentAccessToken?.authenticatedTimestamp.timeIntervalSince1970)
+        try? keychainManager?.setAccessToken(token: newAccessToken)
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNil(FRSession.currentSession?.sessionToken)
+        
+        
+        // Set mock responses
+        self.loadMockResponses(["PolicyAdviceUsernameNode",
+                                "AuthTree_SSOToken_Success"])
+        
+        
+        
+        let policyAdvice = PolicyAdvice(type: "TransactionConditionAdvice", value: "5afff42a-2715-40c8-98e7-919abc1b2dfc")
+        var currentNode: Node?
+        
+        
+        ex = self.expectation(description: "First Node submit - again")
+        FRSession.authenticate(policyAdvice: policyAdvice!) { token, node, error in
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNil(FRSession.currentSession?.sessionToken)
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        // Provide input value for callbacks
+        for callback in node.callbacks {
+            if callback is NameCallback, let nameCallback = callback as? NameCallback {
+                nameCallback.setValue(config.username)
+            }
+            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
+                passwordCallback.setValue(config.password)
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Second Node submit")
+        node.next { (token: Token?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        //Check that the Session is still there
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNil(FRSession.currentSession?.sessionToken)
+    }
+    
+    fileprivate func authenticateUser() {
+        self.config.authServiceName = "UsernamePassword"
+        
+        // Set mock responses
+        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
+                                "AuthTree_SSOToken_Success"])
+        
+        var currentNode: Node?
+        
+        var ex = self.expectation(description: "First Node submit")
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
+            
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        // Provide input value for callbacks
+        for callback in node.callbacks {
+            if callback is NameCallback, let nameCallback = callback as? NameCallback {
+                nameCallback.setValue(config.username)
+            }
+            else if callback is PasswordCallback, let passwordCallback = callback as? PasswordCallback {
+                passwordCallback.setValue(config.password)
+            }
+            else {
+                XCTFail("Received unexpected callback \(callback)")
+            }
+        }
+        
+        ex = self.expectation(description: "Second Node submit")
+        node.next { (token: Token?, node, error) in
+            // Validate result
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        XCTAssertNotNil(FRSession.currentSession)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken)
+    }
 }
 
 
@@ -532,4 +741,24 @@ class SuspendedRequestInterceptor: RequestInterceptor {
     
     static var requests: [Request] = []
     static var actions: [Action] = []
+}
+
+class IDTokenForSessionInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        if (action.type == "START_AUTHENTICATE" || action.type == "AUTHENTICATE"),
+           let payload = action.payload,
+           let type = payload["type"] as? String,
+           type == "composite_advice",
+           let token = FRUser.currentUser?.token,
+           let idToken = token.idToken
+        {
+            var headers = request.headers
+            headers["Cookie"] = "iPlanetDirectoryPro=\(idToken)"
+            let newRequest = Request(url: request.url, method: request.method, headers: headers, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
+            return newRequest
+        }
+        else {
+            return request
+        }
+    }
 }
