@@ -9,6 +9,7 @@
 //
 
 import FRAuth
+import Foundation
 
 /**
  * Callback to initialize PingOne Protect SDK
