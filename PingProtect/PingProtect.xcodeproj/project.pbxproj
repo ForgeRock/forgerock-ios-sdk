@@ -680,7 +680,7 @@
 			repositoryURL = "https://github.com/pingidentity/pingone-signals-sdk-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 5.2.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
