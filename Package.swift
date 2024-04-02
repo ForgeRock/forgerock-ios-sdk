@@ -21,7 +21,7 @@ let package = Package (
         .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("16.0.1")),
         .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("7.0.0")),
         .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .exact("2.4.0")),
-        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .exact("5.2.0"))
+        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .exact("5.2.1"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),
