@@ -1,3 +1,13 @@
+## [4.4.0]
+#### Added
+- Added a new module for integration with `PingOne Protect` [SDKS-2901]
+- Added support for the `TextInput` callback [SDKS-546]
+- Added an interface for customizing the biometric UI prompts when device binding or signing [SDKS-2990]
+- Added `x-requested-with: forgerock-sdk` and `x-requested-platform: ios` immutable HTTP headers to each outgoing request [SDKS-2997]
+
+#### Fixed
+- Blocked the device binding and signing features on simulators [SDKS-2995]
+
 ## [4.3.0]
 #### Added
 - AppIntegrity Callback support [SDKS-2630] [SDKS-2761]
