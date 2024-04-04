@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -15,6 +15,7 @@ import FRUI
 import CoreLocation
 import QuartzCore
 import FRDeviceBinding
+import PingProtect
 
 class ViewController: UIViewController, ErrorAlertShowing {
 
@@ -251,6 +252,15 @@ class ViewController: UIViewController, ErrorAlertShowing {
                             textField.autocapitalizationType = .none
                         })
                     }
+                    else if callback.type == "TextInputCallback", let textInputCallback = callback as? TextInputCallback {
+                        
+                        alert.addTextField(configurationHandler: { (textField) in
+                            textField.placeholder = textInputCallback.prompt
+                            textField.autocorrectionType = .no
+                            textField.autocapitalizationType = .none
+                            textField.text = textInputCallback.getDefaultText()
+                        })
+                    }
                     else if callback.type == "PasswordCallback", let passwordCallback = callback as? PasswordCallback {
                         alert.addTextField(configurationHandler: { (textField) in
                             textField.placeholder = passwordCallback.prompt
@@ -294,7 +304,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         self.present(alert, animated: true, completion: nil)
                         return
                     } else if callback.type == "DeviceBindingCallback", let deviceBindingCallback = callback as? DeviceBindingCallback {
-                        deviceBindingCallback.bind() { result in
+                        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+                        deviceBindingCallback.bind(prompt: customPrompt) { result in
                             DispatchQueue.main.async {
                                 var bindingResult = ""
                                 switch result {
@@ -314,7 +325,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
                         }
                         return
                     } else if callback.type == "DeviceSigningVerifierCallback", let deviceSigningVerifierCallback = callback as? DeviceSigningVerifierCallback {
-                        deviceSigningVerifierCallback.sign(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)]) { result in
+                        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+                        deviceSigningVerifierCallback.sign(customClaims: ["isCompanyPhone": true, "lastUpdated": Int(Date().timeIntervalSince1970)], prompt: customPrompt) { result in
                             DispatchQueue.main.async {
                                 var signingResult = ""
                                 switch result {
@@ -333,8 +345,37 @@ class ViewController: UIViewController, ErrorAlertShowing {
                             }
                         }
                         return
-                    }
-                    else {
+                    } else if callback.type == "PingOneProtectInitializeCallback", let pingOneProtectInitCallback = callback as? PingOneProtectInitializeCallback {
+                        pingOneProtectInitCallback.start { result in
+                            DispatchQueue.main.async {
+                                var signalsResult = ""
+                                switch result {
+                                case .success:
+                                    signalsResult = "Success"
+                                case .failure(let error):
+                                    signalsResult = "Error: \(error.localizedDescription)"
+                                }
+                                self.displayLog("PingOne Protect Initialize Result: \n\(signalsResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else if callback.type == "PingOneProtectEvaluationCallback", let pingOneProtectEvaluationCallback = callback as? PingOneProtectEvaluationCallback {
+                        pingOneProtectEvaluationCallback.getData{ result in
+                            DispatchQueue.main.async {
+                                var signalsResult = ""
+                                switch result {
+                                case .success:
+                                    signalsResult = "Success"
+                                case .failure(let error):
+                                    signalsResult = "Error: \(error.localizedDescription)"
+                                }
+                                self.displayLog("PingOne Protect Evaluation Result: \n\(signalsResult)")
+                                handleNode(node)
+                            }
+                        }
+                        return
+                    } else {
                         let errorAlert = UIAlertController(title: "Invalid Callback", message: "\(callback.type) is not supported.", preferredStyle: .alert)
                         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
                         errorAlert.addAction(cancelAction)

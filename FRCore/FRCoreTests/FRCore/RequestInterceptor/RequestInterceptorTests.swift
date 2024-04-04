@@ -2,7 +2,7 @@
 //  RequestInterceptorTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -296,6 +296,33 @@ class RequestInterceptorTests: FRBaseTestCase {
         XCTAssertTrue(payload.keys.contains("testKey"))
         XCTAssertEqual(payload["testKey"] as? String, "testVal")
     }
+
+
+    func test_10_try_overriding_platform_identifier_headers() {
+        let request = Request(url: FRTestURL.anythingURL, method: .GET)
+        RequestInterceptorRegistry.shared.registerInterceptors(interceptors: [PlatformIdentifierRequestInterceptor()])
+
+        let ex = self.expectation(description: "Request submit")
+        var response:[String: Any]?
+
+        RestClient.shared.invoke(request: request, action: Action(type: .AUTHENTICATE)) { (result) in
+            switch result {
+            case .success(let requestResponse,_):
+                response = requestResponse
+                ex.fulfill()
+            case .failure(let requestError):
+                ex.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        let headers = response?["headers"] as? [String: String]
+
+        XCTAssertNotNil(headers)
+        XCTAssertEqual(headers?["X-Requested-With"], RequestConstants.forgerockSdk)
+        XCTAssertEqual(headers?["X-Requested-Platform"], RequestConstants.ios)
+
+    }
 }
 
 
@@ -413,3 +440,15 @@ class InterceptorSequenceThree: RequestInterceptor {
 }
 
 
+class PlatformIdentifierRequestInterceptor: RequestInterceptor {
+    func intercept(request: Request, action: Action) -> Request {
+        var headers = request.headers
+
+        headers[RequestConstants.xRequestedWith] = "Some_other_sdk"
+        headers[RequestConstants.xRequestedPlatform] = "Some_other_platform"
+
+        let newRequest = Request(url: request.url, method: request.method, headers: headers, bodyParams: request.bodyParams, urlParams: request.urlParams, requestType: request.requestType, responseType: request.responseType, timeoutInterval: request.timeoutInterval)
+
+        return newRequest
+    }
+}

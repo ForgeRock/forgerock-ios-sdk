@@ -2,7 +2,7 @@
 //  AA-06-DeviceSigningVerifierCallbackTest.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -219,6 +219,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Success")
             }
             else {
@@ -290,6 +294,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Success")
             }
             else {
@@ -362,6 +370,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                     ex.fulfill()
                 })
                 waitForExpectations(timeout: 60, handler: nil)
+                if isSimulator {
+                    XCTAssertEqual(singningResult, DeviceBindingStatus.clientNotRegistered.errorMessage)
+                    return
+                }
                 XCTAssertEqual(singningResult, "Authentication Timeout")
             }
             else {
@@ -707,7 +719,10 @@ class AA_06_DeviceSigningVerifierCallbackTest: CallbackBaseTest {
                         ex.fulfill()
                     })
                 waitForExpectations(timeout: 60, handler: nil)
-
+                if isSimulator {
+                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    return
+                }
                 XCTAssertEqual(bindingResult, "Success")
             }
             else {

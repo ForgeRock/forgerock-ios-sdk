@@ -17,6 +17,15 @@ jobs:
     secrets:
       CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Run Mend CLI Scan
+  mend-cli-scan:
+    name: Mend CLI Scan
+    uses: ./.github/workflows/mend-cli-scan.yaml
+    secrets:
+      MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+      MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
   
   # Build and sign BitBar test artifacts (FRTestHost.ipa and FRAuthTests.xctest.zip)
   bitbar-prepare-artifacts:

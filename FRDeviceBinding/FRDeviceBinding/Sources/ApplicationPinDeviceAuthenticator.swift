@@ -2,7 +2,7 @@
 //  ApplicationPinDeviceAuthenticator.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -17,8 +17,6 @@ import JOSESwift
 
 /// DeviceAuthenticator adoption for Application Pin authentication
 open class ApplicationPinDeviceAuthenticator: DefaultDeviceAuthenticator, CryptoAware {
-    /// prompt  for authentication promp if applicable
-    var prompt: Prompt?
     /// cryptoKey for key pair generation
     var cryptoKey: CryptoKey?
     /// AppPinAuthenticator to take care of key generation

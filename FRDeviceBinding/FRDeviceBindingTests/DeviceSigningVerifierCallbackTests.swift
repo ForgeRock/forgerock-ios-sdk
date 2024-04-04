@@ -2,7 +2,7 @@
 //  DeviceSigningVerifierCallbackTests.swift
 //  FRDeviceBindingTests
 //
-//  Copyright (c) 2022-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -461,7 +461,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -534,7 +538,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -570,8 +578,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
         }
@@ -613,7 +625,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }
@@ -654,7 +670,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -693,8 +713,12 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
                 case .failure(let error):
-                    XCTAssertEqual(error.clientError, DeviceBindingStatus.invalidCustomClaims.clientError)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error.clientError, DeviceBindingStatus.invalidCustomClaims.clientError)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
                 }
             }
         }
@@ -732,7 +756,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTAssertTrue(callback.inputValues.count == 1)
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
             }
         }
@@ -779,7 +807,11 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                     // even though it overrids one of the existing claims, it succeeds as validateCustomClaims method always returns true
                     XCTAssertTrue((callback.inputValues["IDToken1jws"] as? String) == "CUSTOM_JWS")
                 case .failure(let error):
-                    XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }
@@ -828,8 +860,66 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
                     XCTFail("Callback bind succeeded instead of unsupported (invalid custom cliams)")
                 case .failure(let error):
                     // even though we don't overrid any of the existing claims, it fails as validateCustomClaims method always returns false
-                    XCTAssertEqual(error, DeviceBindingStatus.invalidCustomClaims)
-                    XCTAssertTrue(callback.inputValues.count == 1)
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTAssertEqual(error, DeviceBindingStatus.invalidCustomClaims)
+                        XCTAssertTrue(callback.inputValues.count == 1)
+                    }
+                }
+                expectation.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    
+    func test_24_sign_customPrompt() throws {
+        // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
+        // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
+        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        
+        let jsonStr = getJsonString()
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        let authenticator = BiometricAndDeviceCredential()
+        let customDeviceBindingIdentifier: (DeviceBindingAuthenticationType) -> DeviceAuthenticator =  { type in
+            return authenticator
+        }
+        
+        let customPrompt: Prompt = Prompt(title: "Custom Title", subtitle: "Custom Subtitle", description: "Custom Description")
+        
+        do {
+            let callback = try DeviceSigningVerifierCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            
+            
+            let cryptoKey = CryptoKey(keyId: "User Id 1")
+            let keyPair = try cryptoKey.createKeyPair(builderQuery: cryptoKey.keyBuilderQuery())
+            
+            let deviceRepository = LocalDeviceBindingRepository()
+            let _ = deviceRepository.deleteAllKeys()
+            
+            try? deviceRepository.persist(userKey: UserKey(id: keyPair.keyAlias, userId: "User Id 1", userName: "User Name 1", kid: UUID().uuidString, authType: .none, createdAt: Date().timeIntervalSince1970))
+            
+            let expectation = self.expectation(description: "Device Signing")
+            callback.sign(userKeySelector: CustomUserKeySelector(),
+                          deviceAuthenticator: customDeviceBindingIdentifier,
+                          prompt: customPrompt) { result in
+                switch result {
+                case .success:
+                    XCTAssertEqual(authenticator.prompt?.title, customPrompt.title)
+                    XCTAssertEqual(authenticator.prompt?.subtitle, customPrompt.subtitle)
+                    XCTAssertEqual(authenticator.prompt?.description, customPrompt.description)
+                case .failure(let error):
+                    if self.isSimulator {
+                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
+                    } else {
+                        XCTFail("Callback Execute failed: \(error.errorMessage)")
+                    }
                 }
                 expectation.fulfill()
             }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A589EC8829E6430700399B64 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A589EC8729E6430700399B64 /* FRDeviceBinding.framework */; };
 		A589EC8929E6430F00399B64 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A589EC8729E6430700399B64 /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A59508352B630FB400E366F9 /* PingProtect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59508342B630FB400E366F9 /* PingProtect.framework */; };
+		A59508362B630FCE00E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A59508342B630FB400E366F9 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5950A2C27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */; };
 		A5950A2E27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5950A2D27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist */; };
 		D5A7A1E9248CD88C00E30CFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A7A1E8248CD88C00E30CFE /* AppDelegate.swift */; };
@@ -38,6 +40,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A59508362B630FCE00E366F9 /* PingProtect.framework in Embed Frameworks */,
 				A589EC8929E6430F00399B64 /* FRDeviceBinding.framework in Embed Frameworks */,
 				D5D5DC0E25E76C8100A8AF0E /* FRAuthenticator.framework in Embed Frameworks */,
 				D5D5DC0C25E76C8100A8AF0E /* FRAuth.framework in Embed Frameworks */,
@@ -52,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		A589EC8729E6430700399B64 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A59508342B630FB400E366F9 /* PingProtect.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PingProtect.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigPKHash.plist; sourceTree = "<group>"; };
 		A5950A2D27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfigEmptyPKHash.plist; sourceTree = "<group>"; };
 		D5087148248CE01600B584D9 /* FRTestHostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRTestHostTests.swift; sourceTree = "<group>"; };
@@ -79,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A59508352B630FB400E366F9 /* PingProtect.framework in Frameworks */,
 				A589EC8829E6430700399B64 /* FRDeviceBinding.framework in Frameworks */,
 				D5D5DC0D25E76C8100A8AF0E /* FRAuthenticator.framework in Frameworks */,
 				D5D5DC0B25E76C8100A8AF0E /* FRAuth.framework in Frameworks */,
@@ -140,6 +145,7 @@
 		D5D5DC0525E76C8100A8AF0E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A59508342B630FB400E366F9 /* PingProtect.framework */,
 				A589EC8729E6430700399B64 /* FRDeviceBinding.framework */,
 				D5D5DC0625E76C8100A8AF0E /* FRAuth.framework */,
 				D5D5DC0725E76C8100A8AF0E /* FRAuthenticator.framework */,
