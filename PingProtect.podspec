@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = 'ForgeRock'
+  s.static_framework = true
 
   s.source           = {
       :git => 'https://github.com/ForgeRock/forgerock-ios-sdk.git',
@@ -30,5 +31,5 @@ Pod::Spec.new do |s|
   base_dir = "PingProtect/PingProtect"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
   s.ios.dependency 'FRAuth', '~> 4.4.0'
-  s.ios.dependency 'PingOneSignals', :podspec => 'https://assets.pingone.com/signals/ios-sdk/5.2.1/PingOneSignals.podspec'
+  s.ios.dependency 'PingOneSignals', '~> 5.2.1'
 end
