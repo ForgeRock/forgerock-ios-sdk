@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A50DEC7E2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC7D2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy */; };
 		D57F637C260137EA00BBA0B6 /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D57F6372260137E900BBA0B6 /* FRFacebookSignIn.framework */; };
 		D57F6383260137EA00BBA0B6 /* FRFacebookSignIn.h in Headers */ = {isa = PBXBuildFile; fileRef = D57F6375260137E900BBA0B6 /* FRFacebookSignIn.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D57F63A42601387E00BBA0B6 /* FacebookSignInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F63A32601387E00BBA0B6 /* FacebookSignInHandler.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A50DEC7D2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D57F6372260137E900BBA0B6 /* FRFacebookSignIn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRFacebookSignIn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D57F6375260137E900BBA0B6 /* FRFacebookSignIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRFacebookSignIn.h; sourceTree = "<group>"; };
 		D57F6376260137E900BBA0B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				D57F63A22601386B00BBA0B6 /* Sources */,
 				D57F6375260137E900BBA0B6 /* FRFacebookSignIn.h */,
 				D57F6376260137E900BBA0B6 /* Info.plist */,
+				A50DEC7D2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRFacebookSignIn;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50DEC7E2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
