@@ -162,11 +162,13 @@ class ViewController: UIViewController, ErrorAlertShowing {
         // - MARK: Token Management - Example
         // Register FRURLProtocol
         URLProtocol.registerClass(FRURLProtocol.self)
-        let policy = TokenManagementPolicy(validatingURL: [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!], delegate: self)
-        FRURLProtocol.tokenManagementPolicy = policy
+        
+        
+//        let policy = TokenManagementPolicy(validatingURL: [URL(string: "http://openig.example.com:9999/products.php")!, URL(string: "http://localhost:9888/policy/transfer")!, URL(string: "https://httpbin.org/status/401")!, URL(string: "https://httpbin.org/anything")!], delegate: self)
+//        FRURLProtocol.tokenManagementPolicy = policy
         
         //  - MARK: Authorization Policy - Example
-        let authPolicy = AuthorizationPolicy(validatingURL: [URL(string: "http://localhost:9888/policy/transfer")!], delegate: self)
+        let authPolicy = AuthorizationPolicy(validatingURL: [URL(string: "https://openig.petrov.ca/anything")!], delegate: self)
         FRURLProtocol.authorizationPolicy = authPolicy
         
         // Configure FRURLProtocol for HTTP client
@@ -808,7 +810,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
     
     // MARK: - IBAction
     
-    @IBAction func invokeAPIButton(sender: UIButton) {
+    @IBAction func invokeAPIButton(sender: UIButton?) {
         
         guard let urlStr = urlField?.text, let url = URL(string: urlStr) else {
             return
@@ -1015,23 +1017,24 @@ extension ViewController: AuthorizationPolicyDelegate {
         }
     }
     
-//    func evaluateAuthorizationPolicy(responseData: Data?, response: URLResponse?, error: Error?) -> PolicyAdvice? {
-//        // Example to evaluate given response data, and constructs PolicyAdvice object
-//        // Following code expects JSON response payload with 'advice' attribute in JSON which contains an array of 'advice' response from AM
-//        if let data = responseData, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
-//            if let advice = json["advice"], let adviceData = advice.data(using: .utf8), let adviceJSON = try? JSONSerialization.jsonObject(with: adviceData, options: []) as? [[String: Any]], let evalResult = adviceJSON.first, let policyAdvice = PolicyAdvice(json: evalResult) {
-//                return policyAdvice
-//            }
-//        }
-//        return nil
-//    }
+    func evaluateAuthorizationPolicy(responseData: Data?, response: URLResponse?, error: Error?) -> PolicyAdvice? {
+        // Example to evaluate given response data, and constructs PolicyAdvice object
+        // Following code expects JSON response payload with 'advice' attribute in JSON which contains an array of 'advice' response from AM
+        if let data = responseData, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+            if let advice = json["advice"], let adviceData = advice.data(using: .utf8), let adviceJSON = try? JSONSerialization.jsonObject(with: adviceData, options: []) as? [[String: Any]], let evalResult = adviceJSON.first, let policyAdvice = PolicyAdvice(json: evalResult) {
+                return policyAdvice
+            }
+        }
+        return nil
+    }
     
-//    func updateRequest(originalRequest: URLRequest, txId: String?) -> URLRequest {
-//        let mutableRequest = ((originalRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
-//        // Appends given transactionId into header
-//        mutableRequest.setValue(txId, forHTTPHeaderField: "transactionId")
-//        return mutableRequest as URLRequest
-//    }
+    func updateRequest(originalRequest: URLRequest, txId: String?) -> URLRequest {
+        let mutableRequest = ((originalRequest as NSURLRequest).mutableCopy() as? NSMutableURLRequest)!
+        // Appends given transactionId into header
+        let updatedURL = URL(string: "\(mutableRequest.url?.absoluteString ?? "")?_txid=\(txId ?? "")")
+        mutableRequest.url = updatedURL
+        return mutableRequest as URLRequest
+    }
 }
 
 class WebAuthnCredentialsTableViewController: UITableViewController {

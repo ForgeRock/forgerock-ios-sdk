@@ -94,7 +94,7 @@ import Foundation
             cookieHeader.forEach{ mutableRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
         }
         
-        //  TokenManagementPolicy requires modification of current URLRequest to inject authorization header
+//          TokenManagementPolicy requires modification of current URLRequest to inject authorization header
         if let tokenManagementPolicy = FRURLProtocol.tokenManagementPolicy {
             FRLog.i("[FRURLProtocol] TokenManagementPolicy found; evaluating currently authenticated session")
             if let user = FRUser.currentUser {
