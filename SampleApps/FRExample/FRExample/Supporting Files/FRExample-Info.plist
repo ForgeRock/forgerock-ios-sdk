@@ -6,6 +6,8 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconFileName</key>
+	<string>FRExample</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -35,18 +37,24 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>FRExample app uses BLE to collect device information</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>FRExample app uses BLE to collect device information</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>FaceID is required for biometric authentication</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>FRExample app uses geo-location service to collect device information</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FRExample app uses geo-location service to collect device information</string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>Main.storyboard</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>

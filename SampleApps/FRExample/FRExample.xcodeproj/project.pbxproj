@@ -464,6 +464,8 @@
 			isa = PBXGroup;
 			children = (
 				D5FE5E6223190A0000E04658 /* FRExample-Info.plist */,
+				95A75BE92B2A923400868DA9 /* FRExample.jpeg */,
+				95A75BE72B2A8D7B00868DA9 /* Media.xcassets */,
 				D5FE5E6123190A0000E04658 /* FRExample.entitlements */,
 				D5FE5E6023190A0000E04658 /* FRExampleSSO-Info.plist */,
 				D5FE5E5F23190A0000E04658 /* FRExampleSSO.entitlements */,
@@ -724,6 +726,8 @@
 				D5E080D123DA5A070025EA17 /* CustomNameCallbackCell.xib in Resources */,
 				D554633722A6EF960096C7A4 /* Assets.xcassets in Resources */,
 				D5FE5E6823190A7700E04658 /* FRAuthConfig.plist in Resources */,
+				95A75BE82B2A8D7B00868DA9 /* Media.xcassets in Resources */,
+				95A75BEA2B2A923400868DA9 /* FRExample.jpeg in Resources */,
 				D554633522A6EF950096C7A4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -985,6 +989,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = FRExample;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1012,6 +1018,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = FRExample;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
