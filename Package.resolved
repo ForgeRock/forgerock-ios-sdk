@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/openid/AppAuth-iOS.git",
         "state": {
           "branch": null,
-          "revision": "0eadcdec4ddb121865f3d66917549194afce1f2b",
-          "version": "1.6.1"
+          "revision": "8c0b028aedf617d6d780d448dc836f7048166d0f",
+          "version": "1.7.4"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/facebook/facebook-ios-sdk.git",
         "state": {
           "branch": null,
-          "revision": "82dec0403c32d7b1d93529dcabb9fcb18f0825cc",
-          "version": "9.1.0"
+          "revision": "5c7367dadcbe504702c041621dc09752bf2cd747",
+          "version": "16.0.1"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/google/GoogleSignIn-iOS.git",
         "state": {
           "branch": null,
-          "revision": "60ca2bfd218ccb194a746a79b41d9d50eb7e3af0",
-          "version": "6.1.0"
+          "revision": "a7965d134c5d3567026c523e0a8a583f73b62b0d",
+          "version": "7.1.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/google/gtm-session-fetcher.git",
         "state": {
           "branch": null,
-          "revision": "4e9bbf2808b8fee444e84a48f5f3c12641987d3e",
-          "version": "1.7.2"
+          "revision": "bc8972686f8797713af26b8eb24e85e2a6b972a3",
+          "version": "3.4.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/google/GTMAppAuth.git",
         "state": {
           "branch": null,
-          "revision": "6dee0cde8a1b223737a5159e55e6b4ec16bbbdd9",
-          "version": "1.3.1"
+          "revision": "5d7d66f647400952b1758b230e019b07c0b4b22a",
+          "version": "4.1.1"
         }
       },
       {
@@ -53,6 +53,15 @@
           "branch": null,
           "revision": "10ed3b6736def7c26eb87135466b1cb46ea7e37f",
           "version": "2.4.0"
+        }
+      },
+      {
+        "package": "PingOneSignals",
+        "repositoryURL": "https://github.com/pingidentity/pingone-signals-sdk-ios.git",
+        "state": {
+          "branch": null,
+          "revision": "07bc27b6485a0d741ca4055f46d743ac0680c974",
+          "version": "5.2.2"
         }
       }
     ]
