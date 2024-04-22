@@ -683,8 +683,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pingidentity/pingone-signals-sdk-ios";
 			requirement = {
-				kind = exactVersion;
-				version = 5.2.2;
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.2.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

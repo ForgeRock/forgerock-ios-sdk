@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/pingidentity/pingone-signals-sdk-ios.git",
         "state": {
           "branch": null,
-          "revision": "07bc27b6485a0d741ca4055f46d743ac0680c974",
-          "version": "5.2.2"
+          "revision": "88951ad71c37853fb86cee0bf48cf447ded5b268",
+          "version": "5.2.3"
         }
       }
     ]
