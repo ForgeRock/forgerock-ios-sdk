@@ -27,6 +27,7 @@
 		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
 		95EB7E4D2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EB7E4C2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift */; };
 		95EB7E532B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EB7E522B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift */; };
+		A50DEC452BCDEEC10094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC442BCDEEC10094CD73 /* PrivacyInfo.xcprivacy */; };
 		A53723D12AE80A5D0047B809 /* TelephonyCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
@@ -358,6 +359,7 @@
 		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
 		95EB7E4C2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_09_PingOneProtectInitializeCallbackTest.swift; sourceTree = "<group>"; };
 		95EB7E522B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_10_PingOneProtectEvaluateCallbackTest.swift; sourceTree = "<group>"; };
+		A50DEC442BCDEEC10094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelephonyCollectorTests.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
@@ -974,6 +976,7 @@
 				D554632122A6EDF90096C7A4 /* FRAuth.swift */,
 				D55462FB22A6DF720096C7A4 /* FRAuth.h */,
 				D55462FC22A6DF720096C7A4 /* Info.plist */,
+				A50DEC442BCDEEC10094CD73 /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRAuth;
 			sourceTree = "<group>";
@@ -1202,7 +1205,7 @@
 				959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */,
 				95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */,
 				3A4B46E32AB95B3D009E7171 /* AA_07_AppIntegrityTest.swift */,
-        9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */,
+				9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */,
 				95EB7E4C2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift */,
 				95EB7E522B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift */,
 			);
@@ -1672,6 +1675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50DEC452BCDEEC10094CD73 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A50DEC542BCDFFE50094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC532BCDFFE50094CD73 /* PrivacyInfo.xcprivacy */; };
 		A589EC6D29E63C0300399B64 /* DeviceSigningVerifierCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC6B29E63C0300399B64 /* DeviceSigningVerifierCallbackTests.swift */; };
 		A589EC6E29E63C0300399B64 /* DeviceBindingCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC6C29E63C0300399B64 /* DeviceBindingCallbackTests.swift */; };
 		A589EC7729E63C7F00399B64 /* UserKeySelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC7529E63C7F00399B64 /* UserKeySelectorTests.swift */; };
@@ -91,6 +92,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A50DEC532BCDFFE50094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A589EC6B29E63C0300399B64 /* DeviceSigningVerifierCallbackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSigningVerifierCallbackTests.swift; sourceTree = "<group>"; };
 		A589EC6C29E63C0300399B64 /* DeviceBindingCallbackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceBindingCallbackTests.swift; sourceTree = "<group>"; };
 		A589EC7129E63C7F00399B64 /* UserDeviceKeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeviceKeyServiceTests.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 			children = (
 				A5D1C39B29E5A4160096039E /* Sources */,
 				A5D1C37729E59FC20096039E /* FRDeviceBinding.h */,
+				A50DEC532BCDFFE50094CD73 /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRDeviceBinding;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50DEC542BCDFFE50094CD73 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

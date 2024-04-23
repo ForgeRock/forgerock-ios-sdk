@@ -30,21 +30,31 @@
 				<string>frauth</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.google</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.684644441808-44ecssta9g7m70umr3unkeb0v7iumahj</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>FRExample app uses BLE to collect device information</string>
+	<string>The app uses BLE for Device Collector functionality (to check if the device supports BLE)</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>FRExample app uses BLE to collect device information</string>
+	<string>The app uses BLE for Device Collector functionality (to check if the device supports BLE)</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>FaceID is required for biometric authentication</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>FRExample app uses geo-location service to collect device information</string>
+	<string>The app uses Location for Device Collector functionality (to display longitude, latititude values)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>FRExample app uses geo-location service to collect device information</string>
+	<string>The app uses Location for Device Collector functionality (to display longitude, latititude values)</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Main.storyboard</string>
 	<key>UIMainStoryboardFile</key>
@@ -72,5 +82,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleDisplayName</key>
+	<string>ForgeRock</string>
 </dict>
 </plist>

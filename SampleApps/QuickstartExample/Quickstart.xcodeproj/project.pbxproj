@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A53E8FA42BC714F80076CF51 /* FRAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A53E8FA32BC714F80076CF51 /* FRAuth */; };
+		A53E8FA62BC714F80076CF51 /* PingProtect in Frameworks */ = {isa = PBXBuildFile; productRef = A53E8FA52BC714F80076CF51 /* PingProtect */; };
 		A53EBC93279F9DD400A97770 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53EBC92279F9DD400A97770 /* AppDelegate.swift */; };
 		A53EBC9A279F9DD400A97770 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A53EBC98279F9DD400A97770 /* Main.storyboard */; };
 		A53EBC9C279F9DD700A97770 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A53EBC9B279F9DD700A97770 /* Assets.xcassets */; };
 		A53EBC9F279F9DD700A97770 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A53EBC9D279F9DD700A97770 /* LaunchScreen.storyboard */; };
 		A53EBCAA279F9F6B00A97770 /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A53EBCA9279F9F6B00A97770 /* FRAuthConfig.plist */; };
 		A53EBCAC279FA28E00A97770 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53EBCAB279FA28E00A97770 /* LoginViewController.swift */; };
-		ECDF5F5C296F03BC007BB721 /* FRAuth in Frameworks */ = {isa = PBXBuildFile; productRef = ECDF5F5B296F03BC007BB721 /* FRAuth */; };
-		ECDF5F5E296F03BC007BB721 /* FRCore in Frameworks */ = {isa = PBXBuildFile; productRef = ECDF5F5D296F03BC007BB721 /* FRCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +26,7 @@
 		A53EBCA0279F9DD700A97770 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A53EBCA9279F9F6B00A97770 /* FRAuthConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfig.plist; sourceTree = "<group>"; };
 		A53EBCAB279FA28E00A97770 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		A5A290132BB345760010A636 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,8 +34,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECDF5F5C296F03BC007BB721 /* FRAuth in Frameworks */,
-				ECDF5F5E296F03BC007BB721 /* FRCore in Frameworks */,
+				A53E8FA62BC714F80076CF51 /* PingProtect in Frameworks */,
+				A53E8FA42BC714F80076CF51 /* FRAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +47,7 @@
 			children = (
 				A53EBC91279F9DD300A97770 /* Quickstart */,
 				A53EBC90279F9DD300A97770 /* Products */,
+				A5A40D382BB2349500C467B8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +73,14 @@
 			path = Quickstart;
 			sourceTree = "<group>";
 		};
+		A5A40D382BB2349500C467B8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A5A290132BB345760010A636 /* Accounts.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -88,8 +98,8 @@
 			);
 			name = Quickstart;
 			packageProductDependencies = (
-				ECDF5F5B296F03BC007BB721 /* FRAuth */,
-				ECDF5F5D296F03BC007BB721 /* FRCore */,
+				A53E8FA32BC714F80076CF51 /* FRAuth */,
+				A53E8FA52BC714F80076CF51 /* PingProtect */,
 			);
 			productName = Quickstart;
 			productReference = A53EBC8F279F9DD300A97770 /* Quickstart.app */;
@@ -103,7 +113,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					A53EBC8E279F9DD300A97770 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -120,7 +130,7 @@
 			);
 			mainGroup = A53EBC86279F9DD300A97770;
 			packageReferences = (
-				ECDF5F5A296F03BC007BB721 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */,
+				A53E8FA22BC714F80076CF51 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */,
 			);
 			productRefGroup = A53EBC90279F9DD300A97770 /* Products */;
 			projectDirPath = "";
@@ -214,6 +224,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -228,7 +239,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -275,6 +286,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -283,7 +295,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -375,26 +387,26 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		ECDF5F5A296F03BC007BB721 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */ = {
+		A53E8FA22BC714F80076CF51 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ForgeRock/forgerock-ios-sdk.git";
+			repositoryURL = "https://github.com/ForgeRock/forgerock-ios-sdk";
 			requirement = {
-				branch = "SDKS-2297_Webauthn_Set_Device_Name";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		ECDF5F5B296F03BC007BB721 /* FRAuth */ = {
+		A53E8FA32BC714F80076CF51 /* FRAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = ECDF5F5A296F03BC007BB721 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
+			package = A53E8FA22BC714F80076CF51 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
 			productName = FRAuth;
 		};
-		ECDF5F5D296F03BC007BB721 /* FRCore */ = {
+		A53E8FA52BC714F80076CF51 /* PingProtect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = ECDF5F5A296F03BC007BB721 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
-			productName = FRCore;
+			package = A53E8FA22BC714F80076CF51 /* XCRemoteSwiftPackageReference "forgerock-ios-sdk" */;
+			productName = PingProtect;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

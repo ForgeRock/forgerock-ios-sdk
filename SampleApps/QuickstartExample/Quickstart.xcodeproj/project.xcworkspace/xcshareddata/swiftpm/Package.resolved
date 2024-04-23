@@ -1,12 +1,13 @@
 {
+  "originHash" : "6505c1ab3e92ab671ee04e6dab75d1f60e572689168b62b4f2f6b90e21cd532e",
   "pins" : [
     {
       "identity" : "appauth-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/openid/AppAuth-iOS.git",
       "state" : {
-        "revision" : "3d36a58a2b736f7bc499453e996a704929b25080",
-        "version" : "1.6.0"
+        "revision" : "7e2c09cbeb3bb799f26c268dbedb26325ea722a9",
+        "version" : "1.7.3"
       }
     },
     {
@@ -14,17 +15,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/facebook/facebook-ios-sdk.git",
       "state" : {
-        "revision" : "82dec0403c32d7b1d93529dcabb9fcb18f0825cc",
-        "version" : "9.1.0"
+        "revision" : "5c7367dadcbe504702c041621dc09752bf2cd747",
+        "version" : "16.0.1"
       }
     },
     {
       "identity" : "forgerock-ios-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ForgeRock/forgerock-ios-sdk.git",
+      "location" : "https://github.com/ForgeRock/forgerock-ios-sdk",
       "state" : {
-        "branch" : "SDKS-2297_Webauthn_Set_Device_Name",
-        "revision" : "2ed70888474b843a78fadeced07ea732935c452e"
+        "revision" : "ef1d1b55831410f0fa6d63236636d3ac7f5195fc",
+        "version" : "4.4.0"
       }
     },
     {
@@ -32,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleSignIn-iOS.git",
       "state" : {
-        "revision" : "60ca2bfd218ccb194a746a79b41d9d50eb7e3af0",
-        "version" : "6.1.0"
+        "revision" : "7932d33686c1dc4d7df7a919aae47361d1cdfda4",
+        "version" : "7.0.0"
       }
     },
     {
@@ -41,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/gtm-session-fetcher.git",
       "state" : {
-        "revision" : "4e9bbf2808b8fee444e84a48f5f3c12641987d3e",
-        "version" : "1.7.2"
+        "revision" : "9534039303015a84837090d20fa21cae6e5eadb6",
+        "version" : "3.3.2"
       }
     },
     {
@@ -50,10 +51,28 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GTMAppAuth.git",
       "state" : {
-        "revision" : "6dee0cde8a1b223737a5159e55e6b4ec16bbbdd9",
-        "version" : "1.3.1"
+        "revision" : "cee3c709307912d040bd1e06ca919875a92339c6",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "joseswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airsidemobile/JOSESwift.git",
+      "state" : {
+        "revision" : "10ed3b6736def7c26eb87135466b1cb46ea7e37f",
+        "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "pingone-signals-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pingidentity/pingone-signals-sdk-ios.git",
+      "state" : {
+        "revision" : "f026d15f2a8b0a256d8ba9bff21b8d2b78313732",
+        "version" : "5.2.1"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

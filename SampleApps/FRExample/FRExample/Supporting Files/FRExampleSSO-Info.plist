@@ -40,7 +40,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>FRExample app uses BLE to collect device information</string>
+	<string>The app used BLE for Device Collector functionality (that checks if the device supports BLE)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FRExample app uses geo-location service to collect device information</string>
 	<key>UILaunchStoryboardName</key>

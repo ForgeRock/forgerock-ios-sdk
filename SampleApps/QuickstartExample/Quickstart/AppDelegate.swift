@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PingProtect
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         window?.makeKeyAndVisible()
+
+      let initParams = PIInitParams(envId: "02fb4743-189a-4bc7-9d6c-a919edfe6447",
+                                          deviceAttributesToIgnore: [],
+                                          consoleLogEnabled: true,
+                                          customHost: "",
+                                          lazyMetadata: false,
+                                          behavioralDataCollection: true)
+            PIProtect.start(initParams: initParams) { error in
+                if let error = error as? NSError {
+                  print("Ping Protect Init Error \(error.localizedDescription)")
+                } else {
+                  print("Ping Protect Init Success")
+                }
+            }
+
         return true
     }
     

@@ -135,27 +135,27 @@ class ViewController: UIViewController, ErrorAlertShowing {
         self.dropDown?.delegate = self
         self.dropDown?.dataSource = [
             "Login with UI (FRUser)",
-            "Login with Browser",
+            //"Login with Browser",
             "Request UserInfo",
             "User Logout",
             "Get FRUser.currentUser",
-            "Invoke API (Token Mgmt)",
+            //"Invoke API (Token Mgmt)",
             "Collect Device Information",
             "JailbreakDetector.analyze()",
             "FRUser.getAccessToken()",
             "FRUser.refresh()",
-            "Login with UI (Accesstoken)",
-            "FRSession.authenticate with UI (Token)",
-            "FRSession.logout()",
+//            "Login with UI (Accesstoken)",
+//            "FRSession.authenticate with UI (Token)",
+//            "FRSession.logout()",
             "Register User with UI (FRUser)",
-            "Register User with UI (Accesstoken)",
-            "Login without UI (FRUser)",
-            "Login without UI (Accesstoken)",
-            "FRSession.authenticate without UI (Token)",
+//            "Register User with UI (Accesstoken)",
+//            "Login without UI (FRUser)",
+//            "Login without UI (Accesstoken)",
+//            "FRSession.authenticate without UI (Token)",
             "Display Configurations",
             "Revoke Access Token",
-            "List WebAuthn Credentials",
-            "List Device Binding Keys"
+//            "List WebAuthn Credentials",
+//            "List Device Binding Keys"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -662,6 +662,39 @@ class ViewController: UIViewController, ErrorAlertShowing {
             .build().login { (user, error) in
                 self.displayLog("User: \(String(describing: user)) || Error: \(String(describing: error))")
         }
+
+
+//
+//
+//      DispatchQueue.main.async {
+////        guard let viewController = RCTPresentedViewController() else {
+////         reject("Error", "Unable to locate view controller", nil)
+////
+////         return
+////        }
+//
+//        let browserBuilder = FRUser.browser()
+//        if let options = ["custom": "value"] as? [String: String] {
+//         for (key, value) in options {
+//          browserBuilder?.setCustomParam(key: key, value: value)
+//         }
+//        }
+//
+//        browserBuilder?.set(presentingViewController: self)
+//
+//        if let browser = browserBuilder?.build() {
+//         browser.login{ (user, error) in
+//          if let error = error {
+//           print("Error", error.localizedDescription, error)
+//          } else if user != nil {
+//           print("User has logged in")
+//          }
+//         }
+//        } else {
+//         print("Error", "Browser is not built")// <---- IT FALLS TO THIS BRANCH
+//        }
+//       }
+
         return
         
     }
@@ -868,86 +901,86 @@ class ViewController: UIViewController, ErrorAlertShowing {
         case 1:
             self.performCentralizedLogin()
             break
-        case 2:
+        case 1:
             // Request user info
             self.getUserInfo()
             break
-        case 3:
+        case 2:
             // User Logout
             self.logout()
             break
-        case 4:
+        case 3:
             // Display FRUser.currentUser
             self.displayLog(String(describing: FRUser.currentUser))
             break
-        case 5:
-            // Invoke API
-            self.invokeAPI()
-            break
-        case 6:
+//        case 5:
+//            // Invoke API
+//            self.invokeAPI()
+//            break
+        case 4:
             // Device Information collector
             self.getDeviceInformation()
             break
-        case 7:
+        case 5:
             // Jailbreak detector
             self.performJailbreakDetector()
             break
-        case 8:
+        case 6:
             // Get AccessToken from FRUser.currentUser
             self.getAccessTokenFromUser()
             break
-        case 9:
+        case 7:
             // Force Refresh AccessToken
             self.refreshAccessToken()
             break
-        case 10:
-            // Login for AccessToken
-            self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
-            break
-        case 11:
-            // FRSession.authenticate with UI (Token)
-            self.performSessionAuthenticate(handleWithUI: true)
-            break
-        case 12:
-            // FRSession.logout
-            FRSession.currentSession?.logout()
-            break
-        case 13:
+//        case 10:
+//            // Login for AccessToken
+//            self.performActionHelperWithUI(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
+//            break
+//        case 11:
+//            // FRSession.authenticate with UI (Token)
+//            self.performSessionAuthenticate(handleWithUI: true)
+//            break
+//        case 12:
+//            // FRSession.logout
+//            FRSession.currentSession?.logout()
+//            break
+        case 8:
             // Register a user for FRUser
             self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: FRUser.self)
             break
-        case 14:
-            // Register a user for AccessToken
-            self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
-            break
-        case 15:
-            // Login for FRUser without UI
-            self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
-            break
-        case 16:
-            // Login for AccessToken without UI
-            self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
-            break
-        case 17:
-            // FRSession.authenticate without UI (Token)
-            self.performSessionAuthenticate(handleWithUI: false)
-            break
-        case 18:
+//        case 14:
+//            // Register a user for AccessToken
+//            self.performActionHelperWithUI(auth: frAuth, flowType: .registration, expectedType: AccessToken.self)
+//            break
+//        case 15:
+//            // Login for FRUser without UI
+//            self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: FRUser.self)
+//            break
+//        case 16:
+//            // Login for AccessToken without UI
+//            self.performActionHelper(auth: frAuth, flowType: .authentication, expectedType: AccessToken.self)
+//            break
+//        case 17:
+//            // FRSession.authenticate without UI (Token)
+//            self.performSessionAuthenticate(handleWithUI: false)
+//            break
+        case 9:
             // Display current Configuration
             self.displayCurrentConfig()
             break
-        case 19:
+        case 10:
             // Revoke Access Token
             self.revokeAccessToken()
             break
-        case 20:
-            // List WebAuthn Credentials by rpId
-            self.listWebAuthnCredentialsByRpId()
-            break
-        case 21:
-            // List device binding user keys
-            self.listUserKeys()
-            break
+//        case 20:
+//            // List WebAuthn Credentials by rpId
+//            self.listWebAuthnCredentialsByRpId()
+//            break
+//        case 21:
+//            // List device binding user keys
+//            self.listUserKeys()
+//            break
         default:
             break
         }
