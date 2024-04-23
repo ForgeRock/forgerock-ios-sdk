@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A50DEC572BCE00130094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC562BCE00130094CD73 /* PrivacyInfo.xcprivacy */; };
 		A52761162B60209000F8BDF7 /* PingProtect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A527610D2B60209000F8BDF7 /* PingProtect.framework */; };
 		A527611B2B60209000F8BDF7 /* PIInitParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A527611A2B60209000F8BDF7 /* PIInitParamsTests.swift */; };
 		A527611C2B60209000F8BDF7 /* PingProtect.h in Headers */ = {isa = PBXBuildFile; fileRef = A52761102B60209000F8BDF7 /* PingProtect.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -74,6 +75,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A50DEC562BCE00130094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A527610D2B60209000F8BDF7 /* PingProtect.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PingProtect.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A52761102B60209000F8BDF7 /* PingProtect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PingProtect.h; sourceTree = "<group>"; };
 		A52761152B60209000F8BDF7 /* PingProtectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingProtectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +144,7 @@
 			children = (
 				A52761402B602D3D00F8BDF7 /* Sources */,
 				A52761102B60209000F8BDF7 /* PingProtect.h */,
+				A50DEC562BCE00130094CD73 /* PrivacyInfo.xcprivacy */,
 			);
 			path = PingProtect;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50DEC572BCE00130094CD73 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,8 +683,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pingidentity/pingone-signals-sdk-ios";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.1;
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.2.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

@@ -18,10 +18,10 @@ let package = Package (
         .library(name: "PingProtect", targets: ["PingProtect"])
     ],
     dependencies: [
-        .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .exact("16.0.1")),
-        .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("7.0.0")),
-        .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .exact("2.4.0")),
-        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .exact("5.2.1"))
+        .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .upToNextMinor(from: "16.0.1")),
+        .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .upToNextMinor(from: ("7.1.0")),
+        .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .upToNextMinor(from: ("2.4.0")),
+        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .upToNextMinor(from: ("5.2.3"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),

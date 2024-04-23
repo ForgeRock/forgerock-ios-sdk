@@ -2,7 +2,7 @@
 //  HardwareCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -31,7 +31,6 @@ public class HardwareCollector: DeviceCollector {
 //        result["activeCPU"] = pi.activeProcessorCount
 //        result["multitaskSupport"] = UIDevice.current.isMultitaskingSupported
         result["manufacturer"] = "Apple"
-        result["storage"] = Int(self.getDiskSpaceSize())
         result["memory"] = Int(self.getMemorySize())
         result["display"] = self.getScreenInfo()
         result["camera"] = self.getCameraInfo()
@@ -63,24 +62,6 @@ public class HardwareCollector: DeviceCollector {
         result["height"] = Int(UIScreen.main.bounds.height)
         result["orientation"] = UIDevice.current.orientation.isPortrait ? 1 : 0
         return result
-    }
-    
-    
-    /// Calculates current device's total disk size in MB
-    ///
-    /// - Returns: Current device's disk size in MB
-    func getDiskSpaceSize() -> Double {
-        do {
-            let fileAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory())
-            if var sysSize = fileAttributes[.systemSize] as? Double {
-                sysSize = (sysSize / 1024) / 1024
-                return sysSize
-            }
-            return 0.0
-        }
-        catch {
-            return 0.0
-        }
     }
     
     
