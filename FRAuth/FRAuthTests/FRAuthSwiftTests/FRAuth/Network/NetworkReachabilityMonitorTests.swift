@@ -169,10 +169,14 @@ class NetworkReachabilityMonitorTests: FRAuthBaseTest {
         waitForExpectations(timeout: 60, handler: nil)
         
         // Then
+      if #available(iOS 13.0, *) {
         addTeardownBlock { [weak monitor] in
-            XCTAssertNil(monitor, "`monitor` should have been deallocated. Potential memory leak!")
-            
+          XCTAssertNil(monitor, "`monitor` should have been deallocated. Potential memory leak!")
+          
         }
+      } else {
+        // Fallback on earlier versions
+      }
     }
     
 }
