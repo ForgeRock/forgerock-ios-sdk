@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRCore'
-  s.version          = '4.4.1-beta2'
+  s.version          = '4.4.1-beta3'
   s.summary          = 'ForgeRock Core SDK for iOS'
   s.description      = <<-DESC
   FRCore is a SDK that allows you to consume some of core functionalities and security features built for FRAuth SDK.
@@ -21,7 +21,6 @@ Pod::Spec.new do |s|
       :git => 'https://github.com/ForgeRock/forgerock-ios-sdk.git',
       :tag => s.version.to_s
   }
-
   s.module_name   = 'FRCore'
   s.swift_versions = ['5.0', '5.1']
 
@@ -29,4 +28,7 @@ Pod::Spec.new do |s|
 
   base_dir = "FRCore/FRCore"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'FRCore' => [base_dir + '/*.xcprivacy']
+  }
 end
