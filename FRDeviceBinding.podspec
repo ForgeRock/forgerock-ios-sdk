@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRDeviceBinding'
-  s.version          = '4.4.1-beta2'
+  s.version          = '4.4.1'
   s.summary          = 'ForgeRock Device Binding SDK for iOS'
   s.description      = <<-DESC
     FRDeviceBinding is a SDK that adds support for the Device Binding feature. FRDeviceBinding depends on JOSESwift.
@@ -29,6 +29,9 @@ Pod::Spec.new do |s|
 
   base_dir = "FRDeviceBinding/FRDeviceBinding"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
-  s.ios.dependency 'FRAuth', '~> 4.4.1-beta2'
+  s.resource_bundles = {
+    'FRDeviceBinding' => [base_dir + '/*.xcprivacy']
+  }
+  s.ios.dependency 'FRAuth', '~> 4.4.1'
   s.ios.dependency 'JOSESwift', '~> 2.4.0'
 end
