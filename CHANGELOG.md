@@ -1,3 +1,12 @@
+## [4.4.1]
+#### Added
+- Added privacy manifest files to the SDK's modules [SDKS-3086]
+
+#### Fixed
+- Removed `storage` field from the `HardwareCollector` [SDKS-3086]
+- Updated Google SDK version to 7.1.0 [SDKS-3086]
+- Updated PingOneSignals SDK version to 5.2.3 [SDKS-3086]
+
 ## [4.4.0]
 #### Added
 - Added a new module for integration with `PingOne Protect` [SDKS-2901]
