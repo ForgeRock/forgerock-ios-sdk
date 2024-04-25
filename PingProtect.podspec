@@ -30,6 +30,9 @@ Pod::Spec.new do |s|
 
   base_dir = "PingProtect/PingProtect"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'PingProtect' => [base_dir + '/*.xcprivacy']
+  }
   s.ios.dependency 'FRAuth', '~> 4.4.1'
   s.ios.dependency 'PingOneSignals', '~> 5.2.3'
 end

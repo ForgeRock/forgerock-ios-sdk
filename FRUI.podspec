@@ -29,6 +29,9 @@ Pod::Spec.new do |s|
 
   base_dir = "FRUI/FRUI"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'FRUI' => [base_dir + '/*.xcprivacy']
+  }
   s.resources = [base_dir + '/**/*.xib', base_dir + '/Assets/*']
   s.ios.dependency 'FRDeviceBinding', '~> 4.4.1'
 end

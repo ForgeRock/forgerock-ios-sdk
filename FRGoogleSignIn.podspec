@@ -30,6 +30,9 @@ Pod::Spec.new do |s|
 
   base_dir = "FRGoogleSignIn/FRGoogleSignIn"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'FRGoogleSignIn' => [base_dir + '/*.xcprivacy']
+  }
 
   s.ios.dependency 'FRAuth', '~> 4.4.1'
   s.ios.dependency 'GoogleSignIn', '~> 7.1.0'

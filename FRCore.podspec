@@ -29,4 +29,7 @@ Pod::Spec.new do |s|
 
   base_dir = "FRCore/FRCore"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'FRCore' => [base_dir + '/*.xcprivacy']
+  }
 end

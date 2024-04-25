@@ -29,6 +29,9 @@ Pod::Spec.new do |s|
 
   base_dir = "FRDeviceBinding/FRDeviceBinding"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'FRDeviceBinding' => [base_dir + '/*.xcprivacy']
+  }
   s.ios.dependency 'FRAuth', '~> 4.4.1'
   s.ios.dependency 'JOSESwift', '~> 2.4.0'
 end

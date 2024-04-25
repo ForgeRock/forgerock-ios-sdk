@@ -29,5 +29,8 @@ Pod::Spec.new do |s|
 
   base_dir = "FRAuth/FRAuth"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
+  s.resource_bundles = {
+    'FRAuth' => [base_dir + '/*.xcprivacy']
+  }
   s.ios.dependency 'FRCore', '~> 4.4.1'
 end
