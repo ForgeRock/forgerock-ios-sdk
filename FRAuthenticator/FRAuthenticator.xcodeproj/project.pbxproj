@@ -18,6 +18,7 @@
 		1BB34B44299704A300729300 /* AccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B43299704A300729300 /* AccountError.swift */; };
 		1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */; };
 		1BB34B48299AE08300729300 /* URIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B47299AE08300729300 /* URIType.swift */; };
+		A53E73B32BD87C9500DA48FE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A53E73B22BD87C9500DA48FE /* PrivacyInfo.xcprivacy */; };
 		A56A46EF2A4A5601000C1055 /* RequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */; };
 		A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */; };
 		D5230BE02457868B004AB6E9 /* FRAConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5230BDF2457868B004AB6E9 /* FRAConstants.swift */; };
@@ -202,6 +203,7 @@
 		1BB34B43299704A300729300 /* AccountError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountError.swift; sourceTree = "<group>"; };
 		1BB34B45299AD30100729300 /* InvalidFakePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidFakePolicy.swift; sourceTree = "<group>"; };
 		1BB34B47299AE08300729300 /* URIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URIType.swift; sourceTree = "<group>"; };
+		A53E73B22BD87C9500DA48FE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A56A46EE2A4A5601000C1055 /* RequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorTests.swift; sourceTree = "<group>"; };
 		A5EAD7D128356B5F000637F0 /* BiometricAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthentication.swift; sourceTree = "<group>"; };
 		D5230BDF2457868B004AB6E9 /* FRAConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAConstants.swift; sourceTree = "<group>"; };
@@ -750,6 +752,7 @@
 				D5C354832412EBF800695A84 /* FRAuthenticator.h */,
 				D5C354842412EBF800695A84 /* Info.plist */,
 				D52D5C5B241324AE00835035 /* FRAClient.swift */,
+				A53E73B22BD87C9500DA48FE /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRAuthenticator;
 			sourceTree = "<group>";
@@ -1029,6 +1032,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A53E73B32BD87C9500DA48FE /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1332,7 +1336,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.4.1;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuthenticator/SharedC/FRAuthenticator.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticator;
@@ -1364,7 +1368,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.4.1;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuthenticator/SharedC/FRAuthenticator.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticator;

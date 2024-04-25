@@ -22,6 +22,7 @@
 		1BA471542993472500E657DA /* FRJailbreakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */; };
 		1BA471552993472500E657DA /* SandboxDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C91299343CB0068D6E8 /* SandboxDetector.swift */; };
 		1BA471572993472500E657DA /* SymbolicLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF4C92299343CB0068D6E8 /* SymbolicLinkDetector.swift */; };
+		A50DEC5F2BCEC76F0094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC5E2BCEC76F0094CD73 /* PrivacyInfo.xcprivacy */; };
 		A52873D72AF1EEA3002424C0 /* URLSchemeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D62AF1EEA3002424C0 /* URLSchemeDetector.swift */; };
 		A52873D92AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */; };
 		A52873DB2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */; };
@@ -148,6 +149,7 @@
 		1BCF4C97299343CB0068D6E8 /* JailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakDetector.swift; sourceTree = "<group>"; };
 		1BCF4C98299343CB0068D6E8 /* FRJailbreakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRJailbreakDetector.swift; sourceTree = "<group>"; };
 		1BCF4C99299343CB0068D6E8 /* RestrictedDirectoriesWritableDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestrictedDirectoriesWritableDetector.swift; sourceTree = "<group>"; };
+		A50DEC5E2BCEC76F0094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A52873D62AF1EEA3002424C0 /* URLSchemeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeDetector.swift; sourceTree = "<group>"; };
 		A52873D82AF99A05002424C0 /* SuspiciousFilesExistenceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousFilesExistenceDetector.swift; sourceTree = "<group>"; };
 		A52873DA2AFA8C2E002424C0 /* SuspiciousFilesAccessibleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousFilesAccessibleDetector.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 				1BCF4C9B299343CB0068D6E8 /* Security */,
 				D5E75BCD2409B8C0005F589F /* FRCore.h */,
 				D5E75BCE2409B8C0005F589F /* Info.plist */,
+				A50DEC5E2BCEC76F0094CD73 /* PrivacyInfo.xcprivacy */,
 			);
 			path = FRCore;
 			sourceTree = "<group>";
@@ -668,6 +671,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50DEC5F2BCEC76F0094CD73 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -951,7 +955,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.4.1;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRCore/SharedC/FRCore.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
@@ -985,7 +989,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.4.1;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRCore/SharedC/FRCore.modulemap";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCore;
