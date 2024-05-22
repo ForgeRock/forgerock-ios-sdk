@@ -23,33 +23,34 @@ internal class RemoteWebAuthnRepository {
             throw AuthApiError.apiFailureWithMessage("Bad Request", "No Configuration found", 400, nil)
         }
         
-        if let userHandle = publicKeyCredentialSource.userHandle, let userIdCoded = Base64.encodeBase64(userHandle) as String?, let userId = userIdCoded.base64Decoded() {
+        if let userHandle = publicKeyCredentialSource.userHandle, let userIdBase64 = Base64.encodeBase64(userHandle) as String?, let userIdCoded = userIdBase64.base64Decoded() {
             
-            let credentialId = Base64.encodeBase64URL(publicKeyCredentialSource.id)
-
-            // retrieve UUID
-            let findResponse = try find(userId: userId, credentialId: credentialId)
-            
-            // call delete API passing UUID
-            if let resourceId = findResponse["uuid"] as? String {
-                let url = try getUrl(userId: userId, resourceId: resourceId )
-                var headers: [String: String] = [:]
-                headers["accept-api-version"] = "resource=1.0"
+            // decode userId and credentialId
+            if let userId = userIdCoded.base64Decoded(), let credentialId = Base64.encodeBase64URL(publicKeyCredentialSource.id) as String? {
                 
-                let request =  Request(url: url, method: .DELETE, headers: headers, requestType: .json, responseType: nil, timeoutInterval: Double(options.timeout) ?? 60)
+                // retrieve UUID
+                let findResponse = try find(userId: userId, credentialId: credentialId)
                 
-                let result = FRRestClient.invokeSync(request: request, action: nil)
-                
-                switch result {
-                case .success:
-                    // all good, do nothing
-                    break
-                case .failure(error: let apiError):
-                    FRLog.e(apiError.localizedDescription)
-                    throw apiError
+                // call delete API passing UUID
+                if let resourceId = findResponse["uuid"] as? String {
+                    let url = try getUrl(userId: userId, resourceId: resourceId )
+                    var headers: [String: String] = [:]
+                    headers["accept-api-version"] = "resource=1.0"
+                    
+                    let request =  Request(url: url, method: .DELETE, headers: headers, requestType: .json, responseType: nil, timeoutInterval: Double(options.timeout) ?? 60)
+                    
+                    let result = FRRestClient.invokeSync(request: request, action: nil)
+                    
+                    switch result {
+                    case .success:
+                        // all good, do nothing
+                        break
+                    case .failure(error: let apiError):
+                        FRLog.e(apiError.localizedDescription)
+                        throw apiError
+                    }
                 }
             }
-
         }
 
     }

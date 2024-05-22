@@ -360,13 +360,14 @@ class PlatformAuthenticatorMakeCredentialSession: AuthenticatorMakeCredentialSes
                     
                     let credentialId = self.createNewCredentialId()
                     
-                    //  Only store userHandle within PublicKeyCredentialSource when requireResidentKey is true
-                    //  the client-side discoverable Public Key Credential Source should adhere requireResidentKey
-                    var userHandle: [UInt8]? = nil
-                    if requireResidentKey {
-                        FRLog.v("Resident key is required; creating client-side discoverable credential source", subModule: WebAuthn.module)
-                        userHandle = userEntity.id
-                    }
+//                    //  Only store userHandle within PublicKeyCredentialSource when requireResidentKey is true
+//                    //  the client-side discoverable Public Key Credential Source should adhere requireResidentKey
+//                    var userHandle: [UInt8]? = nil
+//                    if requireResidentKey {
+//                        FRLog.v("Resident key is required; creating client-side discoverable credential source", subModule: WebAuthn.module)
+//                        userHandle = userEntity.id
+//                    }
+                    var userHandle = userEntity.id
                     let credSource = PublicKeyCredentialSource(id: credentialId, rpId: rpEntity.id ?? "", userHandle: userHandle, signCount: 0, alg: keySupport.selectedAlg.rawValue, otherUI: keyName)
                                         
                     guard let publicKeyCOSE = keySupport.createKeyPair(label: credSource.keyLabel) else {

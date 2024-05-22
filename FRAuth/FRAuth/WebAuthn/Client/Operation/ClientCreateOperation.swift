@@ -221,13 +221,13 @@ class ClientCreateOperation: AuthenticatorMakeCredentialSessionDelegate {
                 }
             }
 
-            if selection.requireResidentKey
-                && !session.canStoreResidentKey() {
-                let logMessage = "<CreateOperation> This authenticator can't store resident-key"
-                WAKLogger.debug(logMessage)
-                self.stop(by: FRWAKError.unsupported(platformError: nil, message: logMessage))
-                return
-            }
+//            if selection.requireResidentKey
+//                && !session.canStoreResidentKey() {
+//                let logMessage = "<CreateOperation> This authenticator can't store resident-key"
+//                WAKLogger.debug(logMessage)
+//                self.stop(by: FRWAKError.unsupported(platformError: nil, message: logMessage))
+//                return
+//            }
 
             if selection.userVerification == .required
                 && !session.canPerformUserVerification() {
