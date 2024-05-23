@@ -1,3 +1,8 @@
+## [4.4.2]
+
+#### Fixed
+- Updated Facebook SDK version to 7.0.0 [SDKS-3146]
+
 ## [4.4.1]
 #### Added
 - Added privacy manifest files to the SDK's modules [SDKS-3086]
