@@ -10,6 +10,7 @@
 
 
 import Foundation
+import FRCore
 
 @objc public class FRURLProtocol: URLProtocol {
     
@@ -19,6 +20,8 @@ import Foundation
     @objc public static var tokenManagementPolicy: TokenManagementPolicy?
     /// AuthorizationPolicy for URLProtocol
     @objc public static var authorizationPolicy: AuthorizationPolicy?
+    
+    @objc public static var frSecurityConfiguration: FRSecurityConfiguration?
     
     //  MARK: - Private Property
     
@@ -386,24 +389,55 @@ extension FRURLProtocol: URLSessionDataDelegate {
     }
 
     
-    /// URLSessionDataDelegate method for Authentication Challenge
+    /// URLSessionDelegate method for Authentication Challenge
     ///
     /// - Parameters:
     ///   - session: URLSession
     ///   - challenge: URLAuthenticationChallenge
     ///   - completionHandler: Completion callback
     public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let protectionSpace = challenge.protectionSpace
-        let sender = challenge.sender
+        if let frSecurityConfiguration = FRURLProtocol.frSecurityConfiguration {
+            frSecurityConfiguration.validateSessionAuthChallenge(session: session, challenge: challenge, completionHandler: completionHandler)
+        } else {
+            let protectionSpace = challenge.protectionSpace
+            let sender = challenge.sender
 
-        if protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-            if let serverTrust = protectionSpace.serverTrust {
-                let credential = URLCredential(trust: serverTrust)
-                sender?.use(credential, for: challenge)
-                completionHandler(.useCredential, credential)
-                return
+            if protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+                if let serverTrust = protectionSpace.serverTrust {
+                    let credential = URLCredential(trust: serverTrust)
+                    sender?.use(credential, for: challenge)
+                    completionHandler(.useCredential, credential)
+                    return
+                }
             }
         }
+        
+    }
+    
+    /// URLSessionTaskDelegate method for Authentication Challenge
+    ///
+    /// - Parameters:
+    ///   - session: URLSession
+    ///   - task: URLSessionTask
+    ///   - challenge: URLAuthenticationChallenge
+    ///   - completionHandler: Completion callback
+    public  func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        if let frSecurityConfiguration = FRURLProtocol.frSecurityConfiguration {
+            frSecurityConfiguration.validateTaskAuthChallenge(session: session, task: task, challenge: challenge, completionHandler: completionHandler)
+        } else {
+            let protectionSpace = challenge.protectionSpace
+            let sender = challenge.sender
+
+            if protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+                if let serverTrust = protectionSpace.serverTrust {
+                    let credential = URLCredential(trust: serverTrust)
+                    sender?.use(credential, for: challenge)
+                    completionHandler(.useCredential, credential)
+                    return
+                }
+            }
+        }
+        
     }
 
     
