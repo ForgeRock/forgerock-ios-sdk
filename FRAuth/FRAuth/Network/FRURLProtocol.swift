@@ -1,8 +1,8 @@
-// 
+//
 //  FRURLProtocol2.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,7 +12,7 @@
 import Foundation
 import FRCore
 
-@objc public class FRURLProtocol: URLProtocol {
+@objc open class FRURLProtocol: URLProtocol {
     
     //  MARK: - Public Property
     
@@ -134,7 +134,7 @@ import FRCore
             self.sessionTask?.resume()
             return
         }
-
+        
         FRURLProtocol.setProperty(true, forKey: Constants.FRURLProtocolHandled, in: mutableRequest)
         session?.dataTask(with: mutableRequest as URLRequest, completionHandler: { (data, response, error) in
             if let returnData = data {
@@ -201,7 +201,7 @@ import FRCore
 
 
 extension FRURLProtocol: URLSessionDataDelegate {
-
+    
     /// URLSessionDataDelegate method for receiving data
     ///
     /// - Parameters:
@@ -217,7 +217,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
             self.responseData = data
         }
     }
-
+    
     
     /// URLSessionDataDelegate method for receiving response
     ///
@@ -232,7 +232,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         completionHandler(.allow)
     }
     
-
+    
     /// URLSessionDataDelegate method to notify completion of the request
     ///
     /// In this delegation method, FRURLProtocol will validate the result of the request with given ValidatedURLs, RefreshTokenPolicy, and maximum retry attempt, and perform token refresh if necessary
@@ -320,7 +320,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
             }
         }
         
-
+        
         if shouldRetry {
             self.responseData = nil
             self.client?.urlProtocol(self, didLoad: Data())
@@ -337,7 +337,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
             self.completeRequest(error: error)
         }
     }
-
+    
     
     /// URLSessionDataDelegate method for HTTP Redirection
     ///
@@ -376,7 +376,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         client?.urlProtocol(self, wasRedirectedTo: request, redirectResponse: response)
         completionHandler(request)
     }
-
+    
     
     /// URLSessionDataDelegate method for invalidating the current request with an error
     ///
@@ -387,7 +387,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         guard let error = error else { return }
         client?.urlProtocol(self, didFailWithError: error)
     }
-
+    
     
     /// URLSessionDelegate method for Authentication Challenge
     ///
@@ -401,7 +401,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         } else {
             let protectionSpace = challenge.protectionSpace
             let sender = challenge.sender
-
+            
             if protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
                 if let serverTrust = protectionSpace.serverTrust {
                     let credential = URLCredential(trust: serverTrust)
@@ -427,7 +427,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         } else {
             let protectionSpace = challenge.protectionSpace
             let sender = challenge.sender
-
+            
             if protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
                 if let serverTrust = protectionSpace.serverTrust {
                     let credential = URLCredential(trust: serverTrust)
@@ -439,7 +439,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
         }
         
     }
-
+    
     
     /// URLSessionDataDelegate method
     ///
