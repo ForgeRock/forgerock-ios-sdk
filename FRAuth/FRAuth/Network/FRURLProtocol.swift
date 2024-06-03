@@ -409,6 +409,9 @@ extension FRURLProtocol: URLSessionDataDelegate {
                     completionHandler(.useCredential, credential)
                     return
                 }
+            } else {
+                completionHandler(.performDefaultHandling, nil)
+                return
             }
         }
         
@@ -435,6 +438,9 @@ extension FRURLProtocol: URLSessionDataDelegate {
                     completionHandler(.useCredential, credential)
                     return
                 }
+            } else {
+                completionHandler(.performDefaultHandling, nil)
+                return
             }
         }
         
