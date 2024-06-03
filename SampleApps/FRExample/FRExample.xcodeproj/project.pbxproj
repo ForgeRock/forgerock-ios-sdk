@@ -3,10 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		954474332BFF065C001A5D2B /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 954474322BFF065C001A5D2B /* AppTrackingTransparency.framework */; };
+		954474352BFF0683001A5D2B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 954474342BFF0683001A5D2B /* AdSupport.framework */; };
+		95AAB1762C06677300E6514F /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = 95AAB1752C06677300E6514F /* FacebookAEM */; };
+		95AAB1782C06677300E6514F /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 95AAB1772C06677300E6514F /* FacebookCore */; };
+		95AAB17A2C06677300E6514F /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 95AAB1792C06677300E6514F /* FacebookLogin */; };
 		A52B848A2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A52B848B2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A52761332B60209100F8BDF7 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -253,6 +258,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		954474322BFF065C001A5D2B /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		954474342BFF0683001A5D2B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PingProtect.xcodeproj; path = ../../PingProtect/PingProtect.xcodeproj; sourceTree = "<group>"; };
 		A52B84892B339571001FBA2C /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
@@ -303,10 +310,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954474332BFF065C001A5D2B /* AppTrackingTransparency.framework in Frameworks */,
 				A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */,
 				D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */,
+				954474352BFF0683001A5D2B /* AdSupport.framework in Frameworks */,
+				95AAB1782C06677300E6514F /* FacebookCore in Frameworks */,
 				EC2FF36228B8DB780095EDD1 /* FRGoogleSignIn.framework in Frameworks */,
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
+				95AAB1762C06677300E6514F /* FacebookAEM in Frameworks */,
+				95AAB17A2C06677300E6514F /* FacebookLogin in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
 				D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */,
@@ -388,6 +400,8 @@
 		D5554F6F235A6F78009FC810 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				954474342BFF0683001A5D2B /* AdSupport.framework */,
+				954474322BFF065C001A5D2B /* AppTrackingTransparency.framework */,
 				D530424326321BF00079EB3B /* FRCore.framework */,
 				D530423A26321BE90079EB3B /* FRCore.framework */,
 				D5C050EB245A415E00E5A38C /* FRCore.framework */,
@@ -514,6 +528,11 @@
 				D59FAEBF23441B7E005D34DA /* PBXTargetDependency */,
 			);
 			name = FRExample;
+			packageProductDependencies = (
+				95AAB1752C06677300E6514F /* FacebookAEM */,
+				95AAB1772C06677300E6514F /* FacebookCore */,
+				95AAB1792C06677300E6514F /* FacebookLogin */,
+			);
 			productName = FRExample;
 			productReference = D554632C22A6EF950096C7A4 /* FRExample.app */;
 			productType = "com.apple.product-type.application";
@@ -563,6 +582,9 @@
 				Base,
 			);
 			mainGroup = D554632322A6EF950096C7A4;
+			packageReferences = (
+				95AAB1742C06674700E6514F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+			);
 			productRefGroup = D554632D22A6EF950096C7A4 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -988,7 +1010,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FRExample",
@@ -1000,7 +1022,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 4.4.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.social;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1015,7 +1037,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FRExample",
@@ -1027,7 +1049,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 4.4.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.social;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1066,6 +1088,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		95AAB1742C06674700E6514F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 17.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		95AAB1752C06677300E6514F /* FacebookAEM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95AAB1742C06674700E6514F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookAEM;
+		};
+		95AAB1772C06677300E6514F /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95AAB1742C06674700E6514F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		95AAB1792C06677300E6514F /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95AAB1742C06674700E6514F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D554632422A6EF950096C7A4 /* Project object */;
 }

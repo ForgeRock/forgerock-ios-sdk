@@ -35,7 +35,7 @@ class WebAuthnCallbackTableViewCell: UITableViewCell, FRUICallbackTableViewCell 
         if let webAuthnRegistration = callback as? WebAuthnRegistrationCallback {
             self.messageLabel?.text = "WebAuthn Registration Process"
             webAuthnRegistration.delegate = self
-            webAuthnRegistration.register(node: node, onSuccess: { (attestation) in
+            webAuthnRegistration.register(node: node, deviceName: "Stoyan's iPhone", onSuccess: { (attestation) in
                 DispatchQueue.main.async {
                     self.delegate?.submitNode()
                 }

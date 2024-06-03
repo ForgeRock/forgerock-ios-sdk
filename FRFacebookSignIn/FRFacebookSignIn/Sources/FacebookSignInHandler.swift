@@ -54,8 +54,42 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     ///   - completion: Completion callback to notify the result
     public func signIn(idpClient: IdPClient, completion: @escaping SocialLoginCompletionCallback) {
         
+//        Settings.shared.isAdvertiserTrackingEnabled = true
+//        
         Log.v("Provided scope (\(idpClient.scopes ?? [])) will be added to authorization request for Facebook", module: module)
-        //  Perform login using Facebook LoginManager
+        
+//        // LIMITED LOGIN !!!
+//        guard let configuration = LoginConfiguration(
+//            permissions: idpClient.scopes ?? [],
+//            tracking: .limited,
+//            nonce: "123"
+//        )
+//        else {
+//            return
+//        }
+//        
+//        self.manager.logIn(configuration: configuration) { result in
+//            switch result {
+//            case .success:
+//                let tokenString = AccessToken.current?.tokenString
+//                let idTokenString = AuthenticationToken.current?.tokenString
+//                Log.i("ACCESS_TOKEN: \(String(describing: tokenString))", module: self.module)
+//                Log.i("ID_TOKEN: \(String(describing: idTokenString))", module: self.module)
+//                completion(tokenString, self.tokenType, nil)
+//                return
+//            case .cancelled:
+//                Log.e("Sign-in with Facebook SDK is cancelled by user", module: self.module)
+//                completion(nil, nil, SocialLoginError.cancelled)
+//                return
+//            case .failed(let error):
+//                Log.e("An error ocurred during the authentication: \(error)", module: self.module)
+//                completion(nil, nil, error)
+//                return
+//            }
+//        }
+        
+        
+        // CLASSIC LOGIN !!! (CURRENT)
         self.manager.logIn(permissions: idpClient.scopes ?? [], from: self.presentingViewController) { (result, error) in
             
             //  Facebook SDK does not return an error when the operation is cancelled by user; return a specific error for cancellation
@@ -67,6 +101,7 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
             if let error = error {
                 Log.e("An error ocurred during the authentication: \(error.localizedDescription)", module: self.module)
             }
+            Log.i("TOKEN: \(String(describing: result?.token?.tokenString))")
             completion(result?.token?.tokenString, self.tokenType, error)
         }
     }
@@ -99,4 +134,6 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     public static func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+    
+
 }

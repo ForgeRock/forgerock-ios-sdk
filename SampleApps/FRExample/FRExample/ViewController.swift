@@ -16,6 +16,8 @@ import CoreLocation
 import QuartzCore
 import FRDeviceBinding
 import PingProtect
+import AppTrackingTransparency
+import AdSupport
 
 class ViewController: UIViewController, ErrorAlertShowing {
 
@@ -155,7 +157,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
             "Display Configurations",
             "Revoke Access Token",
             "List WebAuthn Credentials",
-            "List Device Binding Keys"
+            "List Device Binding Keys",
+            "Request ATT"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -719,6 +722,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
                                       message: "List all credentials by RpId", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = "RpId"
+            textField.text = "idc.petrov.ca"
         }
         
         alert.addAction(UIAlertAction(title: "List", style: .default, handler: { [weak alert] (_) in
@@ -741,6 +745,32 @@ class ViewController: UIViewController, ErrorAlertShowing {
         self.present(viewController, animated: true, completion: nil)
     }
     
+    func requestAtt() {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .authorized:
+                    // Tracking authorization dialog was shown
+                    // and we are authorized
+                    print("Authorized")
+                    
+                    // Now that we are authorized we can get the IDFA
+                    print(ASIdentifierManager.shared().advertisingIdentifier)
+                case .denied:
+                    // Tracking authorization dialog was
+                    // shown and permission is denied
+                    print("Denied")
+                case .notDetermined:
+                    // Tracking authorization dialog has not been shown
+                    print("Not Determined")
+                case .restricted:
+                    print("Restricted")
+                @unknown default:
+                    print("Unknown")
+                }
+            }
+        }
+    }
     
     func performJailbreakDetector() {
         let result = FRJailbreakDetector.shared.analyze()
@@ -948,6 +978,10 @@ class ViewController: UIViewController, ErrorAlertShowing {
             // List device binding user keys
             self.listUserKeys()
             break
+        case 22:
+            // List device binding user keys
+            self.requestAtt()
+            break
         default:
             break
         }
@@ -1073,9 +1107,8 @@ class WebAuthnCredentialsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
       if(editingStyle == .delete) {
-        FRWebAuthn.deleteCredential(with: self.credentialSource[indexPath.row])
+        try? FRWebAuthn.deleteCredential(publicKeyCredentialSource: self.credentialSource[indexPath.row], forceDelete: true)
         self.credentialSource = FRWebAuthn.loadAllCredentials(by: self.rpId)
         tableView.reloadData()
        }

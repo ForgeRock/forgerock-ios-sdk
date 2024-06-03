@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9544741E2BFD0DC2001A5D2B /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9544741D2BFD0DC2001A5D2B /* FacebookCore */; };
 		A50DEC7E2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC7D2BCEC8CB0094CD73 /* PrivacyInfo.xcprivacy */; };
 		D57F637C260137EA00BBA0B6 /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D57F6372260137E900BBA0B6 /* FRFacebookSignIn.framework */; };
 		D57F6383260137EA00BBA0B6 /* FRFacebookSignIn.h in Headers */ = {isa = PBXBuildFile; fileRef = D57F6375260137E900BBA0B6 /* FRFacebookSignIn.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D57F63A42601387E00BBA0B6 /* FacebookSignInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F63A32601387E00BBA0B6 /* FacebookSignInHandler.swift */; };
 		D58BC3AD2603104900254654 /* FacebookSignInHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BC3AC2603104900254654 /* FacebookSignInHandlerTests.swift */; };
-		ECCCB58D28BE63AE00534CBE /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = ECCCB58C28BE63AE00534CBE /* FacebookCore */; };
 		ECCCB58F28BE63AE00534CBE /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = ECCCB58E28BE63AE00534CBE /* FacebookLogin */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECCCB58F28BE63AE00534CBE /* FacebookLogin in Frameworks */,
-				ECCCB58D28BE63AE00534CBE /* FacebookCore in Frameworks */,
+				9544741E2BFD0DC2001A5D2B /* FacebookCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +80,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		957966132BF2E9AB00C7FC4A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D57F6368260137E900BBA0B6 = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +94,7 @@
 				D57F6374260137E900BBA0B6 /* FRFacebookSignIn */,
 				D57F637F260137EA00BBA0B6 /* FRFacebookSignInTests */,
 				D57F6373260137E900BBA0B6 /* Products */,
+				957966132BF2E9AB00C7FC4A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,8 +174,8 @@
 			);
 			name = FRFacebookSignIn;
 			packageProductDependencies = (
-				ECCCB58C28BE63AE00534CBE /* FacebookCore */,
 				ECCCB58E28BE63AE00534CBE /* FacebookLogin */,
+				9544741D2BFD0DC2001A5D2B /* FacebookCore */,
 			);
 			productName = FRFacebookSignIn;
 			productReference = D57F6372260137E900BBA0B6 /* FRFacebookSignIn.framework */;
@@ -567,14 +575,14 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 16.0.1;
+				kind = exactVersion;
+				version = 17.0.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		ECCCB58C28BE63AE00534CBE /* FacebookCore */ = {
+		9544741D2BFD0DC2001A5D2B /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ECCCB58B28BE63AE00534CBE /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookCore;
