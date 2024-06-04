@@ -1,5 +1,4 @@
 {
-  "originHash" : "4b224c9b3814ec281d0a9ebedbf13f7006658641db6a159b927b4e018e4bf76f",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -60,10 +59,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pingidentity/pingone-signals-sdk-ios",
       "state" : {
-        "revision" : "59fde21ecebaaf1b20046e79f55f05f4beb7a74d",
-        "version" : "5.2.7"
+        "revision" : "88951ad71c37853fb86cee0bf48cf447ded5b268",
+        "version" : "5.2.3"
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
