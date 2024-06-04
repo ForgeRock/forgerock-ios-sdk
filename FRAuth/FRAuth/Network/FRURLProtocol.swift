@@ -20,7 +20,7 @@ import FRCore
     @objc public static var tokenManagementPolicy: TokenManagementPolicy?
     /// AuthorizationPolicy for URLProtocol
     @objc public static var authorizationPolicy: AuthorizationPolicy?
-    
+    /// FRSecurityConfiguration for URLProtocol - Used for SSL Pinning
     @objc public static var frSecurityConfiguration: FRSecurityConfiguration?
     
     //  MARK: - Private Property
@@ -424,7 +424,7 @@ extension FRURLProtocol: URLSessionDataDelegate {
     ///   - task: URLSessionTask
     ///   - challenge: URLAuthenticationChallenge
     ///   - completionHandler: Completion callback
-    public  func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if let frSecurityConfiguration = FRURLProtocol.frSecurityConfiguration {
             frSecurityConfiguration.validateTaskAuthChallenge(session: session, task: task, challenge: challenge, completionHandler: completionHandler)
         } else {
