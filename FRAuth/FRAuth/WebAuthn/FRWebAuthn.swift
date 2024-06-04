@@ -49,7 +49,7 @@ public class FRWebAuthn: NSObject {
         return platformAuthenticator.deleteCredential(publicKeyCredentialSource: publicKeyCredentialSource)
     }
     
-    /// Delete the provide key from local storage and also remotely from Server. By default, if failed to delete from server, local storage
+    /// Delete the provide key from local storage and also remotely from Server if the key is discoverable. By default, if failed to delete from server, local storage
     /// will not be deleted, by providing ``forceDelete`` to true, it will also delete local keys if server call is failed.
     /// - Parameter publicKeyCredentialSource: ``PublicKeyCredentialSource`` to be deleted
     /// - Parameter forceDelete: Defaults to false, true will delete local keys even if the server key removal has failed
