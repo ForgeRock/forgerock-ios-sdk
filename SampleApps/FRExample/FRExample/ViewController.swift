@@ -34,7 +34,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
     var invoke401: Bool = false
     var urlSession: URLSession = URLSession.shared
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120, height: 120), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
-    
+    let useDiscoveryURL = false
+
     // MARK: - UIViewController Lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -200,14 +201,39 @@ class ViewController: UIViewController, ErrorAlertShowing {
         */
         
         // Start SDK
+      if !useDiscoveryURL {
+        // use the Config Plist file
         do {
-            try FRAuth.start()
-            self.displayLog("FRAuth SDK started using \(FRAuth.configPlistFileName).plist.")
+          try FRAuth.start()
+          self.displayLog("FRAuth SDK started using \(FRAuth.configPlistFileName).plist.")
         }
         catch {
-            self.displayLog(String(describing: error))
+          self.displayLog(String(describing: error))
         }
-        
+      } else {
+        // use the discovery URL
+        if #available(iOS 13.0, *) {
+          Task {
+            do {
+              let config =
+              ["forgerock_oauth_client_id":"c12743f9-08e8-4420-a624-71bbb08e9fe1",
+               "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+               "forgerock_oauth_scope" : "openid profile email address"]
+              let discoveryURL = "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration"
+              
+              let options = try await FROptions(config: config).discover(discoveryURL: discoveryURL)
+              
+              try FRAuth.start(options: options)
+              self.displayLog("FRAuth SDK started using \(discoveryURL) discovery URL")
+            }
+            catch {
+              self.displayLog(String(describing: error))
+            }
+          }
+        } else {
+          self.displayLog("Please run on iOS 13 and above")
+        }
+      }
     }
     
     
@@ -796,13 +822,17 @@ class ViewController: UIViewController, ErrorAlertShowing {
     
     
     func displayCurrentConfig() {
+      if !useDiscoveryURL {
         guard let path = Bundle.main.path(forResource: FRAuth.configPlistFileName, ofType: "plist"),
-            let config = NSDictionary(contentsOfFile: path) as? [String: Any]  else {
-                self.displayLog("No configuration found (config plist file name: \(FRAuth.configPlistFileName)")
-                return
+              let config = NSDictionary(contentsOfFile: path) as? [String: Any]  else {
+          self.displayLog("No configuration found (config plist file name: \(FRAuth.configPlistFileName)")
+          return
         }
-        
+
         self.displayLog("Current Configuration (\(FRAuth.configPlistFileName).plist): \(config)")
+      } else {
+        self.displayLog("Current Configuration from discovery URL: \(FRAuth.shared?.options?.optionsDictionary() ?? ["Error displaying configuration":""])")
+      }
     }
     
     

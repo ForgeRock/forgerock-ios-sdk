@@ -2,7 +2,7 @@
 //  FROptions.swift
 //  FRAuth
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -195,7 +195,29 @@ public class FROptions: NSObject, Codable {
     public func getEndSessionEndpoint() -> String {
         return self.endSessionEndpoint ?? "/oauth2/realms/\(self.realm)/connect/endSession"
     }
-    
+
+  /// Asynchronously discovers configuration options based on a provided discovery URL.
+  ///
+  /// - Parameter discoveryURL: The URL string from which to discover configuration options. This URL should point to a well-known configuration endpoint that returns the necessary configuration settings in a JSON format.
+  /// - Returns: An instance of `FROptions` populated with the configuration settings fetched from the discovery URL.
+  @available(iOS 13.0.0, *)
+  public func discover(discoveryURL: String) async throws -> FROptions {
+    guard let url = URL(string: discoveryURL) else {
+      throw OAuth2Error.other("Invalid discovery URL")
+    }
+    let data = try await URLSession.shared.data(from: url)
+    let config = try JSONDecoder().decode(OpenIdConfiguration.self, from: data.0)
+
+    self.url = config.issuer
+    self.authorizeEndpoint = config.authorizationEndpoint
+    self.tokenEndpoint = config.tokenEndpoint
+    self.userinfoEndpoint = config.userinfoEndpoint
+    self.endSessionEndpoint = config.endSessionEndpoint
+    self.revokeEndpoint = config.revocationEndpoint
+
+    return self
+  }
+
     // - MARK: Private
     
     /// Equatable comparison method. Comparing the realm, cookie and oauthClientId values
@@ -219,3 +241,23 @@ extension Encodable {
         return dictionary
     }
 }
+
+private struct OpenIdConfiguration: Codable {
+    public let issuer: String
+    public let authorizationEndpoint: String
+    public let tokenEndpoint: String
+    public let userinfoEndpoint: String
+    public let endSessionEndpoint: String
+    public let revocationEndpoint: String
+
+
+    private enum CodingKeys: String, CodingKey {
+        case issuer = "issuer"
+        case authorizationEndpoint = "authorization_endpoint"
+        case tokenEndpoint = "token_endpoint"
+        case userinfoEndpoint = "userinfo_endpoint"
+        case endSessionEndpoint = "end_session_endpoint"
+        case revocationEndpoint = "revocation_endpoint"
+    }
+}
+

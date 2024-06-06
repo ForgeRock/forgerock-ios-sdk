@@ -554,4 +554,33 @@ class FRAuthTests: FRAuthBaseTest {
         XCTAssertNil(request?.value(forHTTPHeaderField:"Accept"), "Request should not contain Accept header")
         
     }
+
+
+  @available(iOS 13.0.0, *)
+  func testFRStartWithDiscoveryURL() async throws {
+    do {
+      FRAuthTests.useMockServer = false
+
+      let config =
+      ["forgerock_oauth_client_id":"c12743f9-08e8-4420-a624-71bbb08e9fe1",
+       "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+       "forgerock_oauth_scope" : "openid profile email address"]
+      let discoveryURL = "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration"
+
+      let options = try await FROptions(config: config).discover(discoveryURL: discoveryURL)
+
+      try FRAuth.start(options: options)
+    }  catch {
+      XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+    }
+
+    guard let frAuth = FRAuth.shared else {
+      XCTFail("FRAuth shared instance is returned nil")
+      return
+    }
+
+    XCTAssertNotNil(frAuth.keychainManager)
+    XCTAssertNotNil(frAuth.oAuth2Client)
+    XCTAssertNotNil(frAuth.tokenManager)
+  }
 }
