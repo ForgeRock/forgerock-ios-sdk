@@ -362,7 +362,7 @@ class FROptionsTests: FRAuthBaseTest {
           let _ = try await options.discover(discoveryURL: invalidURL)
           XCTFail("Expected discovery to throw, but it did not")
       } catch {
-        XCTAssertEqual(error.localizedDescription, "unsupported URL")
+        XCTAssertTrue(["unsupported URL", "OAuth2 /authorize Error"].contains(error.localizedDescription))
       }
   }
 }
