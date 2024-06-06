@@ -175,6 +175,20 @@ class ViewController: UIViewController, ErrorAlertShowing {
         config.protocolClasses = [FRURLProtocol.self]
         self.urlSession = URLSession(configuration: config)
         
+        // Configure FRSecurityConfiguration to set SSL Pinning on the FRURLProtocol
+        // This needs to be set up if using Authroization or Token Policies with FRURLProtocol
+        // and want to force SSL Pinning on those endpoints.
+        // Make sure to add the Key Hashes of the certificates that correspont to the URLs 
+        // set on the `FRURLProtocol.tokenManagementPolicy` & `FRURLProtocol.authorizationPolicy`
+        
+        var sslPinningKeyHashes: [String] = []
+        //sslPinningKeyHashes = ["Key1", "Key2"] --> Add Key hashes and uncomment to enable
+        
+        if(!sslPinningKeyHashes.isEmpty) {
+            let frSecurityConfiguration = FRSecurityConfiguration(hashes: sslPinningKeyHashes)
+            FRURLProtocol.frSecurityConfiguration = frSecurityConfiguration
+        }
+        
         //  - MARK: FRUI Customize Cell example
         // Comment out below code to demonstrate FRUI customization
 //        CallbackTableViewCellFactory.shared.registerCallbackTableViewCell(callbackType: "NameCallback", cellClass: CustomNameCallbackCell.self, nibName: "CustomNameCallbackCell")
