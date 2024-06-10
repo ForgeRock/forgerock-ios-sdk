@@ -232,7 +232,9 @@ class ViewController: UIViewController, ErrorAlertShowing {
               let config =
               ["forgerock_oauth_client_id":"c12743f9-08e8-4420-a624-71bbb08e9fe1",
                "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
-               "forgerock_oauth_scope" : "openid profile email address"]
+               "forgerock_oauth_scope" : "openid profile email address revoke",
+               "forgerock_ssl_pinning_public_key_hashes":["nz2Yw6N2Pv7ctMxG+lSMTQUy0DsBDF6+NHHkvmg4G6s="]]
+
               let discoveryURL = "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration"
               
               let options = try await FROptions(config: config).discover(discoveryURL: discoveryURL)

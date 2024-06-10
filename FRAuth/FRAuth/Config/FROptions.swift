@@ -202,13 +202,13 @@ public class FROptions: NSObject, Codable {
   /// - Returns: An instance of `FROptions` populated with the configuration settings fetched from the discovery URL.
   @available(iOS 13.0.0, *)
   public func discover(discoveryURL: String) async throws -> FROptions {
-    guard let url = URL(string: discoveryURL) else {
+    guard let discoveryURL = URL(string: discoveryURL) else {
       throw OAuth2Error.other("Invalid discovery URL")
     }
-    let data = try await URLSession.shared.data(from: url)
+    let data = try await URLSession.shared.data(from: discoveryURL)
     let config = try JSONDecoder().decode(OpenIdConfiguration.self, from: data.0)
 
-    self.url = config.issuer
+    self.url = self.url.isEmpty ? config.issuer : self.url
     self.authorizeEndpoint = config.authorizationEndpoint
     self.tokenEndpoint = config.tokenEndpoint
     self.userinfoEndpoint = config.userinfoEndpoint
