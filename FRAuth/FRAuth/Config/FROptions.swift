@@ -13,7 +13,7 @@ import Foundation
 /// FROptions represents a configuration object for the SDK. It can be used for passing configuration options in the FRAuth.start() method.
 ///
 @objc
-public class FROptions: NSObject, Codable {
+open class FROptions: NSObject, Codable {
     /// String constant for FROptions storage key
     internal static let frOptionsStorageKey: String = "FROptions"
     
@@ -201,14 +201,17 @@ public class FROptions: NSObject, Codable {
   /// - Parameter discoveryURL: The URL string from which to discover configuration options. This URL should point to a well-known configuration endpoint that returns the necessary configuration settings in a JSON format.
   /// - Returns: An instance of `FROptions` populated with the configuration settings fetched from the discovery URL.
   @available(iOS 13.0.0, *)
-  public func discover(discoveryURL: String) async throws -> FROptions {
+  open func discover(discoveryURL: String) async throws -> FROptions {
     guard let discoveryURL = URL(string: discoveryURL) else {
       throw OAuth2Error.other("Invalid discovery URL")
     }
     let data = try await URLSession.shared.data(from: discoveryURL)
     let config = try JSONDecoder().decode(OpenIdConfiguration.self, from: data.0)
 
-    self.url = self.url.isEmpty ? config.issuer : self.url
+    guard let baseUrl = self.url.isEmpty ? config.issuer : self.url else {
+      throw OAuth2Error.other("Missing base URL")
+    }
+    self.url = baseUrl
     self.authorizeEndpoint = config.authorizationEndpoint
     self.tokenEndpoint = config.tokenEndpoint
     self.userinfoEndpoint = config.userinfoEndpoint
@@ -243,12 +246,12 @@ extension Encodable {
 }
 
 private struct OpenIdConfiguration: Codable {
-    public let issuer: String
-    public let authorizationEndpoint: String
-    public let tokenEndpoint: String
-    public let userinfoEndpoint: String
-    public let endSessionEndpoint: String
-    public let revocationEndpoint: String
+    public let issuer: String?
+    public let authorizationEndpoint: String?
+    public let tokenEndpoint: String?
+    public let userinfoEndpoint: String?
+    public let endSessionEndpoint: String?
+    public let revocationEndpoint: String?
 
 
     private enum CodingKeys: String, CodingKey {

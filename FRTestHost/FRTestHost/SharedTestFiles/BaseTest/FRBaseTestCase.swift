@@ -164,5 +164,6 @@ public enum FRTestURL {
     static let anythingURL = baseURL + "/anything"
     static let getURL = baseURL + "/get"
     static let status401URL = baseURL + "/status/401"
+    static let oidcConfigUrl = "https://gitlab.com"
 }
 

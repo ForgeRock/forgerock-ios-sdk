@@ -310,25 +310,24 @@ class FROptionsTests: FRAuthBaseTest {
 
   @available(iOS 13.0.0, *)
   func testDiscoverWithValidURL() async throws {
-    FRAuthBaseTest.useMockServer = false
+
     var options = FROptions(config: [:])
-      let validURL = "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration"
+    let validURL = FRTestURL.oidcConfigUrl + "/.well-known/openid-configuration"
       // Mock network responses as needed
 
     options = try await options.discover(discoveryURL: validURL)
-    XCTAssertEqual(options.url, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as")
-    XCTAssertEqual(options.authorizeEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/authorize")
-    XCTAssertEqual(options.tokenEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/token")
-    XCTAssertEqual(options.userinfoEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/userinfo")
-    XCTAssertEqual(options.endSessionEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/signoff")
-    XCTAssertEqual(options.revokeEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/revoke")
+    XCTAssertEqual(options.url, FRTestURL.oidcConfigUrl)
+    XCTAssertEqual(options.authorizeEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/authorize")
+    XCTAssertEqual(options.tokenEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/token")
+    XCTAssertEqual(options.userinfoEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/userinfo")
+    XCTAssertEqual(options.revokeEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/revoke")
   }
 
   @available(iOS 13.0.0, *)
-  func testDiscoverWithValidURLandInirtialOptions() async throws {
+  func testDiscoverWithValidURLandInitialOptions() async throws {
     FRAuthBaseTest.useMockServer = false
     let config =
-    ["forgerock_oauth_client_id":"c12743f9-08e8-4420-a624-71bbb08e9fe1",
+    ["forgerock_oauth_client_id":"test_client_id",
      "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
      "forgerock_oauth_scope" : "openid profile email address",
      "forgerock_authorize_endpoint": "test",
@@ -337,18 +336,17 @@ class FROptionsTests: FRAuthBaseTest {
      "forgerock_userinfo_endpoint": "test",
      "forgerock_endsession_endpoint": "test"]
     var options = FROptions(config: config)
-      let validURL = "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration"
+      let validURL = FRTestURL.oidcConfigUrl + "/.well-known/openid-configuration"
 
     options = try await options.discover(discoveryURL: validURL)
-    XCTAssertEqual(options.oauthClientId, "c12743f9-08e8-4420-a624-71bbb08e9fe1")
+    XCTAssertEqual(options.oauthClientId, "test_client_id")
     XCTAssertEqual(options.oauthRedirectUri, "org.forgerock.demo://oauth2redirect")
     XCTAssertEqual(options.oauthScope, "openid profile email address")
-    XCTAssertEqual(options.url, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as")
-    XCTAssertEqual(options.authorizeEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/authorize")
-    XCTAssertEqual(options.tokenEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/token")
-    XCTAssertEqual(options.userinfoEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/userinfo")
-    XCTAssertEqual(options.endSessionEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/signoff")
-    XCTAssertEqual(options.revokeEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/revoke")
+    XCTAssertEqual(options.url, FRTestURL.oidcConfigUrl)
+    XCTAssertEqual(options.authorizeEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/authorize")
+    XCTAssertEqual(options.tokenEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/token")
+    XCTAssertEqual(options.userinfoEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/userinfo")
+    XCTAssertEqual(options.revokeEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/revoke")
   }
 
 
