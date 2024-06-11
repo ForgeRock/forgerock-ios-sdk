@@ -34,7 +34,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
     var invoke401: Bool = false
     var urlSession: URLSession = URLSession.shared
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120, height: 120), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
-    let useDiscoveryURL = true
+    let useDiscoveryURL = false
 
     // MARK: - UIViewController Lifecycle
     
