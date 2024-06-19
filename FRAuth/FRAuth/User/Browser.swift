@@ -2,7 +2,7 @@
 //  Browser.swift
 //  FRAuth
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -49,7 +49,9 @@ import SafariServices
     var currentSession: Any?
     /// Completion callback for authentication
     var completionCallback: UserCallback?
-    
+    /// Browser mode (either login or logout)
+    var browserMode: BrowserMode = .login
+
     
     //  MARK: - Init / Lifecycle
     
@@ -80,10 +82,11 @@ import SafariServices
     /// - Parameter completion: Completion callback that returns FRUser object on success, or error on failure
     @objc
     public func login(completion: @escaping UserCallback) {
-        
+        browserMode = .login
         //  Makes sure if the user is already authenticated or not
         if let _ = FRUser.currentUser?.token {
             completion(nil, AuthError.userAlreadyAuthenticated(true))
+            self.cleanUp()
             return
         }
         
@@ -158,7 +161,94 @@ import SafariServices
             completion(nil, NetworkError.invalidRequest("failed to generate /authorize request for external user agent"))
         }
     }
-    
+
+
+    //  MARK: - End Session
+
+    /// Performs external user-agent logout with /endSession request
+    /// - Parameter completion: Completion callback that returns an error on failure
+    @objc
+    public func logout(completion: @escaping UserCallback) {
+      browserMode = .logout
+
+      //perform browser logout only if signoutRredirectUri is provided
+      guard self.oAuth2Client.signoutRredirectUri != nil else {
+        completion(nil, nil)
+        self.cleanUp()
+        return
+      }
+
+      //  Or make sure that either same Browser instance or other Browser instance is currently running
+      if let isInProgress = Browser.currentBrowser?.isInProgress, isInProgress {
+        completion(nil, BrowserError.externalUserAgentAuthenticationInProgress)
+        return
+      }
+      else if self.isInProgress == true {
+        completion(nil, BrowserError.externalUserAgentAuthenticationInProgress)
+        return
+      }
+
+      // get the idToken
+      var idToken = ""
+      if let accessToken = try? self.keychainManager.getAccessToken(),
+         let newIdToken = accessToken.idToken {
+        idToken = newIdToken
+      }
+
+      // Completion callback
+      self.completionCallback = completion
+
+      // If /endSession request URL can be constructed based on given information, proceed
+      if let url = self.buildEndSessionRequestURL(idToken: idToken) {
+        if self.browserType == .nativeBrowserApp {
+          self.isInProgress = true
+          UIApplication.shared.open(url, options: [:]) { (result) in
+            self.isInProgress = result
+            if result {
+              FRLog.v("Opened native browser app for end session process")
+            }
+            else {
+              completion(nil, BrowserError.externalUserAgentFailure)
+              self.close()
+              self.cleanUp()
+            }
+          }
+        }
+        else if self.browserType == .sfViewController {
+          self.isInProgress = self.logoutWithSFViewController(url: url, completion: completion)
+          if self.isInProgress {
+            FRLog.v("Presented SFSafariViewController for end session process")
+          }
+          else {
+            completion(nil, BrowserError.externalUserAgentFailure)
+            self.close()
+            self.cleanUp()
+          }
+        }
+        else {
+          var prefersEphemeralWebBrowserSession = false
+          if #available(iOS 13.0, *) {
+            if self.browserType == .ephemeralAuthSession {
+              prefersEphemeralWebBrowserSession = true
+            }
+          }
+
+          self.isInProgress = self.logoutWithASWebSession(url: url, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, completion: completion)
+
+
+          if self.isInProgress {
+            FRLog.v("Opened Safari app for end session process")
+          }
+          else {
+            completion(nil, BrowserError.externalUserAgentFailure)
+          }
+        }
+      }
+      else {
+        completion(nil, NetworkError.invalidRequest("failed to generate /endSession request for external user agent"))
+      }
+    }
+
     
     /// Cancels currently performing authentication process, and closes all current browser session
     @objc
@@ -233,9 +323,13 @@ import SafariServices
             FRLog.i("authorization_code is found in URL; exchanging authorization_code for OAuth2 token")
             Browser.currentBrowser?.exchangeAuthCode(code: code)
             return true
-        }
-        else {
-            
+        } else if Browser.currentBrowser?.browserMode == .logout, let completionCallback = Browser.currentBrowser?.completionCallback {
+          completionCallback(nil, nil)
+          Browser.currentBrowser?.close()
+          Browser.currentBrowser?.cleanUp()
+          FRLog.i("Logout successfully completed")
+          return true
+        } else {
             if let completionCallback = Browser.currentBrowser?.completionCallback {
                 completionCallback(nil, OAuth2Error.convertOAuth2Error(urlValue: url.absoluteString))
             }
@@ -284,7 +378,38 @@ import SafariServices
         self.currentSession = asWebAuthSession
         return asWebAuthSession.start()
     }
-    
+
+
+    /// Performs logout through /endSession endpoint using ASWebAuthenticationSession
+    /// - Parameters:
+    ///   - url: URL of /endSession including all URL query parameters
+    ///   - prefersEphemeralWebBrowserSession: (iOS 13 +) Indicates whether the session should ask the browser for an ephemeral session.
+    ///   - completion: Completion callback to nofiy the result
+    /// - Returns: Boolean indicator whether or not launching external user-agent was successful
+    func logoutWithASWebSession(url: URL, prefersEphemeralWebBrowserSession: Bool, completion: @escaping UserCallback) -> Bool {
+      let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.signoutRredirectUri!.scheme) { (url, error) in
+
+        if let error = error {
+          FRLog.e("Failed to complete authorization using ASWebAuthenticationSession: \(error.localizedDescription)")
+          completion(nil, error)
+          self.close()
+          self.cleanUp()
+          return
+        }
+
+        completion(nil, nil)
+        self.close()
+        self.cleanUp()
+      }
+      //  Provide Context Provider with given viewController for iOS 13 or above
+      if #available(iOS 13.0, *) {
+        asWebAuthSession.presentationContextProvider = self
+        asWebAuthSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
+      }
+      self.currentSession = asWebAuthSession
+      return asWebAuthSession.start()
+    }
+
     
     /// Performs authentication through /authorize endpoint using SFAuthenticationsession
     /// - Parameters:
@@ -337,7 +462,29 @@ import SafariServices
             return false
         }
     }
-    
+
+
+    /// Performs logout through /endSession endpoint using SFSafariViewController
+    /// - Parameters:
+    ///   - url: URL of /endSession including all URL query parameters
+    ///   - completion: Completion callback to nofiy the result
+    /// - Returns: Boolean indicator whether or not launching external user-agent was successful
+    func logoutWithSFViewController(url: URL, completion: @escaping UserCallback) -> Bool {
+
+      var viewController: SFSafariViewController?
+      viewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
+      viewController?.delegate = self
+      self.currentSession = viewController
+      if let currentViewController = self.presentingViewController, let sfVC = viewController {
+        currentViewController.present(sfVC, animated: true)
+        return true
+      }
+      else {
+        FRLog.e("Fail to launch SFSafariViewController; missing presenting ViewController")
+        return false
+      }
+    }
+
     
     //  MARK: - OAuth2
     
@@ -352,7 +499,21 @@ import SafariServices
             return nil
         }
     }
-    
+
+
+    /// Builds /endSession URL based on given OAuth2Client and Id Token
+    /// - Parameters:
+    /// -   idToken: OIDC id_token
+    /// - Returns: URL object
+    func buildEndSessionRequestURL(idToken: String?) -> URL? {
+      let request = self.oAuth2Client.buildEndSessionRequestForExternalAgent(idToken: idToken)
+      if let urlRequest = request.build(), let url = urlRequest.url {
+        return url
+      } else {
+        return nil
+      }
+    }
+
     
     /// Exchanges authorization_code for OAuth2 access_token
     /// - Parameters:
@@ -495,4 +656,9 @@ public class BrowserBuilder: NSObject {
         Browser.currentBrowser = browser
         return browser
     }    
+}
+
+enum BrowserMode {
+  case login
+  case logout
 }

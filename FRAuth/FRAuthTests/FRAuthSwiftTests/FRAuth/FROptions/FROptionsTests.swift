@@ -89,8 +89,8 @@ class FROptionsTests: FRAuthBaseTest {
     
     func testDynamicConfigComplete() {
         do {
-            let options = FROptions(url: "https://openam-forgerock-sdks/", realm: "alpha", enableCookie: true, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios.frexample", oauthScope: "openid profile email address", keychainAccessGroup: "com.bitbar.*", sslPinningPublicKeyHashes: ["hash1", "hash2"])
-            
+            let options = FROptions(url: "https://openam-forgerock-sdks/", realm: "alpha", enableCookie: true, cookieName: "CookieName", timeout: "35", authenticateEndpoint: "json/authenticate", authorizeEndpoint: "json/authorize", tokenEndpoint: "json/accessToken", revokeEndpoint: "json/revoke", userinfoEndpoint: "json/userinfo", sessionEndpoint: "json/session", authServiceName: "LoginTest", registrationServiceName: "RegisterTest", oauthThreshold: "62", oauthClientId: "iOSClient", oauthRedirectUri: "frauth://com.forgerock.ios.frexample", oauthSignoutRedirectUri: "frauth://com.forgerock.ios.frexample.signout", oauthScope: "openid profile email address", keychainAccessGroup: "com.bitbar.*", sslPinningPublicKeyHashes: ["hash1", "hash2"])
+
             
             self.dictionaryMatches(options: options)
             
@@ -113,6 +113,7 @@ class FROptionsTests: FRAuthBaseTest {
             XCTAssertTrue(options.oauthThreshold == "62")
             XCTAssertTrue(options.oauthClientId == "iOSClient")
             XCTAssertTrue(options.oauthRedirectUri == "frauth://com.forgerock.ios.frexample")
+            XCTAssertTrue(options.oauthSignoutRedirectUri == "frauth://com.forgerock.ios.frexample.signout")
             XCTAssertTrue(options.oauthScope == "openid profile email address")
             XCTAssertTrue(options.keychainAccessGroup == "com.bitbar.*")
             XCTAssertTrue(options.sslPinningPublicKeyHashes?[0] == "hash1")
@@ -262,6 +263,7 @@ class FROptionsTests: FRAuthBaseTest {
         XCTAssertTrue(options.oauthThreshold == optionsDict?["forgerock_oauth_threshold"] as? String)
         XCTAssertTrue(options.oauthClientId == optionsDict?["forgerock_oauth_client_id"] as? String)
         XCTAssertTrue(options.oauthRedirectUri == optionsDict?["forgerock_oauth_redirect_uri"] as? String)
+        XCTAssertTrue(options.oauthSignoutRedirectUri == optionsDict?["forgerock_oauth_signout_redirect_uri"] as? String)
         XCTAssertTrue(options.oauthScope == optionsDict?["forgerock_oauth_scope"] as? String)
         XCTAssertTrue(options.keychainAccessGroup == optionsDict?["forgerock_keychain_access_group"] as? String)
         XCTAssertTrue(options.sslPinningPublicKeyHashes == optionsDict?["forgerock_ssl_pinning_public_key_hashes"] as? [String])
@@ -296,6 +298,7 @@ class FROptionsTests: FRAuthBaseTest {
         XCTAssertEqual(frAuth?.serverConfig.timeout , Double(updatedOptions.timeout))
         XCTAssertEqual(frAuth?.oAuth2Client?.scope , updatedOptions.oauthScope)
         XCTAssertEqual(frAuth?.oAuth2Client?.redirectUri.absoluteString , updatedOptions.oauthRedirectUri)
+        XCTAssertEqual(frAuth?.oAuth2Client?.signoutRredirectUri?.absoluteString , updatedOptions.oauthSignoutRedirectUri)
         XCTAssertEqual(frAuth?.oAuth2Client?.clientId , updatedOptions.oauthClientId)
         XCTAssertEqual(frAuth?.oAuth2Client?.threshold , Int(updatedOptions.oauthThreshold ?? "60"))
         XCTAssertNotNil(frAuth?.tokenManager)
@@ -329,6 +332,7 @@ class FROptionsTests: FRAuthBaseTest {
     let config =
     ["forgerock_oauth_client_id":"test_client_id",
      "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+     "forgerock_oauth_signout_redirect_uri": "org.forgerock.demo2://oauth2redirect",
      "forgerock_oauth_scope" : "openid profile email address",
      "forgerock_authorize_endpoint": "test",
      "forgerock_token_endpoint": "test",
@@ -341,6 +345,7 @@ class FROptionsTests: FRAuthBaseTest {
     options = try await options.discover(discoveryURL: validURL)
     XCTAssertEqual(options.oauthClientId, "test_client_id")
     XCTAssertEqual(options.oauthRedirectUri, "org.forgerock.demo://oauth2redirect")
+    XCTAssertEqual(options.oauthSignoutRedirectUri, "org.forgerock.demo2://oauth2redirect")
     XCTAssertEqual(options.oauthScope, "openid profile email address")
     XCTAssertEqual(options.url, FRTestURL.oidcConfigUrl)
     XCTAssertEqual(options.authorizeEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/authorize")

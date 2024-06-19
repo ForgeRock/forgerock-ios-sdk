@@ -2,7 +2,7 @@
 //  FRAuth.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -224,7 +224,9 @@ public final class FRAuth: NSObject {
         if let thresholdConfigStr = config[FROptions.CodingKeys.oauthThreshold.rawValue] as? String, let timeOutConfigInt = Int(thresholdConfigStr) {
             threshold = timeOutConfigInt
         }
-        
+
+        let signoutRedirectUri = URL(string: config[FROptions.CodingKeys.oauthSignoutRedirectUri.rawValue] as? String ?? "")
+
         let serverConfig = configBuilder.build()
         FRLog.v("ServerConfig created: \(serverConfig)")
         var oAuth2Client: OAuth2Client?
@@ -235,7 +237,7 @@ public final class FRAuth: NSObject {
         redirectUri.absoluteString.isValidUrl,
         let scope = config[FROptions.CodingKeys.oauthScope.rawValue] as? String
         {
-            oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, serverConfig: serverConfig, threshold: threshold)
+            oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, signoutRredirectUri: signoutRedirectUri, serverConfig: serverConfig, threshold: threshold)
             FRLog.v("OAuth2Client created: \(String(describing: oAuth2Client))")
         }
         else {

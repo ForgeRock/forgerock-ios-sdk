@@ -2,7 +2,7 @@
 //  OAuth2.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,7 +13,8 @@ struct OAuth2 {
     static let clientId = "client_id"
     static let scope = "scope"
     static let redirecUri = "redirect_uri"
-    
+    static let postLogoutRedirectUri = "post_logout_redirect_uri"
+
     static let csrf = "csrf"
     static let decision = "decision"
     

@@ -583,4 +583,52 @@ class FRAuthTests: FRAuthBaseTest {
     XCTAssertNotNil(frAuth.oAuth2Client)
     XCTAssertNotNil(frAuth.tokenManager)
   }
+
+
+  func testFRStartWithMissingOrInvalidSignoutRedirectURL() {
+
+      // Given
+      var config = self.readConfigFile(fileName: "FRAuthConfig")
+      config["forgerock_oauth_signout_redirect_uri"] = "invalid url"
+
+      var initError: Error?
+
+      // Then
+      do {
+          try FRAuth.initPrivate(config: config)
+      }
+      catch {
+          initError = error
+      }
+
+      // It should
+      guard let frAtuh = FRAuth.shared else {
+          XCTFail("FRAuth shared instance is returned nil")
+          return
+      }
+      XCTAssertNotNil(frAtuh.oAuth2Client)
+      XCTAssertNotNil(frAtuh.tokenManager)
+      XCTAssertNil(initError)
+
+      // Given
+      initError = nil
+      config.removeValue(forKey: "forgerock_oauth_signout_redirect_uri")
+
+      // Then
+      do {
+          try FRAuth.initPrivate(config: config)
+      }
+      catch {
+          initError = error
+      }
+
+      // It should
+      guard let frAtuhWithNoUri = FRAuth.shared else {
+          XCTFail("FRAuth shared instance is returned nil")
+          return
+      }
+      XCTAssertNotNil(frAtuhWithNoUri.oAuth2Client)
+      XCTAssertNotNil(frAtuhWithNoUri.tokenManager)
+      XCTAssertNil(initError)
+  }
 }

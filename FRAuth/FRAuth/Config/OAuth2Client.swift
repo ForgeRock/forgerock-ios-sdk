@@ -2,7 +2,7 @@
 //  OAuth2Client.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -23,6 +23,8 @@ public class OAuth2Client: NSObject, Codable {
     let scope: String
     /// OAuth2 redirect_uri for the client
     let redirectUri: URL
+    /// OAuth2 signout_redirect_uri for the client
+    let signoutRredirectUri: URL?
     /// ServerConfig which OAuth2 client will communicate to
     let serverConfig: ServerConfig
     /// Threshold to refresh access_token in advance
@@ -37,13 +39,15 @@ public class OAuth2Client: NSObject, Codable {
     ///   - clientId: client_id of the client
     ///   - scope: set of scope(s) separated by space to request for the client; requesting scope set must be registered in the OAuth2 client
     ///   - redirectUri: redirect_uri in URL object as registered in the client
+    ///   - signoutRredirectUri: optional signout_redirect_uri in URL object as registered in the client
     ///   - serverConfig: ServerConfig that OAuth2 Client will communicate to
     ///   - threshold: threshold in seconds to refresh access_token before it actually expires
     @objc
-    public init (clientId: String, scope: String, redirectUri: URL, serverConfig: ServerConfig, threshold: Int = 60) {
-        
+  public init (clientId: String, scope: String, redirectUri: URL, signoutRredirectUri: URL? = nil, serverConfig: ServerConfig, threshold: Int = 60) {
+
         self.clientId = clientId
         self.redirectUri = redirectUri
+        self.signoutRredirectUri = signoutRredirectUri
         self.scope = scope
         self.serverConfig = serverConfig
         self.threshold = threshold
@@ -458,4 +462,28 @@ public class OAuth2Client: NSObject, Codable {
         //  Call /token service to exchange auth code to OAuth token set
         return Request(url: self.serverConfig.tokenURL, method: .POST, headers: header, bodyParams: parameter, requestType: .urlEncoded, responseType: .json, timeoutInterval: self.serverConfig.timeout)
     }
+
+    /// Builds /endSession request for an external user-agent based on given OAuth2 client information
+    /// - Parameters:
+    ///   - idToken: OIDC id_token
+    /// - Returns: Request object
+    func buildEndSessionRequestForExternalAgent(idToken: String?) -> Request {
+      //  Construct parameter for the request
+      var parameter: [String: String] = [:]
+      parameter[OAuth2.postLogoutRedirectUri] = self.signoutRredirectUri!.absoluteString
+      if let idToken, !idToken.isEmpty {
+        parameter[OAuth2.idTokenHint] = idToken
+      }
+
+      //  AM 6.5.2 - 7.0.0
+      //
+      //  Endpoint: /oauth2/realms/endSession
+      //  API Version: resource=2.1,protocol=1.0
+
+      var header: [String: String] = [:]
+      header[OpenAM.acceptAPIVersion] = OpenAM.apiResource21 + "," + OpenAM.apiProtocol10
+
+      return Request(url: self.serverConfig.endSessionURL, method: .GET, headers: header, urlParams:parameter, requestType: .urlEncoded, responseType: .urlEncoded, timeoutInterval: self.serverConfig.timeout)
+    }
+
 }
