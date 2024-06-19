@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import RecaptchaEnterprise
 
 
 /**
@@ -28,6 +29,8 @@ public class ReCaptchaCallback: Callback {
     /// String value of ReCaptcha SiteKey
     @objc
     public var recaptchaSiteKey: String
+  
+    var recaptchaClient: RecaptchaClient?
     
     
     //  MARK: - Init
@@ -71,6 +74,18 @@ public class ReCaptchaCallback: Callback {
         self.type = callbackType
         self.response = json
     }
+  
+  public func execute() async throws {
+    do {
+      let client = try await Recaptcha.getClient(withSiteKey: recaptchaSiteKey)
+      self.recaptchaClient = client
+      let token = try await recaptchaClient?.execute(withAction: RecaptchaAction.login)
+      self.value = token
+    }
+    catch let error {
+      throw error
+    }
+  }
     
     
     //  MARK: - Build

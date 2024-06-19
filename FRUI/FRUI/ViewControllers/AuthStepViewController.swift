@@ -185,6 +185,29 @@ class AuthStepViewController: UIViewController {
                     }
                 }
                 
+              var captchaCallback: ReCaptchaCallback?
+                             for (index, callback) in self.authCallbacks.enumerated() {
+                                 //  DeviceProfileCallback handling
+                                 if let thisCallback = callback as? ReCaptchaCallback {
+                                     captchaCallback = thisCallback
+                                     if self.authCallbacks.count > 1 {
+                                         self.authCallbacks.remove(at: index)
+                                     }
+                                 }
+                             }
+
+                             if let captchaCallback = captchaCallback {
+                                 self.startLoading()
+                               if #available(iOS 13.0, *) {
+                                 Task {
+                                  try? await captchaCallback.execute()
+                                   self.stopLoading()
+                                   self.submitCurrentNode()
+                                 }
+                               } else {
+                                 // Fallback on earlier versions
+                               }
+                             }
                 
                 
                 var appIntegrity: FRAppIntegrityCallback?

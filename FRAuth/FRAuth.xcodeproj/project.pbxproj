@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		1B85DA132B85208C0023E953 /* TextInputCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B85DA122B85208C0023E953 /* TextInputCallbackTests.swift */; };
 		3A1B43D0284510B700EAFC9D /* AtomicDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43CF284510B700EAFC9D /* AtomicDictionary.swift */; };
 		3A1B43D3284524B900EAFC9D /* AtomicDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B43D2284524B900EAFC9D /* AtomicDictionaryTests.swift */; };
+		3A36FAA52C22514A006671FC /* RecaptchaEnterprise in Frameworks */ = {isa = PBXBuildFile; productRef = 3A36FAA42C22514A006671FC /* RecaptchaEnterprise */; };
 		3A3E785B2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E785A2AAF6BE8007962B7 /* FRAppIntegrityCallback.swift */; };
 		3A3E78632AAF764F007962B7 /* FRAppAttestDomainModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E78622AAF764F007962B7 /* FRAppAttestDomainModal.swift */; };
 		3A3E78652AAF9919007962B7 /* FRAppAttestServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E78642AAF9919007962B7 /* FRAppAttestServiceImpl.swift */; };
@@ -639,6 +640,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5C979C02409EA9600DA380A /* FRCore.framework in Frameworks */,
+				3A36FAA52C22514A006671FC /* RecaptchaEnterprise in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1574,6 +1576,7 @@
 			);
 			name = FRAuth;
 			packageProductDependencies = (
+				3A36FAA42C22514A006671FC /* RecaptchaEnterprise */,
 			);
 			productName = FRAuth;
 			productReference = D55462F822A6DF720096C7A4 /* FRAuth.framework */;
@@ -1628,6 +1631,7 @@
 			);
 			mainGroup = D55462EE22A6DF720096C7A4;
 			packageReferences = (
+				3A36FAA32C22514A006671FC /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */,
 			);
 			productRefGroup = D55462F922A6DF720096C7A4 /* Products */;
 			projectDirPath = "";
@@ -2296,6 +2300,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A36FAA32C22514A006671FC /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A36FAA42C22514A006671FC /* RecaptchaEnterprise */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A36FAA32C22514A006671FC /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */;
+			productName = RecaptchaEnterprise;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D55462EF22A6DF720096C7A4 /* Project object */;
 }
