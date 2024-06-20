@@ -263,7 +263,7 @@ class FROptionsTests: FRAuthBaseTest {
         XCTAssertTrue(options.oauthThreshold == optionsDict?["forgerock_oauth_threshold"] as? String)
         XCTAssertTrue(options.oauthClientId == optionsDict?["forgerock_oauth_client_id"] as? String)
         XCTAssertTrue(options.oauthRedirectUri == optionsDict?["forgerock_oauth_redirect_uri"] as? String)
-        XCTAssertTrue(options.oauthSignoutRedirectUri == optionsDict?["forgerock_oauth_signout_redirect_uri"] as? String)
+        XCTAssertTrue(options.oauthSignoutRedirectUri == optionsDict?["forgerock_oauth_sign_out_redirect_uri"] as? String)
         XCTAssertTrue(options.oauthScope == optionsDict?["forgerock_oauth_scope"] as? String)
         XCTAssertTrue(options.keychainAccessGroup == optionsDict?["forgerock_keychain_access_group"] as? String)
         XCTAssertTrue(options.sslPinningPublicKeyHashes == optionsDict?["forgerock_ssl_pinning_public_key_hashes"] as? [String])
@@ -332,7 +332,7 @@ class FROptionsTests: FRAuthBaseTest {
     let config =
     ["forgerock_oauth_client_id":"test_client_id",
      "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
-     "forgerock_oauth_signout_redirect_uri": "org.forgerock.demo2://oauth2redirect",
+     "forgerock_oauth_sign_out_redirect_uri": "org.forgerock.demo2://oauth2redirect",
      "forgerock_oauth_scope" : "openid profile email address",
      "forgerock_authorize_endpoint": "test",
      "forgerock_token_endpoint": "test",

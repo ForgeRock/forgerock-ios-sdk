@@ -589,7 +589,7 @@ class FRAuthTests: FRAuthBaseTest {
 
       // Given
       var config = self.readConfigFile(fileName: "FRAuthConfig")
-      config["forgerock_oauth_signout_redirect_uri"] = "invalid url"
+      config["forgerock_oauth_sign_out_redirect_uri"] = "invalid url"
 
       var initError: Error?
 
@@ -612,7 +612,7 @@ class FRAuthTests: FRAuthBaseTest {
 
       // Given
       initError = nil
-      config.removeValue(forKey: "forgerock_oauth_signout_redirect_uri")
+      config.removeValue(forKey: "forgerock_oauth_sign_out_redirect_uri")
 
       // Then
       do {

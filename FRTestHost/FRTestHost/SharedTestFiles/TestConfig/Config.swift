@@ -96,7 +96,7 @@ class Config: NSObject {
                         let enableCookie = config["forgerock_enable_cookie"] as? Bool ?? true
                         let cookieName = config["forgerock_cookie_name"] as? String ?? "iPlanetDirectoryPro"
 
-                        let signoutRedirectUri = URL(string: config["forgerock_oauth_signout_redirect_uri"] as? String ?? "")
+                        let signoutRedirectUri = URL(string: config["forgerock_oauth_sign_out_redirect_uri"] as? String ?? "")
 
                         let serverConfig = ServerConfigBuilder(url: url, realm: realm).set(timeout: timeout).set(enableCookie: enableCookie).set(cookieName: cookieName).build()
                         let oAuth2Client = OAuth2Client(clientId: oauthClientId, scope: scope, redirectUri: redirectUri, signoutRredirectUri: signoutRedirectUri, serverConfig: serverConfig, threshold: threshold)

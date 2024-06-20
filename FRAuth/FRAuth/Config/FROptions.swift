@@ -60,7 +60,7 @@ open class FROptions: NSObject, Codable {
         case oauthThreshold = "forgerock_oauth_threshold"
         case oauthClientId = "forgerock_oauth_client_id"
         case oauthRedirectUri = "forgerock_oauth_redirect_uri"
-        case oauthSignoutRedirectUri = "forgerock_oauth_signout_redirect_uri"
+        case oauthSignoutRedirectUri = "forgerock_oauth_sign_out_redirect_uri"
         case oauthScope = "forgerock_oauth_scope"
         case keychainAccessGroup = "forgerock_keychain_access_group"
         case sslPinningPublicKeyHashes = "forgerock_ssl_pinning_public_key_hashes"

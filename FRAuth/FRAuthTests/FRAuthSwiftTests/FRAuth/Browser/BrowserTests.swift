@@ -83,6 +83,7 @@ class BrowserTests: FRAuthBaseTest {
     }
 
 
+    @available(iOS 13, *)
     func test_03_browser_login_already_in_progress_from_another_instance() {
 
         //  Start SDK
@@ -95,7 +96,7 @@ class BrowserTests: FRAuthBaseTest {
         }
 
         //  Given that another Browser instance is constructed and running
-        let firstBrowser = FRUser.browser()?.build()
+        let firstBrowser = FRUser.browser()?.set(browserType: .ephemeralAuthSession).build()
         XCTAssertNotNil(Browser.currentBrowser)
         firstBrowser?.login(completion: { (user, error) in
         })
@@ -320,6 +321,7 @@ class BrowserTests: FRAuthBaseTest {
     }
 
 
+    @available(iOS 13, *)
     func test_08_login_auth_session_cancelled() {
 
         //  Start SDK
@@ -344,7 +346,7 @@ class BrowserTests: FRAuthBaseTest {
             return
         }
 
-        let browser = Browser(.authSession, oAuth2Client, keychainManager, vc)
+        let browser = Browser(.ephemeralAuthSession, oAuth2Client, keychainManager, vc)
         Browser.currentBrowser = browser
 
         let ex = self.expectation(description: "Browser Login")
@@ -515,7 +517,7 @@ class BrowserTests: FRAuthBaseTest {
 
       //  Givne
       let browser = BrowserBuilder(oAuth2Client, keychainManager).set(browserType: .authSession).build()
-    let authorizeURL = browser.buildEndSessionRequestURL(idToken: "idToken")
+      let authorizeURL = browser.buildEndSessionRequestURL(idToken: "idToken")
 
       //  Then
       XCTAssertNotNil(authorizeURL)

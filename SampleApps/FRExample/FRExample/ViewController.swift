@@ -233,7 +233,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
               let config =
               ["forgerock_oauth_client_id": "CLIENT_ID_PLACEHOLDER",
                "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
-               "forgerock_oauth_signout_redirect_uri": "org.forgerock.demo://oauth2redirect",
+               "forgerock_oauth_sign_out_redirect_uri": "org.forgerock.demo://oauth2redirect",
                "forgerock_oauth_scope": "openid profile email address revoke",
               /* "forgerock_ssl_pinning_public_key_hashes": ["SSL_PINNING_HASH_PLACEHOLDER"]*/]
 
