@@ -237,7 +237,7 @@ public final class FRAuth: NSObject {
         redirectUri.absoluteString.isValidUrl,
         let scope = config[FROptions.CodingKeys.oauthScope.rawValue] as? String
         {
-            oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, signoutRredirectUri: signoutRedirectUri, serverConfig: serverConfig, threshold: threshold)
+            oAuth2Client = OAuth2Client(clientId: clientId, scope: scope, redirectUri: redirectUri, signoutRedirectUri: signoutRedirectUri, serverConfig: serverConfig, threshold: threshold)
             FRLog.v("OAuth2Client created: \(String(describing: oAuth2Client))")
         }
         else {

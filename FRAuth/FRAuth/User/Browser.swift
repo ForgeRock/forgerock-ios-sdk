@@ -171,8 +171,8 @@ import SafariServices
     public func logout(completion: @escaping UserCallback) {
       browserMode = .logout
 
-      //perform browser logout only if signoutRredirectUri is provided
-      guard self.oAuth2Client.signoutRredirectUri != nil else {
+      //perform browser logout only if signoutRedirectUri is provided
+      guard self.oAuth2Client.signoutRedirectUri != nil else {
         completion(nil, nil)
         self.cleanUp()
         return
@@ -387,7 +387,7 @@ import SafariServices
     ///   - completion: Completion callback to nofiy the result
     /// - Returns: Boolean indicator whether or not launching external user-agent was successful
     func logoutWithASWebSession(url: URL, prefersEphemeralWebBrowserSession: Bool, completion: @escaping UserCallback) -> Bool {
-      let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.signoutRredirectUri!.scheme) { (url, error) in
+      let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.signoutRedirectUri?.scheme) { (url, error) in
 
         if let error = error {
           FRLog.e("Failed to complete authorization using ASWebAuthenticationSession: \(error.localizedDescription)")

@@ -527,7 +527,7 @@ class BrowserTests: FRAuthBaseTest {
       XCTAssertEqual(authorizeURL?.valueOf("id_token_hint"), "idToken")
       //  Validate OAuth2 client information
       XCTAssertNotNil(authorizeURL?.valueOf("post_logout_redirect_uri"))
-      XCTAssertEqual(authorizeURL?.valueOf("post_logout_redirect_uri"), oAuth2Client.signoutRredirectUri?.absoluteString)
+      XCTAssertEqual(authorizeURL?.valueOf("post_logout_redirect_uri"), oAuth2Client.signoutRedirectUri?.absoluteString)
 
   }
 }

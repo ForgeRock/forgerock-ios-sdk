@@ -99,7 +99,7 @@ class Config: NSObject {
                         let signoutRedirectUri = URL(string: config["forgerock_oauth_sign_out_redirect_uri"] as? String ?? "")
 
                         let serverConfig = ServerConfigBuilder(url: url, realm: realm).set(timeout: timeout).set(enableCookie: enableCookie).set(cookieName: cookieName).build()
-                        let oAuth2Client = OAuth2Client(clientId: oauthClientId, scope: scope, redirectUri: redirectUri, signoutRredirectUri: signoutRedirectUri, serverConfig: serverConfig, threshold: threshold)
+                        let oAuth2Client = OAuth2Client(clientId: oauthClientId, scope: scope, redirectUri: redirectUri, signoutRedirectUri: signoutRedirectUri, serverConfig: serverConfig, threshold: threshold)
                         self.serverConfig = serverConfig
                         self.oAuth2Client = oAuth2Client
                         

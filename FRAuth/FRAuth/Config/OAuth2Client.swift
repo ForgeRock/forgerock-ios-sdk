@@ -24,7 +24,7 @@ public class OAuth2Client: NSObject, Codable {
     /// OAuth2 redirect_uri for the client
     let redirectUri: URL
     /// OAuth2 signout_redirect_uri for the client
-    let signoutRredirectUri: URL?
+    let signoutRedirectUri: URL?
     /// ServerConfig which OAuth2 client will communicate to
     let serverConfig: ServerConfig
     /// Threshold to refresh access_token in advance
@@ -39,15 +39,15 @@ public class OAuth2Client: NSObject, Codable {
     ///   - clientId: client_id of the client
     ///   - scope: set of scope(s) separated by space to request for the client; requesting scope set must be registered in the OAuth2 client
     ///   - redirectUri: redirect_uri in URL object as registered in the client
-    ///   - signoutRredirectUri: optional signout_redirect_uri in URL object as registered in the client
+    ///   - signoutRedirectUri: optional signout_redirect_uri in URL object as registered in the client
     ///   - serverConfig: ServerConfig that OAuth2 Client will communicate to
     ///   - threshold: threshold in seconds to refresh access_token before it actually expires
     @objc
-  public init (clientId: String, scope: String, redirectUri: URL, signoutRredirectUri: URL? = nil, serverConfig: ServerConfig, threshold: Int = 60) {
+  public init (clientId: String, scope: String, redirectUri: URL, signoutRedirectUri: URL? = nil, serverConfig: ServerConfig, threshold: Int = 60) {
 
         self.clientId = clientId
         self.redirectUri = redirectUri
-        self.signoutRredirectUri = signoutRredirectUri
+        self.signoutRedirectUri = signoutRedirectUri
         self.scope = scope
         self.serverConfig = serverConfig
         self.threshold = threshold
@@ -470,7 +470,9 @@ public class OAuth2Client: NSObject, Codable {
     func buildEndSessionRequestForExternalAgent(idToken: String?) -> Request {
       //  Construct parameter for the request
       var parameter: [String: String] = [:]
-      parameter[OAuth2.postLogoutRedirectUri] = self.signoutRredirectUri!.absoluteString
+      if let signoutRedirectUri = self.signoutRedirectUri {
+        parameter[OAuth2.postLogoutRedirectUri] = signoutRedirectUri.absoluteString
+      }
       if let idToken, !idToken.isEmpty {
         parameter[OAuth2.idTokenHint] = idToken
       }

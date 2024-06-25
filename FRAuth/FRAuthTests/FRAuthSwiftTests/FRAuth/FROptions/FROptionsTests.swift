@@ -298,7 +298,7 @@ class FROptionsTests: FRAuthBaseTest {
         XCTAssertEqual(frAuth?.serverConfig.timeout , Double(updatedOptions.timeout))
         XCTAssertEqual(frAuth?.oAuth2Client?.scope , updatedOptions.oauthScope)
         XCTAssertEqual(frAuth?.oAuth2Client?.redirectUri.absoluteString , updatedOptions.oauthRedirectUri)
-        XCTAssertEqual(frAuth?.oAuth2Client?.signoutRredirectUri?.absoluteString , updatedOptions.oauthSignoutRedirectUri)
+        XCTAssertEqual(frAuth?.oAuth2Client?.signoutRedirectUri?.absoluteString , updatedOptions.oauthSignoutRedirectUri)
         XCTAssertEqual(frAuth?.oAuth2Client?.clientId , updatedOptions.oauthClientId)
         XCTAssertEqual(frAuth?.oAuth2Client?.threshold , Int(updatedOptions.oauthThreshold ?? "60"))
         XCTAssertNotNil(frAuth?.tokenManager)

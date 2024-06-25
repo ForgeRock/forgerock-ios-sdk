@@ -220,7 +220,7 @@ public class FRUser: NSObject, NSSecureCoding {
         Browser.currentBrowser = nil
     }
 
-    /// Logs-out currently authenticated user session. If `oauth2Clint.signoutRredirectUri` is not nil, will logout the user in the browser as well
+    /// Logs-out currently authenticated user session. If `oauth2Clint.signoutRedirectUri` is not nil, will logout the user in the browser as well
     ///
     /// - Parameters:
     ///   - presentingViewController: ViewController to present the logout broser view from
