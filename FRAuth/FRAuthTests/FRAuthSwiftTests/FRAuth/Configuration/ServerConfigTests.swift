@@ -2,7 +2,7 @@
 //  ServerConfigTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -127,4 +127,37 @@ class ServerConfigTests: FRAuthBaseTest {
         XCTAssertEqual(serverConfig.enableCookie, false)
         XCTAssertEqual(serverConfig.cookieName, "customCookieName")
     }
+
+  func test_07_custom_valid_url_path_server_config() {
+      // With
+      let builder = ServerConfigBuilder(url: URL(string: self.serverURL)!)
+
+      // authenticate path
+      var serverConfig = builder.set(authenticatePath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.authenticateURL, "http://example.com/am")
+
+      // token path
+      serverConfig = builder.set(tokenPath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.tokenURL, "http://example.com/am")
+
+      // authorize path
+      serverConfig = builder.set(authorizePath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.authorizeURL, "http://example.com/am")
+
+      // userinfo path
+      serverConfig = builder.set(userInfoPath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.userInfoURL, "http://example.com/am")
+
+      // token revoke path
+      serverConfig = builder.set(revokePath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.tokenRevokeURL, "http://example.com/am")
+
+      // session path
+      serverConfig = builder.set(sessionPath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.sessionURL, "http://example.com/am")
+
+      // endSession path
+      serverConfig = builder.set(endSessionPath: "http://example.com/am").build()
+      XCTAssertEqual(serverConfig.endSessionURL, "http://example.com/am")
+  }
 }

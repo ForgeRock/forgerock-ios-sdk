@@ -2,7 +2,7 @@
 //  FROptions.swift
 //  FRAuth
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -13,7 +13,7 @@ import Foundation
 /// FROptions represents a configuration object for the SDK. It can be used for passing configuration options in the FRAuth.start() method.
 ///
 @objc
-public class FROptions: NSObject, Codable {
+open class FROptions: NSObject, Codable {
     /// String constant for FROptions storage key
     internal static let frOptionsStorageKey: String = "FROptions"
     
@@ -37,6 +37,7 @@ public class FROptions: NSObject, Codable {
     public var oauthThreshold: String?
     public var oauthClientId: String?
     public var oauthRedirectUri: String?
+    public var oauthSignoutRedirectUri: String?
     public var oauthScope: String?
     public var keychainAccessGroup: String?
     public var sslPinningPublicKeyHashes: [String]?
@@ -59,6 +60,7 @@ public class FROptions: NSObject, Codable {
         case oauthThreshold = "forgerock_oauth_threshold"
         case oauthClientId = "forgerock_oauth_client_id"
         case oauthRedirectUri = "forgerock_oauth_redirect_uri"
+        case oauthSignoutRedirectUri = "forgerock_oauth_sign_out_redirect_uri"
         case oauthScope = "forgerock_oauth_scope"
         case keychainAccessGroup = "forgerock_keychain_access_group"
         case sslPinningPublicKeyHashes = "forgerock_ssl_pinning_public_key_hashes"
@@ -84,6 +86,7 @@ public class FROptions: NSObject, Codable {
     ///   - oauthThreshold: OAuth Client timeout threshold
     ///   - oauthClientId: OAuth Client name
     ///   - oauthRedirectUri: OAuth Client redirectURI
+    ///   - oauthSignoutRedirectUri: OAuth Client signout redirectURI
     ///   - oauthScope: OAuth Client scopes
     ///   - keychainAccessGroup: Keychain access group for shared keychain
     ///   - sslPinningPublicKeyHashes: SSL Pinning hashes
@@ -105,6 +108,7 @@ public class FROptions: NSObject, Codable {
                 oauthThreshold: String? = nil,
                 oauthClientId: String? = nil,
                 oauthRedirectUri: String? = nil,
+                oauthSignoutRedirectUri: String? = nil,
                 oauthScope: String? = nil,
                 keychainAccessGroup: String? = nil,
                 sslPinningPublicKeyHashes: [String]? = nil) {
@@ -125,6 +129,7 @@ public class FROptions: NSObject, Codable {
         self.oauthClientId = oauthClientId
         self.oauthThreshold = oauthThreshold
         self.oauthRedirectUri = oauthRedirectUri
+        self.oauthSignoutRedirectUri = oauthSignoutRedirectUri
         self.oauthScope = oauthScope
         self.keychainAccessGroup = keychainAccessGroup
         self.sslPinningPublicKeyHashes = sslPinningPublicKeyHashes
@@ -154,6 +159,7 @@ public class FROptions: NSObject, Codable {
         self.oauthClientId = config[FROptions.CodingKeys.oauthClientId.rawValue] as? String
         self.oauthThreshold = config[FROptions.CodingKeys.oauthThreshold.rawValue] as? String
         self.oauthRedirectUri = config[FROptions.CodingKeys.oauthRedirectUri.rawValue] as? String
+        self.oauthSignoutRedirectUri = config[FROptions.CodingKeys.oauthSignoutRedirectUri.rawValue] as? String
         self.oauthScope = config[FROptions.CodingKeys.oauthScope.rawValue] as? String
         self.keychainAccessGroup = config[FROptions.CodingKeys.keychainAccessGroup.rawValue] as? String
         self.sslPinningPublicKeyHashes = config[FROptions.CodingKeys.sslPinningPublicKeyHashes.rawValue] as? [String]
@@ -195,7 +201,32 @@ public class FROptions: NSObject, Codable {
     public func getEndSessionEndpoint() -> String {
         return self.endSessionEndpoint ?? "/oauth2/realms/\(self.realm)/connect/endSession"
     }
-    
+
+  /// Asynchronously discovers configuration options based on a provided discovery URL.
+  ///
+  /// - Parameter discoveryURL: The URL string from which to discover configuration options. This URL should point to a well-known configuration endpoint that returns the necessary configuration settings in a JSON format.
+  /// - Returns: An instance of `FROptions` populated with the configuration settings fetched from the discovery URL.
+  @available(iOS 13.0.0, *)
+  open func discover(discoveryURL: String) async throws -> FROptions {
+    guard let discoveryURL = URL(string: discoveryURL) else {
+      throw OAuth2Error.other("Invalid discovery URL")
+    }
+    let data = try await URLSession.shared.data(from: discoveryURL)
+    let config = try JSONDecoder().decode(OpenIdConfiguration.self, from: data.0)
+
+    guard let baseUrl = self.url.isEmpty ? config.issuer : self.url else {
+      throw OAuth2Error.other("Missing base URL")
+    }
+    self.url = baseUrl
+    self.authorizeEndpoint = config.authorizationEndpoint
+    self.tokenEndpoint = config.tokenEndpoint
+    self.userinfoEndpoint = config.userinfoEndpoint
+    self.endSessionEndpoint = config.endSessionEndpoint
+    self.revokeEndpoint = config.revocationEndpoint
+
+    return self
+  }
+
     // - MARK: Private
     
     /// Equatable comparison method. Comparing the realm, cookie and oauthClientId values
@@ -206,6 +237,7 @@ public class FROptions: NSObject, Codable {
                 lhs.oauthClientId == rhs.oauthClientId &&
                 lhs.oauthScope == rhs.oauthScope &&
                 lhs.oauthRedirectUri == rhs.oauthRedirectUri &&
+                lhs.oauthSignoutRedirectUri == rhs.oauthSignoutRedirectUri &&
                 lhs.keychainAccessGroup == rhs.keychainAccessGroup)
     }
 }
@@ -219,3 +251,23 @@ extension Encodable {
         return dictionary
     }
 }
+
+private struct OpenIdConfiguration: Codable {
+    public let issuer: String?
+    public let authorizationEndpoint: String?
+    public let tokenEndpoint: String?
+    public let userinfoEndpoint: String?
+    public let endSessionEndpoint: String?
+    public let revocationEndpoint: String?
+
+
+    private enum CodingKeys: String, CodingKey {
+        case issuer = "issuer"
+        case authorizationEndpoint = "authorization_endpoint"
+        case tokenEndpoint = "token_endpoint"
+        case userinfoEndpoint = "userinfo_endpoint"
+        case endSessionEndpoint = "end_session_endpoint"
+        case revocationEndpoint = "revocation_endpoint"
+    }
+}
+

@@ -2,7 +2,7 @@
 //  FRAuthTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -554,4 +554,81 @@ class FRAuthTests: FRAuthBaseTest {
         XCTAssertNil(request?.value(forHTTPHeaderField:"Accept"), "Request should not contain Accept header")
         
     }
+
+
+  @available(iOS 13.0.0, *)
+  func testFRStartWithDiscoveryURL() async throws {
+    do {
+      FRAuthTests.useMockServer = false
+
+      let config =
+      ["forgerock_oauth_client_id":"test",
+       "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+       "forgerock_oauth_scope" : "openid profile email address"]
+      let discoveryURL = FRTestURL.oidcConfigUrl +  "/.well-known/openid-configuration"
+
+      let options = try await FROptions(config: config).discover(discoveryURL: discoveryURL)
+
+      try FRAuth.start(options: options)
+    }  catch {
+      XCTFail("SDK Initialization failed: \(error.localizedDescription)")
+    }
+
+    guard let frAuth = FRAuth.shared else {
+      XCTFail("FRAuth shared instance is returned nil")
+      return
+    }
+
+    XCTAssertNotNil(frAuth.keychainManager)
+    XCTAssertNotNil(frAuth.oAuth2Client)
+    XCTAssertNotNil(frAuth.tokenManager)
+  }
+
+
+  func testFRStartWithMissingOrInvalidSignoutRedirectURL() {
+
+      // Given
+      var config = self.readConfigFile(fileName: "FRAuthConfig")
+      config["forgerock_oauth_sign_out_redirect_uri"] = "invalid url"
+
+      var initError: Error?
+
+      // Then
+      do {
+          try FRAuth.initPrivate(config: config)
+      }
+      catch {
+          initError = error
+      }
+
+      // It should
+      guard let frAtuh = FRAuth.shared else {
+          XCTFail("FRAuth shared instance is returned nil")
+          return
+      }
+      XCTAssertNotNil(frAtuh.oAuth2Client)
+      XCTAssertNotNil(frAtuh.tokenManager)
+      XCTAssertNil(initError)
+
+      // Given
+      initError = nil
+      config.removeValue(forKey: "forgerock_oauth_sign_out_redirect_uri")
+
+      // Then
+      do {
+          try FRAuth.initPrivate(config: config)
+      }
+      catch {
+          initError = error
+      }
+
+      // It should
+      guard let frAtuhWithNoUri = FRAuth.shared else {
+          XCTFail("FRAuth shared instance is returned nil")
+          return
+      }
+      XCTAssertNotNil(frAtuhWithNoUri.oAuth2Client)
+      XCTAssertNotNil(frAtuhWithNoUri.tokenManager)
+      XCTAssertNil(initError)
+  }
 }

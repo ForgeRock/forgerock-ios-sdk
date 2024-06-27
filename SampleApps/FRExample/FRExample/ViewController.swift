@@ -34,7 +34,9 @@ class ViewController: UIViewController, ErrorAlertShowing {
     var invoke401: Bool = false
     var urlSession: URLSession = URLSession.shared
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120, height: 120), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
-    
+    let useDiscoveryURL = false
+    let centralizedLoginBrowserType: BrowserType = .authSession
+
     // MARK: - UIViewController Lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -214,14 +216,42 @@ class ViewController: UIViewController, ErrorAlertShowing {
         */
         
         // Start SDK
+      if !useDiscoveryURL {
+        // use the Config Plist file
         do {
-            try FRAuth.start()
-            self.displayLog("FRAuth SDK started using \(FRAuth.configPlistFileName).plist.")
+          try FRAuth.start()
+          self.displayLog("FRAuth SDK started using \(FRAuth.configPlistFileName).plist.")
         }
         catch {
-            self.displayLog(String(describing: error))
+          self.displayLog(String(describing: error))
         }
-        
+      } else {
+        // use the discovery URL
+        if #available(iOS 13.0, *) {
+          Task {
+            do {
+              let config =
+              ["forgerock_oauth_client_id": "CLIENT_ID_PLACEHOLDER",
+               "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+               "forgerock_oauth_sign_out_redirect_uri": "org.forgerock.demo://oauth2redirect",
+               "forgerock_oauth_scope": "openid profile email address revoke",
+              /* "forgerock_ssl_pinning_public_key_hashes": ["SSL_PINNING_HASH_PLACEHOLDER"]*/]
+
+              let discoveryURL = "DISCOVERY_URL_PLACEHOLDER"
+
+              let options = try await FROptions(config: config).discover(discoveryURL: discoveryURL)
+              
+              try FRAuth.start(options: options)
+              self.displayLog("FRAuth SDK started using \(discoveryURL) discovery URL")
+            }
+            catch {
+              self.displayLog(String(describing: error))
+            }
+          }
+        } else {
+          self.displayLog("Please run on iOS 13 and above")
+        }
+      }
     }
     
     
@@ -671,7 +701,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
     func performCentralizedLogin() {
         FRUser.browser()?
             .set(presentingViewController: self)
-            .set(browserType: .authSession)
+            .set(browserType: centralizedLoginBrowserType)
             .setCustomParam(key: "custom", value: "value")
             .build().login { (user, error) in
                 self.displayLog("User: \(String(describing: user)) || Error: \(String(describing: error))")
@@ -711,7 +741,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
         }
         
         // If FRUser.currentUser exists, perform logout
-        user.logout()
+        user.logout(presentingViewController: self, browserType: centralizedLoginBrowserType)
         self.displayLog("Logout completed")
     }
     
@@ -810,13 +840,17 @@ class ViewController: UIViewController, ErrorAlertShowing {
     
     
     func displayCurrentConfig() {
+      if !useDiscoveryURL {
         guard let path = Bundle.main.path(forResource: FRAuth.configPlistFileName, ofType: "plist"),
-            let config = NSDictionary(contentsOfFile: path) as? [String: Any]  else {
-                self.displayLog("No configuration found (config plist file name: \(FRAuth.configPlistFileName)")
-                return
+              let config = NSDictionary(contentsOfFile: path) as? [String: Any]  else {
+          self.displayLog("No configuration found (config plist file name: \(FRAuth.configPlistFileName)")
+          return
         }
-        
+
         self.displayLog("Current Configuration (\(FRAuth.configPlistFileName).plist): \(config)")
+      } else {
+        self.displayLog("Current Configuration from discovery URL: \(FRAuth.shared?.options?.optionsDictionary() ?? ["Error displaying configuration":""])")
+      }
     }
     
     
