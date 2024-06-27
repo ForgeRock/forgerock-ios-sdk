@@ -37,6 +37,7 @@ open class FROptions: NSObject, Codable {
     public var oauthThreshold: String?
     public var oauthClientId: String?
     public var oauthRedirectUri: String?
+    public var oauthSignoutRedirectUri: String?
     public var oauthScope: String?
     public var keychainAccessGroup: String?
     public var sslPinningPublicKeyHashes: [String]?
@@ -59,6 +60,7 @@ open class FROptions: NSObject, Codable {
         case oauthThreshold = "forgerock_oauth_threshold"
         case oauthClientId = "forgerock_oauth_client_id"
         case oauthRedirectUri = "forgerock_oauth_redirect_uri"
+        case oauthSignoutRedirectUri = "forgerock_oauth_sign_out_redirect_uri"
         case oauthScope = "forgerock_oauth_scope"
         case keychainAccessGroup = "forgerock_keychain_access_group"
         case sslPinningPublicKeyHashes = "forgerock_ssl_pinning_public_key_hashes"
@@ -84,6 +86,7 @@ open class FROptions: NSObject, Codable {
     ///   - oauthThreshold: OAuth Client timeout threshold
     ///   - oauthClientId: OAuth Client name
     ///   - oauthRedirectUri: OAuth Client redirectURI
+    ///   - oauthSignoutRedirectUri: OAuth Client signout redirectURI
     ///   - oauthScope: OAuth Client scopes
     ///   - keychainAccessGroup: Keychain access group for shared keychain
     ///   - sslPinningPublicKeyHashes: SSL Pinning hashes
@@ -105,6 +108,7 @@ open class FROptions: NSObject, Codable {
                 oauthThreshold: String? = nil,
                 oauthClientId: String? = nil,
                 oauthRedirectUri: String? = nil,
+                oauthSignoutRedirectUri: String? = nil,
                 oauthScope: String? = nil,
                 keychainAccessGroup: String? = nil,
                 sslPinningPublicKeyHashes: [String]? = nil) {
@@ -125,6 +129,7 @@ open class FROptions: NSObject, Codable {
         self.oauthClientId = oauthClientId
         self.oauthThreshold = oauthThreshold
         self.oauthRedirectUri = oauthRedirectUri
+        self.oauthSignoutRedirectUri = oauthSignoutRedirectUri
         self.oauthScope = oauthScope
         self.keychainAccessGroup = keychainAccessGroup
         self.sslPinningPublicKeyHashes = sslPinningPublicKeyHashes
@@ -154,6 +159,7 @@ open class FROptions: NSObject, Codable {
         self.oauthClientId = config[FROptions.CodingKeys.oauthClientId.rawValue] as? String
         self.oauthThreshold = config[FROptions.CodingKeys.oauthThreshold.rawValue] as? String
         self.oauthRedirectUri = config[FROptions.CodingKeys.oauthRedirectUri.rawValue] as? String
+        self.oauthSignoutRedirectUri = config[FROptions.CodingKeys.oauthSignoutRedirectUri.rawValue] as? String
         self.oauthScope = config[FROptions.CodingKeys.oauthScope.rawValue] as? String
         self.keychainAccessGroup = config[FROptions.CodingKeys.keychainAccessGroup.rawValue] as? String
         self.sslPinningPublicKeyHashes = config[FROptions.CodingKeys.sslPinningPublicKeyHashes.rawValue] as? [String]
@@ -231,6 +237,7 @@ open class FROptions: NSObject, Codable {
                 lhs.oauthClientId == rhs.oauthClientId &&
                 lhs.oauthScope == rhs.oauthScope &&
                 lhs.oauthRedirectUri == rhs.oauthRedirectUri &&
+                lhs.oauthSignoutRedirectUri == rhs.oauthSignoutRedirectUri &&
                 lhs.keychainAccessGroup == rhs.keychainAccessGroup)
     }
 }
