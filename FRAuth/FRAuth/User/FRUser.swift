@@ -194,8 +194,9 @@ public class FRUser: NSObject, NSSecureCoding {
                 else {
                     FRLog.v("Invalidating OAuth2 token(s) successful")
                 }
-                
-                if let idToken = tokens.idToken, ssoTokenInvalidated == false {
+                if let oAuth2Client = frAuth.oAuth2Client, oAuth2Client.signoutRedirectUri != nil {
+                    FRLog.v("Skipping invalidating session using id_token since the session has already been invalidated in the browser")
+                } else if let idToken = tokens.idToken, ssoTokenInvalidated == false {
                     FRLog.v("Invalidating session using id_token")
                     // End Session if id_token exists
                     frAuth.tokenManager?.endSession(idToken: idToken, completion: { (error) in
