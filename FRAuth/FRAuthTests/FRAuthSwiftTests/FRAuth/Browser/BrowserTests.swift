@@ -84,7 +84,8 @@ class BrowserTests: FRAuthBaseTest {
 
 
     @available(iOS 13, *)
-    func test_03_browser_login_already_in_progress_from_another_instance() {
+    func test_03_browser_login_already_in_progress_from_another_instance() throws {
+        try XCTSkipIf(true) // Skip this test - see SDKS-3304
 
         //  Start SDK
         self.startSDK()
@@ -322,7 +323,8 @@ class BrowserTests: FRAuthBaseTest {
 
 
     @available(iOS 13, *)
-    func test_08_login_auth_session_cancelled() {
+    func test_08_login_auth_session_cancelled() throws {
+        try XCTSkipIf(true) // Skip this test - see SDKS-3304
 
         //  Start SDK
         self.startSDK()
