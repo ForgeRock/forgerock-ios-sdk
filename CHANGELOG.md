@@ -1,3 +1,12 @@
+## [4.5.0]
+#### Added
+- Added SDK support for deleting registered WebAuthn devices from the server. [SDKS-1753]
+- Added support for signing off from PingOne to the centralized login flow. [SDKS-3021]
+- Added the ability to dynamically configure the SDK by collecting values from the server's OpenID Connect `.well-known` endpoint. [SDKS-3023]
+
+#### Fixed
+- SSL pinning configuration was ignored in `FRURLProtocol` class. [SDKS-3239]
+
 ## [4.4.1]
 #### Added
 - Added privacy manifest files to the SDK's modules [SDKS-3086]
