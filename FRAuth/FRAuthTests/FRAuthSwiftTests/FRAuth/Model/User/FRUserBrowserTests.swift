@@ -231,8 +231,7 @@ class FRUserBrowserTests: FRAuthBaseTest {
         
         // Set mock responses
         self.loadMockResponses(["OAuth2_Token_Success",
-                                "OAuth2_Token_Revoke_Success",
-                                "OAuth2_EndSession_Success"])
+                                "OAuth2_Token_Revoke_Success"])
         
         //  Get top VC
         let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
