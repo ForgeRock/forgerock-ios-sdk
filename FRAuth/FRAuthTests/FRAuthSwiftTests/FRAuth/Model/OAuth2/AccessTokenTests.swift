@@ -2,7 +2,7 @@
 //  AccessTokenTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -109,10 +109,11 @@ class AccessTokenTests: FRAuthBaseTest {
         XCTAssertNil(at)
         
         // Given missing scope
-        tokenDict = ["access_token":self.access_token, "token_type":self.token_type, "expires_in":self.expires_in]
-        at = AccessToken(tokenResponse: tokenDict)
-        // Then
-        XCTAssertNil(at)
+        // Removing the validation for scope as it is no longer mandatory
+//        tokenDict = ["access_token":self.access_token, "token_type":self.token_type, "expires_in":self.expires_in]
+//        at = AccessToken(tokenResponse: tokenDict)
+//        // Then
+//        XCTAssertNil(at)
         
         // Given missing access_token
         tokenDict = ["scope":self.scope, "token_type":self.token_type, "expires_in":self.expires_in]
@@ -121,7 +122,7 @@ class AccessTokenTests: FRAuthBaseTest {
         XCTAssertNil(at)
         
         // Given minimal set of response values
-        tokenDict = ["access_token":self.access_token, "scope":self.scope, "token_type":self.token_type, "expires_in":self.expires_in]
+        tokenDict = ["access_token":self.access_token, "token_type":self.token_type, "expires_in":self.expires_in]
         at = AccessToken(tokenResponse: tokenDict)
         // Then
         XCTAssertNotNil(at)
@@ -140,9 +141,10 @@ class AccessTokenTests: FRAuthBaseTest {
         XCTAssertNil(at)
         
         // Given missing scope
-        at = AccessToken(token: self.access_token, expiresIn: self.expires_in, scope: nil, tokenType: self.token_type, refreshToken: nil, idToken: nil, authenticatedTimestamp: Date().timeIntervalSince1970)
-        // Then
-        XCTAssertNil(at)
+        // Removing the validation for scope as it is no longer mandatory
+//        at = AccessToken(token: self.access_token, expiresIn: self.expires_in, scope: nil, tokenType: self.token_type, refreshToken: nil, idToken: nil, authenticatedTimestamp: Date().timeIntervalSince1970)
+//        // Then
+//        XCTAssertNil(at)
         
         // Given missing access_token
         at = AccessToken(token: nil, expiresIn: self.expires_in, scope: self.scope, tokenType: self.token_type, refreshToken: nil, idToken: nil, authenticatedTimestamp: Date().timeIntervalSince1970)
@@ -155,7 +157,7 @@ class AccessTokenTests: FRAuthBaseTest {
         XCTAssertNil(at)
         
         // Given minimal set of response values
-        at = AccessToken(token: self.access_token, expiresIn: self.expires_in, scope: self.scope, tokenType: self.token_type, refreshToken: nil, idToken: nil, authenticatedTimestamp: Date().timeIntervalSince1970)
+        at = AccessToken(token: self.access_token, expiresIn: self.expires_in, scope: nil, tokenType: self.token_type, refreshToken: nil, idToken: nil, authenticatedTimestamp: Date().timeIntervalSince1970)
         // Then
         XCTAssertNotNil(at)
     }
