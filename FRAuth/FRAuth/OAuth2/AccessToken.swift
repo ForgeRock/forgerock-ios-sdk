@@ -2,7 +2,7 @@
 //  AccessToken.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -20,7 +20,7 @@ import Foundation
     /// token_type of access_token
     @objc public var tokenType: String
     /// Granted scope(s) with space separator for given access_token
-    @objc public var scope: String
+    @objc public var scope: String?
     /// refresh_token associated with access_token (optional)
     @objc public var refreshToken: String?
     /// id_token associated with access_token (optional)
@@ -77,13 +77,13 @@ import Foundation
     init?(tokenResponse: [String: Any], sessionToken: String? = nil) {
         
         /// Make sure minimum required information is provided
-        guard let accessToken = tokenResponse[OAuth2.accessToken] as? String, let scope = tokenResponse[OAuth2.scope] as? String, let lifetime = tokenResponse[OAuth2.tokenExpiresIn] as? Int, let tokenType = tokenResponse[OAuth2.tokenType] as? String else {
+        guard let accessToken = tokenResponse[OAuth2.accessToken] as? String, let lifetime = tokenResponse[OAuth2.tokenExpiresIn] as? Int, let tokenType = tokenResponse[OAuth2.tokenType] as? String else {
             FRLog.w("Invalid access_token response: \(tokenResponse)")
             return nil
         }
         
         self.expiresIn = lifetime
-        self.scope = scope
+        self.scope = tokenResponse[OAuth2.scope] as? String
         self.tokenType = tokenType
         self.refreshToken = tokenResponse[OAuth2.refreshToken] as? String
         self.idToken = tokenResponse[OAuth2.idToken] as? String
@@ -106,7 +106,7 @@ import Foundation
     ///   - sessionToken: SessionToken associated with AccessToken
     init?(token: String?, expiresIn: Int?, scope: String?, tokenType: String?, refreshToken: String?, idToken:String?, authenticatedTimestamp: Double?, sessionToken: String? = nil) {
         
-        guard let token = token, let expiresIn = expiresIn, let scope = scope, let tokenType = tokenType, let authenticatedTimestamp = authenticatedTimestamp else {
+        guard let token = token, let expiresIn = expiresIn, let tokenType = tokenType, let authenticatedTimestamp = authenticatedTimestamp else {
             FRLog.w("Invalid access_token response: some information is missing.")
             return nil
         }
@@ -126,7 +126,7 @@ import Foundation
     
     /// Prints debug description of AccessToken
     override public var debugDescription: String {
-        return "\(String(describing: self)) isExpired?: \(self.isExpired)\n\naccess_token: \(self.value) | token_type: \(self.tokenType) | scope: \(self.scope) | expires_in: \(String(describing: self.expiresIn)) | refresh_token: \(self.refreshToken ?? "nil") | id_token: \(self.idToken ?? "nil") | expiration: \(self.expiration)"
+        return "\(String(describing: self)) isExpired?: \(self.isExpired)\n\naccess_token: \(self.value) | token_type: \(self.tokenType) | scope: \(self.scope ?? "nil") | expires_in: \(String(describing: self.expiresIn)) | refresh_token: \(self.refreshToken ?? "nil") | id_token: \(self.idToken ?? "nil") | expiration: \(self.expiration)"
     }
     
     
