@@ -20,7 +20,7 @@ import Foundation
     /// token_type of access_token
     @objc public var tokenType: String
     /// Granted scope(s) with space separator for given access_token
-    @objc public var scope: String?
+    @objc public var scope: String
     /// refresh_token associated with access_token (optional)
     @objc public var refreshToken: String?
     /// id_token associated with access_token (optional)
@@ -83,7 +83,7 @@ import Foundation
         }
         
         self.expiresIn = lifetime
-        self.scope = tokenResponse[OAuth2.scope] as? String
+        self.scope = tokenResponse[OAuth2.scope] as? String ?? ""
         self.tokenType = tokenType
         self.refreshToken = tokenResponse[OAuth2.refreshToken] as? String
         self.idToken = tokenResponse[OAuth2.idToken] as? String
@@ -112,7 +112,7 @@ import Foundation
         }
         
         self.expiresIn = expiresIn
-        self.scope = scope
+        self.scope = scope ?? ""
         self.tokenType = tokenType
         self.refreshToken = refreshToken
         self.idToken = idToken
@@ -126,7 +126,7 @@ import Foundation
     
     /// Prints debug description of AccessToken
     override public var debugDescription: String {
-        return "\(String(describing: self)) isExpired?: \(self.isExpired)\n\naccess_token: \(self.value) | token_type: \(self.tokenType) | scope: \(self.scope ?? "nil") | expires_in: \(String(describing: self.expiresIn)) | refresh_token: \(self.refreshToken ?? "nil") | id_token: \(self.idToken ?? "nil") | expiration: \(self.expiration)"
+        return "\(String(describing: self)) isExpired?: \(self.isExpired)\n\naccess_token: \(self.value) | token_type: \(self.tokenType) | scope: \(self.scope) | expires_in: \(String(describing: self.expiresIn)) | refresh_token: \(self.refreshToken ?? "nil") | id_token: \(self.idToken ?? "nil") | expiration: \(self.expiration)"
     }
     
     
