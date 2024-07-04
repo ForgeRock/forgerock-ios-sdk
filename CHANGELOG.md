@@ -6,6 +6,7 @@
 
 #### Fixed
 - SSL pinning configuration was ignored in `FRURLProtocol` class. [SDKS-3239]
+- Removed scope validation from `AccessToken` initialization. [SDKS-3305]
 
 ## [4.4.1]
 #### Added
