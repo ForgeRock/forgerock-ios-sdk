@@ -38,6 +38,7 @@
     },
     "forgerock_oauth_client_id": "iosclient",
     "forgerock_oauth_redirect_uri": "http://localhost:8081",
+    "forgerock_oauth_sign_out_redirect_uri": "http://localhost:8081",
     "forgerock_oauth_scope": "openid profile email address",
     "forgerock_oauth_url": "http://openam.example.com:8081/openam",
     "forgerock_oauth_threshold": 60,

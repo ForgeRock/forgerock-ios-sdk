@@ -2,7 +2,7 @@
 //  AccessToken.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -77,13 +77,13 @@ import Foundation
     init?(tokenResponse: [String: Any], sessionToken: String? = nil) {
         
         /// Make sure minimum required information is provided
-        guard let accessToken = tokenResponse[OAuth2.accessToken] as? String, let scope = tokenResponse[OAuth2.scope] as? String, let lifetime = tokenResponse[OAuth2.tokenExpiresIn] as? Int, let tokenType = tokenResponse[OAuth2.tokenType] as? String else {
+        guard let accessToken = tokenResponse[OAuth2.accessToken] as? String, let lifetime = tokenResponse[OAuth2.tokenExpiresIn] as? Int, let tokenType = tokenResponse[OAuth2.tokenType] as? String else {
             FRLog.w("Invalid access_token response: \(tokenResponse)")
             return nil
         }
         
         self.expiresIn = lifetime
-        self.scope = scope
+        self.scope = tokenResponse[OAuth2.scope] as? String ?? ""
         self.tokenType = tokenType
         self.refreshToken = tokenResponse[OAuth2.refreshToken] as? String
         self.idToken = tokenResponse[OAuth2.idToken] as? String
@@ -106,13 +106,13 @@ import Foundation
     ///   - sessionToken: SessionToken associated with AccessToken
     init?(token: String?, expiresIn: Int?, scope: String?, tokenType: String?, refreshToken: String?, idToken:String?, authenticatedTimestamp: Double?, sessionToken: String? = nil) {
         
-        guard let token = token, let expiresIn = expiresIn, let scope = scope, let tokenType = tokenType, let authenticatedTimestamp = authenticatedTimestamp else {
+        guard let token = token, let expiresIn = expiresIn, let tokenType = tokenType, let authenticatedTimestamp = authenticatedTimestamp else {
             FRLog.w("Invalid access_token response: some information is missing.")
             return nil
         }
         
         self.expiresIn = expiresIn
-        self.scope = scope
+        self.scope = scope ?? ""
         self.tokenType = tokenType
         self.refreshToken = refreshToken
         self.idToken = idToken

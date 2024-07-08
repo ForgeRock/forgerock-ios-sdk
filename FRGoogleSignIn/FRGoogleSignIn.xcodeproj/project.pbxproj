@@ -455,7 +455,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.1;
+				MARKETING_VERSION = 4.5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -488,7 +488,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.1;
+				MARKETING_VERSION = 4.5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRGoogleSignIn;

@@ -2,7 +2,7 @@
 //  ServerConfig.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -95,43 +95,43 @@ public class ServerConfigBuilder: NSObject {
     
     @objc
     @discardableResult public func set(authenticatePath: String) -> ServerConfigBuilder {
-        self.config.authenticateURL = self.config.baseURL.absoluteString + authenticatePath
+        self.config.authenticateURL = authenticatePath.isValidUrl ? authenticatePath : self.config.baseURL.absoluteString + authenticatePath
         return self
     }
     
     @objc
     @discardableResult public func set(tokenPath: String) -> ServerConfigBuilder {
-        self.config.tokenURL = self.config.baseURL.absoluteString + tokenPath
+        self.config.tokenURL = tokenPath.isValidUrl ? tokenPath  : self.config.baseURL.absoluteString + tokenPath
         return self
     }
     
     @objc
     @discardableResult public func set(authorizePath: String) -> ServerConfigBuilder {
-        self.config.authorizeURL = self.config.baseURL.absoluteString + authorizePath
+        self.config.authorizeURL = authorizePath.isValidUrl ? authorizePath : self.config.baseURL.absoluteString + authorizePath
         return self
     }
     
     @objc
     @discardableResult public func set(userInfoPath: String) -> ServerConfigBuilder {
-        self.config.userInfoURL = self.config.baseURL.absoluteString + userInfoPath
+        self.config.userInfoURL = userInfoPath.isValidUrl ? userInfoPath : self.config.baseURL.absoluteString + userInfoPath
         return self
     }
     
     @objc
     @discardableResult public func set(revokePath: String) -> ServerConfigBuilder {
-        self.config.tokenRevokeURL = self.config.baseURL.absoluteString + revokePath
+        self.config.tokenRevokeURL = revokePath.isValidUrl ? revokePath : self.config.baseURL.absoluteString + revokePath
         return self
     }
     
     @objc
     @discardableResult public func set(sessionPath: String) -> ServerConfigBuilder {
-        self.config.sessionURL = self.config.baseURL.absoluteString + sessionPath
+        self.config.sessionURL = sessionPath.isValidUrl ? sessionPath : self.config.baseURL.absoluteString + sessionPath
         return self
     }
     
     @objc
     @discardableResult public func set(endSessionPath: String) -> ServerConfigBuilder {
-        self.config.endSessionURL = self.config.baseURL.absoluteString + endSessionPath
+        self.config.endSessionURL = endSessionPath.isValidUrl ? endSessionPath : self.config.baseURL.absoluteString + endSessionPath
         return self
     }
     

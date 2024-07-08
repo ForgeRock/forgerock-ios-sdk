@@ -11,6 +11,7 @@
 import XCTest
 @testable import FRAuth
 
+// Note that all App Integrity tests are skipped because this feature is not released in AM
 final class AA_07_AppIntegrityTest: CallbackBaseTest {
     
     static var USERNAME: String = "sdkuser"
@@ -53,6 +54,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_02_test_app_integrity_fail_invalid_challenge() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         var currentNode: Node?
@@ -142,6 +144,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
         
     func test_03_test_app_integrity_fail_empty_challenge() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         var currentNode: Node?
@@ -237,6 +240,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_04_test_app_integrity_invalid_team_id() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         /// Test that when the Apple Team Identifier configured in the App Integrity node does NOT match the one of the calling app,
@@ -324,6 +328,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_05_test_app_integrity_invalid_bundle_id() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         /// Test that when the Bundle Identifier configured in the App Integrity node does NOT match the one of the calling app,
@@ -411,6 +416,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_06_test_app_integrity_invalid_root_cert() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         /// Test that when the Attestation Root Certificate URL configured in the App Integrity node does is not the original CA cert,
@@ -499,6 +505,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_07_test_app_integrity_fail_production() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         /// Test that when the App Integrity node is configured for production environment mode and the app is using sandbox (development) environment
@@ -586,6 +593,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_08_test_app_integrity_unsupported() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf((is14Available && !self.isSimulator), "This test requires real device with iOS less than 14, or simulator.")
         
         /// Test that when the client app runs on simulator or on real device with smaller version of iOS 14, the requestIntegrityToken function throws "unsupported" error
@@ -674,6 +682,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func test_09_test_app_integrity_custom_outcome() throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         var currentNode: Node?
         
@@ -822,6 +831,7 @@ final class AA_07_AppIntegrityTest: CallbackBaseTest {
     }
     
     func app_integrity_success(payload: String? = nil) throws {
+        try XCTSkipIf(true) // Skip all App Integrity tests, since AM does not support the feature yet...
         try XCTSkipIf(self.isSimulator || (!is14Available && !self.isSimulator), "This test can only run on real devices above iOS14!")
         
         try XCTSkipIf(!Self.isRegisteredDeveloperDevice, "This test requires device to be refgistered with the ForgeRock developer account.")

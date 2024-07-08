@@ -2,7 +2,7 @@
 //  FRWebAuthnTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -80,6 +80,44 @@ final class FRWebAuthnTests: WebAuthnSharedUtils {
         for credential in registeredCredentials {
             FRWebAuthn.deleteCredential(with: credential)
         }
+        
+        //Load all discoverable credentials
+        let registeredCredentialsAfterDeletion = FRWebAuthn.loadAllCredentials(by: relyingPartyId)
+        XCTAssertTrue(registeredCredentialsAfterDeletion.count == 0)
+    }
+    
+    func test_04_deleteWithCredential_force_false() {
+        //  Perform registration first
+        self.performWebAuthnRegistration()
+        
+        //Load all discoverable credentials
+        let registeredCredentials = FRWebAuthn.loadAllCredentials(by: relyingPartyId)
+        XCTAssertTrue(registeredCredentials.count == 1)
+        
+        //Delete key using the CredentialSource
+        let credential = registeredCredentials.first!
+        XCTAssertThrowsError(try FRWebAuthn.deleteCredential(publicKeyCredentialSource: credential)) { error in
+            guard case is AuthApiError = error else {
+                return XCTFail()
+            }
+        }
+        
+        //Load all discoverable credentials
+        let registeredCredentialsAfterDeletion = FRWebAuthn.loadAllCredentials(by: relyingPartyId)
+        XCTAssertTrue(registeredCredentialsAfterDeletion.count == 1)
+    }
+    
+    func test_05_deleteWithCredential_force_true() {
+        //  Perform registration first
+        self.performWebAuthnRegistration()
+        
+        //Load all discoverable credentials
+        let registeredCredentials = FRWebAuthn.loadAllCredentials(by: relyingPartyId)
+        XCTAssertTrue(registeredCredentials.count == 1)
+        
+        //Delete key using the CredentialSource
+        let credential = registeredCredentials.first!
+        try? FRWebAuthn.deleteCredential(publicKeyCredentialSource: credential, forceDelete: true)
         
         //Load all discoverable credentials
         let registeredCredentialsAfterDeletion = FRWebAuthn.loadAllCredentials(by: relyingPartyId)

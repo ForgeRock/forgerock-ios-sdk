@@ -2,7 +2,7 @@
 //  FRUser.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -194,8 +194,9 @@ public class FRUser: NSObject, NSSecureCoding {
                 else {
                     FRLog.v("Invalidating OAuth2 token(s) successful")
                 }
-                
-                if let idToken = tokens.idToken, ssoTokenInvalidated == false {
+                if let oAuth2Client = frAuth.oAuth2Client, oAuth2Client.signoutRedirectUri != nil {
+                    FRLog.v("Skipping invalidating session using id_token since the session has already been invalidated in the browser")
+                } else if let idToken = tokens.idToken, ssoTokenInvalidated == false {
                     FRLog.v("Invalidating session using id_token")
                     // End Session if id_token exists
                     frAuth.tokenManager?.endSession(idToken: idToken, completion: { (error) in
@@ -219,7 +220,24 @@ public class FRUser: NSObject, NSSecureCoding {
         // Clear Browser instance if there is anything running
         Browser.currentBrowser = nil
     }
-    
+
+    /// Logs-out currently authenticated user session. If `oauth2Clint.signoutRedirectUri` is not nil, will logout the user in the browser as well
+    ///
+    /// - Parameters:
+    ///   - presentingViewController: ViewController to present the logout broser view from
+    ///   - browserType: An external user-agent type; default to Authentication Service. This must match the browser type used during login
+    public func logout(presentingViewController: UIViewController, browserType: BrowserType = .authSession) {
+      FRUser.browser()?
+        .set(presentingViewController: presentingViewController)
+        .set(browserType: browserType)
+        .build().logout { (_, error) in
+          if let error {
+            FRLog.e("Browser logout error: \(String(describing: error))")
+          }
+          self.logout()
+        }
+    }
+
     
     //  MARK: - AccessToken
     
