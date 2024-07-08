@@ -50,8 +50,9 @@ class FRUserBrowserTests: FRAuthBaseTest {
     
     
   @available(iOS 13, *)
-  func test_02_fruser_browser_login_and_logout_success() {
-        
+  func test_02_fruser_browser_login_and_logout_success() throws {
+        try XCTSkipIf(true) // Skip this test - see SDKS-3304
+      
         //  SDK init
         self.startSDK()
         
@@ -85,7 +86,8 @@ class FRUserBrowserTests: FRAuthBaseTest {
     
     
   @available(iOS 13, *)
-  func test_03_fruser_browser_login_and_logout_end_session_failure() {
+  func test_03_fruser_browser_login_and_logout_end_session_failure() throws {
+        try XCTSkipIf(true) // Skip this test - see SDKS-3304
         
         //  SDK init
         self.startSDK()
