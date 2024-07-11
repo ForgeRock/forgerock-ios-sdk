@@ -51,8 +51,6 @@ class FRUserBrowserTests: FRAuthBaseTest {
     
   @available(iOS 13, *)
   func test_02_fruser_browser_login_and_logout_success() throws {
-        try XCTSkipIf(true) // Skip this test - see SDKS-3304
-      
         //  SDK init
         self.startSDK()
         
@@ -62,12 +60,25 @@ class FRUserBrowserTests: FRAuthBaseTest {
                                 "OAuth2_Token_Revoke_Success",
                                 "OAuth2_EndSession_Success"])
         
+        //  Get top VC
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var topVC = keyWindow?.rootViewController
+        while let presentedViewController = topVC?.presentedViewController {
+            topVC = presentedViewController
+        }
+        guard let vc = topVC else {
+            XCTFail("Failed to retrieve top most ViewController")
+            return
+        }
+      
         let ex = self.expectation(description: "Browser Login")
-        let _ = FRUser.browser()?.set(browserType: .ephemeralAuthSession).build().login(completion: { (user, error) in
+        let _ = FRUser.browser()?.set(browserType: .ephemeralAuthSession).set(presentingViewController: vc).build().login(completion: { (user, error) in
             XCTAssertNil(error)
             XCTAssertNotNil(user)
             ex.fulfill()
         })
+        // Sleep for 1 second
+        sleep(1)
         //  Inject authorization_code to mimic browser authentication
         let _ = Browser.validateBrowserLogin(url: URL(string: "frauth://com.forgerock.ios/login?code=testcode")!)
         waitForExpectations(timeout: 60, handler: nil)
@@ -87,8 +98,6 @@ class FRUserBrowserTests: FRAuthBaseTest {
     
   @available(iOS 13, *)
   func test_03_fruser_browser_login_and_logout_end_session_failure() throws {
-        try XCTSkipIf(true) // Skip this test - see SDKS-3304
-        
         //  SDK init
         self.startSDK()
         
@@ -96,13 +105,25 @@ class FRUserBrowserTests: FRAuthBaseTest {
         self.loadMockResponses(["OAuth2_Token_Success",
                                 "OAuth2_Token_Revoke_Success",
                                 "OAuth2_EndSession_Failure"])
+      
+        //  Get top VC
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var topVC = keyWindow?.rootViewController
+        while let presentedViewController = topVC?.presentedViewController {
+            topVC = presentedViewController
+        }
+        guard let vc = topVC else {
+            XCTFail("Failed to retrieve top most ViewController")
+            return
+        }
         
         let ex = self.expectation(description: "Browser Login")
-        let _ = FRUser.browser()?.set(browserType: .ephemeralAuthSession).build().login(completion: { (user, error) in
+        let _ = FRUser.browser()?.set(browserType: .ephemeralAuthSession).set(presentingViewController: vc).build().login(completion: { (user, error) in
             XCTAssertNotNil(user)
             XCTAssertNil(error)
             ex.fulfill()
         })
+      
         //  Inject authorization_code to mimic browser authentication
         let _ = Browser.validateBrowserLogin(url: URL(string: "frauth://com.forgerock.ios/login?code=testcode")!)
         waitForExpectations(timeout: 60, handler: nil)
