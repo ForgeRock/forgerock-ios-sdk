@@ -173,7 +173,7 @@
       </CodeCoverageTargets>
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D5E75BD22409B8C0005F589F"
@@ -183,7 +183,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D5C354882412EBF900695A84"
@@ -201,9 +201,305 @@
                BlueprintName = "FRAuthTests"
                ReferencedContainer = "container:../FRAuth/FRAuth.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AA_00_RegistrationTests">
+               </Test>
+               <Test
+                  Identifier = "AA_01_LoginTests">
+               </Test>
+               <Test
+                  Identifier = "AA_02_KBAAuthenticationTests">
+               </Test>
+               <Test
+                  Identifier = "AA_03_SecondFactorAuthenticationTests">
+               </Test>
+               <Test
+                  Identifier = "AA_04_BooleanAttributeInputCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_ChoiceCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_ConfirmationCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_DeviceProfileCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_KbaCreateCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_NumberAttributeInputCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_PageCallback65Test">
+               </Test>
+               <Test
+                  Identifier = "AA_04_PageCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_PollingWaitCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_ReCaptchaCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_StringAttributeInputCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_04_TermsAndConditionCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_05_DeviceBindingCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_06_DeviceSigningVerifierCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_07_AppIntegrityTest">
+               </Test>
+               <Test
+                  Identifier = "AA_08_TextInputCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_09_PingOneProtectInitializeCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AA_10_PingOneProtectEvaluateCallbackTest">
+               </Test>
+               <Test
+                  Identifier = "AbstractValidatedCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "AccessTokenTests">
+               </Test>
+               <Test
+                  Identifier = "AppleSignInHandlerTests">
+               </Test>
+               <Test
+                  Identifier = "AtomicDictionaryTests">
+               </Test>
+               <Test
+                  Identifier = "AuthApiErrorTests">
+               </Test>
+               <Test
+                  Identifier = "AuthErrorTests">
+               </Test>
+               <Test
+                  Identifier = "AuthServiceTests">
+               </Test>
+               <Test
+                  Identifier = "AuthorizationPolicyTests">
+               </Test>
+               <Test
+                  Identifier = "BooleanAttributeInputCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "BrowserBuilderTests">
+               </Test>
+               <Test
+                  Identifier = "BrowserErrorTests">
+               </Test>
+               <Test
+                  Identifier = "BrowserTests">
+               </Test>
+               <Test
+                  Identifier = "CallbackBaseTest">
+               </Test>
+               <Test
+                  Identifier = "CallbackConstantsTests">
+               </Test>
+               <Test
+                  Identifier = "ChoiceCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "ConfigErrorTests">
+               </Test>
+               <Test
+                  Identifier = "ConfirmationCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "CookieTests">
+               </Test>
+               <Test
+                  Identifier = "CookieValidationTests">
+               </Test>
+               <Test
+                  Identifier = "CustomCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "DeviceProfileCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "FRAppAttestModalTests">
+               </Test>
+               <Test
+                  Identifier = "FRAppAttestServiceImplTests">
+               </Test>
+               <Test
+                  Identifier = "FRAppIntegrityCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "FRAppIntegrityKeysTests">
+               </Test>
+               <Test
+                  Identifier = "FRAuthBaseTest">
+               </Test>
+               <Test
+                  Identifier = "FRAuthTests">
+               </Test>
+               <Test
+                  Identifier = "FRBaseTestCase">
+               </Test>
+               <Test
+                  Identifier = "FRDeviceCollectorTests">
+               </Test>
+               <Test
+                  Identifier = "FRDeviceIdentifierTests">
+               </Test>
+               <Test
+                  Identifier = "FRDeviceTests">
+               </Test>
+               <Test
+                  Identifier = "FROptionsTests">
+               </Test>
+               <Test
+                  Identifier = "FRRequestInterceptorTests">
+               </Test>
+               <Test
+                  Identifier = "FRSessionTests">
+               </Test>
+               <Test
+                  Identifier = "FRURLProtocolTests">
+               </Test>
+               <Test
+                  Identifier = "FRUserTests">
+               </Test>
+               <Test
+                  Identifier = "FRWebAuthnTests">
+               </Test>
+               <Test
+                  Identifier = "FailedPolicyTests">
+               </Test>
+               <Test
+                  Identifier = "IdPCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "IdPClientTests">
+               </Test>
+               <Test
+                  Identifier = "IdPHandlerTests">
+               </Test>
+               <Test
+                  Identifier = "IdPValueTests">
+               </Test>
+               <Test
+                  Identifier = "KbaCreateCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "KeychainManagerTests">
+               </Test>
+               <Test
+                  Identifier = "MetadataCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "MultipleValuesCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "NameCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "NetworkReachabilityMonitorTests">
+               </Test>
+               <Test
+                  Identifier = "NodeFlowTests">
+               </Test>
+               <Test
+                  Identifier = "NodeTests">
+               </Test>
+               <Test
+                  Identifier = "NumberAttributeInputCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "OAuth2ErrorTests">
+               </Test>
+               <Test
+                  Identifier = "PKCETests">
+               </Test>
+               <Test
+                  Identifier = "PasswordCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "PolicyAdviceCreatorTests">
+               </Test>
+               <Test
+                  Identifier = "PolicyAdviceTests">
+               </Test>
+               <Test
+                  Identifier = "PollingWaitCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "ReCaptchaCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "SSLPinningTests">
+               </Test>
+               <Test
+                  Identifier = "SelectIdPCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "ServerConfigTests">
+               </Test>
+               <Test
+                  Identifier = "SessionManagerTests">
+               </Test>
+               <Test
+                  Identifier = "SocialLoginErrorTests">
+               </Test>
+               <Test
+                  Identifier = "TelephonyCollectorTests">
+               </Test>
+               <Test
+                  Identifier = "TermsAndConditionsCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "TextInputCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "TextOutputCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "TokenErrorTests">
+               </Test>
+               <Test
+                  Identifier = "TokenManagementPolicyTests">
+               </Test>
+               <Test
+                  Identifier = "TokenTests">
+               </Test>
+               <Test
+                  Identifier = "WebAuthnAuthenticationCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "WebAuthnAuthenticationTests">
+               </Test>
+               <Test
+                  Identifier = "WebAuthnCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "WebAuthnRegistrationCallbackTests">
+               </Test>
+               <Test
+                  Identifier = "WebAuthnRegistrationTests">
+               </Test>
+               <Test
+                  Identifier = "WebAuthnSharedUtils">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D59FAE26234413D3005D34DA"
@@ -213,7 +509,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D53A91E922B1815B003DF94E"
@@ -223,7 +519,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A5D1C37B29E59FC30096039E"
@@ -233,7 +529,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A52761142B60209000F8BDF7"
