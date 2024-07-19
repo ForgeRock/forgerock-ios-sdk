@@ -322,7 +322,11 @@ public class Node: NSObject {
         var callbacks: [Any] = []
         
         for callback:Callback in self.callbacks {
-            callbacks.append(callback.buildResponse())
+            if let textOutPutCallback = callback as? TextOutputCallback, (textOutPutCallback.messageType == .unknown) {
+                FRLog.i("TextOutputCallback of unknown type (scipted TextOutputCallback) is skipped from the response")
+            } else {
+                callbacks.append(callback.buildResponse())
+            }
         }
         
         payload[OpenAM.callbacks] = callbacks
