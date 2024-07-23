@@ -2,7 +2,7 @@
 //  TextOutputCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -65,6 +65,6 @@ public class TextOutputCallback: Callback {
     /// - Returns: JSON request payload for the Callback
     @objc
     open override func buildResponse() -> [String: Any] {
-        return self.response
+        return messageType == .unknown ? [:] : self.response
     }
 }

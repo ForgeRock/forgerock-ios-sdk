@@ -2,7 +2,7 @@
 //  Node.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -322,7 +322,10 @@ public class Node: NSObject {
         var callbacks: [Any] = []
         
         for callback:Callback in self.callbacks {
-            callbacks.append(callback.buildResponse())
+            let response = callback.buildResponse()
+            if !response.isEmpty {
+                callbacks.append(response)
+            }
         }
         
         payload[OpenAM.callbacks] = callbacks
