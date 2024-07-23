@@ -322,8 +322,8 @@ public class Node: NSObject {
         var callbacks: [Any] = []
         
         for callback:Callback in self.callbacks {
-            if let textOutPutCallback = callback as? TextOutputCallback, (textOutPutCallback.messageType == .unknown) {
-                FRLog.i("TextOutputCallback of unknown type (scipted TextOutputCallback) is skipped from the response")
+            if let textOutputCallback = callback as? TextOutputCallback, (textOutputCallback.messageType == .unknown) {
+                FRLog.i("TextOutputCallback of unknown type (scripted TextOutputCallback) is skipped from the response")
             } else {
                 callbacks.append(callback.buildResponse())
             }
