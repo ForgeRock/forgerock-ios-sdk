@@ -11,6 +11,9 @@
 import Foundation
 import FRCore
 
+// Fix - Cannot find type 'UIViewController' in scope
+import UIKit
+
 
 /// FRUser represents authenticated user session as FRUser object
 @objc
