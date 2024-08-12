@@ -342,4 +342,47 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         }
     }
     
+    func test_12_derived_callback_init() {
+        let metaDataJsonString = """
+            {
+                "type": "MetadataCallback",
+                "output": [
+                    {
+                        "name": "data",
+                        "value": {
+                            "_type": "PingOneProtect",
+                            "_action": "protect_initialize",
+                            "envId" : "66fb4743-189a-4bc7-9d6c-a919edfe6466",
+                            "consoleLogEnabled" : true,
+                            "deviceAttributesToIgnore" : [],
+                            "customHost" : "",
+                            "lazyMetadata" : true,
+                            "behavioralDataCollection" : true,
+                            "disableHub" : true,
+                            "deviceKeyRsyncIntervals" : 10,
+                            "enableTrust" : true,
+                            "disableTags" : true
+                         }
+                    }
+                ]
+            }
+            """
+        
+        let callbackResponse = self.parseStringToDictionary(metaDataJsonString)
+        
+        do {
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.envId, "66fb4743-189a-4bc7-9d6c-a919edfe6466")
+            XCTAssertEqual(callback.consoleLogEnabled, true)
+            XCTAssertEqual(callback.deviceAttributesToIgnore, [])
+            XCTAssertEqual(callback.customHost, "")
+            XCTAssertEqual(callback.lazyMetadata, true)
+            XCTAssertEqual(callback.behavioralDataCollection, true)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
 }

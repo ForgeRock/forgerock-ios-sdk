@@ -218,4 +218,33 @@ final class PingOneProtectEvaluationCallbackTests: FRAuthBaseTest {
         }
     }
     
+    func test_08_derived_callback_init() {
+        let metaDataJsonString = """
+            {
+                "type": "MetadataCallback",
+                "output": [
+                    {
+                        "name": "data",
+                        "value": {
+                            "_type": "PingOneProtect",
+                            "_action": "protect_risk_evaluation",
+                            "envId" : "some_id",
+                            "pauseBehavioralData" : true
+                         }
+                    }
+                ]
+            }
+            """
+        
+        let callbackResponse = self.parseStringToDictionary(metaDataJsonString)
+        
+        do {
+            let callback = try PingOneProtectEvaluationCallback(json: callbackResponse)
+            XCTAssertNotNil(callback)
+        }
+        catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
 }
