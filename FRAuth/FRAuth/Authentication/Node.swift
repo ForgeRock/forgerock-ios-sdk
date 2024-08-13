@@ -89,7 +89,7 @@ public class Node: NSObject {
             for callback in callbacks {
                 
                 // Validate if callback response contains type
-                guard var callbackType = callback["type"] as? String else {
+                guard let callbackType = callback["type"] as? String else {
                     FRLog.e("Invalid response: Callback is missing 'type' \n\t\(callback)")
                     throw AuthError.invalidCallbackResponse(String(describing: callback))
                 }
