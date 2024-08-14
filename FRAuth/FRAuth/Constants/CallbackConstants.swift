@@ -258,3 +258,11 @@ extension CBConstants {
 extension CBConstants {
     static let defaultText: String = "defaultText"
 }
+
+//  MARK: - AbstractProtectCallback
+
+extension CBConstants {
+    static let pingOneProtect: String = "PingOneProtect"
+    static let protectInitialize: String = "protect_initialize"
+    static let protectRiskEvaluation: String = "protect_risk_evaluation"
+}

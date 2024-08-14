@@ -14,23 +14,20 @@ import Foundation
 /**
  * Callback to initialize PingOne Protect SDK
  */
-open class PingOneProtectInitializeCallback: MultipleValuesCallback {
+open class PingOneProtectInitializeCallback: ProtectCallback {
     
     /// The envId received from server
-    public private(set) var envId: String
+    public private(set) var envId: String = String()
     /// The consoleLogEnabled received from server
-    public private(set) var consoleLogEnabled: Bool
+    public private(set) var consoleLogEnabled: Bool = Bool()
     /// The deviceAttributesToIgnore received from server
-    public private(set) var deviceAttributesToIgnore: [String]
+    public private(set) var deviceAttributesToIgnore: [String] = [String]()
     /// The customHost received from server
-    public private(set) var customHost: String
+    public private(set) var customHost: String = String()
     /// The lazyMetadata received from server
-    public private(set) var lazyMetadata: Bool
+    public private(set) var lazyMetadata: Bool = Bool()
     /// The behavioralDataCollection received from server
-    public private(set) var behavioralDataCollection: Bool
-    
-    /// Client Error input key in callback response
-    private var clientErrorKey: String
+    public private(set) var behavioralDataCollection: Bool = Bool()
     
     
     /// Designated initialization method for PingOneProtectInitializeCallback
@@ -39,70 +36,37 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     public required init(json: [String : Any]) throws {
         
-        guard let callbackType = json[CBConstants.type] as? String else {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
+        try super.init(json: json)
         
-        guard let outputs = json[CBConstants.output] as? [[String: Any]], let inputs = json[CBConstants.input] as? [[String: Any]] else {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
-        
-        // parse outputs
-        var outputDictionary = [String: Any]()
-        for output in outputs {
-            guard let outputName = output[CBConstants.name] as? String, let outputValue = output[CBConstants.value] else {
-                throw AuthError.invalidCallbackResponse("Failed to parse output")
-            }
-            outputDictionary[outputName] = outputValue
-        }
-        
-        guard let envId = outputDictionary[CBConstants.envId] as? String else {
+        guard let envId = self.outputValues[CBConstants.envId] as? String else {
             throw AuthError.invalidCallbackResponse("Missing envId")
         }
         self.envId = envId
         
-        guard let consoleLogEnabled = outputDictionary[CBConstants.consoleLogEnabled] as? Bool else {
+        guard let consoleLogEnabled = self.outputValues[CBConstants.consoleLogEnabled] as? Bool else {
             throw AuthError.invalidCallbackResponse("Missing consoleLogEnabled")
         }
         self.consoleLogEnabled = consoleLogEnabled
         
-        guard let deviceAttributesToIgnore = outputDictionary[CBConstants.deviceAttributesToIgnore] as? [String] else {
+        guard let deviceAttributesToIgnore = self.outputValues[CBConstants.deviceAttributesToIgnore] as? [String] else {
             throw AuthError.invalidCallbackResponse("Missing deviceAttributesToIgnore")
         }
         self.deviceAttributesToIgnore = deviceAttributesToIgnore
         
-        guard let customHost = outputDictionary[CBConstants.customHost] as? String else {
+        guard let customHost = self.outputValues[CBConstants.customHost] as? String else {
             throw AuthError.invalidCallbackResponse("Missing customHost")
         }
         self.customHost = customHost
         
-        guard let lazyMetadata = outputDictionary[CBConstants.lazyMetadata] as? Bool else {
+        guard let lazyMetadata = self.outputValues[CBConstants.lazyMetadata] as? Bool else {
             throw AuthError.invalidCallbackResponse("Missing lazyMetadata")
         }
         self.lazyMetadata = lazyMetadata
         
-        guard let behavioralDataCollection = outputDictionary[CBConstants.behavioralDataCollection] as? Bool else {
+        guard let behavioralDataCollection = self.outputValues[CBConstants.behavioralDataCollection] as? Bool else {
             throw AuthError.invalidCallbackResponse("Missing behavioralDataCollection")
         }
         self.behavioralDataCollection = behavioralDataCollection
-        
-        //parse inputs
-        var inputNames = [String]()
-        for input in inputs {
-            guard let inputName = input[CBConstants.name] as? String else {
-                throw AuthError.invalidCallbackResponse("Failed to parse input")
-            }
-            inputNames.append(inputName)
-        }
-        
-        guard let clientErrorKey = inputNames.filter({ $0.contains(CBConstants.clientError) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing clientErrorKey")
-        }
-        self.clientErrorKey = clientErrorKey
-        
-        try super.init(json: json)
-        type = callbackType
-        response = json
     }
     
     
@@ -132,10 +96,5 @@ open class PingOneProtectInitializeCallback: MultipleValuesCallback {
             PIProtect.pauseBehavioralData()
         }
     }
-    
-    /// Sets `clientError` value in callback response
-    /// - Parameter clientError: String value of `clientError`]
-    public func setClientError(_ clientError: String) {
-        self.inputValues[self.clientErrorKey] = clientError
-    }
+
 }
