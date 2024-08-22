@@ -15,13 +15,15 @@ let package = Package (
         .library(name: "FRFacebookSignIn", targets: ["FRFacebookSignIn"]),
         .library(name: "FRGoogleSignIn", targets: ["FRGoogleSignIn"]),
         .library(name: "FRDeviceBinding", targets: ["FRDeviceBinding"]),
+        .library(name: "FRCaptchaEnterprise", targets: ["FRCaptchaEnterprise"]),
         .library(name: "PingProtect", targets: ["PingProtect"])
     ],
     dependencies: [
         .package(name: "Facebook", url: "https://github.com/facebook/facebook-ios-sdk.git", .upToNextMinor(from: "16.0.1")),
         .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .upToNextMinor(from: "7.1.0")),
         .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .upToNextMinor(from: "2.4.0")),
-        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .upToNextMinor(from: "5.2.3"))
+        .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .upToNextMinor(from: "5.2.3")),
+        .package(name: "RecaptchaEnterprise", url: "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk.git", .upToNextMinor(from: "18.5.1"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),
@@ -34,6 +36,7 @@ let package = Package (
         .target(name: "FRFacebookSignIn", dependencies: [.target(name: "FRAuth"), .product(name: "FacebookLogin", package: "Facebook")], path: "FRFacebookSignIn/FRFacebookSignIn/Sources", resources: [.copy("../PrivacyInfo.xcprivacy")]),
         .target(name: "FRGoogleSignIn", dependencies: [.target(name: "FRAuth"), .product(name: "GoogleSignIn", package: "GoogleSignIn")], path: "FRGoogleSignIn/FRGoogleSignIn/Sources", resources: [.copy("../PrivacyInfo.xcprivacy")]),
         .target(name: "FRDeviceBinding", dependencies: [.target(name: "FRAuth"), .product(name: "JOSESwift", package: "JOSESwift")], path: "FRDeviceBinding/FRDeviceBinding/Sources", resources: [.copy("../PrivacyInfo.xcprivacy")]),
+        .target(name: "FRCaptchaEnterprise", dependencies: [.target(name: "FRAuth"), .product(name: "RecaptchaEnterprise", package: "RecaptchaEnterprise")], path: "FRCaptchaEnterprise/FRCaptchaEnterprise/Sources", resources: [.copy("../PrivacyInfo.xcprivacy")]),
         .target(name: "PingProtect", dependencies: [.target(name: "FRAuth"), .product(name: "PingOneSignals", package: "PingOneSignals")], path: "PingProtect/PingProtect/Sources", resources: [.copy("../PrivacyInfo.xcprivacy")])
     ]
 )

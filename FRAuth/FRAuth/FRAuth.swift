@@ -89,7 +89,14 @@ public final class FRAuth: NSObject {
             FRLog.i("FRProximity SDK found; starting FRProximity")
             c.perform(Selector(("startProximity")))
         }
-        
+      
+      // If FRCaptchaEnterprise module is present, invoke FRCaptchaEnterprise.registerCallbacks()
+      // This adds FRCaptchaEnterprise's callbacks to CallbackFactory's supportedCallbacks list
+        if let c: NSObject.Type = NSClassFromString("FRCaptchaEnterprise.FRCaptchaEnterprise") as? NSObject.Type {
+            FRLog.i("FRCaptchaEnterprise SDK found; registering callbacks")
+            c.perform(Selector(("registerCallbacks")))
+        }
+          
         // If FRDeviceBinding module is present, invoke FRDeviceBinding.registerCallbacks()
         // This adds FRDeviceBinding's callbacks to CallbackFactory's supportedCallbacks list
         if let c: NSObject.Type = NSClassFromString("FRDeviceBinding.FRDeviceBinding") as? NSObject.Type {

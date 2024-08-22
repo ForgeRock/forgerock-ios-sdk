@@ -12,6 +12,7 @@ import UIKit
 import FRAuth
 import FRCore
 import FRDeviceBinding
+import FRCaptchaEnterprise
 
 protocol AuthStepProtocol {
     func submitNode()
@@ -185,7 +186,35 @@ class AuthStepViewController: UIViewController {
                     }
                 }
                 
-                
+              
+              var captcha: ReCaptchaEnterpriseCallback?
+              for (_, callback) in self.authCallbacks.enumerated() {
+                  //  DeviceBindingCallback handling
+                  if let thisCallback = callback as? ReCaptchaEnterpriseCallback {
+                    captcha = thisCallback
+                  }
+              }
+              
+              if let captcha = captcha {
+                let alert = UIAlertController(title: "Captcha Result", message: nil, preferredStyle: .alert)
+                let action = UIAlertAction(title: "Ok", style: .cancel, handler: { _ in })
+                alert.addAction(action)
+                self.startLoading()
+                if #available(iOS 13.0, *) {
+                    Task {
+                        do {
+                          try await captcha.execute(action: "login")
+                          alert.message = "Success"
+                          self.present(alert, animated: true)
+                        }
+                        catch let error as RecaptchaError {
+                          alert.message = error.localizedDescription
+                          self.present(alert, animated: true)
+                        }
+                        self.stopLoading()
+                    }
+                }
+              }
                 
                 var appIntegrity: FRAppIntegrityCallback?
                 for (_, callback) in self.authCallbacks.enumerated() {
