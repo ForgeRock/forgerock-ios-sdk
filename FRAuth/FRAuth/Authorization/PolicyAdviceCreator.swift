@@ -2,7 +2,7 @@
 //  PolicyAdviceCreator.swift
 //  FRAuth
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,17 +12,22 @@
 import Foundation
 
 /// PolicyAdviceCreator helps create a Authorization PolicyAdvice based on different response types (xml, base64XML, json) that receive from AM's policy engine
-class PolicyAdviceCreator {
+public class PolicyAdviceCreator {
 
     private let adviceKey = "advices"
     private let valueKey = "authIndexValue"
     private let typeKey = "authIndexType"
     
+    //  MARK: - Init
+    
+    /// Initializes PolicyAdviceCreator object
+    public init() {}
+    
     /// Parse the advice json
     /// - Parameters:
     ///   - advice: The Advice in key value form
     /// - Returns: The parsed PolicyAdvice
-    func parseAsBase64(advice: String) -> PolicyAdvice? {
+    public func parseAsBase64(advice: String) -> PolicyAdvice? {
         var dict: [String: String] = [:]
         let regex = try? NSRegularExpression(pattern: "^\"|\"$", options: [])
         advice.components(separatedBy: ",").forEach { value in
@@ -42,7 +47,7 @@ class PolicyAdviceCreator {
     /// - Parameters:
     ///   - advice: The Advice in XML or base64 encoded form
     /// - Returns: The parsed PolicyAdvice
-    func parse(advice: String) -> PolicyAdvice? {
+    public func parse(advice: String) -> PolicyAdvice? {
         guard let urlString = URL(string: advice), let authIndexValue = urlString.valueOf(valueKey), let authIndexType = urlString.valueOf(typeKey) else {
             return nil
         }
