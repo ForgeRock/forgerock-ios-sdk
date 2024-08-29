@@ -103,7 +103,7 @@ public class FRSecurityConfiguration: NSObject {
                 
                 // Hash the key, and check it's validity.
                 let keyHash = hash(data: (publicKeyData as NSData) as Data, size: SecKeyGetBlockSize(publicKey))
-                print("Cert key hash: \(keyHash)")
+                Log.v("Server Cert key hash: \(keyHash)")
                 if hashes.contains(keyHash) {
                     // Success! This is our server!
                     validated = true
