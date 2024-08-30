@@ -159,9 +159,9 @@ class InternalRequestInterceptor: RequestInterceptor {
 }
 
 public enum FRTestURL {
-    static let baseURL = "https://httpbin.org"
-    static let imageURL = baseURL + "/image"
-    static let anythingURL = baseURL + "/anything"
+    static let baseURL = "https://httpbun.com"
+    static let imageURL = baseURL + "/payload"
+    static let anythingURL = baseURL + "/any"
     static let getURL = baseURL + "/get"
     static let status401URL = baseURL + "/status/401"
     static let oidcConfigUrl = "https://gitlab.com"
