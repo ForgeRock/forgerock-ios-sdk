@@ -36,6 +36,4 @@ Pod::Spec.new do |s|
 
   s.ios.dependency 'FRAuth', '~> 4.5.0'
   s.ios.dependency 'GoogleSignIn', '~> 7.1.0'
-  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
