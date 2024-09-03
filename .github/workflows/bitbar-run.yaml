@@ -45,12 +45,12 @@ jobs:
     steps:
       # Get the test artifacts prepared in previous step
       - name: Get FRTestHost.ipa BitBar artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: FRTestHost.ipa
 
       - name: Get the FRAuthTests.xctest.zip BitBar artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: FRAuthTests.xctest.zip
 
