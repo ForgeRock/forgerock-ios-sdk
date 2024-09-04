@@ -242,6 +242,16 @@
                ReferencedContainer = "container:../PingProtect/PingProtect.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1BA9F0092C755B390033651D"
+               BuildableName = "FRCaptchaEnterpriseTests.xctest"
+               BlueprintName = "FRCaptchaEnterpriseTests"
+               ReferencedContainer = "container:../FRCaptchaEnterprise/FRCaptchaEnterprise.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

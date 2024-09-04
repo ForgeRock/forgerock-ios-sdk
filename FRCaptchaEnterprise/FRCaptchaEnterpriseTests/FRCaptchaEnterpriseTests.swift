@@ -13,6 +13,7 @@ import XCTest
 @testable import FRCaptchaEnterprise
 @testable import FRAuth
 
+@available(iOS 13, *)
 final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
   
   var mockProvider: MockRecaptchaClientProvider!
@@ -143,11 +144,10 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     do {
       let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
       
-      callback.recaptchaProvider = mockProvider
       
       mockProvider.shouldReturnToken = "valid-token"
       
-      try await callback.execute(action: "test-action", timeoutInMillis: 15000)
+        try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       
       // Verify token
       XCTAssertEqual(callback.inputValues[callback.tokenKey] as? String, "valid-token")
@@ -171,10 +171,10 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     mockProvider.shouldThrowErrorIntialization = RecaptchaError(domain: "com.google.recaptcha", code: .errorCodeInternalError, message: "INVALID_CAPTCHA_CLIENT")
     
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
-    callback.recaptchaProvider = mockProvider
+    
     do {
       
-      try await callback.execute(action: "test-action", timeoutInMillis: 15000)
+        try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       XCTFail("Expected error not thrown")
     } catch let error as RecaptchaError {
       XCTAssertEqual(error.errorCode, 100)
@@ -196,10 +196,10 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     mockProvider.shouldthrowError = RecaptchaError(domain: "com.google.recaptcha", code: .errorCodeInternalError, message: "INVALID_CAPTCHA_CLIENT")
     
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
-    callback.recaptchaProvider = mockProvider
+    
     do {
       
-      try await callback.execute(action: "test-action", timeoutInMillis: 15000)
+        try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       XCTFail("Expected error not thrown")
     } catch let error as RecaptchaError {
       XCTAssertEqual(error.errorCode, 100)
@@ -220,7 +220,7 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     mockProvider.shouldthrowError = NSError(domain: "com.google.recaptcha", code: 100, userInfo: nil)
     
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
-    callback.recaptchaProvider = mockProvider
+    
     do {
       
       try await callback.execute(action: "test-action", timeoutInMillis: 15000)
@@ -246,9 +246,9 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     let callbackResponse = self.parseStringToDictionary(jsonStr)
     mockProvider.shouldReturnToken = nil
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
-    callback.recaptchaProvider = mockProvider
+    
     do {
-      try await callback.execute(action: "test-action", timeoutInMillis: 15000)
+        try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       XCTFail("Expected error not thrown")
     } catch {
       XCTAssertTrue(callback.inputValues[callback.clientErrorKey].debugDescription.contains("INVALID_CAPTCHA_TOKEN"))

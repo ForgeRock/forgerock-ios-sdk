@@ -35,7 +35,7 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
   /// An array of output values
   private var outputValues: [String: Any] = [:]
   
-  public var recaptchaProvider: RecaptchaClientProvider = DefaultRecaptchaClientProvider()
+  
   
   //  MARK: - Init
   
@@ -97,7 +97,7 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
   /// - Parameter timeout: Double value of timeout
   @available(iOS 13, *)
   public func execute(action: String = "login",
-                      timeoutInMillis: Double = 15000) async throws {
+                      timeoutInMillis: Double = 15000, recaptchaProvider: RecaptchaClientProvider = DefaultRecaptchaClientProvider()) async throws {
     do {
       let recaptchaClient = try await recaptchaProvider.getClient(withSiteKey: recaptchaSiteKey, withTimeout: timeoutInMillis)
       let action = RecaptchaAction(customAction: action)
@@ -158,6 +158,7 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
 }
 
 // MARK: - RecaptchaClientProvider
+@available(iOS 13, *)
 public protocol RecaptchaClientProvider {
   /// Get RecaptchaClient with given siteKey and timeout
   /// - Parameter siteKey: String value of siteKey
@@ -171,7 +172,9 @@ public protocol RecaptchaClientProvider {
 }
 
 // MARK: - DefaultRecaptchaClientProvider
-public class DefaultRecaptchaClientProvider: RecaptchaClientProvider {
+@available(iOS 13, *)
+public struct DefaultRecaptchaClientProvider: RecaptchaClientProvider {
+    public init(){}
   /// Get RecaptchaClient with given siteKey and timeout
   /// - Parameter siteKey: String value of siteKey
   /// - Parameter timeout: Double value of timeout
