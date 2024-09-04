@@ -223,12 +223,10 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     
     do {
       
-      try await callback.execute(action: "test-action", timeoutInMillis: 15000)
-      XCTFail("Expected error not thrown")
-    } catch _ as RecaptchaError {
+      try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       XCTFail("Expected error not thrown")
     }
-    catch let error as NSError {
+    catch let error as NSError  {
       XCTAssertEqual(error.code, 100)
       XCTAssertEqual(callback.inputValues[callback.clientErrorKey] as? String, error.localizedDescription)
     }
@@ -296,7 +294,7 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
 }
 
 // MARK: - Mock RecaptchaClientProvider
-
+@available(iOS 13, *)
 class MockRecaptchaClientProvider: RecaptchaClientProvider {
   var shouldReturnToken: String?
   

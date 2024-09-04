@@ -845,7 +845,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = org.forgerock.ios.CaptchaEnterprise.FRCaptchaEnterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterprise;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -880,7 +880,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = org.forgerock.ios.CaptchaEnterprise.FRCaptchaEnterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterprise;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -899,7 +899,7 @@
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.forgerock.ios.CaptchaEnterprise.FRCaptchaEnterpriseTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterpriseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -916,7 +916,7 @@
 				DEVELOPMENT_TEAM = JV6EC9KSN3;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.forgerock.ios.CaptchaEnterprise.FRCaptchaEnterpriseTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterpriseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;

@@ -99,7 +99,7 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
   public func execute(action: String = "login",
                       timeoutInMillis: Double = 15000, recaptchaProvider: RecaptchaClientProvider = DefaultRecaptchaClientProvider()) async throws {
     do {
-      let recaptchaClient = try await recaptchaProvider.getClient(withSiteKey: recaptchaSiteKey, withTimeout: timeoutInMillis)
+      let recaptchaClient: RecaptchaClient? = try await recaptchaProvider.getClient(withSiteKey: recaptchaSiteKey, withTimeout: timeoutInMillis)
       let action = RecaptchaAction(customAction: action)
       let token: String? = try await recaptchaProvider.execute(recaptchaClient: recaptchaClient, action: action, timeout: timeoutInMillis)
       guard let result = token else {

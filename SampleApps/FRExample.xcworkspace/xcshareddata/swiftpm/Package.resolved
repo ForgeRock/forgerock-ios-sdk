@@ -1,4 +1,5 @@
 {
+  "originHash" : "61dc5540678d577ccc553e51309c7f2f7471c3df50f7e74acffa57118326f734",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -46,6 +47,15 @@
       }
     },
     {
+      "identity" : "interop-ios-for-google-sdks",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
+      "state" : {
+        "revision" : "2d12673670417654f08f5f90fdd62926dc3a2648",
+        "version" : "100.0.0"
+      }
+    },
+    {
       "identity" : "joseswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airsidemobile/JOSESwift",
@@ -61,6 +71,15 @@
       "state" : {
         "revision" : "88951ad71c37853fb86cee0bf48cf447ded5b268",
         "version" : "5.2.3"
+      }
+    },
+    {
+      "identity" : "recaptcha-enterprise-mobile-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk",
+      "state" : {
+        "revision" : "742de2369422c0e5395205b9215b6b7228dc206a",
+        "version" : "18.5.1"
       }
     }
   ],
