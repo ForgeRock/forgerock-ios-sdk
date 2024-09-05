@@ -38,7 +38,7 @@ on:
         required: true
 jobs:
   prepare-device-farm-artifacts:
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
       # Clone the repo
