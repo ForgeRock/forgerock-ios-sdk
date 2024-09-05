@@ -11,7 +11,7 @@ on:
         required: true
 jobs:
   build-and-test:
-    runs-on: macos-13
+    runs-on: macos-latest
     timeout-minutes: 20
 
     steps:
@@ -32,11 +32,11 @@ jobs:
       # Set target Xcode version. For more details and options see:
       # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-12-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_14.3.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
 
       # Run all tests
       - name: Run tests
-        run: xcodebuild test -scheme FRTestHost -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
+        run: xcodebuild test -scheme FRTestHost -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.5' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
 
       # Publish test results
       - name: Publish test results

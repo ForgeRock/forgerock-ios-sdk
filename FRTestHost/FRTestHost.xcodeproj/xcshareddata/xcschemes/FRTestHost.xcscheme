@@ -118,6 +118,48 @@
                ReferencedContainer = "container:../PingProtect/PingProtect.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1BA9F0092C755B390033651D"
+               BuildableName = "FRCaptchaEnterpriseTests.xctest"
+               BlueprintName = "FRCaptchaEnterpriseTests"
+               ReferencedContainer = "container:../FRCaptchaEnterprise/FRCaptchaEnterprise.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D57F637A260137EA00BBA0B6"
+               BuildableName = "FRFacebookSignInTests.xctest"
+               BlueprintName = "FRFacebookSignInTests"
+               ReferencedContainer = "container:../FRFacebookSignIn/FRFacebookSignIn.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5B2067426008D0900DABB9B"
+               BuildableName = "FRGoogleSignInTests.xctest"
+               BlueprintName = "FRGoogleSignInTests"
+               ReferencedContainer = "container:../FRGoogleSignIn/FRGoogleSignIn.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -240,6 +282,36 @@
                BuildableName = "PingProtectTests.xctest"
                BlueprintName = "PingProtectTests"
                ReferencedContainer = "container:../PingProtect/PingProtect.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1BA9F0092C755B390033651D"
+               BuildableName = "FRCaptchaEnterpriseTests.xctest"
+               BlueprintName = "FRCaptchaEnterpriseTests"
+               ReferencedContainer = "container:../FRCaptchaEnterprise/FRCaptchaEnterprise.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D57F637A260137EA00BBA0B6"
+               BuildableName = "FRFacebookSignInTests.xctest"
+               BlueprintName = "FRFacebookSignInTests"
+               ReferencedContainer = "container:../FRFacebookSignIn/FRFacebookSignIn.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5B2067426008D0900DABB9B"
+               BuildableName = "FRGoogleSignInTests.xctest"
+               BlueprintName = "FRGoogleSignInTests"
+               ReferencedContainer = "container:../FRGoogleSignIn/FRGoogleSignIn.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

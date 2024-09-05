@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AF37D762C8038E400190350 /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */; };
+		3AF37D772C8038E400190350 /* FRCaptchaEnterprise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A52B848A2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A52B848B2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A52761332B60209100F8BDF7 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -57,6 +59,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1BA9F0202C755B390033651D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BA9F01A2C755B390033651D /* FRCaptchaEnterprise.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BA9F0002C755B390033651D;
+			remoteInfo = FRCaptchaEnterprise;
+		};
+		1BA9F0222C755B390033651D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BA9F01A2C755B390033651D /* FRCaptchaEnterprise.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BA9F00A2C755B390033651D;
+			remoteInfo = FRCaptchaEnterpriseTests;
+		};
 		A52761322B60209100F8BDF7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */;
@@ -240,6 +256,7 @@
 			files = (
 				A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */,
 				A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */,
+				3AF37D772C8038E400190350 /* FRCaptchaEnterprise.framework in Embed Frameworks */,
 				D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				EC2FF36328B8DB780095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */,
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
@@ -253,6 +270,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1BA9F01A2C755B390033651D /* FRCaptchaEnterprise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCaptchaEnterprise.xcodeproj; path = ../../FRCaptchaEnterprise/FRCaptchaEnterprise.xcodeproj; sourceTree = "<group>"; };
 		A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PingProtect.xcodeproj; path = ../../PingProtect/PingProtect.xcodeproj; sourceTree = "<group>"; };
 		A52B84892B339571001FBA2C /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
@@ -309,6 +327,7 @@
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
+				3AF37D762C8038E400190350 /* FRCaptchaEnterprise.framework in Frameworks */,
 				D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +335,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1BA9F01B2C755B390033651D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */,
+				1BA9F0232C755B390033651D /* FRCaptchaEnterpriseTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A52761262B60209000F8BDF7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +374,7 @@
 		D554632322A6EF950096C7A4 = {
 			isa = PBXGroup;
 			children = (
+				1BA9F01A2C755B390033651D /* FRCaptchaEnterprise.xcodeproj */,
 				A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */,
 				A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */,
 				D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */,
@@ -571,6 +600,10 @@
 					ProjectRef = D5E6F43B233AC39500D18DF1 /* FRAuth.xcodeproj */;
 				},
 				{
+					ProductGroup = 1BA9F01B2C755B390033651D /* Products */;
+					ProjectRef = 1BA9F01A2C755B390033651D /* FRCaptchaEnterprise.xcodeproj */;
+				},
+				{
 					ProductGroup = A5D1C38D29E59FC30096039E /* Products */;
 					ProjectRef = A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */;
 				},
@@ -604,6 +637,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRCaptchaEnterprise.framework;
+			remoteRef = 1BA9F0202C755B390033651D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1BA9F0232C755B390033651D /* FRCaptchaEnterpriseTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRCaptchaEnterpriseTests.xctest;
+			remoteRef = 1BA9F0222C755B390033651D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A52761332B60209100F8BDF7 /* PingProtect.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
