@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A3B1EC42C8A72AD00945626 /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3B1EC32C8A72AD00945626 /* FRCaptchaEnterprise.framework */; };
 		A50DEC482BCDFF510094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC472BCDFF510094CD73 /* PrivacyInfo.xcprivacy */; };
 		A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */; };
 		D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D527D03024BCDB4E00C21663 /* FRUITextView.swift */; };
@@ -82,6 +83,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A3B1EC32C8A72AD00945626 /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
 		A50DEC472BCDFF510094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A3B1EC42C8A72AD00945626 /* FRCaptchaEnterprise.framework in Frameworks */,
 				A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,6 +171,7 @@
 		D51F44DA22B1B8CF00FC8F0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A3B1EC32C8A72AD00945626 /* FRCaptchaEnterprise.framework */,
 				A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */,
 			);
 			name = Frameworks;
