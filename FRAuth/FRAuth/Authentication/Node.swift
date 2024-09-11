@@ -271,7 +271,9 @@ public class Node: NSObject {
                     }
                 }
                 else if let tokenId = response[OpenAM.tokenId] as? String {
-                    let token = Token(tokenId)
+                    let successUrl = response[OpenAM.successUrl] as? String ?? ""
+                    let realm = response[OpenAM.realm] as? String ?? ""
+                    let token = Token(tokenId, successUrl: successUrl, realm: realm)
                     if let keychainManager = self.keychainManager {
                         let currentSessionToken = keychainManager.getSSOToken()
                         if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {

@@ -2,7 +2,7 @@
 //  Token.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -18,6 +18,8 @@ import Foundation
     /// Raw value of token
     @objc
     public var value: String
+    public var successUrl: String
+    public var realm: String
     
     
     //  MARK: - Init
@@ -25,8 +27,12 @@ import Foundation
     /// Initializes Token object with given token value
     ///
     /// - Parameter token: raw string value of token
-    init(_ token: String) {
+    init(_ token: String,
+        successUrl: String = "",
+        realm: String = "") {
         self.value = token
+        self.successUrl = successUrl
+        self.realm = realm
         super.init()
     }
     
@@ -51,10 +57,12 @@ import Foundation
     ///
     /// - Parameter aDecoder: NSCoder
     convenience required public init?(coder aDecoder: NSCoder) {
-        guard let token = aDecoder.decodeObject(of: NSString.self, forKey: "value") as String? else {
+        guard let token = aDecoder.decodeObject(of: NSString.self, forKey: "value") as String?,
+        let successUrl = aDecoder.decodeObject(of: NSString.self, forKey: "successUrl") as String?,
+        let realm = aDecoder.decodeObject(of: NSString.self, forKey: "realm") as String? else {
             return nil
         }
-        self.init(token)
+        self.init(token, successUrl: successUrl, realm: realm)
     }
     
     
@@ -63,6 +71,8 @@ import Foundation
     /// - Parameter aCoder: NSCoder
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(self.value, forKey: "value")
+        aCoder.encode(self.successUrl, forKey: "successUrl")
+        aCoder.encode(self.realm, forKey: "realm")
     }
     
     

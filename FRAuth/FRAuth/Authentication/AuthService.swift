@@ -2,7 +2,7 @@
 //  AuthService.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -229,7 +229,9 @@ public class AuthService: NSObject {
                     }
                 }
                 else if let tokenId = response[OpenAM.tokenId] as? String {
-                    let token = Token(tokenId)
+                    let successUrl = response[OpenAM.successUrl] as? String ?? ""
+                    let realm = response[OpenAM.realm] as? String ?? ""
+                    let token = Token(tokenId, successUrl: successUrl, realm: realm)
                     if let keychainManager = self.keychainManager {
                         let currentSessionToken = keychainManager.getSSOToken()
                         if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
