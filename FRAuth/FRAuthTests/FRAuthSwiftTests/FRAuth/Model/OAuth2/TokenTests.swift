@@ -12,7 +12,6 @@ import XCTest
 @testable import FRAuth
 
 class TokenTests: FRAuthBaseTest {
-    //= SSOToken("mySSOToken", "http://success.url", "myRealm")
     func testBasicTokenValue() {
         
         // Given
