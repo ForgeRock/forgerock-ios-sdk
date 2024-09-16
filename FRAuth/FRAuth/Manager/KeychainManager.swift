@@ -31,7 +31,7 @@ struct KeychainManager {
         case primaryService = "primaryService"
         case primaryServiceEncrypted = "primaryService-encrypted"
         case successUrl = "successUrl"
-        case realm = "relam"
+        case realm = "realm"
     }
     
     /// String constant for SecuredKey's application tag
