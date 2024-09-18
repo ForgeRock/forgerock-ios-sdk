@@ -85,8 +85,7 @@ class BrowserTests: FRAuthBaseTest {
 
     @available(iOS 13, *)
     func test_03_browser_login_already_in_progress_from_another_instance() throws {
-        try XCTSkipIf(true) // Skip this test - see SDKS-3304
-
+        
         //  Start SDK
         self.startSDK()
 
@@ -128,6 +127,8 @@ class BrowserTests: FRAuthBaseTest {
 
             ex.fulfill()
         }
+        // Sleep for 1 second
+        sleep(1)
         waitForExpectations(timeout: 60, handler: nil)
     }
 
@@ -324,7 +325,6 @@ class BrowserTests: FRAuthBaseTest {
 
     @available(iOS 13, *)
     func test_08_login_auth_session_cancelled() throws {
-        try XCTSkipIf(true) // Skip this test - see SDKS-3304
 
         //  Start SDK
         self.startSDK()
@@ -371,7 +371,11 @@ class BrowserTests: FRAuthBaseTest {
 
             ex.fulfill()
         }
+        // Sleep for 1 second
+        sleep(1)
         browser.cancel()
+        // Sleep for 1 second
+        sleep(1)
         waitForExpectations(timeout: 60, handler: nil)
     }
 
@@ -379,41 +383,52 @@ class BrowserTests: FRAuthBaseTest {
     func test_09_login_native_browser_cancelled() {
 
         //  TODO: - Temporarily disable this test due to UI issue
-//        //  Start SDK
-//        self.startSDK()
-//
-//        //  Construct Browser
-//        guard let oAuth2Client = self.config.oAuth2Client, let sessionManager = self.config.sessionManager else {
-//            XCTFail("Failed to retrieve OAuth2Client, and/or SessionManager instance after SDK init")
-//            return
-//        }
-//
-//        //  Given with SFSafariViewController type of Browser object
-//        let browser = Browser(.nativeBrowserApp, oAuth2Client, sessionManager, UIViewController())
-//        Browser.currentBrowser = browser
-//
-//        let ex = self.expectation(description: "Browser Login")
-//        browser.login { (user, error) in
-//            XCTAssertNil(user)
-//            XCTAssertNotNil(error)
-//
-//            if let browserError = error as? BrowserError {
-//                switch browserError {
-//                case .externalUserAgentCancelled:
-//                    break
-//                default:
-//                    XCTFail("While expecting BrowserError.externalUserAgentCancelled; failed with different error \(browserError.localizedDescription)")
-//                    break
-//                }
-//            }
-//            else {
-//                XCTFail("While expecting BrowserError.externalUserAgentCancelled; failed with different error \(error?.localizedDescription ?? "")")
-//            }
-//
-//            ex.fulfill()
-//        }
-//        browser.cancel()
-//        waitForExpectations(timeout: 60, handler: nil)
+        //  Start SDK
+        self.startSDK()
+
+        //  Construct Browser
+        guard let oAuth2Client = self.config.oAuth2Client, let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve OAuth2Client, and/or KeychainManager instance after SDK init")
+            return
+        }
+        
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var topVC = keyWindow?.rootViewController
+        while let presentedViewController = topVC?.presentedViewController {
+            topVC = presentedViewController
+        }
+
+        guard let vc = topVC else {
+            XCTFail("Failed to retrieve top most ViewController")
+            return
+        }
+
+        //  Given with nativeBrowserApp type of Browser object
+        let browser = Browser(.nativeBrowserApp, oAuth2Client, keychainManager, vc)
+        Browser.currentBrowser = browser
+
+        let ex = self.expectation(description: "Browser Login")
+        browser.login { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            if let browserError = error as? BrowserError {
+                switch browserError {
+                case .externalUserAgentCancelled:
+                    break
+                default:
+                    XCTFail("While expecting BrowserError.externalUserAgentCancelled; failed with different error \(browserError.localizedDescription)")
+                    break
+                }
+            }
+            else {
+                XCTFail("While expecting BrowserError.externalUserAgentCancelled; failed with different error \(error?.localizedDescription ?? "")")
+            }
+
+            ex.fulfill()
+        }
+        browser.cancel()
+        waitForExpectations(timeout: 60, handler: nil)
     }
 
 
