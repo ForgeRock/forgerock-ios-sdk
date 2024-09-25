@@ -2,7 +2,7 @@
 //  FacebookSignInHandlerTests.swift
 //  FRFacebookSignInTests
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -94,7 +94,7 @@ class FacebookSignInHandlerTests: XCTestCase {
             let facebookHandler4 = callback.getDefaultIdPHandler(provider: "facebook-ios")
             let facebookHandler5 = callback.getDefaultIdPHandler(provider: "iosfacebookclient")
             
-            XCTAssertNil(googleHandler)
+            XCTAssertNotNil(googleHandler)
             XCTAssertNotNil(appleHandler)
             XCTAssertNotNil(facebookHandler1)
             XCTAssertNotNil(facebookHandler2)
