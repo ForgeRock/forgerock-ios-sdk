@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1BA9F00B2C755B390033651D /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0002C755B390033651D /* FRCaptchaEnterprise.framework */; };
-		1BA9F0102C755B390033651D /* FRCaptchaEnterpriseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9F00F2C755B390033651D /* FRCaptchaEnterpriseTests.swift */; };
+		1BA9F0102C755B390033651D /* ReCaptchaEnterpriseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9F00F2C755B390033651D /* ReCaptchaEnterpriseTests.swift */; };
 		1BA9F0112C755B390033651D /* FRCaptchaEnterprise.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA9F0032C755B390033651D /* FRCaptchaEnterprise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BA9F02F2C755EB90033651D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1BA9F02E2C755EAD0033651D /* PrivacyInfo.xcprivacy */; };
 		1BE1B7AF2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7AE2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift */; };
@@ -121,7 +121,7 @@
 		1BA9F0002C755B390033651D /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BA9F0032C755B390033651D /* FRCaptchaEnterprise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRCaptchaEnterprise.h; sourceTree = "<group>"; };
 		1BA9F00A2C755B390033651D /* FRCaptchaEnterpriseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRCaptchaEnterpriseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1BA9F00F2C755B390033651D /* FRCaptchaEnterpriseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRCaptchaEnterpriseTests.swift; sourceTree = "<group>"; };
+		1BA9F00F2C755B390033651D /* ReCaptchaEnterpriseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReCaptchaEnterpriseTests.swift; sourceTree = "<group>"; };
 		1BA9F02E2C755EAD0033651D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1BE1B7AE2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReCaptchaEnterpriseCallback.swift; sourceTree = "<group>"; };
 		1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
@@ -246,7 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				1BE1B8212C76B9BE00B12207 /* SharedTestFiles */,
-				1BA9F00F2C755B390033651D /* FRCaptchaEnterpriseTests.swift */,
+				1BA9F00F2C755B390033651D /* ReCaptchaEnterpriseTests.swift */,
 			);
 			path = FRCaptchaEnterpriseTests;
 			sourceTree = "<group>";
@@ -674,7 +674,7 @@
 				1BE1B85D2C76B9BF00B12207 /* FRTestNetworkStubProtocol.swift in Sources */,
 				1BE1B85F2C76B9BF00B12207 /* FRTestUtils.swift in Sources */,
 				1BE1B8222C76B9BE00B12207 /* FRAuthBaseTest.swift in Sources */,
-				1BA9F0102C755B390033651D /* FRCaptchaEnterpriseTests.swift in Sources */,
+				1BA9F0102C755B390033651D /* ReCaptchaEnterpriseTests.swift in Sources */,
 				1BE1B85E2C76B9BF00B12207 /* FRTestStubResponseParser.swift in Sources */,
 				1BE1B82C2C76B9BE00B12207 /* CustomCallback.swift in Sources */,
 			);
@@ -964,7 +964,7 @@
 			repositoryURL = "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 18.5.1;
+				minimumVersion = 18.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
