@@ -23,6 +23,8 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
   public private(set) var recaptchaSiteKey: String = String()
   /// Token input key in callback response
   public private(set) var tokenKey: String = String()
+  /// Token result
+  public private(set) var tokenResult: String = String()
   /// Action input key in callback response
   public private(set) var actionKey: String = String()
   /// Client Error input key in callback response
@@ -99,12 +101,14 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
   public func execute(action: String = "login",
                       timeoutInMillis: Double = 15000, recaptchaProvider: RecaptchaClientProvider = DefaultRecaptchaClientProvider()) async throws {
     do {
-      let recaptchaClient: RecaptchaClient? = try await recaptchaProvider.getClient(withSiteKey: recaptchaSiteKey, withTimeout: timeoutInMillis)
-      let action = RecaptchaAction(customAction: action)
-      let token: String? = try await recaptchaProvider.execute(recaptchaClient: recaptchaClient, action: action, timeout: timeoutInMillis)
+      let recaptchaClient: RecaptchaClient? = try await recaptchaProvider.fetchClient(withSiteKey: recaptchaSiteKey)
+      let recaptchaAction = RecaptchaAction(customAction: action)
+      let token: String? = try await recaptchaProvider.execute(recaptchaClient: recaptchaClient, action: recaptchaAction, timeout: timeoutInMillis)
       guard let result = token else {
         throw NSError(domain: CaptchaConstant.domain, code: 1, userInfo: [NSLocalizedDescriptionKey: CaptchaConstant.invalidToken])
       }
+      self.setAction(action)
+      self.tokenResult = result
       self.setToken(result)
     }
     catch {
@@ -137,7 +141,7 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
   
   /// Sets `action` value for the ReCAPTCHA in callback response
   /// - Parameter value: String value of `action`
-  public func setAction(_ value: String) {
+  internal func setAction(_ value: String) {
     self.inputValues[self.actionKey] = value
   }
   
@@ -147,9 +151,9 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
     self.inputValues[self.clientErrorKey] = value
   }
   
-  /// Sets `additionalJson` value for the ReCAPTCHA in callback response
+  /// Sets additional payload value for the ReCAPTCHA in callback response
   /// - Parameter value: Dictionary value of `additionalJson`
-  public func setAdditionalJson(_ value: [String: Any]? = nil) {
+  public func setPayload(_ value: [String: Any]? = nil) {
     if let payload = value, !payload.isEmpty {
       self.inputValues[self.payloadKey] = JSONStringify(value: payload)
     }
@@ -160,10 +164,9 @@ public class ReCaptchaEnterpriseCallback: MultipleValuesCallback {
 // MARK: - RecaptchaClientProvider
 @available(iOS 13, *)
 public protocol RecaptchaClientProvider {
-  /// Get RecaptchaClient with given siteKey and timeout
+  /// Fetch RecaptchaClient with given siteKey
   /// - Parameter siteKey: String value of siteKey
-  /// - Parameter timeout: Double value of timeout
-  func getClient(withSiteKey siteKey: String, withTimeout timeout: Double) async throws -> RecaptchaClient?
+  func fetchClient(withSiteKey siteKey: String) async throws -> RecaptchaClient?
 
   /// Execute RecaptchaClient with given action and timeout
   /// - Parameter recaptchaClient: RecaptchaClient instance
@@ -175,11 +178,10 @@ public protocol RecaptchaClientProvider {
 @available(iOS 13, *)
 public struct DefaultRecaptchaClientProvider: RecaptchaClientProvider {
     public init(){}
-  /// Get RecaptchaClient with given siteKey and timeout
+  /// Fetch RecaptchaClient with given siteKey and timeout
   /// - Parameter siteKey: String value of siteKey
-  /// - Parameter timeout: Double value of timeout
-  public func getClient(withSiteKey siteKey: String, withTimeout timeout: Double) async throws -> RecaptchaClient? {
-    return try await Recaptcha.getClient(withSiteKey: siteKey, withTimeout: timeout)
+  public func fetchClient(withSiteKey siteKey: String) async throws -> RecaptchaClient? {
+    return try await Recaptcha.fetchClient(withSiteKey: siteKey)
   }
   
     /// Execute RecaptchaClient with given action and timeout

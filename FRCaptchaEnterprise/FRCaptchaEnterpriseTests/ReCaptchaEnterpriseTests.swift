@@ -14,7 +14,7 @@ import XCTest
 @testable import FRAuth
 
 @available(iOS 13, *)
-final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
+final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
   
   var mockProvider: MockRecaptchaClientProvider!
   
@@ -183,7 +183,6 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     
     // Verify captured parameters
     XCTAssertEqual(mockProvider.capturedSiteKey, "siteKey")
-    XCTAssertEqual(mockProvider.capturedClientTimeout, 15000)
     XCTAssertEqual(mockProvider.capturedAction?.action, nil)
   }
   
@@ -268,7 +267,7 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     
     // Test case 1: Set valid JSON payload
     let validJson: [String: Any] = ["key": "value"]
-    callback.setAdditionalJson(validJson)
+    callback.setPayload(validJson)
     XCTAssertTrue((callback.inputValues[callback.payloadKey] as! String).contains("value"))
    
   }
@@ -280,7 +279,6 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     let callbackResponse = self.parseStringToDictionary(jsonStr)
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
     
-    
     // Test case 1: Set valid JSON payload
     let action = "login_test"
     callback.setAction(action)
@@ -288,7 +286,6 @@ final class FRCaptchaEnterpriseTests: FRAuthBaseTest {
     
     XCTAssertEqual(callback.inputValues[callback.actionKey] as? String, "login_test")
     XCTAssertEqual(callback.inputValues[callback.clientErrorKey] as? String, "customClientError")
-   
   }
   
 }
@@ -307,10 +304,9 @@ class MockRecaptchaClientProvider: RecaptchaClientProvider {
   var capturedClientTimeout: Double?
   var capturedAction: RecaptchaAction?
   
-  func getClient(withSiteKey siteKey: String, withTimeout timeout: Double) async throws -> RecaptchaClient? {
+  func fetchClient(withSiteKey siteKey: String) async throws -> RecaptchaClient? {
     
     capturedSiteKey = siteKey
-    capturedClientTimeout = timeout
     
     if let error = shouldThrowErrorIntialization {
       throw error
@@ -320,6 +316,7 @@ class MockRecaptchaClientProvider: RecaptchaClientProvider {
   
   func execute(recaptchaClient: RecaptchaClient?, action: RecaptchaAction, timeout: Double) async throws -> String? {
     capturedAction = action
+    capturedClientTimeout = timeout
     if let shouldthrowError = shouldthrowError {
       throw shouldthrowError
     }
