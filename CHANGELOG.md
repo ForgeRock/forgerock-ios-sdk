@@ -1,14 +1,14 @@
 ## [4.6.0]
 #### Added
-- Skip Type 4 TextOutputCallback [SDKS-3226]
 - Support PingOne Protect Marketplace Nodes [SDKS-3296]
-- Make PolicyAdviceCreator public [SDKS-3349]
 - Support new ReCaptcha Enterprise node [SDKS-3324]
-- Expose realm, Success and Failure URL in GetSessionToken [SDKS-3352]
+- Expose realm, Success and Failure URL in SessionToken [SDKS-3352]
 #### Fixed
 - Missing UIKit import issue for SPM [SDKS-3348]
 - SSL pinning not working with root certificates [SDKS-3334]
 - Build failed because FRCore.swiftmodule is not built for arm64 [SDKS-3347]
+- Skip Type 4 TextOutputCallback [SDKS-3226]
+- Make PolicyAdviceCreator public [SDKS-3349]
 
 ## [4.5.0]
 #### Added
