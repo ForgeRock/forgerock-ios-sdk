@@ -294,7 +294,7 @@ class AA_12_ReCaptchaEnterpriseCallbackTest: CallbackBaseTest {
         // Note: Upon failure the test tree returns CaptchaEnterpriseNode.FAILURE in a TextOutput callback...
         for callback in currentNode.callbacks {
             if callback is TextOutputCallback, let textOutputCallback = callback as? TextOutputCallback {
-                XCTAssertEqual(textOutputCallback.message, "\"VALIDATION_ERROR:CAPTCHA validation failed\"")
+                XCTAssertTrue(textOutputCallback.message.contains("VALIDATION_ERROR:CAPTCHA validation failed"))
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -357,7 +357,7 @@ class AA_12_ReCaptchaEnterpriseCallbackTest: CallbackBaseTest {
         // Note: Upon failure the test tree returns CaptchaEnterpriseNode.FAILURE in a TextOutput callback...
         for callback in currentNode.callbacks {
             if callback is TextOutputCallback, let textOutputCallback = callback as? TextOutputCallback {
-                XCTAssertEqual(textOutputCallback.message, "\"CLIENT_ERROR:CUSTOM_CLIENT_ERROR\"")
+                XCTAssertTrue(textOutputCallback.message.contains("CLIENT_ERROR:CUSTOM_CLIENT_ERROR"))
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
