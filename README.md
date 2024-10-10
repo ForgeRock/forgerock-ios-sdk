@@ -50,6 +50,7 @@ pod 'FRGoogleSignIn' // Social Login module for Google Sign In
 pod 'FRFacebookSignIn' // Social Login module for Facebook Login
 pod 'FRDeviceBinding' // Add-on for Device Binding feature
 pod 'PingProtect' // Add-on for Ping Protect feature
+pod 'FRCaptchaEnterprise' // Add-on for the ReCaptcha Enterprise feature
 ```
 
 ### Swift Package Manager
