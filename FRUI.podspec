@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = 'ForgeRock'
+  s.static_framework = true
 
   s.source           = {
       :git => 'https://github.com/ForgeRock/forgerock-ios-sdk.git',
@@ -32,6 +33,7 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'FRUI' => [base_dir + '/*.xcprivacy']
   }
-  s.resources = [base_dir + '/**/*.xib', base_dir + '/Assets/*']
+  s.resources = [base_dir + '/**/*.xib']
   s.ios.dependency 'FRDeviceBinding', '~> 4.6.0'
+  s.ios.dependency 'FRCaptchaEnterprise', '~> 4.6.0'
 end

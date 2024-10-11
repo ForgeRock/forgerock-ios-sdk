@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://www.forgerock.com'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = 'ForgeRock'
+  s.static_framework = true
 
   s.source           = {
       :git => 'https://github.com/ForgeRock/forgerock-ios-sdk.git',
@@ -33,5 +34,5 @@ Pod::Spec.new do |s|
     'FRCaptchaEnterprise' => [base_dir + '/*.xcprivacy']
   }
   s.ios.dependency 'FRAuth', '~> 4.6.0'
-  s.ios.dependency 'RecaptchaEnterprise', '~> 18.1.0'
+  s.ios.dependency 'RecaptchaEnterprise', '~> 18.6.0'
 end
