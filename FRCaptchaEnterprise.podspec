@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRCaptchaEnterprise'
-  s.version          = '4.6.0-beta1'
+  s.version          = '4.6.0-beta2'
   s.summary          = 'ForgeRock Captcha Enterprise SDK for iOS'
   s.description      = <<-DESC
     FRCaptchaEnterprise is a SDK that adds support for the Captcha Enterprise feature. FRCaptchaEnterprise depends on RecaptchaEnterprise.
@@ -32,6 +32,6 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'FRCaptchaEnterprise' => [base_dir + '/*.xcprivacy']
   }
-  s.ios.dependency 'FRAuth', '~> 4.6.0-beta1'
+  s.ios.dependency 'FRAuth', '~> 4.6.0-beta2'
   s.ios.dependency 'RecaptchaEnterprise', '~> 18.1.0'
 end
