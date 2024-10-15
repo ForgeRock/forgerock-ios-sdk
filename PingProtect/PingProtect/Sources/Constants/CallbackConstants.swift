@@ -29,4 +29,6 @@ struct CBConstants {
     
     static let signals: String = "signals"
     static let clientError: String = "clientError"
+    
+    static let riskEvaluationSignals: String =  "pingone_risk_evaluation_signals"
 }

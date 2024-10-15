@@ -38,7 +38,7 @@ on:
         required: true
 jobs:
   prepare-device-farm-artifacts:
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
       # Clone the repo
@@ -85,10 +85,10 @@ jobs:
       # Set target Xcode version. For more details and options see:
       # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_14.3.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
 
       - name: build-for-testing and sign
-        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos16.4 -workspace SampleApps/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=~/build/ DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath ~/build/derivedData/ build-for-testing
+        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos17.5 -workspace SampleApps/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=~/build/ DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath ~/build/derivedData/ build-for-testing
 
       # Prepare BitBar artifacts:
       - name: Prepare BitBar artifacts

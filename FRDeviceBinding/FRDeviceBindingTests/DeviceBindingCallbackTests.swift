@@ -625,10 +625,7 @@ class DeviceBindingCallbackTests: FRAuthBaseTest {
                 case .success:
                     XCTFail("Callback Execute succeeded instead of timeout")
                 case .failure(let error):
-                    if self.isSimulator {
-                        XCTAssertEqual(error.errorMessage, "DeviceBinding/Signing is not supported on the iOS Simulator")
-                        return
-                    }
+                    
                     XCTAssertEqual(error.clientError, DeviceBindingStatus.timeout.clientError)
                     XCTAssertTrue(callback.inputValues.count == 1)
                 }

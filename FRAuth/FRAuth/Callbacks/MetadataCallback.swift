@@ -2,7 +2,7 @@
 //  MetadataCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -11,7 +11,7 @@
 
 import Foundation
 
-open class MetadataCallback: Callback {
+open class MetadataCallback: Callback, DerivableCallback {
     
     public var _id: Int?
     
@@ -45,5 +45,25 @@ open class MetadataCallback: Callback {
     /// - Returns: JSON request payload for the Callback
     public override func buildResponse() -> [String : Any] {
         return self.response
+    }
+    
+    
+    //  MARK: - DerivedCallback protocol
+    
+    /// Retrieve the derived callback class, return nil if no derived callback found.
+    ///
+    /// - Returns: the derived callback class
+    static func getDerivedCallback(json: [String: Any]) -> Callback.Type? {
+        let webAuthnType = WebAuthnCallback.getWebAuthnType(json)
+        if webAuthnType.rawValue == WebAuthnCallbackType.registration.rawValue || webAuthnType.rawValue == WebAuthnCallbackType.authentication.rawValue {
+            return CallbackFactory.shared.supportedCallbacks[webAuthnType.rawValue]
+        }
+        
+        let protectCallbackType = ProtectCallback.getProtectDerivedCallbackType(json)
+        if protectCallbackType.rawValue == ProtectCallbackType.initialize.rawValue || protectCallbackType.rawValue == ProtectCallbackType.riskEvaluation.rawValue {
+            return CallbackFactory.shared.supportedCallbacks[protectCallbackType.rawValue]
+        }
+
+        return nil
     }
 }

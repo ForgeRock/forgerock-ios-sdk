@@ -1,4 +1,4 @@
-// 
+//
 //  DeviceBindingCallback.swift
 //  FRDeviceBinding
 //
@@ -170,11 +170,14 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
                           deviceRepository: DeviceBindingRepository = LocalDeviceBindingRepository(),
                           prompt: Prompt? = nil,
                           _ completion: @escaping DeviceBindingResultCallback) {
+        if deviceBindingAuthenticationType != .none {
 #if targetEnvironment(simulator)
-        // DeviceBinding/Signing is not supported on the iOS Simulator
-        handleException(status: .unsupported(errorMessage: "DeviceBinding/Signing is not supported on the iOS Simulator"), completion: completion)
-        return
+            // DeviceBinding/Signing other than `.NONE` type is not supported on the iOS Simulator
+            handleException(status: .unsupported(errorMessage: "DeviceBinding/Signing is not supported on the iOS Simulator"), completion: completion)
+            return
 #endif
+        }
+        
         let authInterface = authInterface ?? getDeviceAuthenticator(type: deviceBindingAuthenticationType)
         authInterface.initialize(userId: userId, prompt: prompt ?? Prompt(title: title, subtitle: subtitle, description: promptDescription))
         let deviceId = deviceId ?? FRDevice.currentDevice?.identifier.getIdentifier()

@@ -168,7 +168,7 @@ class TextOutputCallbackTests: FRAuthBaseTest {
             XCTAssertEqual(callback.message, message)
             XCTAssertEqual(callback.messageType, .unknown)
             let requestPayload = callback.buildResponse()
-            XCTAssertTrue(requestPayload == callbackResponse)
+            XCTAssertTrue(requestPayload.isEmpty)
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -241,6 +241,33 @@ class TextOutputCallbackTests: FRAuthBaseTest {
             XCTAssertTrue(requestPayload == callbackResponse)
         }
         catch {
+            XCTFail("Failed to construct callback: \(callbackResponse)")
+        }
+    }
+    
+    func test_06_Type4Message() throws {
+        let jsonStr = """
+        {
+            "type": "TextOutputCallback",
+            "output": [
+                {
+                    "name": "message",
+                    "value": "Javascript"
+                },
+                {
+                    "name": "messageType",
+                    "value": "4"
+                }
+            ]
+        }
+        """
+        
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        do {
+            let callback = try TextOutputCallback(json: callbackResponse)
+            
+            XCTAssertTrue(callback.buildResponse().isEmpty)
+        } catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
         }
     }

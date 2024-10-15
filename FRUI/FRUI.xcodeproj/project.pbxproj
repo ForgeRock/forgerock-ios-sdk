@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A3B1EC42C8A72AD00945626 /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3B1EC32C8A72AD00945626 /* FRCaptchaEnterprise.framework */; };
 		A50DEC482BCDFF510094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC472BCDFF510094CD73 /* PrivacyInfo.xcprivacy */; };
 		A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */; };
 		D527D03124BCDB4E00C21663 /* FRUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D527D03024BCDB4E00C21663 /* FRUITextView.swift */; };
@@ -72,6 +73,20 @@
 			remoteGlobalIDString = A5D1C37C29E59FC30096039E;
 			remoteInfo = FRDeviceBindingTests;
 		};
+		A50508C92C9C550600A2AFE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A50508C42C9C550600A2AFE0 /* FRCaptchaEnterprise.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BA9F0002C755B390033651D;
+			remoteInfo = FRCaptchaEnterprise;
+		};
+		A50508CB2C9C550600A2AFE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A50508C42C9C550600A2AFE0 /* FRCaptchaEnterprise.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BA9F00A2C755B390033651D;
+			remoteInfo = FRCaptchaEnterpriseTests;
+		};
 		D53A91EC22B1815B003DF94E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D53A91D822B1815B003DF94E /* Project object */;
@@ -82,7 +97,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A3B1EC32C8A72AD00945626 /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
+		A50508C42C9C550600A2AFE0 /* FRCaptchaEnterprise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCaptchaEnterprise.xcodeproj; path = ../FRCaptchaEnterprise/FRCaptchaEnterprise.xcodeproj; sourceTree = "<group>"; };
 		A50DEC472BCDFF510094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRDeviceBinding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D527D03024BCDB4E00C21663 /* FRUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUITextView.swift; sourceTree = "<group>"; };
@@ -141,6 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A3B1EC42C8A72AD00945626 /* FRCaptchaEnterprise.framework in Frameworks */,
 				A5C38A2329E5AFB20016B565 /* FRDeviceBinding.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,9 +183,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A50508C52C9C550600A2AFE0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A50508CA2C9C550600A2AFE0 /* FRCaptchaEnterprise.framework */,
+				A50508CC2C9C550600A2AFE0 /* FRCaptchaEnterpriseTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D51F44DA22B1B8CF00FC8F0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A3B1EC32C8A72AD00945626 /* FRCaptchaEnterprise.framework */,
 				A5C38A2229E5AFB20016B565 /* FRDeviceBinding.framework */,
 			);
 			name = Frameworks;
@@ -176,6 +204,7 @@
 		D53A91D722B1815B003DF94E = {
 			isa = PBXGroup;
 			children = (
+				A50508C42C9C550600A2AFE0 /* FRCaptchaEnterprise.xcodeproj */,
 				953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */,
 				D53A91E322B1815B003DF94E /* FRUI */,
 				D53A91EE22B1815B003DF94E /* FRUITests */,
@@ -416,6 +445,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = A50508C52C9C550600A2AFE0 /* Products */;
+					ProjectRef = A50508C42C9C550600A2AFE0 /* FRCaptchaEnterprise.xcodeproj */;
+				},
+				{
 					ProductGroup = 953E5D322A424347003BC7B3 /* Products */;
 					ProjectRef = 953E5D312A424347003BC7B3 /* FRDeviceBinding.xcodeproj */;
 				},
@@ -441,6 +474,20 @@
 			fileType = wrapper.cfbundle;
 			path = FRDeviceBindingTests.xctest;
 			remoteRef = 953E5D392A424347003BC7B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A50508CA2C9C550600A2AFE0 /* FRCaptchaEnterprise.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRCaptchaEnterprise.framework;
+			remoteRef = A50508C92C9C550600A2AFE0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A50508CC2C9C550600A2AFE0 /* FRCaptchaEnterpriseTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRCaptchaEnterpriseTests.xctest;
+			remoteRef = A50508CB2C9C550600A2AFE0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -677,7 +724,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.5.0;
+				MARKETING_VERSION = 4.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -714,7 +761,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.5.0;
+				MARKETING_VERSION = 4.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -747,6 +794,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Debug;
 		};
@@ -769,6 +817,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
 			};
 			name = Release;
 		};

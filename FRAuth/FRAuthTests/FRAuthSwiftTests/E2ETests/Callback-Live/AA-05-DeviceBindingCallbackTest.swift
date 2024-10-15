@@ -206,10 +206,6 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
                         ex.fulfill()
                     })
                 waitForExpectations(timeout: 60, handler: nil)
-                if isSimulator {
-                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
-                    return
-                }
                 
                 XCTAssertEqual(bindingResult, "Success")
 
@@ -301,10 +297,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
                     })
                 waitForExpectations(timeout: 60, handler: nil)
                 
-                if isSimulator {
-                    XCTAssertEqual(bindingResult, "DeviceBinding/Signing is not supported on the iOS Simulator")
-                    return
-                }
+                
                 XCTAssertEqual(bindingResult, "Success")
 
             }

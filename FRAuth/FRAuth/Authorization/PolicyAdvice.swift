@@ -2,7 +2,7 @@
 //  PolicyAdvice.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -41,7 +41,7 @@ public enum AdviceType: String {
     
     //  MARK: - Init
     
-    /// Initializes PolicyAdvice object with URL; PolicyAdvice class extracts certain information fromt he redirect-url, and construct the object
+    /// Initializes PolicyAdvice object with URL; PolicyAdvice class extracts certain information from the redirect-url, and construct the object
     /// - Parameter redirectUrl: redirectURL string value from the response header
     @objc public init?(redirectUrl: String) {
         guard let url = URL(string: redirectUrl), let xmlstring = url.valueOf("authIndexValue"), let authIndexType = url.valueOf("authIndexType") else {

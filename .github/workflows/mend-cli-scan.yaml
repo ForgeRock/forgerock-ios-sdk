@@ -14,7 +14,7 @@ on:
       
 jobs:
   mend-cli-scan:
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
       # Clone the repo
@@ -28,7 +28,7 @@ jobs:
       # Set target Xcode version. For more details and options see:
       # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-12-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_14.3.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
 
       # Setup Mend CLI
       - name: Download and cache the Mend CLI executable

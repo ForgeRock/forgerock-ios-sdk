@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -30,6 +30,8 @@ struct KeychainManager {
         case ssoToken = "sso_token"
         case primaryService = "primaryService"
         case primaryServiceEncrypted = "primaryService-encrypted"
+        case successUrl = "successUrl"
+        case realm = "realm"
     }
     
     /// String constant for SecuredKey's application tag
@@ -155,7 +157,9 @@ struct KeychainManager {
     /// Returns current session's Token object that represents SSO Token
     func getSSOToken() -> Token? {
         if let ssoTokenString = self.sharedStore.getString(StorageKey.ssoToken.rawValue) {
-            return Token(ssoTokenString)
+            let successUrl = self.sharedStore.getString(StorageKey.successUrl.rawValue) ?? ""
+            let realm = self.sharedStore.getString(StorageKey.realm.rawValue) ?? ""
+            return Token(ssoTokenString, successUrl: successUrl, realm: realm)
         }
         else {
             return nil
@@ -169,9 +173,13 @@ struct KeychainManager {
     @discardableResult func setSSOToken(ssoToken: Token?) -> Bool {
         if let token = ssoToken {
             return self.sharedStore.set(token.value, key: StorageKey.ssoToken.rawValue)
+            && self.sharedStore.set(token.successUrl, key: StorageKey.successUrl.rawValue)
+            && self.sharedStore.set(token.realm, key: StorageKey.realm.rawValue)
         }
         else {
             return self.sharedStore.delete(StorageKey.ssoToken.rawValue)
+            && self.sharedStore.delete(StorageKey.successUrl.rawValue)
+            && self.sharedStore.delete(StorageKey.realm.rawValue)
         }
     }
     

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRGoogleSignIn'
-  s.version          = '4.5.0'
+  s.version          = '4.6.0'
   s.summary          = 'ForgeRock Auth Google Sign-in SDK for iOS'
   s.description      = <<-DESC
   FRGoogleSignIn is a SDK that allows a user to sign-in through Google. FRGoogleSignIn depends on GoogleSignIn, and uses Google's SDK to perform authorization following Google's protocol.
@@ -34,8 +34,6 @@ Pod::Spec.new do |s|
     'FRGoogleSignIn' => [base_dir + '/*.xcprivacy']
   }
 
-  s.ios.dependency 'FRAuth', '~> 4.5.0'
+  s.ios.dependency 'FRAuth', '~> 4.6.0'
   s.ios.dependency 'GoogleSignIn', '~> 7.1.0'
-  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end

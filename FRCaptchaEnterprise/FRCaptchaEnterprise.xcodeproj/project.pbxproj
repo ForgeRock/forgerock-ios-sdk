@@ -1,0 +1,981 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1BA9F00B2C755B390033651D /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0002C755B390033651D /* FRCaptchaEnterprise.framework */; };
+		1BA9F0102C755B390033651D /* ReCaptchaEnterpriseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9F00F2C755B390033651D /* ReCaptchaEnterpriseTests.swift */; };
+		1BA9F0112C755B390033651D /* FRCaptchaEnterprise.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA9F0032C755B390033651D /* FRCaptchaEnterprise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1BA9F02F2C755EB90033651D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1BA9F02E2C755EAD0033651D /* PrivacyInfo.xcprivacy */; };
+		1BE1B7AF2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7AE2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift */; };
+		1BE1B7BE2C76812700B12207 /* RecaptchaEnterprise in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE1B7BD2C76812700B12207 /* RecaptchaEnterprise */; };
+		1BE1B7C02C768DFA00B12207 /* CaptchaConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7BF2C768DFA00B12207 /* CaptchaConstant.swift */; };
+		1BE1B7C22C768FDB00B12207 /* FRCaptchaEnterprise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7C12C768FDB00B12207 /* FRCaptchaEnterprise.swift */; };
+		1BE1B8222C76B9BE00B12207 /* FRAuthBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7D72C76B9BE00B12207 /* FRAuthBaseTest.swift */; };
+		1BE1B8232C76B9BE00B12207 /* FRBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7D82C76B9BE00B12207 /* FRBaseTestCase.swift */; };
+		1BE1B8242C76B9BE00B12207 /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7DA2C76B9BE00B12207 /* Config-live-01.json */; };
+		1BE1B8252C76B9BE00B12207 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7DB2C76B9BE00B12207 /* Config.json */; };
+		1BE1B8262C76B9BE00B12207 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7DC2C76B9BE00B12207 /* Config.swift */; };
+		1BE1B8272C76B9BE00B12207 /* 01-cert.cert in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7DE2C76B9BE00B12207 /* 01-cert.cert */; };
+		1BE1B8282C76B9BE00B12207 /* 01-pkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7DF2C76B9BE00B12207 /* 01-pkey.key */; };
+		1BE1B8292C76B9BE00B12207 /* 02-cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E02C76B9BE00B12207 /* 02-cert.pem */; };
+		1BE1B82A2C76B9BE00B12207 /* 02-pkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E12C76B9BE00B12207 /* 02-pkey.pem */; };
+		1BE1B82B2C76B9BE00B12207 /* httpbin_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E22C76B9BE00B12207 /* httpbin_cert.der */; };
+		1BE1B82C2C76B9BE00B12207 /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E42C76B9BE00B12207 /* CustomCallback.swift */; };
+		1BE1B82D2C76B9BE00B12207 /* NoSessionInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E62C76B9BE00B12207 /* NoSessionInterceptor.swift */; };
+		1BE1B82E2C76B9BE00B12207 /* AM_Session_Logout_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E82C76B9BE00B12207 /* AM_Session_Logout_Failure.json */; };
+		1BE1B82F2C76B9BE00B12207 /* AM_Session_Logout_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7E92C76B9BE00B12207 /* AM_Session_Logout_Success.json */; };
+		1BE1B8302C76B9BE00B12207 /* AM_Push_Authentication_Fail.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7EB2C76B9BE00B12207 /* AM_Push_Authentication_Fail.json */; };
+		1BE1B8312C76B9BE00B12207 /* AM_Push_Authentication_Successful.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7EC2C76B9BE00B12207 /* AM_Push_Authentication_Successful.json */; };
+		1BE1B8322C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7ED2C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json */; };
+		1BE1B8332C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7EE2C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */; };
+		1BE1B8342C76B9BE00B12207 /* AM_Push_Registration_Successful.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7EF2C76B9BE00B12207 /* AM_Push_Registration_Successful.json */; };
+		1BE1B8352C76B9BE00B12207 /* AuthTree_AttributeCollectorsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F02C76B9BE00B12207 /* AuthTree_AttributeCollectorsNode.json */; };
+		1BE1B8362C76B9BE00B12207 /* AuthTree_AuthTimedOut.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F12C76B9BE00B12207 /* AuthTree_AuthTimedOut.json */; };
+		1BE1B8372C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeAll.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F22C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeAll.json */; };
+		1BE1B8382C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F32C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeLocationOnly.json */; };
+		1BE1B8392C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F42C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */; };
+		1BE1B83A2C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeNone.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F52C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeNone.json */; };
+		1BE1B83B2C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F62C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeWithMessage.json */; };
+		1BE1B83C2C76B9BE00B12207 /* AuthTree_KBACreateNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F72C76B9BE00B12207 /* AuthTree_KBACreateNode.json */; };
+		1BE1B83D2C76B9BF00B12207 /* AuthTree_KBAVerificationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F82C76B9BE00B12207 /* AuthTree_KBAVerificationNode.json */; };
+		1BE1B83E2C76B9BF00B12207 /* AuthTree_LoginNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7F92C76B9BE00B12207 /* AuthTree_LoginNode.json */; };
+		1BE1B83F2C76B9BF00B12207 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7FA2C76B9BE00B12207 /* AuthTree_NoSession_Success.json */; };
+		1BE1B8402C76B9BF00B12207 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7FB2C76B9BE00B12207 /* AuthTree_PlatformUsernamePasswordNode.json */; };
+		1BE1B8412C76B9BF00B12207 /* AuthTree_RegistrationNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7FC2C76B9BE00B12207 /* AuthTree_RegistrationNode.json */; };
+		1BE1B8422C76B9BF00B12207 /* AuthTree_SecondFactorChoiceNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7FD2C76B9BE00B12207 /* AuthTree_SecondFactorChoiceNode.json */; };
+		1BE1B8432C76B9BF00B12207 /* AuthTree_SecondFactorOTPNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7FE2C76B9BE00B12207 /* AuthTree_SecondFactorOTPNode.json */; };
+		1BE1B8442C76B9BF00B12207 /* AuthTree_SSOToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B7FF2C76B9BE00B12207 /* AuthTree_SSOToken_Success.json */; };
+		1BE1B8452C76B9BF00B12207 /* AuthTree_SSOToken_Success2.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8002C76B9BE00B12207 /* AuthTree_SSOToken_Success2.json */; };
+		1BE1B8462C76B9BF00B12207 /* AuthTree_SuspendedAuthSessionException.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8012C76B9BE00B12207 /* AuthTree_SuspendedAuthSessionException.json */; };
+		1BE1B8472C76B9BF00B12207 /* AuthTree_TermsAndConditionsNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8022C76B9BE00B12207 /* AuthTree_TermsAndConditionsNode.json */; };
+		1BE1B8482C76B9BF00B12207 /* AuthTree_UsernamePasswordNode.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8032C76B9BE00B12207 /* AuthTree_UsernamePasswordNode.json */; };
+		1BE1B8492C76B9BF00B12207 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8042C76B9BE00B12207 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
+		1BE1B84A2C76B9BF00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8052C76B9BE00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71.json */; };
+		1BE1B84B2C76B9BF00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71InvalidHiddenValueCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8062C76B9BE00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71InvalidHiddenValueCallback.json */; };
+		1BE1B84C2C76B9BF00B12207 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8082C76B9BE00B12207 /* OAuth2_AuthorizeRedirect_Failure.json */; };
+		1BE1B84D2C76B9BF00B12207 /* OAuth2_AuthorizeRedirect_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8092C76B9BE00B12207 /* OAuth2_AuthorizeRedirect_Success.json */; };
+		1BE1B84E2C76B9BF00B12207 /* OAuth2_EndSession_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B80A2C76B9BE00B12207 /* OAuth2_EndSession_Failure.json */; };
+		1BE1B84F2C76B9BF00B12207 /* OAuth2_EndSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B80B2C76B9BE00B12207 /* OAuth2_EndSession_Success.json */; };
+		1BE1B8502C76B9BF00B12207 /* OAuth2_Token_Failure_InvalidClient.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B80C2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidClient.json */; };
+		1BE1B8512C76B9BF00B12207 /* OAuth2_Token_Failure_InvalidGrant.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B80D2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidGrant.json */; };
+		1BE1B8522C76B9BF00B12207 /* OAuth2_Token_Failure_InvalidScope.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B80E2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidScope.json */; };
+		1BE1B8532C76B9BF00B12207 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B80F2C76B9BE00B12207 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */; };
+		1BE1B8542C76B9BF00B12207 /* OAuth2_Token_Refresh_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8102C76B9BE00B12207 /* OAuth2_Token_Refresh_Success.json */; };
+		1BE1B8552C76B9BF00B12207 /* OAuth2_Token_Revoke_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8112C76B9BE00B12207 /* OAuth2_Token_Revoke_Success.json */; };
+		1BE1B8562C76B9BF00B12207 /* OAuth2_Token_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8122C76B9BE00B12207 /* OAuth2_Token_Success.json */; };
+		1BE1B8572C76B9BF00B12207 /* OAuth2_UserInfo_Failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8132C76B9BE00B12207 /* OAuth2_UserInfo_Failure.json */; };
+		1BE1B8582C76B9BF00B12207 /* OAuth2_UserInfo_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8142C76B9BE00B12207 /* OAuth2_UserInfo_Success.json */; };
+		1BE1B8592C76B9BF00B12207 /* AccessToken.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8172C76B9BE00B12207 /* AccessToken.json */; };
+		1BE1B85A2C76B9BF00B12207 /* AccessToken2.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8182C76B9BE00B12207 /* AccessToken2.json */; };
+		1BE1B85B2C76B9BF00B12207 /* AccessTokenNoRefresh.json in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1B8192C76B9BE00B12207 /* AccessTokenNoRefresh.json */; };
+		1BE1B85C2C76B9BF00B12207 /* FRTestLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B81C2C76B9BE00B12207 /* FRTestLogger.swift */; };
+		1BE1B85D2C76B9BF00B12207 /* FRTestNetworkStubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B81D2C76B9BE00B12207 /* FRTestNetworkStubProtocol.swift */; };
+		1BE1B85E2C76B9BF00B12207 /* FRTestStubResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B81E2C76B9BE00B12207 /* FRTestStubResponseParser.swift */; };
+		1BE1B85F2C76B9BF00B12207 /* FRTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1B81F2C76B9BE00B12207 /* FRTestUtils.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1BA9F00C2C755B390033651D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BA9EFF72C755B390033651D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BA9EFFF2C755B390033651D;
+			remoteInfo = FRCaptchaEnterprise;
+		};
+		1BE1B7B62C767EB400B12207 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D55462F822A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+		1BE1B7B82C767EB400B12207 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D554630122A6DF720096C7A4;
+			remoteInfo = FRAuthTests;
+		};
+		1BE1B7BA2C767EFF00B12207 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D55462F722A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+		1BE1B7D52C76B91100B12207 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BE1B7D12C76B91100B12207 /* FRTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5A7A1E5248CD88C00E30CFE;
+			remoteInfo = FRTestHost;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1BA9F0002C755B390033651D /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BA9F0032C755B390033651D /* FRCaptchaEnterprise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FRCaptchaEnterprise.h; sourceTree = "<group>"; };
+		1BA9F00A2C755B390033651D /* FRCaptchaEnterpriseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FRCaptchaEnterpriseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BA9F00F2C755B390033651D /* ReCaptchaEnterpriseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReCaptchaEnterpriseTests.swift; sourceTree = "<group>"; };
+		1BA9F02E2C755EAD0033651D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		1BE1B7AE2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReCaptchaEnterpriseCallback.swift; sourceTree = "<group>"; };
+		1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = ../FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
+		1BE1B7BF2C768DFA00B12207 /* CaptchaConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptchaConstant.swift; sourceTree = "<group>"; };
+		1BE1B7C12C768FDB00B12207 /* FRCaptchaEnterprise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRCaptchaEnterprise.swift; sourceTree = "<group>"; };
+		1BE1B7D12C76B91100B12207 /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = ../FRTestHost/FRTestHost.xcodeproj; sourceTree = "<group>"; };
+		1BE1B7D72C76B9BE00B12207 /* FRAuthBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRAuthBaseTest.swift; sourceTree = "<group>"; };
+		1BE1B7D82C76B9BE00B12207 /* FRBaseTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRBaseTestCase.swift; sourceTree = "<group>"; };
+		1BE1B7DA2C76B9BE00B12207 /* Config-live-01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Config-live-01.json"; sourceTree = "<group>"; };
+		1BE1B7DB2C76B9BE00B12207 /* Config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		1BE1B7DC2C76B9BE00B12207 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		1BE1B7DE2C76B9BE00B12207 /* 01-cert.cert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-cert.cert"; sourceTree = "<group>"; };
+		1BE1B7DF2C76B9BE00B12207 /* 01-pkey.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "01-pkey.key"; sourceTree = "<group>"; };
+		1BE1B7E02C76B9BE00B12207 /* 02-cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-cert.pem"; sourceTree = "<group>"; };
+		1BE1B7E12C76B9BE00B12207 /* 02-pkey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "02-pkey.pem"; sourceTree = "<group>"; };
+		1BE1B7E22C76B9BE00B12207 /* httpbin_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = httpbin_cert.der; sourceTree = "<group>"; };
+		1BE1B7E42C76B9BE00B12207 /* CustomCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
+		1BE1B7E62C76B9BE00B12207 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
+		1BE1B7E82C76B9BE00B12207 /* AM_Session_Logout_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Failure.json; sourceTree = "<group>"; };
+		1BE1B7E92C76B9BE00B12207 /* AM_Session_Logout_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Session_Logout_Success.json; sourceTree = "<group>"; };
+		1BE1B7EB2C76B9BE00B12207 /* AM_Push_Authentication_Fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Authentication_Fail.json; sourceTree = "<group>"; };
+		1BE1B7EC2C76B9BE00B12207 /* AM_Push_Authentication_Successful.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Authentication_Successful.json; sourceTree = "<group>"; };
+		1BE1B7ED2C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Fail_Invalid_Signed_Challenge.json; sourceTree = "<group>"; };
+		1BE1B7EE2C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Fail_Invalid_Signed_JWT.json; sourceTree = "<group>"; };
+		1BE1B7EF2C76B9BE00B12207 /* AM_Push_Registration_Successful.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Successful.json; sourceTree = "<group>"; };
+		1BE1B7F02C76B9BE00B12207 /* AuthTree_AttributeCollectorsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AttributeCollectorsNode.json; sourceTree = "<group>"; };
+		1BE1B7F12C76B9BE00B12207 /* AuthTree_AuthTimedOut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_AuthTimedOut.json; sourceTree = "<group>"; };
+		1BE1B7F22C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeAll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeAll.json; sourceTree = "<group>"; };
+		1BE1B7F32C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeLocationOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeLocationOnly.json; sourceTree = "<group>"; };
+		1BE1B7F42C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeMetadataOnly.json; sourceTree = "<group>"; };
+		1BE1B7F52C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeNone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeNone.json; sourceTree = "<group>"; };
+		1BE1B7F62C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeWithMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_DeviceCollectorNodeWithMessage.json; sourceTree = "<group>"; };
+		1BE1B7F72C76B9BE00B12207 /* AuthTree_KBACreateNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBACreateNode.json; sourceTree = "<group>"; };
+		1BE1B7F82C76B9BE00B12207 /* AuthTree_KBAVerificationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_KBAVerificationNode.json; sourceTree = "<group>"; };
+		1BE1B7F92C76B9BE00B12207 /* AuthTree_LoginNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_LoginNode.json; sourceTree = "<group>"; };
+		1BE1B7FA2C76B9BE00B12207 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
+		1BE1B7FB2C76B9BE00B12207 /* AuthTree_PlatformUsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_PlatformUsernamePasswordNode.json; sourceTree = "<group>"; };
+		1BE1B7FC2C76B9BE00B12207 /* AuthTree_RegistrationNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_RegistrationNode.json; sourceTree = "<group>"; };
+		1BE1B7FD2C76B9BE00B12207 /* AuthTree_SecondFactorChoiceNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorChoiceNode.json; sourceTree = "<group>"; };
+		1BE1B7FE2C76B9BE00B12207 /* AuthTree_SecondFactorOTPNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SecondFactorOTPNode.json; sourceTree = "<group>"; };
+		1BE1B7FF2C76B9BE00B12207 /* AuthTree_SSOToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success.json; sourceTree = "<group>"; };
+		1BE1B8002C76B9BE00B12207 /* AuthTree_SSOToken_Success2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success2.json; sourceTree = "<group>"; };
+		1BE1B8012C76B9BE00B12207 /* AuthTree_SuspendedAuthSessionException.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SuspendedAuthSessionException.json; sourceTree = "<group>"; };
+		1BE1B8022C76B9BE00B12207 /* AuthTree_TermsAndConditionsNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_TermsAndConditionsNode.json; sourceTree = "<group>"; };
+		1BE1B8032C76B9BE00B12207 /* AuthTree_UsernamePasswordNode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNode.json; sourceTree = "<group>"; };
+		1BE1B8042C76B9BE00B12207 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
+		1BE1B8052C76B9BE00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_WebAuthnRegistrationNodeAM71.json; sourceTree = "<group>"; };
+		1BE1B8062C76B9BE00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71InvalidHiddenValueCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_WebAuthnRegistrationNodeAM71InvalidHiddenValueCallback.json; sourceTree = "<group>"; };
+		1BE1B8082C76B9BE00B12207 /* OAuth2_AuthorizeRedirect_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Failure.json; sourceTree = "<group>"; };
+		1BE1B8092C76B9BE00B12207 /* OAuth2_AuthorizeRedirect_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_AuthorizeRedirect_Success.json; sourceTree = "<group>"; };
+		1BE1B80A2C76B9BE00B12207 /* OAuth2_EndSession_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Failure.json; sourceTree = "<group>"; };
+		1BE1B80B2C76B9BE00B12207 /* OAuth2_EndSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_EndSession_Success.json; sourceTree = "<group>"; };
+		1BE1B80C2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidClient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidClient.json; sourceTree = "<group>"; };
+		1BE1B80D2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidGrant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidGrant.json; sourceTree = "<group>"; };
+		1BE1B80E2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidScope.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Failure_InvalidScope.json; sourceTree = "<group>"; };
+		1BE1B80F2C76B9BE00B12207 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_No_RefreshToken_Success.json; sourceTree = "<group>"; };
+		1BE1B8102C76B9BE00B12207 /* OAuth2_Token_Refresh_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Refresh_Success.json; sourceTree = "<group>"; };
+		1BE1B8112C76B9BE00B12207 /* OAuth2_Token_Revoke_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Revoke_Success.json; sourceTree = "<group>"; };
+		1BE1B8122C76B9BE00B12207 /* OAuth2_Token_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_Token_Success.json; sourceTree = "<group>"; };
+		1BE1B8132C76B9BE00B12207 /* OAuth2_UserInfo_Failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Failure.json; sourceTree = "<group>"; };
+		1BE1B8142C76B9BE00B12207 /* OAuth2_UserInfo_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OAuth2_UserInfo_Success.json; sourceTree = "<group>"; };
+		1BE1B8172C76B9BE00B12207 /* AccessToken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken.json; sourceTree = "<group>"; };
+		1BE1B8182C76B9BE00B12207 /* AccessToken2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessToken2.json; sourceTree = "<group>"; };
+		1BE1B8192C76B9BE00B12207 /* AccessTokenNoRefresh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccessTokenNoRefresh.json; sourceTree = "<group>"; };
+		1BE1B81C2C76B9BE00B12207 /* FRTestLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestLogger.swift; sourceTree = "<group>"; };
+		1BE1B81D2C76B9BE00B12207 /* FRTestNetworkStubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestNetworkStubProtocol.swift; sourceTree = "<group>"; };
+		1BE1B81E2C76B9BE00B12207 /* FRTestStubResponseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestStubResponseParser.swift; sourceTree = "<group>"; };
+		1BE1B81F2C76B9BE00B12207 /* FRTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTestUtils.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1BA9EFFD2C755B390033651D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BE1B7BE2C76812700B12207 /* RecaptchaEnterprise in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA9F0072C755B390033651D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BA9F00B2C755B390033651D /* FRCaptchaEnterprise.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1BA9EFF62C755B390033651D = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7D12C76B91100B12207 /* FRTestHost.xcodeproj */,
+				1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */,
+				1BA9F0022C755B390033651D /* FRCaptchaEnterprise */,
+				1BA9F00E2C755B390033651D /* FRCaptchaEnterpriseTests */,
+				1BA9F0012C755B390033651D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1BA9F0012C755B390033651D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BA9F0002C755B390033651D /* FRCaptchaEnterprise.framework */,
+				1BA9F00A2C755B390033651D /* FRCaptchaEnterpriseTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1BA9F0022C755B390033651D /* FRCaptchaEnterprise */ = {
+			isa = PBXGroup;
+			children = (
+				1BA9F02D2C755C4E0033651D /* Sources */,
+				1BA9F0032C755B390033651D /* FRCaptchaEnterprise.h */,
+				1BA9F02E2C755EAD0033651D /* PrivacyInfo.xcprivacy */,
+			);
+			path = FRCaptchaEnterprise;
+			sourceTree = "<group>";
+		};
+		1BA9F00E2C755B390033651D /* FRCaptchaEnterpriseTests */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B8212C76B9BE00B12207 /* SharedTestFiles */,
+				1BA9F00F2C755B390033651D /* ReCaptchaEnterpriseTests.swift */,
+			);
+			path = FRCaptchaEnterpriseTests;
+			sourceTree = "<group>";
+		};
+		1BA9F02D2C755C4E0033651D /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7AD2C767C4100B12207 /* Callbacks */,
+				1BE1B7BF2C768DFA00B12207 /* CaptchaConstant.swift */,
+				1BE1B7C12C768FDB00B12207 /* FRCaptchaEnterprise.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		1BE1B7AD2C767C4100B12207 /* Callbacks */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7AE2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift */,
+			);
+			path = Callbacks;
+			sourceTree = "<group>";
+		};
+		1BE1B7B22C767EB400B12207 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7B72C767EB400B12207 /* FRAuth.framework */,
+				1BE1B7B92C767EB400B12207 /* FRAuthTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1BE1B7D22C76B91100B12207 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7D62C76B91100B12207 /* FRTestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1BE1B7D92C76B9BE00B12207 /* BaseTest */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7D72C76B9BE00B12207 /* FRAuthBaseTest.swift */,
+				1BE1B7D82C76B9BE00B12207 /* FRBaseTestCase.swift */,
+			);
+			path = BaseTest;
+			sourceTree = "<group>";
+		};
+		1BE1B7DD2C76B9BE00B12207 /* TestConfig */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7DA2C76B9BE00B12207 /* Config-live-01.json */,
+				1BE1B7DB2C76B9BE00B12207 /* Config.json */,
+				1BE1B7DC2C76B9BE00B12207 /* Config.swift */,
+			);
+			path = TestConfig;
+			sourceTree = "<group>";
+		};
+		1BE1B7E32C76B9BE00B12207 /* Certs */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7DE2C76B9BE00B12207 /* 01-cert.cert */,
+				1BE1B7DF2C76B9BE00B12207 /* 01-pkey.key */,
+				1BE1B7E02C76B9BE00B12207 /* 02-cert.pem */,
+				1BE1B7E12C76B9BE00B12207 /* 02-pkey.pem */,
+				1BE1B7E22C76B9BE00B12207 /* httpbin_cert.der */,
+			);
+			path = Certs;
+			sourceTree = "<group>";
+		};
+		1BE1B7E52C76B9BE00B12207 /* CustomCallback */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7E42C76B9BE00B12207 /* CustomCallback.swift */,
+			);
+			path = CustomCallback;
+			sourceTree = "<group>";
+		};
+		1BE1B7E72C76B9BE00B12207 /* Customization */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7E62C76B9BE00B12207 /* NoSessionInterceptor.swift */,
+			);
+			path = Customization;
+			sourceTree = "<group>";
+		};
+		1BE1B7EA2C76B9BE00B12207 /* AM */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7E82C76B9BE00B12207 /* AM_Session_Logout_Failure.json */,
+				1BE1B7E92C76B9BE00B12207 /* AM_Session_Logout_Success.json */,
+			);
+			path = AM;
+			sourceTree = "<group>";
+		};
+		1BE1B8072C76B9BE00B12207 /* AuthTree */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7EB2C76B9BE00B12207 /* AM_Push_Authentication_Fail.json */,
+				1BE1B7EC2C76B9BE00B12207 /* AM_Push_Authentication_Successful.json */,
+				1BE1B7ED2C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json */,
+				1BE1B7EE2C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */,
+				1BE1B7EF2C76B9BE00B12207 /* AM_Push_Registration_Successful.json */,
+				1BE1B7F02C76B9BE00B12207 /* AuthTree_AttributeCollectorsNode.json */,
+				1BE1B7F12C76B9BE00B12207 /* AuthTree_AuthTimedOut.json */,
+				1BE1B7F22C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeAll.json */,
+				1BE1B7F32C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeLocationOnly.json */,
+				1BE1B7F42C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeMetadataOnly.json */,
+				1BE1B7F52C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeNone.json */,
+				1BE1B7F62C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeWithMessage.json */,
+				1BE1B7F72C76B9BE00B12207 /* AuthTree_KBACreateNode.json */,
+				1BE1B7F82C76B9BE00B12207 /* AuthTree_KBAVerificationNode.json */,
+				1BE1B7F92C76B9BE00B12207 /* AuthTree_LoginNode.json */,
+				1BE1B7FA2C76B9BE00B12207 /* AuthTree_NoSession_Success.json */,
+				1BE1B7FB2C76B9BE00B12207 /* AuthTree_PlatformUsernamePasswordNode.json */,
+				1BE1B7FC2C76B9BE00B12207 /* AuthTree_RegistrationNode.json */,
+				1BE1B7FD2C76B9BE00B12207 /* AuthTree_SecondFactorChoiceNode.json */,
+				1BE1B7FE2C76B9BE00B12207 /* AuthTree_SecondFactorOTPNode.json */,
+				1BE1B7FF2C76B9BE00B12207 /* AuthTree_SSOToken_Success.json */,
+				1BE1B8002C76B9BE00B12207 /* AuthTree_SSOToken_Success2.json */,
+				1BE1B8012C76B9BE00B12207 /* AuthTree_SuspendedAuthSessionException.json */,
+				1BE1B8022C76B9BE00B12207 /* AuthTree_TermsAndConditionsNode.json */,
+				1BE1B8032C76B9BE00B12207 /* AuthTree_UsernamePasswordNode.json */,
+				1BE1B8042C76B9BE00B12207 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
+				1BE1B8052C76B9BE00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71.json */,
+				1BE1B8062C76B9BE00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71InvalidHiddenValueCallback.json */,
+			);
+			path = AuthTree;
+			sourceTree = "<group>";
+		};
+		1BE1B8152C76B9BE00B12207 /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B8082C76B9BE00B12207 /* OAuth2_AuthorizeRedirect_Failure.json */,
+				1BE1B8092C76B9BE00B12207 /* OAuth2_AuthorizeRedirect_Success.json */,
+				1BE1B80A2C76B9BE00B12207 /* OAuth2_EndSession_Failure.json */,
+				1BE1B80B2C76B9BE00B12207 /* OAuth2_EndSession_Success.json */,
+				1BE1B80C2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidClient.json */,
+				1BE1B80D2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidGrant.json */,
+				1BE1B80E2C76B9BE00B12207 /* OAuth2_Token_Failure_InvalidScope.json */,
+				1BE1B80F2C76B9BE00B12207 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json */,
+				1BE1B8102C76B9BE00B12207 /* OAuth2_Token_Refresh_Success.json */,
+				1BE1B8112C76B9BE00B12207 /* OAuth2_Token_Revoke_Success.json */,
+				1BE1B8122C76B9BE00B12207 /* OAuth2_Token_Success.json */,
+				1BE1B8132C76B9BE00B12207 /* OAuth2_UserInfo_Failure.json */,
+				1BE1B8142C76B9BE00B12207 /* OAuth2_UserInfo_Success.json */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
+		1BE1B8162C76B9BE00B12207 /* MockResponseData */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7EA2C76B9BE00B12207 /* AM */,
+				1BE1B8072C76B9BE00B12207 /* AuthTree */,
+				1BE1B8152C76B9BE00B12207 /* OAuth2 */,
+			);
+			path = MockResponseData;
+			sourceTree = "<group>";
+		};
+		1BE1B81A2C76B9BE00B12207 /* ModelData */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B8172C76B9BE00B12207 /* AccessToken.json */,
+				1BE1B8182C76B9BE00B12207 /* AccessToken2.json */,
+				1BE1B8192C76B9BE00B12207 /* AccessTokenNoRefresh.json */,
+			);
+			path = ModelData;
+			sourceTree = "<group>";
+		};
+		1BE1B81B2C76B9BE00B12207 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7E32C76B9BE00B12207 /* Certs */,
+				1BE1B7E52C76B9BE00B12207 /* CustomCallback */,
+				1BE1B7E72C76B9BE00B12207 /* Customization */,
+				1BE1B8162C76B9BE00B12207 /* MockResponseData */,
+				1BE1B81A2C76B9BE00B12207 /* ModelData */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+		1BE1B8202C76B9BE00B12207 /* TestUtil */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B81C2C76B9BE00B12207 /* FRTestLogger.swift */,
+				1BE1B81D2C76B9BE00B12207 /* FRTestNetworkStubProtocol.swift */,
+				1BE1B81E2C76B9BE00B12207 /* FRTestStubResponseParser.swift */,
+				1BE1B81F2C76B9BE00B12207 /* FRTestUtils.swift */,
+			);
+			path = TestUtil;
+			sourceTree = "<group>";
+		};
+		1BE1B8212C76B9BE00B12207 /* SharedTestFiles */ = {
+			isa = PBXGroup;
+			children = (
+				1BE1B7D92C76B9BE00B12207 /* BaseTest */,
+				1BE1B7DD2C76B9BE00B12207 /* TestConfig */,
+				1BE1B81B2C76B9BE00B12207 /* TestData */,
+				1BE1B8202C76B9BE00B12207 /* TestUtil */,
+			);
+			name = SharedTestFiles;
+			path = ../../FRTestHost/FRTestHost/SharedTestFiles;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1BA9EFFB2C755B390033651D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BA9F0112C755B390033651D /* FRCaptchaEnterprise.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1BA9EFFF2C755B390033651D /* FRCaptchaEnterprise */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BA9F0142C755B390033651D /* Build configuration list for PBXNativeTarget "FRCaptchaEnterprise" */;
+			buildPhases = (
+				1BA9EFFB2C755B390033651D /* Headers */,
+				1BA9EFFC2C755B390033651D /* Sources */,
+				1BA9EFFD2C755B390033651D /* Frameworks */,
+				1BA9EFFE2C755B390033651D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BE1B7BB2C767EFF00B12207 /* PBXTargetDependency */,
+			);
+			name = FRCaptchaEnterprise;
+			packageProductDependencies = (
+				1BE1B7BD2C76812700B12207 /* RecaptchaEnterprise */,
+			);
+			productName = FRCaptchaEnterprise;
+			productReference = 1BA9F0002C755B390033651D /* FRCaptchaEnterprise.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		1BA9F0092C755B390033651D /* FRCaptchaEnterpriseTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BA9F0172C755B390033651D /* Build configuration list for PBXNativeTarget "FRCaptchaEnterpriseTests" */;
+			buildPhases = (
+				1BA9F0062C755B390033651D /* Sources */,
+				1BA9F0072C755B390033651D /* Frameworks */,
+				1BA9F0082C755B390033651D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BA9F00D2C755B390033651D /* PBXTargetDependency */,
+			);
+			name = FRCaptchaEnterpriseTests;
+			productName = FRCaptchaEnterpriseTests;
+			productReference = 1BA9F00A2C755B390033651D /* FRCaptchaEnterpriseTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1BA9EFF72C755B390033651D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					1BA9EFFF2C755B390033651D = {
+						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
+					};
+					1BA9F0092C755B390033651D = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 1BA9EFFA2C755B390033651D /* Build configuration list for PBXProject "FRCaptchaEnterprise" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1BA9EFF62C755B390033651D;
+			packageReferences = (
+				1BE1B7BC2C76812700B12207 /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */,
+			);
+			productRefGroup = 1BA9F0012C755B390033651D /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1BE1B7B22C767EB400B12207 /* Products */;
+					ProjectRef = 1BE1B7B12C767EB400B12207 /* FRAuth.xcodeproj */;
+				},
+				{
+					ProductGroup = 1BE1B7D22C76B91100B12207 /* Products */;
+					ProjectRef = 1BE1B7D12C76B91100B12207 /* FRTestHost.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				1BA9EFFF2C755B390033651D /* FRCaptchaEnterprise */,
+				1BA9F0092C755B390033651D /* FRCaptchaEnterpriseTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1BE1B7B72C767EB400B12207 /* FRAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRAuth.framework;
+			remoteRef = 1BE1B7B62C767EB400B12207 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1BE1B7B92C767EB400B12207 /* FRAuthTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRAuthTests.xctest;
+			remoteRef = 1BE1B7B82C767EB400B12207 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1BE1B7D62C76B91100B12207 /* FRTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRTestHost.app;
+			remoteRef = 1BE1B7D52C76B91100B12207 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1BA9EFFE2C755B390033651D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BA9F02F2C755EB90033651D /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA9F0082C755B390033651D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BE1B84A2C76B9BF00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71.json in Resources */,
+				1BE1B8362C76B9BE00B12207 /* AuthTree_AuthTimedOut.json in Resources */,
+				1BE1B83B2C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */,
+				1BE1B8582C76B9BF00B12207 /* OAuth2_UserInfo_Success.json in Resources */,
+				1BE1B8312C76B9BE00B12207 /* AM_Push_Authentication_Successful.json in Resources */,
+				1BE1B8552C76B9BF00B12207 /* OAuth2_Token_Revoke_Success.json in Resources */,
+				1BE1B8492C76B9BF00B12207 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */,
+				1BE1B84D2C76B9BF00B12207 /* OAuth2_AuthorizeRedirect_Success.json in Resources */,
+				1BE1B83F2C76B9BF00B12207 /* AuthTree_NoSession_Success.json in Resources */,
+				1BE1B8462C76B9BF00B12207 /* AuthTree_SuspendedAuthSessionException.json in Resources */,
+				1BE1B8372C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeAll.json in Resources */,
+				1BE1B8452C76B9BF00B12207 /* AuthTree_SSOToken_Success2.json in Resources */,
+				1BE1B84E2C76B9BF00B12207 /* OAuth2_EndSession_Failure.json in Resources */,
+				1BE1B8422C76B9BF00B12207 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
+				1BE1B85A2C76B9BF00B12207 /* AccessToken2.json in Resources */,
+				1BE1B8532C76B9BF00B12207 /* OAuth2_Token_Refresh_No_RefreshToken_Success.json in Resources */,
+				1BE1B8332C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */,
+				1BE1B82B2C76B9BE00B12207 /* httpbin_cert.der in Resources */,
+				1BE1B8242C76B9BE00B12207 /* Config-live-01.json in Resources */,
+				1BE1B8512C76B9BF00B12207 /* OAuth2_Token_Failure_InvalidGrant.json in Resources */,
+				1BE1B83E2C76B9BF00B12207 /* AuthTree_LoginNode.json in Resources */,
+				1BE1B8502C76B9BF00B12207 /* OAuth2_Token_Failure_InvalidClient.json in Resources */,
+				1BE1B8302C76B9BE00B12207 /* AM_Push_Authentication_Fail.json in Resources */,
+				1BE1B83A2C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeNone.json in Resources */,
+				1BE1B8482C76B9BF00B12207 /* AuthTree_UsernamePasswordNode.json in Resources */,
+				1BE1B82A2C76B9BE00B12207 /* 02-pkey.pem in Resources */,
+				1BE1B85B2C76B9BF00B12207 /* AccessTokenNoRefresh.json in Resources */,
+				1BE1B8382C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
+				1BE1B8292C76B9BE00B12207 /* 02-cert.pem in Resources */,
+				1BE1B83C2C76B9BE00B12207 /* AuthTree_KBACreateNode.json in Resources */,
+				1BE1B8402C76B9BF00B12207 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
+				1BE1B83D2C76B9BF00B12207 /* AuthTree_KBAVerificationNode.json in Resources */,
+				1BE1B8322C76B9BE00B12207 /* AM_Push_Registration_Fail_Invalid_Signed_Challenge.json in Resources */,
+				1BE1B8522C76B9BF00B12207 /* OAuth2_Token_Failure_InvalidScope.json in Resources */,
+				1BE1B8442C76B9BF00B12207 /* AuthTree_SSOToken_Success.json in Resources */,
+				1BE1B8592C76B9BF00B12207 /* AccessToken.json in Resources */,
+				1BE1B82F2C76B9BE00B12207 /* AM_Session_Logout_Success.json in Resources */,
+				1BE1B8412C76B9BF00B12207 /* AuthTree_RegistrationNode.json in Resources */,
+				1BE1B8432C76B9BF00B12207 /* AuthTree_SecondFactorOTPNode.json in Resources */,
+				1BE1B8282C76B9BE00B12207 /* 01-pkey.key in Resources */,
+				1BE1B84C2C76B9BF00B12207 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */,
+				1BE1B8252C76B9BE00B12207 /* Config.json in Resources */,
+				1BE1B84F2C76B9BF00B12207 /* OAuth2_EndSession_Success.json in Resources */,
+				1BE1B8352C76B9BE00B12207 /* AuthTree_AttributeCollectorsNode.json in Resources */,
+				1BE1B84B2C76B9BF00B12207 /* AuthTree_WebAuthnRegistrationNodeAM71InvalidHiddenValueCallback.json in Resources */,
+				1BE1B8472C76B9BF00B12207 /* AuthTree_TermsAndConditionsNode.json in Resources */,
+				1BE1B8272C76B9BE00B12207 /* 01-cert.cert in Resources */,
+				1BE1B8572C76B9BF00B12207 /* OAuth2_UserInfo_Failure.json in Resources */,
+				1BE1B8542C76B9BF00B12207 /* OAuth2_Token_Refresh_Success.json in Resources */,
+				1BE1B8562C76B9BF00B12207 /* OAuth2_Token_Success.json in Resources */,
+				1BE1B8342C76B9BE00B12207 /* AM_Push_Registration_Successful.json in Resources */,
+				1BE1B82E2C76B9BE00B12207 /* AM_Session_Logout_Failure.json in Resources */,
+				1BE1B8392C76B9BE00B12207 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1BA9EFFC2C755B390033651D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BE1B7C02C768DFA00B12207 /* CaptchaConstant.swift in Sources */,
+				1BE1B7C22C768FDB00B12207 /* FRCaptchaEnterprise.swift in Sources */,
+				1BE1B7AF2C767C5800B12207 /* ReCaptchaEnterpriseCallback.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BA9F0062C755B390033651D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BE1B8232C76B9BE00B12207 /* FRBaseTestCase.swift in Sources */,
+				1BE1B82D2C76B9BE00B12207 /* NoSessionInterceptor.swift in Sources */,
+				1BE1B8262C76B9BE00B12207 /* Config.swift in Sources */,
+				1BE1B85C2C76B9BF00B12207 /* FRTestLogger.swift in Sources */,
+				1BE1B85D2C76B9BF00B12207 /* FRTestNetworkStubProtocol.swift in Sources */,
+				1BE1B85F2C76B9BF00B12207 /* FRTestUtils.swift in Sources */,
+				1BE1B8222C76B9BE00B12207 /* FRAuthBaseTest.swift in Sources */,
+				1BA9F0102C755B390033651D /* ReCaptchaEnterpriseTests.swift in Sources */,
+				1BE1B85E2C76B9BF00B12207 /* FRTestStubResponseParser.swift in Sources */,
+				1BE1B82C2C76B9BE00B12207 /* CustomCallback.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1BA9F00D2C755B390033651D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BA9EFFF2C755B390033651D /* FRCaptchaEnterprise */;
+			targetProxy = 1BA9F00C2C755B390033651D /* PBXContainerItemProxy */;
+		};
+		1BE1B7BB2C767EFF00B12207 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRAuth;
+			targetProxy = 1BE1B7BA2C767EFF00B12207 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1BA9F0122C755B390033651D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1BA9F0132C755B390033651D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		1BA9F0152C755B390033651D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterprise;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1BA9F0162C755B390033651D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterprise;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1BA9F0182C755B390033651D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 4.6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterpriseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
+			};
+			name = Debug;
+		};
+		1BA9F0192C755B390033651D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 4.6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRCaptchaEnterpriseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FRTestHost.app/FRTestHost";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1BA9EFFA2C755B390033651D /* Build configuration list for PBXProject "FRCaptchaEnterprise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA9F0122C755B390033651D /* Debug */,
+				1BA9F0132C755B390033651D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BA9F0142C755B390033651D /* Build configuration list for PBXNativeTarget "FRCaptchaEnterprise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA9F0152C755B390033651D /* Debug */,
+				1BA9F0162C755B390033651D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BA9F0172C755B390033651D /* Build configuration list for PBXNativeTarget "FRCaptchaEnterpriseTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BA9F0182C755B390033651D /* Debug */,
+				1BA9F0192C755B390033651D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1BE1B7BC2C76812700B12207 /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1BE1B7BD2C76812700B12207 /* RecaptchaEnterprise */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BE1B7BC2C76812700B12207 /* XCRemoteSwiftPackageReference "recaptcha-enterprise-mobile-sdk" */;
+			productName = RecaptchaEnterprise;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1BA9EFF72C755B390033651D /* Project object */;
+}

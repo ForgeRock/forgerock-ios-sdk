@@ -2,7 +2,7 @@
 //  Node.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -82,28 +82,19 @@ public class Node: NSObject {
         self.keychainManager = keychainManager
         self.tokenManager = tokenManager
         
+        super.init()
+        
         if let callbacks = authServiceResponse[OpenAM.callbacks] as? [[String: Any]] {
             
             for callback in callbacks {
                 
                 // Validate if callback response contains type
-                guard var callbackType = callback["type"] as? String else {
+                guard let callbackType = callback["type"] as? String else {
                     FRLog.e("Invalid response: Callback is missing 'type' \n\t\(callback)")
                     throw AuthError.invalidCallbackResponse(String(describing: callback))
                 }
-                
-                //  Validate if Callback is WebAuthnCallback
-                let webAuthnType = WebAuthnCallback.getWebAuthnType(callback)
-                switch webAuthnType {
-                //  If Callback type is WebAuthnAuthentication/Registration, manually change Callback type
-                case .authentication, .registration:
-                    callbackType = webAuthnType.rawValue
-                    break
-                default:
-                    break
-                }
-                
-                let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback)
+
+                let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback, node: self)
                 self.callbacks.append(callbackObj)
                 
                 if self.stage == nil { //Fix for SDKS-1209
@@ -133,15 +124,24 @@ public class Node: NSObject {
     ///   - json: JSON response of Callback
     /// - Throws: `AuthError`
     /// - Returns: Callback object
-    static func transformCallback(callbackType: String, json: [String: Any]) throws -> Callback {
+    static func transformCallback(callbackType: String, json: [String: Any], node: Node? = nil) throws -> Callback {
 
+        var callbackClass : Callback.Type
+        
         // Validate if given callback type is supported
-        guard let callbackClass = CallbackFactory.shared.supportedCallbacks[callbackType] else {
+        if callbackType == CallbackType.MetadataCallback.rawValue, let derivedCallback = MetadataCallback.getDerivedCallback(json: json) {
+            callbackClass = derivedCallback
+        } else if let supportedCallback = CallbackFactory.shared.supportedCallbacks[callbackType] {
+            callbackClass = supportedCallback
+        } else {
             FRLog.e("Unsupported callback: Callback is not supported in SDK \n\t\(json)")
             throw AuthError.unsupportedCallback("callback type, \(callbackType), is not supported")
         }
-        
+
         let callback = try callbackClass.init(json: json)
+        if let callback = callback as? NodeAware {
+            callback.setNode(node: node)
+        }
         
         return callback
     }
@@ -271,7 +271,9 @@ public class Node: NSObject {
                     }
                 }
                 else if let tokenId = response[OpenAM.tokenId] as? String {
-                    let token = Token(tokenId)
+                    let successUrl = response[OpenAM.successUrl] as? String ?? ""
+                    let realm = response[OpenAM.realm] as? String ?? ""
+                    let token = Token(tokenId, successUrl: successUrl, realm: realm)
                     if let keychainManager = self.keychainManager {
                         let currentSessionToken = keychainManager.getSSOToken()
                         if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
@@ -322,7 +324,10 @@ public class Node: NSObject {
         var callbacks: [Any] = []
         
         for callback:Callback in self.callbacks {
-            callbacks.append(callback.buildResponse())
+            let response = callback.buildResponse()
+            if !response.isEmpty {
+                callbacks.append(response)
+            }
         }
         
         payload[OpenAM.callbacks] = callbacks

@@ -15,67 +15,34 @@ import FRAuth
 /**
  * Callback to evaluate Ping One Protect
  */
-open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
+open class PingOneProtectEvaluationCallback: ProtectCallback {
     
     /// The pauseBehavioralData received from server
-    public private(set) var pauseBehavioralData: Bool
+    public private(set) var pauseBehavioralData: Bool = Bool()
     
     /// Signals input key in callback response
-    private var signalsKey: String
-    /// Client Error input key in callback response
-    private var clientErrorKey: String
+    private var signalsKey: String = String()
+    
     
     /// Designated initialization method for PingOneProtectEvaluationCallback
     ///
     /// - Parameter json: JSON object of PingOneProtectEvaluationCallback
     /// - Throws: AuthError.invalidCallbackResponse for invalid callback response
     public required init(json: [String : Any]) throws {
+
+        try super.init(json: json)
         
-        guard let callbackType = json[CBConstants.type] as? String else {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
-        
-        guard let outputs = json[CBConstants.output] as? [[String: Any]], let inputs = json[CBConstants.input] as? [[String: Any]] else {
-            throw AuthError.invalidCallbackResponse(String(describing: json))
-        }
-        
-        // parse outputs
-        var outputDictionary = [String: Any]()
-        for output in outputs {
-            guard let outputName = output[CBConstants.name] as? String, let outputValue = output[CBConstants.value] else {
-                throw AuthError.invalidCallbackResponse("Failed to parse output")
-            }
-            outputDictionary[outputName] = outputValue
-        }
-        
-        guard let pauseBehavioralData = outputDictionary[CBConstants.pauseBehavioralData] as? Bool else {
+        guard let pauseBehavioralData = self.outputValues[CBConstants.pauseBehavioralData] as? Bool else {
             throw AuthError.invalidCallbackResponse("Missing pauseBehavioralData")
         }
         self.pauseBehavioralData = pauseBehavioralData
         
-        
-        //parse inputs
-        var inputNames = [String]()
-        for input in inputs {
-            guard let inputName = input[CBConstants.name] as? String else {
-                throw AuthError.invalidCallbackResponse("Failed to parse input")
+        if !self.derivedCallback {
+            guard let signalsKey = self.inputNames.filter({ $0.contains(CBConstants.signals) }).first else {
+                throw AuthError.invalidCallbackResponse("Missing signalsKey")
             }
-            inputNames.append(inputName)
+            self.signalsKey = signalsKey
         }
-        
-        guard let signalsKey = inputNames.filter({ $0.contains(CBConstants.signals) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing signalsKey")
-        }
-        self.signalsKey = signalsKey
-        
-        guard let clientErrorKey = inputNames.filter({ $0.contains(CBConstants.clientError) }).first else {
-            throw AuthError.invalidCallbackResponse("Missing clientErrorKey")
-        }
-        self.clientErrorKey = clientErrorKey
-        
-        try super.init(json: json)
-        type = callbackType
-        response = json
     }
     
     
@@ -98,17 +65,32 @@ open class PingOneProtectEvaluationCallback: MultipleValuesCallback {
         }
     }
     
+    
     /// Sets `signals` value in callback response
     /// - Parameter signals: String value of `signals`]
     public func setSignals(_ signals: String) {
-        self.inputValues[self.signalsKey] = signals
+        if derivedCallback {
+            self.setSignalsInHiddenCallback(value: signals)
+        } else {
+            self.inputValues[self.signalsKey] = signals
+        }
     }
     
     
-    /// Sets `clientError` value in callback response
-    /// - Parameter clientError: String value of `clientError`]
-    public func setClientError(_ clientError: String) {
-        self.inputValues[self.clientErrorKey] = clientError
+    /// Sets `signals` value  to the `HiddenValueCallback` which is associated with the ProtectCallback
+    /// - Parameter signals: String value of `signals`]
+    func setSignalsInHiddenCallback(value: String) {
+        if let node = self.node {
+            for callback in node.callbacks {
+                if let hiddenCallback = callback as? HiddenValueCallback {
+                    if let callbackId = hiddenCallback.id, callbackId.contains(CBConstants.riskEvaluationSignals) {
+                        hiddenCallback.setValue(value)
+                        return
+                    }
+                }
+            }
+        }
+        FRLog.e("Failed to set signals to HiddenValueCallback; HiddenValueCallback with \(CBConstants.riskEvaluationSignals) is missing")
     }
 }
 

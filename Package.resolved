@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "InteropForGoogle",
+        "repositoryURL": "https://github.com/google/interop-ios-for-google-sdks.git",
+        "state": {
+          "branch": null,
+          "revision": "2d12673670417654f08f5f90fdd62926dc3a2648",
+          "version": "100.0.0"
+        }
+      },
+      {
         "package": "JOSESwift",
         "repositoryURL": "https://github.com/airsidemobile/JOSESwift.git",
         "state": {
@@ -60,8 +69,17 @@
         "repositoryURL": "https://github.com/pingidentity/pingone-signals-sdk-ios.git",
         "state": {
           "branch": null,
-          "revision": "88951ad71c37853fb86cee0bf48cf447ded5b268",
-          "version": "5.2.3"
+          "revision": "59fde21ecebaaf1b20046e79f55f05f4beb7a74d",
+          "version": "5.2.7"
+        }
+      },
+      {
+        "package": "RecaptchaEnterprise",
+        "repositoryURL": "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk.git",
+        "state": {
+          "branch": null,
+          "revision": "e1890d87d0aa0780baa38f46bf09db3630bd0beb",
+          "version": "18.6.0"
         }
       }
     ]
