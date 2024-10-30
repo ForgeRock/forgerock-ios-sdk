@@ -13,6 +13,7 @@ struct OpenAM {
     static let acceptAPIVersion = "accept-api-version"
     static let apiResource21 = "resource=2.1"
     static let apiResource31 = "resource=3.1"
+    static let apiResource10 = "resource=1.0"
     static let apiProtocol10 = "protocol=1.0"
     static let action = "_action"
     static let logout = "logout"

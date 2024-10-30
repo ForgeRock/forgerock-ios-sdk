@@ -1,0 +1,33 @@
+{
+    "responsePayload": {
+        "result": [
+            {
+                "_id": "8e569eb8-1eb8-4459-88a4-2151b7e4ba91",
+                "_rev": "594218113",
+                "createdDate": 1728415625836,
+                "lastAccessDate": 1728415625836,
+                "deviceName": "Push Device",
+                "uuid": "8e569eb8-1eb8-4459-88a4-2151b7e4ba91",
+                "deviceManagementStatus": false
+            }
+        ],
+        "resultCount": 1,
+        "pagedResultsCookie": null,
+        "totalPagedResultsPolicy": "NONE",
+        "totalPagedResults": -1,
+        "remainingPagedResults": -1
+    },
+    "response": {
+        "statusCode": 200,
+        "url": "http://openam.example.com:8081/openam",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Content-Length": "2",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Content-API-Version": "resource=1.0",
+            "Date": "Tue, 05 May 2020 21:49:02 GMT",
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff, nosniff"
+        }
+    }
+}
