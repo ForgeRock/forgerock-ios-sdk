@@ -17,7 +17,7 @@ import QuartzCore
 import FRDeviceBinding
 import PingProtect
 
-class ViewController: UIViewController, ErrorAlertShowing {
+class ViewController: UIViewController, AlertShowing {
 
     // MARK: - Properties
     @IBOutlet weak var loggingView: UITextView?
@@ -157,7 +157,8 @@ class ViewController: UIViewController, ErrorAlertShowing {
             "Display Configurations",
             "Revoke Access Token",
             "List WebAuthn Credentials",
-            "List Device Binding Keys"
+            "List Device Binding Keys",
+            "List Client Devices"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -179,7 +180,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
         // Configure FRSecurityConfiguration to set SSL Pinning on the FRURLProtocol
         // This needs to be set up if using Authroization or Token Policies with FRURLProtocol
         // and want to force SSL Pinning on those endpoints.
-        // Make sure to add the Key Hashes of the certificates that correspont to the URLs 
+        // Make sure to add the Key Hashes of the certificates that correspont to the URLs
         // set on the `FRURLProtocol.tokenManagementPolicy` & `FRURLProtocol.authorizationPolicy`
         
         var sslPinningKeyHashes: [String] = []
@@ -357,7 +358,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
                                     bindingResult = "Success"
                                 case .failure(let error):
                                     if error == .invalidCustomClaims {
-                                        self.showErrorAlert(title: "Device Binding Error", message: error.errorMessage)
+                                        self.showAlert(title: "Device Binding Error", message: error.errorMessage)
                                         return
                                     }
                                     bindingResult = error.errorMessage
@@ -378,7 +379,7 @@ class ViewController: UIViewController, ErrorAlertShowing {
                                     signingResult = "Success"
                                 case .failure(let error):
                                     if error == .invalidCustomClaims {
-                                        self.showErrorAlert(title: "Device Signing Error", message: error.errorMessage)
+                                        self.showAlert(title: "Device Signing Error", message: error.errorMessage)
                                         return
                                     }
                                     signingResult = error.errorMessage
@@ -785,6 +786,18 @@ class ViewController: UIViewController, ErrorAlertShowing {
         self.present(viewController, animated: true, completion: nil)
     }
     
+    func listClientDevices() {
+        if #available(iOS 13.0.0, *) {
+            //let viewController = ClientDevicesTableViewController()
+            let viewController = UINavigationController(rootViewController: ClientDevicesTableViewController())
+            view.addSubview(viewController.view)
+            
+            self.present( viewController, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
     
     func performJailbreakDetector() {
         let result = FRJailbreakDetector.shared.analyze()
@@ -996,6 +1009,10 @@ class ViewController: UIViewController, ErrorAlertShowing {
             // List device binding user keys
             self.listUserKeys()
             break
+        case 22:
+            // List User Devices
+            self.listClientDevices()
+            break
         default:
             break
         }
@@ -1168,7 +1185,7 @@ class WebAuthnCredentialsTableViewController: UITableViewController {
 }
 
 
-class UserKeysTableViewController: UITableViewController, ErrorAlertShowing {
+class UserKeysTableViewController: UITableViewController, AlertShowing {
     let identifier = "cell"
     let frUserKeys = FRUserKeys()
     var userKeys: [UserKey] = []
@@ -1213,7 +1230,7 @@ class UserKeysTableViewController: UITableViewController, ErrorAlertShowing {
               try frUserKeys.delete(userKey: self.userKeys[indexPath.row], forceDelete: false)
           }
           catch {
-              self.showErrorAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
+              self.showAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
           }
           self.userKeys = frUserKeys.loadAll()
           tableView.reloadData()
@@ -1253,7 +1270,7 @@ class UserKeysTableViewController: UITableViewController, ErrorAlertShowing {
                     try self.frUserKeys.delete(userKey: userKey, forceDelete: false)
                 }
                 catch {
-                    self.showErrorAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
+                    self.showAlert(title: "Delete Remote UserKey", message: error.localizedDescription)
                 }
             }
             self.userKeys = self.frUserKeys.loadAll()
@@ -1266,15 +1283,16 @@ class UserKeysTableViewController: UITableViewController, ErrorAlertShowing {
     }
 }
 
-protocol ErrorAlertShowing: UIViewController {
-    func showErrorAlert(title: String, message: String)
+protocol AlertShowing: UIViewController {
+    func showAlert(title: String, message: String)
 }
 
-extension ErrorAlertShowing {
-    func showErrorAlert(title: String, message: String) {
+extension AlertShowing {
+    func showAlert(title: String, message: String) {
         let errorAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler:nil)
         errorAlert.addAction(cancelAction)
         self.present(errorAlert, animated: true, completion: nil)
     }
 }
+

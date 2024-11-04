@@ -11,6 +11,8 @@
 		3AF37D772C8038E400190350 /* FRCaptchaEnterprise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A52B848A2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A52B848B2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
+		A530D48A2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4892CD3D024009EC60C /* ClientDevicesTableViewController.swift */; };
+		A530D48B2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4892CD3D024009EC60C /* ClientDevicesTableViewController.swift */; };
 		A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A52761332B60209100F8BDF7 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A59506F42B6070DD00E366F9 /* PingProtect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A52761332B60209100F8BDF7 /* PingProtect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -273,6 +275,7 @@
 		1BA9F01A2C755B390033651D /* FRCaptchaEnterprise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRCaptchaEnterprise.xcodeproj; path = ../../FRCaptchaEnterprise/FRCaptchaEnterprise.xcodeproj; sourceTree = "<group>"; };
 		A52761252B60209000F8BDF7 /* PingProtect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PingProtect.xcodeproj; path = ../../PingProtect/PingProtect.xcodeproj; sourceTree = "<group>"; };
 		A52B84892B339571001FBA2C /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
+		A530D4892CD3D024009EC60C /* ClientDevicesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDevicesTableViewController.swift; sourceTree = "<group>"; };
 		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -353,6 +356,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A530D47C2CD3CFE7009EC60C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A530D4892CD3D024009EC60C /* ClientDevicesTableViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		A5D1C38D29E59FC30096039E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -401,6 +412,7 @@
 		D554632E22A6EF950096C7A4 /* FRExample */ = {
 			isa = PBXGroup;
 			children = (
+				A530D47C2CD3CFE7009EC60C /* ViewControllers */,
 				D5E080C623DA58310025EA17 /* Customization */,
 				D5FE5E5B23190A0000E04658 /* Configs */,
 				D5FE5E5E23190A0000E04658 /* Supporting Files */,
@@ -784,6 +796,7 @@
 			files = (
 				D521A2062303644300EDD28E /* ViewController.swift in Sources */,
 				D521A2082303644300EDD28E /* AppDelegate.swift in Sources */,
+				A530D48B2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */,
 				A52B848B2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -794,6 +807,7 @@
 			files = (
 				D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */,
 				D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */,
+				A530D48A2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */,
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
