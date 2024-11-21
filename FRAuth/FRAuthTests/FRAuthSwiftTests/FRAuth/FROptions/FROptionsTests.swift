@@ -16,7 +16,7 @@ import FRCore
 class FROptionsTests: FRAuthBaseTest {
     
     override func setUp() {
-        //leave empty
+        super.setUp()
     }
     
     override func tearDown() {
@@ -313,7 +313,7 @@ class FROptionsTests: FRAuthBaseTest {
 
   @available(iOS 13.0.0, *)
   func testDiscoverWithValidURL() async throws {
-
+    FRAuthBaseTest.useMockServer = false
     var options = FROptions(config: [:])
     let validURL = FRTestURL.oidcConfigUrl + "/.well-known/openid-configuration"
       // Mock network responses as needed
@@ -354,7 +354,6 @@ class FROptionsTests: FRAuthBaseTest {
     XCTAssertEqual(options.revokeEndpoint, FRTestURL.oidcConfigUrl +  "/oauth/revoke")
   }
 
-
   @available(iOS 13.0.0, *)
   func testDiscoverWithInvalidURL() async {
     FRAuthBaseTest.useMockServer = false
@@ -367,5 +366,42 @@ class FROptionsTests: FRAuthBaseTest {
       } catch {
         XCTAssertTrue(["unsupported URL", "OAuth2 /authorize Error"].contains(error.localizedDescription))
       }
+  }
+    
+  @available(iOS 13.0.0, *)
+  func testDiscoverEndpointWithPingEndIdpSession() async throws {
+    FRAuthBaseTest.useMockServer = true
+    self.loadMockResponses(["discoveryWithPingEndIdp"])
+    let config =
+    ["forgerock_oauth_client_id":"test_client_id",
+     "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+     "forgerock_oauth_scope" : "openid profile email address"
+    ]
+    
+    var options = FROptions(config: config)
+    let validURL = FRTestURL.oidcConfigUrl + "/.well-known/openid-configuration"
+    
+    //Since config is without oauthSignoutRedirectUri, use ping_end_idp_session_endpoint instead of end_session_endpoint if exists
+    options = try await options.discover(discoveryURL: validURL)
+    XCTAssertEqual(options.endSessionEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/idp/signoff")
+  }
+  
+  @available(iOS 13.0.0, *)
+  func testDiscoverEndpointWithPingEndIdpSessionSignOutRedirect() async throws {
+    FRAuthBaseTest.useMockServer = true
+    self.loadMockResponses(["discoveryWithPingEndIdp"])
+    let config =
+    ["forgerock_oauth_client_id":"test_client_id",
+     "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
+     "forgerock_oauth_scope" : "openid profile email address",
+     "forgerock_oauth_sign_out_redirect_uri": "org.forgerock.demo2://oauth2redirect",
+    ]
+    
+    var options = FROptions(config: config)
+    let validURL = FRTestURL.oidcConfigUrl + "/.well-known/openid-configuration"
+    
+    //Since config is with oauthSignOutRedirectUri, use end_session_endpoint instead of ping_end_idp_session_endpoint
+    options = try await options.discover(discoveryURL: validURL)
+    XCTAssertEqual(options.endSessionEndpoint, "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/signoff")
   }
 }
