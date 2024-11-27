@@ -221,7 +221,11 @@ open class FROptions: NSObject, Codable {
     self.authorizeEndpoint = config.authorizationEndpoint
     self.tokenEndpoint = config.tokenEndpoint
     self.userinfoEndpoint = config.userinfoEndpoint
-    self.endSessionEndpoint = config.endSessionEndpoint
+    if let oauthSignoutRedirectUri = oauthSignoutRedirectUri, !oauthSignoutRedirectUri.isEmpty {
+        self.endSessionEndpoint = config.endSessionEndpoint
+    } else {
+        self.endSessionEndpoint = config.pingEndIdpSessionEndpoint ?? config.endSessionEndpoint
+    }
     self.revokeEndpoint = config.revocationEndpoint
 
     return self
@@ -259,6 +263,7 @@ private struct OpenIdConfiguration: Codable {
     public let userinfoEndpoint: String?
     public let endSessionEndpoint: String?
     public let revocationEndpoint: String?
+    public let pingEndIdpSessionEndpoint: String?
 
 
     private enum CodingKeys: String, CodingKey {
@@ -268,6 +273,7 @@ private struct OpenIdConfiguration: Codable {
         case userinfoEndpoint = "userinfo_endpoint"
         case endSessionEndpoint = "end_session_endpoint"
         case revocationEndpoint = "revocation_endpoint"
+        case pingEndIdpSessionEndpoint = "ping_end_idp_session_endpoint"
     }
 }
 

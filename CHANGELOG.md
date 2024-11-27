@@ -1,3 +1,7 @@
+## [4.X.X]
+#### Added
+- Support Sign out with ID Token for PingOne Platform [SDKS-3424]
+
 ## [4.6.0]
 #### Added
 - Support PingOne Protect Marketplace Nodes [SDKS-3296]
