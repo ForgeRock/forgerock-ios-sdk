@@ -79,7 +79,18 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
             alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (alert: UIAlertAction!) in
                 Task {
                     do {
-                        try await self.deviceRepo.delete(device: device)
+                        //try await self.deviceRepo.delete(device: device)
+                      if let device = device as? BoundDevice {
+                          try await self.deviceRepo.bound.delete(device)
+                      } else if let device = device as? ProfileDevice {
+                          try await self.deviceRepo.profile.delete(device)
+                      } else if let device = device as? WebAuthnDevice {
+                          try await self.deviceRepo.webAuthn.delete(device)
+                      }else if let device = device as? OathDevice {
+                          try await self.deviceRepo.oath.delete(device)
+                      }else if let device = device as? PushDevice {
+                        try await self.deviceRepo.push.delete(device)
+                      }
                     } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {
                         self.showAlert(title: reason, message: message + " -  \(String(describing: code ?? 0))")
                     }
@@ -108,21 +119,18 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
                 
                 let okAction = UIAlertAction(title: "Submit", style: .default) {  [unowned alert] _ in
                     let updateDeviceName = alert.textFields![0].text!
-                    var updatedDevice: Device!
-                    if var device = device as? BindingDevice {
-                        device.deviceName = updateDeviceName
-                        updatedDevice = device
-                    } else if var device = device as? ProfileDevice {
-                        device.deviceName = updateDeviceName
-                        updatedDevice = device
-                    } else if var device = device as? WebAuthnDevice {
-                        device.deviceName = updateDeviceName
-                        updatedDevice = device
-                    }
-                    
                     Task {
                         do {
-                            try await self.deviceRepo.update(device: updatedDevice)
+                            if var device = device as? BoundDevice {
+                                device.deviceName = updateDeviceName
+                                try await self.deviceRepo.bound.update(device)
+                            } else if var device = device as? ProfileDevice {
+                                device.deviceName = updateDeviceName
+                                try await self.deviceRepo.profile.update(device)
+                            } else if var device = device as? WebAuthnDevice {
+                                device.deviceName = updateDeviceName
+                                try await self.deviceRepo.webAuthn.update(device)
+                            }
                         } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {
                             self.showAlert(title: reason, message: message + " -  \(String(describing: code ?? 0))")
                         }
@@ -156,7 +164,7 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
     private func reloadAllDevices() {
         Task {
             do {
-                let oathDevices = try await deviceRepo.oathDevices()
+              let oathDevices = try await deviceRepo.oath.get()
                 devices[.oath] = oathDevices
                 self.tableView.reloadData()
             } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {
@@ -164,7 +172,7 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
             }
             
             do {
-                let pushDevices = try await deviceRepo.pushDevices()
+                let pushDevices = try await deviceRepo.push.get()
                 devices[.push] = pushDevices
                 self.tableView.reloadData()
             } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {
@@ -172,7 +180,7 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
             }
             
             do {
-                let webAuthnDevices = try await deviceRepo.webAuthnDevices()
+                let webAuthnDevices = try await deviceRepo.webAuthn.get()
                 devices[.webAuthn] = webAuthnDevices
                 self.tableView.reloadData()
             } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {
@@ -180,7 +188,7 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
             }
             
             do {
-                let bindingDevices = try await deviceRepo.bindingDevices()
+              let bindingDevices = try await deviceRepo.bound.get()
                 devices[.binding] = bindingDevices
                 self.tableView.reloadData()
             } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {
@@ -188,7 +196,7 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
             }
             
             do {
-                let profileDevices = try await deviceRepo.profileDevices()
+                let profileDevices = try await deviceRepo.profile.get()
                 devices[.profile] = profileDevices
                 self.tableView.reloadData()
             } catch AuthApiError.apiFailureWithMessage(let reason, let message, let code, _) {

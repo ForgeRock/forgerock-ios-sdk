@@ -17,35 +17,9 @@ enum UserRepoConstants {
     static let json = "application/json"
 }
 
-/// Protocol defining the repository for user devices
-@available(iOS 13.0.0, *)
-public protocol DeviceRepository {
-    /// Retrieves a list of Oath devices.
-    /// - Returns: A list of `OathDevice`.
-    func oathDevices() async throws -> [OathDevice]
-    /// Retrieves a list of Push devices.
-    /// - Returns: A list of `PushDevice`.
-    func pushDevices() async throws -> [PushDevice]
-    /// Retrieves a list of Binding devices.
-    /// - Returns: A list of `BindingDevice`.
-    func bindingDevices() async throws -> [BindingDevice]
-    /// Retrieves a list of WebAuthn devices.
-    /// - Returns: A list of `WebAuthnDevice`.
-    func webAuthnDevices() async throws -> [WebAuthnDevice]
-    /// Retrieves a list of Profile devices.
-    /// - Returns: A list of `ProfileDevice`.
-    func profileDevices() async throws -> [ProfileDevice]
-    /// Updates the given device.
-    /// - Parameter device: The `Device` to update.
-    func update(device: Device) async throws
-    /// Deletes the given device.
-    /// - Parameter device: The `Device` to delete.
-    func delete(device: Device) async throws
-}
-
 /// Implementation of `DeviceRepository` for managing user devices
 @available(iOS 13.0.0, *)
-public class DeviceClient: DeviceRepository {
+public class DeviceClient {
     private var options: FROptions?
     private let ssoTokenBlock: () async throws -> Token
     private let httpClient: URLSession
@@ -60,40 +34,25 @@ public class DeviceClient: DeviceRepository {
         self.ssoTokenBlock = ssoTokenBlock
         self.httpClient = URLSession.shared
     }
-    
-    /// Retrieves a list of Oath devices.
-    /// - Returns: A list of `OathDevice`.
-    public func oathDevices() async throws -> [OathDevice] {
-        return try await fetchDevices(endpoint: "devices/2fa/oath")
-    }
-    
-    /// Retrieves a list of Push devices.
-    /// - Returns: A list of `PushDevice`.
-    public func pushDevices() async throws -> [PushDevice] {
-        return try await fetchDevices(endpoint: "devices/2fa/push")
-    }
-    
-    /// Retrieves a list of Binding devices.
-    /// - Returns: A list of `BindingDevice`.
-    public func bindingDevices() async throws -> [BindingDevice] {
-        return try await fetchDevices(endpoint: "devices/2fa/binding")
-    }
-    
-    /// Retrieves a list of WebAuthn devices.
-    /// - Returns: A list of `WebAuthnDevice`.
-    public func webAuthnDevices() async throws -> [WebAuthnDevice] {
-        return try await fetchDevices(endpoint: "devices/2fa/webauthn")
-    }
-    
-    /// Retrieves a list of Profile devices.
-    /// - Returns: A list of `ProfileDevice`.
-    public func profileDevices() async throws -> [ProfileDevice] {
-        return try await fetchDevices(endpoint: "devices/profile")
-    }
+  
+    /// Provides access to Oath devices, supporting deletions.
+    public lazy var oath: any ImmutableDevice<OathDevice> = ImmutableDeviceImplementation<OathDevice>(endpoint: "devices/2fa/oath", deviceClient: self)
+
+    /// Provides access to Push devices, supporting deletions.
+    public lazy var push: any ImmutableDevice<PushDevice> = ImmutableDeviceImplementation<PushDevice>(endpoint: "devices/2fa/push", deviceClient: self)
+
+    /// Provides access to Bound devices, supporting updates and deletions.
+    public lazy var bound: any MutableDevice<BoundDevice> = MutableDeviceImplementation<BoundDevice>(endpoint: "devices/2fa/binding", deviceClient: self)
+
+    /// Provides access to Profile devices, supporting updates and deletions.
+    public lazy var profile: any MutableDevice<ProfileDevice> =  MutableDeviceImplementation<ProfileDevice>(endpoint: "devices/profile", deviceClient: self)
+
+    /// Provides access to WebAuthn devices, supporting updates and deletions.
+    public lazy var webAuthn: any MutableDevice<WebAuthnDevice> = MutableDeviceImplementation<WebAuthnDevice>(endpoint: "devices/2fa/webauthn", deviceClient: self)
     
     /// Updates the given device.
     /// - Parameter device: The `Device` to update.
-    public func update(device: Device) async throws {
+    internal func update(device: Device) async throws {
         let request = try await createPutRequest(for: device)
         let (_, response) = try await httpClient.data(for: request)
         try validateResponse(response)
@@ -101,7 +60,7 @@ public class DeviceClient: DeviceRepository {
     
     /// Deletes the given device.
     /// - Parameter device: The `Device` to delete.
-    public func delete(device: Device) async throws {
+    internal func delete(device: Device) async throws {
         let request = try await createDeleteRequest(for: device)
         let (_, response) = try await httpClient.data(for: request)
         try validateResponse(response)
@@ -118,7 +77,7 @@ public class DeviceClient: DeviceRepository {
     /// Fetches a list of devices from the server.
     /// - Parameter endpoint: The endpoint to fetch devices from.
     /// - Returns: A list of devices.
-    private func fetchDevices<T: Decodable>(endpoint: String) async throws -> [T] {
+    internal func fetchDevices<T: Decodable>(endpoint: String) async throws -> [T] {
         let request = try await createGetRequest(for: endpoint)
         let (data, response) = try await httpClient.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
@@ -252,4 +211,50 @@ public class DeviceClient: DeviceRepository {
         
         return try JSONDecoder().decode(Session.self, from: data)
     }
+}
+
+
+/// Implementation of the `ImmutableDevice` protocol for managing devices that only support retrieval and deletion.
+@available(iOS 13.0.0, *)
+public struct ImmutableDeviceImplementation<R>: ImmutableDevice where R: Device {
+  var endpoint: String
+  var deviceClient: DeviceClient
+  
+  /// Retrieves a list of devices from the server.
+  /// - Returns: An array of devices of type `R`.
+  public func get() async throws -> [R] {
+    try await deviceClient.fetchDevices(endpoint: endpoint)
+  }
+  
+  /// Deletes the specified device from the server.
+  /// - Parameter device: The device to delete.
+  public func delete(_ device: R) async throws {
+    try await deviceClient.delete(device: device)
+  }
+}
+
+
+/// Implementation of the `MutableDevice` protocol for managing devices that support retrieval, deletion, and updates.
+@available(iOS 13.0.0, *)
+public struct MutableDeviceImplementation<R>: MutableDevice where R: Device {
+  var endpoint: String
+  var deviceClient: DeviceClient
+  
+  /// Retrieves a list of devices from the server.
+  /// - Returns: An array of devices of type `R`.
+  public func get() async throws -> [R] {
+    try await deviceClient.fetchDevices(endpoint: endpoint)
+  }
+  
+  /// Deletes the specified device from the server.
+  /// - Parameter device: The device to delete.
+  public func delete(_ device: R) async throws {
+    try await deviceClient.delete(device: device)
+  }
+  
+  /// Updates the specified device on the server.
+  /// - Parameter device: The device to update.
+  public func update(_ device: R) async throws {
+    try await deviceClient.update(device: device)
+  }
 }
