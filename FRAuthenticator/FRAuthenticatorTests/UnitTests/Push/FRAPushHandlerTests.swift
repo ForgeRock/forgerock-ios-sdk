@@ -2,7 +2,7 @@
 //  FRAPushHandlerTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -188,5 +188,54 @@ class FRAPushHandlerTests: FRABaseTests {
         
         let notification = FRAPushHandler.shared.application(UIApplication.shared, didReceiveRemoteNotification: payload)
         XCTAssertNil(notification)
+    }
+    
+    
+    func test_11_pushnotification_already_exist() {
+        
+        // Given
+        let storage = KeychainServiceClient()
+        let account = Account(issuer: "Rm9yZ2Vyb2Nr", accountName: "demo")
+        storage.setAccount(account: account)
+        
+        let qrCode = URL(string: "pushauth://push/forgerock:demo?a=aHR0cDovL2FtcWEtY2xvbmU2OS50ZXN0LmZvcmdlcm9jay5jb206ODA4MC9vcGVuYW0vanNvbi9wdXNoL3Nucy9tZXNzYWdlP19hY3Rpb249YXV0aGVudGljYXRl&image=aHR0cDovL3NlYXR0bGV3cml0ZXIuY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDEzLzAxL3dlaWdodC13YXRjaGVycy1zbWFsbC5naWY&b=ff00ff&r=aHR0cDovL2FtcWEtY2xvbmU2OS50ZXN0LmZvcmdlcm9jay5jb206ODA4MC9vcGVuYW0vanNvbi9wdXNoL3Nucy9tZXNzYWdlP19hY3Rpb249cmVnaXN0ZXI=&s=dA18Iph3slIUDVuRc5+3y7nv9NLGnPksH66d3jIF6uE=&c=Yf66ojm3Pm80PVvNpljTB6X9CUhgSJ0WZUzB4su3vCY=&l=YW1sYmNvb2tpZT0wMQ==&m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&issuer=Rm9yZ2Vyb2Nr")!
+        
+        do {
+            let parser = try PushQRCodeParser(url: qrCode)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            mechanism.mechanismUUID = "759ACE9D-C64B-43E6-981D-97F7B54C3B01"
+            FRAClient.storage.setMechanism(mechanism: mechanism)
+            
+            let payload: [String: String] = ["c": "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE=", "l": "ZnJfc3NvX2FtbGJfcHJvZD0wMQ==", "t": "120", "u": mechanism.mechanismUUID, "messageId": "AUTHENTICATE:e84233f8-9ecf-4456-91ad-2649c4103bc01569980570407"]
+
+            let messageId = "AUTHENTICATE:e84233f8-9ecf-4456-91ad-2649c4103bc01569980570407"
+
+            let notification = try PushNotification(messageId: messageId, payload: payload)
+            
+            storage.setNotification(notification: notification)
+            let notifications = storage.getAllNotificationsForMechanism(mechanism: mechanism)
+            
+            XCTAssertNotNil(notifications)
+            XCTAssertEqual(notifications.count, 1)
+            XCTAssertEqual(notifications.first?.messageId, messageId)
+
+            var newPayload: [String: Any] = [:]
+            var aps: [String: Any] = [:]
+            aps["messageId"] = "AUTHENTICATE:e84233f8-9ecf-4456-91ad-2649c4103bc01569980570407"
+            aps["content-available"] = true
+            aps["alert"] = "Login attempt from user at ForgeRockSandbox"
+            aps["data"] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjIjoibFltZmVQUzllYisrMWtpbzJJSUpBdHdVV1dDY1pDcytCU2dLUGpaS04yOD0iLCJ0IjoiMTIwIiwidSI6Ijc1OUFDRTlELUM2NEItNDNFNi05ODFELTk3RjdCNTRDM0IwMSIsImwiOiJZVzFzWW1OdmIydHBaVDB3TVE9PSJ9.Kflihn5sCXFQ3TDWe8GBayCinguSLs9nsu4j4JxddtY"
+            aps["sound"] = "default"
+            newPayload["aps"] = aps
+            
+            guard let storedNotification = FRAPushHandler.shared.application(UIApplication.shared, didReceiveRemoteNotification: newPayload) else {
+               XCTFail("Failed to parse notification payload and construct PushNotification object")
+               return
+            }
+            XCTAssertNotNil(storedNotification)
+            XCTAssertEqual(storedNotification.messageId, messageId)        }
+        catch {
+            XCTFail("Failed to parse remote-notification: \(error.localizedDescription)")
+        }
     }
 }
