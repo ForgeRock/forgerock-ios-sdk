@@ -99,6 +99,7 @@ public class FRAPushHandler: NSObject {
                 }
                 else {
                     FRALog.w("PushNotification object failed to be stored into StorageClient")
+                    return nil
                 }
                 
                 return notification
