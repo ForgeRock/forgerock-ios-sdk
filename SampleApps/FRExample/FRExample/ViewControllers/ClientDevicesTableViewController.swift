@@ -79,7 +79,6 @@ class ClientDevicesTableViewController: UITableViewController, AlertShowing {
             alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (alert: UIAlertAction!) in
                 Task {
                     do {
-                        //try await self.deviceRepo.delete(device: device)
                       if let device = device as? BoundDevice {
                           try await self.deviceRepo.bound.delete(device)
                       } else if let device = device as? ProfileDevice {

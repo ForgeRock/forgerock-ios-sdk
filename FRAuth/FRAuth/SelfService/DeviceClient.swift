@@ -217,17 +217,30 @@ public class DeviceClient {
 /// Implementation of the `ImmutableDevice` protocol for managing devices that only support retrieval and deletion.
 @available(iOS 13.0.0, *)
 public struct ImmutableDeviceImplementation<R>: ImmutableDevice where R: Device {
+  /// The endpoint for device-related requests.
   var endpoint: String
+  /// The `DeviceClient` used to perform network operations.
   var deviceClient: DeviceClient
+
+  /// Initializes a new instance of `ImmutableDeviceImplementation`.
+  /// - Parameters:
+  ///   - endpoint: The endpoint for retrieving and managing devices.
+  ///   - deviceClient: The `DeviceClient` instance used for performing network operations.
+  public init(endpoint: String, deviceClient: DeviceClient) {
+    self.endpoint = endpoint
+    self.deviceClient = deviceClient
+  }
   
   /// Retrieves a list of devices from the server.
   /// - Returns: An array of devices of type `R`.
+  /// - Throws: An error if the request fails or the response cannot be decoded.
   public func get() async throws -> [R] {
     try await deviceClient.fetchDevices(endpoint: endpoint)
   }
   
   /// Deletes the specified device from the server.
   /// - Parameter device: The device to delete.
+  /// - Throws: An error if the request fails or the server response indicates failure.
   public func delete(_ device: R) async throws {
     try await deviceClient.delete(device: device)
   }
@@ -237,23 +250,37 @@ public struct ImmutableDeviceImplementation<R>: ImmutableDevice where R: Device 
 /// Implementation of the `MutableDevice` protocol for managing devices that support retrieval, deletion, and updates.
 @available(iOS 13.0.0, *)
 public struct MutableDeviceImplementation<R>: MutableDevice where R: Device {
+  /// The endpoint for device-related requests.
   var endpoint: String
+  /// The `DeviceClient` used to perform network operations.
   var deviceClient: DeviceClient
+
+  /// Initializes a new instance of `MutableDeviceImplementation`.
+  /// - Parameters:
+  ///   - endpoint: The endpoint for retrieving and managing devices.
+  ///   - deviceClient: The `DeviceClient` instance used for performing network operations.
+  public init(endpoint: String, deviceClient: DeviceClient) {
+    self.endpoint = endpoint
+    self.deviceClient = deviceClient
+  }
   
   /// Retrieves a list of devices from the server.
   /// - Returns: An array of devices of type `R`.
+  /// - Throws: An error if the request fails or the response cannot be decoded.
   public func get() async throws -> [R] {
     try await deviceClient.fetchDevices(endpoint: endpoint)
   }
   
   /// Deletes the specified device from the server.
   /// - Parameter device: The device to delete.
+  /// - Throws: An error if the request fails or the server response indicates failure.
   public func delete(_ device: R) async throws {
     try await deviceClient.delete(device: device)
   }
   
   /// Updates the specified device on the server.
   /// - Parameter device: The device to update.
+  /// - Throws: An error if the request fails or the server response indicates failure.
   public func update(_ device: R) async throws {
     try await deviceClient.update(device: device)
   }
