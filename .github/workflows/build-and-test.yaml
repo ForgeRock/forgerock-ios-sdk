@@ -36,7 +36,7 @@ jobs:
 
       # Run all tests
       - name: Run tests
-        run: xcodebuild test -scheme FRTestHost -workspace e2e/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.5' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
+        run: xcodebuild test -scheme FRTestHost -workspace e2e/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.5' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults -allowProvisioningUpdates | xcpretty && exit ${PIPESTATUS[0]}
 
       # Publish test results
       - name: Publish test results
