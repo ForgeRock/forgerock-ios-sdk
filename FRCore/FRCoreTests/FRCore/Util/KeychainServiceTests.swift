@@ -34,9 +34,9 @@ class KeychainServiceTests: FRBaseTestCase {
         let kc = KeychainService(service: "com.forgerock.ios", accessGroup: accessGroup)
         XCTAssertTrue(kc.debugDescription.contains(".com.bitbar.*"))
         
-        // 2. Create Keychain Service with accessGroup and Apple TeamID; 'JV6EC9KSN3' is ForgeRock Ltd's TeamID
-        let kc2 = KeychainService(service: "com.forgerock.ios", accessGroup: "JV6EC9KSN3.\(accessGroup)")
-        XCTAssertTrue(kc2.debugDescription.contains("JV6EC9KSN3.\(accessGroup)"))
+        // 2. Create Keychain Service with accessGroup and Apple TeamID; '9QSE66762D' is ForgeRock Ltd's TeamID
+        let kc2 = KeychainService(service: "com.forgerock.ios", accessGroup: "9QSE66762D.\(accessGroup)")
+        XCTAssertTrue(kc2.debugDescription.contains("9QSE66762D.\(accessGroup)"))
     }
     
     func testKeychainServiceAccessGroup() {
@@ -46,7 +46,7 @@ class KeychainServiceTests: FRBaseTestCase {
         }
         
         // 1. Validate if granted AccessGroup is correctly validated with Apple TeamID; validation requires AccessGroup contains Apple TeamID
-        XCTAssertTrue(KeychainService.validateAccessGroup(service: "com.forgerofck.ios", accessGroup: "JV6EC9KSN3.\(accessGroup)"))
+        XCTAssertTrue(KeychainService.validateAccessGroup(service: "com.forgerofck.ios", accessGroup: "9QSE66762D.\(accessGroup)"))
         
         // 2. Validate if AccessGroup that is not valid Keychain Sharing identifier
         XCTAssertFalse(KeychainService.validateAccessGroup(service: "com.forgerofck.ios", accessGroup: "com.forgerock.ios.notvalid"))
