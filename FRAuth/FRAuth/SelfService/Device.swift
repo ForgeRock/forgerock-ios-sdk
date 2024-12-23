@@ -11,6 +11,26 @@
 
 import Foundation
 
+/// Protocol defining immutable device operations.
+public protocol ImmutableDevice<T> {
+    associatedtype T
+    
+    /// Retrieves a list of devices.
+    /// - Returns: A list of devices of type `T`.
+    func get() async throws -> [T]
+    
+    /// Deletes the specified device.
+    /// - Parameter device: The device to delete.
+    func delete(_ device: T) async throws
+}
+
+/// Protocol defining mutable device operations.
+public protocol MutableDevice<T>: ImmutableDevice {
+    /// Updates the specified device.
+    /// - Parameter device: The device to update.
+    func update(_ device: T) async throws
+}
+
 /// Protocol representing a device.
 public protocol Device: Codable {
     var id: String { get }
@@ -18,8 +38,8 @@ public protocol Device: Codable {
     var urlSuffix: String { get }
 }
 
-/// Struct representing a Binding device
-public struct BindingDevice: Device {
+/// Struct representing a BoundDevice
+public struct BoundDevice: Device {
     /// The ID of the device.
     public let id: String
     /// The name of the device.
