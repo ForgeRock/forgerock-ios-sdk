@@ -2,7 +2,7 @@
 //  FRAPushHandler.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -68,35 +68,42 @@ public class FRAPushHandler: NSObject {
         
         FRALog.v("Received valid format of remote-notification for AM Push Authentication; starts parsing it into PushNotification object")
         do {
-            // Extract JWT payload
-            FRALog.v("Starts extracting JWT payload: \(jwt)")
-            let jwtPayload = try FRCompactJWT.extractPayload(jwt: jwt)
-            FRALog.v("JWT payload is extracted: \(jwtPayload)")
-            
-            // Construct and save Notification object
-            FRALog.v("PushNotification object created - messageId:\(messageId), payload: \(jwtPayload)")
-            let notification = try PushNotification(messageId: messageId, payload: jwtPayload)
-            
-            if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: notification.mechanismUUID) {
-                if try FRCompactJWT.verify(jwt: jwt, secret: mechanism.secret) == false {
-                    FRALog.e("Failed to verify given JWT in remote-notification payload; returning nil")
+            // Check if notification with given messageId already exists
+            if let notification = FRAClient.storage.getNotificationByMessageId(messageId: messageId) {
+                FRALog.v("Received remote-notification with messageId: \(messageId) already exists in StorageClient; returning the existing PushNotification object")
+                return notification
+            } else {
+                // Extract JWT payload
+                FRALog.v("Starts extracting JWT payload: \(jwt)")
+                let jwtPayload = try FRCompactJWT.extractPayload(jwt: jwt)
+                FRALog.v("JWT payload is extracted: \(jwtPayload)")
+                
+                // Construct and save Notification object
+                FRALog.v("PushNotification object created - messageId:\(messageId), payload: \(jwtPayload)")
+                let notification = try PushNotification(messageId: messageId, payload: jwtPayload)
+                
+                if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: notification.mechanismUUID) {
+                    if try FRCompactJWT.verify(jwt: jwt, secret: mechanism.secret) == false {
+                        FRALog.e("Failed to verify given JWT in remote-notification payload; returning nil")
+                        return nil
+                    }
+                    FRALog.v("Verification of JWT in remote-notification payload with PushMechanism's secret")
+                }
+                else {
+                    FRALog.e("Failed to retrieve PushMechanism object from StorageClient; returning null")
                     return nil
                 }
-                FRALog.v("Verification of JWT in remote-notification payload with PushMechanism's secret")
+                
+                if FRAClient.storage.setNotification(notification: notification) {
+                    FRALog.v("PushNotification object is created and saved into StorageClient")
+                }
+                else {
+                    FRALog.w("PushNotification object failed to be stored into StorageClient")
+                    return nil
+                }
+                
+                return notification
             }
-            else {
-                FRALog.e("Failed to retrieve PushMechanism object from StorageClient; returning null")
-                return nil
-            }
-            
-            if FRAClient.storage.setNotification(notification: notification) {
-                FRALog.v("PushNotification object is created and saved into StorageClient")
-            }
-            else {
-                FRALog.w("PushNotification object failed to be stored into StorageClient")
-            }
-            
-            return notification
         }
         catch {
             FRALog.e("An error occurred during handling incoming PushNotification: \(error.localizedDescription)")

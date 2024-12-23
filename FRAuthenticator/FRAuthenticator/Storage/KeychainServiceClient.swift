@@ -2,7 +2,7 @@
 //  KeychainServiceStorageClient.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -197,6 +197,29 @@ struct KeychainServiceClient: StorageClient {
                 return nil
             }
         }
+    }
+    
+    
+    func getNotificationByMessageId(messageId: String) -> PushNotification? {
+        if let items = self.notificationStorage.allItems() {
+           for item in items {
+            if #available(iOS 11.0, *) {
+                if let notificationData = item.value as? Data,
+                   let notification = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushNotification.self, from: notificationData),
+                   notification.messageId == messageId {
+                        return notification
+                }
+            } else {
+                if let notificationData = item.value as? Data,
+                    let notification = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification,
+                    notification.messageId == messageId {
+                        return notification
+                }
+            }
+           }
+        }
+        
+        return nil
     }
     
     

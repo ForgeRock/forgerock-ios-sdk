@@ -2,7 +2,7 @@
 //  StorageClient.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -48,6 +48,10 @@ public protocol StorageClient {
     /// Retrieves PushNotification object with its unique identifier
     /// - Parameter notificationIdentifier: String value of PushNotification's unique identifier
     func getNotification(notificationIdentifier: String) -> PushNotification?
+    
+    /// Retrieves PushNotification object with its unique message identifier
+    /// - Parameter messageId: String value of PushNotification's message identifier
+    func getNotificationByMessageId(messageId: String) -> PushNotification?
     
     /// Stores PushNotification object into Storage Client, and returns discardable Boolean result of operation
     /// - Parameter notification: PushNotification object to be stored

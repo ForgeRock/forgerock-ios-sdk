@@ -2,7 +2,7 @@
 //  FRAClientTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -403,6 +403,14 @@ class FRAClientTests: FRABaseTests {
                 notifications[1].messageId = "AUTHENTICATE:0666696b-859d-4565-b069-f13c800c5e3c1589151071515"
                 notifications[2].messageId = "AUTHENTICATE:929d72b7-c3e6-4460-a7b6-8e1c950b43361589151096771"
             }
+            
+            // Get push notification by messageId
+            guard let notification1 = FRAClient.shared?.getNotificationByMessageId(messageId: "AUTHENTICATE:64e909a2-84db-4ee8-b244-f0dbbeb8b0ff1589151035455") else {
+                XCTFail("Failed to retrieve PushNotification by messageId")
+                return
+            }
+            XCTAssertEqual(notification1.messageId, "AUTHENTICATE:64e909a2-84db-4ee8-b244-f0dbbeb8b0ff1589151035455")
+            
             
             //  Remove Account object
             //  When
