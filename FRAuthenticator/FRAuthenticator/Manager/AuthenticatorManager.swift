@@ -2,7 +2,7 @@
 //  AuthenticatorManager.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -452,6 +452,14 @@ struct AuthenticatorManager {
     /// - Returns: PushNotification object with given identifier
     func getNotification(identifier: String) -> PushNotification? {
         return self.storageClient.getNotification(notificationIdentifier: identifier)
+    }
+    
+    
+    /// Retrieves PushNotification object with given PushNotification Message Identifier
+    /// - Parameter messageId: String value of PushNotification object's message identifier
+    /// - Returns: PushNotification object with given message identifier
+    func getNotificationByMessageId(messageId: String) -> PushNotification? {
+        return self.storageClient.getNotificationByMessageId(messageId: messageId)
     }
     
     

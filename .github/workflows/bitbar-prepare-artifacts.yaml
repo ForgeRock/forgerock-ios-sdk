@@ -88,7 +88,7 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
 
       - name: build-for-testing and sign
-        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos17.5 -workspace SampleApps/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=~/build/ DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath ~/build/derivedData/ build-for-testing
+        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos17.5 -workspace e2e/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=~/build/ DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath ~/build/derivedData/ build-for-testing
 
       # Prepare BitBar artifacts:
       - name: Prepare BitBar artifacts
