@@ -31,7 +31,7 @@ jobs:
   bitbar-prepare-artifacts:
     name: Prepare device farm artifacts
     uses: ./.github/workflows/bitbar-prepare-artifacts.yaml
-    needs: build-and-test
+    # needs: build-and-test
     secrets:
       CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
       CERTIFICATES_FILE_BASE64: ${{ secrets.CERTIFICATES_FILE_BASE64 }}
