@@ -215,6 +215,8 @@ class ViewController: UIViewController, AlertShowing {
         RestClient.shared.setURLSessionConfiguration(config: customConfig, handler: customPinner)
          
         */
+      FRJailbreakDetector.shared.detectors.append(CustomDetector1())
+      FRJailbreakDetector.shared.detectors.append(CustomDetector2())
         
         // Start SDK
       if !useDiscoveryURL {

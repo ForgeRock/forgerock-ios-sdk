@@ -18,6 +18,12 @@
 		A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; };
+		A5E9AE5E2D2D8270000533ED /* CustomDetector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9AE5D2D2D8270000533ED /* CustomDetector2.swift */; };
+		A5E9AE5F2D2D8270000533ED /* CustomDetector1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9AE5C2D2D8270000533ED /* CustomDetector1.swift */; };
+		A5E9AE602D2D8270000533ED /* CustomDetector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9AE5D2D2D8270000533ED /* CustomDetector2.swift */; };
+		A5E9AE612D2D8270000533ED /* CustomDetector1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9AE5C2D2D8270000533ED /* CustomDetector1.swift */; };
+		A5E9AE6F2D2D8452000533ED /* CustomJailbreakDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9AE6E2D2D8452000533ED /* CustomJailbreakDetection.swift */; };
+		A5E9AE702D2D8452000533ED /* CustomJailbreakDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9AE6E2D2D8452000533ED /* CustomJailbreakDetection.swift */; };
 		D521A2062303644300EDD28E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
 		D521A2082303644300EDD28E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
@@ -277,6 +283,9 @@
 		A52B84892B339571001FBA2C /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		A530D4892CD3D024009EC60C /* ClientDevicesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDevicesTableViewController.swift; sourceTree = "<group>"; };
 		A5D1C38C29E59FC30096039E /* FRDeviceBinding.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRDeviceBinding.xcodeproj; path = ../../FRDeviceBinding/FRDeviceBinding.xcodeproj; sourceTree = "<group>"; };
+		A5E9AE5C2D2D8270000533ED /* CustomDetector1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetector1.swift; sourceTree = "<group>"; };
+		A5E9AE5D2D2D8270000533ED /* CustomDetector2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetector2.swift; sourceTree = "<group>"; };
+		A5E9AE6E2D2D8452000533ED /* CustomJailbreakDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomJailbreakDetection.swift; sourceTree = "<group>"; };
 		D521A21A2303644300EDD28E /* FRExampleSSO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExampleSSO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530423A26321BE90079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D530424326321BF00079EB3B /* FRCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -418,6 +427,9 @@
 				D5FE5E5E23190A0000E04658 /* Supporting Files */,
 				A52B84892B339571001FBA2C /* Playground.swift */,
 				D554632F22A6EF950096C7A4 /* AppDelegate.swift */,
+				A5E9AE5C2D2D8270000533ED /* CustomDetector1.swift */,
+				A5E9AE5D2D2D8270000533ED /* CustomDetector2.swift */,
+				A5E9AE6E2D2D8452000533ED /* CustomJailbreakDetection.swift */,
 				D554633122A6EF950096C7A4 /* ViewController.swift */,
 				D554633322A6EF950096C7A4 /* Main.storyboard */,
 				D554633622A6EF960096C7A4 /* Assets.xcassets */,
@@ -796,7 +808,10 @@
 			files = (
 				D521A2062303644300EDD28E /* ViewController.swift in Sources */,
 				D521A2082303644300EDD28E /* AppDelegate.swift in Sources */,
+				A5E9AE6F2D2D8452000533ED /* CustomJailbreakDetection.swift in Sources */,
 				A530D48B2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */,
+				A5E9AE602D2D8270000533ED /* CustomDetector2.swift in Sources */,
+				A5E9AE612D2D8270000533ED /* CustomDetector1.swift in Sources */,
 				A52B848B2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -807,9 +822,12 @@
 			files = (
 				D5C64E562489808600CB7EB3 /* NoSessionInterceptor.swift in Sources */,
 				D5E080CF23DA583D0025EA17 /* CustomNameCallbackCell.swift in Sources */,
+				A5E9AE702D2D8452000533ED /* CustomJailbreakDetection.swift in Sources */,
 				A530D48A2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */,
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
+				A5E9AE5E2D2D8270000533ED /* CustomDetector2.swift in Sources */,
+				A5E9AE5F2D2D8270000533ED /* CustomDetector1.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
 				A52B848A2B339571001FBA2C /* Playground.swift in Sources */,
 			);

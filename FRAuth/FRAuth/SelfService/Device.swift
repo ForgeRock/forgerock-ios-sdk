@@ -12,6 +12,7 @@
 import Foundation
 
 /// Protocol defining immutable device operations.
+@available(iOS 13.0.0, *)
 public protocol ImmutableDevice<T> {
     associatedtype T
     
@@ -25,6 +26,7 @@ public protocol ImmutableDevice<T> {
 }
 
 /// Protocol defining mutable device operations.
+@available(iOS 13.0.0, *)
 public protocol MutableDevice<T>: ImmutableDevice {
     /// Updates the specified device.
     /// - Parameter device: The device to update.
