@@ -41,7 +41,7 @@ final class DeviceClientTests: FRAuthBaseTest {
         
         self.loadMockResponses(["sessionInfo",
                                 "successOath"])
-        let devices = try await deviceClient.oathDevices()
+        let devices = try await deviceClient.oath.get()
         
         let request = FRTestNetworkStubProtocol.requestHistory.last!
         XCTAssertEqual(request.httpMethod, "GET")
@@ -62,7 +62,7 @@ final class DeviceClientTests: FRAuthBaseTest {
         self.loadMockResponses(["sessionInfo",
                                 "successPush"])
         
-        let devices = try await deviceClient.pushDevices()
+        let devices = try await deviceClient.push.get()
         
         let request = FRTestNetworkStubProtocol.requestHistory.last!
         XCTAssertEqual(request.httpMethod, "GET")
@@ -83,7 +83,7 @@ final class DeviceClientTests: FRAuthBaseTest {
         self.loadMockResponses(["sessionInfo",
                                 "successDeviceBinding"])
         
-        let devices = try await deviceClient.bindingDevices()
+        let devices = try await deviceClient.bound.get()
         
         let request = FRTestNetworkStubProtocol.requestHistory.last!
         XCTAssertEqual(request.httpMethod, "GET")
@@ -105,7 +105,7 @@ final class DeviceClientTests: FRAuthBaseTest {
         self.loadMockResponses(["sessionInfo",
                                 "successWebAuthn"])
         
-        let devices = try await deviceClient.webAuthnDevices()
+        let devices = try await deviceClient.webAuthn.get()
         
         let request = FRTestNetworkStubProtocol.requestHistory.last!
         XCTAssertEqual(request.httpMethod, "GET")
@@ -127,7 +127,7 @@ final class DeviceClientTests: FRAuthBaseTest {
         self.loadMockResponses(["sessionInfo",
                                 "successDeviceProfile"])
         
-        let devices = try await deviceClient.profileDevices()
+        let devices = try await deviceClient.profile.get()
         
         let request = FRTestNetworkStubProtocol.requestHistory.last!
         XCTAssertEqual(request.httpMethod, "GET")
@@ -150,7 +150,7 @@ final class DeviceClientTests: FRAuthBaseTest {
                                 "sessionInfo",
                                 "successUpdateDeviceBinding"])
         
-        let devices = try await deviceClient.bindingDevices()
+        let devices = try await deviceClient.bound.get()
         XCTAssertTrue(!devices.isEmpty)
         XCTAssertEqual(devices.count, 4)
         try await deviceClient.update(device: devices[0])
@@ -169,7 +169,7 @@ final class DeviceClientTests: FRAuthBaseTest {
                                 "sessionInfo",
                                 "successUpdateDeviceBinding"])
         
-        let devices = try await deviceClient.bindingDevices()
+        let devices = try await deviceClient.bound.get()
         XCTAssertTrue(!devices.isEmpty)
         XCTAssertEqual(devices.count, 4)
         try await deviceClient.delete(device: devices[0])
@@ -188,7 +188,7 @@ final class DeviceClientTests: FRAuthBaseTest {
                                 "sessionInfo",
                                 "accessDenied"])
         
-        let devices = try await deviceClient.bindingDevices()
+        let devices = try await deviceClient.bound.get()
         XCTAssertTrue(!devices.isEmpty)
         
         do {
@@ -213,7 +213,7 @@ final class DeviceClientTests: FRAuthBaseTest {
                                 "sessionInfo",
                                 "forbidden"])
         
-        let devices = try await deviceClient.bindingDevices()
+        let devices = try await deviceClient.bound.get()
         XCTAssertTrue(!devices.isEmpty)
         
         do {
@@ -236,7 +236,7 @@ final class DeviceClientTests: FRAuthBaseTest {
         self.loadMockResponses(["accessDenied"])
         
         do {
-            _ = try await deviceClient.bindingDevices()
+            _ = try await deviceClient.bound.get()
             XCTFail("Should have failed")
         } catch AuthApiError.apiFailureWithMessage {
             let response = FRTestNetworkStubProtocol.mockedResponses.last!
