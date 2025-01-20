@@ -366,6 +366,10 @@ public struct TokenManager {
         Browser.currentBrowser = nil
     }
     
+    public func persistToken(token: AccessToken) {
+        let _ = try? self.keychainManager.setAccessToken(token: token)
+    }
+    
     
     /// Revoke given Access Token without using the Refresh Token
     func revokeToken(_ token: AccessToken, completion: @escaping CompletionCallback) {
