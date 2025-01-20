@@ -357,7 +357,7 @@ public struct TokenManager {
     
     
     /// Clears all credentials locally as there is no more valid credentials to renew user's session
-    func clearCredentials() {
+    public func clearCredentials() {
         self.keychainManager.cookieStore.deleteAll()
         let _ = try? self.keychainManager.setAccessToken(token: nil)
         self.keychainManager.setSSOToken(ssoToken: nil)
