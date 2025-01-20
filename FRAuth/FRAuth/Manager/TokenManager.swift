@@ -12,7 +12,7 @@ import Foundation
 
 
 /// TokenManager class is a management class responsible for persisting, retrieving, and refreshing OAuth2 token(s)
-struct TokenManager {
+public struct TokenManager {
     
     var oAuth2Client: OAuth2Client
     var keychainManager: KeychainManager
@@ -22,7 +22,7 @@ struct TokenManager {
     /// - Parameters:
     ///   - oAuth2Client: OAuth2Client instance for OAuth2 token protocols
     ///   - keychainManager: KeychainManager instance for secure credentials management
-    public init(oAuth2Client: OAuth2Client, keychainManager: KeychainManager) {
+    init(oAuth2Client: OAuth2Client, keychainManager: KeychainManager) {
         self.oAuth2Client = oAuth2Client
         self.keychainManager = keychainManager
     }
