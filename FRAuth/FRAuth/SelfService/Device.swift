@@ -2,7 +2,7 @@
 //  Device.swift
 //  FRAuth
 //
-//  Copyright (c) 2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2024 - 2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -12,6 +12,7 @@
 import Foundation
 
 /// Protocol defining immutable device operations.
+@available(iOS 13.0.0, *)
 public protocol ImmutableDevice<T> {
     associatedtype T
     
@@ -25,6 +26,7 @@ public protocol ImmutableDevice<T> {
 }
 
 /// Protocol defining mutable device operations.
+@available(iOS 13.0.0, *)
 public protocol MutableDevice<T>: ImmutableDevice {
     /// Updates the specified device.
     /// - Parameter device: The device to update.
