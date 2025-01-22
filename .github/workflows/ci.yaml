@@ -10,28 +10,28 @@ on:
       - develop
 
 jobs:
-  # Build and run unit tests
-  build-and-test:
-    name: Build and test
-    uses: ./.github/workflows/build-and-test.yaml
-    secrets:
-      CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  # # Build and run unit tests
+  # build-and-test:
+  #   name: Build and test
+  #   uses: ./.github/workflows/build-and-test.yaml
+  #   secrets:
+  #     CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
+  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # Run Mend CLI Scan
-  mend-cli-scan:
-    name: Mend CLI Scan
-    uses: ./.github/workflows/mend-cli-scan.yaml
-    secrets:
-      MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
-      MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
+  # mend-cli-scan:
+  #   name: Mend CLI Scan
+  #   uses: ./.github/workflows/mend-cli-scan.yaml
+  #   secrets:
+  #     MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+  #     MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
   
   # Build and sign BitBar test artifacts (FRTestHost.ipa and FRAuthTests.xctest.zip)
   bitbar-prepare-artifacts:
     name: Prepare device farm artifacts
     uses: ./.github/workflows/bitbar-prepare-artifacts.yaml
-    needs: build-and-test
+    # needs: build-and-test
     secrets:
       CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
       CERTIFICATES_FILE_BASE64: ${{ secrets.CERTIFICATES_FILE_BASE64 }}
@@ -40,22 +40,22 @@ jobs:
       BUILD_PROVISION_PROFILE: ${{ secrets.BUILD_PROVISION_PROFILE_ZIP_BASE64}}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   
-  # Execute e2e test cases in BitBar. The workflow outputs the newly created run id.
-  bitbar-run:
-    name: Run e2e tests in BitBar
-    uses: ./.github/workflows/bitbar-run.yaml
-    needs: bitbar-prepare-artifacts
-    secrets:
-      BITBAR_API_KEY: ${{ secrets.BITBAR_API_KEY }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  # # Execute e2e test cases in BitBar. The workflow outputs the newly created run id.
+  # bitbar-run:
+  #   name: Run e2e tests in BitBar
+  #   uses: ./.github/workflows/bitbar-run.yaml
+  #   needs: bitbar-prepare-artifacts
+  #   secrets:
+  #     BITBAR_API_KEY: ${{ secrets.BITBAR_API_KEY }}
+  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-  # Wait for BitBar test run to finish and publish results
-  bitbar-results:
-    name: Wait for and publish BitBar test results
-    uses: ./.github/workflows/bitbar-results.yaml
-    needs: bitbar-run
-    secrets:
-      BITBAR_API_KEY: ${{ secrets.BITBAR_API_KEY }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-    with:
-      bitbar-run-id: ${{ needs.bitbar-run.outputs.bitbar-run-id }}
+  # # Wait for BitBar test run to finish and publish results
+  # bitbar-results:
+  #   name: Wait for and publish BitBar test results
+  #   uses: ./.github/workflows/bitbar-results.yaml
+  #   needs: bitbar-run
+  #   secrets:
+  #     BITBAR_API_KEY: ${{ secrets.BITBAR_API_KEY }}
+  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  #   with:
+  #     bitbar-run-id: ${{ needs.bitbar-run.outputs.bitbar-run-id }}

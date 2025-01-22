@@ -34,7 +34,7 @@ class ViewController: UIViewController, AlertShowing {
     var invoke401: Bool = false
     var urlSession: URLSession = URLSession.shared
     var loadingView: FRLoadingView = FRLoadingView(size: CGSize(width: 120, height: 120), showDropShadow: true, showDimmedBackground: true, loadingText: "Loading...")
-    let useDiscoveryURL = false
+    let useDiscoveryURL = true
     let centralizedLoginBrowserType: BrowserType = .authSession
 
     // MARK: - UIViewController Lifecycle
@@ -232,13 +232,13 @@ class ViewController: UIViewController, AlertShowing {
           Task {
             do {
               let config =
-              ["forgerock_oauth_client_id": "CLIENT_ID_PLACEHOLDER",
+              ["forgerock_oauth_client_id": "47c36978-1ff5-4458-ad04-1cf96c52590d",
                "forgerock_oauth_redirect_uri": "org.forgerock.demo://oauth2redirect",
-               "forgerock_oauth_sign_out_redirect_uri": "org.forgerock.demo://oauth2redirect",
+//               "forgerock_oauth_sign_out_redirect_uri": "org.forgerock.demo://oauth2redirect",
                "forgerock_oauth_scope": "openid profile email address revoke",
               /* "forgerock_ssl_pinning_public_key_hashes": ["SSL_PINNING_HASH_PLACEHOLDER"]*/]
 
-              let discoveryURL = "DISCOVERY_URL_PLACEHOLDER"
+              let discoveryURL = "https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration"
 
               let options = try await FROptions(config: config).discover(discoveryURL: discoveryURL)
               

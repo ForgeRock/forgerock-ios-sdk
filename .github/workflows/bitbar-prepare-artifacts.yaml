@@ -38,12 +38,12 @@ on:
         required: true
 jobs:
   prepare-device-farm-artifacts:
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       # Clone the repo
       - name: Clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
@@ -60,14 +60,10 @@ jobs:
         run: |
           # Create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH_ZIP=$RUNNER_TEMP/build_pp.mobileprovision.zip
-          PP_FILENAME=provisioning_profile.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # Import certificate and provisioning profile from secrets
           echo -n ${{ secrets.CERTIFICATES_FILE_BASE64 }} | base64 --decode -o $CERTIFICATE_PATH
-          echo -n ${{ secrets.BUILD_PROVISION_PROFILE }} | base64 --decode -o $PP_PATH_ZIP
-          unzip $PP_PATH_ZIP
 
           # Create temporary keychain
           security create-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
@@ -80,57 +76,72 @@ jobs:
 
           # Apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_FILENAME ~/Library/MobileDevice/Provisioning\ Profiles
+          cp ./provisioning_profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
+          ls -la ~/Library/MobileDevice/Provisioning\ Profiles/provisioning_profile.mobileprovision  
 
       # Set target Xcode version. For more details and options see:
       # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
+
+      - name: List Profiles
+        run: |
+          security find-identity -p codesigning -v
+          ls -la ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: AutheQnticate with Apple Developer Portal
+        env:
+          CI: "1" # Required to suppress interactive prompts
+          APPLE_ID: ${{ secrets.APPLE_DEVELOPER_EMAIL }}
+          APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_DEVELOPER_PASSWORD }}
+        run: |
+          xcodebuild -allowProvisioningUpdates
 
       - name: build-for-testing and sign
-        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos17.5 -workspace e2e/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=~/build/ DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath ~/build/derivedData/ build-for-testing
+        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos18.2 -workspace e2e/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=/tmp/build DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath /tmp/build/derivedData build-for-testing
 
-      # Prepare BitBar artifacts:
-      - name: Prepare BitBar artifacts
-        run: |
-          pwd
-          ls -la
-          cd ~/build/Debug-iphoneos/
-          cp -r FRTestHost.app/PlugIns/FRAuthTests.xctest .
-          zip -r -X FRAuthTests.xctest.zip FRAuthTests.xctest
-          mkdir  Payload
-          cp -r FRTestHost.app Payload/
-          zip --symlinks -qr FRTestHost.ipa Payload
 
-      # Publish e2e tests and app build artifacts
-      - name: Publish FRTestHost.ipa
-        uses: actions/upload-artifact@v3
-        if: success()
-        with:
-          name: FRTestHost.ipa
-          path: ~/build/Debug-iphoneos/FRTestHost.ipa
+      # # Prepare BitBar artifacts:
+      # - name: Prepare BitBar artifacts
+      #   run: |
+      #     pwd
+      #     ls -la
+      #     cd ~/build/Debug-iphoneos/
+      #     cp -r FRTestHost.app/PlugIns/FRAuthTests.xctest .
+      #     zip -r -X FRAuthTests.xctest.zip FRAuthTests.xctest
+      #     mkdir  Payload
+      #     cp -r FRTestHost.app Payload/
+      #     zip --symlinks -qr FRTestHost.ipa Payload
 
-      - name: Publish FRAuthTests.xctest.zip
-        uses: actions/upload-artifact@v3
-        if: success()
-        with:
-          name: FRAuthTests.xctest.zip
-          path: ~/build/Debug-iphoneos/FRAuthTests.xctest.zip
+      # # Publish e2e tests and app build artifacts
+      # - name: Publish FRTestHost.ipa
+      #   uses: actions/upload-artifact@v3
+      #   if: success()
+      #   with:
+      #     name: FRTestHost.ipa
+      #     path: ~/build/Debug-iphoneos/FRTestHost.ipa
 
-      # Send slack notification ONLY if any of the steps above fail
-      - name: Send slack notification
-        uses: 8398a7/action-slack@v3
-        with:
-          status: custom
-          fields: all
-          custom_payload: |
-            {
-              attachments: [{
-                title: ':no_entry: Failed to prepare BitBar test artifacts',
-                color: 'danger',
-                text: `\nWorkflow: ${process.env.AS_WORKFLOW} -> ${process.env.AS_JOB}\nPull request: ${process.env.AS_PULL_REQUEST}\nCommit: ${process.env.AS_COMMIT} by ${process.env.AS_AUTHOR}`, 
-              }]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
+      # - name: Publish FRAuthTests.xctest.zip
+      #   uses: actions/upload-artifact@v3
+      #   if: success()
+      #   with:
+      #     name: FRAuthTests.xctest.zip
+      #     path: ~/build/Debug-iphoneos/FRAuthTests.xctest.zip
+
+      # # Send slack notification ONLY if any of the steps above fail
+      # - name: Send slack notification
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: custom
+      #     fields: all
+      #     custom_payload: |
+      #       {
+      #         attachments: [{
+      #           title: ':no_entry: Failed to prepare BitBar test artifacts',
+      #           color: 'danger',
+      #           text: `\nWorkflow: ${process.env.AS_WORKFLOW} -> ${process.env.AS_JOB}\nPull request: ${process.env.AS_PULL_REQUEST}\nCommit: ${process.env.AS_COMMIT} by ${process.env.AS_AUTHOR}`, 
+      #         }]
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #   if: failure()
