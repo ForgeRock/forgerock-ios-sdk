@@ -4,9 +4,9 @@
 
 <p align="center">
   <a href="https://github.com/ForgeRock">
-    <img src="https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg" alt="Logo">
+    <img src="https://cdn-docs.pingidentity.com/navbar/ping-logo-horizontal.svg" alt="Logo">
   </a>
-  <h2 align="center">ForgeRock SDK for iOS</h2>
+  <h2 align="center">Ping SDK for iOS</h2>
   <p align="center">
     <a href="./CHANGELOG.md">Change Log</a>
     ·
@@ -17,9 +17,9 @@
   <hr />
 </p>
 
-The ForgeRock iOS SDK enables you to quickly integrate the [ForgeRock Identity Platform](https://www.forgerock.com/digital-identity-and-access-management-platform) into your iOS apps.
+The Ping SDk for iOS enables you to quickly integrate Ping products into your iOS apps.
 
-Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com/platform/access-management/intelligent-authentication)_ in [ForgeRock's Access Management (AM)](https://www.forgerock.com/platform/access-management) product, to easily step through each stage of an authentication tree by using callbacks.
+Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/platform/capabilities/intelligent-access.html)_ to easily step through each stage of an authentication tree by using callbacks.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- REQUIREMENTS - Supported AM versions, API versions, any other requirements. -->
@@ -27,7 +27,8 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 ## Requirements
 
 * ForgeRock Identity Platform
-    * Access Management (AM) 6.5.2+
+  * Ping Advanced Identity Cloud
+  * PingAM 6.5.2+
 * iOS 12 and above
 * Xcode
 * Swift 5.x or Objective-C
@@ -42,7 +43,7 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 Use the following pods in your `Podfile` to install FR iOS SDK module(s) if you want to install the latest version.
 
 ```
-pod 'FRAuth' // Authentication module for Access Manager
+pod 'FRAuth' // Authentication module
 pod 'FRUI' // UI SDK demonstrates FRAuth SDK functionalities
 pod 'FRProximity' // Add-on for FRAuth's Device Profile feature related to location, and BLE
 pod 'FRAuthenticator' // Authenticator module that generates HOTP, TOTP, and Push registration/authentication
@@ -58,7 +59,7 @@ pod 'FRCaptchaEnterprise' // Add-on for the ReCaptcha Enterprise feature
 > * `FRGoogleSignIn` module is currently not available in Swift Package Manager; use Cocoapods instead to integrate `FRGoogleSignIn` module.
 
 1. In Xcode menus, `File` -> `Swift Packages` -> `Add Package Dependencies...`
-2. Select the project to integrate the ForgeRock iOS SDK
+2. Select the project to integrate the Ping SDK for iOS
 3. Enter the url of the repo: `https://github.com/ForgeRock/forgerock-ios-sdk`
 4. Select module(s) to integrate into the project
 
@@ -67,63 +68,30 @@ pod 'FRCaptchaEnterprise' // Add-on for the ReCaptcha Enterprise feature
 
 ## Getting Started
 
-To try out the ForgeRock iOS SDK sample, perform these steps:
+To try out the Ping SDK for iOS sample, perform these steps:
 
-1. Setup Access Management (AM) as described in the documentation:
-    - [Self-managed AM server](https://backstage.forgerock.com/docs/sdks/latest/serverconfiguration/onpremise/index.html)
-    - [Identity Cloud tenant](https://backstage.forgerock.com/docs/sdks/latest/serverconfiguration/cloud/index.html)
-2. Clone this repo:
+1. Setup your server as described in the [documentation](https://docs.pingidentity.com/sdks/latest/sdks/tutorials/ios/00_before-you-begin.html#server_configuration)
+2. Clone the sample apps repo:
     ```
-    git clone https://github.com/ForgeRock/forgerock-ios-sdk.git
+    git clone https://github.com/ForgeRock/sdk-sample-apps
     ```
-3. Open the `SampleApps/QuickstartExample/Quickstart.xcodeproj` file in [Xcode](https://developer.apple.com/xcode/).
-4. Open `/Quickstart/FRAuthConfig.plist` and edit the values to match your AM instance.
-5. Ensure the active scheme is "_Quickstart_", and then click the **Run** button.
+3. Open the `iOS/swiftui-quickstart/Quickstart.xcodeproj` file in [Xcode](https://developer.apple.com/xcode/).
+4. Open `/Quickstart/Resources/FRAuthConfig` and edit the values to match your server.
+5. Ensure the active scheme is "_QuickStart_", and then click the **Run** button.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
 
 ## Samples
 
-ForgeRock provides these samples to help demonstrate SDK functionality:
-
-- **Swift Sample - `/FRExample/`**
-
-  This sample Swift app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface.
-
-  Other features include:
-
-    - OAuth 2.0 access tokens
-    - Logout
-    - Collecting device information
-    - Get the current user's details
-    - Jailbreak detection
-
-  Configure your AM instance settings in the `/FRexampleObjC/FRexampleObjC/Configs/FRAuthConfig.plist` file to use this sample application.
-
-- **Objective-C Sample - `/FRexampleObjC/`**
-
-  This sample Objective-C app demonstrates authenticating to an AM instance, both with and without the `FRUser` automatic user interface.
-
-  Other features include:
-
-    - Logout
-    - Collecting device information
-    - Get the current user's details
-    - Jailbreak detection
-
-  Configure your AM instance settings in the `/FRExample/FRExample/Configs/FRAuthConfig.plist` file to use this sample application.
-
-- **Authenticator App Sample - `/FRAuthenticatorExample/`**
-  This Authenticator sample app demonstrates HMAC-based, and Time-based One-time Password, and Push Registration and Authentication with ForgeRock's Access Manager.
-
+We provide a [sample repo](https://github.com/ForgeRock/sdk-sample-apps) to help demonstrate SDK functionality.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
 
 ## Documentation
 
-Documentation for the SDKs is provided on **[BackStage](https://backstage.forgerock.com/docs/sdks/latest/whatsnew/)**, and includes topics such as:
+Documentation for the SDKs is provided at **<https://docs.pingidentity.com/sdks>**, and includes topics such as:
 
 * Introducing SDK features
 * Preparing AM for use with the SDKS
@@ -134,16 +102,16 @@ Documentation for the SDKs is provided on **[BackStage](https://backstage.forger
 
 ## Support
 
-If you encounter any issues, be sure to check our **[Troubleshooting](https://backstage.forgerock.com/knowledge/kb/article/a79362752)** pages.
+If you encounter any issues, be sure to check our **[Troubleshooting](https://support.pingidentity.com/s/article/How-do-I-troubleshoot-the-ForgeRock-SDK-for-Android)** pages.
 
 Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
 * Suspected bugs or problems with ForgeRock software.
-* Requests for assistance - please look at the **[Documentation](https://backstage.forgerock.com/docs/sdks/latest/whatsnew/)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
+* Requests for assistance - please look at the **[Documentation](https://docs.pingidentity.com/sdks)** and **[Knowledge Base](https://support.pingidentity.com/s/knowledge-base)** first.
 
-You can raise a ticket using **[BackStage](https://backstage.forgerock.com/support/tickets)**, our customer support portal that provides one stop access to ForgeRock services.
+You can raise a ticket using the **[Ping Identity Support Portal](https://support.pingidentity.com/s/)** that provides one stop access to support services.
 
-BackStage shows all currently open support tickets and allows you to raise a new one by clicking **New Ticket**.
+The support portal shows all currently open support tickets and allows you to raise a new one by clicking **New Ticket**.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- COLLABORATION -->
@@ -157,8 +125,10 @@ If you would like to contribute to this project you can fork the repository, clo
 
 ## Disclaimer
 
-> This code is provided by ForgeRock on an “as is” basis, without warranty of any kind, to the fullest extent permitted by law. ForgeRock does not represent or warrant or make any guarantee regarding the use of this code or the accuracy, timeliness or completeness of any data or information relating to this code, and ForgeRock hereby disclaims all warranties whether express, or implied or statutory, including without limitation the implied warranties of merchantability, fitness for a particular purpose, and any warranty of non-infringement. ForgeRock shall not have any liability arising out of or related to any use, implementation or configuration of this code, including but not limited to use for any commercial purpose. Any action or suit relating to the use of the code may be brought only in the courts of a jurisdiction wherein ForgeRock resides or in which ForgeRock conducts its primary business, and under the laws of that jurisdiction excluding its conflict-of-law provisions.
-
+> **This code is provided by Ping Identity Corporation ("Ping") on an "as is" basis, without warranty of any kind, to the fullest extent permitted by law.
+> Ping Identity Corporation does not represent or warrant or make any guarantee regarding the use of this code or the accuracy, timeliness or completeness of any data or information relating to this code, and Ping Identity Corporation hereby disclaims all warranties whether express, or implied or statutory, including without limitation the implied warranties of merchantability, fitness for a particular purpose, and any warranty of non-infringement.
+> Ping Identity Corporation shall not have any liability arising out of or related to any use, implementation or configuration of this code, including but not limited to use for any commercial purpose.
+> Any action or suit relating to the use of the code may be brought only in the courts of a jurisdiction wherein Ping Identity Corporation resides or in which Ping Identity Corporation conducts its primary business, and under the laws of that jurisdiction excluding its conflict-of-law provisions.**
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- LICENSE -->
@@ -169,6 +139,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-&copy; Copyright 2024 ForgeRock AS. All Rights Reserved
-
-[forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg "ForgeRock Logo"
+&copy; Copyright 2020-2025 Ping Identity. All Rights Reserved
