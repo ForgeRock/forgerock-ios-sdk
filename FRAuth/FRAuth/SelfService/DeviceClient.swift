@@ -285,6 +285,11 @@ public struct MutableDeviceImplementation<R>: MutableDevice where R: Device {
 }
 
 extension FRRestClient {
+    /// Invokes REST API Request with `Request` object
+    /// - Parameters:
+    ///   - request: request: `Request` object for API request which should contain all information regarding the request
+    ///   - action: action: `Action` object for API request which should contain all information regarding the action
+    /// - Returns: tuple of response data as `[String: Any]` and `URLResponse` object
     @available(iOS 13.0, *)
     static func invoke(request: Request, action: Action? = nil) async throws -> (result: [String: Any], httpResponse: URLResponse?) {
         return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<([String: Any], URLResponse?), Error>) -> Void in
