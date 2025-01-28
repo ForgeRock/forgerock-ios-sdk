@@ -9,6 +9,14 @@ on:
       SLACK_WEBHOOK_URL:
         description: 'Slack Notifier Webhook'
         required: true
+
+env:
+  WORKSPACE: e2e/FRExample.xcworkspace
+  SCHEME: FRTestHost
+  CONFIGURATION: Debug
+  DESTINATION: platform=iOS Simulator,name=iPhone 16,OS=18.2
+  XCODE_VERSION: '16.2'
+
 jobs:
   build-and-test:
     runs-on: macos-15
@@ -32,39 +40,35 @@ jobs:
       # Set target Xcode version. For more details and options see:
       # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_16.2.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app && /usr/bin/xcodebuild -version
 
-      # # Add Homebrew binary path to PATH
-      # - name: Ensure xcresultparser is in PATH
-      #   run: |
-      #     echo "/opt/homebrew/bin" >> $GITHUB_PATH
-      #     echo "Added /opt/homebrew/bin to PATH."
+        
+      # # Restore `xcresultparser` from cache
+      # # TBD: Fix the restore of the xcresultparser tool. It is not working as expected at the moment, causing the build to fail...
+      # - name: Restore xcresultparser from cache
+      #   id: cache-xcresultparser
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /opt/homebrew/bin/xcresultparser
+      #     key: ${{ runner.os }}-xcresultparser
+      #     restore-keys: |
+      #       ${{ runner.os }}-xcresultparser
 
-      # Restore `xcresultparser` from cache
-      - name: Restore xcresultparser from cache
-        id: cache-xcresultparser
-        uses: actions/cache@v3
-        with:
-          path: /opt/homebrew/bin/xcresultparser
-          key: ${{ runner.os }}-xcresultparser
-          restore-keys: |
-            ${{ runner.os }}-xcresultparser
-
-      - name: Install xcresultparser if not cached
-        if: steps.cache-xcresultparser.outputs.cache-hit != 'true'
+      # Install xcresultparser
+      - name: Install xcresultparser
         run: |
           brew tap a7ex/homebrew-formulae
           brew install xcresultparser
-          echo "Installed xcresultparser (cache miss...)"
+          echo "Installed xcresultparser..."
 
       # Run all tests
       - name: Run tests
         run: |
           xcodebuild test \
           -scheme FRTestHost \
-          -workspace e2e/FRExample.xcworkspace \
-          -configuration Debug \
-          -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+          -workspace ${{ env.WORKSPACE }} \
+          -configuration ${{ env.CONFIGURATION}} \
+          -destination '${{ env.DESTINATION }}' \
           -derivedDataPath DerivedData \
           TEST_TARGET_SIGNING=YES \
           -enableCodeCoverage YES \
@@ -86,13 +90,13 @@ jobs:
           fail-on-error: 'true'
           reporter: java-junit
  
-      # # Send slack notification with result status
-      # - uses: 8398a7/action-slack@v3
-      #   with:
-      #     mention: 'stoyan.petrov'
-      #     if_mention: 'failure,cancelled'
-      #     fields: repo,author,eventName,message,job,pullRequest,took
-      #     status: ${{ job.status }}
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #   if: always()
+      # Send slack notification with result status
+      - uses: 8398a7/action-slack@v3
+        with:
+          mention: 'stoyan.petrov'
+          if_mention: 'failure,cancelled'
+          fields: repo,author,eventName,message,job,pullRequest,took
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

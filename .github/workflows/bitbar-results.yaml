@@ -6,7 +6,7 @@ on:
       bitbar-project-id:
         description: BitBar Project ID
         type: string
-        default: 207050144
+        default: ${{ vars.BITBAR_PROJECT_ID }}
 
       bitbar-run-id:
         description: BitBar Run ID
