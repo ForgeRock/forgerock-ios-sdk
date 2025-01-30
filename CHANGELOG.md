@@ -1,6 +1,11 @@
-## [4.X.X]
+## [4.7.0]
 #### Added
-- Support Sign out with ID Token for PingOne Platform [SDKS-3424]
+- Support for Sign-out with ID Token in the PingOne Platform. [SDKS-3424]
+- Support for Self-Service [SDKS-3409]
+
+#### Fixed
+ - Prevent duplicate PUSH notifications in the Authenticator module. [SDKS-3533]
+ - Updated jailbreak detectors to prevent false-positive detections. [SDKS-3693]
 
 ## [4.6.0]
 #### Added
