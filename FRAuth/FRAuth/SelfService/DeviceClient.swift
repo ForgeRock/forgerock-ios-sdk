@@ -2,7 +2,7 @@
 //  DeviceClient.swift
 //  FRAuth
 //
-//  Copyright (c) 2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2024 - 2025 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,7 +22,6 @@ enum UserRepoConstants {
 public class DeviceClient {
     private var options: FROptions?
     private let ssoTokenBlock: () async throws -> Token
-    private let httpClient: URLSession
     
     /// Initializes the `DeviceClient` with the given options and SSO token block.
     /// - Parameters:
@@ -32,7 +31,6 @@ public class DeviceClient {
                 ssoTokenBlock: @escaping () async throws -> Token = { ssoToken() }) {
         self.options = options
         self.ssoTokenBlock = ssoTokenBlock
-        self.httpClient = URLSession.shared
     }
   
     /// Provides access to Oath devices, supporting deletions.
@@ -54,7 +52,7 @@ public class DeviceClient {
     /// - Parameter device: The `Device` to update.
     internal func update(device: Device) async throws {
         let request = try await createPutRequest(for: device)
-        let (_, response) = try await httpClient.data(for: request)
+        let (_, response) = try await FRRestClient.invoke(request: request)
         try validateResponse(response)
     }
     
@@ -62,7 +60,7 @@ public class DeviceClient {
     /// - Parameter device: The `Device` to delete.
     internal func delete(device: Device) async throws {
         let request = try await createDeleteRequest(for: device)
-        let (_, response) = try await httpClient.data(for: request)
+        let (_, response) = try await FRRestClient.invoke(request: request)
         try validateResponse(response)
     }
     
@@ -79,14 +77,13 @@ public class DeviceClient {
     /// - Returns: A list of devices.
     internal func fetchDevices<T: Decodable>(endpoint: String) async throws -> [T] {
         let request = try await createGetRequest(for: endpoint)
-        let (data, response) = try await httpClient.data(for: request)
+        let (result, response) = try await FRRestClient.invoke(request: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw AuthApiError.apiFailureWithMessage("Bad Request", "Failed to fetch devices", (response as? HTTPURLResponse)?.statusCode, nil)
         }
         
         do {
-            let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            if let resultArray = jsonObject?["result"] as? [[String: Any]] {
+            if let resultArray = result["result"] as? [[String: Any]] {
                 let resultData = try JSONSerialization.data(withJSONObject: resultArray, options: [])
                 return try JSONDecoder().decode([T].self, from: resultData)
             }
@@ -99,8 +96,8 @@ public class DeviceClient {
     
     /// Creates a GET request for the given suffix.
     /// - Parameter suffix: The suffix to append to the URL.
-    /// - Returns: A `URLRequest` for the given suffix.
-    private func createGetRequest(for suffix: String) async throws -> URLRequest {
+    /// - Returns: A `Request` for the given suffix.
+    private func createGetRequest(for suffix: String) async throws -> Request {
         let urlPrefix = try await urlPrefix()
         
         var components = URLComponents(url: urlPrefix, resolvingAgainstBaseURL: false)
@@ -111,28 +108,30 @@ public class DeviceClient {
             throw AuthApiError.apiFailureWithMessage("Invalid URL", "URL is malformed", nil, nil)
         }
         
-        let request = try await request(url: url)
+        let request = try await request(url: url, method: .GET)
         return request
     }
     
     /// Creates a PUT request for the given device.
     /// - Parameter device: The `Device` to build the request for.
-    /// - Returns: A `URLRequest` to update the device.
-    private func createPutRequest(for device: Device) async throws -> URLRequest {
+    /// - Returns: A `Request` to update the device.
+    private func createPutRequest(for device: Device) async throws -> Request {
         let url = try await urlPrefix().appendingPathComponent(device.urlSuffix).appendingPathComponent(device.id)
-        var request = try await request(url: url)
-        request.httpMethod = Request.HTTPMethod.PUT.rawValue
-        request.httpBody = try JSONEncoder().encode(device)
+        
+        let data = try JSONEncoder().encode(device)
+        guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+            throw AuthApiError.apiFailureWithMessage("Invalid device json", "Device json is malformed", nil, nil)
+        }
+        let request = try await request(url: url, method: .PUT, bodyParams: dictionary)
         return request
     }
     
     /// Creates a DELETE request for the given device.
     /// - Parameter device: The `Device` to build the request for.
-    /// - Returns: A `URLRequest` to delete the device.
-    private func createDeleteRequest(for device: Device) async throws -> URLRequest {
+    /// - Returns: A `Request` to delete the device.
+    private func createDeleteRequest(for device: Device) async throws -> Request {
         let url = try await urlPrefix().appendingPathComponent(device.urlSuffix).appendingPathComponent(device.id)
-        var request = try await request(url: url)
-        request.httpMethod = Request.HTTPMethod.DELETE.rawValue
+        let request = try await request(url: url, method: .DELETE)
         return request
     }
     
@@ -151,16 +150,21 @@ public class DeviceClient {
     
     /// Creates a request for the given URL.
     /// - Parameter url: The URL to create the request for.
-    /// - Returns: A `URLRequest` for the given URL.
-    private func request(url: URL) async throws -> URLRequest {
+    /// - Parameter method: HTTP method for the request
+    /// - Parameter bodyParams: HTTP body in dictionary
+    /// - Parameter acceptAPIVersion: API version to accept
+    /// - Returns: A `URequest` for the given URL.
+    private func request(url: URL, method: Request.HTTPMethod, bodyParams: [String: Any] = [:], acceptAPIVersion: String = OpenAM.apiResource10) async throws -> Request {
         guard let options = options else {
             throw AuthApiError.apiFailureWithMessage("Bad Request", "No Configuration found", 400, nil)
         }
         let token = try await ssoTokenBlock()
-        var request = URLRequest(url: url)
-        request.setValue(token.value, forHTTPHeaderField: options.cookieName)
-        request.setValue(OpenAM.apiResource10, forHTTPHeaderField: OpenAM.acceptAPIVersion)
-        request.setValue(UserRepoConstants.json, forHTTPHeaderField: UserRepoConstants.contentType)
+        
+        var headers: [String: String] = [:]
+        headers[options.cookieName] = token.value
+        headers[OpenAM.acceptAPIVersion] = acceptAPIVersion
+        
+        let request =  Request(url: url.absoluteString, method: method, headers: headers, bodyParams: bodyParams, requestType: .json, responseType: nil, timeoutInterval: Double(options.timeout) ?? 60)
         return request
     }
     
@@ -174,7 +178,7 @@ public class DeviceClient {
     
     /// Validates the given response.
     /// - Parameter response: The response to validate.
-    private func validateResponse(_ response: URLResponse) throws {
+    private func validateResponse(_ response: URLResponse?) throws {
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw AuthApiError.apiFailureWithMessage("Bad Request", "Failed to perform the request", (response as? HTTPURLResponse)?.statusCode, nil)
         }
@@ -197,18 +201,12 @@ public class DeviceClient {
             throw AuthApiError.apiFailureWithMessage("Invalid URL", "URL is malformed", nil, nil)
         }
         
-        let token = try await ssoTokenBlock()
-        var request = URLRequest(url: url)
-        request.httpMethod = Request.HTTPMethod.POST.rawValue
-        request.setValue(UserRepoConstants.json, forHTTPHeaderField: UserRepoConstants.contentType)
-        request.setValue(token.value, forHTTPHeaderField: options.cookieName)
-        request.setValue(OpenAM.apiResource21, forHTTPHeaderField: OpenAM.acceptAPIVersion)
-        
-        let (data, response) = try await httpClient.data(for: request)
+        let request = try await request(url: url, method: .POST, acceptAPIVersion: OpenAM.apiResource21)
+        let (result, response) = try await FRRestClient.invoke(request: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw AuthApiError.apiFailureWithMessage("Bad Request", "Failed to retrieve user", (response as? HTTPURLResponse)?.statusCode, nil)
         }
-        
+        let data = try JSONSerialization.data(withJSONObject: result, options: [])
         return try JSONDecoder().decode(Session.self, from: data)
     }
 }
@@ -284,4 +282,25 @@ public struct MutableDeviceImplementation<R>: MutableDevice where R: Device {
   public func update(_ device: R) async throws {
     try await deviceClient.update(device: device)
   }
+}
+
+extension FRRestClient {
+    /// Invokes REST API Request with `Request` object
+    /// - Parameters:
+    ///   - request: request: `Request` object for API request which should contain all information regarding the request
+    ///   - action: action: `Action` object for API request which should contain all information regarding the action
+    /// - Returns: tuple of response data as `[String: Any]` and `URLResponse` object
+    @available(iOS 13.0, *)
+    static func invoke(request: Request, action: Action? = nil) async throws -> (result: [String: Any], httpResponse: URLResponse?) {
+        return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<([String: Any], URLResponse?), Error>) -> Void in
+            FRRestClient.invoke(request: request, action: action) { result in
+                switch result {
+                case .success(let result, let response):
+                    continuation.resume(returning: (result, response))
+                case .failure(error: let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        })
+    }
 }
