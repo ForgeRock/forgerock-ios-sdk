@@ -5,12 +5,12 @@ on:
       bitbar-project-id:
         description: BitBar project id
         type: string
-        default: 207050144
+        default: ${{ vars.BITBAR_PROJECT_ID }}
 
       bitbar-device-group-id:
         description: The device group id to run tests against
         type: string
-        default: 45011
+        default: ${{ vars.BITBAR_DEVICE_GROUP_ID }}
 
       bitbar-os-type: 
         description: OS Type
@@ -20,7 +20,7 @@ on:
       bitbar-framework-id:
         description: The framework id
         type: string
-        default: 590
+        default: ${{ vars.BITBAR_FRAMEWORK_ID }}
 
     outputs:
       bitbar-run-id:
@@ -45,12 +45,12 @@ jobs:
     steps:
       # Get the test artifacts prepared in previous step
       - name: Get FRTestHost.ipa BitBar artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: FRTestHost.ipa
 
       - name: Get the FRAuthTests.xctest.zip BitBar artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: FRAuthTests.xctest.zip
 

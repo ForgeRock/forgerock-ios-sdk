@@ -887,7 +887,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExampleSSO.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExampleSSO-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -910,7 +910,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExampleSSO.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExampleSSO-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1049,7 +1049,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FRExample",
@@ -1076,7 +1076,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FRExample/Supporting Files/FRExample.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JV6EC9KSN3;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FRExample",
