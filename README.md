@@ -31,7 +31,7 @@ Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/p
   * PingAM 6.5.2+
 * iOS 12 and above
 * Xcode
-* Swift 5.x or Objective-C
+* Swift 5.x
 * CocoaPods or Swift Package Manager (optional)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
@@ -102,7 +102,7 @@ Documentation for the SDKs is provided at **<https://docs.pingidentity.com/sdks>
 
 ## Support
 
-If you encounter any issues, be sure to check our **[Troubleshooting](https://support.pingidentity.com/s/article/How-do-I-troubleshoot-the-ForgeRock-SDK-for-Android)** pages.
+If you encounter any issues, be sure to check our **[Troubleshooting](https://support.pingidentity.com/s/article/How-do-I-troubleshoot-the-ForgeRock-SDK-for-iOS)** pages.
 
 Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
