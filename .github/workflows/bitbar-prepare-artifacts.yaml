@@ -7,7 +7,7 @@ on:
         required: true
       
       # 1. Open the keychain on your mac and export the signing certificate and private key in a Certificates.p12 file
-      # 2. Convert your certificate to Base64 string: `base64 Certificates.p12 | pbcopy`
+      # 2. Convert your certificate to Base64 string: `base64 -i Certificates.p12 | pbcopy`
       # 3. Update the value of the CERTIFICATES_FILE_BASE64 action secret with the content of the clipboard
       # 4. Update the CERTIFICATES_PASSWORD action secret with the one used during the export of the certificate from the keychain
       CERTIFICATES_FILE_BASE64:
@@ -27,7 +27,7 @@ on:
       # 1. Find the 'com.forgerock.FRTestHost' provisioning profile (~/Library/MobileDevice/Provisioning\ Profiles)
       # 2. Rename the file to `provisioning_profile.mobileprovision`
       # 3. Zip the file: `zip provisioning_profile.mobileprovision.zip provisioning_profile.mobileprovision`
-      # 4. Convert the file to Base64 string: `base64 provisioning_profile.mobileprovision.zip | pbcopy`
+      # 4. Convert the file to Base64 string: `base64 -i provisioning_profile.mobileprovision.zip | pbcopy`
       # 5. Update the value of the BUILD_PROVISION_PROFILE_ZIP_BASE64 action secret with the content of the clipboard
       BUILD_PROVISION_PROFILE:
         description: 'Apple build provisioning profile'
@@ -36,6 +36,16 @@ on:
       SLACK_WEBHOOK_URL:
         description: 'Slack Notifier Incoming Webhook URL'
         required: true
+
+env:
+  BUILD_DIR: /tmp/build
+  CONFIGURATION: Debug
+  SCHEME: FRTestHostBitBar
+  WORKSPACE: e2e/FRExample.xcworkspace
+  DEVELOPMENT_TEAM: 9QSE66762D
+  XCODE_VERSION: '15.4'
+  SDK: iphoneos17.5
+
 jobs:
   prepare-device-farm-artifacts:
     runs-on: macos-14
@@ -43,7 +53,7 @@ jobs:
     steps:
       # Clone the repo
       - name: Clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
@@ -83,19 +93,31 @@ jobs:
           cp $PP_FILENAME ~/Library/MobileDevice/Provisioning\ Profiles
 
       # Set target Xcode version. For more details and options see:
-      # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11-Readme.md
+      # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app && /usr/bin/xcodebuild -version
 
       - name: build-for-testing and sign
-        run: xcodebuild -scheme FRTestHostBitBar -sdk iphoneos17.5 -workspace SampleApps/FRExample.xcworkspace -configuration Debug clean build BUILD_DIR=~/build/ DEVELOPMENT_TEAM=JV6EC9KSN3 -allowProvisioningUpdates -destination generic/platform=iOS -derivedDataPath ~/build/derivedData/ build-for-testing
+        run: |
+          xcodebuild \
+            -scheme ${{ env.SCHEME }} \
+            -sdk ${{ env.SDK}} \
+            -workspace ${{ env.WORKSPACE }} \
+            -configuration ${{ env.CONFIGURATION }} \
+            clean build \
+            BUILD_DIR=${{ env.BUILD_DIR }} \
+            DEVELOPMENT_TEAM=${{ env.DEVELOPMENT_TEAM }} \
+            -allowProvisioningUpdates \
+            -destination generic/platform=iOS \
+            -derivedDataPath ${{ env.BUILD_DIR }}/derivedData \
+            build-for-testing
 
       # Prepare BitBar artifacts:
       - name: Prepare BitBar artifacts
         run: |
           pwd
           ls -la
-          cd ~/build/Debug-iphoneos/
+          cd ${{ env.BUILD_DIR }}/Debug-iphoneos/
           cp -r FRTestHost.app/PlugIns/FRAuthTests.xctest .
           zip -r -X FRAuthTests.xctest.zip FRAuthTests.xctest
           mkdir  Payload
@@ -104,21 +126,21 @@ jobs:
 
       # Publish e2e tests and app build artifacts
       - name: Publish FRTestHost.ipa
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: FRTestHost.ipa
-          path: ~/build/Debug-iphoneos/FRTestHost.ipa
+          path: ${{ env.BUILD_DIR }}/Debug-iphoneos/FRTestHost.ipa
 
       - name: Publish FRAuthTests.xctest.zip
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: FRAuthTests.xctest.zip
-          path: ~/build/Debug-iphoneos/FRAuthTests.xctest.zip
+          path: ${{ env.BUILD_DIR }}/Debug-iphoneos/FRAuthTests.xctest.zip
 
       # Send slack notification ONLY if any of the steps above fail
-      - name: Send slack notification
+      - name: Send slack notification if something goes wrong
         uses: 8398a7/action-slack@v3
         with:
           status: custom

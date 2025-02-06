@@ -2,7 +2,7 @@
 //  DummyStorageClient.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -109,6 +109,11 @@ class DummyStorageClient: StorageClient {
             return self.getNotificationResult
         }
         return self.defaultStorageClient.getNotification(notificationIdentifier: notificationIdentifier)
+    }
+    
+    
+    func getNotificationByMessageId(messageId: String) -> FRAuthenticator.PushNotification? {
+        return self.defaultStorageClient.getNotificationByMessageId(messageId: messageId)
     }
     
     

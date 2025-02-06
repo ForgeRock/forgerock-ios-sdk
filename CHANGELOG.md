@@ -1,3 +1,12 @@
+## [4.7.0]
+#### Added
+- Support for Sign-out with ID Token in the PingOne Platform. [SDKS-3424]
+- Support for Self-Service [SDKS-3409]
+
+#### Fixed
+ - Prevent duplicate PUSH notifications in the Authenticator module. [SDKS-3533]
+ - Updated jailbreak detectors to prevent false-positive detections. [SDKS-3693]
+
 ## [4.6.0]
 #### Added
 - Support PingOne Protect Marketplace Nodes [SDKS-3296]
@@ -215,7 +224,7 @@ It should now be called from `application(_ application:, didFinishLaunchingWith
 - `FRAuth` introduces new dependency, `FRCore` which contains generic core functionalities that can be shared across other ForgeRock iOS SDK. [SDKS-241]
 - `FRCore` has been added to iOS SDK suite. `FRCore` is responsible to handle generic iOS tools and functionalities that are not relevant to ForgeRock products.
 - `FRAuth` is now able to handle AM's Transactional Authorization requests out of box for IG integration, and with a little bit of customization for custom REST Apps. `FRAuth` SDK can support `Authentication by Service` and `Transaction - Authenticate to Tree` in Policy environment. [SDKS-87]
-- `MetadataCallback` is now supported in `FRAuth` SDK. For AM 6.5.2, when `MetadataCallback` is returned with `stage` value, SDK automatically parses `MetadataCallback` into `Node`'s `stage` property. Please refer [this blog post](https://forum.forgerock.com/2020/02/using-an-authentication-tree-stage-to-build-a-custom-ui-with-the-forgerock-javascript-sdk/) for more details. [SDKS-304]
+- `MetadataCallback` is now supported in `FRAuth` SDK. For AM 6.5.2, when `MetadataCallback` is returned with `stage` value, SDK automatically parses `MetadataCallback` into `Node`'s `stage` property. [SDKS-304]
 - `FRAuth` now allows more flexible customization on server infomration. Custom URL paths can be configured through `.plist` config file, or `ServerConfigBuilder`. [SDKS-302]
 - `FRAuth` now supports `Device Profile Node` in AM 7.0.0. [SDKS-294]
 - `FRCore` introduces an ability to customize internal SDK requests through `RequestInterceptor`. Use `FRCore.RequestInterceptor` to implement the interceptor, and `FRAuth.FRRequestInterceptorRegistry`to register interceptors. [SDKS-250]

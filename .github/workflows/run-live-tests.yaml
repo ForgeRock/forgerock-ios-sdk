@@ -48,7 +48,7 @@ jobs:
 
       # Run all e2e tests
       - name: Run e2e tests
-        run: xcodebuild test -scheme FRTestHostE2E -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.4' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResultsE2E | xcpretty && exit ${PIPESTATUS[0]}
+        run: xcodebuild test -scheme FRTestHostE2E -workspace e2e/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.4' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResultsE2E | xcpretty && exit ${PIPESTATUS[0]}
 
       # Publish test results
       - name: Publish test results

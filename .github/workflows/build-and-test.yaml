@@ -9,15 +9,23 @@ on:
       SLACK_WEBHOOK_URL:
         description: 'Slack Notifier Webhook'
         required: true
+
+env:
+  WORKSPACE: e2e/FRExample.xcworkspace
+  SCHEME: FRTestHost
+  CONFIGURATION: Debug
+  DESTINATION: platform=iOS Simulator,name=iPhone 16,OS=18.2
+  XCODE_VERSION: '16.2'
+
 jobs:
   build-and-test:
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 20
 
     steps:
       # Clone the repo
       - name: Clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
@@ -30,21 +38,57 @@ jobs:
         run: echo $CONFIG_E2E_CLOUD > FRTestHost/FRTestHost/SharedTestFiles/TestConfig/Config-live-01.json
 
       # Set target Xcode version. For more details and options see:
-      # https://github.com/actions/virtual-environments/blob/main/images/macos/macos-12-Readme.md
+      # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app && /usr/bin/xcodebuild -version
+        run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app && /usr/bin/xcodebuild -version
+
+        
+      # # Restore `xcresultparser` from cache
+      # # TBD: Fix the restore of the xcresultparser tool. It is not working as expected at the moment, causing the build to fail...
+      # - name: Restore xcresultparser from cache
+      #   id: cache-xcresultparser
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /opt/homebrew/bin/xcresultparser
+      #     key: ${{ runner.os }}-xcresultparser
+      #     restore-keys: |
+      #       ${{ runner.os }}-xcresultparser
+
+      # Install xcresultparser
+      - name: Install xcresultparser
+        run: |
+          brew tap a7ex/homebrew-formulae
+          brew install xcresultparser
+          echo "Installed xcresultparser..."
 
       # Run all tests
       - name: Run tests
-        run: xcodebuild test -scheme FRTestHost -workspace SampleApps/FRExample.xcworkspace -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.5' -derivedDataPath DerivedData -enableCodeCoverage YES -resultBundlePath TestResults | xcpretty && exit ${PIPESTATUS[0]}
+        run: |
+          xcodebuild test \
+          -scheme FRTestHost \
+          -workspace ${{ env.WORKSPACE }} \
+          -configuration ${{ env.CONFIGURATION}} \
+          -destination '${{ env.DESTINATION }}' \
+          -derivedDataPath DerivedData \
+          TEST_TARGET_SIGNING=YES \
+          -enableCodeCoverage YES \
+          -resultBundlePath TestResults | grep -E 'Test Case|^Executed|error:'
 
-      # Publish test results
+      # Convert test results to JUnit format
+      - name: Convert Test Results to JUnit
+        run: xcresultparser -o junit TestResults.xcresult > test-report.xml
+
+      # Publish the test results
       - name: Publish test results
-        uses: kishikawakatsumi/xcresulttool@v1
-        with:
-          path: TestResults.xcresult
-          show-passed-tests: false
         if: success() || failure()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit tests results
+          path: './test*.xml'
+          list-suites: 'all'
+          list-tests: 'all'
+          fail-on-error: 'true'
+          reporter: java-junit
  
       # Send slack notification with result status
       - uses: 8398a7/action-slack@v3

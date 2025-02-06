@@ -1,0 +1,26 @@
+{
+    "responsePayload": {
+        "username": "c49e9f78-0193-402e-b8d1-be70da3c3d17",
+        "universalId": "id=c49e9f78-0193-402e-b8d1-be70da3c3d17,ou=user,o=alpha,ou=services,ou=am-config",
+        "realm": "/alpha",
+        "latestAccessTime": "2024-10-08T19:46:20Z",
+        "maxIdleExpirationTime": "2024-10-08T20:16:20Z",
+        "maxSessionExpirationTime": "2024-10-08T21:39:44Z",
+        "properties": {
+            "AMCtxId": "b7f52b24-d680-4778-8302-f82ab09d8184-434294"
+        }
+    },
+    "response": {
+        "statusCode": 200,
+        "url": "http://openam.example.com:8081/openam",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Content-Length": "2",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Content-API-Version": "resource=1.0",
+            "Date": "Tue, 05 May 2020 21:49:02 GMT",
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff, nosniff"
+        }
+    }
+}

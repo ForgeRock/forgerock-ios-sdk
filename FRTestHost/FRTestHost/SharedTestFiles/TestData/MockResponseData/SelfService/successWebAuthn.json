@@ -1,0 +1,34 @@
+{
+    "responsePayload": {
+        "result": [
+            {
+                "_id": "4f5420a8-cfce-438b-843e-6b9ca6b738af",
+                "_rev": "212011009",
+                "createdDate": 1728415453606,
+                "lastAccessDate": 1728415453606,
+                "credentialId": "AbksZfsZ2GDXIGYA1ueAl4V7mMPyWFHlit3y4hL1S88IqnDT-WW71gOdx6h5NInMAkMusAQ11Je3XqlWtPAW7Yw",
+                "deviceName": "sdk_gphone64_arm64",
+                "uuid": "4f5420a8-cfce-438b-843e-6b9ca6b738af",
+                "deviceManagementStatus": false
+            }
+        ],
+        "resultCount": 1,
+        "pagedResultsCookie": null,
+        "totalPagedResultsPolicy": "NONE",
+        "totalPagedResults": -1,
+        "remainingPagedResults": -1
+    },
+    "response": {
+        "statusCode": 200,
+        "url": "http://openam.example.com:8081/openam",
+        "httpVersion": "HTTP/1.1",
+        "headerFields": {
+            "Content-Length": "2",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Content-API-Version": "resource=1.0",
+            "Date": "Tue, 05 May 2020 21:49:02 GMT",
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff, nosniff"
+        }
+    }
+}

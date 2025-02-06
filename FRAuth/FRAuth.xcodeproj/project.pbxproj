@@ -29,11 +29,28 @@
 		9527F63F2CA32942008475B7 /* AA_12_ReCaptchaEnterpriseCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527F63E2CA32942008475B7 /* AA_12_ReCaptchaEnterpriseCallbackTest.swift */; };
 		9536C56C2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */; };
 		959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */; };
+		95A391252D47F91B00079F4C /* discoveryWithPingEndIdp.json in Resources */ = {isa = PBXBuildFile; fileRef = 95A391232D47F91B00079F4C /* discoveryWithPingEndIdp.json */; };
 		95A812F02C516FC4001CDFCB /* AA_11_TextOutputCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A812EF2C516FC4001CDFCB /* AA_11_TextOutputCallbackTest.swift */; };
 		95E180B42992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */; };
 		95EB7E4D2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EB7E4C2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift */; };
 		95EB7E532B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EB7E522B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift */; };
 		A50DEC452BCDEEC10094CD73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A50DEC442BCDEEC10094CD73 /* PrivacyInfo.xcprivacy */; };
+		A529AFD92CD010CB00F60F68 /* successPush.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD32CD010CB00F60F68 /* successPush.json */; };
+		A529AFDA2CD010CB00F60F68 /* successWebAuthn.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD72CD010CB00F60F68 /* successWebAuthn.json */; };
+		A529AFDB2CD010CB00F60F68 /* successDeviceProfile.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD12CD010CB00F60F68 /* successDeviceProfile.json */; };
+		A529AFDC2CD010CB00F60F68 /* successUpdateDeviceBinding.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD42CD010CB00F60F68 /* successUpdateDeviceBinding.json */; };
+		A529AFDD2CD010CB00F60F68 /* successUpdateWebAuthn.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD62CD010CB00F60F68 /* successUpdateWebAuthn.json */; };
+		A529AFDE2CD010CB00F60F68 /* forbidden.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFCE2CD010CB00F60F68 /* forbidden.json */; };
+		A529AFDF2CD010CB00F60F68 /* successUpdateDeviceProfile.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD52CD010CB00F60F68 /* successUpdateDeviceProfile.json */; };
+		A529AFE02CD010CB00F60F68 /* accessDenied.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFCD2CD010CB00F60F68 /* accessDenied.json */; };
+		A529AFE12CD010CB00F60F68 /* successOath.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD22CD010CB00F60F68 /* successOath.json */; };
+		A529AFE22CD010CB00F60F68 /* successDeviceBinding.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFD02CD010CB00F60F68 /* successDeviceBinding.json */; };
+		A529AFE32CD010CB00F60F68 /* sessionInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = A529AFCF2CD010CB00F60F68 /* sessionInfo.json */; };
+		A530D4592CD13E1D009EC60C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4562CD13E1D009EC60C /* Device.swift */; };
+		A530D45A2CD13E1D009EC60C /* DeviceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4572CD13E1D009EC60C /* DeviceClient.swift */; };
+		A530D45B2CD13E1D009EC60C /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4582CD13E1D009EC60C /* Session.swift */; };
+		A530D45D2CD13E1D009EC60C /* DeviceClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D45C2CD13E1D009EC60C /* DeviceClientTests.swift */; };
+		A530D4782CD1A7C7009EC60C /* CodableExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4752CD1A7C0009EC60C /* CodableExtentions.swift */; };
 		A53723D12AE80A5D0047B809 /* TelephonyCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
@@ -367,11 +384,28 @@
 		9527F63E2CA32942008475B7 /* AA_12_ReCaptchaEnterpriseCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_12_ReCaptchaEnterpriseCallbackTest.swift; sourceTree = "<group>"; };
 		9536C56B2B865DD600B2DFDD /* AA_08_TextInputCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_08_TextInputCallbackTest.swift; sourceTree = "<group>"; };
 		959D7D97290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-05-DeviceBindingCallbackTest.swift"; sourceTree = "<group>"; };
+		95A391232D47F91B00079F4C /* discoveryWithPingEndIdp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = discoveryWithPingEndIdp.json; sourceTree = "<group>"; };
 		95A812EF2C516FC4001CDFCB /* AA_11_TextOutputCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_11_TextOutputCallbackTest.swift; sourceTree = "<group>"; };
 		95E180B32992A6F20087457D /* AA-06-DeviceSigningVerifierCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AA-06-DeviceSigningVerifierCallbackTest.swift"; sourceTree = "<group>"; };
 		95EB7E4C2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_09_PingOneProtectInitializeCallbackTest.swift; sourceTree = "<group>"; };
 		95EB7E522B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AA_10_PingOneProtectEvaluateCallbackTest.swift; sourceTree = "<group>"; };
 		A50DEC442BCDEEC10094CD73 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A529AFCD2CD010CB00F60F68 /* accessDenied.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = accessDenied.json; sourceTree = "<group>"; };
+		A529AFCE2CD010CB00F60F68 /* forbidden.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = forbidden.json; sourceTree = "<group>"; };
+		A529AFCF2CD010CB00F60F68 /* sessionInfo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sessionInfo.json; sourceTree = "<group>"; };
+		A529AFD02CD010CB00F60F68 /* successDeviceBinding.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successDeviceBinding.json; sourceTree = "<group>"; };
+		A529AFD12CD010CB00F60F68 /* successDeviceProfile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successDeviceProfile.json; sourceTree = "<group>"; };
+		A529AFD22CD010CB00F60F68 /* successOath.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successOath.json; sourceTree = "<group>"; };
+		A529AFD32CD010CB00F60F68 /* successPush.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successPush.json; sourceTree = "<group>"; };
+		A529AFD42CD010CB00F60F68 /* successUpdateDeviceBinding.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successUpdateDeviceBinding.json; sourceTree = "<group>"; };
+		A529AFD52CD010CB00F60F68 /* successUpdateDeviceProfile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successUpdateDeviceProfile.json; sourceTree = "<group>"; };
+		A529AFD62CD010CB00F60F68 /* successUpdateWebAuthn.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successUpdateWebAuthn.json; sourceTree = "<group>"; };
+		A529AFD72CD010CB00F60F68 /* successWebAuthn.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successWebAuthn.json; sourceTree = "<group>"; };
+		A530D4562CD13E1D009EC60C /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		A530D4572CD13E1D009EC60C /* DeviceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClient.swift; sourceTree = "<group>"; };
+		A530D4582CD13E1D009EC60C /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		A530D45C2CD13E1D009EC60C /* DeviceClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClientTests.swift; sourceTree = "<group>"; };
+		A530D4752CD1A7C0009EC60C /* CodableExtentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtentions.swift; sourceTree = "<group>"; };
 		A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelephonyCollectorTests.swift; sourceTree = "<group>"; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
@@ -683,6 +717,58 @@
 			path = AppIntegrity;
 			sourceTree = "<group>";
 		};
+		95A391242D47F91B00079F4C /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				95A391232D47F91B00079F4C /* discoveryWithPingEndIdp.json */,
+			);
+			path = Discovery;
+			sourceTree = "<group>";
+		};
+		A529AFD82CD010CB00F60F68 /* SelfService */ = {
+			isa = PBXGroup;
+			children = (
+				A529AFCD2CD010CB00F60F68 /* accessDenied.json */,
+				A529AFCE2CD010CB00F60F68 /* forbidden.json */,
+				A529AFCF2CD010CB00F60F68 /* sessionInfo.json */,
+				A529AFD02CD010CB00F60F68 /* successDeviceBinding.json */,
+				A529AFD12CD010CB00F60F68 /* successDeviceProfile.json */,
+				A529AFD22CD010CB00F60F68 /* successOath.json */,
+				A529AFD32CD010CB00F60F68 /* successPush.json */,
+				A529AFD42CD010CB00F60F68 /* successUpdateDeviceBinding.json */,
+				A529AFD52CD010CB00F60F68 /* successUpdateDeviceProfile.json */,
+				A529AFD62CD010CB00F60F68 /* successUpdateWebAuthn.json */,
+				A529AFD72CD010CB00F60F68 /* successWebAuthn.json */,
+			);
+			path = SelfService;
+			sourceTree = "<group>";
+		};
+		A530D4792CD27496009EC60C /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				A530D4752CD1A7C0009EC60C /* CodableExtentions.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		A530D47A2CD274E9009EC60C /* SelfService */ = {
+			isa = PBXGroup;
+			children = (
+				A530D4572CD13E1D009EC60C /* DeviceClient.swift */,
+				A530D4562CD13E1D009EC60C /* Device.swift */,
+				A530D4582CD13E1D009EC60C /* Session.swift */,
+			);
+			path = SelfService;
+			sourceTree = "<group>";
+		};
+		A530D47B2CD27534009EC60C /* SelfService */ = {
+			isa = PBXGroup;
+			children = (
+				A530D45C2CD13E1D009EC60C /* DeviceClientTests.swift */,
+			);
+			path = SelfService;
+			sourceTree = "<group>";
+		};
 		A5950A2827EA200200EDEFE4 /* SSL Pinning */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +800,7 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				A530D47B2CD27534009EC60C /* SelfService */,
 				3A3E78662AB0D602007962B7 /* AppIntegrity */,
 				EC0BA2F72863323A00F8326E /* FROptions */,
 				A5950A2827EA200200EDEFE4 /* SSL Pinning */,
@@ -982,9 +1069,11 @@
 				D586CF3523358EDF007A2194 /* Network */,
 				D586CF3C23358EDF007A2194 /* OAuth2 */,
 				D533270924806633002FF207 /* Policy */,
+				A530D47A2CD274E9009EC60C /* SelfService */,
 				D5BE349323CD2F23005873BB /* Session */,
 				D5B205E825FFDD4600DABB9B /* SocialLogin */,
 				D586CF5D23358EE0007A2194 /* User */,
+				A530D4792CD27496009EC60C /* Util */,
 				D53A801C262789BD0093B1CA /* WebAuthn */,
 				D554632122A6EDF90096C7A4 /* FRAuth.swift */,
 				D55462FB22A6DF720096C7A4 /* FRAuth.h */,
@@ -1309,6 +1398,8 @@
 		D5888C4C25664EDF0041FD94 /* MockResponseData */ = {
 			isa = PBXGroup;
 			children = (
+				95A391242D47F91B00079F4C /* Discovery */,
+				A529AFD82CD010CB00F60F68 /* SelfService */,
 				D5888C4D25664EDF0041FD94 /* AM */,
 				D5888C5025664EDF0041FD94 /* OAuth2 */,
 				D5888C5E25664EDF0041FD94 /* AuthTree */,
@@ -1715,6 +1806,7 @@
 				D5888C2B25664E920041FD94 /* SecondFactorFlow.png in Resources */,
 				D5888C9F25664EDF0041FD94 /* AuthTree_TermsAndConditionsNode.json in Resources */,
 				D5888CA825664EDF0041FD94 /* AuthTree_SecondFactorChoiceNode.json in Resources */,
+				95A391252D47F91B00079F4C /* discoveryWithPingEndIdp.json in Resources */,
 				D5888CB225664EDF0041FD94 /* AuthTree_AttributeCollectorsNode.json in Resources */,
 				D5888CAE25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeWithMessage.json in Resources */,
 				D5888C9125664EDF0041FD94 /* OAuth2_AuthorizeRedirect_Failure.json in Resources */,
@@ -1732,6 +1824,17 @@
 				D5888CA525664EDF0041FD94 /* AM_Push_Registration_Successful.json in Resources */,
 				D5888CA025664EDF0041FD94 /* AuthTree_SSOToken_Success.json in Resources */,
 				D5888C9425664EDF0041FD94 /* OAuth2_UserInfo_Success.json in Resources */,
+				A529AFD92CD010CB00F60F68 /* successPush.json in Resources */,
+				A529AFDA2CD010CB00F60F68 /* successWebAuthn.json in Resources */,
+				A529AFDB2CD010CB00F60F68 /* successDeviceProfile.json in Resources */,
+				A529AFDC2CD010CB00F60F68 /* successUpdateDeviceBinding.json in Resources */,
+				A529AFDD2CD010CB00F60F68 /* successUpdateWebAuthn.json in Resources */,
+				A529AFDE2CD010CB00F60F68 /* forbidden.json in Resources */,
+				A529AFDF2CD010CB00F60F68 /* successUpdateDeviceProfile.json in Resources */,
+				A529AFE02CD010CB00F60F68 /* accessDenied.json in Resources */,
+				A529AFE12CD010CB00F60F68 /* successOath.json in Resources */,
+				A529AFE22CD010CB00F60F68 /* successDeviceBinding.json in Resources */,
+				A529AFE32CD010CB00F60F68 /* sessionInfo.json in Resources */,
 				D5888CA325664EDF0041FD94 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */,
 				D5888C9C25664EDF0041FD94 /* OAuth2_Token_Success.json in Resources */,
 				D5888CAA25664EDF0041FD94 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
@@ -1776,6 +1879,9 @@
 				D513F17524DA6B490042228B /* AuthApiError.swift in Sources */,
 				D5C8641A252E880D00268F06 /* OAuth2Error.swift in Sources */,
 				D586CFA023358EE0007A2194 /* AttributeInputCallback.swift in Sources */,
+				A530D4592CD13E1D009EC60C /* Device.swift in Sources */,
+				A530D45A2CD13E1D009EC60C /* DeviceClient.swift in Sources */,
+				A530D45B2CD13E1D009EC60C /* Session.swift in Sources */,
 				D53A8042262789BD0093B1CA /* PlatformAuthenticator.swift in Sources */,
 				D586CF9A23358EE0007A2194 /* TextOutputCallback.swift in Sources */,
 				D53A804B262789BD0093B1CA /* ClientCreateOperation.swift in Sources */,
@@ -1861,6 +1967,7 @@
 				D53A8046262789BD0093B1CA /* CredentialStore.swift in Sources */,
 				D586CF8F23358EE0007A2194 /* AccessToken.swift in Sources */,
 				D5723C3D23F4C65800557AA8 /* Node.swift in Sources */,
+				A530D4782CD1A7C7009EC60C /* CodableExtentions.swift in Sources */,
 				D5B2A38B23FCC19E00764370 /* ProfileCollector.swift in Sources */,
 				D586CFA123358EE0007A2194 /* Callback.swift in Sources */,
 				D5CD493225265FF8006DD932 /* BrowserError.swift in Sources */,
@@ -1991,6 +2098,7 @@
 				D5791BDB25F87DE8004B487A /* KeychainManagerTests.swift in Sources */,
 				D5791BDD25F87DE8004B487A /* TokenTests.swift in Sources */,
 				D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */,
+				A530D45D2CD13E1D009EC60C /* DeviceClientTests.swift in Sources */,
 				D58BC39F2602FB7700254654 /* IdPValueTests.swift in Sources */,
 				3A53E4DA2A153AF200E17DDF /* PolicyAdviceCreatorTests.swift in Sources */,
 				959D7D98290B4B9200A1F22F /* AA-05-DeviceBindingCallbackTest.swift in Sources */,
@@ -2155,10 +2263,10 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2170,7 +2278,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.6.0;
+				MARKETING_VERSION = 4.7.0;
 				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
@@ -2192,10 +2300,10 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2207,7 +2315,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.6.0;
+				MARKETING_VERSION = 4.7.0;
 				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
@@ -2228,10 +2336,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = FRAuthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2259,10 +2366,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = FRAuthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
