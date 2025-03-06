@@ -2,7 +2,7 @@
 //  OathMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -18,7 +18,7 @@ class OathMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, digits: parser.digits)
+            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, digits: parser.digits)
             if #available(iOS 11.0, *) {
                 if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                     let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? OathMechanism
@@ -62,7 +62,7 @@ class OathMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, digits: parser.digits)
+            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, digits: parser.digits)
             
             //  Encode
             let jsonData = try JSONEncoder().encode(mechanism)
@@ -103,7 +103,7 @@ class OathMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, digits: parser.digits)
+            let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, digits: parser.digits)
             
             
             XCTAssertNotNil(mechanism.mechanismUUID)

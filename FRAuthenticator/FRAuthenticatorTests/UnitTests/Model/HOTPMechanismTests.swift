@@ -2,7 +2,7 @@
 //  HOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -19,7 +19,7 @@ class HOTPMechanismTests: FRABaseTests {
          
          do {
              let parser = try OathQRCodeParser(url: qrCode)
-             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
              
              XCTAssertNotNil(mechanism.mechanismUUID)
              XCTAssertNotNil(mechanism.issuer)
@@ -47,7 +47,7 @@ class HOTPMechanismTests: FRABaseTests {
 
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             if #available(iOS 11.0, *) {
                 if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                     let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? HOTPMechanism
@@ -94,7 +94,7 @@ class HOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertEqual(mechanism.identifier, "Forgerock-demo-hotp")
         }
@@ -110,7 +110,7 @@ class HOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertEqual(mechanism.counter, 4)
         }
@@ -126,7 +126,7 @@ class HOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertEqual(mechanism.counter, 0)
         }
@@ -142,7 +142,7 @@ class HOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertEqual(mechanism.counter, 4)
         }
@@ -160,7 +160,7 @@ class HOTPMechanismTests: FRABaseTests {
             FRAClient.start()
             
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             
             let expected: [String] = ["185731", "773759", "684879", "952500", "430844", "344487", "866561"]
@@ -188,7 +188,7 @@ class HOTPMechanismTests: FRABaseTests {
             FRAClient.start()
             
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             tmpMechanism = mechanism
             
@@ -227,7 +227,7 @@ class HOTPMechanismTests: FRABaseTests {
         let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=0&algorithm=SHA256")!
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             
             //  Encode
             let jsonData = try JSONEncoder().encode(mechanism)
@@ -256,7 +256,7 @@ class HOTPMechanismTests: FRABaseTests {
         let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&counter=0&algorithm=SHA256")!
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             
             guard let jsonString = mechanism.toJson() else {
                 XCTFail("Failed to serialize the object into JSON String value")
@@ -302,7 +302,7 @@ class HOTPMechanismTests: FRABaseTests {
          
          do {
              let parser = try OathQRCodeParser(url: qrCode)
-             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
              
              XCTAssertNotNil(mechanism.mechanismUUID)
              XCTAssertNotNil(mechanism.issuer)
@@ -319,6 +319,38 @@ class HOTPMechanismTests: FRABaseTests {
              XCTAssertEqual(mechanism.secret, "R2PYFZRISXA5L25NVSSYK2RQ6E======")
              XCTAssertEqual(mechanism.algorithm.rawValue, "sha1")
              XCTAssertEqual(mechanism.counter, 10)
+         }
+         catch {
+             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+         }
+     }
+    
+    func test_12_hotpmechanism_init_with_new_attributes_success() {
+         
+         let qrCode = URL(string: "otpauth://hotp/ForgeRock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=ForgeRock&counter=0&algorithm=SHA256&uid=ZGVtbw&oid=ZTBkZTAxMzUtZWFmOS00ZmFjLWI1ODQtMmRkYmQyYTQwN2M2MTczOTgyNDI4ODE3NQ")!
+         
+         do {
+             let parser = try OathQRCodeParser(url: qrCode)
+             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
+             
+             XCTAssertNotNil(mechanism.mechanismUUID)
+             XCTAssertNotNil(mechanism.issuer)
+             XCTAssertNotNil(mechanism.type)
+             XCTAssertNotNil(mechanism.version)
+             XCTAssertNotNil(mechanism.accountName)
+             XCTAssertNotNil(mechanism.secret)
+             XCTAssertNotNil(mechanism.algorithm)
+             XCTAssertNotNil(mechanism.uid)
+             XCTAssertNotNil(mechanism.resourceId)
+             XCTAssertNotNil(mechanism.timeAdded)
+             
+             XCTAssertEqual(mechanism.issuer, "ForgeRock")
+             XCTAssertEqual(mechanism.type, "hotp")
+             XCTAssertEqual(mechanism.accountName, "demo")
+             XCTAssertEqual(mechanism.secret, "IJQWIZ3FOIQUEYLE")
+             XCTAssertEqual(mechanism.algorithm.rawValue, "sha256")
+             XCTAssertEqual(mechanism.uid, "demo")
+             XCTAssertEqual(mechanism.resourceId, "e0de0135-eaf9-4fac-b584-2ddbd2a407c61739824288175")
          }
          catch {
              XCTFail("Failed with unexpected error: \(error.localizedDescription)")

@@ -2,7 +2,7 @@
 //  DummyStorageClient.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -30,6 +30,8 @@ class DummyStorageClient: StorageClient {
     var removeNotificationResult: Bool?
     var getAllNotificationsForMechanismResult: [PushNotification]?
     var getAllNotificationsResult: [PushNotification]?
+    var setPushDeviceTokenResult: Bool?
+    var getPushDeviceTokenResult: PushDeviceToken?
     var isEmptyResult: Bool?
     var defaultStorageClient: KeychainServiceClient
     
@@ -146,6 +148,21 @@ class DummyStorageClient: StorageClient {
             return mockResult
         }
         return self.defaultStorageClient.getAllNotifications()
+    }
+    
+    
+    @discardableResult func setPushDeviceToken(pushDeviceToken: PushDeviceToken) -> Bool {
+        if let mockResult = self.setPushDeviceTokenResult {
+            return mockResult
+        }
+        return self.defaultStorageClient.setPushDeviceToken(pushDeviceToken: pushDeviceToken)
+    }
+    
+    func getPushDeviceToken() -> FRAuthenticator.PushDeviceToken? {
+        if let mockResult = self.getPushDeviceTokenResult {
+            return mockResult
+        }
+        return self.defaultStorageClient.getPushDeviceToken()
     }
     
     

@@ -2,7 +2,7 @@
 //  RequestInterceptorTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -48,9 +48,9 @@ class RequestInterceptorTests: FRABaseTests {
         do {
             // Then
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             let ex = self.expectation(description: "Register PushMechanism")
-            mechanism.register(onSuccess: {
+            FRAPushHandler.shared.register(mechanism: mechanism, onSuccess: {
                 ex.fulfill()
             }) { (error) in
                 XCTFail("Failed to register PushMechanism with following error: \(error.localizedDescription)")
@@ -90,7 +90,7 @@ class RequestInterceptorTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -105,7 +105,7 @@ class RequestInterceptorTests: FRABaseTests {
             
             let ex = self.expectation(description: "PushNotification Authentication")
             let notification = try PushNotification(messageId: messageId, payload: notificationPayload)
-            notification.handleNotification(challengeResponse: "56", approved: true, onSuccess: {
+            FRAPushHandler.shared.handleNotification(notification: notification, challengeResponse: "56", approved: true, onSuccess: {
                 // Expected to be successful
                 ex.fulfill()
             }) { (error) in

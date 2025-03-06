@@ -2,7 +2,7 @@
 //  TOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -20,7 +20,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
             XCTAssertNotNil(mechanism.mechanismUUID)
             XCTAssertNotNil(mechanism.issuer)
@@ -50,7 +50,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             if #available(iOS 11.0, *) {
                 if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                     let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
@@ -96,7 +96,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertEqual(mechanism.identifier, "ForgeRock-demo-totp")
         }
@@ -111,7 +111,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertNotNil(try mechanism.generateCode())
         }
@@ -126,7 +126,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertNotNil(try mechanism.generateCode())
             XCTAssertEqual(mechanism.digits, 6)
@@ -143,7 +143,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             XCTAssertNotNil(mechanism)
             XCTAssertNotNil(try mechanism.generateCode())
             XCTAssertEqual(mechanism.digits, 8)
@@ -160,7 +160,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
             if #available(iOS 11.0, *) {
                 if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
@@ -227,7 +227,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
             //  Encode
             let jsonData = try JSONEncoder().encode(mechanism)
@@ -257,7 +257,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
             guard let jsonStr = mechanism.toJson() else {
                 XCTFail("Failed to serialize the object into JSON String value")
@@ -306,7 +306,7 @@ class TOTPMechanismTests: FRABaseTests {
         
         do {
             let parser = try OathQRCodeParser(url: qrCode)
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
             XCTAssertNotNil(mechanism.mechanismUUID)
             XCTAssertNotNil(mechanism.issuer)
@@ -329,4 +329,38 @@ class TOTPMechanismTests: FRABaseTests {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    func test_11_totpmechanism_init_with_new_attributes_success() {
+         
+         let qrCode = URL(string: "otpauth://totp/ForgeRock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=ForgeRock&period=30&algorithm=SHA256&uid=ZGVtbw&oid=ZTBkZTAxMzUtZWFmOS00ZmFjLWI1ODQtMmRkYmQyYTQwN2M2MTczOTgyNDI4ODE3NQ")!
+         
+         do {
+             let parser = try OathQRCodeParser(url: qrCode)
+             let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
+             
+             XCTAssertNotNil(mechanism.mechanismUUID)
+             XCTAssertNotNil(mechanism.issuer)
+             XCTAssertNotNil(mechanism.type)
+             XCTAssertNotNil(mechanism.version)
+             XCTAssertNotNil(mechanism.accountName)
+             XCTAssertNotNil(mechanism.secret)
+             XCTAssertNotNil(mechanism.algorithm)
+             XCTAssertNotNil(mechanism.period)
+             XCTAssertNotNil(mechanism.uid)
+             XCTAssertNotNil(mechanism.resourceId)
+             XCTAssertNotNil(mechanism.timeAdded)
+             
+             XCTAssertEqual(mechanism.issuer, "ForgeRock")
+             XCTAssertEqual(mechanism.type, "totp")
+             XCTAssertEqual(mechanism.accountName, "demo")
+             XCTAssertEqual(mechanism.secret, "IJQWIZ3FOIQUEYLE")
+             XCTAssertEqual(mechanism.algorithm.rawValue, "sha256")
+             XCTAssertEqual(mechanism.period, 30)
+             XCTAssertEqual(mechanism.uid, "demo")
+             XCTAssertEqual(mechanism.resourceId, "e0de0135-eaf9-4fac-b584-2ddbd2a407c61739824288175")
+         }
+         catch {
+             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+         }
+     }
 }
