@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -162,8 +162,13 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
                 self.allowCredentials.append(uint8Arr)
             }
         }
-        
+                
         try super.init(json: json)
+        
+        /// Check for support of JSON response for WebAuthn Authentication
+        if let supportsJsonResponse = value[CBConstants.supportsJsonResponse] as? Bool {
+            self.supportsJsonResponse = supportsJsonResponse
+        }
         
         self.type = CallbackType.WebAuthnAuthenticationCallback.rawValue
     }
@@ -180,7 +185,7 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
     public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
-        if #available(iOS 16.0, *), usePasskeysIfAvailable {
+        if #available(iOS 16.6, *), usePasskeysIfAvailable {
             FRLog.i("Performing WebAuthn authentication using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
             self.successCallback = onSuccess
             self.errorCallback = onError

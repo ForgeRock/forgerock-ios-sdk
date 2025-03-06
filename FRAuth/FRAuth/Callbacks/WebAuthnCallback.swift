@@ -14,7 +14,8 @@ import Foundation
 
 /// WebAuthnCallback represents AM's WebAuthn MetadataCallback, and is a parent class of WebAuthnRegistrationCallback and WebAuthnAuthenticationCallback
 open class WebAuthnCallback: MetadataCallback {
-    
+    /// Boolean indicator whether or not if response supports JSON response
+    public var supportsJsonResponse: Bool = false
     //  MARK: - Static internal helper methods
     
     /// Extracts WebAuthn type from given MetadataCallback
