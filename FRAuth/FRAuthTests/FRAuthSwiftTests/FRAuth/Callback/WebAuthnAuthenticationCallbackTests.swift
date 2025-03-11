@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationCallbackTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -1024,6 +1024,81 @@ class WebAuthnAuthenticationCallbackTests: FRAuthBaseTest {
                 XCTFail("Invalid WebAuthnAuthenticationCallback failed with unexpected error: \(error.localizedDescription)")
                 break
             }
+        }
+        catch {
+            XCTFail("Invalid WebAuthnAuthenticationCallback failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_16_AM8_supports_json_response_callback() {
+        //  JSON response
+        let jsonString = """
+        {
+            "type": "MetadataCallback",
+            "output": [
+                {
+                    "name": "data",
+                    "value": {
+                        "_action": "webauthn_authentication",
+                        "challenge": "HnvgaAhU+grUtRAVGr9LHWG6+91pZZsKAj87b34Ewqs=",
+                        "allowCredentials": "",
+                        "_allowCredentials": [],
+                        "timeout": "60000",
+                        "userVerification": "preferred",
+                        "relyingPartyId": "",
+                        "_relyingPartyId": "openam-webauthnsdkhint.forgeblocks.com",
+                        "extensions": {},
+                        "_type": "WebAuthn",
+                        "supportsJsonResponse": true
+                    }
+                }
+            ]
+        }
+        """.data(using: .utf8)!
+        let json = try? JSONSerialization.jsonObject(with: jsonString) as? [String: Any]
+        
+        // When
+        do {
+            let webAuthnAuthenticationCallback = try WebAuthnAuthenticationCallback(json: json!)
+            XCTAssertNotNil(webAuthnAuthenticationCallback)
+            XCTAssertEqual(webAuthnAuthenticationCallback.supportsJsonResponse, true)
+        }
+        catch {
+            XCTFail("Invalid WebAuthnAuthenticationCallback failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_16_no_support_json_response_callback() {
+        //  JSON response
+        let jsonString = """
+        {
+            "type": "MetadataCallback",
+            "output": [
+                {
+                    "name": "data",
+                    "value": {
+                        "_action": "webauthn_authentication",
+                        "challenge": "HnvgaAhU+grUtRAVGr9LHWG6+91pZZsKAj87b34Ewqs=",
+                        "allowCredentials": "",
+                        "_allowCredentials": [],
+                        "timeout": "60000",
+                        "userVerification": "preferred",
+                        "relyingPartyId": "",
+                        "_relyingPartyId": "openam-webauthnsdkhint.forgeblocks.com",
+                        "extensions": {},
+                        "_type": "WebAuthn",
+                    }
+                }
+            ]
+        }
+        """.data(using: .utf8)!
+        let json = try? JSONSerialization.jsonObject(with: jsonString) as? [String: Any]
+        
+        // When
+        do {
+            let webAuthnAuthenticationCallback = try WebAuthnAuthenticationCallback(json: json!)
+            XCTAssertNotNil(webAuthnAuthenticationCallback)
+            XCTAssertEqual(webAuthnAuthenticationCallback.supportsJsonResponse, false)
         }
         catch {
             XCTFail("Invalid WebAuthnAuthenticationCallback failed with unexpected error: \(error.localizedDescription)")

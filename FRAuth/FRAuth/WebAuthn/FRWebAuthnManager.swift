@@ -19,11 +19,11 @@ public protocol FRWebAuthnManagerDelegate: NSObject {
 }
 
 /// WebAuthOutcome represents the outcome of WebAuthn Registration or Authentication
-/// - authenticationAttachement: Authentication attachment, can be either `platform` or `cross-platform` or any future values
+/// - authenticatorAttachment: Authentication attachment, can be either `platform` or `cross-platform` or any future values
 /// - legacyData: Legacy data
 /// Note: The AuthenticatorAttachment enumeration is deliberately not referenced, see § 2.1.1 Enumerations as DOMString types.
 struct WebAuthOutcome: Codable {
-    let authenticationAttachement: String?
+    let authenticatorAttachment: String?
     let legacyData: String
 }
 
@@ -45,7 +45,7 @@ extension ASAuthorizationPublicKeyCredentialAttachment {
 /**
  FRWebAuthnManager is a class handling WebAuthn Registation and Authentication using Apple's ASAuthorization libraries. Used by the SDK, it is called by the WebAuthnRegistration and WebAuthnAuthenticaton callbacks and sets the outcome in the HiddenValueCallback. This comes with the `FRWebAuthnManagerDelegate` that offers callbacks in the calling class for Success, Error and Cancel scenarios.
  */
-    @available(iOS 16.6, *)
+@available(iOS 16.6, *)
 public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationContextProviding, ASAuthorizationControllerDelegate {
     
     public weak var delegate: FRWebAuthnManagerDelegate?
@@ -168,7 +168,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             }
             
             let attachement = credentialRegistration.attachment.toString()
-            let webauthOutcome = WebAuthOutcome(authenticationAttachement: attachement, legacyData: result)
+            let webauthOutcome = WebAuthOutcome(authenticatorAttachment: attachement, legacyData: result)
             guard let jsonData = try? JSONEncoder().encode(webauthOutcome), let jsonString = String(data: jsonData, encoding: .utf8), supportsJSONResponse() else {
                 // After the server verifies the registration and creates the user account, sign in the user with the new account.
                 //didFinishSignIn()
@@ -197,7 +197,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             let result = "\(clientDataJSON)::\(authenticatorData)::\(signature)::\(credID)::\(userIDString)"
             
             let attachement = credentialAssertion.attachment.toString()
-            let webauthOutcome = WebAuthOutcome(authenticationAttachement: attachement, legacyData: result)
+            let webauthOutcome = WebAuthOutcome(authenticatorAttachment: attachement, legacyData: result)
             guard let jsonData = try? JSONEncoder().encode(webauthOutcome), let jsonString = String(data: jsonData, encoding: .utf8), supportsJSONResponse() else {
                 // After the server verifies the assertion, sign in the user.
                 //didFinishSignIn()

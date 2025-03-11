@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -581,6 +581,46 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
                 else {
                     XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 }
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to perform WebAuthn authentication: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_11_basic_authentication_supportsJson_no_passkeys() {
+        
+        //  Perform registration first
+        self.performWebAuthnRegistration()
+        
+        //  Retrieve credentialId
+        guard let credentialId = WebAuthnAuthenticationTests.registeredCredentialids.first else {
+            XCTFail("Failed to retrieve registered credentialId")
+            return
+        }
+        
+        do {
+            let callback = try self.createAuthenticationCallback(jsonResponse: true)
+            
+            XCTAssertTrue(callback.supportsJsonResponse)
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            //  Set allowedCredentials
+            callback.allowCredentials = [credentialId]
+            
+            //  Perform Authentication
+            let ex = self.expectation(description: "WebAuthn Authentication")
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                XCTAssertNotNil(webAuthnOutcome)
+                ex.fulfill()
+            }) { (error) in
+                XCTFail("Failed with unexpected error: \(error.localizedDescription)")
                 ex.fulfill()
             }
             waitForExpectations(timeout: 60, handler: nil)
