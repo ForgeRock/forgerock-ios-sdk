@@ -26,7 +26,7 @@ class PushDeviceTokenManager {
     /// Constructor
     ///
     /// - Parameters:
-    ///   - deviceToken: The FCM device token
+    ///   - deviceToken: The APNS device token
     init(_ deviceToken: String? = nil) {
         if let token = deviceToken {
             self.deviceToken = token
@@ -63,6 +63,7 @@ class PushDeviceTokenManager {
     /// Clear the push device token
     func clearDeviceToken() {
         FRALog.i("Clearing APNS device token.")
+        FRAClient.storage.removePushDeviceToken()
         self.deviceToken = nil
     }
     

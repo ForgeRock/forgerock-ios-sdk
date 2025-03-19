@@ -331,6 +331,12 @@ struct KeychainServiceClient: StorageClient {
         }
     }
     
+    
+    @discardableResult func removePushDeviceToken() -> Bool {
+        return self.pushDeviceTokenStorage.delete(deviceTokenIdentifier)
+    }
+    
+    
     @discardableResult func isEmpty() -> Bool {
         return self.notificationStorage.allItems()?.count == 0 && self.mechanismStorage.allItems()?.count == 0 && self.accountStorage.allItems()?.count == 0 &&
             self.pushDeviceTokenStorage.allItems()?.count == 0

@@ -98,6 +98,18 @@ class MainListViewController: BaseTableViewController {
         self.present(viewController, animated: true, completion: nil)
     }
     
+    @IBAction func displayDeviceToken(sender: UIBarButtonItem) {
+        if let deviceToken = FRAPushHandler.shared.deviceToken {
+            self.displayAlert(title: "Device Token", message: deviceToken)
+        } else {
+            self.displayAlert(title: "Error", message: "Device Token is not available.")
+        }
+    }
+        
+    @IBAction func clearDeviceToken(sender: UIBarButtonItem) {
+        FRAPushHandler.shared.clearDeviceToken()
+        self.displayAlert(title: "Success", message: "Device Token is cleared.")
+    }
     
     // MARK: - TableView DataSource / Delegate
     

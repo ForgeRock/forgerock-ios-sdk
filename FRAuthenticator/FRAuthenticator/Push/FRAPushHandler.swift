@@ -297,7 +297,7 @@ public class FRAPushHandler: NSObject {
     
     
     /// Clears the current device token
-    func clearDeviceToken() {
+   public func clearDeviceToken() {
         pushDeviceTokenManager.clearDeviceToken()
     }
     

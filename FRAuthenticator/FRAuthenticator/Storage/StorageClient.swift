@@ -75,6 +75,9 @@ public protocol StorageClient {
     /// Get the current stored PushDeviceToken object with its id
     func getPushDeviceToken() -> PushDeviceToken?
     
+    /// Remove the current stored PushDeviceToken object
+    @discardableResult func removePushDeviceToken() -> Bool
+    
     /// Returns whether or not StorageClient has any data stored
     @discardableResult func isEmpty() -> Bool
     

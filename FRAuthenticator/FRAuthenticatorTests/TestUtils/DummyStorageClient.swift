@@ -32,6 +32,7 @@ class DummyStorageClient: StorageClient {
     var getAllNotificationsResult: [PushNotification]?
     var setPushDeviceTokenResult: Bool?
     var getPushDeviceTokenResult: PushDeviceToken?
+    var removePushDeviceTokenResult: Bool?
     var isEmptyResult: Bool?
     var defaultStorageClient: KeychainServiceClient
     
@@ -165,7 +166,13 @@ class DummyStorageClient: StorageClient {
         return self.defaultStorageClient.getPushDeviceToken()
     }
     
-    
+    func removePushDeviceToken() -> Bool {
+        if let mockResult = self.removePushDeviceTokenResult {
+            return mockResult
+        }
+        return self.defaultStorageClient.removePushDeviceToken()
+    }
+
     @discardableResult func isEmpty() -> Bool {
         if let mockResult = self.isEmptyResult {
             return mockResult

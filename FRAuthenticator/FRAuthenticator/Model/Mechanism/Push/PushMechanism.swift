@@ -29,7 +29,7 @@ public class PushMechanism: Mechanism {
     var loadBalancer: String?
     
     /// Update endpoint for Push mechanism
-    public var updateEndpoint: URL {
+    var updateEndpoint: URL {
         get {
             var components = URLComponents(url: self.regEndpoint, resolvingAgainstBaseURL: false)
             if let queryItems = components?.queryItems {
