@@ -149,7 +149,7 @@ final class FRWebAuthnTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()
