@@ -393,13 +393,14 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
                     result = "\(credential.response.clientDataJSON)::\(attObj)::\(credential.id)"
                 }
                 
-                //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
-                if let node = node {
-                    FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                    self.setWebAuthnOutcome(node: node, outcome: result)
+                let webauthOutcome = WebAuthOutcome(authenticatorAttachment: "platform", legacyData: result)
+                guard let jsonData = try? JSONEncoder().encode(webauthOutcome), let jsonString = String(data: jsonData, encoding: .utf8), self.supportsJsonResponse else {
+                    self.passOutcomeAndCallback(node: node, outcome: onSuccess, result: result)
+                    return
                 }
-                onSuccess(result)
                 
+                self.passOutcomeAndCallback(node: node, outcome: onSuccess, result: jsonString)
+
             }) { [unowned self] (error) in
                 
                 /// Converts internal WAKError into WebAuthnError
@@ -418,6 +419,19 @@ open class WebAuthnRegistrationCallback: WebAuthnCallback {
                 }
             }
         }
+    }
+    
+    /// Completes the WebAuthn authentication with the given assertion and the optionally attaches the outcome to the designated `HiddenValueCallback`
+    /// - Parameters:
+    ///  - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
+    ///  - outcome: Completion callback for the WebAuthn outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
+    ///  - result: WebAuthn assertion value
+    private func passOutcomeAndCallback(node: Node?, outcome: StringCompletionCallback, result: String) {
+        if let node = node {
+            FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+            setWebAuthnOutcome(node: node, outcome: result)
+        }
+        outcome(result)
     }
 }
 
