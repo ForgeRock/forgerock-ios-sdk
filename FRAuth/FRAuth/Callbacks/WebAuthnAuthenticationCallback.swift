@@ -181,6 +181,30 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
     public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
         if #available(iOS 16.0, *), usePasskeysIfAvailable {
+            //  Platform Authenticator
+            let platformAuthenticator = PlatformAuthenticator(authenticationDelegate: self)
+            let credSources = self.getCredSources(platformAuthenticator: platformAuthenticator)
+            
+            if credSources!.isEmpty == false {
+                FRLog.i("Existing WebAuthn keys in storage, ", subModule: WebAuthn.module)
+                self.delegate?.selectCredential(keyNames: Array(credSources!.keys).sorted(), selectionCallback: { (keyName) in
+                    if keyName != nil {
+                        FRLog.v("Selected credential source received, proceeding with getAssertion operation", subModule: WebAuthn.module)
+                        self.authenticateUsingFRWebAuthn(node: node, onSuccess: onSuccess, onError: onError)
+                    } else {
+                        self.authenticateUsingPasskeys(node: node, window: window, preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, onSuccess: onSuccess, onError: onError)
+                    }
+                })
+            } else {
+                self.authenticateUsingPasskeys(node: node, window: window, preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, onSuccess: onSuccess, onError: onError)
+            }
+        } else {
+            self.authenticateUsingFRWebAuthn(node: node, onSuccess: onSuccess, onError: onError)
+        }
+    }
+    
+    private func authenticateUsingPasskeys(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        if #available(iOS 16.0, *) {
             FRLog.i("Performing WebAuthn authentication using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
             self.successCallback = onSuccess
             self.errorCallback = onError
@@ -194,103 +218,126 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
             webAuthnManager.delegate = self
             
             webAuthnManager.signInWith(preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials, challenge: data, allowedCredentialsArray: self.allowCredentials, userVerificationPreference: self.convertUserVerification())
-        } else {
-            if self.isNewJSONFormat {
-                FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)
+        }
+    }
+    
+    private func authenticateUsingFRWebAuthn(node: Node? = nil, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        if self.isNewJSONFormat {
+            FRLog.i("Performing WebAuthn authentication for AM 7.1.0 or above", subModule: WebAuthn.module)
+        }
+        else {
+            FRLog.i("Performing WebAuthn authentication for AM 7.0.0 or below", subModule: WebAuthn.module)
+        }
+        
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            FRLog.e("Bundle Identifier is missing")
+            onError(FRWAKError.unknown(platformError: nil, message: "Bundle Identifier is missing"))
+            return
+        }
+        
+        //  Platform Authenticator
+        let platformAuthenticator = PlatformAuthenticator(authenticationDelegate: self)
+        var options = self.setUpAuthenticator(platformAuthenticator: platformAuthenticator, bundleIdentifier: bundleIdentifier)
+        
+        //  Allowed credentials
+        for allowCred in allowCredentials {
+            options.addAllowCredential(credentialId: allowCred, transports: [.internal_])
+        }
+        
+        self.webAuthnClient?.get(options, onSuccess: { (assertion) in
+            
+            var result = "\(assertion.response.clientDataJSON)"
+            
+            let authInt8Arr = assertion.response.authenticatorData.map { Int8(bitPattern: $0) }
+            let sigInt8Arr = assertion.response.signature.map { Int8(bitPattern: $0) }
+            
+            let authenticatorData = self.convertInt8ArrToStr(authInt8Arr)
+            result = result + "::\(authenticatorData)"
+            let signatureData = self.convertInt8ArrToStr(sigInt8Arr)
+            result = result + "::\(signatureData)"
+            result = result + "::\(assertion.id)"
+            if let userHandle = assertion.response.userHandle {
+                let encoded = Base64.encodeBase64(userHandle)
+                if let decoded = encoded.base64Decoded() {
+                    result = result + "::\(decoded)"
+                }
+            }
+            
+            //  Expected AM result for successful assertion
+            //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
+            
+            //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
+            if let node = node {
+                FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+                self.setWebAuthnOutcome(node: node, outcome: result)
+            }
+            
+            if #available(iOS 16.0, *) {
+                FRLog.i("Local keypair exists and user authenticated locally succesfully. The device and FR SDK now supports Passkeys, in order to use it enable the functionality using `usePasskeysIfAvailable=true` and register a new keyPair.", subModule: WebAuthn.module)
+                self.delegate?.localKeyExistsAndPasskeysAreAvailable()
+            }
+            
+            onSuccess(result)
+            
+        }) { (error) in
+            
+            /// Converts internal WAKError into WebAuthnError
+            if let webAuthnError = error as? FRWAKError {
+                //  Converts the error to public facing error
+                let publicError = webAuthnError.convert()
+                if let node = node {
+                    FRLog.i("Found optional 'Node' instance, setting WebAuthn error outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+                    //  Converts WebAuthnError to proper WebAuthn error outcome that can be understood by AM
+                    self.setWebAuthnOutcome(node: node, outcome: publicError.convertToWebAuthnOutcome())
+                }
+                onError(publicError)
             }
             else {
-                FRLog.i("Performing WebAuthn authentication for AM 7.0.0 or below", subModule: WebAuthn.module)
-            }
-            
-            guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
-                FRLog.e("Bundle Identifier is missing")
-                onError(FRWAKError.unknown(platformError: nil, message: "Bundle Identifier is missing"))
-                return
-            }
-            
-            //  Platform Authenticator
-            let platformAuthenticator = PlatformAuthenticator(authenticationDelegate: self)
-            //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
-            var origin = CBConstants.originScheme + bundleIdentifier
-            //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
-            if self.isNewJSONFormat {
-                origin = CBConstants.originPrefix + bundleIdentifier
-            }
-            
-            let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)
-            self.webAuthnClient = webAuthnClient
-            
-            //  PublicKey credential request options
-            var options = PublicKeyCredentialRequestOptions()
-            
-            //  Default userVerification option set to preferred
-            options.userVerification = self.userVerification.convert()
-            
-            //  Challenge
-            options.challenge = Bytes.fromString(self.challenge.urlSafeEncoding())
-            //  Relying Party
-            options.rpId = self.relyingPartyId
-            //  Timeout
-            options.timeout = UInt64(self.timeout/1000)
-            
-            //  Allowed credentials
-            for allowCred in allowCredentials {
-                options.addAllowCredential(credentialId: allowCred, transports: [.internal_])
-            }
-            
-            webAuthnClient.get(options, onSuccess: { (assertion) in
-                
-                var result = "\(assertion.response.clientDataJSON)"
-                
-                let authInt8Arr = assertion.response.authenticatorData.map { Int8(bitPattern: $0) }
-                let sigInt8Arr = assertion.response.signature.map { Int8(bitPattern: $0) }
-                
-                let authenticatorData = self.convertInt8ArrToStr(authInt8Arr)
-                result = result + "::\(authenticatorData)"
-                let signatureData = self.convertInt8ArrToStr(sigInt8Arr)
-                result = result + "::\(signatureData)"
-                result = result + "::\(assertion.id)"
-                if let userHandle = assertion.response.userHandle {
-                    let encoded = Base64.encodeBase64(userHandle)
-                    if let decoded = encoded.base64Decoded() {
-                        result = result + "::\(decoded)"
-                    }
-                }
-                
-                //  Expected AM result for successful assertion
-                //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
-                
-                //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
-                if let node = node {
-                    FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                    self.setWebAuthnOutcome(node: node, outcome: result)
-                }
-                
-                if #available(iOS 16.0, *) {
-                    FRLog.i("Local keypair exists and user authenticated locally succesfully. The device and FR SDK now supports Passkeys, in order to use it enable the functionality using `usePasskeysIfAvailable=true` and register a new keyPair.", subModule: WebAuthn.module)
-                    self.delegate?.localKeyExistsAndPasskeysAreAvailable()
-                }
-                
-                onSuccess(result)
-                
-            }) { (error) in
-                
-                /// Converts internal WAKError into WebAuthnError
-                if let webAuthnError = error as? FRWAKError {
-                    //  Converts the error to public facing error
-                    let publicError = webAuthnError.convert()
-                    if let node = node {
-                        FRLog.i("Found optional 'Node' instance, setting WebAuthn error outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                        //  Converts WebAuthnError to proper WebAuthn error outcome that can be understood by AM
-                        self.setWebAuthnOutcome(node: node, outcome: publicError.convertToWebAuthnOutcome())
-                    }
-                    onError(publicError)
-                }
-                else {
-                    onError(error)
-                }
+                onError(error)
             }
         }
+    }
+    
+    private func setUpAuthenticator(platformAuthenticator: PlatformAuthenticator, bundleIdentifier: String) -> PublicKeyCredentialRequestOptions {
+        //  For AM 7.0.0, origin only supports https scheme; to be updated for AM 7.1.0
+        var origin = CBConstants.originScheme + bundleIdentifier
+        //  For AM 7.1.0 or above, origin should follow origin format according to FIDO AppId and Facet specification
+        if self.isNewJSONFormat {
+            origin = CBConstants.originPrefix + bundleIdentifier
+        }
+        
+        let webAuthnClient = WebAuthnClient(origin: origin, authenticator: platformAuthenticator)
+        self.webAuthnClient = webAuthnClient
+        
+        //  PublicKey credential request options
+        var options = PublicKeyCredentialRequestOptions()
+        
+        //  Default userVerification option set to preferred
+        options.userVerification = self.userVerification.convert()
+        
+        //  Challenge
+        options.challenge = Bytes.fromString(self.challenge.urlSafeEncoding())
+        //  Relying Party
+        options.rpId = self.relyingPartyId
+        //  Timeout
+        options.timeout = UInt64(self.timeout/1000)
+        return options
+    }
+    
+    private func getCredSources(platformAuthenticator: PlatformAuthenticator) -> [String : PublicKeyCredentialSource]? {
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            FRLog.e("Bundle Identifier is missing")
+            return nil
+        }
+        
+        var options = self.setUpAuthenticator(platformAuthenticator: platformAuthenticator, bundleIdentifier: bundleIdentifier)
+        //  Allowed credentials
+        for allowCred in allowCredentials {
+            options.addAllowCredential(credentialId: allowCred, transports: [.internal_])
+        }
+        let session = platformAuthenticator.newGetAssertionSession() as! PlatformAuthenticatorGetAssertionSession
+        let credSources = session.getCredentialsSources(rpId: self.relyingPartyId, allowCredentialDescriptorList: options.allowCredentials)
+        return credSources
     }
 }
 
