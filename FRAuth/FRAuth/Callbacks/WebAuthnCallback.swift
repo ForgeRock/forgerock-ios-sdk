@@ -2,7 +2,7 @@
 //  WebAuthnCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2021-2025 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2025 Ping Identity. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -14,7 +14,7 @@ import Foundation
 
 /// WebAuthnCallback represents AM's WebAuthn MetadataCallback, and is a parent class of WebAuthnRegistrationCallback and WebAuthnAuthenticationCallback
 open class WebAuthnCallback: MetadataCallback {
-    /// Boolean indicator whether or not if response supports JSON response
+    /// Boolean flag indicating whether the response supports JSON. Default is false.
     public var supportsJsonResponse: Bool = false
     //  MARK: - Static internal helper methods
     
