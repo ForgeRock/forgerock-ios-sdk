@@ -2,7 +2,7 @@
 //  FRWebAuthnManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2023-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -18,10 +18,34 @@ public protocol FRWebAuthnManagerDelegate: NSObject {
     func didCancelModalSheet()
 }
 
+/// WebAuthOutcome represents the outcome of WebAuthn Registration or Authentication
+/// - authenticatorAttachment: Authentication attachment, can be either `platform` or `cross-platform` or any future values
+/// - legacyData: Legacy data
+/// Note: The AuthenticatorAttachment enumeration is deliberately not referenced, see § 2.1.1 Enumerations as DOMString types.
+struct WebAuthOutcome: Codable {
+    let authenticatorAttachment: String?
+    let legacyData: String
+}
+
+/// Extension to the ASAuthorizationPublicKeyCredentialAttachment to convert the enum to a String
+@available(iOS 16.6, *)
+extension ASAuthorizationPublicKeyCredentialAttachment {
+    func toString() -> String? {
+        switch self {
+        case .platform:
+            return "platform"
+        case .crossPlatform:
+            return "cross-platform"
+        default:
+            return nil
+        }
+    }
+}
+
 /**
  FRWebAuthnManager is a class handling WebAuthn Registation and Authentication using Apple's ASAuthorization libraries. Used by the SDK, it is called by the WebAuthnRegistration and WebAuthnAuthenticaton callbacks and sets the outcome in the HiddenValueCallback. This comes with the `FRWebAuthnManagerDelegate` that offers callbacks in the calling class for Success, Error and Cancel scenarios.
  */
-@available(iOS 16, *)
+@available(iOS 16.6, *)
 public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationContextProviding, ASAuthorizationControllerDelegate {
     
     public weak var delegate: FRWebAuthnManagerDelegate?
@@ -142,9 +166,19 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             } else {
                 result = "\(clientDataJSON)::\(attestationObject)::\(credID)"
             }
+            
+            let attachement = credentialRegistration.attachment.toString()
+            let webauthOutcome = WebAuthOutcome(authenticatorAttachment: attachement, legacyData: result)
+            guard let jsonData = try? JSONEncoder().encode(webauthOutcome), let jsonString = String(data: jsonData, encoding: .utf8), supportsJSONResponse() else {
+                // After the server verifies the registration and creates the user account, sign in the user with the new account.
+                //didFinishSignIn()
+                self.setWebAuthnOutcome(outcome: result)
+                self.delegate?.didFinishAuthorization()
+                return
+            }
             // After the server verifies the registration and creates the user account, sign in the user with the new account.
             //didFinishSignIn()
-            self.setWebAuthnOutcome(outcome: result)
+            self.setWebAuthnOutcome(outcome: jsonString)
             self.delegate?.didFinishAuthorization()
         case let credentialAssertion as ASAuthorizationPlatformPublicKeyCredentialAssertion:
             FRLog.i("A passkey was used to sign in: \(credentialAssertion)")
@@ -161,8 +195,19 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             
             //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
             let result = "\(clientDataJSON)::\(authenticatorData)::\(signature)::\(credID)::\(userIDString)"
+            
+            let attachement = credentialAssertion.attachment.toString()
+            let webauthOutcome = WebAuthOutcome(authenticatorAttachment: attachement, legacyData: result)
+            guard let jsonData = try? JSONEncoder().encode(webauthOutcome), let jsonString = String(data: jsonData, encoding: .utf8), supportsJSONResponse() else {
+                // After the server verifies the assertion, sign in the user.
+                //didFinishSignIn()
+                self.setWebAuthnOutcome(outcome: result)
+                self.delegate?.didFinishAuthorization()
+                return
+            }
+            
             // After the server verifies the assertion, sign in the user.
-            self.setWebAuthnOutcome(outcome: result)
+            self.setWebAuthnOutcome(outcome: jsonString)
             self.delegate?.didFinishAuthorization()
         default:
             let webAuthnError = FRWAKError.badData(platformError: nil, message: "Received unknown authorization type.")
@@ -218,6 +263,16 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
     }
     
     // MARK: - Private Methods
+    /// Check if the WebAuthn callback supports JSON response
+    private func supportsJSONResponse() -> Bool {
+        for callback in node.callbacks {
+            if let webAuthnCallback = callback as? WebAuthnCallback {
+                return webAuthnCallback.supportsJsonResponse
+            }
+        }
+        return false
+    }
+    
     private func setWebAuthnOutcome(outcome: String) {
         for callback in node.callbacks {
             if let hiddenValueCallback = callback as? HiddenValueCallback, hiddenValueCallback.isWebAuthnOutcome {

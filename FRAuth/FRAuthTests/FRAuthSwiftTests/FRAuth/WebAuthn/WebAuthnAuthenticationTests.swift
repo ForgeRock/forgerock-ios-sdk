@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2021-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -590,10 +590,111 @@ class WebAuthnAuthenticationTests: WebAuthnSharedUtils {
         }
     }
     
+    func test_11_basic_authentication_supportsJson_no_passkeys() {
+        
+        //  Perform registration first
+        self.performWebAuthnRegistration()
+        
+        //  Retrieve credentialId
+        guard let credentialId = WebAuthnAuthenticationTests.registeredCredentialids.first else {
+            XCTFail("Failed to retrieve registered credentialId")
+            return
+        }
+        
+        do {
+            let callback = try self.createAuthenticationCallback(jsonResponse: true)
+            
+            XCTAssertTrue(callback.supportsJsonResponse)
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            //  Set allowedCredentials
+            callback.allowCredentials = [credentialId]
+            
+            //  Perform Authentication
+            let ex = self.expectation(description: "WebAuthn Authentication")
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                let jsonDictionary = self.convertStringToDictionary(text: webAuthnOutcome)
+                XCTAssertNotNil(webAuthnOutcome)
+                XCTAssertNotNil(jsonDictionary)
+                let legacyData = jsonDictionary?["legacyData"] as? String
+                XCTAssertNotNil(legacyData)
+                ex.fulfill()
+            }) { (error) in
+                XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to perform WebAuthn authentication: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_12_basic_authentication_notSupportingJson_no_passkeys() {
+        
+        //  Perform registration first
+        self.performWebAuthnRegistration()
+        
+        //  Retrieve credentialId
+        guard let credentialId = WebAuthnAuthenticationTests.registeredCredentialids.first else {
+            XCTFail("Failed to retrieve registered credentialId")
+            return
+        }
+        
+        do {
+            let callback = try self.createAuthenticationCallback(jsonResponse: false)
+            
+            XCTAssertFalse(callback.supportsJsonResponse)
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            //  Set allowedCredentials
+            callback.allowCredentials = [credentialId]
+            
+            //  Perform Authentication
+            let ex = self.expectation(description: "WebAuthn Authentication")
+            callback.authenticate(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                let jsonDictionary = self.convertStringToDictionary(text: webAuthnOutcome)
+                XCTAssertNotNil(webAuthnOutcome)
+                XCTAssertNil(jsonDictionary)
+                let components = webAuthnOutcome.components(separatedBy: "::")
+                XCTAssertNotNil(components)
+                XCTAssertTrue(components.count > 0)
+                ex.fulfill()
+            }) { (error) in
+                XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed to perform WebAuthn authentication: \(error.localizedDescription)")
+        }
+    }
+    
     
     func test_99_clean_up() {
         //  Clean up all registered keys and credentials after entire authentication tests is done
         self.shouldCleanup = true
+    }
+    
+    private func convertStringToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
+                return json
+            } catch {
+                print("Something went wrong")
+            }
+        }
+        return nil
     }
 }
 
