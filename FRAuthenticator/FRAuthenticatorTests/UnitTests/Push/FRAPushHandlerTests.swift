@@ -327,4 +327,40 @@ class FRAPushHandlerTests: FRABaseTests {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
+    
+    func test_14_parse_notification_with_user_id() {
+        
+        // Given
+        let qrCode = URL(string: "pushauth://push/forgerock:pushtestuser?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=-3xGWaKjfls_ZHFRnGeIvFHn--GxzjQyg1RVG_Pak1s&c=esDK4G8eYce0_Gdf4p9XGGg2cIYYoxf6CTlL_O_1aF8&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:593b6a92-f5c1-4ac0-a94a-a63e05451dd51589138620791&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+        
+        do {
+            let parser = try PushQRCodeParser(url: qrCode)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+            mechanism.mechanismUUID = "759ACE9D-C64B-43E6-981D-97F7B54C3B01"
+            FRAClient.storage.setMechanism(mechanism: mechanism)
+            var payload: [String: Any] = [:]
+            var aps: [String: Any] = [:]
+            aps["messageId"] = "AUTHENTICATE:e29b50b6-bf3d-4993-aa84-144d09fe19cf1589138699819"
+            aps["content-available"] = true
+            aps["alert"] = "Login attempt from user at ForgeRockSandbox"
+            aps["data"] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjIjoibFltZmVQUzllYisrMWtpbzJJSUpBdHdVV1dDY1pDcytCU2dLUGpaS04yOD0iLCJ0IjoiMTIwIiwidSI6Ijc1OUFDRTlELUM2NEItNDNFNi05ODFELTk3RjdCNTRDM0IwMSIsImwiOiJZVzFzWW1OdmIydHBaVDB3TVE9PSIsImQiOiJ1c2VyMSJ9.24GeB5p2tpHfgIIqtdAsGtRIb-L9kK3OBwFyX-ksHGg"
+            aps["sound"] = "default"
+            
+            payload["aps"] = aps
+            
+            guard let notification = FRAPushHandler.shared.application(UIApplication.shared, didReceiveRemoteNotification: payload) else {
+                XCTFail("Failed to parse notification payload and construct PushNotification object")
+                return
+            }
+            XCTAssertNotNil(notification)
+            XCTAssertEqual(notification.messageId, "AUTHENTICATE:e29b50b6-bf3d-4993-aa84-144d09fe19cf1589138699819")
+            XCTAssertEqual(notification.mechanismUUID, "759ACE9D-C64B-43E6-981D-97F7B54C3B01")
+            XCTAssertEqual(notification.loadBalanceKey, "amlbcookie=01")
+            
+            let updatedMechanism = FRAClient.storage.getMechanismForUUID(uuid: notification.mechanismUUID)
+            XCTAssertEqual(updatedMechanism?.uid, "user1")
+        } catch {
+            XCTFail("Failed to parse remote-notification: \(error.localizedDescription)")
+        }
+    }
 }

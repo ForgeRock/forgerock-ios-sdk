@@ -94,6 +94,15 @@ public class FRAPushHandler: NSObject {
                 let notification = try PushNotification(messageId: messageId, payload: jwtPayload)
                 
                 if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: notification.mechanismUUID) {
+                    
+                    // Check if the push mechanism has the user id information, otherwise set it from the notification
+                    if let userId = jwtPayload["d"] as? String, mechanism.uid == nil {
+                        mechanism.uid = userId
+                        if !FRAClient.storage.setMechanism(mechanism: mechanism) {
+                            FRALog.w("Failed to update PushMechanism object in StorageClient")
+                        }
+                    }
+                    
                     if try FRCompactJWT.verify(jwt: jwt, secret: mechanism.secret) == false {
                         FRALog.e("Failed to verify given JWT in remote-notification payload; returning nil")
                         return nil
