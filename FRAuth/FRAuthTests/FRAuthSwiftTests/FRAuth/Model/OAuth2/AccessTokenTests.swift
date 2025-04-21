@@ -2,7 +2,7 @@
 //  AccessTokenTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -165,46 +165,44 @@ class AccessTokenTests: FRAuthBaseTest {
     
     func testTokenSecureCoding() {
     
-        if #available(iOS 11.0, *) {
-            // Given
-            let tokenDict: [String: Any] = ["access_token":self.access_token, "scope":self.scope, "expires_in":self.expires_in, "token_type":self.token_type, "refresh_token": self.refresh_token, "id_token": self.id_token]
-            guard let at = AccessToken(tokenResponse: tokenDict) else {
-                XCTFail("Fail to create AccessToken object with given token dictionary: \(tokenDict)")
-                return
-            }
+        // Given
+        let tokenDict: [String: Any] = ["access_token":self.access_token, "scope":self.scope, "expires_in":self.expires_in, "token_type":self.token_type, "refresh_token": self.refresh_token, "id_token": self.id_token]
+        guard let at = AccessToken(tokenResponse: tokenDict) else {
+            XCTFail("Fail to create AccessToken object with given token dictionary: \(tokenDict)")
+            return
+        }
+        
+        // Then
+        XCTAssertEqual(at.value, self.access_token)
+        XCTAssertEqual(at.scope, self.scope)
+        XCTAssertEqual(at.expiresIn, self.expires_in)
+        XCTAssertEqual(at.tokenType, self.token_type)
+        XCTAssertEqual(at.refreshToken, self.refresh_token)
+        XCTAssertEqual(at.idToken, self.id_token)
+        
+        // Should Also
+        do {
+            // With given
+            let tokenData = try NSKeyedArchiver.archivedData(withRootObject: at, requiringSecureCoding: true)
             
             // Then
-            XCTAssertEqual(at.value, self.access_token)
-            XCTAssertEqual(at.scope, self.scope)
-            XCTAssertEqual(at.expiresIn, self.expires_in)
-            XCTAssertEqual(at.tokenType, self.token_type)
-            XCTAssertEqual(at.refreshToken, self.refresh_token)
-            XCTAssertEqual(at.idToken, self.id_token)
-            
-            // Should Also
-            do {
-                // With given
-                let tokenData = try NSKeyedArchiver.archivedData(withRootObject: at, requiringSecureCoding: true)
-                
-                // Then
-                if let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [AccessToken.self, Token.self], from: tokenData) as? AccessToken {
-                    // Should equal
-                    XCTAssertEqual(at, token)
-                    XCTAssertTrue(at == token)
-                    XCTAssertEqual(token.value, self.access_token)
-                    XCTAssertEqual(token.scope, self.scope)
-                    XCTAssertEqual(token.expiresIn, self.expires_in)
-                    XCTAssertEqual(token.tokenType, self.token_type)
-                    XCTAssertEqual(token.refreshToken, self.refresh_token)
-                    XCTAssertEqual(token.idToken, self.id_token)
-                }
-                else {
-                    XCTFail("Failed to unarchive AccessToken \nToken:\(at.debugDescription)\n\nToken Data: \(tokenData)")
-                }
+            if let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [AccessToken.self, Token.self], from: tokenData) as? AccessToken {
+                // Should equal
+                XCTAssertEqual(at, token)
+                XCTAssertTrue(at == token)
+                XCTAssertEqual(token.value, self.access_token)
+                XCTAssertEqual(token.scope, self.scope)
+                XCTAssertEqual(token.expiresIn, self.expires_in)
+                XCTAssertEqual(token.tokenType, self.token_type)
+                XCTAssertEqual(token.refreshToken, self.refresh_token)
+                XCTAssertEqual(token.idToken, self.id_token)
             }
-            catch {
-                XCTFail("Failed to archive AccessToken \nError:\(error.localizedDescription)\n\nToken:\(at.debugDescription)")
+            else {
+                XCTFail("Failed to unarchive AccessToken \nToken:\(at.debugDescription)\n\nToken Data: \(tokenData)")
             }
+        }
+        catch {
+            XCTFail("Failed to archive AccessToken \nError:\(error.localizedDescription)\n\nToken:\(at.debugDescription)")
         }
     }
     

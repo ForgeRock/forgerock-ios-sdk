@@ -130,16 +130,8 @@ class FRLocationManager: NSObject {
         var shouldRequestAlways = false
         var shouldRequestWhenInUse = false
         
-        //  For iOS 11, search for NSLocationAlwaysAndWhenInUseUsageDescription, and NSLocationWhenInUseUsageDescription string keys in plist file
-        if #available(iOS 11.0, *) {
-            shouldRequestAlways = Bundle.main.object(forInfoDictionaryKey: "NSLocationAlwaysAndWhenInUseUsageDescription") != nil
-            shouldRequestWhenInUse = Bundle.main.object(forInfoDictionaryKey: "NSLocationWhenInUseUsageDescription") != nil
-        }
-        //  For iOS 11, search for NSLocationAlwaysUsageDescription, and NSLocationWhenInUseUsageDescription string keys in plist file
-        else {
-            shouldRequestAlways = Bundle.main.object(forInfoDictionaryKey: "NSLocationAlwaysUsageDescription") != nil
-            shouldRequestWhenInUse = Bundle.main.object(forInfoDictionaryKey: "NSLocationWhenInUseUsageDescription") != nil
-        }
+        shouldRequestAlways = Bundle.main.object(forInfoDictionaryKey: "NSLocationAlwaysAndWhenInUseUsageDescription") != nil
+        shouldRequestWhenInUse = Bundle.main.object(forInfoDictionaryKey: "NSLocationWhenInUseUsageDescription") != nil
         
         //  If Location for Always privacy consent is defined
         if shouldRequestAlways {
