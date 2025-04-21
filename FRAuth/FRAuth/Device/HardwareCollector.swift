@@ -2,7 +2,7 @@
 //  HardwareCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2019-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -42,14 +42,8 @@ public class HardwareCollector: DeviceCollector {
     ///
     /// - Returns: Current device's camera information in Dictionary
     func getCameraInfo() -> [String: Any] {
-        if #available(iOS 10.2, *) {
-            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
-            return ["numberOfCameras": session.devices.count]
-        }
-        else {
-            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
-            return ["numberOfCameras": session.devices.count]
-        }
+        let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTelephotoCamera, .builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+        return ["numberOfCameras": session.devices.count]
     }
     
 

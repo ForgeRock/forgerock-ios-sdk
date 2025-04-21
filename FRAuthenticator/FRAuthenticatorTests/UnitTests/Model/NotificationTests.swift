@@ -2,7 +2,7 @@
 //  NotificationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 ForgeRock. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -268,29 +268,17 @@ class NotificationTests: FRABaseTests {
             let notification = try PushNotification(messageId: messageId, payload: payload)
             XCTAssertNotNil(notification)
 
-            if #available(iOS 11.0, *) {
-                if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
-                    let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
-                    XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
-                    XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
-                    XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
-                    XCTAssertEqual(notification.ttl, notificationFromData?.ttl)
-                    XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
-                    XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
-                }
-                else {
-                    XCTFail("Failed to serialize PushNotification object with Secure Coding")
-                }
-            } else {
-                let notificationData = NSKeyedArchiver.archivedData(withRootObject: notification)
+            if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
                 let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
-                
                 XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
                 XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
                 XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
                 XCTAssertEqual(notification.ttl, notificationFromData?.ttl)
                 XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
                 XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
+            }
+            else {
+                XCTFail("Failed to serialize PushNotification object with Secure Coding")
             }
         }
         catch {
@@ -304,28 +292,8 @@ class NotificationTests: FRABaseTests {
             let notification = try PushNotification(messageId: messageId, payload: newPayload)
             XCTAssertNotNil(notification)
 
-            if #available(iOS 11.0, *) {
-                if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
-                    let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
-                    XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
-                    XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
-                    XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
-                    XCTAssertEqual(notification.ttl, notificationFromData?.ttl)
-                    XCTAssertEqual(notification.mechanismUUID, notificationFromData?.mechanismUUID)
-                    XCTAssertEqual(notification.timeAdded.timeIntervalSince1970, notificationFromData?.timeAdded.timeIntervalSince1970)
-                    XCTAssertEqual(notification.customPayload, notificationFromData?.customPayload)
-                    XCTAssertEqual(notification.message, notificationFromData?.message)
-                    XCTAssertEqual(notification.pushType, notificationFromData?.pushType)
-                    XCTAssertEqual(notification.numbersChallenge, notificationFromData?.numbersChallenge)
-                    XCTAssertEqual(notification.contextInfo, notificationFromData?.contextInfo)
-                }
-                else {
-                    XCTFail("Failed to serialize PushNotification object with Secure Coding")
-                }
-            } else {
-                let notificationData = NSKeyedArchiver.archivedData(withRootObject: notification)
+            if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
                 let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
-                
                 XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
                 XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
                 XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
@@ -337,6 +305,9 @@ class NotificationTests: FRABaseTests {
                 XCTAssertEqual(notification.pushType, notificationFromData?.pushType)
                 XCTAssertEqual(notification.numbersChallenge, notificationFromData?.numbersChallenge)
                 XCTAssertEqual(notification.contextInfo, notificationFromData?.contextInfo)
+            }
+            else {
+                XCTFail("Failed to serialize PushNotification object with Secure Coding")
             }
         }
         catch {

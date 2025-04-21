@@ -50,24 +50,7 @@ class PushMechanismTests: FRABaseTests {
         do {
             let parser = try PushQRCodeParser(url: qrCode)
             let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
-            if #available(iOS 11.0, *) {
-                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
-                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-                    XCTAssertEqual(mechanism.regEndpoint, mechanismFromData?.regEndpoint)
-                    XCTAssertEqual(mechanism.authEndpoint, mechanismFromData?.authEndpoint)
-                    XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
-                }
-                else {
-                    XCTFail("Failed to serialize PushMechanism object with Secure Coding")
-                }
-            } else {
-                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
+            if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                 let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
                 XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
@@ -78,6 +61,9 @@ class PushMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanism.regEndpoint, mechanismFromData?.regEndpoint)
                 XCTAssertEqual(mechanism.authEndpoint, mechanismFromData?.authEndpoint)
                 XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            }
+            else {
+                XCTFail("Failed to serialize PushMechanism object with Secure Coding")
             }
         }
         catch {

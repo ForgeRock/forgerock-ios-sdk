@@ -19,25 +19,7 @@ class OathMechanismTests: FRABaseTests {
         do {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, digits: parser.digits)
-            if #available(iOS 11.0, *) {
-                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? OathMechanism
-                    XCTAssertNotNil(mechanismFromData)
-                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-                    XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
-                    XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
-                    XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
-                }
-                else {
-                    XCTFail("Failed to serialize OathMechanism object with Secure Coding")
-                }
-            } else {
-                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
+            if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                 let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? OathMechanism
                 XCTAssertNotNil(mechanismFromData)
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
@@ -49,6 +31,9 @@ class OathMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
                 XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
                 XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            }
+            else {
+                XCTFail("Failed to serialize OathMechanism object with Secure Coding")
             }
         }
         catch {
