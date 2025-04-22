@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1B4236BB26CDA3A3009AF58F /* FRDateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */; };
+		1B94DD192D7919ED003B41BA /* PushDeviceToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD172D7919E2003B41BA /* PushDeviceToken.swift */; };
+		1B94DD1B2D79200D003B41BA /* PushDeviceTokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD1A2D792003003B41BA /* PushDeviceTokenManager.swift */; };
+		1B94DD1D2D7A5852003B41BA /* PushDeviceTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD1C2D7A584E003B41BA /* PushDeviceTokenTests.swift */; };
+		1B94DD1F2D7A59D3003B41BA /* PushDeviceTokenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD1E2D7A59CF003B41BA /* PushDeviceTokenManagerTests.swift */; };
 		1BB34B34299577E200729300 /* FRAPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B33299577E200729300 /* FRAPolicy.swift */; };
 		1BB34B3629957D8F00729300 /* BiometricAvailablePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B3529957D8F00729300 /* BiometricAvailablePolicy.swift */; };
 		1BB34B3829957E2000729300 /* DeviceTamperingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B3729957E2000729300 /* DeviceTamperingPolicy.swift */; };
@@ -193,6 +197,10 @@
 
 /* Begin PBXFileReference section */
 		1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDateUtil.swift; sourceTree = "<group>"; };
+		1B94DD172D7919E2003B41BA /* PushDeviceToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDeviceToken.swift; sourceTree = "<group>"; };
+		1B94DD1A2D792003003B41BA /* PushDeviceTokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDeviceTokenManager.swift; sourceTree = "<group>"; };
+		1B94DD1C2D7A584E003B41BA /* PushDeviceTokenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushDeviceTokenTests.swift; sourceTree = "<group>"; };
+		1B94DD1E2D7A59CF003B41BA /* PushDeviceTokenManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDeviceTokenManagerTests.swift; sourceTree = "<group>"; };
 		1BB34B33299577E200729300 /* FRAPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAPolicy.swift; sourceTree = "<group>"; };
 		1BB34B3529957D8F00729300 /* BiometricAvailablePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAvailablePolicy.swift; sourceTree = "<group>"; };
 		1BB34B3729957E2000729300 /* DeviceTamperingPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTamperingPolicy.swift; sourceTree = "<group>"; };
@@ -423,6 +431,7 @@
 		D52D5C4E241318F000835035 /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD172D7919E2003B41BA /* PushDeviceToken.swift */,
 				D5FFA053245FA2FD003680C1 /* PushMechanism.swift */,
 				D52D5C4F241318F000835035 /* PushQRCodeParser.swift */,
 			);
@@ -473,6 +482,7 @@
 		D52D5C67241333D500835035 /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD1E2D7A59CF003B41BA /* PushDeviceTokenManagerTests.swift */,
 				D5D0A4FF2462059F00BA9FE0 /* FRAPushHandlerTests.swift */,
 				D5D0A5102462171B00BA9FE0 /* PushMechanismRegistrationTests.swift */,
 				D5CAC79124622E010059F6B8 /* PushNotificationAuthenticationTests.swift */,
@@ -551,6 +561,7 @@
 		D542AA562416F9F800ECBFC1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD1C2D7A584E003B41BA /* PushDeviceTokenTests.swift */,
 				D542AA7E2417413B00ECBFC1 /* PushMechanismTests.swift */,
 				D542AA5A2416FBD000ECBFC1 /* HOTPMechanismTests.swift */,
 				D542AA5B2416FBD000ECBFC1 /* TOTPMechanismTests.swift */,
@@ -877,6 +888,7 @@
 		D5FC33F52458CC0B00C77A52 /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD1A2D792003003B41BA /* PushDeviceTokenManager.swift */,
 				D5FC33F82458CC1F00C77A52 /* FRAPushHandler.swift */,
 			);
 			path = Push;
@@ -1117,7 +1129,9 @@
 				D5FFA03B245F52E8003680C1 /* PushNotificationError.swift in Sources */,
 				D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */,
 				D5C354A52412EC0600695A84 /* PushNotification.swift in Sources */,
+				1B94DD192D7919ED003B41BA /* PushDeviceToken.swift in Sources */,
 				A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */,
+				1B94DD1B2D79200D003B41BA /* PushDeviceTokenManager.swift in Sources */,
 				1BB34B48299AE08300729300 /* URIType.swift in Sources */,
 				D54E88EE241749BE00E8ACB1 /* FRAError.swift in Sources */,
 				D52D5C5824131B2D00835035 /* HOTPMechanism.swift in Sources */,
@@ -1137,6 +1151,7 @@
 				D5791C1525F88393004B487A /* FRTestNetworkStubProtocol.swift in Sources */,
 				D5791BEF25F8829F004B487A /* DummyStorageClient.swift in Sources */,
 				D5791BF025F8829F004B487A /* AuthenticatorManagerTests.swift in Sources */,
+				1B94DD1D2D7A5852003B41BA /* PushDeviceTokenTests.swift in Sources */,
 				1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */,
 				1BB34B3E2996C02C00729300 /* FRAPolicyEvaluatorTests.swift in Sources */,
 				D5791BF125F8829F004B487A /* FRAClientTests.swift in Sources */,
@@ -1156,6 +1171,7 @@
 				D5791BFD25F8829F004B487A /* HOTPMechanismTests.swift in Sources */,
 				D5791BFE25F8829F004B487A /* TOTPMechanismTests.swift in Sources */,
 				D5791BFF25F8829F004B487A /* AccountTests.swift in Sources */,
+				1B94DD1F2D7A59D3003B41BA /* PushDeviceTokenManagerTests.swift in Sources */,
 				D5791C0025F8829F004B487A /* NotificationTests.swift in Sources */,
 				D5791C0125F8829F004B487A /* MechanismTests.swift in Sources */,
 				D5791C0225F8829F004B487A /* OathMechanismTests.swift in Sources */,

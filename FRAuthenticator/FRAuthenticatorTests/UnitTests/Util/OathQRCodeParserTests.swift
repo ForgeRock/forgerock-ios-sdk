@@ -2,7 +2,7 @@
 //  OathQRCodeParserTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -420,6 +420,21 @@ class OathQRCodeParserTests: FRABaseTests {
             XCTAssertEqual(parser.period, 30)
             XCTAssertEqual(parser.algorithm, "sha1")
             XCTAssertEqual(parser.policies, jsonPolicies)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_22_parse_userId_resourceId() {
+        let qrCode = URL(string: "otpauth://hotp/Forgerock:demo?secret=IJQWIZ3FOIQUEYLE&issuer=Forgerock&uid=ZGVtbw&oid=ZTBkZTAxMzUtZWFmOS00ZmFjLWI1ODQtMmRkYmQyYTQwN2M2MTczOTgyNDI4ODE3NQ")!
+        
+        do {
+            let parser = try OathQRCodeParser(url: qrCode)
+            XCTAssertNotNil(parser.uid)
+            XCTAssertNotNil(parser.resourceId)
+            XCTAssertEqual(parser.uid, "demo")
+            XCTAssertEqual(parser.resourceId, "e0de0135-eaf9-4fac-b584-2ddbd2a407c61739824288175")
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

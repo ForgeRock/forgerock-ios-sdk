@@ -2,7 +2,7 @@
 //  MechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -15,7 +15,7 @@ class MechanismTests: FRABaseTests {
 
     func test_01_mechanism_serialization() {
     
-        let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB")
+        let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
         if #available(iOS 11.0, *) {
             if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                 let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism
@@ -49,11 +49,11 @@ class MechanismTests: FRABaseTests {
     func test_02_mechanism_order() {
         
         let thisAccount = Account(issuer: "ForgeRock", accountName: "OrderTest")
-        let mechanism1 = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB")
+        let mechanism1 = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
         sleep(1)
-        let mechanism2 = Mechanism(type: "hotp", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB")
+        let mechanism2 = Mechanism(type: "hotp", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
         sleep(1)
-        let mechanism3 = Mechanism(type: "push", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB")
+        let mechanism3 = Mechanism(type: "push", issuer: "ForgeRock", accountName: "OrderTest", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
         
         FRAClient.start()
         FRAClient.storage.setAccount(account: thisAccount)
@@ -74,7 +74,7 @@ class MechanismTests: FRABaseTests {
     
     func test_03_codable_serialization() {
         
-        let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB")
+        let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
         
         do {
             //  Encode

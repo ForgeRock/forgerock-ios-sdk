@@ -2,7 +2,7 @@
 //  PushMechanismRegistrationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -31,9 +31,9 @@ class PushMechanismRegistrationTests: FRABaseTests {
         do {
             // Then
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             let ex = self.expectation(description: "Register PushMechanism")
-            mechanism.register(onSuccess: {
+            FRAPushHandler.shared.register(mechanism: mechanism, onSuccess: {
                 ex.fulfill()
             }) { (error) in
                 XCTFail("Failed to register PushMechanism with following error: \(error.localizedDescription)")
@@ -54,10 +54,10 @@ class PushMechanismRegistrationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
 
             let ex = self.expectation(description: "Register PushMechanism")
-            mechanism.register(onSuccess: {
+            FRAPushHandler.shared.register(mechanism: mechanism, onSuccess: {
                 XCTFail("PushMechanism without DeviceToken was expected to fail; but somehow passed")
                 ex.fulfill()
             }) { (error) in
@@ -94,11 +94,11 @@ class PushMechanismRegistrationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             // Switch to different secret than server expected
             mechanism.secret = "5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg"
             let ex = self.expectation(description: "Register PushMechanism")
-            mechanism.register(onSuccess: {
+            FRAPushHandler.shared.register(mechanism: mechanism, onSuccess: {
                 XCTFail("PushMechanism without DeviceToken was expected to fail; but somehow passed")
                 ex.fulfill()
             }) { (error) in
@@ -134,12 +134,12 @@ class PushMechanismRegistrationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             // Change challenge to unsafe URL encoded string which will cause failure to parse and generate challenge response
             mechanism.challenge = "KP0XQfZ21N_jsXP_xfVQMmsmoUiWvdDPWecHdb5_INQ"
             
             let ex = self.expectation(description: "Register PushMechanism")
-            mechanism.register(onSuccess: {
+            FRAPushHandler.shared.register(mechanism: mechanism, onSuccess: {
                 XCTFail("PushMechanism without DeviceToken was expected to fail; but somehow passed")
                 ex.fulfill()
             }) { (error) in
@@ -175,8 +175,8 @@ class PushMechanismRegistrationTests: FRABaseTests {
 
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
-            let request = try mechanism.buildPushRegistrationRequest()
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+            let request = try FRAPushHandler.shared.buildPushRegistrationRequest(mechanism: mechanism)
             
             let bodyPayload = request.bodyParams
             

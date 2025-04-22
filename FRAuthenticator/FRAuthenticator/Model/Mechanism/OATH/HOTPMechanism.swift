@@ -2,7 +2,7 @@
 //  HOTPMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -28,11 +28,13 @@ public class HOTPMechanism: OathMechanism {
     ///   - accountName: accountName of current OATH Mechanism
     ///   - secret: shared secret in string of OATH Mechanism
     ///   - algorithm: algorithm in string for OATH Mechanism
+    ///   - uid: unique identifier of the user associated with this mechanism
+    ///   - resourceId: unique identifier of this mechanism on the server
     ///   - counter: counter of HOTP
     ///   - digits: number of digits for TOTP code
-    init(issuer: String, accountName: String, secret: String, algorithm: String?, counter: Int? = 0, digits: Int? = 6) {
+    init(issuer: String, accountName: String, secret: String, algorithm: String?, uid: String?, resourceId: String?, counter: Int? = 0, digits: Int? = 6) {
         self.counter = counter ?? 0
-        super.init(type: FRAConstants.hotp, issuer: issuer, accountName: accountName, secret: secret, algorithm: algorithm, digits: digits)
+        super.init(type: FRAConstants.hotp, issuer: issuer, accountName: accountName, secret: secret, algorithm: algorithm, uid: uid, resourceId: resourceId, digits: digits)
     }
     
     
@@ -46,10 +48,12 @@ public class HOTPMechanism: OathMechanism {
     /// - Parameter algorithm: algorithm used for OATH
     /// - Parameter digits: length of OTP Credentials
     /// - Parameter counter: counter for number of OTP credentials generated
-    /// - Parameter timeAdded: Date timestamp for creation of Mechanism object 
-    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, algorithm: String?, digits: Int, counter: Int, timeAdded: Double) {
+    /// - Parameter uid: unique identifier of the user associated with this mechanism
+    /// - Parameter resourceId: unique identifier of this mechanism on the server
+    /// - Parameter timeAdded: Date timestamp for creation of Mechanism object
+    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, algorithm: String?, digits: Int, counter: Int, uid: String?, resourceId: String?, timeAdded: Double) {
         self.counter = counter
-        super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, timeAdded: timeAdded)
+        super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
 
     
@@ -74,8 +78,10 @@ public class HOTPMechanism: OathMechanism {
         let algorithm = coder.decodeObject(of: NSString.self, forKey: "algorithm") as String?
         let digits = coder.decodeInteger(forKey: "digits")
         let counter = coder.decodeInteger(forKey: "counter")
+        let uid = coder.decodeObject(of: NSString.self, forKey: "uid") as String?
+        let resourceId = coder.decodeObject(of: NSString.self, forKey: "resourceId") as String?
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
-        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, counter: counter, timeAdded: timeAdded)
+        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, counter: counter, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
     
     

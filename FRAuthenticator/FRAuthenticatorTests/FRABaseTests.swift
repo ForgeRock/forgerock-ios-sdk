@@ -22,17 +22,19 @@ class FRABaseTests: FRBaseTestCase {
         super.tearDown()
         
         if shouldCleanup {
-            FRAPushHandler.shared.deviceToken = nil
+            FRAPushHandler.shared.clearDeviceToken()
             if let keychainStorageClient = FRAClient.storage as? KeychainServiceClient {
                 keychainStorageClient.accountStorage.deleteAll()
                 keychainStorageClient.mechanismStorage.deleteAll()
                 keychainStorageClient.notificationStorage.deleteAll()
+                keychainStorageClient.pushDeviceTokenStorage.deleteAll()
                 FRAClient.storage = KeychainServiceClient()
             }
             if let keychainStorageClient = FRAClient.storage as? DummyStorageClient {
                 keychainStorageClient.defaultStorageClient.accountStorage.deleteAll()
                 keychainStorageClient.defaultStorageClient.mechanismStorage.deleteAll()
                 keychainStorageClient.defaultStorageClient.notificationStorage.deleteAll()
+                keychainStorageClient.defaultStorageClient.pushDeviceTokenStorage.deleteAll()
                 FRAClient.storage = DummyStorageClient()
             }
             FRAClient.shared = nil

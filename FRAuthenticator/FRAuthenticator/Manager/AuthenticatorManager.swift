@@ -2,7 +2,7 @@
 //  AuthenticatorManager.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -122,7 +122,7 @@ struct AuthenticatorManager {
             let account = Account(issuer: parser.issuer, accountName: parser.label, imageUrl: parser.image, backgroundColor: parser.backgroundColor,  policies: parser.policies)
             FRALog.v("Account object (\(account.identifier)) is created")
             
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             FRALog.v("PushMechanism (\(mechanism.identifier) is created")
                         
             for thisMechanism in self.storageClient.getMechanismsForAccount(account: account) {
@@ -134,7 +134,7 @@ struct AuthenticatorManager {
             }
             
             FRALog.v("Start registering PushMechanism object with AM")
-            mechanism.register(onSuccess: {
+            FRAPushHandler.shared.register(mechanism: mechanism, onSuccess: {
                 FRALog.v("PushMechanism registration request was successful")
                 do {
                     if !self.storageClient.setMechanism(mechanism: mechanism) {
@@ -175,7 +175,7 @@ struct AuthenticatorManager {
         
         // Constructs Mechanism object, and tries to store it into StorageClient
         if uri.getAuthType() == .hotp {
-            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, counter: parser.counter, digits: parser.digits)
+            let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
             FRALog.v("HOTPMechanism (\(mechanism.identifier) is created")
             
             for thisMechanism in self.storageClient.getMechanismsForAccount(account: account) {
@@ -195,7 +195,7 @@ struct AuthenticatorManager {
             return mechanism
         }
         else if uri.getAuthType() == .totp {
-            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, period: parser.period, digits: parser.digits)
+            let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             FRALog.v("TOTPMechanism (\(mechanism.identifier) is created")
                         
             for thisMechanism in self.storageClient.getMechanismsForAccount(account: account) {

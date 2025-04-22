@@ -2,7 +2,7 @@
 //  OathMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -39,8 +39,10 @@ public class OathMechanism: Mechanism {
     ///   - accountName: accountName of current OATH Mechanism
     ///   - secret: shared secret in string of OATH Mechanism
     ///   - algorithm: algorithm in string for OATH Mechanism
+    ///   - uid: unique identifier of the user associated with this mechanism
+    ///   - resourceId: unique identifier of this mechanism on the server
     ///   - digits: number of digits for TOTP code
-    init(type: String, issuer: String, accountName: String, secret: String, algorithm: String?, digits: Int? = 6) {
+    init(type: String, issuer: String, accountName: String, secret: String, algorithm: String?, uid: String?, resourceId: String?, digits: Int? = 6) {
         if let algorithmStr = algorithm, let oathAlgorithm = OathAlgorithm(algorithm: algorithmStr) {
             self.algorithm = oathAlgorithm
         }
@@ -48,7 +50,7 @@ public class OathMechanism: Mechanism {
             self.algorithm = .sha1
         }
         self.digits = digits ?? 6
-        super.init(type: type, issuer: issuer, accountName: accountName, secret: secret)
+        super.init(type: type, issuer: issuer, accountName: accountName, secret: secret, uid: uid, resourceId: resourceId)
     }
     
     
@@ -61,14 +63,16 @@ public class OathMechanism: Mechanism {
     /// - Parameter accountName: accountName of OATH
     /// - Parameter algorithm: algorithm used for OATH
     /// - Parameter digits: length of OTP Credentials
-    /// - Parameter timeAdded: Date timestamp for creation of Mechanism object 
-    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, algorithm: String?, digits: Int, timeAdded: Double) {
+    /// - Parameter uid: unique identifier of the user associated with this mechanism
+    /// - Parameter resourceId: unique identifier of this mechanism on the server
+    /// - Parameter timeAdded: Date timestamp for creation of Mechanism object
+    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, algorithm: String?, digits: Int, uid: String?, resourceId: String?, timeAdded: Double) {
         guard let algorithm = algorithm, let oathAlgorithm = OathAlgorithm(algorithm: algorithm) else {
             return nil
         }
         self.algorithm = oathAlgorithm
         self.digits = digits
-        super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
+        super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
 
     
@@ -93,8 +97,10 @@ public class OathMechanism: Mechanism {
         let accountName = coder.decodeObject(of: NSString.self, forKey: "accountName") as String?
         let algorithm = coder.decodeObject(of: NSString.self, forKey: "algorithm") as String?
         let digits = coder.decodeInteger(forKey: "digits")
+        let uid = coder.decodeObject(of: NSString.self, forKey: "uid") as String?
+        let resourceId = coder.decodeObject(of: NSString.self, forKey: "resourceId") as String?
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
-        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, timeAdded: timeAdded)
+        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, algorithm: algorithm, digits: digits, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
     
     

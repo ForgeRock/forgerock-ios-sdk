@@ -2,7 +2,7 @@
 //  PushMechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -27,6 +27,27 @@ public class PushMechanism: Mechanism {
     var challenge: String
     /// load balancer key
     var loadBalancer: String?
+    
+    /// Update endpoint for Push mechanism
+    var updateEndpoint: URL {
+        get {
+            var components = URLComponents(url: self.regEndpoint, resolvingAgainstBaseURL: false)
+            if let queryItems = components?.queryItems {
+                components?.queryItems = queryItems.map { item in
+                    if item.name == "_action" && item.value == "register" {
+                        return URLQueryItem(name: item.name, value: "refresh")
+                    }
+                    return item
+                }
+            }
+            
+            guard let updatedURL = components?.url else {
+                fatalError("Failed to construct update URL")
+            }
+
+            return updatedURL
+        }
+    }
     
     /// PushNotification(s) objects associated with current PushMechanism
     public var notifications: [PushNotification] = []
@@ -69,7 +90,9 @@ public class PushMechanism: Mechanism {
     ///   - messageId: messageId for push registration
     ///   - challenge: challenge to be signed for PushMechanism registration
     ///   - loadBalancer: load balancer key
-    init(issuer: String, accountName: String, secret: String, authEndpoint: URL, regEndpoint: URL, messageId: String, challenge: String, loadBalancer: String?) {
+    ///   - uid: unique identifier of the user associated with this mechanism
+    ///   - resourceId: unique identifier of this mechanism on the server
+    init(issuer: String, accountName: String, secret: String, authEndpoint: URL, regEndpoint: URL, messageId: String, challenge: String, loadBalancer: String?, uid: String?, resourceId: String?) {
         
         self.authEndpoint = authEndpoint
         self.regEndpoint = regEndpoint
@@ -77,7 +100,7 @@ public class PushMechanism: Mechanism {
         self.challenge = challenge
         self.loadBalancer = loadBalancer
         
-        super.init(type: FRAConstants.push, issuer: issuer, accountName: accountName, secret: secret)
+        super.init(type: FRAConstants.push, issuer: issuer, accountName: accountName, secret: secret, uid: uid, resourceId: resourceId)
     }
     
     
@@ -93,8 +116,10 @@ public class PushMechanism: Mechanism {
     /// - Parameter messageId: messageId of Push mechanism
     /// - Parameter challenge: challenge used for Push
     /// - Parameter loadBalancer: load balancer optional value
-    /// - Parameter timeAdded: Date timestamp for creation of Mechanism object 
-    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, authURLStr: String?, regURLStr: String?, messageId: String?, challenge: String?, loadBalancer: String?, timeAdded: Double) {
+    /// - Parameter uid: unique identifier of the user associated with this mechanism
+    /// - Parameter resourceId: unique identifier of this mechanism on the server
+    /// - Parameter timeAdded: Date timestamp for creation of Mechanism object
+    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, authURLStr: String?, regURLStr: String?, messageId: String?, challenge: String?, loadBalancer: String?, uid: String?, resourceId: String?, timeAdded: Double) {
         
         // Validate URLs
         guard let authURLStr = authURLStr, let authEndpoint = URL(string:authURLStr), let regURLStr = regURLStr, let regEndpoint = URL(string: regURLStr) else {
@@ -112,7 +137,7 @@ public class PushMechanism: Mechanism {
         self.challenge = challenge
         self.loadBalancer = loadBalancer
 
-        super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
+        super.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
     
     
@@ -144,9 +169,11 @@ public class PushMechanism: Mechanism {
         let messageId = coder.decodeObject(of: NSString.self, forKey: "messageId") as String?
         let challenge = coder.decodeObject(of: NSString.self, forKey: "challenge") as String?
         let loadBalancer = coder.decodeObject(of: NSString.self, forKey: "loadBalancer") as String?
+        let uid = coder.decodeObject(of: NSString.self, forKey: "uid") as String?
+        let resourceId = coder.decodeObject(of: NSString.self, forKey: "resourceId") as String?
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
 
-        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, authURLStr: authEndpoint, regURLStr: regEndpoint, messageId: messageId, challenge: challenge, loadBalancer: loadBalancer, timeAdded: timeAdded)
+        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, authURLStr: authEndpoint, regURLStr: regEndpoint, messageId: messageId, challenge: challenge, loadBalancer: loadBalancer, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
     
     
@@ -170,78 +197,6 @@ public class PushMechanism: Mechanism {
         challenge = try container.decode(String.self, forKey: .challenge)
         loadBalancer = try container.decode(String.self, forKey: .loadBalancer)
         try super.init(from: decoder)
-    }
-    
-    
-    //  MARK: - Register
-    
-    /// Registers current PushMechanism object with designated AM instance using information given in QR code
-    /// - Parameters:
-    ///   - onSuccess: Success callback to notify that registration is completed and successful
-    ///   - onFailure: Error callback to notify an error occurred during the push registration
-    func register(onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
-        do {
-            let request = try buildPushRegistrationRequest()
-            RestClient.shared.invoke(request: request, action: Action(type: .PUSH_REGISTER)) { (result) in
-                switch result {
-                case .success(let result, let httpResponse):
-                    FRALog.v("Push registration request was successful: \n\nResponse:\(result)\n\nHTTPResponse:\(String(describing: httpResponse))")
-                    onSuccess()
-                    break
-                case .failure(let error):
-                    FRALog.e("Push registration request failed with following error: \(error.localizedDescription)")
-                    onFailure(error)
-                    break
-                }
-            }
-        }
-        catch {
-            FRALog.w("Failed to prepare and make request for Push Registration with following error: \(error.localizedDescription)")
-            onFailure(error)
-        }
-    }
-    
-        
-    //  MARK: - Request Build
-    
-    /// Builds Request object for Push Registration
-    /// - Throws: CryptoError, PushNotificationError,
-    /// - Returns: Request object for Push Registration request
-    func buildPushRegistrationRequest() throws -> Request {
-        
-        guard let deviceToken = FRAPushHandler.shared.deviceToken else {
-            FRALog.e("Missing DeviceToken")
-            throw PushNotificationError.missingDeviceToken
-        }
-        
-        let challengeResponse = try Crypto.generatePushChallengeResponse(challenge: self.challenge, secret: self.secret)
-        FRALog.v("Challenge response generated: \(challenge)")
-        
-        var payload: [String: CodableValue] = [:]
-        payload[FRAConstants.response] = CodableValue(challengeResponse)
-        payload[FRAConstants.mechanismUid] = CodableValue(self.mechanismUUID)
-        payload[FRAConstants.deviceId] = CodableValue(deviceToken)
-        payload[FRAConstants.deviceType] = CodableValue(FRAConstants.ios)
-        payload[FRAConstants.communicationType] = CodableValue(FRAConstants.apns)
-        FRALog.v("Push registration JWT payload prepared: \(payload)")
-                
-        let jwt = try FRCompactJWT(algorithm: .hs256, secret: self.secret, payload: payload).sign()
-        FRALog.v("JWT generated and signed: \(jwt)")
-        
-        let requestPayload: [String: String] = [FRAConstants.messageId: self.messageId, FRAConstants.jwt: jwt]
-        
-        var headers: [String: String] = [:]
-        headers["Set-Cookie"] = self.loadBalancer
-        
-        //  AM 6.5.2 - 7.0.0
-        //
-        //  Endpoint: /openam/json/push/sns/message?_action=register
-        //  API Version: resource=1.0, protocol=1.0
-        headers[FRAConstants.acceptAPIVersion] = FRAConstants.apiResource10 + ", " + FRAConstants.apiProtocol10
-        
-        let request = Request(url: self.regEndpoint.absoluteString, method: .POST, headers: headers, bodyParams: requestPayload, requestType: .json, responseType: .json)
-        
-        return request
     }
     
 

@@ -2,7 +2,7 @@
 //  PushMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -19,7 +19,7 @@ class PushMechanismTests: FRABaseTests {
 
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             
             XCTAssertNotNil(mechanism.mechanismUUID)
             XCTAssertNotNil(mechanism.issuer)
@@ -49,7 +49,7 @@ class PushMechanismTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             if #available(iOS 11.0, *) {
                 if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
                     let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
@@ -91,7 +91,7 @@ class PushMechanismTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             XCTAssertNotNil(mechanism)
             XCTAssertEqual(mechanism.identifier, "Forgerock-demo-push")
         }
@@ -106,7 +106,7 @@ class PushMechanismTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
 
             //  Encode
             let jsonData = try JSONEncoder().encode(mechanism)
@@ -135,7 +135,7 @@ class PushMechanismTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
 
             guard let jsonStr = mechanism.toJson() else {
                 XCTFail("Failed to serialize the object into JSON String value")
@@ -179,7 +179,7 @@ class PushMechanismTests: FRABaseTests {
 
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             
             XCTAssertNotNil(mechanism.mechanismUUID)
             XCTAssertNotNil(mechanism.issuer)
@@ -197,6 +197,42 @@ class PushMechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.secret, "ryJkqNRjXYd_nX523672AX_oKdVXrKExq-VjVeRKKTc")
             XCTAssertEqual(mechanism.regEndpoint.absoluteString, "https://forgerock.example.com/openam/json/push/sns/message?_action=register")
             XCTAssertEqual(mechanism.authEndpoint.absoluteString, "https://forgerock.example.com/openam/json/push/sns/message?_action=authenticate")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_07_push_mechanism_init_with_new_attributes_success() {
+        
+        let qrCode = URL(string: "pushauth://push/forgerock:demo?a=aHR0cDovL2FtcWEtY2xvbmU2OS50ZXN0LmZvcmdlcm9jay5jb206ODA4MC9vcGVuYW0vanNvbi9wdXNoL3Nucy9tZXNzYWdlP19hY3Rpb249YXV0aGVudGljYXRl&r=aHR0cDovL2FtcWEtY2xvbmU2OS50ZXN0LmZvcmdlcm9jay5jb206ODA4MC9vcGVuYW0vanNvbi9wdXNoL3Nucy9tZXNzYWdlP19hY3Rpb249cmVnaXN0ZXI=&s=dA18Iph3slIUDVuRc5+3y7nv9NLGnPksH66d3jIF6uE=&c=Yf66ojm3Pm80PVvNpljTB6X9CUhgSJ0WZUzB4su3vCY=&l=YW1sYmNvb2tpZT0wMQ==&m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&issuer=Rm9yZ2Vyb2Nr&uid=ZGVtbw&pid=ZTBkZTAxMzUtZWFmOS00ZmFjLWI1ODQtMmRkYmQyYTQwN2M2MTczOTgyNDI4ODE3NQ")!
+
+        do {
+            let parser = try PushQRCodeParser(url: qrCode)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+            
+            XCTAssertNotNil(mechanism.mechanismUUID)
+            XCTAssertNotNil(mechanism.issuer)
+            XCTAssertNotNil(mechanism.type)
+            XCTAssertNotNil(mechanism.version)
+            XCTAssertNotNil(mechanism.accountName)
+            XCTAssertNotNil(mechanism.secret)
+            XCTAssertNotNil(mechanism.regEndpoint)
+            XCTAssertNotNil(mechanism.authEndpoint)
+            XCTAssertNotNil(mechanism.uid)
+            XCTAssertNotNil(mechanism.resourceId)
+            XCTAssertNotNil(mechanism.timeAdded)
+            
+            XCTAssertEqual(mechanism.issuer, "Forgerock")
+            XCTAssertEqual(mechanism.type, "push")
+            XCTAssertEqual(mechanism.accountName, "demo")
+            XCTAssertEqual(mechanism.secret, "dA18Iph3slIUDVuRc5+3y7nv9NLGnPksH66d3jIF6uE=")
+            XCTAssertEqual(mechanism.regEndpoint.absoluteString, "http://amqa-clone69.test.forgerock.com:8080/openam/json/push/sns/message?_action=register")
+            XCTAssertEqual(mechanism.authEndpoint.absoluteString, "http://amqa-clone69.test.forgerock.com:8080/openam/json/push/sns/message?_action=authenticate")
+            XCTAssertEqual(mechanism.updateEndpoint.absoluteString, "http://amqa-clone69.test.forgerock.com:8080/openam/json/push/sns/message?_action=refresh")
+            XCTAssertEqual(mechanism.uid, "demo")
+            XCTAssertEqual(mechanism.resourceId, "e0de0135-eaf9-4fac-b584-2ddbd2a407c61739824288175")
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")

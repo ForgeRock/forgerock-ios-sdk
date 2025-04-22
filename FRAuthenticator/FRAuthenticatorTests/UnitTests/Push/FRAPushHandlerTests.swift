@@ -2,7 +2,7 @@
 //  FRAPushHandlerTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -21,6 +21,10 @@ class FRAPushHandlerTests: FRABaseTests {
         }
         FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
         XCTAssertEqual(FRAPushHandler.shared.deviceToken, "3C9E9DEE4F2E33602F2BE4F58C94CC0580F9B28F92AC79EF54BA06CF632D7B70")
+        
+        let pushDeviceToken = FRAClient.storage.getPushDeviceToken()
+        XCTAssertNotNil(pushDeviceToken)
+        XCTAssertEqual(pushDeviceToken?.tokenId, "3C9E9DEE4F2E33602F2BE4F58C94CC0580F9B28F92AC79EF54BA06CF632D7B70")
     }
     
     
@@ -51,7 +55,7 @@ class FRAPushHandlerTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "759ACE9D-C64B-43E6-981D-97F7B54C3B01"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             var payload: [String: Any] = [:]
@@ -202,7 +206,7 @@ class FRAPushHandlerTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "759ACE9D-C64B-43E6-981D-97F7B54C3B01"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -235,6 +239,127 @@ class FRAPushHandlerTests: FRABaseTests {
             XCTAssertNotNil(storedNotification)
             XCTAssertEqual(storedNotification.messageId, messageId)        }
         catch {
+            XCTFail("Failed to parse remote-notification: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func test_12_validate_push_update_request() {
+        // Set DeviceToken before PushMechnaism registration
+        let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
+        guard let deviceToken = deviceTokenStr.decodeBase64() else {
+            XCTFail("Failed to parse device token data")
+            return
+        }
+        FRAPushHandler.shared.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        
+        // Given
+        let qrCode = URL(string: "pushauth://push/forgerock:pushreg3?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg&c=KP0XQfZ21N_jsXP_xfVQMmsmoUiWvdDPWecHdb5_INQ&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:a8970dea-3257-4be1-a37a-23eed2b692131588282723889&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+
+        do {
+            let parser = try PushQRCodeParser(url: qrCode)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+            let request = try FRAPushHandler.shared.buildPushUpdateRequest(mechanism: mechanism, deviceToken: deviceTokenStr)
+            
+            let bodyPayload = request.bodyParams
+            
+            let mechanismUid = bodyPayload["mechanismUid"] as? String
+            let jwt = bodyPayload["jwt"] as? String
+            XCTAssertNotNil(mechanismUid)
+            XCTAssertEqual(mechanismUid, mechanism.mechanismUUID)
+            XCTAssertNotNil(jwt)
+            XCTAssertTrue(try FRCompactJWT.verify(jwt: jwt!, secret: "5GuioYhLlh-xER3n5I8vrx0uuYQo3yD86aJi6KuWDsg"))
+            
+            let jwtPayload = try FRCompactJWT.extractPayload(jwt: jwt!)
+            XCTAssertNotNil(jwtPayload)
+            
+            XCTAssertTrue(jwtPayload.keys.contains("mechanismUid"))
+            XCTAssertTrue(jwtPayload.keys.contains("deviceName"))
+            XCTAssertTrue(jwtPayload.keys.contains("deviceId"))
+            XCTAssertTrue(jwtPayload.keys.contains("deviceType"))
+            XCTAssertTrue(jwtPayload.keys.contains("communicationType"))
+
+            XCTAssertEqual(jwtPayload["mechanismUid"] as? String, mechanism.mechanismUUID)
+            XCTAssertEqual(jwtPayload["deviceName"] as? String, UIDevice.current.name)
+            XCTAssertEqual(jwtPayload["deviceId"] as? String, FRAPushHandler.shared.deviceToken)
+            XCTAssertEqual(jwtPayload["deviceType"] as? String, "ios")
+            XCTAssertEqual(jwtPayload["communicationType"] as? String, "apns")
+
+            let header = request.headers
+            
+            let loadBalancerKey = header["Set-Cookie"]
+            XCTAssertNotNil(loadBalancerKey)
+            XCTAssertEqual(loadBalancerKey, "amlbcookie=01")
+            
+            let acceptAPIVersion = header["accept-api-version"]
+            XCTAssertNotNil(acceptAPIVersion)
+            XCTAssertEqual(acceptAPIVersion, "resource=1.0, protocol=1.0")
+        }
+        catch {
+           XCTFail("Fail to create PushMechanism registration request with given QRCode: \(qrCode.absoluteString)")
+        }
+    }
+    
+    
+    func test_13_push_device_token_update_fail_no_push_mechanism() {
+        // Given
+        let deviceTokenStr = "PJ6d7k8uM2AvK+T1jJTMBYD5so+SrHnvVLoGz2Mte3A="
+
+        // When
+        let accounts = FRAClient.storage.getAllAccounts()
+        XCTAssertEqual(accounts.count, 0)
+        
+        // Then
+        let ex = self.expectation(description: "Failed to retrieve PushMechanism objects")
+        FRAPushHandler.shared.updateDeviceToken(deviceToken: deviceTokenStr, onSuccess: {
+            XCTFail("PushMechanism without DeviceToken was expected to fail; but somehow passed")
+            ex.fulfill()
+        }) { (error) in
+            
+            switch error {
+            case PushNotificationError.storageError:
+                break
+            default:
+                XCTFail("Push device token update without PushMechanisms was expected to fail with 'PushNotificationError.storageError'; but failed with other reason")
+            }
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    
+    func test_14_parse_notification_with_user_id() {
+        
+        // Given
+        let qrCode = URL(string: "pushauth://push/forgerock:pushtestuser?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=-3xGWaKjfls_ZHFRnGeIvFHn--GxzjQyg1RVG_Pak1s&c=esDK4G8eYce0_Gdf4p9XGGg2cIYYoxf6CTlL_O_1aF8&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:593b6a92-f5c1-4ac0-a94a-a63e05451dd51589138620791&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+        
+        do {
+            let parser = try PushQRCodeParser(url: qrCode)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+            mechanism.mechanismUUID = "759ACE9D-C64B-43E6-981D-97F7B54C3B01"
+            FRAClient.storage.setMechanism(mechanism: mechanism)
+            var payload: [String: Any] = [:]
+            var aps: [String: Any] = [:]
+            aps["messageId"] = "AUTHENTICATE:e29b50b6-bf3d-4993-aa84-144d09fe19cf1589138699819"
+            aps["content-available"] = true
+            aps["alert"] = "Login attempt from user at ForgeRockSandbox"
+            aps["data"] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjIjoibFltZmVQUzllYisrMWtpbzJJSUpBdHdVV1dDY1pDcytCU2dLUGpaS04yOD0iLCJ0IjoiMTIwIiwidSI6Ijc1OUFDRTlELUM2NEItNDNFNi05ODFELTk3RjdCNTRDM0IwMSIsImwiOiJZVzFzWW1OdmIydHBaVDB3TVE9PSIsImQiOiJ1c2VyMSJ9.24GeB5p2tpHfgIIqtdAsGtRIb-L9kK3OBwFyX-ksHGg"
+            aps["sound"] = "default"
+            
+            payload["aps"] = aps
+            
+            guard let notification = FRAPushHandler.shared.application(UIApplication.shared, didReceiveRemoteNotification: payload) else {
+                XCTFail("Failed to parse notification payload and construct PushNotification object")
+                return
+            }
+            XCTAssertNotNil(notification)
+            XCTAssertEqual(notification.messageId, "AUTHENTICATE:e29b50b6-bf3d-4993-aa84-144d09fe19cf1589138699819")
+            XCTAssertEqual(notification.mechanismUUID, "759ACE9D-C64B-43E6-981D-97F7B54C3B01")
+            XCTAssertEqual(notification.loadBalanceKey, "amlbcookie=01")
+            
+            let updatedMechanism = FRAClient.storage.getMechanismForUUID(uuid: notification.mechanismUUID)
+            XCTAssertEqual(updatedMechanism?.uid, "user1")
+        } catch {
             XCTFail("Failed to parse remote-notification: \(error.localizedDescription)")
         }
     }
