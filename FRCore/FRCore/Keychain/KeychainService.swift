@@ -994,7 +994,7 @@ public enum KeychainAccessibility: String {
         case .whenPasscodeSetThisDeviceOnly:
             return String(kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly)
         case .alwaysThisDeviceOnly:
-            return String(kSecAttrAccessibleAlwaysThisDeviceOnly)
+            return String(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
         }
     }
 }

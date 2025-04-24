@@ -17,7 +17,7 @@ class MechanismTests: FRABaseTests {
     
         let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
         if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-            let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism
+            let mechanismFromData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Mechanism.self, from: mechanismData)
             XCTAssertNotNil(mechanismFromData)
             XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
             XCTAssertEqual(mechanism.type, mechanismFromData?.type)

@@ -148,7 +148,7 @@ public struct FRDeviceIdentifier {
     func buildKeyAttr(_ keyType: FRDeviceIdentifierKeyType) -> [String: Any] {
         var query: [String: Any] = [:]
         
-        query[kSecAttrAccessible as String] = kSecAttrAccessibleAlwaysThisDeviceOnly
+        query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         query[kSecAttrIsPermanent as String] = true
         
         switch keyType {

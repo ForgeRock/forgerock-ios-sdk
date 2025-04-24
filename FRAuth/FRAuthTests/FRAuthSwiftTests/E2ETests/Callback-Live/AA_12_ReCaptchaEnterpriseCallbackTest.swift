@@ -19,7 +19,7 @@ class AA_12_ReCaptchaEnterpriseCallbackTest: CallbackBaseTest {
     static var USERNAME: String = "sdkuser"
     static var SITE_KEY: String = "6Lc0NUIqAAAAALRSrhXb5CWrZPzWkezBFB_0mnqS" // this is configured in the test joruney
     
-    let options = FROptions(url: "https://openam-recaptcha.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-sdks2.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
                             cookieName: "b431aeda2ba0e98",

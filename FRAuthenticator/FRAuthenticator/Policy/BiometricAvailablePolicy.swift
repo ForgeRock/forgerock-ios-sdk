@@ -41,6 +41,8 @@ extension LAContext {
             return biometricResult(result: false)
         case .touchID, .faceID:
             return biometricResult(result: true)
+        case .opticID:
+            return biometricResult(result: false)
         @unknown default:
             return biometricResult(result: false)
         }

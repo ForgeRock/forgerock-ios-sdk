@@ -33,7 +33,7 @@ public class TelephonyCollector: DeviceCollector {
         
         
         if let providers = networkInfo.serviceSubscriberCellularProviders, providers.keys.count > 0 {
-            var carriers = providers.map { (carrierName: $0.value.carrierName , isoCountryCode: $0.value.isoCountryCode ) }
+            let carriers = providers.map { (carrierName: $0.value.carrierName , isoCountryCode: $0.value.isoCountryCode ) }
             carrier = TelephonyCollector.firstElementInCustomSortedArray(array: carriers)
         }
         

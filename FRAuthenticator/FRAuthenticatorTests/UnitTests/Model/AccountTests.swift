@@ -69,7 +69,7 @@ class AccountTests: FRABaseTests {
         let account = Account(issuer: issuer, accountName: accountName, imageUrl: imageUrl, backgroundColor: backgroundColor)
         
         if let accountData = try? NSKeyedArchiver.archivedData(withRootObject: account, requiringSecureCoding: true) {
-            let accountFromData = NSKeyedUnarchiver.unarchiveObject(with: accountData) as? Account
+            let accountFromData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Account.self, from: accountData)
             XCTAssertNotNil(accountFromData)
             XCTAssertEqual(account.issuer, accountFromData?.issuer)
             XCTAssertEqual(account.accountName, accountFromData?.accountName)

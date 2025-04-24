@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         #if canImport(FRFacebookSignIn)
-            FacebookSignInHandler.application(application, didFinishLaunchingWithOptions: launchOptions)
+            _ = FacebookSignInHandler.application(application, didFinishLaunchingWithOptions: launchOptions)
         #endif
         // Enable logs for all level
         FRLog.setLogLevel([ .all])

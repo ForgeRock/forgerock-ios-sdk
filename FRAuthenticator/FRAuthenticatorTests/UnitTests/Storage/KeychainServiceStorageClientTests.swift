@@ -337,7 +337,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
             let notification1 = try PushNotification(messageId: messageId1, payload: payload1)
             
             storage.setNotification(notification: notification1)
-            var notifications = storage.getAllNotificationsForMechanism(mechanism: mechanism)
+            let notifications = storage.getAllNotificationsForMechanism(mechanism: mechanism)
             
             XCTAssertNotNil(notifications)
             XCTAssertEqual(notifications.count, 1)

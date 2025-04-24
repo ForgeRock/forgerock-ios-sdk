@@ -257,7 +257,7 @@ class AuthStepViewController: UIViewController {
                 
                 //
                 var deviceBindingCallback: DeviceBindingCallback?
-                for (index, callback) in self.authCallbacks.enumerated() {
+                for (_, callback) in self.authCallbacks.enumerated() {
                     //  DeviceBindingCallback handling
                     if let thisCallback = callback as? DeviceBindingCallback {
                         deviceBindingCallback = thisCallback
@@ -290,7 +290,7 @@ class AuthStepViewController: UIViewController {
                 }
                 
                 var deviceSigningVerifierCallback: DeviceSigningVerifierCallback?
-                for (index, callback) in self.authCallbacks.enumerated() {
+                for (_, callback) in self.authCallbacks.enumerated() {
                     //  DeviceBindingCallback handling
                     if let thisCallback = callback as? DeviceSigningVerifierCallback {
                         deviceSigningVerifierCallback = thisCallback

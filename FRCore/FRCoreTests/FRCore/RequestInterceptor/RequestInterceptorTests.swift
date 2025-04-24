@@ -310,7 +310,7 @@ class RequestInterceptorTests: FRBaseTestCase {
             case .success(let requestResponse,_):
                 response = requestResponse
                 ex.fulfill()
-            case .failure(let requestError):
+            case .failure(_):
                 ex.fulfill()
             }
         }

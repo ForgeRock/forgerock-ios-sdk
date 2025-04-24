@@ -253,6 +253,8 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             webAuthnError = FRWAKError.notAllowed(platformError: error, message: error.localizedDescription)
         case .notHandled, .notInteractive:
             webAuthnError = FRWAKError.invalidState(platformError: error, message: error.localizedDescription)
+        case .matchedExcludedCredential, .credentialImport, .credentialExport:
+            webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
         @unknown default:
             webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
         }

@@ -51,7 +51,7 @@ class PushMechanismTests: FRABaseTests {
             let parser = try PushQRCodeParser(url: qrCode)
             let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? PushMechanism
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: PushMechanism.self, from: mechanismData)
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
                 XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
                 XCTAssertEqual(mechanism.type, mechanismFromData?.type)

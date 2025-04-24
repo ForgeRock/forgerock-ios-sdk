@@ -11,7 +11,7 @@
 
 import Foundation
 
-class FRHTTPCookie: HTTPCookie, NSSecureCoding {
+class FRHTTPCookie: HTTPCookie, NSSecureCoding, @unchecked Sendable {
     required init?(coder: NSCoder) {
         var properties = [HTTPCookiePropertyKey: Any]()
         let version = coder.decodeInteger(forKey: "version")

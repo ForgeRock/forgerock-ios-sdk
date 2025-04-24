@@ -1903,7 +1903,7 @@ class AuthenticatorManagerTests: FRABaseTests {
             let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
             let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
             try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            _ = authenticatorManager.getAccount(identifier: "Forgerock-demo")
             
             self.loadMockResponses(["AM_Push_Authentication_Successful"])
             

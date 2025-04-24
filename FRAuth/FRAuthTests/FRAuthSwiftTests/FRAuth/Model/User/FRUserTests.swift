@@ -522,7 +522,7 @@ class FRUserTests: FRAuthBaseTest {
             return
         }
         
-        guard let serverConfig = self.config.serverConfig else {
+        guard self.config.serverConfig != nil else {
             XCTFail("Failed to load Config for ServerConfig")
             return
         }

@@ -392,16 +392,16 @@ import SafariServices
     }
 
     
-    /// Performs authentication through /authorize endpoint using SFAuthenticationsession
+    /// Performs authentication through /authorize endpoint using ASWebAuthenticationSession
     /// - Parameters:
     ///   - url: URL of /authorize including all URL query parameter
     ///   - completion: Completion callback to nofiy the result
     /// - Returns: Boolean indicator whether or not launching external user-agent was successful
     func loginWithSFWebSession(url: URL, completion: @escaping UserCallback) -> Bool {
-        let sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
+        let sfAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
         
             if let error = error {
-                FRLog.e("Failed to complete authorization using SFAuthenticationSession: \(error.localizedDescription)")
+                FRLog.e("Failed to complete authorization using ASWebAuthenticationSession: \(error.localizedDescription)")
                 completion(nil, error)
                 self.close()
                 self.cleanUp()

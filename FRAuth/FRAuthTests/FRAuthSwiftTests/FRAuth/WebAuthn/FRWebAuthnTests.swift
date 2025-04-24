@@ -78,7 +78,7 @@ final class FRWebAuthnTests: WebAuthnSharedUtils {
         
         //Delete one by one based on the CredentialSource
         for credential in registeredCredentials {
-            FRWebAuthn.deleteCredential(with: credential)
+            try? FRWebAuthn.deleteCredential(publicKeyCredentialSource: credential, forceDelete: true)
         }
         
         //Load all discoverable credentials

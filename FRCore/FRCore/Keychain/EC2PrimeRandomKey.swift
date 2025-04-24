@@ -107,7 +107,7 @@ public struct ECPrimeRandomKey {
         //  Public Key Query
         var publicQuery: [String: Any] = [:]
         publicQuery[String(kSecAttrLabel)] = publicKeyLabel
-        publicQuery[String(kSecAttrAccessControl)] = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleAlwaysThisDeviceOnly, [], nil)!
+        publicQuery[String(kSecAttrAccessControl)] = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, [], nil)!
         
         //  Private Key Query
         var privateQuery: [String: Any] = [:]

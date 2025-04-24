@@ -20,7 +20,7 @@ class OathMechanismTests: FRABaseTests {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = OathMechanism(type: parser.type, issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, digits: parser.digits)
             if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? OathMechanism
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: OathMechanism.self, from: mechanismData)
                 XCTAssertNotNil(mechanismFromData)
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
                 XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)

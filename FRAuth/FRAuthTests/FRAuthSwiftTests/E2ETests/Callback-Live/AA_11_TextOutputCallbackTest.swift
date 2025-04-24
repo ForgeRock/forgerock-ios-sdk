@@ -54,7 +54,7 @@ class AA_11_TextOutputCallbackTest: CallbackBaseTest {
             }
         }
         
-        var ex = self.expectation(description: "Submit the text output callbacks and continue...")
+        let ex = self.expectation(description: "Submit the text output callbacks and continue...")
         currentNode?.next { (token: AccessToken?, node, error) in
             XCTAssertNil(node)
             XCTAssertNil(error)

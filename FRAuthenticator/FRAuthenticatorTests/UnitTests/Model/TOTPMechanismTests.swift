@@ -52,7 +52,7 @@ class TOTPMechanismTests: FRABaseTests {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: TOTPMechanism.self, from: mechanismData)
                 XCTAssertNotNil(mechanismFromData)
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
                 XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
@@ -147,7 +147,7 @@ class TOTPMechanismTests: FRABaseTests {
             let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
             if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: TOTPMechanism.self, from: mechanismData)
                 XCTAssertNotNil(mechanismFromData)
                 
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)

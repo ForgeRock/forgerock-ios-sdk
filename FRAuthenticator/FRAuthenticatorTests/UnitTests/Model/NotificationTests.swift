@@ -269,7 +269,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertNotNil(notification)
 
             if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
-                let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
+                let notificationFromData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushNotification.self, from: notificationData)
                 XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
                 XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
                 XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)
@@ -293,7 +293,7 @@ class NotificationTests: FRABaseTests {
             XCTAssertNotNil(notification)
 
             if let notificationData = try? NSKeyedArchiver.archivedData(withRootObject: notification, requiringSecureCoding: true) {
-                let notificationFromData = NSKeyedUnarchiver.unarchiveObject(with: notificationData) as? PushNotification
+                let notificationFromData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushNotification.self, from: notificationData)
                 XCTAssertEqual(notification.messageId, notificationFromData?.messageId)
                 XCTAssertEqual(notification.challenge, notificationFromData?.challenge)
                 XCTAssertEqual(notification.loadBalanceKey, notificationFromData?.loadBalanceKey)

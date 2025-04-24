@@ -13,7 +13,7 @@ import Foundation
 
 
 /// FRJSONEncoder class is a helper class that is responsible to help JSON encoding operation using JSONEncoder
-class FRJSONEncoder: JSONEncoder {
+class FRJSONEncoder: JSONEncoder, @unchecked Sendable {
     
     /// shared instance of FRAPushHandler
     static var shared: FRJSONEncoder = FRJSONEncoder()

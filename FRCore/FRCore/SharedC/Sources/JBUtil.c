@@ -16,7 +16,7 @@
 #include <unistd.h>
 
 
-bool validate_sandbox() {
+bool validate_sandbox(void) {
     int result = fork();
     if (!result)  /* The child should exit, if it spawned */
         return false;
@@ -29,7 +29,7 @@ bool validate_sandbox() {
     }
 }
 
-bool validate_dyld()
+bool validate_dyld(void)
 {
     // load and interate all dyld
     int i=0;
