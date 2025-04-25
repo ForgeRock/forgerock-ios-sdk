@@ -2,7 +2,7 @@
 //  HOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -48,27 +48,8 @@ class HOTPMechanismTests: FRABaseTests {
         do {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = HOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, counter: parser.counter, digits: parser.digits)
-            if #available(iOS 11.0, *) {
-                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? HOTPMechanism
-                    XCTAssertNotNil(mechanismFromData)
-                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-                    XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
-                    XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
-                    XCTAssertEqual(mechanism.counter, mechanismFromData?.counter)
-                    XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
-                }
-                else {
-                    XCTFail("Failed to serialize HOTPMechnaism object with Secure Coding")
-                }
-            } else {
-                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? HOTPMechanism
+            if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: HOTPMechanism.self, from: mechanismData)
                 XCTAssertNotNil(mechanismFromData)
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
                 XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
@@ -80,6 +61,9 @@ class HOTPMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
                 XCTAssertEqual(mechanism.counter, mechanismFromData?.counter)
                 XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            }
+            else {
+                XCTFail("Failed to serialize HOTPMechnaism object with Secure Coding")
             }
         }
         catch {

@@ -2,7 +2,7 @@
 //  MechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -16,24 +16,8 @@ class MechanismTests: FRABaseTests {
     func test_01_mechanism_serialization() {
     
         let mechanism = Mechanism(type: "totp", issuer: "ForgeRock", accountName: "demo", secret: "T7SIIEPTZJQQDSCB", uid: nil, resourceId: nil)
-        if #available(iOS 11.0, *) {
-            if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism
-                XCTAssertNotNil(mechanismFromData)
-                XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-                XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-                XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-                XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-                XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-                XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-                XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
-            }
-            else {
-                XCTFail("Failed to serialize Mechanism object with Secure Coding")
-            }
-        } else {
-            let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-            let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? Mechanism
+        if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
+            let mechanismFromData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: Mechanism.self, from: mechanismData)
             XCTAssertNotNil(mechanismFromData)
             XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
             XCTAssertEqual(mechanism.type, mechanismFromData?.type)
@@ -42,6 +26,9 @@ class MechanismTests: FRABaseTests {
             XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
             XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
             XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+        }
+        else {
+            XCTFail("Failed to serialize Mechanism object with Secure Coding")
         }
     }
     

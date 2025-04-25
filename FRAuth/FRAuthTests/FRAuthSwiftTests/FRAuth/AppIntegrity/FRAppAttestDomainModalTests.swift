@@ -2,7 +2,7 @@
 //  FRAppAttestModal.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023- 2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2023 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -215,7 +215,7 @@ final class FRAppAttestModalTests: FRAuthBaseTest {
 }
 
 @available(iOS 14.0, *)
-class MockJsonEncoder: JSONEncoder {
+class MockJsonEncoder: JSONEncoder, @unchecked Sendable {
     override func encode<T>(_ value: T) throws -> Data where T : Encodable {
         if value is [String: String] {
             throw FRDeviceCheckAPIFailure.invalidClientData
@@ -225,7 +225,7 @@ class MockJsonEncoder: JSONEncoder {
 }
 
 @available(iOS 14.0, *)
-class MockUnkownJsonEncoder: JSONEncoder {
+class MockUnkownJsonEncoder: JSONEncoder, @unchecked Sendable {
     override func encode<T>(_ value: T) throws -> Data where T : Encodable {
         if value is [String: String] {
             throw NSError(domain: "unknown", code: 10)

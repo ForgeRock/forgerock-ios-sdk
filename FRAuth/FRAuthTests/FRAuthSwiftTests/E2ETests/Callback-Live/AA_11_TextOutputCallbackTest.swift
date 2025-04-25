@@ -2,7 +2,7 @@
 //  AA_11_TextOutputCallbackTest.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -54,7 +54,7 @@ class AA_11_TextOutputCallbackTest: CallbackBaseTest {
             }
         }
         
-        var ex = self.expectation(description: "Submit the text output callbacks and continue...")
+        let ex = self.expectation(description: "Submit the text output callbacks and continue...")
         currentNode?.next { (token: AccessToken?, node, error) in
             XCTAssertNil(node)
             XCTAssertNil(error)

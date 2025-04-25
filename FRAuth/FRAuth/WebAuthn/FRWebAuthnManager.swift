@@ -2,7 +2,7 @@
 //  FRWebAuthnManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2023-2025 ForgeRock. All rights reserved.
+//  Copyright (c) 2023 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -253,6 +253,8 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             webAuthnError = FRWAKError.notAllowed(platformError: error, message: error.localizedDescription)
         case .notHandled, .notInteractive:
             webAuthnError = FRWAKError.invalidState(platformError: error, message: error.localizedDescription)
+        case .matchedExcludedCredential, .credentialImport, .credentialExport:
+            webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
         @unknown default:
             webAuthnError = FRWAKError.unknown(platformError: error, message: error.localizedDescription)
         }

@@ -2,7 +2,7 @@
 //  Browser.swift
 //  FRAuth
 //
-//  Copyright (c) 2020-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -139,15 +139,7 @@ import SafariServices
                         prefersEphemeralWebBrowserSession = true
                     }
                 }
-                if #available(iOS 12.0, *) {
-                    self.isInProgress = self.loginWithASWebSession(url: url, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, completion: completion)
-                }
-                else if #available(iOS 11.0, *) {
-                    self.isInProgress = self.loginWithSFWebSession(url: url, completion: completion)
-                }
-                else {
-                    self.isInProgress = self.loginWithSFViewController(url: url, completion: completion)
-                }
+                self.isInProgress = self.loginWithASWebSession(url: url, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, completion: completion)
                 
                 if self.isInProgress {
                     FRLog.v("Opened Safari app for authorization process")
@@ -285,23 +277,13 @@ import SafariServices
             }
         }
         
-        if #available(iOS 12, *) {
-            if let asAuthSession = self.currentSession as? ASWebAuthenticationSession {
-                FRLog.v("Close called with iOS 12 or above: \(String(describing: self.currentSession))")
-                DispatchQueue.main.async {
-                    asAuthSession.cancel()
-                }
+        if let asAuthSession = self.currentSession as? ASWebAuthenticationSession {
+            FRLog.v("Close called: \(String(describing: self.currentSession))")
+            DispatchQueue.main.async {
+                asAuthSession.cancel()
             }
         }
         
-        if #available(iOS 11, *) {
-            if let sfAuthSession = self.currentSession as? SFAuthenticationSession {
-                FRLog.v("Close called with iOS 11 or above: \(String(describing: self.currentSession))")
-                DispatchQueue.main.async {
-                    sfAuthSession.cancel()
-                }
-            }
-        }
     }
     
     
@@ -349,7 +331,6 @@ import SafariServices
     ///   - prefersEphemeralWebBrowserSession: (iOS 13 +) Indicates whether the session should ask the browser for an ephemeral session.
     ///   - completion: Completion callback to nofiy the result
     /// - Returns: Boolean indicator whether or not launching external user-agent was successful
-    @available(iOS 12.0, *)
     func loginWithASWebSession(url: URL, prefersEphemeralWebBrowserSession: Bool, completion: @escaping UserCallback) -> Bool {
         let asWebAuthSession = ASWebAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.scheme) { (url, error) in
 
@@ -410,37 +391,6 @@ import SafariServices
       return asWebAuthSession.start()
     }
 
-    
-    /// Performs authentication through /authorize endpoint using SFAuthenticationsession
-    /// - Parameters:
-    ///   - url: URL of /authorize including all URL query parameter
-    ///   - completion: Completion callback to nofiy the result
-    /// - Returns: Boolean indicator whether or not launching external user-agent was successful
-    @available(iOS 11.0, *)
-    func loginWithSFWebSession(url: URL, completion: @escaping UserCallback) -> Bool {
-        let sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: self.oAuth2Client.redirectUri.absoluteString) { (url, error) in
-        
-            if let error = error {
-                FRLog.e("Failed to complete authorization using SFAuthenticationSession: \(error.localizedDescription)")
-                completion(nil, error)
-                self.close()
-                self.cleanUp()
-                return
-            }
-            
-            if let authCode = url?.valueOf("code") {
-                self.exchangeAuthCode(code: authCode, completion: completion)
-            }
-            else {
-                completion(nil, OAuth2Error.convertOAuth2Error(urlValue: url?.absoluteString))
-                self.close()
-                self.cleanUp()
-            }
-        }
-        self.currentSession = sfAuthSession
-        return sfAuthSession.start()
-    }
-    
     
     /// Performs authentication through /authorize endpoint using SFSafariViewController
     /// - Parameters:

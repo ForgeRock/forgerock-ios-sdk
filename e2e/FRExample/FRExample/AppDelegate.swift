@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         #if canImport(FRFacebookSignIn)
-            FacebookSignInHandler.application(application, didFinishLaunchingWithOptions: launchOptions)
+            _ = FacebookSignInHandler.application(application, didFinishLaunchingWithOptions: launchOptions)
         #endif
         // Enable logs for all level
         FRLog.setLogLevel([ .all])

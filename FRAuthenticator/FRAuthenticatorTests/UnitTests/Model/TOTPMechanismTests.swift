@@ -2,7 +2,7 @@
 //  TOTPMechanismTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -51,27 +51,8 @@ class TOTPMechanismTests: FRABaseTests {
         do {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
-            if #available(iOS 11.0, *) {
-                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
-                    XCTAssertNotNil(mechanismFromData)
-                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-                    XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
-                    XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
-                    XCTAssertEqual(mechanism.period, mechanismFromData?.period)
-                    XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
-                }
-                else {
-                    XCTFail("Failed to serialize TOTPMechanism object with Secure Coding")
-                }
-            } else {
-                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
+            if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: TOTPMechanism.self, from: mechanismData)
                 XCTAssertNotNil(mechanismFromData)
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
                 XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
@@ -83,6 +64,9 @@ class TOTPMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
                 XCTAssertEqual(mechanism.period, mechanismFromData?.period)
                 XCTAssertEqual(mechanism.timeAdded.timeIntervalSince1970, mechanismFromData?.timeAdded.timeIntervalSince1970)
+            }
+            else {
+                XCTFail("Failed to serialize TOTPMechanism object with Secure Coding")
             }
         }
         catch {
@@ -162,37 +146,8 @@ class TOTPMechanismTests: FRABaseTests {
             let parser = try OathQRCodeParser(url: qrCode)
             let mechanism = TOTPMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, algorithm: parser.algorithm, uid: parser.uid, resourceId: parser.resourceId, period: parser.period, digits: parser.digits)
             
-            if #available(iOS 11.0, *) {
-                if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
-                    let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
-                    XCTAssertNotNil(mechanismFromData)
-                    
-                    XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
-                    XCTAssertEqual(mechanism.issuer, mechanismFromData?.issuer)
-                    XCTAssertEqual(mechanism.type, mechanismFromData?.type)
-                    XCTAssertEqual(mechanism.secret, mechanismFromData?.secret)
-                    XCTAssertEqual(mechanism.version, mechanismFromData?.version)
-                    XCTAssertEqual(mechanism.accountName, mechanismFromData?.accountName)
-                    XCTAssertEqual(mechanism.algorithm, mechanismFromData?.algorithm)
-                    XCTAssertEqual(mechanism.digits, mechanismFromData?.digits)
-                    XCTAssertEqual(mechanism.period, mechanismFromData?.period)
-                    
-                    
-                    XCTAssertEqual(mechanismFromData?.issuer, "ForgeRock")
-                    XCTAssertEqual(mechanismFromData?.type, "totp")
-                    XCTAssertEqual(mechanismFromData?.secret, "T7SIIEPTZJQQDSCB")
-                    XCTAssertEqual(mechanismFromData?.version, 1)
-                    XCTAssertEqual(mechanismFromData?.accountName, "demo")
-                    XCTAssertEqual(mechanismFromData?.algorithm.rawValue, "sha256")
-                    XCTAssertEqual(mechanismFromData?.digits, 8)
-                    XCTAssertEqual(mechanismFromData?.period, 45)
-                }
-                else {
-                    XCTFail("Failed to serialize TOTPMechnaism with Secure Coding")
-                }
-            } else {
-                let mechanismData = NSKeyedArchiver.archivedData(withRootObject: mechanism)
-                let mechanismFromData = NSKeyedUnarchiver.unarchiveObject(with: mechanismData) as? TOTPMechanism
+            if let mechanismData = try? NSKeyedArchiver.archivedData(withRootObject: mechanism, requiringSecureCoding: true) {
+                let mechanismFromData = try NSKeyedUnarchiver.unarchivedObject(ofClass: TOTPMechanism.self, from: mechanismData)
                 XCTAssertNotNil(mechanismFromData)
                 
                 XCTAssertEqual(mechanism.mechanismUUID, mechanismFromData?.mechanismUUID)
@@ -214,6 +169,9 @@ class TOTPMechanismTests: FRABaseTests {
                 XCTAssertEqual(mechanismFromData?.algorithm.rawValue, "sha256")
                 XCTAssertEqual(mechanismFromData?.digits, 8)
                 XCTAssertEqual(mechanismFromData?.period, 45)
+            }
+            else {
+                XCTFail("Failed to serialize TOTPMechnaism with Secure Coding")
             }
         }
         catch {

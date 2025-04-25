@@ -43,21 +43,13 @@ class PushDeviceTokenTests: FRABaseTests {
         
         let pushDeviceToken = PushDeviceToken(tokenId: tokenId, timeAdded: timeAdded)
         
-        if #available(iOS 11.0, *) {
-            if let tokenData = try? NSKeyedArchiver.archivedData(withRootObject: pushDeviceToken, requiringSecureCoding: true) {
-                let tokenFromData = NSKeyedUnarchiver.unarchiveObject(with: tokenData) as? PushDeviceToken
-                XCTAssertNotNil(tokenFromData)
-                XCTAssertEqual(pushDeviceToken.tokenId, tokenFromData?.tokenId)
-                XCTAssertEqual(pushDeviceToken.timeAdded.timeIntervalSince1970, tokenFromData?.timeAdded.timeIntervalSince1970)
-            } else {
-                XCTFail("Failed to serialize PushDeviceToken object with Secure Coding")
-            }
-        } else {
-            let tokenData = NSKeyedArchiver.archivedData(withRootObject: pushDeviceToken)
-            let tokenFromData = NSKeyedUnarchiver.unarchiveObject(with: tokenData) as? PushDeviceToken
+        if let tokenData = try? NSKeyedArchiver.archivedData(withRootObject: pushDeviceToken, requiringSecureCoding: true) {
+            let tokenFromData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: PushDeviceToken.self, from: tokenData)
             XCTAssertNotNil(tokenFromData)
             XCTAssertEqual(pushDeviceToken.tokenId, tokenFromData?.tokenId)
             XCTAssertEqual(pushDeviceToken.timeAdded.timeIntervalSince1970, tokenFromData?.timeAdded.timeIntervalSince1970)
+        } else {
+            XCTFail("Failed to serialize PushDeviceToken object with Secure Coding")
         }
     }
     

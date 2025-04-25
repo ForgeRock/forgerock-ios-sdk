@@ -2,7 +2,7 @@
 //  TelephonyCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -33,7 +33,7 @@ public class TelephonyCollector: DeviceCollector {
         
         
         if let providers = networkInfo.serviceSubscriberCellularProviders, providers.keys.count > 0 {
-            var carriers = providers.map { (carrierName: $0.value.carrierName , isoCountryCode: $0.value.isoCountryCode ) }
+            let carriers = providers.map { (carrierName: $0.value.carrierName , isoCountryCode: $0.value.isoCountryCode ) }
             carrier = TelephonyCollector.firstElementInCustomSortedArray(array: carriers)
         }
         
