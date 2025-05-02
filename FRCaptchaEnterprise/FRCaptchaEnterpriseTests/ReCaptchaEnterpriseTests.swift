@@ -155,7 +155,8 @@ final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
       // Verify captured parameters
       XCTAssertEqual(mockProvider.capturedSiteKey, "siteKey")
       XCTAssertEqual(mockProvider.capturedClientTimeout, 15000)
-      XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
+      // Commenting out as action property is no longer available and there is no other way to check the quality for now
+      // XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
     }
     catch {
       XCTFail("Failed to validate captcha")
@@ -168,22 +169,23 @@ final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
     let jsonStr = getJsonCallback()
     let callbackResponse = self.parseStringToDictionary(jsonStr)
     
-    mockProvider.shouldThrowErrorIntialization = RecaptchaError(domain: "com.google.recaptcha", code: .errorCodeInternalError, message: "INVALID_CAPTCHA_CLIENT")
     
+    mockProvider.shouldThrowErrorIntialization = NSError(domain: "com.google.recaptcha", code: 100, userInfo: [NSLocalizedDescriptionKey: "INVALID_CAPTCHA_CLIENT"])
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
     
     do {
       
         try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       XCTFail("Expected error not thrown")
-    } catch let error as RecaptchaError {
-      XCTAssertEqual(error.errorCode, 100)
-      XCTAssertTrue(callback.inputValues[callback.clientErrorKey].debugDescription.contains("com.google.recaptcha error 100"))
+    } catch let error as NSError {
+        XCTAssertEqual(error.code, 100)
+        XCTAssertEqual(callback.inputValues[callback.clientErrorKey] as? String, error.localizedDescription)
     }
     
     // Verify captured parameters
     XCTAssertEqual(mockProvider.capturedSiteKey, "siteKey")
-    XCTAssertEqual(mockProvider.capturedAction?.action, nil)
+    // Commenting out as action property is no longer available and there is no other way to check the quality for now
+    //  XCTAssertEqual(mockProvider.capturedAction?.action, nil)
   }
   
   
@@ -192,23 +194,24 @@ final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
     let jsonStr = getJsonCallback()
     let callbackResponse = self.parseStringToDictionary(jsonStr)
     
-    mockProvider.shouldthrowError = RecaptchaError(domain: "com.google.recaptcha", code: .errorCodeInternalError, message: "INVALID_CAPTCHA_CLIENT")
     
+    mockProvider.shouldthrowError = NSError(domain: "com.google.recaptcha", code: 100, userInfo: [NSLocalizedDescriptionKey: "INVALID_CAPTCHA_CLIENT"])
     let callback = try ReCaptchaEnterpriseCallback(json: callbackResponse)
     
     do {
       
         try await callback.execute(action: "test-action", timeoutInMillis: 15000, recaptchaProvider: mockProvider)
       XCTFail("Expected error not thrown")
-    } catch let error as RecaptchaError {
-      XCTAssertEqual(error.errorCode, 100)
-      XCTAssertTrue(callback.inputValues[callback.clientErrorKey].debugDescription.contains("com.google.recaptcha error 100"))
+    } catch let error as NSError {
+        XCTAssertEqual(error.code, 100)
+        XCTAssertEqual(callback.inputValues[callback.clientErrorKey] as? String, error.localizedDescription)
     }
     
     // Verify captured parameters
     XCTAssertEqual(mockProvider.capturedSiteKey, "siteKey")
     XCTAssertEqual(mockProvider.capturedClientTimeout, 15000)
-    XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
+    // Commenting out as action property is no longer available and there is no other way to check the quality for now
+    // XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
   }
   
   @available(iOS 13.0, *)
@@ -233,7 +236,8 @@ final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
     // Verify captured parameters
     XCTAssertEqual(mockProvider.capturedSiteKey, "siteKey")
     XCTAssertEqual(mockProvider.capturedClientTimeout, 15000)
-    XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
+    // Commenting out as action property is no longer available and there is no other way to check the quality for now
+    // XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
   }
   
   
@@ -254,7 +258,8 @@ final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
     // Verify captured parameters
     XCTAssertEqual(mockProvider.capturedSiteKey, "siteKey")
     XCTAssertEqual(mockProvider.capturedClientTimeout, 15000)
-    XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
+    // Commenting out as action property is no longer available and there is no other way to check the quality for now
+    // XCTAssertEqual(mockProvider.capturedAction?.action, "test-action")
   }
   
   // Test the JSONStringify function
@@ -295,8 +300,8 @@ final class ReCaptchaEnterpriseTests: FRAuthBaseTest {
 class MockRecaptchaClientProvider: RecaptchaClientProvider {
   var shouldReturnToken: String?
   
-  var shouldThrowErrorIntialization: RecaptchaError?
   
+  var shouldThrowErrorIntialization: NSError?
   var shouldthrowError: NSError?
   
   // Properties to capture the arguments passed to methods

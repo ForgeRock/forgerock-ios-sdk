@@ -52,6 +52,8 @@
 		A530D45D2CD13E1D009EC60C /* DeviceClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D45C2CD13E1D009EC60C /* DeviceClientTests.swift */; };
 		A530D4782CD1A7C7009EC60C /* CodableExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4752CD1A7C0009EC60C /* CodableExtentions.swift */; };
 		A53723D12AE80A5D0047B809 /* TelephonyCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */; };
+		A55D57BE2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */; };
+		A55D57BF2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
@@ -361,6 +363,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A55D57C02DC034E6000BDBCA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A55D57BF2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1B264AA62C642507002E3BD2 /* ProtectCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectCallback.swift; sourceTree = "<group>"; };
 		1B264AA92C642F59002E3BD2 /* DerivableCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivableCallback.swift; sourceTree = "<group>"; };
@@ -407,6 +423,8 @@
 		A530D45C2CD13E1D009EC60C /* DeviceClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceClientTests.swift; sourceTree = "<group>"; };
 		A530D4752CD1A7C0009EC60C /* CodableExtentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtentions.swift; sourceTree = "<group>"; };
 		A53723D02AE80A5D0047B809 /* TelephonyCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelephonyCollectorTests.swift; sourceTree = "<group>"; };
+		A544D6702DBFF31200A2EE4C /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
@@ -690,6 +708,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A55D57BE2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Frameworks */,
 				D554630222A6DF720096C7A4 /* FRAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1097,6 +1116,8 @@
 		D5554F73235A7258009FC810 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */,
+				A544D6702DBFF31200A2EE4C /* FRCaptchaEnterprise.framework */,
 				D5554F74235A7259009FC810 /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -1692,6 +1713,7 @@
 				D55462FD22A6DF720096C7A4 /* Sources */,
 				D55462FE22A6DF720096C7A4 /* Frameworks */,
 				D55462FF22A6DF720096C7A4 /* Resources */,
+				A55D57C02DC034E6000BDBCA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2334,7 +2356,6 @@
 		D554631022A6DF720096C7A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -2364,7 +2385,6 @@
 		D554631122A6DF720096C7A4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
