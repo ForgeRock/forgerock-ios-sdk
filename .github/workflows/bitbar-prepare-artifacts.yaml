@@ -43,12 +43,12 @@ env:
   SCHEME: FRTestHostBitBar
   WORKSPACE: e2e/FRExample.xcworkspace
   DEVELOPMENT_TEAM: 9QSE66762D
-  XCODE_VERSION: '15.4'
-  SDK: iphoneos17.5
+  XCODE_VERSION: '16.3'
+  SDK: iphoneos18.4
 
 jobs:
   prepare-device-farm-artifacts:
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       # Clone the repo
