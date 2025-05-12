@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FRAuthenticator'
-  s.version          = '4.8.0_beta1'
+  s.version          = '4.8.0-beta1'
   s.summary          = 'ForgeRock OTP/Push Authentication SDK for iOS'
   s.description      = <<-DESC
   FRAuthenticator is a SDK that allows you easily and quickly develop an application with ForgeRock Platform for OATH and Push Authentication with AM. FRAuthenticator SDK provides interfaces and functionalities of HMAC-based OTP, Time-based OTP, Push Registration and Authentication with AM.
@@ -32,5 +32,5 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'FRAuthenticator' => [base_dir + '/*.xcprivacy']
   }
-  s.ios.dependency 'FRCore', '~> 4.8.0_beta1'
+  s.ios.dependency 'FRCore', '~> 4.8.0-beta1'
 end
