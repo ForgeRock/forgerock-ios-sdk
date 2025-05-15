@@ -118,7 +118,7 @@ The support portal shows all currently open support tickets and allows you to ra
 
 ## Contributing
 
-If you would like to contribute to this project you can fork the repository, clone it to your machine and get started.
+If you would like to contribute to this project, please see the [contributions guide](./CONTRIBUTION.md).
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- LEGAL -->
