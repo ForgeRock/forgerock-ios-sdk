@@ -2,7 +2,7 @@
 //  WebAuthnSharedUtils.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//  Copyright (c) 2021 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -50,7 +50,7 @@ class WebAuthnSharedUtils: FRAuthBaseTest {
     }
     
     
-    func createAuthenticationCallback() throws -> WebAuthnAuthenticationCallback {
+    func createAuthenticationCallback(jsonResponse: Bool = false) throws -> WebAuthnAuthenticationCallback {
         let jsonStr = """
         {
             "type": "MetadataCallback",
@@ -69,6 +69,7 @@ class WebAuthnSharedUtils: FRAuthBaseTest {
                         "timeout": "60000",
                         "userVerification": "preferred",
                         "_relyingPartyId": "com.forgerock.ios",
+                        "supportsJsonResponse": \(jsonResponse),
                         "_type": "WebAuthn"
                     }
                 }
@@ -80,7 +81,7 @@ class WebAuthnSharedUtils: FRAuthBaseTest {
         return try WebAuthnAuthenticationCallback(json: callbackResponse)
     }
     
-    func createRegistrationCallback(userName: String = "527490d2-0d91-483e-bf0b-853ff3bb2447", displayName: String = "527490d2-0d91-483e-bf0b-853ff3bb2447", userId: String = "NTI3NDkwZDItMGQ5MS00ODNlLWJmMGItODUzZmYzYmIyNDQ3", attestationPreference: String = "indirect") throws -> WebAuthnRegistrationCallback {
+    func createRegistrationCallback(userName: String = "527490d2-0d91-483e-bf0b-853ff3bb2447", displayName: String = "527490d2-0d91-483e-bf0b-853ff3bb2447", userId: String = "NTI3NDkwZDItMGQ5MS00ODNlLWJmMGItODUzZmYzYmIyNDQ3", attestationPreference: String = "indirect", jsonResponse: Bool = false) throws -> WebAuthnRegistrationCallback {
         let jsonStr = """
         {
             "type": "MetadataCallback",
@@ -88,6 +89,7 @@ class WebAuthnSharedUtils: FRAuthBaseTest {
                 {
                     "name": "data",
                     "value": {
+                        "supportsJsonResponse": \(jsonResponse),
                         "_action": "webauthn_registration",
                         "challenge": "fJ4kdpPiHmBXHe1l1q6sB+GUC35husrw1w6vWBHiSJg=",
                         "attestationPreference": "\(attestationPreference)",

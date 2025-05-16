@@ -2,7 +2,7 @@
 //  AuthenticatorManager.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -1836,7 +1836,7 @@ class AuthenticatorManagerTests: FRABaseTests {
             try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
             let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
             let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-            let mechanism = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", counter: 0)
+            let mechanism = HOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", uid: "demo", resourceId: "581dd3c8-3c69-49ac-b01a-074450b226c5", counter: 0)
             
             //  When
             try authenticatorManager.storeAccount(account: account)
@@ -1869,7 +1869,7 @@ class AuthenticatorManagerTests: FRABaseTests {
             try policyEvaluator.registerPolicies(policies: [DummyPolicy(), DummyWithDataPolicy()])
             let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
             let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
-            let mechanism = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", period: 30)
+            let mechanism = TOTPMechanism(issuer: "Forgerock", accountName: "demo", secret: "kjr6wxe5zsiml3v47dneo6rdiuompawngagaxwdm3ykhzjjvve4ksjpi", algorithm: "sha1", uid: "demo", resourceId: "581dd3c8-3c69-49ac-b01a-074450b226c5", period: 30)
             
             //  When
             try authenticatorManager.storeAccount(account: account)
@@ -1903,14 +1903,14 @@ class AuthenticatorManagerTests: FRABaseTests {
             let authenticatorManager = AuthenticatorManager(storageClient: storageClient, policyEvaluator: policyEvaluator)
             let account = Account(issuer: "Forgerock", displayIssuer: nil, accountName: "demo", displayAccountName: nil, imageUrl: nil, backgroundColor: nil, timeAdded: Date().timeIntervalSince1970, policies: "{\"dummy\": { }, \"dummyWithData\": { \"result\" : false }}", lockingPolicy: nil, lock: false)!
             try authenticatorManager.storeAccount(account: account)
-            let accountFromManager = authenticatorManager.getAccount(identifier: "Forgerock-demo")
+            _ = authenticatorManager.getAccount(identifier: "Forgerock-demo")
             
             self.loadMockResponses(["AM_Push_Authentication_Successful"])
             
             let qrCode = URL(string: "pushauth://push/Forgerock:demo?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=O9JHEGfOsaZqc5JT0DHM5hYFA8jofohw5vAP0EpG4JU&c=75OQ3FXmzV99TPf0ihevFfB0s43XsxQ747sY6BopgME&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:fe6311ab-013e-4599-9c0e-4c4e2525199b1588721418483")!
         
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             storageClient.setMechanism(mechanism: mechanism)
             

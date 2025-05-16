@@ -2,7 +2,7 @@
 //  Mechanism.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -30,6 +30,10 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     public internal(set) var accountName: String
     /// Time added for push
     public internal(set) var timeAdded: Date
+    /// The unique identifier of the user associated with this mechanism
+    public internal(set) var uid: String?
+    /// The unique identifier of this mechanism on the server
+    public internal(set) var resourceId: String?
     
     /// Unique identifier for current auth associated with Account information
     public var identifier: String {
@@ -57,6 +61,8 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         case timeAdded
         case oathType
         case type
+        case uid
+        case resourceId
     }
     
     
@@ -74,7 +80,9 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     ///   - issuer: issuer of OATH
     ///   - accountName: accountName of current OATH Mechanism
     ///   - secret: shared secret in string of OATH Mechanism
-    init(type: String, issuer: String, accountName: String, secret: String) {
+    ///   - uid: unique identifier of the user associated with this mechanism
+    ///   - resourceId: unique identifier of this mechanism on the server
+    init(type: String, issuer: String, accountName: String, secret: String, uid: String?, resourceId: String?) {
         
         self.mechanismUUID = UUID().uuidString
         
@@ -82,6 +90,8 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         self.issuer = issuer
         self.accountName = accountName
         self.secret = secret
+        self.uid = uid
+        self.resourceId = resourceId
         self.timeAdded = Date()
     }
     
@@ -94,7 +104,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     /// - Parameter secret: shared secret
     /// - Parameter accountName: accountName or username of auth
     /// - Parameter timeAdded: Date timestamp for creation of Mechanism object
-    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, timeAdded: Double) {
+    init?(mechanismUUID: String?, type: String?, version: Int?, issuer: String?, secret: String?, accountName: String?, uid: String?, resourceId: String?, timeAdded: Double) {
     
         guard let mechanismUUID = mechanismUUID, let type = type, let version = version, let issuer = issuer, let secret = secret, let accountName = accountName else {
             return nil
@@ -107,6 +117,8 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         self.secret = secret
         self.accountName = accountName
         self.timeAdded = Date(timeIntervalSince1970: timeAdded)
+        self.uid = uid
+        self.resourceId = resourceId
         super.init()
     }
     
@@ -124,6 +136,8 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         coder.encode(self.secret, forKey: "secret")
         coder.encode(self.issuer, forKey: "issuer")
         coder.encode(self.accountName, forKey: "accountName")
+        coder.encode(self.uid, forKey: "uid")
+        coder.encode(self.resourceId, forKey: "resourceId")
         coder.encode(self.timeAdded.timeIntervalSince1970, forKey: "timeAdded")
     }
     
@@ -135,9 +149,11 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         let issuer = coder.decodeObject(of: NSString.self, forKey: "issuer") as String?
         let secret = coder.decodeObject(of: NSString.self, forKey: "secret") as String?
         let accountName = coder.decodeObject(of: NSString.self, forKey: "accountName") as String?
+        let uid = coder.decodeObject(of: NSString.self, forKey: "uid") as String?
+        let resourceId = coder.decodeObject(of: NSString.self, forKey: "resourceId") as String?
         let timeAdded = coder.decodeDouble(forKey: "timeAdded")
         
-        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, timeAdded: timeAdded)
+        self.init(mechanismUUID: mechanismUUID, type: type, version: version, issuer: issuer, secret: secret, accountName: accountName, uid: uid, resourceId: resourceId, timeAdded: timeAdded)
     }
     
     
@@ -157,6 +173,8 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
             try container.encode(type, forKey: .oathType)
             try container.encode(FRAConstants.oathAuth, forKey: .type)
         }
+        try container.encode(uid, forKey: .uid)
+        try container.encode(resourceId, forKey: .resourceId)
         try container.encode(self.timeAdded.millisecondsSince1970, forKey: .timeAdded)
     }
     
@@ -167,14 +185,16 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
         secret = try container.decode(String.self, forKey: .secret)
         issuer = try container.decode(String.self, forKey: .issuer)
         accountName = try container.decode(String.self, forKey: .accountName)
-        
+        uid = try container.decodeIfPresent(String.self, forKey: .uid)
+        resourceId = try container.decodeIfPresent(String.self, forKey: .resourceId)
+            
         let type_value = try container.decode(String.self, forKey: .type)
         if(type_value == FRAConstants.pushAuth) {
             type = FRAConstants.push
         } else {
             type = try container.decode(String.self, forKey: .oathType)
         }
-        
+            
         let milliseconds = try container.decode(Double.self, forKey: .timeAdded)
         timeAdded = Date(timeIntervalSince1970: Double(milliseconds / 1000))
     }

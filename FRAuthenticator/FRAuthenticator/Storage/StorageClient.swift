@@ -2,7 +2,7 @@
 //  StorageClient.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -68,6 +68,17 @@ public protocol StorageClient {
     /// Retrieves all Notification objects from Storage Client
     func getAllNotifications() -> [PushNotification]
     
+    /// Set the PushDeviceToken object to the storage system
+    /// - Parameter pushDeviceToken: PushDeviceToken object to be stored
+    @discardableResult func setPushDeviceToken(pushDeviceToken: PushDeviceToken) -> Bool
+    
+    /// Get the current stored PushDeviceToken object with its id
+    func getPushDeviceToken() -> PushDeviceToken?
+    
+    /// Remove the current stored PushDeviceToken object
+    @discardableResult func removePushDeviceToken() -> Bool
+    
     /// Returns whether or not StorageClient has any data stored
     @discardableResult func isEmpty() -> Bool
+    
 }

@@ -2,7 +2,7 @@
 //  MainListViewController.swift
 //  FRAuthenticatorExample
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -98,6 +98,18 @@ class MainListViewController: BaseTableViewController {
         self.present(viewController, animated: true, completion: nil)
     }
     
+    @IBAction func displayDeviceToken(sender: UIBarButtonItem) {
+        if let deviceToken = FRAPushHandler.shared.deviceToken {
+            self.displayAlert(title: "Device Token", message: deviceToken)
+        } else {
+            self.displayAlert(title: "Error", message: "Device Token is not available.")
+        }
+    }
+        
+    @IBAction func clearDeviceToken(sender: UIBarButtonItem) {
+        FRAPushHandler.shared.clearDeviceToken()
+        self.displayAlert(title: "Success", message: "Device Token is cleared.")
+    }
     
     // MARK: - TableView DataSource / Delegate
     

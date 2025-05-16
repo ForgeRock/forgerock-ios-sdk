@@ -2,7 +2,7 @@
 //  PushQRCodeParserTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -170,4 +170,21 @@ class PushQRCodeParserTests: FRABaseTests {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
+    
+    
+    func test_09_parse_userId_resourceId() {
+        let qrCode = URL(string: "pushauth://push/forgerock:demo?a=aHR0cDovL2FtcWEtY2xvbmU2OS50ZXN0LmZvcmdlcm9jay5jb206ODA4MC9vcGVuYW0vanNvbi9wdXNoL3Nucy9tZXNzYWdlP19hY3Rpb249YXV0aGVudGljYXRl&r=aHR0cDovL2FtcWEtY2xvbmU2OS50ZXN0LmZvcmdlcm9jay5jb206ODA4MC9vcGVuYW0vanNvbi9wdXNoL3Nucy9tZXNzYWdlP19hY3Rpb249cmVnaXN0ZXI=&s=dA18Iph3slIUDVuRc5+3y7nv9NLGnPksH66d3jIF6uE=&c=Yf66ojm3Pm80PVvNpljTB6X9CUhgSJ0WZUzB4su3vCY=&l=YW1sYmNvb2tpZT0wMQ==&m=9326d19c-4d08-4538-8151-f8558e71475f1464361288472&issuer=Rm9yZ2Vyb2Nr&uid=ZGVtbw&pid=ZTBkZTAxMzUtZWFmOS00ZmFjLWI1ODQtMmRkYmQyYTQwN2M2MTczOTgyNDI4ODE3NQ")!
+        
+        do {
+            let parser = try PushQRCodeParser(url: qrCode)
+            XCTAssertNotNil(parser.uid)
+            XCTAssertNotNil(parser.resourceId)
+            XCTAssertEqual(parser.uid, "demo")
+            XCTAssertEqual(parser.resourceId, "e0de0135-eaf9-4fac-b584-2ddbd2a407c61739824288175")
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
 }

@@ -2,7 +2,7 @@
 //  FRSecurityConfiguration.swift
 //  FRCore
 //
-//  Copyright (c) 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -135,11 +135,7 @@ public class FRSecurityConfiguration: NSObject {
     
     /// Extracts public key from the certificate
     private func publicKey(for certificate: SecCertificate) -> SecKey? {
-        if #available(iOS 12.0, *) {
-            return SecCertificateCopyKey(certificate)
-        } else {
-            return SecCertificateCopyPublicKey(certificate)
-        }
+        return SecCertificateCopyKey(certificate)
     }
     
     /// Creates a hash from the received data using the `sha256` algorithm.

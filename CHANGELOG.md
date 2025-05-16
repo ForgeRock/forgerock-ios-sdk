@@ -1,3 +1,14 @@
+## [4.8.0]
+#### Added
+- Support for updating APNs device tokens of existing push mechanisms [SDKS-3684]
+- Support for new response payloads in WebAuthn authentication and registration flows [SDKS-3842]
+
+#### Fixed
+ - Upgraded ReCAPTCHA Enterprise to version 18.7.0 (from 18.6.0) [SDKS-3927]
+ - Resolved issue where updating device biometrics did not enforce device re-binding as expected [SDKS-3963]
+ - Added missing `PingProtect` scheme [SDKS-3856]
+ - Resolved race condition in the device network collector that prevented `NetworkReachabilityMonitor` from completing [SDKS-3827]
+
 ## [4.7.0]
 #### Added
 - Support for Sign-out with ID Token in the PingOne Platform. [SDKS-3424]

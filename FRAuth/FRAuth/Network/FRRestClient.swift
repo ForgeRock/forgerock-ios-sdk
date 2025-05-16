@@ -2,7 +2,7 @@
 //  FRRestClient.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 - 2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -112,13 +112,7 @@ public class FRRestClient: NSObject {
                     FRLog.v("[Cookies] Delete - Cookie Name: \(cookie.name)")
                 }
                 else {
-                    if #available(iOS 11.0, *) {
-                        if let properties = cookie.properties, let frHTTPCookie = FRHTTPCookie(with: properties), let cookieData = try? NSKeyedArchiver.archivedData(withRootObject: frHTTPCookie, requiringSecureCoding: true) {
-                            frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
-                            FRLog.v("[Cookies] Update - Cookie Name: \(cookie.name) | Cookie Value: \(cookie.value)")
-                        }
-                    } else {
-                        let cookieData = NSKeyedArchiver.archivedData(withRootObject: cookie)
+                    if let properties = cookie.properties, let frHTTPCookie = FRHTTPCookie(with: properties), let cookieData = try? NSKeyedArchiver.archivedData(withRootObject: frHTTPCookie, requiringSecureCoding: true) {
                         frAuth.keychainManager.cookieStore.set(cookieData, key: cookie.name + "-" + cookie.domain)
                         FRLog.v("[Cookies] Update - Cookie Name: \(cookie.name) | Cookie Value: \(cookie.value)")
                     }
@@ -158,19 +152,12 @@ public class FRRestClient: NSObject {
             
             // Iterate Cookie List and validate
             for cookieObj in cookieItems {
-                if #available(iOS 11.0, *) {
-                    do {
+                do {
                     if let cookieData = cookieObj.value as? Data, let cookie = try NSKeyedUnarchiver.unarchivedObject(ofClass: FRHTTPCookie.self, from: cookieData) {
                         checkCookie(cookie)
                     }
-                    } catch {
-                        FRLog.e("[Cookies] unarchiving failed with error: \(error.localizedDescription)")
-                    }
-                }
-                else {
-                    if let cookieData = cookieObj.value as? Data, let cookie = NSKeyedUnarchiver.unarchiveObject(with: cookieData) as? HTTPCookie {
-                        checkCookie(cookie)
-                    }
+                } catch {
+                    FRLog.e("[Cookies] unarchiving failed with error: \(error.localizedDescription)")
                 }
             }
             // Generate and return the Cookie List as in header format

@@ -2,7 +2,7 @@
 //  Action.swift
 //  FRCore
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -28,8 +28,9 @@ import Foundation
         8. LOGOUT - AM Session logout request to revoke SSO Token: '/json/realms/{realm}/sessions?_action=logout'
         9. PUSH_REGISTER - AM Push registration for Authenticator SDK: '/json/push/sns/message?_action=register'
         10. PUSH_AUTHENTICATE - AM Push authentication for Authenticator SDK: '/json/push/sns/message?_action=authenticate'
-        11. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
-        12. END_SESSION - OIDC end session request: '/oauth2/realms/{realm}/connect/endSession'
+        11. PUSH_UPDATE - AM Push update device token for Authenticator SDK: '/json/push/sns/message?_action=refresh'
+        12. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
+        13. END_SESSION - OIDC end session request: '/oauth2/realms/{realm}/connect/endSession'
  */
 public struct Action {
     public let type: String
@@ -53,6 +54,7 @@ public enum ActionType: String {
     case LOGOUT = "LOGOUT"
     case PUSH_REGISTER = "PUSH_REGISTER"
     case PUSH_AUTHENTICATE = "PUSH_AUTHENTICATE"
+    case PUSH_UPDATE = "PUSH_UPDATE"
     case USER_INFO = "USER_INFO"
     case END_SESSION = "END_SESSION"
 }

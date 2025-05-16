@@ -2,7 +2,7 @@
 //  WebAuthnAuthenticationCallback.swift
 //  FRAuth
 //
-//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2021 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -162,8 +162,13 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
                 self.allowCredentials.append(uint8Arr)
             }
         }
-        
+                
         try super.init(json: json)
+        
+        /// Check for support of JSON response for WebAuthn Authentication
+        if let supportsJsonResponse = value[CBConstants.supportsJsonResponse] as? Bool {
+            self.supportsJsonResponse = supportsJsonResponse
+        }
         
         self.type = CallbackType.WebAuthnAuthenticationCallback.rawValue
     }
@@ -176,11 +181,11 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
     ///   - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
     ///   - window: Optional `Window` set the presenting Window for the Apple Passkeys UI. If not set it will default to `UIApplication.shared.windows.first`
     ///   - preferImmediatelyAvailableCredentials: Optional `preferImmediatelyAvailableCredentials` set this to true if you want to use only local credentials. Default value `false`
-    ///   - usePasskeysIfAvailable: Optional `usePasskeysIfAvailable` set this to enable Passkeys in supported devices (iOS 16+). Setting this to true will not affect older OSs
+    ///   - usePasskeysIfAvailable: Optional `usePasskeysIfAvailable` set this to enable Passkeys in supported devices (iOS 16.6+). Setting this to true will not affect older OSs
     ///   - onSuccess: Completion callback for successful WebAuthn assertion outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
     ///   - onError: Error callback to notify any error thrown while generating WebAuthn assertion
-    public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = false, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
-        if #available(iOS 16.0, *), usePasskeysIfAvailable {
+    public func authenticate(node: Node? = nil, window: UIWindow? = UIApplication.shared.windows.first, preferImmediatelyAvailableCredentials: Bool = false, usePasskeysIfAvailable: Bool = true, onSuccess: @escaping StringCompletionCallback, onError: @escaping ErrorCallback) {
+        if #available(iOS 16.6, *), usePasskeysIfAvailable {
             FRLog.i("Performing WebAuthn authentication using FRWebAuthnManager and Passkeys", subModule: WebAuthn.module)
             self.successCallback = onSuccess
             self.errorCallback = onError
@@ -257,21 +262,20 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
                     }
                 }
                 
-                //  Expected AM result for successful assertion
-                //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
-                
-                //  If Node is given, set WebAuthn outcome to designated HiddenValueCallback
-                if let node = node {
-                    FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
-                    self.setWebAuthnOutcome(node: node, outcome: result)
-                }
-                
-                if #available(iOS 16.0, *) {
+                if #available(iOS 16.6, *) {
                     FRLog.i("Local keypair exists and user authenticated locally succesfully. The device and FR SDK now supports Passkeys, in order to use it enable the functionality using `usePasskeysIfAvailable=true` and register a new keyPair.", subModule: WebAuthn.module)
                     self.delegate?.localKeyExistsAndPasskeysAreAvailable()
                 }
                 
-                onSuccess(result)
+                //  Expected AM result for successful assertion
+                //  {clientDataJSON as String}::{Int8 array of authenticatorData}::{Int8 array of signature}::{assertion identifier}::{user handle}
+                let webauthOutcome = WebAuthOutcome(authenticatorAttachment: "platform", legacyData: result)
+                guard let jsonData = try? JSONEncoder().encode(webauthOutcome), let jsonString = String(data: jsonData, encoding: .utf8), self.supportsJsonResponse else {
+                    self.passOutcomeAndCallback(node: node, outcome: onSuccess, result: result)
+                    return
+                }
+                
+                self.passOutcomeAndCallback(node: node, outcome: onSuccess, result: jsonString)
                 
             }) { (error) in
                 
@@ -291,6 +295,19 @@ open class WebAuthnAuthenticationCallback: WebAuthnCallback {
                 }
             }
         }
+    }
+    
+    /// Completes the WebAuthn authentication with the given assertion and the optionally attaches the outcome to the designated `HiddenValueCallback`
+    /// - Parameters:
+    ///  - node: Optional `Node` object to set WebAuthn value to the designated `HiddenValueCallback`
+    ///  - outcome: Completion callback for the WebAuthn outcome; note that the outcome will automatically be set to the designated `HiddenValueCallback`
+    ///  - result: WebAuthn assertion value
+    private func passOutcomeAndCallback(node: Node?, outcome: StringCompletionCallback, result: String) {
+        if let node = node {
+            FRLog.i("Found optional 'Node' instance, setting WebAuthn outcome to designated HiddenValueCallback", subModule: WebAuthn.module)
+            setWebAuthnOutcome(node: node, outcome: result)
+        }
+        outcome(result)
     }
 }
 

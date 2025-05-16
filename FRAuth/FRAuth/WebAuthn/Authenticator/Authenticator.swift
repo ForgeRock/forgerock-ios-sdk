@@ -20,14 +20,14 @@ struct AuthenticatorAssertionResult {
     }
 }
 
-protocol AuthenticatorMakeCredentialSessionDelegate: class {
+protocol AuthenticatorMakeCredentialSessionDelegate: AnyObject {
     func authenticatorSessionDidBecomeAvailable(session: AuthenticatorMakeCredentialSession)
     func authenticatorSessionDidBecomeUnavailable(session: AuthenticatorMakeCredentialSession)
     func authenticatorSessionDidStopOperation(session: AuthenticatorMakeCredentialSession, reason: FRWAKError)
     func authenticatorSessionDidMakeCredential(session: AuthenticatorMakeCredentialSession, attestation: AttestationObject)
 }
 
-protocol AuthenticatorGetAssertionSessionDelegate: class {
+protocol AuthenticatorGetAssertionSessionDelegate: AnyObject {
     func authenticatorSessionDidBecomeAvailable(session: AuthenticatorGetAssertionSession)
     func authenticatorSessionDidBecomeUnavailable(session: AuthenticatorGetAssertionSession)
     func authenticatorSessionDidStopOperation(session: AuthenticatorGetAssertionSession, reason: FRWAKError)

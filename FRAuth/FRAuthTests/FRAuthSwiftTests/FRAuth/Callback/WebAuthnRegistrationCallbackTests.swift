@@ -2,7 +2,7 @@
 //  WebAuthnRegistrationCallbackTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2021 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -2484,4 +2484,122 @@ class WebAuthnRegistrationCallbackTests: FRAuthBaseTest {
             XCTFail("Failed to construct callback: \(callbackResponse)")
         }
     }
+    
+    func test_31_AM8_supports_json_response_callback() {
+        //  JSON response
+        let jsonString = """
+        {
+            "type": "MetadataCallback",
+            "output": [
+                {
+                          "name": "data",
+                          "value": {
+                            "relyingPartyId": "",
+                            "_relyingPartyId": "openam-webauthnsdkhint.forgeblocks.com",
+                            "timeout": "60000",
+                            "_pubKeyCredParams": [
+                              {
+                                "type": "public-key",
+                                "alg": -7
+                              },
+                              {
+                                "type": "public-key",
+                                "alg": -257
+                              }
+                            ],
+                            "extensions": {},
+                            "_type": "WebAuthn",
+                            "supportsJsonResponse": true,
+                            "_action": "webauthn_registration",
+                            "userName": "gbafal",
+                            "userId": "MjhjZWU1OTctZjI5NC00ODVkLTk2Y2EtMDAwOGVjODZkMzgz",
+                            "_authenticatorSelection": {
+                              "residentKey": "required",
+                              "requireResidentKey": true,
+                              "userVerification": "preferred"
+                            },
+                            "authenticatorSelection": "",
+                            "attestationPreference": "none",
+                            "relyingPartyName": "ForgeRock",
+                            "challenge": "rf+dH5qDogQWD4OihX2HFNNPdz2kTHY04cmGy7zXK6M=",
+                            "pubKeyCredParams": "",
+                            "excludeCredentials": "",
+                            "_excludeCredentials": [],
+                            "displayName": "gbafal"
+                          }
+                        }
+            ]
+        }
+        """.data(using: .utf8)!
+        let json = try? JSONSerialization.jsonObject(with: jsonString) as? [String: Any]
+        
+        // When
+        do {
+            let webAuthnARegistrationCallback = try WebAuthnRegistrationCallback(json: json!)
+            XCTAssertNotNil(webAuthnARegistrationCallback)
+            XCTAssertEqual(webAuthnARegistrationCallback.supportsJsonResponse, true)
+        }
+        catch {
+            XCTFail("Invalid WebAuthnAuthenticationCallback failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+    
+    func test_32_no_support_json_response_callback() {
+        //  JSON response
+        let jsonString = """
+                {
+                    "type": "MetadataCallback",
+                    "output": [
+                        {
+                                  "name": "data",
+                                  "value": {
+                                    "relyingPartyId": "",
+                                    "_relyingPartyId": "openam-webauthnsdkhint.forgeblocks.com",
+                                    "timeout": "60000",
+                                    "_pubKeyCredParams": [
+                                      {
+                                        "type": "public-key",
+                                        "alg": -7
+                                      },
+                                      {
+                                        "type": "public-key",
+                                        "alg": -257
+                                      }
+                                    ],
+                                    "extensions": {},
+                                    "_type": "WebAuthn",
+                                    "_action": "webauthn_registration",
+                                    "userName": "gbafal",
+                                    "userId": "MjhjZWU1OTctZjI5NC00ODVkLTk2Y2EtMDAwOGVjODZkMzgz",
+                                    "_authenticatorSelection": {
+                                      "residentKey": "required",
+                                      "requireResidentKey": true,
+                                      "userVerification": "preferred"
+                                    },
+                                    "authenticatorSelection": "",
+                                    "attestationPreference": "none",
+                                    "relyingPartyName": "ForgeRock",
+                                    "challenge": "rf+dH5qDogQWD4OihX2HFNNPdz2kTHY04cmGy7zXK6M=",
+                                    "pubKeyCredParams": "",
+                                    "excludeCredentials": "",
+                                    "_excludeCredentials": [],
+                                    "displayName": "gbafal"
+                                  }
+                                }
+                    ]
+                }
+        """.data(using: .utf8)!
+        let json = try? JSONSerialization.jsonObject(with: jsonString) as? [String: Any]
+        
+        // When
+        do {
+            let webAuthnARegistrationCallback = try WebAuthnRegistrationCallback(json: json!)
+            XCTAssertNotNil(webAuthnARegistrationCallback)
+            XCTAssertEqual(webAuthnARegistrationCallback.supportsJsonResponse, false)
+        }
+        catch {
+            XCTFail("Invalid WebAuthnAuthenticationCallback failed with unexpected error: \(error.localizedDescription)")
+        }
+    }
+
 }

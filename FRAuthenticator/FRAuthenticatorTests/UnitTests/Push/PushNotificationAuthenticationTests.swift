@@ -2,7 +2,7 @@
 //  PushNotificationAuthenticationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -22,7 +22,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -73,7 +73,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -107,7 +107,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
         do {
             
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -120,7 +120,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
             
             let notification = try PushNotification(messageId: notificationMessageId, payload: notificationPayload)
 
-            let request = try notification.buildPushAuthenticationRequest(approved: true, mechanism: mechanism)
+            let request = try FRAPushHandler.shared.buildPushAuthenticationRequest(notification: notification, approved: true, mechanism: mechanism)
             
             let bodyPayload = request.bodyParams
             let messageId = bodyPayload["messageId"] as? String
@@ -159,7 +159,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
         do {
             
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -172,7 +172,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
             
             let notification = try PushNotification(messageId: notificationMessageId, payload: notificationPayload)
 
-            let request = try notification.buildPushAuthenticationRequest(approved: false, mechanism: mechanism)
+            let request = try FRAPushHandler.shared.buildPushAuthenticationRequest(notification: notification, approved: false, mechanism: mechanism)
             
             let bodyPayload = request.bodyParams
             let messageId = bodyPayload["messageId"] as? String
@@ -248,7 +248,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -300,7 +300,7 @@ class PushNotificationAuthenticationTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
             FRAClient.storage.setMechanism(mechanism: mechanism)
             
@@ -343,7 +343,7 @@ func test_08_push_authentication_accept_successful_type_challenge() {
     
     do {
         let parser = try PushQRCodeParser(url: qrCode)
-        let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+        let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
         mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
         FRAClient.storage.setMechanism(mechanism: mechanism)
         

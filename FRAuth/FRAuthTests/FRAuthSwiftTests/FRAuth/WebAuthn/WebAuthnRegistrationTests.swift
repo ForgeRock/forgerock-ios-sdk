@@ -2,7 +2,7 @@
 //  WebAuthnRegistrationTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2021-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2021 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -654,6 +654,90 @@ class WebAuthnRegistrationTests: WebAuthnSharedUtils {
         catch {
             XCTFail("Failed with unexpected error")
         }
+    }
+    
+    func test_13_webauthn_registration_with_device_name_supportsJsonResponse_no_passkeys() {
+        do {
+            let callback = try self.createRegistrationCallback(jsonResponse: true)
+            
+            XCTAssertTrue(callback.supportsJsonResponse)
+            
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            
+            //  Set delegation consent result
+            self.createNewKeyConsentResult = .allow
+            
+            //  Perform registration
+            let ex = self.expectation(description: "WebAuthn Registration")
+            callback.register(deviceName: "Test Device Name", usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                let jsonDictionary = self.convertStringToDictionary(text: webAuthnOutcome)
+                XCTAssertNotNil(webAuthnOutcome)
+                XCTAssertNotNil(jsonDictionary)
+                let legacyData = jsonDictionary?["legacyData"] as? String
+                XCTAssertNotNil(legacyData)
+                let components = legacyData!.components(separatedBy: "::")
+                XCTAssertTrue(components.last == "Test Device Name")
+                ex.fulfill()
+            }) { (error) in
+                XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed with unexpected error")
+        }
+    }
+    
+    func test_14_webauthn_registration_with_device_name_NotSupportingJsonResponse_no_passkeys() {
+        do {
+            let callback = try self.createRegistrationCallback(jsonResponse: false)
+            
+            XCTAssertFalse(callback.supportsJsonResponse)
+            
+            //  Disable UV for testing
+            callback.userVerification = .discouraged
+            //  Set rpId
+            callback.relyingPartyId = self.relyingPartyId
+            //  Set delegate
+            callback.delegate = self
+            
+            //  Set delegation consent result
+            self.createNewKeyConsentResult = .allow
+            
+            //  Perform registration
+            let ex = self.expectation(description: "WebAuthn Registration")
+            callback.register(deviceName: "Test Device Name", usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
+                XCTAssertNotNil(webAuthnOutcome)
+                let components = webAuthnOutcome.components(separatedBy: "::")
+                XCTAssertTrue(components.last == "Test Device Name")
+                ex.fulfill()
+            }) { (error) in
+                XCTFail("Failed with unexpected error: \(error.localizedDescription)")
+                ex.fulfill()
+            }
+            waitForExpectations(timeout: 60, handler: nil)
+        }
+        catch {
+            XCTFail("Failed with unexpected error")
+        }
+    }
+
+    private func convertStringToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
+                return json
+            } catch {
+                print("Something went wrong")
+            }
+        }
+        return nil
     }
 }
 

@@ -1,8 +1,8 @@
 // 
-//  AMConstants.swift
+//  FRAConstants.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -19,8 +19,10 @@ struct FRAConstants {
     static let apiProtocol10 = "protocol=1.0"
     
     static let response = "response"
+    static let username = "username"
     static let mechanismUid = "mechanismUid"
     static let deviceId = "deviceId"
+    static let deviceName = "deviceName"
     static let deviceType = "deviceType"
     static let communicationType = "communicationType"
     

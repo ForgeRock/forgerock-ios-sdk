@@ -2,7 +2,7 @@
 //  FRWebAuthnTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2023-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2023 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -78,7 +78,7 @@ final class FRWebAuthnTests: WebAuthnSharedUtils {
         
         //Delete one by one based on the CredentialSource
         for credential in registeredCredentials {
-            FRWebAuthn.deleteCredential(with: credential)
+            try? FRWebAuthn.deleteCredential(publicKeyCredentialSource: credential, forceDelete: true)
         }
         
         //Load all discoverable credentials
@@ -149,7 +149,7 @@ final class FRWebAuthnTests: WebAuthnSharedUtils {
             
             //  Perform registration
             let ex = self.expectation(description: "WebAuthn Registration")
-            callback.register(onSuccess: { (webAuthnOutcome) in
+            callback.register(usePasskeysIfAvailable: false, onSuccess: { (webAuthnOutcome) in
                 result = webAuthnOutcome
                 XCTAssertNotNil(webAuthnOutcome)
                 ex.fulfill()

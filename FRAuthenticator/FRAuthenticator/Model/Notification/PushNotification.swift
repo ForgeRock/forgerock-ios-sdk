@@ -2,7 +2,7 @@
 //  Notification.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -293,7 +293,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     ///   - onError: failure error callback
     public func accept(onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
         if self.pushType == .default {
-             self.handleNotification(approved: true, onSuccess: onSuccess, onError: onError)
+            FRAPushHandler.shared.handleNotification(notification: self, approved: true, onSuccess: onSuccess, onError: onError)
          } else {
              onError(MechanismError.invalidInformation("Error processing the Push  Authentication request. This method cannot be used to process notification of type: \(self.pushType)"))
          }
@@ -308,7 +308,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
      ///   - onError: failure error callback
      public func accept(challengeResponse: String, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
          if self.pushType == .challenge {
-             self.handleNotification(challengeResponse: challengeResponse, approved: true, onSuccess: onSuccess, onError: onError)
+             FRAPushHandler.shared.handleNotification(notification: self, challengeResponse: challengeResponse, approved: true, onSuccess: onSuccess, onError: onError)
          } else {
              onError(MechanismError.invalidInformation("Error processing the Push  Authentication request. This method cannot be used to process notification of type: \(self.pushType)"))
          }
@@ -325,7 +325,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     public func accept(title: String, allowDeviceCredentials: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
         if self.pushType == .biometric {
             BiometricAuthentication.authenticate(title: title, allowDeviceCredentials: allowDeviceCredentials) {
-                self.handleNotification(approved: true, onSuccess: onSuccess, onError: onError)
+                FRAPushHandler.shared.handleNotification(notification: self, approved: true, onSuccess: onSuccess, onError: onError)
             } onError: { error in
                 onError(MechanismError.invalidInformation(error.localizedDescription))
             }
@@ -340,99 +340,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     ///   - onSuccess: successful completion callback
     ///   - onError: failure error callback
     public func deny(onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
-        self.handleNotification(approved: false, onSuccess: onSuccess, onError: onError)
-    }
-    
-    
-    //  MARK: - Accept / Deny - Private
-    
-    /// Handles PushNotification authentication process with given decision
-    /// - Parameters:
-    ///   - challengeResponse: the response for the Push Challenge
-    ///   - approved: Boolean indicator whether or not PushNotification authentication is approved or denied
-    ///   - onSuccess: successful completion callback
-    ///   - onError: failure error callback
-    func handleNotification(challengeResponse: String? = nil, approved: Bool, onSuccess: @escaping SuccessCallback, onError: @escaping ErrorCallback) {
-        
-        if !self.isPending {
-            onError(PushNotificationError.notificationInvalidStatus)
-            return
-        }
-        
-        if let mechanism = FRAClient.storage.getMechanismForUUID(uuid: self.mechanismUUID) as? PushMechanism {
-            
-            if let account = FRAClient.storage.getAccount(accountIdentifier: mechanism.accountIdentifier), let policyName = account.lockingPolicy, account.lock {
-                FRALog.e("Unable to process the Push Authentication request: Account is locked.")
-                onError(AccountError.accountLocked(policyName))
-                return
-            }
-            
-            do {
-                let request = try buildPushAuthenticationRequest(challengeResponse: challengeResponse, approved: approved, mechanism: mechanism)
-                RestClient.shared.invoke(request: request, action: Action(type: .PUSH_AUTHENTICATE)) { (result) in
-                    switch result {
-                    case .success(_, _):
-                        self.approved = approved
-                        self.pending = false
-                        Log.i("PushNotification authentication was successful")
-                        if FRAClient.storage.setNotification(notification: self) {
-                            FRALog.v("New PushNotification object is stored into StorageClient")
-                        }
-                        else {
-                            FRALog.e("Failed to save PushNotification object into StorageClient")
-                        }
-                        onSuccess()
-                        break
-                    case .failure(let error):
-                        self.approved = false
-                        self.pending = true
-                        Log.i("PushNotification authentication failed with following error: \(error.localizedDescription)")
-                        onError(error)
-                        break
-                    }
-                }
-            }
-            catch {
-                onError(error)
-            }
-        }
-        else {
-            FRALog.e("Failed to retrieve PushMechanism object based on MechanismUUID in Push Notification's payload: \(self.mechanismUUID)")
-            onError(PushNotificationError.storageError("Failed to retrieve PushMechanism object with given UUID: \(self.mechanismUUID)"))
-        }
-    }
-    
-    
-    func buildPushAuthenticationRequest(challengeResponse: String? = nil, approved: Bool, mechanism: PushMechanism) throws -> Request {
-        var payload: [String: CodableValue] = [:]
-        payload[FRAConstants.response] = try CodableValue(Crypto.generatePushChallengeResponse(challenge: self.challenge, secret: mechanism.secret))
-        if !approved {
-            payload["deny"] = CodableValue(true)
-        }
-        
-        if self.pushType == .challenge {
-            payload["challengeResponse"] = CodableValue(challengeResponse)
-        }
-        
-        FRALog.v("Push authentication JWT payload prepared: \(payload)")
-        
-        let jwt = try FRCompactJWT(algorithm: .hs256, secret: mechanism.secret, payload: payload).sign()
-        FRALog.v("JWT generated and signed: \(jwt)")
-        
-        let requestPayload: [String: String] = [FRAConstants.messageId: self.messageId, FRAConstants.jwt: jwt]
-
-        var headers: [String: String] = [:]
-        headers["Set-Cookie"] = self.loadBalanceKey
-        
-        //  AM 6.5.2 - 7.0.0
-        //
-        //  Endpoint: /openam/json/push/sns/message?_action=authenticate
-        //  API Version: resource=1.0, protocol=1.0
-        headers[FRAConstants.acceptAPIVersion] = FRAConstants.apiResource10 + ", " + FRAConstants.apiProtocol10
-        
-        let request = Request(url: mechanism.authEndpoint.absoluteString, method: .POST, headers: headers, bodyParams: requestPayload, requestType: .json, responseType: .json)
-        
-        return request
+        FRAPushHandler.shared.handleNotification(notification: self, approved: false, onSuccess: onSuccess, onError: onError)
     }
     
     

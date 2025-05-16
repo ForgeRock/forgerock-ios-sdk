@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -193,14 +193,8 @@ struct KeychainManager {
     @discardableResult func setAccessToken(token: AccessToken?) throws -> Bool {
         if let thisToken = token {
             do {
-                if #available(iOS 11.0, *) {
-                    let tokenData = try NSKeyedArchiver.archivedData(withRootObject: thisToken, requiringSecureCoding: true)
-                    return self.privateStore.set(tokenData, key: StorageKey.accessToken.rawValue)
-                }
-                else {
-                    let tokenData = NSKeyedArchiver.archivedData(withRootObject: thisToken)
-                    return self.privateStore.set(tokenData, key: StorageKey.accessToken.rawValue)
-                }
+                let tokenData = try NSKeyedArchiver.archivedData(withRootObject: thisToken, requiringSecureCoding: true)
+                return self.privateStore.set(tokenData, key: StorageKey.accessToken.rawValue)
             }
             catch {
                 throw TokenError.failToParseToken(error.localizedDescription)
@@ -218,16 +212,8 @@ struct KeychainManager {
     func getAccessToken() throws -> AccessToken? {
         if let tokenData = self.privateStore.getData(StorageKey.accessToken.rawValue) {
             do {
-                
-                if #available(iOS 11.0, *) {
-                    let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [AccessToken.self, Token.self], from: tokenData) as? AccessToken
-                    return token
-                }
-                else {
-                    if let token = NSKeyedUnarchiver.unarchiveObject(with: tokenData) as? AccessToken {
-                        return token
-                    }
-                }
+                let token = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [AccessToken.self, Token.self], from: tokenData) as? AccessToken
+                return token
             }
             catch {
                 throw TokenError.failToParseToken(error.localizedDescription)

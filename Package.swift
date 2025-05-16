@@ -23,7 +23,7 @@ let package = Package (
         .package(name: "GoogleSignIn", url: "https://github.com/google/GoogleSignIn-iOS.git", .upToNextMinor(from: "7.1.0")),
         .package(name: "JOSESwift", url: "https://github.com/airsidemobile/JOSESwift.git", .upToNextMinor(from: "2.4.0")),
         .package(name: "PingOneSignals", url: "https://github.com/pingidentity/pingone-signals-sdk-ios.git", .upToNextMinor(from: "5.2.7")),
-        .package(name: "RecaptchaEnterprise", url: "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk.git", .upToNextMinor(from: "18.6.0"))
+        .package(name: "RecaptchaEnterprise", url: "https://github.com/GoogleCloudPlatform/recaptcha-enterprise-mobile-sdk.git", .upToNextMinor(from: "18.7.0"))
     ],
     targets: [
         .target(name: "cFRCore", dependencies: [], path: "FRCore/FRCore/SharedC/Sources"),

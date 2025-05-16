@@ -2,7 +2,7 @@
 //  KeychainServiceStorageClientTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020-2024 Ping Identity. All rights reserved.
+//  Copyright (c) 2020-2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -133,7 +133,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             storage.setMechanism(mechanism: mechanism)
             
             let accountFromStorage = storage.getAccount(accountIdentifier: account.identifier)
@@ -158,10 +158,10 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         
         do {
             let tparser = try OathQRCodeParser(url: totp)
-            let totpMechanism = TOTPMechanism(issuer: tparser.issuer, accountName: tparser.label, secret: tparser.secret, algorithm: tparser.algorithm, period: tparser.period, digits: tparser.digits)
+            let totpMechanism = TOTPMechanism(issuer: tparser.issuer, accountName: tparser.label, secret: tparser.secret, algorithm: tparser.algorithm, uid: tparser.uid, resourceId: tparser.resourceId, period: tparser.period, digits: tparser.digits)
             
             let hparser = try OathQRCodeParser(url: hotp)
-            let hotpMechanism = HOTPMechanism(issuer: hparser.issuer, accountName: hparser.label, secret: hparser.secret, algorithm: hparser.algorithm, counter: hparser.counter, digits: hparser.digits)
+            let hotpMechanism = HOTPMechanism(issuer: hparser.issuer, accountName: hparser.label, secret: hparser.secret, algorithm: hparser.algorithm, uid: hparser.uid, resourceId: hparser.resourceId, counter: hparser.counter, digits: hparser.digits)
             
             storage.setMechanism(mechanism: hotpMechanism)
             var accountFromStorage = storage.getAccount(accountIdentifier: account.identifier)
@@ -199,7 +199,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             storage.setMechanism(mechanism: mechanism)
             
             let payload1: [String: String] = ["c": "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE=", "l": "ZnJfc3NvX2FtbGJfcHJvZD0wMQ==", "t": "120", "u": mechanism.mechanismUUID]
@@ -246,7 +246,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             storage.setMechanism(mechanism: mechanism)
             
             let payload1: [String: String] = ["c": "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE=", "l": "ZnJfc3NvX2FtbGJfcHJvZD0wMQ==", "t": "120", "u": mechanism.mechanismUUID]
@@ -283,7 +283,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             storage.setMechanism(mechanism: mechanism)
             let mechanismUUID = mechanism.mechanismUUID
             
@@ -327,7 +327,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
         
         do {
             let parser = try PushQRCodeParser(url: qrCode)
-            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer)
+            let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
             storage.setMechanism(mechanism: mechanism)
             
             let payload1: [String: String] = ["c": "j4i8MSuGOcqfslLpRMsYWUMkfsZnsgTCcgNZ+WN3MEE=", "l": "ZnJfc3NvX2FtbGJfcHJvZD0wMQ==", "t": "120", "u": mechanism.mechanismUUID]
@@ -337,7 +337,7 @@ class KeychainServiceStorageClientTests: FRABaseTests {
             let notification1 = try PushNotification(messageId: messageId1, payload: payload1)
             
             storage.setNotification(notification: notification1)
-            var notifications = storage.getAllNotificationsForMechanism(mechanism: mechanism)
+            let notifications = storage.getAllNotificationsForMechanism(mechanism: mechanism)
             
             XCTAssertNotNil(notifications)
             XCTAssertEqual(notifications.count, 1)

@@ -2,7 +2,7 @@
 //  CallbackConstants.swift
 //  FRAuth
 //
-//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -206,6 +206,7 @@ extension CBConstants {
     static let WebAuthn: String = "WebAuthn"
     static let pubKeyCredParams: String = "pubKeyCredParams"
     static let challenge: String = "challenge"
+    static let supportsJsonResponse: String = "supportsJsonResponse"
     static let timeout: String = "timeout"
     static let userVerification: String = "userVerification"
     static let relyingPartyId: String = "relyingPartyId"

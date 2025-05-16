@@ -2,7 +2,7 @@
 //  QRCodeParser.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020-2023 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -44,6 +44,10 @@ struct OathQRCodeParser {
     var image: String?
     /// Set of policies
     var policies: String?
+    /// The unique identifier of the user associated with this mechanism
+    var uid: String?
+    /// The unique identifier of this mechanism on the server
+    var resourceId: String?
     
     //  MARK: - Init
     
@@ -128,6 +132,12 @@ struct OathQRCodeParser {
                 }
                 if item.name == "policies", let strVal = item.value {
                     self.policies = strVal.base64Decoded()
+                }
+                if item.name == "uid", let strVal = item.value {
+                    self.uid = strVal.base64Decoded()
+                }
+                if item.name == "oid", let strVal = item.value {
+                    self.resourceId = strVal.base64Decoded()
                 }
             }
         }

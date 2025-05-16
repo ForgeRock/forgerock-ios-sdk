@@ -2,7 +2,7 @@
 //  SecuredKey.swift
 //  FRCore
 //
-//  Copyright (c) 2020 - 2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -42,12 +42,7 @@ public struct SecuredKey {
         if canEvaluatePolicy == false, let error = error {
             
             // Check if an error is whether LocalAuthentication is not available (meaning there is no hardware security module)
-            if #available(iOS 11.0, *) {
-                canEvaluatePolicy = error.code != LAError.biometryNotAvailable.rawValue
-            }
-            else {
-                canEvaluatePolicy = error.code != LAError.touchIDNotAvailable.rawValue
-            }
+            canEvaluatePolicy = error.code != LAError.biometryNotAvailable.rawValue
             
             if !canEvaluatePolicy {
                 Log.w("Biometry is not available on the device; SDK continues without storage data encryption")

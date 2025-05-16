@@ -2,7 +2,7 @@
 //  DeviceBindingAuthenticators.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -370,9 +370,9 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
     /// Access Control for the authetication type
     open override func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence, .privateKeyUsage], nil)
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .or, .devicePasscode, .privateKeyUsage], nil)
 #else
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence], nil)
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .or, .devicePasscode], nil)
 #endif
     }
     

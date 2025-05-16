@@ -3,11 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1B4236BB26CDA3A3009AF58F /* FRDateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */; };
+		1B94DD192D7919ED003B41BA /* PushDeviceToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD172D7919E2003B41BA /* PushDeviceToken.swift */; };
+		1B94DD1B2D79200D003B41BA /* PushDeviceTokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD1A2D792003003B41BA /* PushDeviceTokenManager.swift */; };
+		1B94DD1D2D7A5852003B41BA /* PushDeviceTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD1C2D7A584E003B41BA /* PushDeviceTokenTests.swift */; };
+		1B94DD1F2D7A59D3003B41BA /* PushDeviceTokenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B94DD1E2D7A59CF003B41BA /* PushDeviceTokenManagerTests.swift */; };
 		1BB34B34299577E200729300 /* FRAPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B33299577E200729300 /* FRAPolicy.swift */; };
 		1BB34B3629957D8F00729300 /* BiometricAvailablePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B3529957D8F00729300 /* BiometricAvailablePolicy.swift */; };
 		1BB34B3829957E2000729300 /* DeviceTamperingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB34B3729957E2000729300 /* DeviceTamperingPolicy.swift */; };
@@ -193,6 +197,10 @@
 
 /* Begin PBXFileReference section */
 		1B4236BA26CDA3A3009AF58F /* FRDateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRDateUtil.swift; sourceTree = "<group>"; };
+		1B94DD172D7919E2003B41BA /* PushDeviceToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDeviceToken.swift; sourceTree = "<group>"; };
+		1B94DD1A2D792003003B41BA /* PushDeviceTokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDeviceTokenManager.swift; sourceTree = "<group>"; };
+		1B94DD1C2D7A584E003B41BA /* PushDeviceTokenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushDeviceTokenTests.swift; sourceTree = "<group>"; };
+		1B94DD1E2D7A59CF003B41BA /* PushDeviceTokenManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDeviceTokenManagerTests.swift; sourceTree = "<group>"; };
 		1BB34B33299577E200729300 /* FRAPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRAPolicy.swift; sourceTree = "<group>"; };
 		1BB34B3529957D8F00729300 /* BiometricAvailablePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAvailablePolicy.swift; sourceTree = "<group>"; };
 		1BB34B3729957E2000729300 /* DeviceTamperingPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTamperingPolicy.swift; sourceTree = "<group>"; };
@@ -423,6 +431,7 @@
 		D52D5C4E241318F000835035 /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD172D7919E2003B41BA /* PushDeviceToken.swift */,
 				D5FFA053245FA2FD003680C1 /* PushMechanism.swift */,
 				D52D5C4F241318F000835035 /* PushQRCodeParser.swift */,
 			);
@@ -473,6 +482,7 @@
 		D52D5C67241333D500835035 /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD1E2D7A59CF003B41BA /* PushDeviceTokenManagerTests.swift */,
 				D5D0A4FF2462059F00BA9FE0 /* FRAPushHandlerTests.swift */,
 				D5D0A5102462171B00BA9FE0 /* PushMechanismRegistrationTests.swift */,
 				D5CAC79124622E010059F6B8 /* PushNotificationAuthenticationTests.swift */,
@@ -551,6 +561,7 @@
 		D542AA562416F9F800ECBFC1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD1C2D7A584E003B41BA /* PushDeviceTokenTests.swift */,
 				D542AA7E2417413B00ECBFC1 /* PushMechanismTests.swift */,
 				D542AA5A2416FBD000ECBFC1 /* HOTPMechanismTests.swift */,
 				D542AA5B2416FBD000ECBFC1 /* TOTPMechanismTests.swift */,
@@ -877,6 +888,7 @@
 		D5FC33F52458CC0B00C77A52 /* Push */ = {
 			isa = PBXGroup;
 			children = (
+				1B94DD1A2D792003003B41BA /* PushDeviceTokenManager.swift */,
 				D5FC33F82458CC1F00C77A52 /* FRAPushHandler.swift */,
 			);
 			path = Push;
@@ -962,8 +974,9 @@
 		D5C354772412EBF800695A84 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1630;
 				ORGANIZATIONNAME = "James Go";
 				TargetAttributes = {
 					D5C3547F2412EBF800695A84 = {
@@ -1117,7 +1130,9 @@
 				D5FFA03B245F52E8003680C1 /* PushNotificationError.swift in Sources */,
 				D5D54E8A245A1FA90001EE34 /* FRCompactJWT.swift in Sources */,
 				D5C354A52412EC0600695A84 /* PushNotification.swift in Sources */,
+				1B94DD192D7919ED003B41BA /* PushDeviceToken.swift in Sources */,
 				A5EAD7D228356B5F000637F0 /* BiometricAuthentication.swift in Sources */,
+				1B94DD1B2D79200D003B41BA /* PushDeviceTokenManager.swift in Sources */,
 				1BB34B48299AE08300729300 /* URIType.swift in Sources */,
 				D54E88EE241749BE00E8ACB1 /* FRAError.swift in Sources */,
 				D52D5C5824131B2D00835035 /* HOTPMechanism.swift in Sources */,
@@ -1137,6 +1152,7 @@
 				D5791C1525F88393004B487A /* FRTestNetworkStubProtocol.swift in Sources */,
 				D5791BEF25F8829F004B487A /* DummyStorageClient.swift in Sources */,
 				D5791BF025F8829F004B487A /* AuthenticatorManagerTests.swift in Sources */,
+				1B94DD1D2D7A5852003B41BA /* PushDeviceTokenTests.swift in Sources */,
 				1BB34B46299AD30100729300 /* InvalidFakePolicy.swift in Sources */,
 				1BB34B3E2996C02C00729300 /* FRAPolicyEvaluatorTests.swift in Sources */,
 				D5791BF125F8829F004B487A /* FRAClientTests.swift in Sources */,
@@ -1156,6 +1172,7 @@
 				D5791BFD25F8829F004B487A /* HOTPMechanismTests.swift in Sources */,
 				D5791BFE25F8829F004B487A /* TOTPMechanismTests.swift in Sources */,
 				D5791BFF25F8829F004B487A /* AccountTests.swift in Sources */,
+				1B94DD1F2D7A59D3003B41BA /* PushDeviceTokenManagerTests.swift in Sources */,
 				D5791C0025F8829F004B487A /* NotificationTests.swift in Sources */,
 				D5791C0125F8829F004B487A /* MechanismTests.swift in Sources */,
 				D5791C0225F8829F004B487A /* OathMechanismTests.swift in Sources */,
@@ -1224,6 +1241,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1233,8 +1251,10 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1287,6 +1307,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1296,8 +1317,10 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9QSE66762D;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1322,13 +1345,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 9QSE66762D;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = FRAuthenticator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1337,8 +1360,9 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.8.0;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuthenticator/SharedC/FRAuthenticator.modulemap";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticator;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1356,13 +1380,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 9QSE66762D;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = FRAuthenticator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1371,8 +1395,9 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.8.0;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuthenticator/SharedC/FRAuthenticator.modulemap";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuthenticator;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1389,10 +1414,8 @@
 		D5C354982412EBF900695A84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = FRAuthenticatorTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1413,10 +1436,8 @@
 		D5C354992412EBF900695A84 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = FRAuthenticatorTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

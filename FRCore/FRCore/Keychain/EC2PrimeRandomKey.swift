@@ -2,7 +2,7 @@
 //  ECPrimeRandomKey.swift
 //  FRCore
 //
-//  Copyright (c) 2020 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -107,7 +107,7 @@ public struct ECPrimeRandomKey {
         //  Public Key Query
         var publicQuery: [String: Any] = [:]
         publicQuery[String(kSecAttrLabel)] = publicKeyLabel
-        publicQuery[String(kSecAttrAccessControl)] = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleAlwaysThisDeviceOnly, [], nil)!
+        publicQuery[String(kSecAttrAccessControl)] = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, [], nil)!
         
         //  Private Key Query
         var privateQuery: [String: Any] = [:]

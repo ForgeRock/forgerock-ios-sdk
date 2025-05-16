@@ -2,7 +2,7 @@
 //  Log.swift
 //  FRCore
 //
-//  Copyright (c) 2020-2022 ForgeRock. All rights reserved.
+//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -129,7 +129,7 @@ public class Log: NSObject {
     //  MARK: - Property
     
     /// Current SDK version. We hard code it here as currently there is no other way to get it dinamically when used with SPM
-    public static let sdkVersion = "4.7.0"
+    public static let sdkVersion = "4.8.0"
     /// Current LogLevel
     static var logLevel: LogLevel = .none
     /// Current Loggers to handle log entries

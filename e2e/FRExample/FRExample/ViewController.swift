@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019-2024 ForgeRock. All rights reserved.
+//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -183,7 +183,7 @@ class ViewController: UIViewController, AlertShowing {
         // Make sure to add the Key Hashes of the certificates that correspont to the URLs
         // set on the `FRURLProtocol.tokenManagementPolicy` & `FRURLProtocol.authorizationPolicy`
         
-        var sslPinningKeyHashes: [String] = []
+        let sslPinningKeyHashes: [String] = []
         //sslPinningKeyHashes = ["Key1", "Key2"] --> Add Key hashes and uncomment to enable
         
         if(!sslPinningKeyHashes.isEmpty) {
@@ -1140,7 +1140,7 @@ class WebAuthnCredentialsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
       if(editingStyle == .delete) {
-        FRWebAuthn.deleteCredential(with: self.credentialSource[indexPath.row])
+        try? FRWebAuthn.deleteCredential(publicKeyCredentialSource: self.credentialSource[indexPath.row], forceDelete: true)
         self.credentialSource = FRWebAuthn.loadAllCredentials(by: self.rpId)
         tableView.reloadData()
        }
