@@ -23,7 +23,7 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     //  MARK: - Properties
     
     /// Credentials type for Facebook credentials
-    public var tokenType: String = "access_token"
+    public var tokenType: String = "id_token"
     
     /// Currently presented UIViewController in the application which will be used to present Facebook login view
     public var presentingViewController: UIViewController?
@@ -39,6 +39,9 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     
     public override init() {
         //  Initialize Facebook LoginManager instance
+        DispatchQueue.main.async {
+            ApplicationDelegate.shared.initializeSDK()
+        }
         self.manager = LoginManager()
         //  Perform logout to clear previously authenticated session
         self.manager.logOut()
@@ -53,24 +56,48 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     ///   - idpClient: `IdPClient` information
     ///   - completion: Completion callback to notify the result
     public func signIn(idpClient: IdPClient, completion: @escaping SocialLoginCompletionCallback) {
-        
+        let config = LoginConfiguration(permissions: idpClient.scopes ?? [], tracking: .limited, nonce: idpClient.nonce ?? "")
+
         Log.v("Provided scope (\(idpClient.scopes ?? [])) will be added to authorization request for Facebook", module: module)
         //  Perform login using Facebook LoginManager
-        self.manager.logIn(permissions: idpClient.scopes ?? [], from: self.presentingViewController) { (result, error) in
-            
-            //  Facebook SDK does not return an error when the operation is cancelled by user; return a specific error for cancellation
-            if let result = result, result.isCancelled {
-                Log.e("Sign-in with Facebook SDK is cancelled by user", module: self.module)
+//        self.manager.logIn(permissions: idpClient.scopes ?? [], from: self.presentingViewController) { (result, error) in
+//            
+//            //  Facebook SDK does not return an error when the operation is cancelled by user; return a specific error for cancellation
+//            if let result = result, result.isCancelled {
+//                Log.e("Sign-in with Facebook SDK is cancelled by user", module: self.module)
+//                completion(nil, nil, SocialLoginError.cancelled)
+//                return
+//            }
+//            if let error = error {
+//                Log.e("An error ocurred during the authentication: \(error.localizedDescription)", module: self.module)
+//            }
+//            completion(result?.token?.tokenString, self.tokenType, error)
+//        }
+
+
+        self.manager.logIn(viewController: self.presentingViewController, configuration: config) { result in
+            switch result {
+            case .cancelled:
+                print("User cancelled login")
                 completion(nil, nil, SocialLoginError.cancelled)
                 return
+            case .failed(let error):
+                print("An error ocurred during the authentication: \(error.localizedDescription)" )
+                completion(nil, nil, error)
+                return
+            case .success(_, _, _):
+                guard let accessToken = AuthenticationToken.current?.tokenString else {
+                    print("Access Token is required and not found on result")
+                    return
+                }
+                // getting id token string
+
+                completion(accessToken, self.tokenType, nil)
+                return
             }
-            if let error = error {
-                Log.e("An error ocurred during the authentication: \(error.localizedDescription)", module: self.module)
-            }
-            completion(result?.token?.tokenString, self.tokenType, error)
         }
-    }
-    
+}
+
     
     /// Generates, and returns `UIView` for `FBLoginButton` button
     /// - Returns: `FBLoginButton` button in `UIView`
@@ -98,5 +125,14 @@ public class FacebookSignInHandler: NSObject, IdPHandler {
     /// - Returns: `true` if there are any added application observers that themselves return true from calling `application(_:didFinishLaunchingWithOptions:)`. Otherwise will return `false`.
     public static func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+
+    public static func application(
+        _ application: UIApplication,
+        open url: URL,
+        sourceApplication: String?,
+        annotation: Any?
+    ) -> Bool {
+        return ApplicationDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 }

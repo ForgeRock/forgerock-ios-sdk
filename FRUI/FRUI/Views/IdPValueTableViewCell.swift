@@ -54,7 +54,7 @@ class IdPValueTableViewCell: UITableViewCell, FRUICallbackTableViewCell {
                 return
             }
         }
-        else if provider.provider.lowercased().contains("facebook") {
+        else if provider.provider.lowercased().contains("fb-limited") {
             if let c: NSObject.Type = NSClassFromString("FRFacebookSignIn.FacebookSignInHandler") as? NSObject.Type, let thisHandler = c.init() as? IdPHandler, let buttonView = thisHandler.getProviderButtonView(), let containerView = self.buttonContainerview {
                 self.adjustButtonView(buttonView: buttonView, containerView: containerView)
                 return

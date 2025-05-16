@@ -1,5 +1,5 @@
 {
-  "originHash" : "61dc5540678d577ccc553e51309c7f2f7471c3df50f7e74acffa57118326f734",
+  "originHash" : "e5af38543a0063452955301e4253e74fbe31d09267a5a565e38955f00e9d1bdb",
   "pins" : [
     {
       "identity" : "appauth-ios",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/facebook/facebook-ios-sdk",
       "state" : {
-        "revision" : "5c7367dadcbe504702c041621dc09752bf2cd747",
-        "version" : "16.0.1"
+        "revision" : "b28dde427715b45a26ebebf697929f4a81b15e04",
+        "version" : "18.0.0"
       }
     },
     {

@@ -137,6 +137,7 @@ extension CBConstants {
     static let apple: String = "apple"
     static let google: String = "google"
     static let facebook: String = "facebook"
+    static let facebookLimited: String = "fb-limited"
 }
 
 //  MARK: - DeviceProfileCallback

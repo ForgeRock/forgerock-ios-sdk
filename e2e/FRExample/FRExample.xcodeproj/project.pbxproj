@@ -3,12 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3AF37D762C8038E400190350 /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */; };
 		3AF37D772C8038E400190350 /* FRCaptchaEnterprise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1BA9F0212C755B390033651D /* FRCaptchaEnterprise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A50340AC2DC27B1B001DF3DD /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; };
+		A50340AD2DC27B1B001DF3DD /* FRFacebookSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A52B848A2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A52B848B2B339571001FBA2C /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52B84892B339571001FBA2C /* Playground.swift */; };
 		A530D48A2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530D4892CD3D024009EC60C /* ClientDevicesTableViewController.swift */; };
@@ -18,6 +20,8 @@
 		A5D8938529E5AA78004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C39329E59FC30096039E /* FRDeviceBinding.framework */; };
+		A5E42B582DC413AC0099B4B7 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = A5E42B572DC413AC0099B4B7 /* FacebookCore */; };
+		A5E42B5A2DC413AC0099B4B7 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = A5E42B592DC413AC0099B4B7 /* FacebookLogin */; };
 		D521A2062303644300EDD28E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554633122A6EF950096C7A4 /* ViewController.swift */; };
 		D521A2082303644300EDD28E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
 		D521A20E2303644300EDD28E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
@@ -34,8 +38,6 @@
 		D554633A22A6EF960096C7A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
 		D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; };
 		D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; };
-		D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D58BC3E826031C3200254654 /* FRFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; };
 		D58BC3E926031C3200254654 /* FRFacebookSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3DF26031BF100254654 /* FRFacebookSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D59FAE772344144A005D34DA /* FRProximity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59FAE562344141A005D34DA /* FRProximity.framework */; };
@@ -130,13 +132,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = D57F637B260137EA00BBA0B6;
 			remoteInfo = FRFacebookSignInTests;
-		};
-		D58BC3E226031C0D00254654 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D58BC3D826031BF100254654 /* FRFacebookSignIn.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D57F6371260137E900BBA0B6;
-			remoteInfo = FRFacebookSignIn;
 		};
 		D58BC3E626031C2B00254654 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -256,10 +251,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A50340AD2DC27B1B001DF3DD /* FRFacebookSignIn.framework in Embed Frameworks */,
 				A59506EB2B6070D000E366F9 /* PingProtect.framework in Embed Frameworks */,
 				A5D8938C29E5AAA3004D21F4 /* FRDeviceBinding.framework in Embed Frameworks */,
 				3AF37D772C8038E400190350 /* FRCaptchaEnterprise.framework in Embed Frameworks */,
-				D58BC3E526031C1B00254654 /* FRFacebookSignIn.framework in Embed Frameworks */,
 				EC2FF36328B8DB780095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */,
 				D59FAEAE234418EF005D34DA /* FRAuth.framework in Embed Frameworks */,
 				D5554F71235A6F78009FC810 /* FRProximity.framework in Embed Frameworks */,
@@ -324,13 +319,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5E42B5A2DC413AC0099B4B7 /* FacebookLogin in Frameworks */,
 				A5D8938D29E5AAD1004D21F4 /* FRDeviceBinding.framework in Frameworks */,
-				D58BC3E426031C1B00254654 /* FRFacebookSignIn.framework in Frameworks */,
 				EC2FF36228B8DB780095EDD1 /* FRGoogleSignIn.framework in Frameworks */,
 				D59FAEAD234418EF005D34DA /* FRAuth.framework in Frameworks */,
 				D5554F70235A6F78009FC810 /* FRProximity.framework in Frameworks */,
 				D59FAEB5234418EF005D34DA /* FRUI.framework in Frameworks */,
 				3AF37D762C8038E400190350 /* FRCaptchaEnterprise.framework in Frameworks */,
+				A50340AC2DC27B1B001DF3DD /* FRFacebookSignIn.framework in Frameworks */,
+				A5E42B582DC413AC0099B4B7 /* FacebookCore in Frameworks */,
 				D530423B26321BE90079EB3B /* FRCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -549,7 +546,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D58BC3E326031C0D00254654 /* PBXTargetDependency */,
 				D59FAEA3234418D3005D34DA /* PBXTargetDependency */,
 				D59FAEAB234418D3005D34DA /* PBXTargetDependency */,
 				D59FAEBF23441B7E005D34DA /* PBXTargetDependency */,
@@ -604,6 +600,9 @@
 				Base,
 			);
 			mainGroup = D554632322A6EF950096C7A4;
+			packageReferences = (
+				A5E42B562DC413AC0099B4B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+			);
 			productRefGroup = D554632D22A6EF950096C7A4 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -818,11 +817,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D58BC3E326031C0D00254654 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FRFacebookSignIn;
-			targetProxy = D58BC3E226031C0D00254654 /* PBXContainerItemProxy */;
-		};
 		D58BC3E726031C2B00254654 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FRFacebookSignIn;
@@ -1127,6 +1121,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5E42B562DC413AC0099B4B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5E42B572DC413AC0099B4B7 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5E42B562DC413AC0099B4B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		A5E42B592DC413AC0099B4B7 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5E42B562DC413AC0099B4B7 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D554632422A6EF950096C7A4 /* Project object */;
 }

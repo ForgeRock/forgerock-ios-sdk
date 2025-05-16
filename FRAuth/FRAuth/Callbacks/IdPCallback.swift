@@ -185,7 +185,7 @@ public class IdPCallback: MultipleValuesCallback {
                 idpHandler = thisHandler
             }
         }
-        else if provider.lowercased().contains(CBConstants.facebook) {
+        else if provider.lowercased().contains(CBConstants.facebookLimited) {
             if let c: NSObject.Type = NSClassFromString("FRFacebookSignIn.FacebookSignInHandler") as? NSObject.Type, let thisHandler = c.init() as? IdPHandler {
                 idpHandler = thisHandler
             }

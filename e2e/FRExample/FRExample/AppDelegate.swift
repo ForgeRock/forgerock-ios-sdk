@@ -61,7 +61,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             FRLog.w("Incoming URL from native Safari App")
             return true
         }
-
+#if canImport(FRFacebookSignIn)
+        _ = FacebookSignInHandler.application(
+                    app,
+                    open: url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                    annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+                )
+#endif
         return true
     }
 
