@@ -41,17 +41,15 @@ public class FRAPushHandler: NSObject {
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         FRALog.i("Received DeviceToken data (\(deviceToken)")
         if pushDeviceTokenManager.deviceToken != deviceTokenString {
-            FRALog.i("DeviceToken has changed; updating DeviceToken in PushDeviceTokenManager")
-            pushDeviceTokenManager.setDeviceToken(deviceTokenString)
-            FRALog.i("Update the device token on the server")
             self.updateDeviceToken(deviceToken: deviceTokenString, onSuccess: {
-                FRALog.i("DeviceToken is updated successfully")
+                FRALog.i("DeviceToken is updated on the server successfully")
             }) { (error) in
                 FRALog.e("Failed to update DeviceToken with following error: \(error.localizedDescription)")
             }
+            FRALog.i("Parsed and stored DeviceToken (\(deviceTokenString)")
+        } else {
+            FRALog.i("DeviceToken (\(deviceTokenString) parsed but not stored; identical device token.")
         }
-        
-        FRALog.i("Parsed and stored DeviceToken (\(deviceTokenString)")
     }
 
     
@@ -231,12 +229,20 @@ public class FRAPushHandler: NSObject {
     
     
     /// Updates current device token with designated AM instance using information given in QR code
+    ///
+    /// NOTE: The device token is automatically stored within the method `application(_ application:, didRegisterForRemoteNotificationsWithDeviceToken deviceToken:)`.
+    /// Use this method for manual updates. The device token provided will overwrite any previously stored token.
     /// - Parameters:
     ///   - mechanism: PushMechanism object
     ///   - deviceToken: APNS device token
     ///   - onSuccess: Success callback to notify that device token update is completed and successful
     ///   - onFailure: Error callback to notify an error occurred during the push device token update
     public func updateDeviceToken(mechanism: PushMechanism, deviceToken: String, onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
+        if pushDeviceTokenManager.deviceToken != deviceToken {
+            FRALog.i("DeviceToken has changed; updating DeviceToken in PushDeviceTokenManager")
+            pushDeviceTokenManager.setDeviceToken(deviceToken)
+        }
+        
         do {
             let request = try buildPushUpdateRequest(mechanism: mechanism, deviceToken: deviceToken)
             RestClient.shared.invoke(request: request, action: Action(type: .PUSH_UPDATE)) { (result) in
@@ -260,11 +266,19 @@ public class FRAPushHandler: NSObject {
     
     
     /// Updates all current device tokens with designated AM instance using information given in QR code
+    ///
+    /// NOTE: The device token is automatically stored within the method `application(_ application:, didRegisterForRemoteNotificationsWithDeviceToken deviceToken:)`.
+    /// Use this method for manual updates. The device token provided will overwrite any previously stored token.
     /// - Parameters:
     ///  - deviceToken: APNS device token
     ///  - onSuccess: Success callback to notify that device token update is completed and successful
     ///  - onFailure: Error callback to notify an error occurred during the push device token update
-    func updateDeviceToken(deviceToken: String, onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
+    public func updateDeviceToken(deviceToken: String, onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
+        if pushDeviceTokenManager.deviceToken != deviceToken {
+            FRALog.i("DeviceToken has changed; updating DeviceToken in PushDeviceTokenManager")
+            pushDeviceTokenManager.setDeviceToken(deviceToken)
+        }
+        
         guard let mechanisms = getAllPushMechanisms(), !mechanisms.isEmpty else {
             FRALog.e("Failed to retrieve PushMechanism objects from StorageClient")
             onFailure(PushNotificationError.storageError("Failed to retrieve PushMechanism objects"))
@@ -405,12 +419,6 @@ public class FRAPushHandler: NSObject {
     /// - Throws: CryptoError, PushNotificationError,
     /// - Returns: Request object for Push Registration request
     func buildPushUpdateRequest(mechanism: PushMechanism, deviceToken: String) throws -> Request {
-        
-        guard let deviceToken = pushDeviceTokenManager.deviceToken else {
-            FRALog.e("Missing DeviceToken")
-            throw PushNotificationError.missingDeviceToken
-        }
-        
         let deviceName = UIDevice.current.name
         
         var payload: [String: CodableValue] = [:]
