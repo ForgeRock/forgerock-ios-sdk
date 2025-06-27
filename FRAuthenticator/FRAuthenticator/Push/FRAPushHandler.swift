@@ -231,17 +231,15 @@ public class FRAPushHandler: NSObject {
     /// Updates current device token with designated AM instance using information given in QR code
     ///
     /// NOTE: The device token is automatically stored within the method `application(_ application:, didRegisterForRemoteNotificationsWithDeviceToken deviceToken:)`.
-    /// Use this method for manual updates. The device token provided will overwrite any previously stored token.
+    /// Use this method for manual updates. The provided device token will overwrite any previously stored token.
     /// - Parameters:
     ///   - mechanism: PushMechanism object
     ///   - deviceToken: APNS device token
     ///   - onSuccess: Success callback to notify that device token update is completed and successful
     ///   - onFailure: Error callback to notify an error occurred during the push device token update
     public func updateDeviceToken(mechanism: PushMechanism, deviceToken: String, onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
-        if pushDeviceTokenManager.deviceToken != deviceToken {
-            FRALog.i("DeviceToken has changed; updating DeviceToken in PushDeviceTokenManager")
-            pushDeviceTokenManager.setDeviceToken(deviceToken)
-        }
+        FRALog.i("DeviceToken has changed; updating DeviceToken in storage")
+        pushDeviceTokenManager.setDeviceToken(deviceToken)
         
         do {
             let request = try buildPushUpdateRequest(mechanism: mechanism, deviceToken: deviceToken)
@@ -268,16 +266,14 @@ public class FRAPushHandler: NSObject {
     /// Updates all current device tokens with designated AM instance using information given in QR code
     ///
     /// NOTE: The device token is automatically stored within the method `application(_ application:, didRegisterForRemoteNotificationsWithDeviceToken deviceToken:)`.
-    /// Use this method for manual updates. The device token provided will overwrite any previously stored token.
+    /// Use this method for manual updates. The provided device token will overwrite any previously stored token.
     /// - Parameters:
     ///  - deviceToken: APNS device token
     ///  - onSuccess: Success callback to notify that device token update is completed and successful
     ///  - onFailure: Error callback to notify an error occurred during the push device token update
     public func updateDeviceToken(deviceToken: String, onSuccess: @escaping SuccessCallback, onFailure: @escaping ErrorCallback) {
-        if pushDeviceTokenManager.deviceToken != deviceToken {
-            FRALog.i("DeviceToken has changed; updating DeviceToken in PushDeviceTokenManager")
-            pushDeviceTokenManager.setDeviceToken(deviceToken)
-        }
+        FRALog.i("DeviceToken has changed; updating DeviceToken in storage")
+        pushDeviceTokenManager.setDeviceToken(deviceToken)
         
         guard let mechanisms = getAllPushMechanisms(), !mechanisms.isEmpty else {
             FRALog.e("Failed to retrieve PushMechanism objects from StorageClient")
