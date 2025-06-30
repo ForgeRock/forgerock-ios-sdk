@@ -1,3 +1,8 @@
+## [4.8.1]
+
+#### Fixed
+- Resolved an issue where the new push device token was not being stored correctly on the device [SDKS-4182]
+
 ## [4.8.0]
 #### Added
 - Support for updating APNs device tokens of existing push mechanisms [SDKS-3684]

@@ -281,7 +281,7 @@ class FRAPushHandlerTests: FRABaseTests {
 
             XCTAssertEqual(jwtPayload["mechanismUid"] as? String, mechanism.mechanismUUID)
             XCTAssertEqual(jwtPayload["deviceName"] as? String, UIDevice.current.name)
-            XCTAssertEqual(jwtPayload["deviceId"] as? String, FRAPushHandler.shared.deviceToken)
+            XCTAssertEqual(jwtPayload["deviceId"] as? String, deviceTokenStr)
             XCTAssertEqual(jwtPayload["deviceType"] as? String, "ios")
             XCTAssertEqual(jwtPayload["communicationType"] as? String, "apns")
 
