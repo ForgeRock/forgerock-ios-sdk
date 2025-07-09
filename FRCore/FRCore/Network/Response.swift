@@ -14,11 +14,11 @@ import Foundation
 public struct Response {
     
     /// response Data
-    let data: Data?
+    public let data: Data?
     /// URLResponse object containing HTTP information of the response
-    let response: URLResponse?
+    public let response: URLResponse?
     /// API request failure error
-    let error: Error?
+    public let error: Error?
     
     public init(data: Data?, response: URLResponse?, error: Error?) {
         self.data = data
