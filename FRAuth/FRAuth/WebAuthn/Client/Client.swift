@@ -209,7 +209,7 @@ class WebAuthnClient: ClientOperationDelegate {
 
         let clientDataJSONData = try! JSONEncoder().encode(clientData)
         let clientDataJSON = String(data: clientDataJSONData, encoding: .utf8)!
-        let clientDataHash = clientDataJSONData.sha256.bytes
+        let clientDataHash = clientDataJSONData.sha256.bytesArray
 
         return (clientData, clientDataJSON, clientDataHash)
     }

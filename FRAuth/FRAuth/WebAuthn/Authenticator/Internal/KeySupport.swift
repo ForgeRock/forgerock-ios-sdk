@@ -66,7 +66,7 @@ class ECDSAKeySupport : KeySupport {
     func sign(data: [UInt8], label: String) -> Optional<[UInt8]> {
         
         if let pair = self.createPair(label: label), let signature = pair.sign(data: Data(data)) {
-            return signature.bytes
+            return signature.bytesArray
         }
         else {
             WAKLogger.debug("<ECDSAKeySupport> failed to sign:")
@@ -79,7 +79,7 @@ class ECDSAKeySupport : KeySupport {
         
         if let pair = self.createPair(label: label) {
             do {
-                let publicKey = try pair.getPublicKeyDERData().bytes
+                let publicKey = try pair.getPublicKeyDERData().bytesArray
                 if publicKey.count != 91 {
                     WAKLogger.debug("<ECDSAKeySupport> length of pubKey should be 91: \(publicKey.count)")
                     return nil
