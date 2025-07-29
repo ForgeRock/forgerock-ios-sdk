@@ -18,22 +18,12 @@ public class FRDeviceCollector: NSObject {
     public static let shared = FRDeviceCollector()
     /// An array of DeviceCollector to be collected
     @objc
-    public var collectors: [DeviceCollector]
+    public var collectors: [DeviceCollector] = [] // The default array of DeviceCollector is empty, and should be initialized by the ProfileCollector in the DeviceProfileCallback initialization based on the `metadata` and `location` flags
+    
     /// Current version of Device Collector structure
     @objc
     static let FRDeviceCollectorVersion: String = "1.0"
     
-    /// Private initialization method which initializes default array of DeviceCollector
-    @objc
-    public override init() {
-        collectors = [
-            PlatformCollector(),
-            HardwareCollector(),
-            BrowserCollector(),
-            TelephonyCollector(),
-            NetworkCollector()
-        ]
-    }
     
     /// Collects Device Information with all given DeviceCollector
     ///
