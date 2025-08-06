@@ -39,7 +39,7 @@ public struct FRDeviceIdentifier {
     /// Constant Key for Private Key in KeychainService
     let privateKeyDataKeychainServiceKey = "com.forgerock.ios.device-identifier.private-key.data"
     /// Constant Key for Identifier in KeychainService
-    let identifierKeychainServiceKey = "com.forgerock.ios.device-identifier.hash-base64-string-identifier"
+    static let identifierKeychainServiceKey = "com.forgerock.ios.device-identifier.hash-base64-string-identifier"
     
     /// Initializes FRDeviceIdentifier
     ///
@@ -53,7 +53,7 @@ public struct FRDeviceIdentifier {
     /// - Returns: Uniquely generated Identifier as per Keychain Sharing Access Group
     @discardableResult public func getIdentifier() -> String {
         
-        if let identifier = self.keychainService.getString(self.identifierKeychainServiceKey) {
+        if let identifier = self.keychainService.getString(FRDeviceIdentifier.identifierKeychainServiceKey) {
             FRLog.v("Device Identifier is retrieved from Device Identifier Store")
             // If the identifier was found from KeychainService
             return identifier
@@ -63,7 +63,7 @@ public struct FRDeviceIdentifier {
             // If the identifier was not found from KeychainService, then generates Key Pair and hash Public Key
             let identifier = self.hashAndBase64Data(keyData)
             // Persists the identifier
-            self.keychainService.set(identifier, key: self.identifierKeychainServiceKey)
+            self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey)
             return identifier
         }
         else {
@@ -73,7 +73,7 @@ public struct FRDeviceIdentifier {
             let uuidData = uuid.data(using: .utf8)!
             // Hash UUID string, and persists it
             let identifier = self.hashAndBase64Data(uuidData)
-            self.keychainService.set(identifier, key: self.identifierKeychainServiceKey)
+            self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey)
             return identifier
         }
     }
@@ -140,7 +140,6 @@ public struct FRDeviceIdentifier {
         return false
     }
     
-    
     /// Builds Dictionary of Keychain operation attributes for Key Pair generation based on given Key Type
     ///
     /// - Parameter keyType: RSA Key Type whether Public or Private Key
@@ -148,7 +147,7 @@ public struct FRDeviceIdentifier {
     func buildKeyAttr(_ keyType: FRDeviceIdentifierKeyType) -> [String: Any] {
         var query: [String: Any] = [:]
         
-        query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+        query[kSecAttrAccessible as String] = KeychainAccessibility.afterFirstUnlockThisDeviceOnly.rawValue
         query[kSecAttrIsPermanent as String] = true
         
         switch keyType {
