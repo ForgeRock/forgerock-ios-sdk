@@ -33,7 +33,7 @@ open class RequestInterceptorRegistry {
         }
         else {
             if let interceptors = interceptors {
-                var newInterceptors = RestClient.shared.interceptors ?? []
+                var newInterceptors = RestClient.shared.requestInterceptors ?? []
                 for interceptor in interceptors {
                     newInterceptors.append(interceptor)
                 }

@@ -25,7 +25,9 @@ public class RestClient: NSObject {
     /// URLSession to be consumed through RestClient
     var _urlSession: URLSession?
     /// An array of RequestInterceptor
-    var interceptors: [RequestInterceptor]?
+    var requestInterceptors: [RequestInterceptor]?
+    /// An array of ResponseInterceptor
+    var responseInterceptors: [ResponseInterceptor]?
     
     static var defaultURLSessionConfiguration: URLSessionConfiguration {
         get {
@@ -72,7 +74,7 @@ public class RestClient: NSObject {
     public func invoke(request: Request, action: Action? = nil, completion: @escaping ResultCallback) {
         
         //  Intercept request with current set of interceptors
-        let thisRequest = self.interceptRequest(originalRequest: request, action: action)
+        let thisRequest = self.interceptRequest(request, action: action)
         
         //  Validate whether `Request` object is valid; otherwise, return an error
         guard let urlRequest = thisRequest.build() else {
@@ -113,11 +115,12 @@ public class RestClient: NSObject {
     public func invokeSync(request: Request, action: Action? = nil) -> Result {
         
         //  Intercept request with current set of interceptors
-        let thisRequest = self.interceptRequest(originalRequest: request, action: action)
+        let thisRequest = self.interceptRequest(request, action: action)
         
         //  Validate whether `Request` object is valid; otherwise, return an error
         guard let urlRequest = thisRequest.build() else {
-            return Response(data: nil, response: nil, error: NetworkError.invalidRequest(thisRequest.debugDescription)).parseReponse()
+            let response = Response(data: nil, response: nil, error: NetworkError.invalidRequest(thisRequest.debugDescription))
+            return interceptResponse(response, action: action).parseReponse()
         }
         
         // Log request / capture request start
@@ -133,15 +136,15 @@ public class RestClient: NSObject {
         let timeInterval = Int(nanoTime) / 1_000_000
         Log.logResponse(timeInterval, data, response, error)
         
-        return Response(data: data, response: response, error: error).parseReponse()
+        return interceptResponse(Response(data: data, response: response, error: error), action: action).parseReponse()
     }
     
     
     /// Intercepts current Request object, and evaluates with given set of RequestInterceptors to update the original request
     /// - Parameter originalRequest: original Request object
     /// - Returns: updated Request object with given set of RequestInterceptors
-    func interceptRequest(originalRequest: Request, action: Action? = nil) -> Request {
-        if let action = action, let interceptors = self.interceptors {
+    func interceptRequest(_ originalRequest: Request, action: Action? = nil) -> Request {
+        if let action = action, let interceptors = self.requestInterceptors {
             Log.i("Request found with Action (\(action.type); processing with RequestInterceptors (\(interceptors.count) found)")
             Log.i("Original Request: \(originalRequest.debugDescription)")
             var currentRequest = originalRequest
@@ -158,6 +161,25 @@ public class RestClient: NSObject {
         return originalRequest
     }
     
+    /// Intercepts current Response object, and evaluates with given set of ResponseInterceptors to handle the original response
+    /// - Parameter originalResponse: original Response object
+    /// - Returns: updated Response object with given set of ResponseInterceptors
+    func interceptResponse(_ originalResponse: Response, action: Action? = nil) -> Response {
+        if let action = action, let interceptors = self.responseInterceptors {
+            Log.i("Response found with Action (\(action.type); processing with ResponseInterceptors (\(interceptors.count) found)")
+            var currentResponse = originalResponse
+            for interceptor in interceptors {
+                Log.i("Start processing: \(String(describing: interceptor))")
+                currentResponse = interceptor.intercept(response: currentResponse, action: action)
+                Log.i("Executed \(String(describing: interceptor))")
+            }
+            
+            return currentResponse
+        }
+        Log.v("ResponseInterceptor not found; proceeding with original response")
+        
+        return originalResponse
+    }
     
     //  MARK: - Config
     
@@ -187,7 +209,15 @@ public class RestClient: NSObject {
     /// Registers an array of RequestInterceptors to intercept and modify Requests originated by SDK
     /// - Parameter interceptors: An array of RequestInterceptors
     func setRequestInterceptors(interceptors: [RequestInterceptor]?) {
-        self.interceptors = interceptors
+        self.requestInterceptors = interceptors
+    }
+    
+    //  MARK: - ResponseInterceptors
+    
+    /// Registers an array of ResponseInterceptor to intercept and modify Requests originated by SDK
+    /// - Parameter interceptors: An array of ResponseInterceptor
+    func setResponseInterceptors(interceptors: [ResponseInterceptor]?) {
+        self.responseInterceptors = interceptors
     }
 }
 

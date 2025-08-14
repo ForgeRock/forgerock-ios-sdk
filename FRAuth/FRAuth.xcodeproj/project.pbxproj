@@ -55,6 +55,7 @@
 		A55D57BE2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */; };
 		A55D57BF2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
+		CA5194C92CA49A0900583F29 /* FRResponseInterceptorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5194C82CA49A0900583F29 /* FRResponseInterceptorRegistry.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
@@ -426,6 +427,7 @@
 		A544D6702DBFF31200A2EE4C /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
+		CA5194C82CA49A0900583F29 /* FRResponseInterceptorRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRResponseInterceptorRegistry.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
@@ -1163,6 +1165,7 @@
 				D586CF3A23358EDF007A2194 /* NetworkReachabilityMonitor.swift */,
 				D512CD40240DC41E00AF520E /* FRRestClient.swift */,
 				D5EC34FA247B329D0005A50C /* FRRequestInterceptorRegistry.swift */,
+				CA5194C82CA49A0900583F29 /* FRResponseInterceptorRegistry.swift */,
 				EC8BCAFD273C3EC100C3B2D8 /* FRHTTPCookie.swift */,
 				D5E86BBC2481E5B800DFD5E0 /* FRURLProtocol.swift */,
 			);
@@ -1966,6 +1969,7 @@
 				D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */,
 				D586CF7823358EE0007A2194 /* ConfigError.swift in Sources */,
 				D586CF7723358EE0007A2194 /* AuthError.swift in Sources */,
+				CA5194C92CA49A0900583F29 /* FRResponseInterceptorRegistry.swift in Sources */,
 				D53A800E262789A80093B1CA /* WebAuthn.swift in Sources */,
 				1B264AA72C642507002E3BD2 /* ProtectCallback.swift in Sources */,
 				D586CFB923358EE0007A2194 /* DeviceCollector.swift in Sources */,
