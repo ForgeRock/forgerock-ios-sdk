@@ -9,7 +9,7 @@
 //
 
 import Foundation
-
+import Dispatch
 
 /// TokenManager class is a management class responsible for persisting, retrieving, and refreshing OAuth2 token(s)
 struct TokenManager {
@@ -17,7 +17,10 @@ struct TokenManager {
     var oAuth2Client: OAuth2Client
     var keychainManager: KeychainManager
     
-    /// Initializes TokenMAnager instance with optional Access Group for shared Keychain Group identifier
+    /// Semaphore lock to make TokenManager thread-safe
+    private let lock = DispatchSemaphore(value: 1)
+    
+    /// Initializes TokenManager instance with optional Access Group for shared Keychain Group identifier
     ///
     /// - Parameters:
     ///   - oAuth2Client: OAuth2Client instance for OAuth2 token protocols
@@ -26,50 +29,40 @@ struct TokenManager {
         self.oAuth2Client = oAuth2Client
         self.keychainManager = keychainManager
     }
-        
+    
     
     /// Retrieves AccessToken; if AccessToken expires within threshold defined in OAuth2Client, it will return a new set of OAuth2 tokens
     ///
     /// - Parameter completion: TokenCompletion block which will return an AccessToken object, or Error
     public func getAccessToken(completion: @escaping TokenCompletionCallback) {
-        do {
-            if let token = try self.keychainManager.getAccessToken() {
-                if let ssoToken = self.keychainManager.getSSOToken()?.value, ssoToken != token.sessionToken {
-                    FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                    self.revokeAndEndSession { (error) in
-                        FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
-                        self.refreshUsingSSOToken(completion: completion)
-                    }
-                }
-                else {
-                    if token.willExpireIn(threshold: self.oAuth2Client.threshold) {
-                        self.refreshUsingRefreshToken(token: token) { (token, error) in
-                            if let tokenError = error as? TokenError, case TokenError.nullRefreshToken = tokenError {
-                                FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
-                                self.refreshUsingSSOToken(completion: completion)
-                            }
-                            else if let oAuthError = error as? OAuth2Error, case OAuth2Error.invalidGrant = oAuthError {
-                                FRLog.w("refresh_token grant failed; try to exchange SSO Token for OAuth2 tokens")
-                                self.refreshUsingSSOToken(completion: completion)
-                            }
-                            else {
-                                completion(token, error)
-                            }
-                        }
-                    }
-                    else {
-                        FRLog.v("access_token still valid; returning existing token")
-                        completion(token, nil)
-                    }
-                }
+        
+        // 1. Call the `retrieveToken` method.
+        // This safely handles initial token retrieval and any session mismatch errors.
+        self.retrieveToken { (token, error) in
+            
+            // Handle any errors from the initial retrieval (e.g., keychain failure).
+            if let error = error {
+                FRLog.e("An error occurred during initial token retrieval: \(error.localizedDescription)")
+                completion(nil, error)
+                return
             }
-            else {
-                FRLog.w("No OAuth2 token found; exchanging SSO Token for OAuth2 tokens")
+            
+            // 2. If a token was successfully retrieved, proceed to check its expiration.
+            if let validToken = token {
+                if validToken.willExpireIn(threshold: self.oAuth2Client.threshold) {
+                    // Token is about to expire, so attempt to refresh it.
+                    self._handleRefreshToken(token: validToken, completion: completion)
+                } else {
+                    // Token is valid and not expiring. Return it directly.
+                    FRLog.v("Access token is still valid; returning existing token.")
+                    completion(validToken, nil)
+                }
+            } else {
+                // 3. If `retrieveToken` returned nil, no token was found.
+                // Proceed to get a new token using the SSO token.
+                FRLog.w("No OAuth2 token found; exchanging SSO Token for OAuth2 tokens.")
                 self.refreshUsingSSOToken(completion: completion)
             }
-        } catch {
-            FRLog.e("An error encountered while retrieving tokens from storage")
-            completion(nil, error)
         }
     }
     
@@ -81,108 +74,72 @@ struct TokenManager {
     /// - Returns: AccessToken if it was able to retrieve, or get new set of OAuth2 token
     /// - Throws: AuthError will be thrown when refresh_token request failed, or TokenError
     public func getAccessToken() throws -> AccessToken? {
-        if let token = try self.keychainManager.getAccessToken() {
+        
+        // 1. Call the corrected `retrieveTokenSync` method.
+        // This method handles thread-safety, keychain access, and session token mismatches.
+        if let token = try retrieveTokenSync() {
             
-            if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
-                FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                self.revokeAndEndSession { (error) in
-                }
-                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
-                return try self.refreshUsingSSOTokenAsync()
-            }
-            
+            // 2. A session-valid token was returned. Now, check its expiration.
             if token.willExpireIn(threshold: self.oAuth2Client.threshold) {
-                do {
-                    return try self.refreshUsingRefreshTokenAsync(token: token)
-                }
-                catch TokenError.nullRefreshToken {
-                    FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
-                    return try self.refreshUsingSSOTokenAsync()
-                }
-                catch OAuth2Error.invalidGrant {
-                    FRLog.w("refresh_token grant failed; try to exchange SSO Token for OAuth2 tokens")
-                    return try self.refreshUsingSSOTokenAsync()
-                }
+                // Token is expiring, so attempt to refresh it using its refresh token.
+                return try self._handleRefreshTokenSync(token: token)
             }
             else {
-                FRLog.v("access_token still valid; returning existing token")
+                // Token is valid and not expiring. Return it directly.
+                FRLog.v("Access token is still valid; returning existing token")
                 return token
             }
         }
         else {
+            // 3. `retrieveTokenSync` returned nil, meaning no token was stored.
+            // Get a new one using the SSO token.
             FRLog.w("No OAuth2 token found; exchanging SSO Token for OAuth2 tokens")
-            return try self.refreshUsingSSOTokenAsync()
+            return try self.refreshUsingSSOTokenSync()
         }
     }
     
     
-    /// Refreshes OAuth2 token set using refresh_token
-    /// - Parameter completion: TokenCompletion block which will return an AccessToken object, or Error
+    /// Refreshes the current OAuth2 token set.
+    /// It will handle session mismatches, then attempt to use the refresh_token,
+    /// falling back to the SSO token if necessary.
+    /// - Parameter completion: The callback delivering the result.
     func refresh(completion: @escaping TokenCompletionCallback) {
-        do {
-            if let token = try self.keychainManager.getAccessToken() {
-                if let ssoToken = self.keychainManager.getSSOToken()?.value, ssoToken != token.sessionToken {
-                    FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                    self.revokeAndEndSession { (error) in
-                        FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
-                        self.refreshUsingSSOToken(completion: completion)
-                    }
-                }
-                else {
-                    self.refreshUsingRefreshToken(token: token) { (token, error) in
-                        if let tokenError = error as? TokenError, case TokenError.nullRefreshToken = tokenError {
-                            FRLog.i("No refresh_token found; proceeding with SSO Token to obtain OAuth2 token(s)")
-                            self.refreshUsingSSOToken(completion: completion)
-                        }
-                        else if let oAuthError = error as? OAuth2Error, case OAuth2Error.invalidGrant = oAuthError {
-                            FRLog.i("invalid_grant received during refresh_token grant; proceeding with SSO Token to obtain OAuth2 token(s)")
-                            self.refreshUsingSSOToken(completion: completion)
-                        }
-                        else {
-                            completion(token, error)
-                        }
-                    }
-                }
+        // First, retrieve a session-valid token.
+        // retrieveToken handles the session mismatch check internally.
+        self.retrieveToken { (token, error) in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            if let token = token {
+                // A valid token was found, so proceed to refresh it.
+                self._handleRefreshToken(token: token, completion: completion)
             }
             else {
-                FRLog.e("No OAuth2 token(s) found")
+                // retrieveToken returned nil, meaning no token was stored.
+                FRLog.e("No OAuth2 token(s) found to refresh.")
                 completion(nil, TokenError.nullToken)
             }
         }
-        catch {
-            completion(nil, error)
-        }
     }
     
     
-    /// Refreshs OAuth2 token set synchronously with current refresh_token
-    /// - Throws: TokenError
-    /// - Returns: renewed OAuth2 token 
+    /// Synchronously refreshes the current OAuth2 token set.
+    /// It will handle session mismatches, then attempt to use the refresh_token,
+    /// falling back to the SSO token if necessary.
+    /// - Throws: TokenError or other underlying errors.
+    /// - Returns: The renewed AccessToken.
     func refreshSync() throws -> AccessToken? {
-        if let token = try self.keychainManager.getAccessToken() {
-            
-            if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
-                FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) associated with Access Token mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with previously granted Session Token.")
-                self.revokeAndEndSession { (error) in
-                }
-                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
-                return try self.refreshUsingSSOTokenAsync()
-            }
-            
-            do {
-                return try self.refreshUsingRefreshTokenAsync(token: token)
-            }
-            catch TokenError.nullRefreshToken {
-                FRLog.i("No refresh_token found; proceeding with SSO Token to obtain OAuth2 token(s)")
-                return try self.refreshUsingSSOTokenAsync()
-            }
-            catch OAuth2Error.invalidGrant {
-                FRLog.i("invalid_grant received during refresh_token grant; proceeding with SSO Token to obtain OAuth2 token(s)")
-                return try self.refreshUsingSSOTokenAsync()
-            }
+        // First, retrieve a session-valid token.
+        // retrieveTokenSync handles thread-safety and session mismatch checks internally.
+        if let token = try self.retrieveTokenSync() {
+            // A valid token was found, so proceed to refresh it.
+            return try self._handleRefreshTokenSync(token: token)
         }
         else {
-            FRLog.e("No OAuth2 token(s) found")
+            // retrieveTokenSync returned nil, meaning no token was stored.
+            FRLog.e("No OAuth2 token(s) found to refresh.")
             throw TokenError.nullToken
         }
     }
@@ -218,21 +175,41 @@ struct TokenManager {
     }
     
     
-    
     /// Ends OIDC Session with given id_token and revokes OAuth2 token(s)
     /// - Parameter completion: Completion callback to notify the result
     func revokeAndEndSession(completion: @escaping CompletionCallback) {
         do {
             if let token = try self.keychainManager.getAccessToken() {
-                //  End session if id_token exists
+                let dispatchGroup = DispatchGroup()
+                var capturedError: Error?
+                
+                // End session if id_token exists
                 if let idToken = token.idToken {
+                    dispatchGroup.enter() // Enter group for endSession
                     self.endSession(idToken: idToken) { (error) in
-                        FRLog.v("Session ended with given id_token (\(idToken)) using OIDC /endSession - Error: \(error?.localizedDescription ?? "")")
+                        if let error = error {
+                            FRLog.v("Session ended with error: \(error.localizedDescription)")
+                            capturedError = error // Capture the first error
+                        } else {
+                            FRLog.v("Session ended successfully.")
+                        }
+                        dispatchGroup.leave() // Leave group for endSession
                     }
                 }
                 
-                //  Revoke OAuth2 token(s)
-                self.revoke(completion: completion)
+                // Revoke OAuth2 token(s)
+                dispatchGroup.enter() // Enter group for revoke
+                self.revoke { (error) in
+                    if let error = error, capturedError == nil {
+                        capturedError = error // Capture the first error
+                    }
+                    dispatchGroup.leave() // Leave group for revoke
+                }
+                
+                // Notify when both operations are complete
+                dispatchGroup.notify(queue: .main) {
+                    completion(capturedError)
+                }
             }
             else {
                 completion(TokenError.nullToken)
@@ -247,7 +224,7 @@ struct TokenManager {
     /// Renews OAuth 2 token(s) with SSO Token
     /// - Throws: AuthApiError, TokenError
     /// - Returns: AccessToken object containing OAuth 2 token if it was successful
-    func refreshUsingSSOTokenAsync() throws -> AccessToken? {
+    func refreshUsingSSOTokenSync() throws -> AccessToken? {
         if let ssoToken = self.keychainManager.getSSOToken() {
             do {
                 let token = try self.oAuth2Client.exchangeTokenSync(token: ssoToken)
@@ -308,7 +285,7 @@ struct TokenManager {
     /// - Parameter token: AccessToken object to be consumed for renewal
     /// - Throws: AuthApiError, TokenError
     /// - Returns: AccessToken object containing OAuth 2 token if it was successful
-    func refreshUsingRefreshTokenAsync(token: AccessToken) throws -> AccessToken? {
+    func refreshUsingRefreshTokenSync(token: AccessToken) throws -> AccessToken? {
         if let refreshToken = token.refreshToken {
             let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
             newToken.sessionToken = token.sessionToken
@@ -371,6 +348,120 @@ struct TokenManager {
     func revokeToken(_ token: AccessToken, completion: @escaping CompletionCallback) {
         self.oAuth2Client.revoke(accessToken: token, useRefreshToken: false) { (error) in
             completion(error)
+        }
+    }
+    
+    /// Retrieves AccessToken without checking expiry; if Session Token associated with AccessToken mismatches with current SSO Token, it will revoke the token set and return nil
+    /// - Parameter completion: Completion callback to notify the result
+    /// - Throws: TokenError
+    /// - Returns: AccessToken if it was able to retrieve, or nil if there was no token found
+    func retrieveToken(completion: @escaping TokenCompletionCallback) {
+        do {
+            guard let token = try self.keychainManager.getAccessToken() else {
+                // No token found, complete with nil
+                completion(nil, nil)
+                return
+            }
+            
+            if let ssoToken = self.keychainManager.getSSOToken()?.value, ssoToken != token.sessionToken {
+                // Mismatch found: revoke, then refresh.
+                FRLog.w("SDK identified Session Token mismatch; revoking token set.")
+                
+                self.revoke { (error) in
+                    if let error = error {
+                        // If revoke fails, pass the error up
+                        completion(nil, error)
+                        return
+                    }
+                    
+                    FRLog.i("Token set revoked; proceeding to refresh using SSO token.")
+                    // After revoke succeeds, call the async refresh
+                    self.refreshUsingSSOToken(completion: completion)
+                }
+            }
+            else {
+                // No mismatch, token is valid. Complete successfully with the current token.
+                completion(token, nil)
+            }
+        } catch {
+            // Catch any errors from keychainManager and complete with the error.
+            completion(nil, error)
+        }
+    }
+    
+    /// Retrieves AccessToken; if AccessToken expires within threshold defined in OAuth2Client, it will return a new set of OAuth2 tokens
+    /// - NOTE: This method may perform synchronous API request if the token expires within threshold. Make sure to not call this method in Main thread
+    /// - Returns: AccessToken if it was able to retrieve, or get new set of OAuth2 token
+    func retrieveTokenSync() throws -> AccessToken? {
+        // This outer lock makes the entire method thread-safe
+        self.lock.wait()
+        
+        defer {
+            self.lock.signal()
+        }
+        guard let token = try self.keychainManager.getAccessToken() else {
+            return nil
+        }
+        if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
+            FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) mismatch...")
+            
+            // 1. Create a new semaphore to wait specifically for the revoke operation
+            let revokeSemaphore = DispatchSemaphore(value: 0)
+            var revokeError: Error?
+            
+            self.revoke { (error) in
+                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
+                
+                // Capture any error and signal that the revoke operation is finished
+                revokeError = error
+                revokeSemaphore.signal()
+            }
+            
+            // 2. Wait here until the semaphore is signaled from the completion block
+            revokeSemaphore.wait()
+            
+            // 3. If an error occurred during revoke, throw it
+            if let error = revokeError {
+                throw error
+            }
+            
+            // 4. This line will now only execute after the revoke completion handler has run
+            return try self.refreshUsingSSOTokenSync()
+        }
+        
+        return token
+    }
+    
+    
+    // MARK: - Private Refactoring Helpers
+    
+    /// Private helper to manage the refresh-token grant and its specific fallback logic.
+    private func _handleRefreshToken(token: AccessToken, completion: @escaping TokenCompletionCallback) {
+        self.refreshUsingRefreshToken(token: token) { (refreshedToken, refreshError) in
+            if let tokenError = refreshError as? TokenError, case .nullRefreshToken = tokenError {
+                FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
+                self.refreshUsingSSOToken(completion: completion)
+            } else if let oAuthError = refreshError as? OAuth2Error, case .invalidGrant = oAuthError {
+                FRLog.w("refresh_token grant failed; exchanging SSO Token for OAuth2 tokens")
+                self.refreshUsingSSOToken(completion: completion)
+            } else {
+                completion(refreshedToken, refreshError)
+            }
+        }
+    }
+    
+    /// Private sync helper to manage the refresh-token grant and its specific fallback logic.
+    private func _handleRefreshTokenSync(token: AccessToken) throws -> AccessToken? {
+        do {
+            return try self.refreshUsingRefreshTokenSync(token: token)
+        }
+        catch TokenError.nullRefreshToken {
+            FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
+            return try self.refreshUsingSSOTokenSync()
+        }
+        catch OAuth2Error.invalidGrant {
+            FRLog.w("refresh_token grant failed; exchanging SSO Token for OAuth2 tokens")
+            return try self.refreshUsingSSOTokenSync()
         }
     }
 }
