@@ -471,30 +471,21 @@ struct TokenManager {
     /// Private helper to manage the refresh-token grant and its specific fallback logic.
     private func _handleRefreshToken(token: AccessToken, completion: @escaping TokenCompletionCallback) {
         self.refreshUsingRefreshToken(token: token) { (refreshedToken, refreshError) in
-            if let tokenError = refreshError as? TokenError, case .nullRefreshToken = tokenError {
-                FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
-                self.refreshUsingSSOToken(completion: completion)
-            } else if let oAuthError = refreshError as? OAuth2Error, case .invalidGrant = oAuthError {
-                FRLog.w("refresh_token grant failed; exchanging SSO Token for OAuth2 tokens")
-                self.refreshUsingSSOToken(completion: completion)
-            } else {
-                completion(refreshedToken, refreshError)
+            guard let refreshedToken = refreshedToken else {
+                if let _ = self.keychainManager.getSSOToken() {
+                    if let tokenError = refreshError as? TokenError, case .nullRefreshToken = tokenError {
+                        FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
+                    } else if let oAuthError = refreshError as? OAuth2Error, case .invalidGrant = oAuthError {
+                        FRLog.w("refresh_token grant failed; exchanging SSO Token for OAuth2 tokens")
+                    }
+                    self.refreshUsingSSOToken(completion: completion)
+                } else {
+                    self.clearCredentials()
+                    completion(refreshedToken, refreshError)
+                }
+                return
             }
-        }
-    }
-    
-    /// Private sync helper to manage the refresh-token grant and its specific fallback logic.
-    private func _handleRefreshTokenSync(token: AccessToken) throws -> AccessToken? {
-        do {
-            return try self.refreshUsingRefreshTokenSync(token: token)
-        }
-        catch TokenError.nullRefreshToken {
-            FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
-            return try self.refreshUsingSSOTokenSync()
-        }
-        catch OAuth2Error.invalidGrant {
-            FRLog.w("refresh_token grant failed; exchanging SSO Token for OAuth2 tokens")
-            return try self.refreshUsingSSOTokenSync()
+            completion(refreshedToken, refreshError)
         }
     }
 }
