@@ -97,10 +97,11 @@ public class Address: NSObject, NSSecureCoding {
     ///
     /// - Parameter aDecoder: NSCoder
     convenience required public init?(coder aDecoder: NSCoder) {
-        if let address = aDecoder.decodeObject(forKey: "address") as? [String: Any] {
-            self.init(address)
+        guard let address = aDecoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self, NSDate.self, NSURL.self, NSNull.self],
+                                                  forKey: "address") as? [String: Any] else {
+            return nil
         }
-        return nil
+        self.init(address)
     }
     
     
