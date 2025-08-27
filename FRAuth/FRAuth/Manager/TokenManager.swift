@@ -75,27 +75,40 @@ struct TokenManager {
     /// - Throws: AuthError will be thrown when refresh_token request failed, or TokenError
     public func getAccessToken() throws -> AccessToken? {
         
-        // 1. Call the corrected `retrieveTokenSync` method.
-        // This method handles thread-safety, keychain access, and session token mismatches.
-        if let token = try retrieveTokenSync() {
+        // Use the instance's lock to ensure atomicity and prevent race conditions
+        // from multiple threads calling this synchronous method.
+        self.lock.wait()
+        defer {
+            self.lock.signal()
+        }
+        
+        // Create a semaphore to block the current thread.
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        // Variables to capture the result from the async function.
+        var resultToken: AccessToken?
+        var resultError: Error?
+        
+        // Call the asynchronous version of the function.
+        self.getAccessToken { (token, error) in
+            // Capture the results from the completion handler.
+            resultToken = token
+            resultError = error
             
-            // 2. A session-valid token was returned. Now, check its expiration.
-            if token.willExpireIn(threshold: self.oAuth2Client.threshold) {
-                // Token is expiring, so attempt to refresh it using its refresh token.
-                return try self._handleRefreshTokenSync(token: token)
-            }
-            else {
-                // Token is valid and not expiring. Return it directly.
-                FRLog.v("Access token is still valid; returning existing token")
-                return token
-            }
+            // Signal the semaphore to unblock the waiting thread.
+            semaphore.signal()
         }
-        else {
-            // 3. `retrieveTokenSync` returned nil, meaning no token was stored.
-            // Get a new one using the SSO token.
-            FRLog.w("No OAuth2 token found; exchanging SSO Token for OAuth2 tokens")
-            return try self.refreshUsingSSOTokenSync()
+        
+        // Wait here until the async function calls the completion handler and signals the semaphore.
+        semaphore.wait()
+        
+        // After being unblocked, check for an error and throw it if it exists.
+        if let error = resultError {
+            throw error
         }
+        
+        // Otherwise, return the token.
+        return resultToken
     }
     
     
@@ -131,17 +144,40 @@ struct TokenManager {
     /// - Throws: TokenError or other underlying errors.
     /// - Returns: The renewed AccessToken.
     func refreshSync() throws -> AccessToken? {
-        // First, retrieve a session-valid token.
-        // retrieveTokenSync handles thread-safety and session mismatch checks internally.
-        if let token = try self.retrieveTokenSync() {
-            // A valid token was found, so proceed to refresh it.
-            return try self._handleRefreshTokenSync(token: token)
+        
+        // Use the instance's lock to ensure this operation is atomic.
+        self.lock.wait()
+        defer {
+            self.lock.signal()
         }
-        else {
-            // retrieveTokenSync returned nil, meaning no token was stored.
-            FRLog.e("No OAuth2 token(s) found to refresh.")
-            throw TokenError.nullToken
+        
+        // Create a semaphore to block the current thread until the async work is done.
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        // Declare variables to capture the result from the completion handler.
+        var resultToken: AccessToken?
+        var resultError: Error?
+        
+        // Call the primary asynchronous refresh function.
+        self.refresh { (token, error) in
+            // Store the results.
+            resultToken = token
+            resultError = error
+            
+            // Signal the semaphore to unblock the thread.
+            semaphore.signal()
         }
+        
+        // Wait here until the signal is received.
+        semaphore.wait()
+        
+        // Check for an error and throw it if one occurred.
+        if let error = resultError {
+            throw error
+        }
+        
+        // Return the resulting token.
+        return resultToken
     }
     
     
@@ -393,43 +429,40 @@ struct TokenManager {
     /// - NOTE: This method may perform synchronous API request if the token expires within threshold. Make sure to not call this method in Main thread
     /// - Returns: AccessToken if it was able to retrieve, or get new set of OAuth2 token
     func retrieveTokenSync() throws -> AccessToken? {
-        // This outer lock makes the entire method thread-safe
-        self.lock.wait()
         
+        // Maintain the original lock to ensure the entire operation is thread-safe.
+        self.lock.wait()
         defer {
             self.lock.signal()
         }
-        guard let token = try self.keychainManager.getAccessToken() else {
-            return nil
-        }
-        if let ssoToken = self.keychainManager.getSSOToken()?.value, token.sessionToken != ssoToken {
-            FRLog.w("SDK identified current Session Token (\(ssoToken)) and Session Token (\(String(describing: token.sessionToken))) mismatch...")
+        
+        // Create a semaphore to block the current thread.
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        // Variables to capture the result from the async function.
+        var resultToken: AccessToken?
+        var resultError: Error?
+        
+        // Call the asynchronous version of the function.
+        self.retrieveToken { (token, error) in
+            // Capture the results from the completion handler.
+            resultToken = token
+            resultError = error
             
-            // 1. Create a new semaphore to wait specifically for the revoke operation
-            let revokeSemaphore = DispatchSemaphore(value: 0)
-            var revokeError: Error?
-            
-            self.revoke { (error) in
-                FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; proceeding to exchange SSO token for OAuth2 tokens")
-                
-                // Capture any error and signal that the revoke operation is finished
-                revokeError = error
-                revokeSemaphore.signal()
-            }
-            
-            // 2. Wait here until the semaphore is signaled from the completion block
-            revokeSemaphore.wait()
-            
-            // 3. If an error occurred during revoke, throw it
-            if let error = revokeError {
-                throw error
-            }
-            
-            // 4. This line will now only execute after the revoke completion handler has run
-            return try self.refreshUsingSSOTokenSync()
+            // Signal the semaphore to unblock the waiting thread.
+            semaphore.signal()
         }
         
-        return token
+        // Wait here until the async function signals completion.
+        semaphore.wait()
+        
+        // After unblocking, check if an error occurred and throw it.
+        if let error = resultError {
+            throw error
+        }
+        
+        // Otherwise, return the retrieved token.
+        return resultToken
     }
     
     
