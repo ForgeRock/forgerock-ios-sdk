@@ -183,6 +183,7 @@ struct TokenManager {
     
     /// Revokes OAuth2 token set using either of access_token or refresh_token
     /// - Parameter completion: Completion block which will return an Error if there was any error encountered
+    ///
     func revoke(completion: @escaping CompletionCallback) {
         do {
             if let token = try self.keychainManager.getAccessToken() {
@@ -201,7 +202,6 @@ struct TokenManager {
         }
     }
     
-    
     /// Ends OIDC Session with given id_token
     /// - Parameters:
     ///   - idToken: id_token to be revoked, and OIDC session
@@ -215,48 +215,41 @@ struct TokenManager {
     /// - Parameter completion: Completion callback to notify the result
     func revokeAndEndSession(completion: @escaping CompletionCallback) {
         do {
-            if let token = try self.keychainManager.getAccessToken() {
-                let dispatchGroup = DispatchGroup()
-                var capturedError: Error?
-                
-                // End session if id_token exists
-                if let idToken = token.idToken {
-                    dispatchGroup.enter() // Enter group for endSession
-                    self.endSession(idToken: idToken) { (error) in
-                        if let error = error {
-                            FRLog.v("Session ended with error: \(error.localizedDescription)")
-                            capturedError = error // Capture the first error
-                        } else {
-                            FRLog.v("Session ended successfully.")
-                        }
-                        dispatchGroup.leave() // Leave group for endSession
-                    }
-                }
-                
-                // Revoke OAuth2 token(s)
-                dispatchGroup.enter() // Enter group for revoke
-                self.revoke { (error) in
-                    if let error = error, capturedError == nil {
-                        capturedError = error // Capture the first error
-                    }
-                    dispatchGroup.leave() // Leave group for revoke
-                }
-                
-                // Notify when both operations are complete
-                dispatchGroup.notify(queue: .main) {
-                    completion(capturedError)
-                }
-            }
-            else {
+            guard let token = try self.keychainManager.getAccessToken() else {
                 completion(TokenError.nullToken)
+                return
             }
+            
+            var capturedError: Error?
+            
+            if let idToken = token.idToken {
+                self.endSession(idToken: idToken) { (error) in
+                    if let error = error {
+                        FRLog.v("Step 1 (endSession) failed with an error: \(error.localizedDescription)")
+                        capturedError = error
+                    } else {
+                        FRLog.v("Step 1 (endSession) finished successfully.")
+                    }
+                }
+            }
+            
+            self.revoke { (error) in
+                if let error = error {
+                    FRLog.v("Step 2 (revoke) failed with an error: \(error.localizedDescription)")
+                    capturedError = error
+                } else {
+                    FRLog.v("Step 2 (revoke) finished successfully.")
+                }
+            }
+            
+            completion(capturedError)
         }
         catch {
             completion(error)
         }
     }
     
-
+    
     /// Renews OAuth 2 token(s) with SSO token
     /// - Parameter completion: Completion callback to notify the result
     func refreshUsingSSOToken(completion: @escaping TokenCompletionCallback) {
@@ -291,54 +284,61 @@ struct TokenManager {
     
     
     /// Renews OAuth 2 token(s) with refresh_token
-    /// - Parameter token: AccessToken object to be consumed for renewal
-    /// - Throws: AuthApiError, TokenError
-    /// - Returns: AccessToken object containing OAuth 2 token if it was successful
-    func refreshUsingRefreshTokenSync(token: AccessToken) throws -> AccessToken? {
-        if let refreshToken = token.refreshToken {
-            let newToken = try self.oAuth2Client.refreshSync(refreshToken: refreshToken)
-            newToken.sessionToken = token.sessionToken
-            //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
-            if newToken.refreshToken == nil, token.refreshToken != nil {
-                FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
-                newToken.refreshToken = token.refreshToken
-            }
-            try self.keychainManager.setAccessToken(token: newToken)
-            return newToken
-        }
-        else {
-            throw TokenError.nullRefreshToken
-        }
-    }
-    
-    
-    /// Renews OAuth 2 token(s) with refresh_token
     /// - Parameters:
     ///   - token: AccessToken object to be consumed for renewal
     ///   - completion: Completion callback to notify the result
     func refreshUsingRefreshToken(token: AccessToken, completion: @escaping TokenCompletionCallback) {
-        if let refreshToken = token.refreshToken {
-            self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
-                do {
-                    if error == nil, let newToken = newToken {
-                        newToken.sessionToken = token.sessionToken
-                        //  Update AccessToken's refresh_token if new AccessToken doesn't have refresh_token, and old one does.
-                        if newToken.refreshToken == nil, token.refreshToken != nil {
-                            FRLog.i("Newly granted OAuth2 token from refresh_token grant is missing refresh_token; reuse previously granted refresh_token")
-                            newToken.refreshToken = token.refreshToken
-                        }
-                        try self.keychainManager.setAccessToken(token: newToken)
+        guard let refreshToken = token.refreshToken else {
+            completion(nil, TokenError.nullRefreshToken)
+            return
+        }
+        
+        self.oAuth2Client.refresh(refreshToken: refreshToken) { (newToken, error) in
+            do {
+                if let newToken = newToken, error == nil {
+                    newToken.sessionToken = token.sessionToken
+                    if newToken.refreshToken == nil, token.refreshToken != nil {
+                        FRLog.i("Newly granted token is missing refresh_token; reusing previous one.")
+                        newToken.refreshToken = token.refreshToken
                     }
-                    completion(newToken, error)
+                    try self.keychainManager.setAccessToken(token: newToken)
                 }
-                catch {
-                    completion(nil, error)
-                }
+                completion(newToken, error)
+            }
+            catch {
+                completion(nil, error)
             }
         }
-        else {
-            completion(nil, TokenError.nullRefreshToken)
+    }
+    
+    
+    /// Synchronously renews OAuth 2 token(s) with refresh_token
+    /// - Parameter token: AccessToken object to be consumed for renewal
+    /// - Throws: AuthApiError, TokenError
+    /// - Returns: AccessToken object containing OAuth 2 token if it was successful
+    func refreshUsingRefreshTokenSync(token: AccessToken) throws -> AccessToken? {
+        // Lock to ensure thread-safety
+        self.lock.wait()
+        defer { self.lock.signal() }
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var resultToken: AccessToken?
+        var resultError: Error?
+        
+        // Call the primary async function
+        self.refreshUsingRefreshToken(token: token) { (newToken, error) in
+            resultToken = newToken
+            resultError = error
+            semaphore.signal()
         }
+        
+        // Wait for the async function to complete
+        semaphore.wait()
+        
+        if let error = resultError {
+            throw error
+        }
+        return resultToken
     }
     
     

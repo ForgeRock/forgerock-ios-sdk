@@ -13,13 +13,13 @@ import FRCore
 
 /**
  AuthService represents Authentication Tree in OpenAM to initiate authentication flow with OpenAM. Initiating AuthService returns one of following:
-    * Result of expected type, if available
-    * A Node object instance to continue on the authentication flow
-    * An error, if occurred during the authentication flow
+ * Result of expected type, if available
+ * A Node object instance to continue on the authentication flow
+ * An error, if occurred during the authentication flow
  
  ## Notes ##
-     * Any Callback type returned from AM must be supported within CallbackFactory.shared.supportedCallbacks.
-     * Any custom Callback must be implemented by inheriting Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
+ * Any Callback type returned from AM must be supported within CallbackFactory.shared.supportedCallbacks.
+ * Any custom Callback must be implemented by inheriting Callback class, and be registered through CallbackFactory.shared.registerCallback(callbackType:callbackClass:).
  */
 @objc(FRAuthService)
 public class AuthService: NSObject {
@@ -87,8 +87,8 @@ public class AuthService: NSObject {
     ///   - serverConfig: ServerConfig object for AuthService server communication
     ///   - oAuth2Config: OAuth2Client object for AuthService OAuth2 protocol upon completion of authentication flow, and when SSOToken received, AuthService automatically exchanges the token to OAuth2 token set
     ///   - keychainManager: KeychainManager instance to persist, and retrieve credentials from secure storage
-    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session   
-    ///   - authIndexType: String value of Authentication Tree type   
+    ///   - tokenManager: TokenManager  instance to manage and persist authenticated session
+    ///   - authIndexType: String value of Authentication Tree type
     init(authIndexValue: String, serverConfig: ServerConfig, oAuth2Config: OAuth2Client?, keychainManager: KeychainManager? = nil, tokenManager: TokenManager? = nil, authIndexType: String = OpenAM.service) {
         FRLog.v("AuthService init - service: \(authIndexValue), serviceType: \(authIndexType) ServerConfig: \(serverConfig), OAuth2Client: \(String(describing: oAuth2Config)), KeychainManager: \(String(describing: keychainManager)), TokenManager: \(String(describing: tokenManager))")
         self.serviceName = authIndexValue
@@ -152,7 +152,7 @@ public class AuthService: NSObject {
     
     
     fileprivate func next(completion: @escaping NodeCompletion<AccessToken>) {
-    
+        
         if let accessToken = try? self.keychainManager?.getAccessToken() {
             FRLog.i("access_token retrieved from SessionManager; ignoring AuthService submit")
             completion(accessToken, nil, nil)
@@ -232,27 +232,54 @@ public class AuthService: NSObject {
                     let successUrl = response[OpenAM.successUrl] as? String ?? ""
                     let realm = response[OpenAM.realm] as? String ?? ""
                     let token = Token(tokenId, successUrl: successUrl, realm: realm)
-                    if let keychainManager = self.keychainManager {
-                        let currentSessionToken = keychainManager.getSSOToken()
-                        if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
-                            FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
-                            if let tokenManager = self.tokenManager {
-                                tokenManager.revoke { (error) in
-                                    FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
-                                }
+                    guard let keychainManager = self.keychainManager else {
+                        // This path now correctly handles the missing keychainManager.
+                        // It returns the new token but logs a warning that it couldn't be stored.
+                        FRLog.w("KeychainManager not available; cannot store new SSO token.")
+                        completion(token, nil, nil)
+                        return
+                    }
+                    let currentSessionToken = keychainManager.getSSOToken()
+                    if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
+                        FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; revoking old token set.")
+                        
+                        if let tokenManager = self.tokenManager {
+                            
+                            // 1. Create a semaphore and a variable to capture the error.
+                            let revokeSemaphore = DispatchSemaphore(value: 0)
+                            var revokeError: Error?
+                            
+                            // 2. Call the async function.
+                            tokenManager.revokeAndEndSession { error in
+                                FRLog.i("OAuth2 token set revocation finished. Error: \(error?.localizedDescription ?? "none")")
+                                // Capture the result and signal completion.
+                                revokeError = error
+                                revokeSemaphore.signal()
                             }
-                            else {
-                                FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
-                                do {
-                                    try keychainManager.setAccessToken(token: nil)
-                                }
-                                catch {
-                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
-                                }
+                            
+                            // 3. Wait here until the semaphore is signaled.
+                            revokeSemaphore.wait()
+                            
+                            // 4. After waiting, check if revocation failed.
+                            if let error = revokeError {
+                                FRLog.e("Unexpected error while revoking and ending session: \(error.localizedDescription)")
                             }
                         }
-                        keychainManager.setSSOToken(ssoToken: token)
+                        else {
+                            // This else block corresponds to `if let tokenManager`.
+                            // The logic here is synchronous, so no semaphore is needed.
+                            FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
+                            do {
+                                try keychainManager.setAccessToken(token: nil)
+                            }
+                            catch {
+                                FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                            }
+                        }
                     }
+                    
+                    // This code will now only run AFTER revokeAndEndSession is complete.
+                    keychainManager.setSSOToken(ssoToken: token)
                     
                     completion(token, nil, nil)
                 }
