@@ -21,17 +21,6 @@ The Ping SDk for iOS enables you to quickly integrate Ping products into your iO
 
 Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/platform/capabilities/intelligent-access.html)_ to easily step through each stage of an authentication tree by using callbacks.
 
-## ⚠️ Xcode 26 Beta Warning
-
-**If you're using Xcode 26 beta, please use the `xcode26_fixes` branch to avoid build issues.**
-
-### Swift Package Manager
-```swift
-.package(url: "https://github.com/ForgeRock/forgerock-ios-sdk", branch: "xcode26_fixes")
-```
-
-> **Note:** This is a temporary workaround. We'll merge these fixes into main once Xcode 26 is stable.
-
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- REQUIREMENTS - Supported AM versions, API versions, any other requirements. -->
 
