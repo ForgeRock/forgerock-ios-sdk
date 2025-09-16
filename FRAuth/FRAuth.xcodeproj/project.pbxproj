@@ -55,6 +55,8 @@
 		A55D57BE2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */; };
 		A55D57BF2DC034E6000BDBCA /* FRCaptchaEnterprise.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5950A2A27EA205B00EDEFE4 /* SSLPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */; };
+		A5A855572E5CFE54001C5349 /* UserInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A855562E5CFE49001C5349 /* UserInfoTests.swift */; };
+		A5A855592E5CFEBB001C5349 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A855582E5CFEB3001C5349 /* AddressTests.swift */; };
 		D512CD41240DC41E00AF520E /* FRRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D512CD40240DC41E00AF520E /* FRRestClient.swift */; };
 		D513F17524DA6B490042228B /* AuthApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513F17424DA6B490042228B /* AuthApiError.swift */; };
 		D533270B24806665002FF207 /* TokenManagementPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533270A24806665002FF207 /* TokenManagementPolicy.swift */; };
@@ -426,6 +428,8 @@
 		A544D6702DBFF31200A2EE4C /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A55D57BD2DC034E6000BDBCA /* FRCaptchaEnterprise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRCaptchaEnterprise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5950A2927EA205B00EDEFE4 /* SSLPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningTests.swift; sourceTree = "<group>"; };
+		A5A855562E5CFE49001C5349 /* UserInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTests.swift; sourceTree = "<group>"; };
+		A5A855582E5CFEB3001C5349 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
 		D5015FEE24996AE50025FEB6 /* MetadataCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCallbackTests.swift; sourceTree = "<group>"; };
 		D5054B4D244680C3007FBA92 /* DeviceProfileCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceProfileCallbackTests.swift; sourceTree = "<group>"; };
 		D5094CD923DF7F850041D5C1 /* CookieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieTests.swift; sourceTree = "<group>"; };
@@ -796,6 +800,15 @@
 			path = "SSL Pinning";
 			sourceTree = "<group>";
 		};
+		A5A855542E5CFE42001C5349 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				A5A855562E5CFE49001C5349 /* UserInfoTests.swift */,
+				A5A855582E5CFEB3001C5349 /* AddressTests.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		D5094CD823DF7F590041D5C1 /* Cookie */ = {
 			isa = PBXGroup;
 			children = (
@@ -819,6 +832,7 @@
 		D52D1637231484D60095905A /* FRAuth */ = {
 			isa = PBXGroup;
 			children = (
+				A5A855542E5CFE42001C5349 /* User */,
 				A530D47B2CD27534009EC60C /* SelfService */,
 				3A3E78662AB0D602007962B7 /* AppIntegrity */,
 				EC0BA2F72863323A00F8326E /* FROptions */,
@@ -2089,6 +2103,7 @@
 				D5791BC425F87DE8004B487A /* TextOutputCallbackTests.swift in Sources */,
 				D58BC3A52602FB8000254654 /* IdPClientTests.swift in Sources */,
 				D5791BC525F87DE8004B487A /* PollingWaitCallbackTests.swift in Sources */,
+				A5A855592E5CFEBB001C5349 /* AddressTests.swift in Sources */,
 				D5791BC625F87DE8004B487A /* ConfirmationCallbackTests.swift in Sources */,
 				D5791BC725F87DE8004B487A /* DeviceProfileCallbackTests.swift in Sources */,
 				D53A806F26278A5C0093B1CA /* WebAuthnRegistrationCallbackTests.swift in Sources */,
@@ -2131,6 +2146,7 @@
 				D5791BE225F87DE8004B487A /* NetworkReachabilityMonitorTests.swift in Sources */,
 				D58BC38F2602A47600254654 /* IdPCallbackTests.swift in Sources */,
 				95EB7E4D2B8D010B00B59CD6 /* AA_09_PingOneProtectInitializeCallbackTest.swift in Sources */,
+				A5A855572E5CFE54001C5349 /* UserInfoTests.swift in Sources */,
 				95EB7E532B8D5F6100B59CD6 /* AA_10_PingOneProtectEvaluateCallbackTest.swift in Sources */,
 				3A3E78682AB0D642007962B7 /* FRAppAttestDomainModalTests.swift in Sources */,
 				D5791BE325F87DE8004B487A /* FRBaseTest.swift in Sources */,
@@ -2300,7 +2316,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.1;
+				MARKETING_VERSION = 4.8.2;
 				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;
@@ -2337,7 +2353,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.1;
+				MARKETING_VERSION = 4.8.2;
 				MODULEMAP_FILE = "";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRAuth;

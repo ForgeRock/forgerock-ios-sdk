@@ -14,8 +14,8 @@ env:
   WORKSPACE: e2e/FRExample.xcworkspace
   SCHEME: FRTestHost
   CONFIGURATION: Debug
-  DESTINATION: platform=iOS Simulator,name=iPhone 16,OS=18.2
-  XCODE_VERSION: '16.2'
+  DESTINATION: platform=iOS Simulator,name=iPhone 16,OS=18.5
+  XCODE_VERSION: '16.4'
 
 jobs:
   build-and-test:
