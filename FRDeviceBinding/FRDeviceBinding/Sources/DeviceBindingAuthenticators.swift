@@ -137,7 +137,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyPair.privateKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyPair.privateKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         
@@ -179,7 +179,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyStoreKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyStoreKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         

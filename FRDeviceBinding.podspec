@@ -33,5 +33,5 @@ Pod::Spec.new do |s|
     'FRDeviceBinding' => [base_dir + '/*.xcprivacy']
   }
   s.ios.dependency 'FRAuth', '~> 4.8.2'
-  s.ios.dependency 'JOSESwift', '~> 2.4.0'
+  s.ios.dependency 'JOSESwift', '~> 3.0.0'
 end

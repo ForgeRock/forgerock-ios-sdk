@@ -116,7 +116,7 @@ open class ApplicationPinDeviceAuthenticator: DefaultDeviceAuthenticator, Crypto
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyStoreKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyStoreKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         
