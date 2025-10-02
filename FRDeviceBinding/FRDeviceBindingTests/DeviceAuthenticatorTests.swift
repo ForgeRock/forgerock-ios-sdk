@@ -60,7 +60,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -132,7 +132,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -212,7 +212,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -285,7 +285,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -334,7 +334,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -383,7 +383,7 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
