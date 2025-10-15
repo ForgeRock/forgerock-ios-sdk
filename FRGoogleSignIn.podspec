@@ -35,5 +35,5 @@ Pod::Spec.new do |s|
   }
 
   s.ios.dependency 'FRAuth', '~> 4.8.2'
-  s.ios.dependency 'GoogleSignIn', '~> 7.1.0'
+  s.ios.dependency 'GoogleSignIn', '~> 9.0.0'
 end
