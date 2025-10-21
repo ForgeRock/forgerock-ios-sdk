@@ -58,11 +58,6 @@ public class TOTPMechanism: OathMechanism {
     }
     
     
-    //  MARK: - NSCoder
-    
-    override public class var supportsSecureCoding: Bool { return true }
-    
-    
     override public func encode(with coder: NSCoder) {
         coder.encode(self.period, forKey: "period")
         super.encode(with: coder)

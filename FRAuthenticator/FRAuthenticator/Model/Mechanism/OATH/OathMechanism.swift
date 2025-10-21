@@ -76,11 +76,6 @@ public class OathMechanism: Mechanism {
     }
 
     
-    //  MARK: - NSCoder
-    
-    override public class var supportsSecureCoding: Bool { return true }
-    
-    
     override public func encode(with coder: NSCoder) {
         coder.encode(self.algorithm.rawValue, forKey: "algorithm")
         coder.encode(self.digits, forKey: "digits")
