@@ -185,7 +185,8 @@ public class UserInfo: NSObject, NSSecureCoding {
     ///
     /// - Parameter aDecoder: NSCoder
     convenience required public init?(coder aDecoder: NSCoder) {
-        guard let userInfo = aDecoder.decodeObject(forKey: "userInfo") as? [String: Any] else {
+        guard let userInfo = aDecoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self, NSDate.self, NSURL.self, NSNull.self],
+                                                   forKey: "userInfo") as? [String: Any] else {
             return nil
         }
         self.init(userInfo)

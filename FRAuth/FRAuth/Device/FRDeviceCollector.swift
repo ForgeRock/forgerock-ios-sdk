@@ -13,26 +13,29 @@ import Foundation
 /// FRDeviceCollector class manages, and collects Device related information with given DeviceCollector objects and returns JSON result of all Device Collectors
 @objc
 public class FRDeviceCollector: NSObject {
-    /// Singleton instance of FRDeviceCollector
+    /// Singleton instance of FRDeviceCollector with the default collectors populated
     @objc
-    public static let shared = FRDeviceCollector()
+    public static let shared = FRDeviceCollector.initWithDefaultCollectors()
     /// An array of DeviceCollector to be collected
     @objc
-    public var collectors: [DeviceCollector]
+    public var collectors: [DeviceCollector] = [] //The default array of DeviceCollector is empty, and should be initialized by the ProfileCollector in the DeviceProfileCallback initialization based on the `metadata` and `location` flags or this will be set with the default collectors when using the FRDeviceCollector.shared singleton instance.
+    
     /// Current version of Device Collector structure
     @objc
     static let FRDeviceCollectorVersion: String = "1.0"
     
-    /// Private initialization method which initializes default array of DeviceCollector
+    /// Public initialization method which initializes default array of DeviceCollector
     @objc
-    public override init() {
-        collectors = [
+    private static func initWithDefaultCollectors() -> FRDeviceCollector {
+        let collector = FRDeviceCollector()
+        collector.collectors = [
             PlatformCollector(),
             HardwareCollector(),
             BrowserCollector(),
             TelephonyCollector(),
             NetworkCollector()
         ]
+        return collector
     }
     
     /// Collects Device Information with all given DeviceCollector

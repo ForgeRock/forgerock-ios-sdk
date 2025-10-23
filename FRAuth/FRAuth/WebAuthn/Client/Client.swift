@@ -4,7 +4,7 @@
 //
 //  Created by Lyo Kato on 2018/11/20.
 //  Original work Copyright © 2018 Lyo Kato. All rights reserved.
-//  Modified work Copyright © 2021-2022 ForgeRock, Inc.
+//  Modified work Copyright © 2021 - 2025 Ping Identity Corporation.
 //
 
 import Foundation
@@ -209,7 +209,7 @@ class WebAuthnClient: ClientOperationDelegate {
 
         let clientDataJSONData = try! JSONEncoder().encode(clientData)
         let clientDataJSON = String(data: clientDataJSONData, encoding: .utf8)!
-        let clientDataHash = clientDataJSONData.sha256.bytes
+        let clientDataHash = clientDataJSONData.sha256.bytesArray
 
         return (clientData, clientDataJSON, clientDataHash)
     }

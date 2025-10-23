@@ -4,7 +4,7 @@
 //
 //  Created by Lyo Kato on 2018/11/20.
 //  Original work Copyright © 2018 Lyo Kato. All rights reserved.
-//  Modified work Copyright © 2021 ForgeRock, Inc.
+//  Modified work Copyright © 2021 - 2025 Ping Identity Corporation.
 //
 
 import Foundation
@@ -94,7 +94,7 @@ class KeychainCredentialStore : CredentialStore {
         if let items = keychainService.allItems() {
             return items.compactMap { (key, item) -> PublicKeyCredentialSource? in
                 if let itemData = item as? Data {
-                    let credentialSource = PublicKeyCredentialSource.fromCBOR(itemData.bytes)
+                    let credentialSource = PublicKeyCredentialSource.fromCBOR(itemData.bytesArray)
                     //  If PublicKeyCredentialSource has userHandle meaning that it's client-side discoverable PublicKeyCredentialSource
                     //  Only return the client-side discoverable PublicKeyCredentialSource
                     if credentialSource?.userHandle != nil {
@@ -140,7 +140,7 @@ class KeychainCredentialStore : CredentialStore {
         let handle = credentialId.toHexString()
         let keychain = self.getKeychainStore(service: self.servicePrefix + rpId).keychainStore
         if let result = keychain.getData(handle) {
-            return PublicKeyCredentialSource.fromCBOR(result.bytes)
+            return PublicKeyCredentialSource.fromCBOR(result.bytesArray)
         }
         else {
             WAKLogger.debug("[CredentialStore] failed to load data for key:\(handle)")

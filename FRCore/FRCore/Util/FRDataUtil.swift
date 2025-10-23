@@ -15,7 +15,7 @@ import CommonCrypto
 extension Data {
     
     /// Converts Data object into byte (UInt8) array
-    public var bytes: Array<UInt8> {
+    public var bytesArray: Array<UInt8> {
         return Array(self)
     }
     

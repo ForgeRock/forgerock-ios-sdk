@@ -86,7 +86,7 @@ extension String {
     
     /// Converts String to bytes array
     public var bytes: Array<UInt8> {
-        return data(using: String.Encoding.utf8, allowLossyConversion: true)?.bytes ?? Array(utf8)
+        return data(using: String.Encoding.utf8, allowLossyConversion: true)?.bytesArray ?? Array(utf8)
     }
 
     

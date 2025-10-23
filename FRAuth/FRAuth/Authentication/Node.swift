@@ -19,7 +19,7 @@ import FRCore
  */
 @objc(FRNode)
 public class Node: NSObject {
-
+    
     //  MARK: - Public properties
     
     /// A list of Callback for the state
@@ -93,7 +93,7 @@ public class Node: NSObject {
                     FRLog.e("Invalid response: Callback is missing 'type' \n\t\(callback)")
                     throw AuthError.invalidCallbackResponse(String(describing: callback))
                 }
-
+                
                 let callbackObj = try Node.transformCallback(callbackType: callbackType, json: callback, node: self)
                 self.callbacks.append(callbackObj)
                 
@@ -114,7 +114,7 @@ public class Node: NSObject {
             throw AuthError.invalidAuthServiceResponse("missing or invalid callback(S) response \(authServiceResponse)")
         }
     }
-
+    
     
     //  MARK: - Static helper method
     
@@ -125,7 +125,7 @@ public class Node: NSObject {
     /// - Throws: `AuthError`
     /// - Returns: Callback object
     static func transformCallback(callbackType: String, json: [String: Any], node: Node? = nil) throws -> Callback {
-
+        
         var callbackClass : Callback.Type
         
         // Validate if given callback type is supported
@@ -137,7 +137,7 @@ public class Node: NSObject {
             FRLog.e("Unsupported callback: Callback is not supported in SDK \n\t\(json)")
             throw AuthError.unsupportedCallback("callback type, \(callbackType), is not supported")
         }
-
+        
         let callback = try callbackClass.init(json: json)
         if let callback = callback as? NodeAware {
             callback.setNode(node: node)
@@ -153,7 +153,7 @@ public class Node: NSObject {
     ///
     /// - Parameter completion: NodeCompletion callback which returns the result of Node submission.
     public func next<T>(completion:@escaping NodeCompletion<T>) {
-
+        
         if T.self as AnyObject? === Token.self {
             next { (token: Token?, node, error) in
                 completion(token as? T, node, error)
@@ -249,11 +249,11 @@ public class Node: NSObject {
     }
     
     
-    /// Submits current node, and returns Token instance if result of node returns SSO TOken
+    /// Submits current node, and returns Token instance if result of node returns SSO Token
     ///
     /// - Parameter completion: NodeCompletion<Token> callback that returns Token upon completion
     fileprivate func next(completion:@escaping NodeCompletion<Token>) {
-
+        
         let thisRequest = self.buildAuthServiceRequest()
         FRRestClient.invoke(request: thisRequest, action: Action(type: .AUTHENTICATE, payload: ["tree": self.serviceName, "type": self.authIndexType])) { (result) in
             switch result {
@@ -274,27 +274,55 @@ public class Node: NSObject {
                     let successUrl = response[OpenAM.successUrl] as? String ?? ""
                     let realm = response[OpenAM.realm] as? String ?? ""
                     let token = Token(tokenId, successUrl: successUrl, realm: realm)
-                    if let keychainManager = self.keychainManager {
-                        let currentSessionToken = keychainManager.getSSOToken()
-                        if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
-                            FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; to avoid misled information, SDK automatically revokes OAuth2 token set issued with existing Session Token.")
-                            if let tokenManager = self.tokenManager {
-                                tokenManager.revokeAndEndSession { (error) in
-                                    FRLog.i("OAuth2 token set was revoked due to mismatch of Session Tokens; \(error?.localizedDescription ?? "")")
-                                }
+                    
+                    guard let keychainManager = self.keychainManager else {
+                        // This path now correctly handles the missing keychainManager.
+                        // It returns the new token but logs a warning that it couldn't be stored.
+                        FRLog.w("KeychainManager not available; cannot store new SSO token.")
+                        completion(token, nil, nil)
+                        return
+                    }
+                    let currentSessionToken = keychainManager.getSSOToken()
+                    if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
+                        FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; revoking old token set.")
+                        
+                        if let tokenManager = self.tokenManager {
+                            
+                            // 1. Create a semaphore and a variable to capture the error.
+                            let revokeSemaphore = DispatchSemaphore(value: 0)
+                            var revokeError: Error?
+                            
+                            // 2. Call the async function.
+                            tokenManager.revokeAndEndSession { error in
+                                FRLog.i("OAuth2 token set revocation finished. Error: \(error?.localizedDescription ?? "none")")
+                                // Capture the result and signal completion.
+                                revokeError = error
+                                revokeSemaphore.signal()
                             }
-                            else {
-                                FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
-                                do {
-                                    try keychainManager.setAccessToken(token: nil)
-                                }
-                                catch {
-                                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
-                                }
+                            
+                            // 3. Wait here until the semaphore is signaled.
+                            revokeSemaphore.wait()
+                            
+                            // 4. After waiting, check if revocation failed.
+                            if let error = revokeError {
+                                FRLog.e("Unexpected error while revoking and ending session: \(error.localizedDescription)")
                             }
                         }
-                        keychainManager.setSSOToken(ssoToken: token)
+                        else {
+                            // This else block corresponds to `if let tokenManager`.
+                            // The logic here is synchronous, so no semaphore is needed.
+                            FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
+                            do {
+                                try keychainManager.setAccessToken(token: nil)
+                            }
+                            catch {
+                                FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                            }
+                        }
                     }
+                    
+                    // This code will now only run AFTER revokeAndEndSession is complete.
+                    keychainManager.setSSOToken(ssoToken: token)
                     
                     completion(token, nil, nil)
                 }

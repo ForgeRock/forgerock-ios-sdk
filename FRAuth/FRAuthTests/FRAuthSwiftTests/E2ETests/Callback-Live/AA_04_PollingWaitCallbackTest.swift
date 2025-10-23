@@ -37,7 +37,7 @@ class AA_04_PollingWaitCallbackTest: CallbackBaseTest {
         // We expect PollingWait callback here. Assert its properties. . .
         for callback in currentNode.callbacks {
             if callback is PollingWaitCallback, let pollingCallback = callback as? PollingWaitCallback {
-                XCTAssertEqual(pollingCallback.waitTime, 10000)
+                XCTAssertEqual(pollingCallback.waitTime, 5000)
                 XCTAssertEqual(pollingCallback.message, "Please Wait")
                 
                 hit += 1

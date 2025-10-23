@@ -141,11 +141,12 @@ import SafariServices
                 }
                 self.isInProgress = self.loginWithASWebSession(url: url, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, completion: completion)
                 
+                
                 if self.isInProgress {
                     FRLog.v("Opened Safari app for authorization process")
                 }
                 else {
-                    completion(nil, BrowserError.externalUserAgentFailure)
+                    FRLog.e("Failed to complete authorization using ASWebAuthenticationSession. Completion has already been called with error.")
                 }
             }
         }

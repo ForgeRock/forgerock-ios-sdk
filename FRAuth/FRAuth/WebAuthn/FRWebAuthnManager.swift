@@ -152,7 +152,7 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             FRLog.i("A new passkey was registered: \(credentialRegistration)")
             // Verify the attestationObject and clientDataJSON with your service.
             // The attestationObject contains the user's new public key to store and use for subsequent sign-ins.
-            let int8Arr = credentialRegistration.rawAttestationObject?.bytes.map { Int8(bitPattern: $0) }
+            let int8Arr = credentialRegistration.rawAttestationObject?.bytesArray.map { Int8(bitPattern: $0) }
             let attestationObject = self.convertInt8ArrToStr(int8Arr!)
             
             let clientDataJSON = String(decoding: credentialRegistration.rawClientDataJSON, as: UTF8.self)
@@ -184,10 +184,10 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
             FRLog.i("A passkey was used to sign in: \(credentialAssertion)")
             // Verify the below signature and clientDataJSON with your service for the given userID.
             
-            let signatureInt8 = credentialAssertion.signature.bytes.map { Int8(bitPattern: $0) }
+            let signatureInt8 = credentialAssertion.signature.bytesArray.map { Int8(bitPattern: $0) }
             let signature = self.convertInt8ArrToStr(signatureInt8)
             let clientDataJSON = String(decoding: credentialAssertion.rawClientDataJSON, as: UTF8.self)
-            let authenticatorDataInt8 = credentialAssertion.rawAuthenticatorData.bytes.map { Int8(bitPattern: $0) }
+            let authenticatorDataInt8 = credentialAssertion.rawAuthenticatorData.bytesArray.map { Int8(bitPattern: $0) }
             let authenticatorData = self.convertInt8ArrToStr(authenticatorDataInt8)
             let credID = base64ToBase64url(base64: credentialAssertion.credentialID.base64EncodedString())
             let userIDString = String(decoding: credentialAssertion.userID, as: UTF8.self)
@@ -320,11 +320,5 @@ public class FRWebAuthnManager: NSObject, ASAuthorizationControllerPresentationC
                 self?.asAuthorizationController?.cancel()
             }
         }
-    }
-}
-
-fileprivate extension Data {
-    var bytes: [UInt8] {
-        return [UInt8](self)
     }
 }

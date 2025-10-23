@@ -1,3 +1,12 @@
+## [4.8.2]
+
+#### Fixed
+- Renamed Data extension `bytes` property to `bytesArray` to avoid Xcode26 issues [SDKS-4299]
+- Fixed decoding logic in `Address` and `UserInfo` to prevent CWE-502 vulnerability [SDKS-4346]
+- Removed redundant completion call when using `ASWebAuthentication` [SDKS-4345]
+- Updated Token Manager to revoke mismatched SSO sessions before storing a new token and fetching a fresh Access Token [TRIAGE-29185]
+- Fixed `DeviceProfileCallback` response structure on iOS to match Android behavior, preventing Device Match Node failures [TRIAGE-28582]
+
 ## [4.8.1]
 
 #### Fixed

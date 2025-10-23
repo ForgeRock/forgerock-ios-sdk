@@ -215,7 +215,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
                 setDeviceId(deviceId)
             }
             completion(.success)
-        } catch JOSESwiftError.localAuthenticationFailed {
+        } catch JOSESwiftError.localAuthenticationFailed(_) {
             deleteUserKey()
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {

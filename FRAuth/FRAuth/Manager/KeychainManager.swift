@@ -131,10 +131,24 @@ struct KeychainManager {
             self.sharedStore = KeychainService(service: currentService + KeychainStoreType.shared.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
             self.cookieStore = KeychainService(service: currentService + KeychainStoreType.cookie.rawValue, accessGroup: accessGroup, securedKey: self.securedKey)
             
-            // Constructs Device Identifier storage with specific Keychain Options
-            var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue, accessGroup: accessGroup)
-            option.accessibility = .alwaysThisDeviceOnly
-            self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+            // Device Identifier Migration
+            var optionOld = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue, accessGroup: accessGroup)
+            optionOld.accessibility = .alwaysThisDeviceOnly
+            let previousService = KeychainService(options: optionOld, securedKey: self.securedKey)
+            let oldIdentifier = previousService.getString(FRDeviceIdentifier.identifierKeychainServiceKey)
+            if oldIdentifier != nil {
+                previousService.deleteAll()
+                // If old identifier exists, migrate it to new KeychainService
+                // Constructs Device Identifier storage with specific Keychain Options
+                var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue, accessGroup: accessGroup)
+                option.accessibility = .afterFirstUnlockThisDeviceOnly
+                self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+                self.deviceIdentifierStore.set(oldIdentifier!, key: FRDeviceIdentifier.identifierKeychainServiceKey)
+            } else {
+                var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue, accessGroup: accessGroup)
+                option.accessibility = .afterFirstUnlockThisDeviceOnly
+                self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+            }
             
             self.isSharedKeychainAccessible = true
         }
@@ -144,13 +158,26 @@ struct KeychainManager {
             self.sharedStore = KeychainService(service: currentService + appBundleIdentifier + KeychainStoreType.shared.rawValue, securedKey: self.securedKey)
             self.cookieStore = KeychainService(service: currentService + appBundleIdentifier + KeychainStoreType.cookie.rawValue, securedKey: self.securedKey)
             
-            // Constructs Device Identifier storage with specific Keychain Options
-            var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue)
-            option.accessibility = .alwaysThisDeviceOnly
-            self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+            // Device Identifier Migration
+            var optionOld = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue)
+            optionOld.accessibility = .alwaysThisDeviceOnly
+            let previousService = KeychainService(options: optionOld, securedKey: self.securedKey)
+            let oldIdentifier = previousService.getString(FRDeviceIdentifier.identifierKeychainServiceKey)
+            if oldIdentifier != nil {
+                previousService.deleteAll()
+                // If old identifier exists, migrate it to new KeychainService
+                // Constructs Device Identifier storage with specific Keychain Options
+                var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue)
+                option.accessibility = .afterFirstUnlockThisDeviceOnly
+                self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+                self.deviceIdentifierStore.set(oldIdentifier!, key: FRDeviceIdentifier.identifierKeychainServiceKey)
+            } else {
+                var option = KeychainOptions(service: KeychainStoreType.deviceIdentifier.rawValue)
+                option.accessibility = .afterFirstUnlockThisDeviceOnly
+                self.deviceIdentifierStore = KeychainService(options: option, securedKey: self.securedKey)
+            }
         }
     }
-    
     
     //  MARK: - SSO Token
     
