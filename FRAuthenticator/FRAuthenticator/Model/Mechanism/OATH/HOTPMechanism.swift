@@ -57,11 +57,6 @@ public class HOTPMechanism: OathMechanism {
     }
 
     
-    //  MARK: - NSCoder
-    
-    override public class var supportsSecureCoding: Bool { return true }
-    
-    
     override public func encode(with coder: NSCoder) {
         coder.encode(self.counter, forKey: "counter")
         super.encode(with: coder)

@@ -198,7 +198,7 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - NSCoder
     
-    public class var supportsSecureCoding: Bool { return true }
+    public static var supportsSecureCoding: Bool { return true }
     
     
     public func encode(with coder: NSCoder) {
