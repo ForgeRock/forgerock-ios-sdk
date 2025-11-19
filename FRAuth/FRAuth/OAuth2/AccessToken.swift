@@ -129,7 +129,13 @@ import Foundation
         return "\(String(describing: self)) isExpired?: \(self.isExpired)\n\naccess_token: \(self.value) | token_type: \(self.tokenType) | scope: \(self.scope) | expires_in: \(String(describing: self.expiresIn)) | refresh_token: \(self.refreshToken ?? "nil") | id_token: \(self.idToken ?? "nil") | expiration: \(self.expiration)"
     }
     
-
+    
+    // MARK: NSSecureCoding
+    
+    /// Boolean value of whether SecureCoding is supported or not
+    override public class var supportsSecureCoding: Bool { return true }
+    
+    
     /// Initializes AccessToken object with NSCoder
     ///
     /// - Parameter aDecoder: NSCoder
