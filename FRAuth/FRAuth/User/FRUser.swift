@@ -458,9 +458,7 @@ public class FRUser: NSObject, NSSecureCoding {
     // MARK: - NSSecureCoding
     
     /// Boolean value of whether SecureCoding is supported or not
-    public class var supportsSecureCoding: Bool {
-        return true
-    }
+    public static var supportsSecureCoding = true
     
     
     /// Initializes FRUser object with NSCoder

@@ -176,9 +176,7 @@ public class UserInfo: NSObject, NSSecureCoding {
     // MARK: NSSecureCoding
     
     /// Boolean value of whether SecureCoding is supported or not
-    public class var supportsSecureCoding: Bool {
-        return true
-    }
+    public static var supportsSecureCoding = true
     
     
     /// Initializes UserInfo object with NSCoder
