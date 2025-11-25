@@ -125,7 +125,7 @@ public class Mechanism: NSObject, NSSecureCoding, Codable {
     
     //  MARK: - NSCoder
     
-    public static var supportsSecureCoding: Bool {
+    public class var supportsSecureCoding: Bool {
         return true
     }
     

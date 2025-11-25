@@ -141,6 +141,11 @@ public class PushMechanism: Mechanism {
     }
     
     
+    //  MARK: - NSCoder
+    
+    override public class var supportsSecureCoding: Bool { return true }
+    
+    
     override public func encode(with coder: NSCoder) {
         coder.encode(self.authEndpoint.absoluteString, forKey: "authEndpoint")
         coder.encode(self.regEndpoint.absoluteString, forKey: "regEndpoint")

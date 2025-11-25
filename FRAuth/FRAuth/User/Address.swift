@@ -88,9 +88,7 @@ public class Address: NSObject, NSSecureCoding {
     // MARK: NSSecureCoding
     
     /// Boolean value of whether SecureCoding is supported or not
-    public static var supportsSecureCoding: Bool {
-        return true
-    }
+    public static var supportsSecureCoding = true
     
     
     /// Initializes Address object with NSCoder
