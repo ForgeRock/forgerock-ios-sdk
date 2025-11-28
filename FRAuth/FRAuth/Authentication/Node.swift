@@ -349,6 +349,9 @@ public class Node: NSObject {
         var payload: [String: Any] = [:]
         
         payload[OpenAM.authId] = self.authId
+        payload[OpenAM.stage] = self.stage
+        payload[OpenAM.header] = self.pageHeader
+        payload[OpenAM.description] = self.pageDescription
         var callbacks: [Any] = []
         
         for callback:Callback in self.callbacks {
