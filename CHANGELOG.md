@@ -1,3 +1,10 @@
+## [4.8.3]
+
+#### Fixed
+- Fixed unsafe object deserialization by enforcing `NSSecureCoding` [SDKS-4426] 
+- Updated `GoogleSignIn` library from 7.1.0 to 9.0.0 [SDKS-4227]
+- Fixed missing `stage`, `header`, and `description` fields in callback requests [SDKS-4585]
+
 ## [4.8.2]
 
 #### Fixed
