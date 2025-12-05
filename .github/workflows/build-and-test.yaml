@@ -14,13 +14,14 @@ env:
   WORKSPACE: e2e/FRExample.xcworkspace
   SCHEME: FRTestHost
   CONFIGURATION: Debug
-  DESTINATION: platform=iOS Simulator,name=iPhone 16,OS=18.5
+  DESTINATION: platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.6
   XCODE_VERSION: '16.4'
+  DERIVED_DATA_PATH: DerivedData
 
 jobs:
   build-and-test:
     runs-on: macos-15
-    timeout-minutes: 20
+    timeout-minutes: 40
 
     steps:
       # Clone the repo
@@ -51,19 +52,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-derived-data-${{ env.XCODE_VERSION }}-
 
+      # Cache Swift Packages
+      - name: Cache Swift Packages
+        uses: actions/cache@v3
+        with:
+          path: SourcePackages
+          # Look for Package.resolved inside your workspace or project
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
       # Install xcresultparser
       - name: Install xcresultparser
         run: |
-          # Download specific version binary to avoid brew update times
-          curl -LO https://github.com/a7ex/xcresultparser/releases/download/1.5.2/xcresultparser.zip
+          curl -LO https://github.com/a7ex/xcresultparser/releases/download/1.9.3/xcresultparser.zip
           unzip xcresultparser.zip
-          chmod +x xcresultparser
-          sudo mv xcresultparser /usr/local/bin/
+          # Fix: The binary is inside the 'product' folder
+          chmod +x product/xcresultparser
+          sudo mv product/xcresultparser /usr/local/bin/
+
+      # # List available simulators
+      # - name: List available simulators
+      #   run: xcrun simctl list devices
 
       # Pre-boot the simulator to avoid timeouts during xcodebuild
       - name: Pre-boot Simulator
         run: |
-          xcrun simctl bootstatus "iPhone 16" -b || true
+          xcrun simctl bootstatus "iPhone SE (3rd generation)" -b || true
 
       # Run unit tests
       - name: Run tests
@@ -74,12 +89,15 @@ jobs:
           -configuration ${{ env.CONFIGURATION}} \
           -destination '${{ env.DESTINATION }}' \
           -derivedDataPath ${{ env.DERIVED_DATA_PATH }} \
-          TEST_TARGET_SIGNING=YES \
-          -enableCodeCoverage YES \
-          -resultBundlePath TestResults \
-          -disable-concurrent-destination-testing \
-          -retry-tests-on-failure \
-          -test-iterations 1 | xcbeautify
+          -clonedSourcePackagesDirPath SourcePackages \
+          COMPILER_INDEX_STORE_ENABLE=NO \
+          -resultBundlePath TestResults | xcbeautify
+          
+          # TEST_TARGET_SIGNING=YES \
+          # -enableCodeCoverage YES \
+          # -resultBundlePath TestResults \
+          # -disable-concurrent-destination-testing \
+          # -retry-tests-on-failure 
 
       # Convert test results to JUnit format
       - name: Convert Test Results to JUnit

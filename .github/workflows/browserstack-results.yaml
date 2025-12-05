@@ -42,6 +42,9 @@ jobs:
             elif [[ "$status" == "failed" ]]; then
               echo "❌ Test execution failed."
               exit 1
+            elif [[ "$status" == "timedout" ]]; then
+              echo "⚠️ Test execution timedout."
+              exit 1
             else
               echo "⏳ Current status: $status. Retrying in 15s..."
               sleep 15
@@ -73,6 +76,8 @@ jobs:
 
             if [ "$session_status" = "passed" ]; then
               emoji="✅"
+            elif [[ "$status" == "timedout" ]]; then
+              emoji="⚠️"
             else
               emoji="❌"
               failed_total=$((failed_total + 1))

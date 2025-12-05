@@ -18,20 +18,20 @@ jobs:
       CONFIG_E2E_CLOUD: ${{secrets.CONFIG_E2E_CLOUD}}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-  # # Run Mend CLI Scan
-  # mend-cli-scan:
-  #   name: Mend CLI Scan
-  #   uses: ./.github/workflows/mend-cli-scan.yaml
-  #   secrets:
-  #     MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
-  #     MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
-  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
+  # Run Mend CLI Scan
+  mend-cli-scan:
+    name: Mend CLI Scan
+    uses: ./.github/workflows/mend-cli-scan.yaml
+    secrets:
+      MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+      MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
   
   # Build BrowserStack test artifacts
   browserstack-prepare-artifacts:
     name: Prepare device farm artifacts
     uses: ./.github/workflows/browserstack-prepare-artifacts.yaml
-    # needs: build-and-test
+    needs: build-and-test
     secrets:
       CERTIFICATES_FILE_BASE64: ${{ secrets.CERTIFICATES_FILE_BASE64 }}
       CERTIFICATES_PASSWORD: ${{ secrets.CERTIFICATES_PASSWORD }}
