@@ -42,37 +42,44 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app && /usr/bin/xcodebuild -version
 
-        
-      # # Restore `xcresultparser` from cache
-      # # TBD: Fix the restore of the xcresultparser tool. It is not working as expected at the moment, causing the build to fail...
-      # - name: Restore xcresultparser from cache
-      #   id: cache-xcresultparser
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /opt/homebrew/bin/xcresultparser
-      #     key: ${{ runner.os }}-xcresultparser
-      #     restore-keys: |
-      #       ${{ runner.os }}-xcresultparser
+      # Cache DerivedData
+      - name: Cache DerivedData
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DERIVED_DATA_PATH }}
+          key: ${{ runner.os }}-derived-data-${{ env.XCODE_VERSION }}-${{ hashFiles('**/Podfile.lock', '**/*.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-derived-data-${{ env.XCODE_VERSION }}-
 
       # Install xcresultparser
       - name: Install xcresultparser
         run: |
-          brew tap a7ex/homebrew-formulae
-          brew install xcresultparser
-          echo "Installed xcresultparser..."
+          # Download specific version binary to avoid brew update times
+          curl -LO https://github.com/a7ex/xcresultparser/releases/download/1.5.2/xcresultparser.zip
+          unzip xcresultparser.zip
+          chmod +x xcresultparser
+          sudo mv xcresultparser /usr/local/bin/
 
-      # Run all tests
+      # Pre-boot the simulator to avoid timeouts during xcodebuild
+      - name: Pre-boot Simulator
+        run: |
+          xcrun simctl bootstatus "iPhone 16" -b || true
+
+      # Run unit tests
       - name: Run tests
         run: |
-          xcodebuild test \
+          set -o pipefail && xcodebuild test \
           -scheme FRTestHost \
           -workspace ${{ env.WORKSPACE }} \
           -configuration ${{ env.CONFIGURATION}} \
           -destination '${{ env.DESTINATION }}' \
-          -derivedDataPath DerivedData \
+          -derivedDataPath ${{ env.DERIVED_DATA_PATH }} \
           TEST_TARGET_SIGNING=YES \
           -enableCodeCoverage YES \
-          -resultBundlePath TestResults | grep -E 'Test Case|^Executed|error:'
+          -resultBundlePath TestResults \
+          -disable-concurrent-destination-testing \
+          -retry-tests-on-failure \
+          -test-iterations 1 | xcbeautify
 
       # Convert test results to JUnit format
       - name: Convert Test Results to JUnit

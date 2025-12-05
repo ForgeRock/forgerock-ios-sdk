@@ -1,0 +1,110 @@
+name: Wait for BrowserStack Test Run Results
+
+on:
+  workflow_call:
+    inputs:
+      browserstack-build-id:
+        description: BrowserStack Run ID
+        type: string
+        required: true
+
+    secrets:
+      BROWSERSTACK_USERNAME:
+        description: 'BrowserStack username'
+        required: true
+      BROWSERSTACK_ACCESS_KEY:
+        description: 'BrowserStack API key'
+        required: true
+      SLACK_WEBHOOK_URL:
+        description: Slack Notifier Incoming Webhook
+        required: true
+
+jobs:
+  browserstack-results:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for BrowserStack tests run to finish...
+        timeout-minutes: 40
+        shell: bash
+        run: |
+          echo "Polling for build ID: ${{ inputs.browserstack-build-id }}"
+
+          for i in {1..120}; do
+            response=$(curl -s -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" \
+              "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/builds/${{ inputs.browserstack-build-id }}")
+
+            echo "Response: $response"
+            status=$(echo "$response" | jq -r '.status')
+
+            if [[ "$status" == "passed" ]]; then
+              echo "✅ Test execution completed successfully."
+              exit 0
+            elif [[ "$status" == "failed" ]]; then
+              echo "❌ Test execution failed."
+              exit 1
+            else
+              echo "⏳ Current status: $status. Retrying in 15s..."
+              sleep 15
+            fi
+          done
+
+          echo "❌ Timed out waiting for test execution to finish."
+          exit 1
+
+      - name: Prepare test summary report
+        id: summary
+        if: always()
+        shell: bash
+        run: |
+          response=$(curl -s -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" \
+            "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/builds/${{ inputs.browserstack-build-id }}")
+
+          # Dump to file for jq
+          echo "$response" > result.json
+
+          total_devices=$(jq '.devices | length' result.json)
+          summary=""
+          failed_total=0
+
+          for (( i=0; i<total_devices; i++ )); do
+            device=$(jq -r ".devices[$i].device" result.json)
+            os_version=$(jq -r ".devices[$i].os_version" result.json)
+            session_status=$(jq -r ".devices[$i].sessions[0].status" result.json)
+
+            if [ "$session_status" = "passed" ]; then
+              emoji="✅"
+            else
+              emoji="❌"
+              failed_total=$((failed_total + 1))
+            fi
+
+            summary+="📱 $device (iOS $os_version): $emoji $session_status\n"
+          done
+
+          # Escape for JSON and strip quotes
+          escaped_summary=$(echo -e "$summary" | jq -Rs .)
+          escaped_summary="${escaped_summary:1:-1}"
+
+          # Export outputs
+          echo "summary=$escaped_summary" >> $GITHUB_OUTPUT
+          echo "any_failed=$failed_total" >> $GITHUB_OUTPUT
+          echo "build_url=https://app-automate.browserstack.com/dashboard/v2/builds/${{ inputs.browserstack-build-id }}" >> $GITHUB_OUTPUT
+        
+          
+      - name: Send slack notification with test results
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: repo,message,commit,author
+          custom_payload: |
+            {
+              "attachments": [{
+                "title": "E2E Test Summary Report",
+                "color": "${{ steps.summary.outputs.any_failed == '0' && 'good' || 'danger' }}",
+                "text": "${{ steps.summary.outputs.summary }}\n\n🔗 <${{ steps.summary.outputs.build_url }}|View full results on BrowserStack>"
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          

@@ -1,0 +1,69 @@
+name: Run e2e tests in BrowserStack
+on:
+  workflow_call:
+    outputs:
+      build_id:
+        description: "BrowserStack build ID"
+        value: ${{ jobs.browserstack-run.outputs.build_id }}
+        
+    secrets:
+      BROWSERSTACK_USERNAME:
+        description: 'BrowserStack username'
+        required: true
+      BROWSERSTACK_ACCESS_KEY:
+        description: 'BrowserStack API key'
+        required: true
+      SLACK_WEBHOOK_URL:
+        description: 'Slack Notifier Incoming Webhook URL'
+        required: true
+jobs:
+  browserstack-run:
+    runs-on: ubuntu-latest
+    outputs:
+      build_id: ${{ steps.trigger.outputs.build_id }}
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ForgeRockTestArtifacts.zip
+
+      - name: Upload to BrowserStack
+        id: upload
+        run: |
+          response=$(curl -s -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" \
+            -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/test-suite" \
+            -F "file=@ForgeRockTestArtifacts.zip")
+          echo "test_suite_url=$(echo $response | jq -r '.test_suite_url')" >> $GITHUB_OUTPUT
+
+      - name: Trigger test run
+        id: trigger
+        run: |
+          DEVICES='${{ vars.BROWSERSTACK_DEVICES }}'
+          
+          response=$(curl -s -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" \
+            -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/xctestrun-build" \
+            -H "Content-Type: application/json" \
+            -d "{\"testSuite\": \"${{ steps.upload.outputs.test_suite_url }}\", \"devices\": $DEVICES, \"deviceLogs\": true}")
+
+          echo "Trigger response: $response"
+          message=$(echo "$response" | jq -r '.message')
+          [ "$message" != "Success" ] && echo "Failed to start test run" && exit 1
+          echo "build_id=$(echo $response | jq -r '.build_id')" >> $GITHUB_OUTPUT
+
+      - name: Slack on failure
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: all
+          custom_payload: |
+            {
+              "attachments": [{
+                "title": ":no_entry: Failed to start test run!",
+                "color": "danger",
+                "text": "Workflow: ${{ github.workflow }} -> ${{ github.job }}\nCommit: ${{ github.sha }} by ${{ github.actor }}"
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
