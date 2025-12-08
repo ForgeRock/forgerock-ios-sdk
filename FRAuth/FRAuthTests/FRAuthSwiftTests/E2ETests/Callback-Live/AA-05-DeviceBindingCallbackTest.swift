@@ -18,7 +18,7 @@ class AA_05_DeviceBindingCallbackTest: CallbackBaseTest {
     let options = FROptions(url: "https://openam-sdks.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
-                            cookieName: "afef1acb448a873",
+                            cookieName: "5421aeddf91aa20",
                             timeout: "180",
                             authServiceName: "device-bind",
                             oauthThreshold: "60",

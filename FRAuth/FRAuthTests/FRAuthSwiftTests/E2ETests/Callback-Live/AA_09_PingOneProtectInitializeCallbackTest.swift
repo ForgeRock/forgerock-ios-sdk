@@ -15,10 +15,10 @@ import XCTest
 class AA_09_PingOneProtectInitializeCallbackTest: CallbackBaseTest {
     
     static var USERNAME: String = "sdkuser"
-    let options = FROptions(url: "https://openam-sdks2.forgeblocks.com/am",
+    let options = FROptions(url: "https://openam-sdks.forgeblocks.com/am",
                             realm: "alpha",
                             enableCookie: true,
-                            cookieName: "9dfa82bc124226d",
+                            cookieName: "5421aeddf91aa20",
                             timeout: "180",
                             authServiceName: "TEST_PING_ONE_PROTECT_INITIALIZE",
                             oauthThreshold: "60",

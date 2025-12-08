@@ -636,7 +636,8 @@ class DeviceSigningVerifierCallbackTests: FRAuthBaseTest {
     func test_19_execute_single_success_with_valid_custom_claims() throws {
         // Skip the test on iOS 15 Simulator due to the bug when private key generation fails with Access Control Flags set
         // https://stackoverflow.com/questions/69279715/ios-15-xcode-13-cannot-generate-private-key-on-simulator-running-ios-15-with-s
-        try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        // try XCTSkipIf(self.isSimulator && isIOS15, "on iOS 15 Simulator private key generation fails with Access Control Flags set")
+        try XCTSkipIf(self.isSimulator, "on simulators private key generation fails with Access Control Flags set")
         
         let jsonStr = getJsonString()
         let callbackResponse = self.parseStringToDictionary(jsonStr)
