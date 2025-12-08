@@ -14,13 +14,14 @@ env:
   WORKSPACE: e2e/FRExample.xcworkspace
   SCHEME: FRTestHost
   CONFIGURATION: Debug
-  DESTINATION: platform=iOS Simulator,name=iPhone 16,OS=18.5
+  DESTINATION: platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.6
   XCODE_VERSION: '16.4'
+  DERIVED_DATA_PATH: DerivedData
 
 jobs:
   build-and-test:
     runs-on: macos-15
-    timeout-minutes: 20
+    timeout-minutes: 40
 
     steps:
       # Clone the repo
@@ -42,37 +43,61 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app && /usr/bin/xcodebuild -version
 
-        
-      # # Restore `xcresultparser` from cache
-      # # TBD: Fix the restore of the xcresultparser tool. It is not working as expected at the moment, causing the build to fail...
-      # - name: Restore xcresultparser from cache
-      #   id: cache-xcresultparser
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /opt/homebrew/bin/xcresultparser
-      #     key: ${{ runner.os }}-xcresultparser
-      #     restore-keys: |
-      #       ${{ runner.os }}-xcresultparser
+      # Cache DerivedData
+      - name: Cache DerivedData
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DERIVED_DATA_PATH }}
+          key: ${{ runner.os }}-derived-data-${{ env.XCODE_VERSION }}-${{ hashFiles('**/Podfile.lock', '**/*.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-derived-data-${{ env.XCODE_VERSION }}-
+
+      # Cache Swift Packages
+      - name: Cache Swift Packages
+        uses: actions/cache@v3
+        with:
+          path: SourcePackages
+          # Look for Package.resolved inside your workspace or project
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
 
       # Install xcresultparser
       - name: Install xcresultparser
         run: |
-          brew tap a7ex/homebrew-formulae
-          brew install xcresultparser
-          echo "Installed xcresultparser..."
+          curl -LO https://github.com/a7ex/xcresultparser/releases/download/1.9.3/xcresultparser.zip
+          unzip xcresultparser.zip
+          # Fix: The binary is inside the 'product' folder
+          chmod +x product/xcresultparser
+          sudo mv product/xcresultparser /usr/local/bin/
 
-      # Run all tests
+      # # List available simulators
+      # - name: List available simulators
+      #   run: xcrun simctl list devices
+
+      # Pre-boot the simulator to avoid timeouts during xcodebuild
+      - name: Pre-boot Simulator
+        run: |
+          xcrun simctl bootstatus "iPhone SE (3rd generation)" -b || true
+
+      # Run unit tests
       - name: Run tests
         run: |
-          xcodebuild test \
+          set -o pipefail && xcodebuild test \
           -scheme FRTestHost \
           -workspace ${{ env.WORKSPACE }} \
           -configuration ${{ env.CONFIGURATION}} \
           -destination '${{ env.DESTINATION }}' \
-          -derivedDataPath DerivedData \
-          TEST_TARGET_SIGNING=YES \
-          -enableCodeCoverage YES \
-          -resultBundlePath TestResults | grep -E 'Test Case|^Executed|error:'
+          -derivedDataPath ${{ env.DERIVED_DATA_PATH }} \
+          -clonedSourcePackagesDirPath SourcePackages \
+          COMPILER_INDEX_STORE_ENABLE=NO \
+          -resultBundlePath TestResults | xcbeautify
+          
+          # TEST_TARGET_SIGNING=YES \
+          # -enableCodeCoverage YES \
+          # -resultBundlePath TestResults \
+          # -disable-concurrent-destination-testing \
+          # -retry-tests-on-failure 
 
       # Convert test results to JUnit format
       - name: Convert Test Results to JUnit

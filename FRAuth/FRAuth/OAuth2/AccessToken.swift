@@ -10,11 +10,11 @@
 
 import Foundation
 
-/// AccessToken class represents access_token data inheriting from Token class
-@objc public class AccessToken: Token {
+/// AccessToken class represents access_token data
+@objc public class AccessToken: NSObject, Encodable, NSSecureCoding {
     
     //  MARK: - Property
-    
+    @objc public var value: String
     /// Lifetime (expires_in) of access_token in seconds
     @objc public var expiresIn: Int
     /// token_type of access_token
@@ -89,7 +89,7 @@ import Foundation
         self.idToken = tokenResponse[OAuth2.idToken] as? String
         self.authenticatedTimestamp = Date()
         self.sessionToken = sessionToken
-        super.init(accessToken)
+        self.value = accessToken
     }
     
     
@@ -118,7 +118,7 @@ import Foundation
         self.idToken = idToken
         self.authenticatedTimestamp = Date(timeIntervalSince1970: authenticatedTimestamp)
         self.sessionToken = sessionToken
-        super.init(token)
+        self.value = token
     }
     
     
@@ -133,7 +133,7 @@ import Foundation
     // MARK: NSSecureCoding
     
     /// Boolean value of whether SecureCoding is supported or not
-    override public class var supportsSecureCoding: Bool { return true }
+    public static var supportsSecureCoding = true
     
     
     /// Initializes AccessToken object with NSCoder
@@ -157,7 +157,7 @@ import Foundation
     /// Encodes AccessToken object with NSCoder
     ///
     /// - Parameter aCoder: NSCoder
-    override public func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(self.value, forKey: "value")
         aCoder.encode(self.expiresIn, forKey: "expires_in")
         aCoder.encode(self.scope, forKey: "scope")
@@ -169,11 +169,10 @@ import Foundation
     }
     
     private enum CodingKeys: String, CodingKey {
-            case expiresIn, scope, tokenType, refreshToken, idToken, authenticatedTimestamp, sessionToken
+            case expiresIn, scope, tokenType, refreshToken, idToken, authenticatedTimestamp, sessionToken, value
     }
     
-    public override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.expiresIn, forKey: .expiresIn)
         try container.encode(self.scope, forKey: .scope)
@@ -182,6 +181,7 @@ import Foundation
         try container.encode(self.idToken, forKey: .idToken)
         try container.encode(self.authenticatedTimestamp, forKey: .authenticatedTimestamp)
         try container.encode(self.sessionToken, forKey: .sessionToken)
+        try container.encode(self.value, forKey: .value)
     }
     
     

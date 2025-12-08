@@ -31,6 +31,26 @@ class AA_04_DeviceProfileCallbackTest: CallbackBaseTest {
             return
         }
         
+        // The first callback is a ChoiceCallback (choose to collect location or not...)
+        guard let choiceCallback = currentNode.callbacks.first as? ChoiceCallback else {
+            XCTFail("Expected ChoiceCallback")
+            return
+        }
+        
+        // Select "Yes" - collect location data...
+        choiceCallback.setValue(0)
+        
+        var ex = self.expectation(description: "Submit choice callback")
+        currentNode.next { (token: AccessToken?, node, error) in
+            // Validate result
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node!
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
         // We expect DeviceProfileCallback here. Assert its properties. . .
         for callback in currentNode.callbacks {
             if callback is DeviceProfileCallback, let dCallback = callback as? DeviceProfileCallback {
@@ -55,7 +75,7 @@ class AA_04_DeviceProfileCallbackTest: CallbackBaseTest {
             }
         }
         
-        let ex = self.expectation(description: "Submit device collector callback and continue...")
+        ex = self.expectation(description: "Submit device collector callback and continue...")
         currentNode.next { (token: AccessToken?, node, error) in
             
             // Validate result

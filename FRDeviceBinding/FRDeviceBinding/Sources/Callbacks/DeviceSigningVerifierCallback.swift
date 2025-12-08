@@ -218,7 +218,7 @@ open class DeviceSigningVerifierCallback: MultipleValuesCallback, Binding {
             self.setJws(jws)
             
             completion(.success)
-        } catch JOSESwiftError.localAuthenticationFailed {
+        } catch JOSESwiftError.localAuthenticationFailed(_) {
             handleException(status: .abort, completion: completion)
         } catch let error as DeviceBindingStatus {
             handleException(status: error, completion: completion)
