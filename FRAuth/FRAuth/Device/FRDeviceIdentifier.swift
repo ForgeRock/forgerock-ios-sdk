@@ -58,6 +58,13 @@ public struct FRDeviceIdentifier {
             // If the identifier was found from KeychainService
             return identifier
         }
+        else if let keyData = self.keychainService.getData(self.publicKeyDataKeychainServiceKey) {
+            // Keys exist but identifier is missing - regenerate identifier from existing key
+            FRLog.v("Public key found but identifier missing; regenerating identifier from existing key data")
+            let identifier = self.hashAndBase64Data(keyData)
+            self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey)
+            return identifier
+        }
         else if self.generateKeyPair(), let keyData = self.keychainService.getData(self.publicKeyDataKeychainServiceKey) {
             FRLog.v("Device Identifier is created, and hash/base64; storing it into Device Identifier Store")
             // If the identifier was not found from KeychainService, then generates Key Pair and hash Public Key
@@ -84,7 +91,7 @@ public struct FRDeviceIdentifier {
     /// - Parameter data: Data to be hashed
     /// - Returns: Hashed String of given Data
     func hashAndBase64Data(_ data: Data) -> String {
-        var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
+        var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         data.withUnsafeBytes {
             _ = CC_SHA1($0.baseAddress, CC_LONG(data.count), &digest)
         }
@@ -98,6 +105,10 @@ public struct FRDeviceIdentifier {
     /// - Returns: A boolean result of whether Key Pair generation, and store process was successful or not
     func generateKeyPair() -> Bool {
         FRLog.v("Generating KeyPair for Device Identifier")
+        
+        // First, check if keys already exist and delete them to avoid conflicts
+        self.deleteExistingKeys()
+        
         let publicKeyPairAttr: [String: Any] = self.buildKeyAttr(.publicKey)
         let privateKeyPairAttr: [String: Any] = self.buildKeyAttr(.privateKey)
         
@@ -112,32 +123,157 @@ public struct FRDeviceIdentifier {
         var privateKey: SecKey?
         let status = SecKeyGeneratePair(keyPairAttr as CFDictionary, &publicKey, &privateKey)
         
-        if status == noErr, let _ = privateKey, let _ = publicKey {
+        guard status == noErr else {
+            FRLog.e("Failed to generate Key Pair using SecKeyGeneratePair(). Status: \(status), OSStatus description: \(self.keychainErrorDescription(status))")
+            return false
+        }
+        
+        guard let generatedPrivateKey = privateKey, let generatedPublicKey = publicKey else {
+            FRLog.e("Key Pair generation returned noErr but keys are nil")
+            return false
+        }
+        
+        FRLog.v("Key Pair generated successfully, extracting key data")
+        
+        // Try to extract key data using SecKeyCopyExternalRepresentation first
+        var publicKeyData: Data?
+        var privateKeyData: Data?
+        
+        var publicKeyError: Unmanaged<CFError>?
+        if let data = SecKeyCopyExternalRepresentation(generatedPublicKey, &publicKeyError) as Data? {
+            publicKeyData = data
+            FRLog.v("Public key extracted using SecKeyCopyExternalRepresentation")
+        } else {
+            if let error = publicKeyError?.takeRetainedValue() {
+                FRLog.w("SecKeyCopyExternalRepresentation failed for public key: \(error). Falling back to SecItemCopyMatching")
+            }
+            // Fallback to SecItemCopyMatching for keys created with kSecAttrIsPermanent = true
             let publicKeyQuery = self.buildQuery(.publicKey)
             var publicKeyDataRef: CFTypeRef?
             let publicKeyStatus = SecItemCopyMatching(publicKeyQuery as CFDictionary, &publicKeyDataRef)
+            
+            if publicKeyStatus == noErr, let data = publicKeyDataRef as? Data {
+                publicKeyData = data
+                FRLog.v("Public key extracted using SecItemCopyMatching")
+            } else {
+                FRLog.e("Failed to extract public key data using SecItemCopyMatching. Status: \(publicKeyStatus), OSStatus description: \(self.keychainErrorDescription(publicKeyStatus))")
+                return false
+            }
+        }
+        
+        var privateKeyError: Unmanaged<CFError>?
+        if let data = SecKeyCopyExternalRepresentation(generatedPrivateKey, &privateKeyError) as Data? {
+            privateKeyData = data
+            FRLog.v("Private key extracted using SecKeyCopyExternalRepresentation")
+        } else {
+            if let error = privateKeyError?.takeRetainedValue() {
+                FRLog.w("SecKeyCopyExternalRepresentation failed for private key: \(error). Falling back to SecItemCopyMatching")
+            }
+            // Fallback to SecItemCopyMatching for keys created with kSecAttrIsPermanent = true
             let privateKeyQuery = self.buildQuery(.privateKey)
             var privateKeyDataRef: CFTypeRef?
             let privateKeyStatus = SecItemCopyMatching(privateKeyQuery as CFDictionary, &privateKeyDataRef)
             
-            if publicKeyStatus == noErr, let publicKeyData = publicKeyDataRef as? Data, privateKeyStatus == noErr, let privateKeyData = privateKeyDataRef as? Data {
-                
-                if self.keychainService.set(publicKeyData, key: self.publicKeyDataKeychainServiceKey), self.keychainService.set(privateKeyData, key: self.privateKeyDataKeychainServiceKey) {
-                    return true
-                }
-                else {
-                    FRLog.e("Failed to store Key Pairs into Keychain Service: \(self)")
-                }
+            if privateKeyStatus == noErr, let data = privateKeyDataRef as? Data {
+                privateKeyData = data
+                FRLog.v("Private key extracted using SecItemCopyMatching")
+            } else {
+                FRLog.e("Failed to extract private key data using SecItemCopyMatching. Status: \(privateKeyStatus), OSStatus description: \(self.keychainErrorDescription(privateKeyStatus))")
+                return false
             }
-            else {
-                FRLog.e("Failed to retrieve Key Pairs from Keychain Service: \(self)")
-            }
-        }
-        else {
-            FRLog.e("Failed to generate Key Pair using SecKeyGeneratePair(): \(self)")
         }
         
-        return false
+        guard let publicKey = publicKeyData, let privateKey = privateKeyData else {
+            FRLog.e("Failed to extract key data despite multiple attempts")
+            return false
+        }
+        
+        FRLog.v("Key data extracted successfully, storing to KeychainService")
+        
+        // Store the key data
+        guard self.keychainService.set(publicKey, key: self.publicKeyDataKeychainServiceKey) else {
+            FRLog.e("Failed to store Public Key data into Keychain Service")
+            // Clean up the keys generated by SecKeyGeneratePair in system Keychain
+            FRLog.v("Cleaning up keys from system Keychain due to storage failure")
+            self.deleteExistingKeys()
+            return false
+        }
+        
+        guard self.keychainService.set(privateKey, key: self.privateKeyDataKeychainServiceKey) else {
+            FRLog.e("Failed to store Private Key data into Keychain Service")
+            // Clean up both the public key data we just stored and the keys in system Keychain
+            FRLog.v("Cleaning up stored public key data and system Keychain keys due to private key storage failure")
+            if !self.keychainService.delete(self.publicKeyDataKeychainServiceKey) {
+                FRLog.w("Failed to delete public key data from KeychainService during cleanup")
+            }
+            self.deleteExistingKeys()
+            return false
+        }
+        
+        FRLog.v("Key Pair generation and storage completed successfully")
+        return true
+    }
+    
+    
+    /// Deletes existing keys from keychain to avoid conflicts during key generation
+    private func deleteExistingKeys() {
+        // Delete public key
+        var publicKeyQuery = self.buildQuery(.publicKey)
+        publicKeyQuery.removeValue(forKey: kSecReturnData as String)
+        let publicKeyDeleteStatus = SecItemDelete(publicKeyQuery as CFDictionary)
+        
+        if publicKeyDeleteStatus == noErr {
+            FRLog.v("Successfully deleted existing public key from system Keychain")
+        } else if publicKeyDeleteStatus == errSecItemNotFound {
+            FRLog.v("No existing public key found in system Keychain to delete")
+        } else {
+            FRLog.w("Failed to delete public key from system Keychain. Status: \(publicKeyDeleteStatus), OSStatus description: \(self.keychainErrorDescription(publicKeyDeleteStatus))")
+        }
+        
+        // Delete private key
+        var privateKeyQuery = self.buildQuery(.privateKey)
+        privateKeyQuery.removeValue(forKey: kSecReturnData as String)
+        let privateKeyDeleteStatus = SecItemDelete(privateKeyQuery as CFDictionary)
+        
+        if privateKeyDeleteStatus == noErr {
+            FRLog.v("Successfully deleted existing private key from system Keychain")
+        } else if privateKeyDeleteStatus == errSecItemNotFound {
+            FRLog.v("No existing private key found in system Keychain to delete")
+        } else {
+            FRLog.w("Failed to delete private key from system Keychain. Status: \(privateKeyDeleteStatus), OSStatus description: \(self.keychainErrorDescription(privateKeyDeleteStatus))")
+        }
+    }
+    
+    
+    /// Provides human-readable description for OSStatus error codes
+    ///
+    /// - Parameter status: OSStatus error code
+    /// - Returns: Human-readable error description
+    private func keychainErrorDescription(_ status: OSStatus) -> String {
+        switch status {
+        case errSecSuccess:
+            return "Success"
+        case errSecUnimplemented:
+            return "Function or operation not implemented"
+        case errSecParam:
+            return "One or more parameters passed to the function were not valid"
+        case errSecAllocate:
+            return "Failed to allocate memory"
+        case errSecNotAvailable:
+            return "No trust results are available"
+        case errSecAuthFailed:
+            return "Authorization/Authentication failed"
+        case errSecDuplicateItem:
+            return "The item already exists"
+        case errSecItemNotFound:
+            return "The item cannot be found"
+        case errSecInteractionNotAllowed:
+            return "Interaction with the Security Server is not allowed"
+        case errSecDecode:
+            return "Unable to decode the provided data"
+        default:
+            return "Unknown error (\(status))"
+        }
     }
     
     /// Builds Dictionary of Keychain operation attributes for Key Pair generation based on given Key Type
