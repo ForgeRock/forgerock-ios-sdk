@@ -1,3 +1,8 @@
+## [4.8.4]
+
+#### Fixed
+- Fixed inconsistent device identifier generation on iOS 26 affecting Device Profile Collector–based authentication flows [SDKS-4627] 
+
 ## [4.8.3]
 
 #### Fixed
