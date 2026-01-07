@@ -21,14 +21,25 @@ struct CBConstants {
 
     static let envId: String = "envId"
     static let pauseBehavioralData: String = "pauseBehavioralData"
-    static let consoleLogEnabled: String = "consoleLogEnabled"
-    static let deviceAttributesToIgnore = "deviceAttributesToIgnore"
+    
     static let customHost = "customHost"
-    static let lazyMetadata = "lazyMetadata"
+    
     static let behavioralDataCollection = "behavioralDataCollection"
+    
     
     static let signals: String = "signals"
     static let clientError: String = "clientError"
     
     static let riskEvaluationSignals: String =  "pingone_risk_evaluation_signals"
+    
+    // New properties
+    static let universalDeviceIdentification = "universalDeviceIdentification"
+    static let agentIdentification = "agentIdentification"
+    static let agentTimeout = "agentTimeout"
+    static let agentPort = "agentPort"
+    
+    // Removed but keeping for backwards compatibility
+    static let consoleLogEnabled: String = "consoleLogEnabled"
+    static let deviceAttributesToIgnore = "deviceAttributesToIgnore"
+    static let lazyMetadata = "lazyMetadata"
 }

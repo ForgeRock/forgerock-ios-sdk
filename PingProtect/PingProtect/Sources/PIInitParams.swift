@@ -21,15 +21,21 @@ public struct PIInitParams {
     var customHost: String? = nil
     var lazyMetadata: Bool = false
     var behavioralDataCollection: Bool = true
+    var agentIdentification: Bool = false
+    var agentTimeout: Int? = nil
+    var agentPort: Int? = nil
     
     /// Memberwise Initializer
-    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true) {
+    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true, agentIdentification: Bool = false, agentTimeout: Int? = nil, agentPort: Int? = nil) {
         self.envId = envId
         self.deviceAttributesToIgnore = deviceAttributesToIgnore
         self.consoleLogEnabled = consoleLogEnabled
         self.customHost = customHost
         self.lazyMetadata = lazyMetadata
         self.behavioralDataCollection = behavioralDataCollection
+        self.agentIdentification = agentIdentification
+        self.agentTimeout = agentTimeout
+        self.agentPort = agentPort
     }
     
     
@@ -41,6 +47,10 @@ public struct PIInitParams {
         poInitParams.customHost = customHost
         poInitParams.lazyMetadata = lazyMetadata
         poInitParams.behavioralDataCollection = behavioralDataCollection
+        // TODO: Uncomment when PingOneSignals SDK supports these properties
+//         poInitParams.agentIdentification = agentIdentification
+//         poInitParams.agentTimeout = agentTimeout
+//         poInitParams.agentPort = agentPort
         
         return poInitParams
     }

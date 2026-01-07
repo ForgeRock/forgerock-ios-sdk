@@ -27,12 +27,16 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                        lazyMetadata: String = "false",
                        behavioralDataCollectionKey: String = "behavioralDataCollection",
                        behavioralDataCollection: String = "true",
+                       agentIdentificationKey: String = "agentIdentification",
+                       agentIdentification: String = "false",
+                       agentTimeoutKey: String = "agentTimeout",
+                       agentTimeout: String? = nil,
+                       agentPortKey: String = "agentPort",
+                       agentPort: String? = nil,
                        clientErrorKey: String = "IDToken1clientError",
                        clientError: String = "") -> String {
-        let jsonStr = """
-        {
-          "type": "PingOneProtectInitializeCallback",
-          "output": [
+        
+        var outputFields = """
             {
               "name": "\(envIdKey)",
               "value": "\(envId)"
@@ -56,7 +60,40 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             {
               "name": "\(behavioralDataCollectionKey)",
               "value": \(behavioralDataCollection)
+            },
+            {
+              "name": "\(agentIdentificationKey)",
+              "value": \(agentIdentification)
             }
+        """
+        
+        // Add optional agentTimeout if provided
+        if let timeout = agentTimeout {
+            outputFields += """
+            ,
+            {
+              "name": "\(agentTimeoutKey)",
+              "value": \(timeout)
+            }
+            """
+        }
+        
+        // Add optional agentPort if provided
+        if let port = agentPort {
+            outputFields += """
+            ,
+            {
+              "name": "\(agentPortKey)",
+              "value": \(port)
+            }
+            """
+        }
+        
+        let jsonStr = """
+        {
+          "type": "PingOneProtectInitializeCallback",
+          "output": [
+            \(outputFields)
           ],
           "input": [
             {
@@ -91,6 +128,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         let customHost = "custom.host"
         let lazyMetadata = "true"
         let behavioralDataCollection = "false"
+        let agentIdentification = "true"
+        let agentTimeout = "5000"
+        let agentPort = "8080"
         let clientErrorKey = "IDToken1clientError"
         
         let jsonStr = getJsonString(envId: envId,
@@ -99,6 +139,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                                     customHost: customHost,
                                     lazyMetadata: lazyMetadata,
                                     behavioralDataCollection: behavioralDataCollection,
+                                    agentIdentification: agentIdentification,
+                                    agentTimeout: agentTimeout,
+                                    agentPort: agentPort,
                                     clientErrorKey: clientErrorKey)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -112,6 +155,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             XCTAssertEqual(callback.customHost, customHost)
             XCTAssertEqual(String(callback.lazyMetadata), lazyMetadata)
             XCTAssertEqual(String(callback.behavioralDataCollection), behavioralDataCollection)
+            XCTAssertEqual(String(callback.agentIdentification), agentIdentification)
+            XCTAssertEqual(callback.agentTimeout, Int(agentTimeout))
+            XCTAssertEqual(callback.agentPort, Int(agentPort))
             
             XCTAssertTrue(callback.inputNames.contains(clientErrorKey))
         }
@@ -150,20 +196,12 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
-            let _ = try PingOneProtectInitializeCallback(json: callbackResponse)
-            XCTFail("Initiating PingOneProtectInitializeCallback with invalid JSON was successful")
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of false
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.consoleLogEnabled, false)
         }
-        catch let error as AuthError {
-            switch error {
-                // Should only fail with this error
-            case .invalidCallbackResponse(let message):
-                XCTAssertEqual(message, "Missing consoleLogEnabled")
-                break
-            default:
-                XCTFail("Failed with unexpected error: \(error)")
-                break
-            }
-        } catch {
+        catch {
             XCTFail("Failed with unexpected error: \(error)")
         }
     }
@@ -174,20 +212,12 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
-            let _ = try PingOneProtectInitializeCallback(json: callbackResponse)
-            XCTFail("Initiating PingOneProtectInitializeCallback with invalid JSON was successful")
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of empty array
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.deviceAttributesToIgnore, [])
         }
-        catch let error as AuthError {
-            switch error {
-                // Should only fail with this error
-            case .invalidCallbackResponse(let message):
-                XCTAssertEqual(message, "Missing deviceAttributesToIgnore")
-                break
-            default:
-                XCTFail("Failed with unexpected error: \(error)")
-                break
-            }
-        } catch {
+        catch {
             XCTFail("Failed with unexpected error: \(error)")
         }
     }
@@ -198,20 +228,12 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
-            let _ = try PingOneProtectInitializeCallback(json: callbackResponse)
-            XCTFail("Initiating PingOneProtectInitializeCallback with invalid JSON was successful")
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of empty string
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.customHost, "")
         }
-        catch let error as AuthError {
-            switch error {
-                // Should only fail with this error
-            case .invalidCallbackResponse(let message):
-                XCTAssertEqual(message, "Missing customHost")
-                break
-            default:
-                XCTFail("Failed with unexpected error: \(error)")
-                break
-            }
-        } catch {
+        catch {
             XCTFail("Failed with unexpected error: \(error)")
         }
     }
@@ -222,20 +244,12 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
         do {
-            let _ = try PingOneProtectInitializeCallback(json: callbackResponse)
-            XCTFail("Initiating PingOneProtectInitializeCallback with invalid JSON was successful")
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of false
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.lazyMetadata, false)
         }
-        catch let error as AuthError {
-            switch error {
-                // Should only fail with this error
-            case .invalidCallbackResponse(let message):
-                XCTAssertEqual(message, "Missing lazyMetadata")
-                break
-            default:
-                XCTFail("Failed with unexpected error: \(error)")
-                break
-            }
-        } catch {
+        catch {
             XCTFail("Failed with unexpected error: \(error)")
         }
     }
@@ -282,6 +296,54 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                 XCTFail("Failed with unexpected error: \(error)")
             }
         } catch {
+            XCTFail("Failed with unexpected error: \(error)")
+        }
+    }
+    
+    
+    func test_09a_missing_agentIdentification_value() {
+        let jsonStr = getJsonString(agentIdentificationKey: "WrongKey")
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        do {
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of false
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.agentIdentification, false)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error)")
+        }
+    }
+    
+    
+    func test_09b_missing_agentTimeout_value() {
+        let jsonStr = getJsonString(agentTimeoutKey: "WrongKey")
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        do {
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of nil
+            XCTAssertNotNil(callback)
+            XCTAssertNil(callback.agentTimeout)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error)")
+        }
+    }
+    
+    
+    func test_09c_missing_agentPort_value() {
+        let jsonStr = getJsonString(agentPortKey: "WrongKey")
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        do {
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of nil
+            XCTAssertNotNil(callback)
+            XCTAssertNil(callback.agentPort)
+        }
+        catch {
             XCTFail("Failed with unexpected error: \(error)")
         }
     }
@@ -359,6 +421,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                             "customHost" : "",
                             "lazyMetadata" : true,
                             "behavioralDataCollection" : true,
+                            "agentIdentification" : true,
+                            "agentTimeout" : 3000,
+                            "agentPort" : 9090,
                             "disableHub" : true,
                             "deviceKeyRsyncIntervals" : 10,
                             "enableTrust" : true,
@@ -380,6 +445,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             XCTAssertEqual(callback.customHost, "")
             XCTAssertEqual(callback.lazyMetadata, true)
             XCTAssertEqual(callback.behavioralDataCollection, true)
+            XCTAssertEqual(callback.agentIdentification, true)
+            XCTAssertEqual(callback.agentTimeout, 3000)
+            XCTAssertEqual(callback.agentPort, 9090)
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -407,6 +475,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                         "customHost": "",
                         "lazyMetadata": true,
                         "behavioralDataCollection": true,
+                        "agentIdentification": false,
+                        "agentTimeout": 2000,
+                        "agentPort": 7070,
                         "disableHub": true,
                         "deviceKeyRsyncIntervals": 10,
                         "enableTrust": true,
@@ -459,6 +530,9 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                     XCTAssertEqual(pingOneProtectInitializeCallback?.customHost, "")
                     XCTAssertEqual(pingOneProtectInitializeCallback?.lazyMetadata, true)
                     XCTAssertEqual(pingOneProtectInitializeCallback?.behavioralDataCollection, true)
+                    XCTAssertEqual(pingOneProtectInitializeCallback?.agentIdentification, false)
+                    XCTAssertEqual(pingOneProtectInitializeCallback?.agentTimeout, 2000)
+                    XCTAssertEqual(pingOneProtectInitializeCallback?.agentPort, 7070)
                     
                     pingOneProtectInitializeCallback?.setClientError("Some failure!")
                 }

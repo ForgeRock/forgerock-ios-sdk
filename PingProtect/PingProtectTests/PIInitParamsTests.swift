@@ -23,6 +23,9 @@ final class PIInitParamsTests: XCTestCase {
         XCTAssertEqual(initParams.envId, nil)
         XCTAssertEqual(initParams.lazyMetadata, false)
         XCTAssertEqual(initParams.consoleLogEnabled, false)
+        XCTAssertEqual(initParams.agentIdentification, false)
+        XCTAssertEqual(initParams.agentTimeout, nil)
+        XCTAssertEqual(initParams.agentPort, nil)
     }
     
     
@@ -33,13 +36,19 @@ final class PIInitParamsTests: XCTestCase {
         let customHost = "custom.host"
         let lazyMetadata = true
         let behavioralDataCollection = false
+        let agentIdentification = true
+        let agentTimeout = 5000
+        let agentPort = 8080
         
         let initParams = PIInitParams(envId: envId, 
                                       deviceAttributesToIgnore: deviceAttributesToIgnore,
                                       consoleLogEnabled: consoleLogEnabled,
                                       customHost: customHost,
                                       lazyMetadata: lazyMetadata,
-                                      behavioralDataCollection: behavioralDataCollection)
+                                      behavioralDataCollection: behavioralDataCollection,
+                                      agentIdentification: agentIdentification,
+                                      agentTimeout: agentTimeout,
+                                      agentPort: agentPort)
         
         let signalsInitParam = initParams.getPOInitParams()
         
@@ -49,6 +58,10 @@ final class PIInitParamsTests: XCTestCase {
         XCTAssertEqual(signalsInitParam.customHost, customHost)
         XCTAssertEqual(signalsInitParam.lazyMetadata, lazyMetadata)
         XCTAssertEqual(signalsInitParam.behavioralDataCollection, behavioralDataCollection)
+        // TODO: Uncomment when PingOneSignals SDK supports these properties
+//        XCTAssertEqual(signalsInitParam.agentIdentification, agentIdentification)
+//        XCTAssertEqual(signalsInitParam.agentTimeout, agentTimeout)
+//        XCTAssertEqual(signalsInitParam.agentPort, agentPort)
     }
     
 }
