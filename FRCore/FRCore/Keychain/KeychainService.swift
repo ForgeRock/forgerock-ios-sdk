@@ -1029,6 +1029,6 @@ enum KeychainItemClass: String {
     }
     
     static var allClasses: [KeychainItemClass] {
-        return [.genericPassword, .internetPassword, .certificate, .key, .identity]
+        return [.genericPassword, .internetPassword, .certificate, .identity]
     }
 }

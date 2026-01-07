@@ -359,4 +359,55 @@ class KeychainServiceTests: FRBaseTestCase {
         
         return privateKey
     }
+    
+      // MARK: - Test deleteAll does not delete customer RSA keys
+
+    func test_deleteAll_shouldNotDeleteCustomerRSAKeys() {
+        // Given: Create a customer's RSA key (not created by SDK)
+        let customerKeyTag = "com.customer.app.rsaKey"
+        let customerKeyIdentifier = customerKeyTag.data(using: .utf8)!
+        
+        // Generate RSA key pair for customer
+        let keyAttributes: [String: Any] = [
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecAttrKeySizeInBits as String: 2048,
+            kSecPrivateKeyAttrs as String: [
+                kSecAttrIsPermanent as String: true,
+                kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock as String,
+                kSecAttrApplicationTag as String: customerKeyIdentifier
+            ]
+        ]
+        
+        var error: Unmanaged<CFError>?
+        guard SecKeyCreateRandomKey(keyAttributes as CFDictionary, &error) != nil else {
+            XCTFail("Failed to create customer RSA key: \(String(describing: error))")
+            return
+        }
+        
+        // Verify customer key exists
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassKey,
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecAttrApplicationTag as String: customerKeyIdentifier,
+            kSecReturnRef as String: true,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock as String
+        ]
+        
+        var item: CFTypeRef?
+        var status = SecItemCopyMatching(query as CFDictionary, &item)
+        XCTAssertEqual(status, errSecSuccess, "Customer key should exist before deleteAll")
+        
+        // When: Call deleteAll on KeychainService
+        let keychainService = KeychainService(service: "com.forgerock.ios.test")
+        keychainService.deleteAll()
+        
+        // Then: Customer's RSA key should still exist
+        item = nil
+        status = SecItemCopyMatching(query as CFDictionary, &item)
+        XCTAssertEqual(status, errSecSuccess, "Customer RSA key should NOT be deleted by SDK")
+        
+        // Cleanup: Delete customer key
+        SecItemDelete(query as CFDictionary)
+    }
+    
 }
