@@ -2,7 +2,7 @@
 //  PIInitParams.swift
 //  PingProtect
 //
-//  Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2024 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -23,10 +23,10 @@ public struct PIInitParams {
     var behavioralDataCollection: Bool = true
     var agentIdentification: Bool = false
     var agentTimeout: Int? = nil
-    var agentPort: Int? = nil
+    var agentPort: String? = nil
     
     /// Memberwise Initializer
-    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true, agentIdentification: Bool = false, agentTimeout: Int? = nil, agentPort: Int? = nil) {
+    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true, agentIdentification: Bool = false, agentTimeout: Int? = nil, agentPort: String? = nil) {
         self.envId = envId
         self.deviceAttributesToIgnore = deviceAttributesToIgnore
         self.consoleLogEnabled = consoleLogEnabled

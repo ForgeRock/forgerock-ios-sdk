@@ -2,7 +2,7 @@
 //  PingOneProtectInitializeCallbackTests.swift
 //  PingProtectTests
 //
-//  Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2024 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -84,7 +84,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             ,
             {
               "name": "\(agentPortKey)",
-              "value": \(port)
+              "value": "\(port)"
             }
             """
         }
@@ -157,7 +157,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             XCTAssertEqual(String(callback.behavioralDataCollection), behavioralDataCollection)
             XCTAssertEqual(String(callback.agentIdentification), agentIdentification)
             XCTAssertEqual(callback.agentTimeout, Int(agentTimeout))
-            XCTAssertEqual(callback.agentPort, Int(agentPort))
+            XCTAssertEqual(callback.agentPort, agentPort)
             
             XCTAssertTrue(callback.inputNames.contains(clientErrorKey))
         }
@@ -423,7 +423,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                             "behavioralDataCollection" : true,
                             "agentIdentification" : true,
                             "agentTimeout" : 3000,
-                            "agentPort" : 9090,
+                            "agentPort" : "9090",
                             "disableHub" : true,
                             "deviceKeyRsyncIntervals" : 10,
                             "enableTrust" : true,
@@ -447,7 +447,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             XCTAssertEqual(callback.behavioralDataCollection, true)
             XCTAssertEqual(callback.agentIdentification, true)
             XCTAssertEqual(callback.agentTimeout, 3000)
-            XCTAssertEqual(callback.agentPort, 9090)
+            XCTAssertEqual(callback.agentPort, "9090")
         }
         catch {
             XCTFail("Failed to construct callback: \(callbackResponse)")
@@ -477,7 +477,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                         "behavioralDataCollection": true,
                         "agentIdentification": false,
                         "agentTimeout": 2000,
-                        "agentPort": 7070,
+                        "agentPort": "7070",
                         "disableHub": true,
                         "deviceKeyRsyncIntervals": 10,
                         "enableTrust": true,
@@ -532,7 +532,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                     XCTAssertEqual(pingOneProtectInitializeCallback?.behavioralDataCollection, true)
                     XCTAssertEqual(pingOneProtectInitializeCallback?.agentIdentification, false)
                     XCTAssertEqual(pingOneProtectInitializeCallback?.agentTimeout, 2000)
-                    XCTAssertEqual(pingOneProtectInitializeCallback?.agentPort, 7070)
+                    XCTAssertEqual(pingOneProtectInitializeCallback?.agentPort, "7070")
                     
                     pingOneProtectInitializeCallback?.setClientError("Some failure!")
                 }

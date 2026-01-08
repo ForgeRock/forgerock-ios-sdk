@@ -2,7 +2,7 @@
 //  PIInitParams.swift
 //  PingProtectTests
 //
-//  Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2024 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -38,7 +38,7 @@ final class PIInitParamsTests: XCTestCase {
         let behavioralDataCollection = false
         let agentIdentification = true
         let agentTimeout = 5000
-        let agentPort = 8080
+        let agentPort = "8080"
         
         let initParams = PIInitParams(envId: envId, 
                                       deviceAttributesToIgnore: deviceAttributesToIgnore,

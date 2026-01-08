@@ -2,7 +2,7 @@
 //  PingOneProtectInitializeCallback.swift
 //  PingProtect
 //
-//  Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2024 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -33,7 +33,7 @@ open class PingOneProtectInitializeCallback: ProtectCallback {
     /// The agentTimeout received from server
     public private(set) var agentTimeout: Int?
     /// The agentPort received from server
-    public private(set) var agentPort: Int?
+    public private(set) var agentPort: String?
     
     
     /// Designated initialization method for PingOneProtectInitializeCallback
@@ -103,7 +103,7 @@ open class PingOneProtectInitializeCallback: ProtectCallback {
         }
         
         // Optional - not included by default
-        if let agentPort = self.outputValues[CBConstants.agentPort] as? Int {
+        if let agentPort = self.outputValues[CBConstants.agentPort] as? String {
             self.agentPort = agentPort
         } else {
             FRLog.i("Missing agentPort - now optional")
