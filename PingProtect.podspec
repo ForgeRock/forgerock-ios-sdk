@@ -34,5 +34,5 @@ Pod::Spec.new do |s|
     'PingProtect' => [base_dir + '/*.xcprivacy']
   }
   s.ios.dependency 'FRAuth', '~> 4.8.3'
-  s.ios.dependency 'PingOneSignals', '~> 5.2.7'
+  s.ios.dependency 'PingOneSignals', '~> 5.3.0'
 end
