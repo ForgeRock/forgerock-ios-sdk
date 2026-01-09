@@ -243,14 +243,6 @@
                BlueprintName = "FRAuthTests"
                ReferencedContainer = "container:../FRAuth/FRAuth.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "AA_09_PingOneProtectInitializeCallbackTest">
-               </Test>
-               <Test
-                  Identifier = "AA_10_PingOneProtectEvaluateCallbackTest">
-               </Test>
-            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">
