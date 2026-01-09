@@ -60,11 +60,9 @@ class AA_09_PingOneProtectInitializeCallbackTest: CallbackBaseTest {
             if callback is PingOneProtectInitializeCallback, let pingOneProtectInitializeCallback = callback as? PingOneProtectInitializeCallback {
                 
                 XCTAssertNotEqual(pingOneProtectInitializeCallback.envId, "")
-                XCTAssertFalse(pingOneProtectInitializeCallback.consoleLogEnabled)
-                XCTAssertTrue(pingOneProtectInitializeCallback.deviceAttributesToIgnore.count == 0)
-                XCTAssertEqual(pingOneProtectInitializeCallback.customHost, "")
-                XCTAssertFalse(pingOneProtectInitializeCallback.lazyMetadata)
                 XCTAssertTrue(pingOneProtectInitializeCallback.behavioralDataCollection)
+                XCTAssertFalse(pingOneProtectInitializeCallback.enableTrust)
+                XCTAssertFalse(pingOneProtectInitializeCallback.agentIdentification)
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
@@ -121,14 +119,10 @@ class AA_09_PingOneProtectInitializeCallbackTest: CallbackBaseTest {
             if callback is PingOneProtectInitializeCallback, let pingOneProtectInitializeCallback = callback as? PingOneProtectInitializeCallback {
                 
                 XCTAssertNotEqual(pingOneProtectInitializeCallback.envId, "")
-                XCTAssertTrue(pingOneProtectInitializeCallback.consoleLogEnabled)
-                XCTAssertTrue(pingOneProtectInitializeCallback.deviceAttributesToIgnore.count == 3)
-                XCTAssertTrue(pingOneProtectInitializeCallback.deviceAttributesToIgnore.contains("Model"))
-                XCTAssertTrue(pingOneProtectInitializeCallback.deviceAttributesToIgnore.contains("Manufacturer"))
-                XCTAssertTrue(pingOneProtectInitializeCallback.deviceAttributesToIgnore.contains("Screen size"))
-                XCTAssertEqual(pingOneProtectInitializeCallback.customHost, "custom.host.com")
-                XCTAssertTrue(pingOneProtectInitializeCallback.lazyMetadata)
                 XCTAssertFalse(pingOneProtectInitializeCallback.behavioralDataCollection)
+                XCTAssertTrue(pingOneProtectInitializeCallback.agentIdentification)
+                XCTAssertEqual(pingOneProtectInitializeCallback.agentTimeout, 200)
+                XCTAssertEqual(pingOneProtectInitializeCallback.agentPort, "8089")
             }
             else {
                 XCTFail("Received unexpected callback \(callback)")
