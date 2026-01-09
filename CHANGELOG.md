@@ -2,6 +2,8 @@
 
 #### Fixed
 - Fixed inconsistent device identifier generation on iOS 26 affecting Device Profile Collector–based authentication flows [SDKS-4627] 
+- Resolved an issue where logging out via the SDK could remove RSA keys from the Keychain [SDKS-4476]
+- Aligned `PingOneProtectInitializeCallback` with server-side changes [SDKS-4666]
 
 ## [4.8.3]
 
