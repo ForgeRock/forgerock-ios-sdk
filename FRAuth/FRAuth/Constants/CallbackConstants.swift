@@ -266,4 +266,19 @@ extension CBConstants {
     static let pingOneProtect: String = "PingOneProtect"
     static let protectInitialize: String = "protect_initialize"
     static let protectRiskEvaluation: String = "protect_risk_evaluation"
+    
+    // PingOneProtectInitializeCallback properties
+    static let envId: String = "envId"
+    static let consoleLogEnabled: String = "consoleLogEnabled"
+    static let deviceAttributesToIgnore: String = "deviceAttributesToIgnore"
+    static let customHost: String = "customHost"
+    static let lazyMetadata: String = "lazyMetadata"
+    static let behavioralDataCollection: String = "behavioralDataCollection"
+    static let agentIdentification: String = "agentIdentification"
+    static let agentTimeout: String = "agentTimeout"
+    static let agentPort: String = "agentPort"
+    static let enableTrust: String = "enableTrust"
+    
+    // PingOneProtectEvaluationCallback properties
+    static let pauseBehavioralData: String = "pauseBehavioralData"
 }
