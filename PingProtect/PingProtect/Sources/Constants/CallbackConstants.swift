@@ -31,9 +31,9 @@ struct CBConstants {
     static let clientError: String = "clientError"
     
     static let riskEvaluationSignals: String =  "pingone_risk_evaluation_signals"
+    static let enableTrust = "enableTrust"
     
     // New properties
-    static let universalDeviceIdentification = "universalDeviceIdentification"
     static let agentIdentification = "agentIdentification"
     static let agentTimeout = "agentTimeout"
     static let agentPort = "agentPort"

@@ -34,6 +34,8 @@ open class PingOneProtectInitializeCallback: ProtectCallback {
     public private(set) var agentTimeout: Int?
     /// The agentPort received from server
     public private(set) var agentPort: String?
+    /// The enableTrust received from server
+    public private(set) var enableTrust: Bool = Bool()
     
     
     /// Designated initialization method for PingOneProtectInitializeCallback
@@ -108,6 +110,14 @@ open class PingOneProtectInitializeCallback: ProtectCallback {
         } else {
             FRLog.i("Missing agentPort - now optional")
             self.agentPort = nil
+        }
+        
+        // Optional - defaults to false if not provided by server
+        if let enableTrust = self.outputValues[CBConstants.enableTrust] as? Bool {
+            self.enableTrust = enableTrust
+        } else {
+            FRLog.i("Missing enableTrust - now optional")
+            self.enableTrust = false
         }
     }
     

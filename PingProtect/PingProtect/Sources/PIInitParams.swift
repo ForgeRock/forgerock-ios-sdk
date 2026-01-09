@@ -24,9 +24,10 @@ public struct PIInitParams {
     var agentIdentification: Bool = false
     var agentTimeout: Int? = nil
     var agentPort: String? = nil
+    var enableTrust: Bool? = nil
     
     /// Memberwise Initializer
-    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true, agentIdentification: Bool = false, agentTimeout: Int? = nil, agentPort: String? = nil) {
+    public init(envId: String? = nil, deviceAttributesToIgnore: [String]? = nil, consoleLogEnabled: Bool = false, customHost: String? = nil, lazyMetadata: Bool = false, behavioralDataCollection: Bool = true, agentIdentification: Bool = false, agentTimeout: Int? = nil, agentPort: String? = nil, enableTrust: Bool? = nil) {
         self.envId = envId
         self.deviceAttributesToIgnore = deviceAttributesToIgnore
         self.consoleLogEnabled = consoleLogEnabled
@@ -36,6 +37,7 @@ public struct PIInitParams {
         self.agentIdentification = agentIdentification
         self.agentTimeout = agentTimeout
         self.agentPort = agentPort
+        self.enableTrust = enableTrust
     }
     
     
@@ -51,6 +53,7 @@ public struct PIInitParams {
 //         poInitParams.agentIdentification = agentIdentification
 //         poInitParams.agentTimeout = agentTimeout
 //         poInitParams.agentPort = agentPort
+//         poInitParams.enableTrust = enableTrust
         
         return poInitParams
     }

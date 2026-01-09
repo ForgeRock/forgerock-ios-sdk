@@ -33,6 +33,8 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                        agentTimeout: String? = nil,
                        agentPortKey: String = "agentPort",
                        agentPort: String? = nil,
+                       enableTrustKey: String = "enableTrust",
+                       enableTrust: String? = nil,
                        clientErrorKey: String = "IDToken1clientError",
                        clientError: String = "") -> String {
         
@@ -89,6 +91,17 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             """
         }
         
+        // Add optional enableTrust if provided
+        if let trust = enableTrust {
+            outputFields += """
+            ,
+            {
+              "name": "\(enableTrustKey)",
+              "value": \(trust)
+            }
+            """
+        }
+        
         let jsonStr = """
         {
           "type": "PingOneProtectInitializeCallback",
@@ -131,6 +144,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
         let agentIdentification = "true"
         let agentTimeout = "5000"
         let agentPort = "8080"
+        let enableTrust = "true"
         let clientErrorKey = "IDToken1clientError"
         
         let jsonStr = getJsonString(envId: envId,
@@ -142,6 +156,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
                                     agentIdentification: agentIdentification,
                                     agentTimeout: agentTimeout,
                                     agentPort: agentPort,
+                                    enableTrust: enableTrust,
                                     clientErrorKey: clientErrorKey)
         let callbackResponse = self.parseStringToDictionary(jsonStr)
         
@@ -158,6 +173,7 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             XCTAssertEqual(String(callback.agentIdentification), agentIdentification)
             XCTAssertEqual(callback.agentTimeout, Int(agentTimeout))
             XCTAssertEqual(callback.agentPort, agentPort)
+            XCTAssertEqual(String(callback.enableTrust), enableTrust)
             
             XCTAssertTrue(callback.inputNames.contains(clientErrorKey))
         }
@@ -342,6 +358,22 @@ final class PingOneProtectInitializeCallbackTests: FRAuthBaseTest {
             // Should succeed with default value of nil
             XCTAssertNotNil(callback)
             XCTAssertNil(callback.agentPort)
+        }
+        catch {
+            XCTFail("Failed with unexpected error: \(error)")
+        }
+    }
+    
+    
+    func test_09d_missing_enableTrust_value() {
+        let jsonStr = getJsonString(enableTrustKey: "WrongKey")
+        let callbackResponse = self.parseStringToDictionary(jsonStr)
+        
+        do {
+            let callback = try PingOneProtectInitializeCallback(json: callbackResponse)
+            // Should succeed with default value of false
+            XCTAssertNotNil(callback)
+            XCTAssertEqual(callback.enableTrust, false)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error)")
