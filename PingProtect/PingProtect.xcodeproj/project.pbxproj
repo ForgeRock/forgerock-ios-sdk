@@ -566,7 +566,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.3;
+				MARKETING_VERSION = 4.8.4;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.PingProtect;
@@ -600,7 +600,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.3;
+				MARKETING_VERSION = 4.8.4;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.PingProtect;
@@ -688,7 +688,7 @@
 			repositoryURL = "https://github.com/pingidentity/pingone-signals-sdk-ios";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 5.2.3;
+				minimumVersion = 5.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
