@@ -671,11 +671,18 @@ public struct KeychainService {
     ///   - accessGroup: Access Group (Shared Keychain Group Identifier) defined in Keychain Sharing under Capabilities tab
     /// - Returns: Bool result indicating whether Keychain Service is accessible with given Service namespace and Access Group
     public static func validateAccessGroup(service: String, accessGroup: String) -> Bool {
+        Log.v("validateAccessGroup called with service: \(service), accessGroup: \(accessGroup)")
+        
+        let appleTeamId = KeychainService.getAppleTeamId()
+        Log.v("Retrieved Apple Team ID: \(appleTeamId ?? "nil")")
         
         var validatedAccessGroup = accessGroup
-        if let appleTeamId = KeychainService.getAppleTeamId(), !accessGroup.hasPrefix(appleTeamId) {
+        if let appleTeamId = appleTeamId, !accessGroup.hasPrefix(appleTeamId) {
             // If Apple TeamId prefix is found, and accessGroup provided doesn't contain, append it
             validatedAccessGroup = appleTeamId + "." + accessGroup
+            Log.v("Access group prefixed with Team ID: \(validatedAccessGroup)")
+        } else {
+            Log.v("Using access group as-is: \(validatedAccessGroup)")
         }
         
         // Validate if dummy data can be added to Keychain Service with given Access Group
@@ -690,20 +697,70 @@ public struct KeychainService {
         query[SecKeys.valueData.rawValue] = itemData
         query[SecKeys.accessible.rawValue] = KeychainAccessibility.afterFirstUnlock.rawValue
         
+        Log.v("Attempting to add test item to keychain with access group: \(validatedAccessGroup)")
         let status = SecItemAdd(query as CFDictionary, nil)
         
         // If dummy data was added, make sure to delete it
         if status == noErr {
+            Log.v("Successfully validated access group, cleaning up test item")
             var query: [String: Any] = [:]
             query[SecKeys.secClass.rawValue] = KeychainItemClass.genericPassword.rawValue
             query[SecKeys.service.rawValue] = service
             query[SecKeys.accessGroup.rawValue] = validatedAccessGroup
             query[SecKeys.account.rawValue] = itemKey
             query[SecKeys.accessible.rawValue] = KeychainAccessibility.afterFirstUnlock.rawValue
-            SecItemDelete(query as CFDictionary)
+            let deleteStatus = SecItemDelete(query as CFDictionary)
+            if deleteStatus != errSecSuccess {
+                Log.w("Failed to cleanup test item, status: \(deleteStatus)")
+            }
+        } else {
+            // Log the error with detailed information
+            let errorMessage = Self.keychainErrorDescription(for: status)
+            Log.e("validateAccessGroup failed - Status: \(status) (\(errorMessage))")
+            Log.e("  Service: \(service)")
+            Log.e("  Original Access Group: \(accessGroup)")
+            Log.e("  Validated Access Group: \(validatedAccessGroup)")
+            Log.e("  Apple Team ID: \(appleTeamId ?? "nil")")
         }
         
         return status == noErr
+    }
+    
+    
+    /// Returns a human-readable description for keychain error codes
+    ///
+    /// - Parameter status: OSStatus error code from keychain operation
+    /// - Returns: String description of the error
+    private static func keychainErrorDescription(for status: OSStatus) -> String {
+        switch status {
+        case errSecSuccess:
+            return "Success"
+        case errSecItemNotFound:
+            return "Item not found"
+        case errSecDuplicateItem:
+            return "Duplicate item"
+        case errSecParam:
+            return "Invalid parameter"
+        case errSecAuthFailed:
+            return "Authorization failed"
+        case errSecNotAvailable:
+            return "Not available (access group may not exist)"
+        case errSecInteractionNotAllowed:
+            return "User interaction not allowed"
+        case errSecMissingEntitlement:
+            return "Missing entitlement (check Keychain Sharing capability)"
+        case errSecDecode:
+            return "Decode error"
+        case errSecAllocate:
+            return "Memory allocation failed"
+        default:
+            if #available(iOS 11.3, macOS 10.13.4, *) {
+                if let errorMessage = SecCopyErrorMessageString(status, nil) as String? {
+                    return errorMessage
+                }
+            }
+            return "Unknown error"
+        }
     }
     
     
