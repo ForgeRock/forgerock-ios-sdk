@@ -471,28 +471,40 @@ struct TokenManager {
         }
     }
 
-    /// Detect network transport failures where credentials should be preserved for retry.
+    /// Detect retryable network transport failures where credentials should be preserved.
     ///
-    /// Any error in `NSURLErrorDomain` represents a transport-level failure (no internet,
-    /// timeout, connection lost, DNS, TLS), not an OAuth2 credential rejection.
+    /// This classifier intentionally uses a strict whitelist of retryable `URLError.Code`
+    /// values rather than all `NSURLErrorDomain` errors:
+    /// `notConnectedToInternet`, `networkConnectionLost`, `timedOut`,
+    /// `cannotFindHost`, `cannotConnectToHost`, and `dnsLookupFailed`.
     /// Also checks inside `AuthApiError.apiRequestFailure` for a wrapped transport error.
     private func isNetworkTransportError(_ error: Error) -> Bool {
-        if self.isURLErrorDomain(error) {
-            return true
-        }
-
+        let resolved = underlyingTransportError(from: error)
+        guard let urlError = resolved as? URLError else { return false }
+        return Self.retryableTransportCodes.contains(urlError.code)
+    }
+    
+    /// Extracts the underlying transport error from an `AuthApiError.apiRequestFailure`,
+    /// or returns the error itself if it's not wrapped.
+    private func underlyingTransportError(from error: Error) -> Error {
         guard let authApiError = error as? AuthApiError,
-              case let .apiRequestFailure(_, _, underlyingError) = authApiError else {
-            return false
+              case let .apiRequestFailure(_, _, underlyingError) = authApiError,
+              let underlyingError else {
+            return error
         }
-
-        return self.isURLErrorDomain(underlyingError)
+        return underlyingError
     }
-
-    private func isURLErrorDomain(_ error: Error?) -> Bool {
-        guard let error else {
-            return false
-        }
-        return (error as NSError).domain == URLError.errorDomain
-    }
+    
+    /// Retry-safe URL loading failures that represent transient transport conditions.
+    ///
+    /// These codes indicate temporary connectivity/path issues where local credentials remain valid,
+    /// so token renewal should fail fast and allow callers to retry without destructive cleanup.
+    private static let retryableTransportCodes: Set<URLError.Code> = [
+        .notConnectedToInternet,
+        .networkConnectionLost,
+        .timedOut,
+        .cannotFindHost,
+        .cannotConnectToHost,
+        .dnsLookupFailed
+    ]
 }

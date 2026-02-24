@@ -1376,4 +1376,63 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
             XCTFail("Failed to retrieve KeychainManager")
         }
     }
+
+    func test_32_FRUser_GetAccessToken_RefreshTokenGrant_NetworkConnectionLost_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Use a custom transport failure for refresh_token request.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.networkConnectionLost)
+
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorNetworkConnectionLost)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
 }
