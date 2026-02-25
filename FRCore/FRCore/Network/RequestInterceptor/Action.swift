@@ -31,6 +31,7 @@ import Foundation
         11. PUSH_UPDATE - AM Push update device token for Authenticator SDK: '/json/push/sns/message?_action=refresh'
         12. USER_INFO - OIDC OAuth2 userinfo request: '/oauth2/realms/{realm}/userinfo'
         13. END_SESSION - OIDC end session request: '/oauth2/realms/{realm}/connect/endSession'
+        14. DELETE_BINDING - Device binding key deletion request: '/json/realms/{realm}/users/{userId}/devices/2fa/binding/{kid}'
  */
 public struct Action {
     public let type: String
@@ -57,4 +58,5 @@ public enum ActionType: String {
     case PUSH_UPDATE = "PUSH_UPDATE"
     case USER_INFO = "USER_INFO"
     case END_SESSION = "END_SESSION"
+    case DELETE_BINDING = "DELETE_BINDING"
 }

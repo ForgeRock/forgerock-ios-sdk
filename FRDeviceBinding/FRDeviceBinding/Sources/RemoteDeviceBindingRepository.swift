@@ -40,7 +40,7 @@ internal class RemoteDeviceBindingRepository: DeviceBindingRepository {
         
         let request =  Request(url: url, method: .DELETE, headers: headers, requestType: .json, responseType: nil, timeoutInterval: Double(options.timeout) ?? 60)
         
-        let result = FRRestClient.invokeSync(request: request, action: nil)
+        let result = FRRestClient.invokeSync(request: request, action: Action(type: .DELETE_BINDING))
         
         switch result {
         case .success:
