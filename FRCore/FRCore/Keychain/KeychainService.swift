@@ -2,7 +2,7 @@
 //  KeychainService.swift
 //  FRCore
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -754,12 +754,11 @@ public struct KeychainService {
         case errSecAllocate:
             return "Memory allocation failed"
         default:
-            if #available(iOS 11.3, macOS 10.13.4, *) {
-                if let errorMessage = SecCopyErrorMessageString(status, nil) as String? {
-                    return errorMessage
-                }
+            if let errorMessage = SecCopyErrorMessageString(status, nil) as String? {
+                return errorMessage
+            } else {
+                return "Unknown error: \(status)"
             }
-            return "Unknown error"
         }
     }
     
