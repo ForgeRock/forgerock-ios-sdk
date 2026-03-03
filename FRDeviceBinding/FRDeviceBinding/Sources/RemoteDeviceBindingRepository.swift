@@ -2,7 +2,7 @@
 //  RemoteDeviceBindingRepository.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2023 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2023 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -40,7 +40,7 @@ internal class RemoteDeviceBindingRepository: DeviceBindingRepository {
         
         let request =  Request(url: url, method: .DELETE, headers: headers, requestType: .json, responseType: nil, timeoutInterval: Double(options.timeout) ?? 60)
         
-        let result = FRRestClient.invokeSync(request: request, action: nil)
+        let result = FRRestClient.invokeSync(request: request, action: Action(type: .DELETE_BINDING))
         
         switch result {
         case .success:
