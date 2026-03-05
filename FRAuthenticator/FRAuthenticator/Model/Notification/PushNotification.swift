@@ -2,7 +2,7 @@
 //  Notification.swift
 //  FRAuthenticator
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -23,8 +23,8 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     public internal(set) var mechanismUUID: String
     /// Load balance key for Push
     var loadBalanceKey: String?
-    /// Time to live for push
-    var ttl: Double
+    /// Date and Time that the notification was sent
+    public var ttl: Double
     /// Time added for push
     public var timeAdded: Date
     /// Challenge for push
@@ -33,15 +33,15 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
     var pending: Bool = true
     /// Boolean indicator of whether push notification is approved or not
     var approved: Bool = false
-    /// The JSON String containing the custom attributes added to this notification */
+    /// The JSON String containing the custom attributes added to this notification
     public internal(set) var customPayload: String?
-    /// Message that was received with this notification */
+    /// Message that was received with this notification
     public internal(set) var message: String?
-    /// The type of push notification **/
+    /// The type of push notification
     public internal(set) var pushType: PushType
-    /// The numbers used in the push challenge **/
+    /// The numbers used in the push challenge
     public internal(set) var numbersChallenge: String?
-    ///The context information to this notification. */
+    ///The context information to this notification.
     public internal(set) var contextInfo: String?
     
     
@@ -82,12 +82,18 @@ public class PushNotification: NSObject, NSSecureCoding, Codable {
         }
     }
     
-    ///numbers used for push challenge as int array
+    /// Numbers used for push challenge as Int array
     public var numbersChallengeArray: [Int]? {
         guard numbersChallenge != nil else {
             return nil
         }
         return numbersChallenge!.components(separatedBy: ",").compactMap { Int($0) }
+    }
+    
+    /// Date and Time that the notification expired
+    /// This is calculated by adding the ttl to the timeAdded timestamp
+    public var timeExpired: Date {
+        return self.timeAdded.addingTimeInterval(self.ttl)
     }
     
     
