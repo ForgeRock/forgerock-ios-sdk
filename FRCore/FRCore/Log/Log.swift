@@ -129,7 +129,7 @@ public class Log: NSObject {
     //  MARK: - Property
     
     /// Current SDK version. We hard code it here as currently there is no other way to get it dinamically when used with SPM
-    public static let sdkVersion = "4.8.4"
+    public static let sdkVersion = "4.8.5"
     /// Current LogLevel
     static var logLevel: LogLevel = .none
     /// Current Loggers to handle log entries
