@@ -10,6 +10,7 @@
 
 
 import XCTest
+@testable import FRAuth
 
 class FRUserTokenRenewalTests: FRAuthBaseTest {
 
@@ -45,7 +46,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -84,7 +85,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -124,13 +125,13 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
             // Persist original AccessToken
             // Manually update token lifetime to force token refresh
             at.expiresIn = 0
-            try tokenManager.persist(token: at)
+            try tokenManager.keychainManager.setAccessToken(token: at)
         }
         catch {
             XCTFail("Failed to store AccessToken object: \(error.localizedDescription)")
         }
         
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         let ex = self.expectation(description: "Get User Info")
         user.getAccessToken { (user, error) in
@@ -180,13 +181,13 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
             // Persist original AccessToken
             // Manually update token lifetime to force token refresh
             at.expiresIn = 0
-            try tokenManager.persist(token: at)
+            try tokenManager.keychainManager.setAccessToken(token: at)
         }
         catch {
             XCTFail("Failed to store AccessToken object: \(error.localizedDescription)")
         }
         
-        var user = FRUser(token: at, serverConfig: serverConfig)
+        var user = FRUser(token: at)
         
         do {
             user = try user.getAccessToken()
@@ -231,7 +232,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         }
         
         // Do not persist token, or user object to test no token from Keychain storage
-        var user = FRUser(token: at, serverConfig: serverConfig)
+        var user = FRUser(token: at)
         
         do {
             user = try user.getAccessToken()
@@ -275,7 +276,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         }
         
         // Do not persist token, or user object to test no token from Keychain storage
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         let ex = self.expectation(description: "Get User Info")
         user.getAccessToken { (user, error) in
@@ -327,7 +328,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -370,7 +371,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -414,7 +415,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -457,7 +458,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -503,7 +504,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with OAuth2Error.invalidGrant, and proceed with authorize flow with SSO token
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -543,7 +544,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -596,7 +597,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -649,7 +650,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -702,7 +703,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with OAuth2Error.invalidGrant, and proceed with authorize flow with SSO token
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -742,7 +743,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -784,7 +785,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -826,7 +827,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         
@@ -1185,7 +1186,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
         at1.sessionToken = "different_sso_token"
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -1225,7 +1226,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
         at1.sessionToken = "different_sso_token"
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -1265,7 +1266,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
         at1.sessionToken = "different_sso_token"
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -1305,7 +1306,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
         at1.sessionToken = "different_sso_token"
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -1316,5 +1317,122 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
-    
+
+    func test_31_FRUser_GetAccessToken_RefreshTokenGrant_NoInternet_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Use a custom transport failure for refresh_token request.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.notConnectedToInternet)
+
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorNotConnectedToInternet)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
+
+    func test_32_FRUser_GetAccessToken_RefreshTokenGrant_NetworkConnectionLost_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Use a custom transport failure for refresh_token request.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.networkConnectionLost)
+
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorNetworkConnectionLost)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
 }
