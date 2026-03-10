@@ -43,8 +43,8 @@ env:
   SCHEME: FRTestHostBitBar
   WORKSPACE: e2e/FRExample.xcworkspace
   DEVELOPMENT_TEAM: 9QSE66762D
-  XCODE_VERSION: '16.3'
-  SDK: iphoneos18.4
+  XCODE_VERSION: '16.4'
+  SDK: iphoneos18.5
 
 jobs:
   prepare-device-farm-artifacts:

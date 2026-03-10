@@ -198,8 +198,14 @@ class ViewController: UIViewController, AlertShowing {
         
         //  - MARK: RequestInterceptor example
         
-        //  By commenting out below code, it registers 'ForceAuthIntercetpr' class into FRCore and FRAuth's RequestInterceptor which then allows developers to customize requests being made by ForgeRock SDK, and modify as needed
+        //  By commenting out below code, it registers 'ForceAuthInterceptor' class into FRCore and FRAuth's RequestInterceptor which then allows developers to customize requests being made by ForgeRock SDK, and modify as needed
         // FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [ForceAuthInterceptor()])
+        
+        //  - MARK: DeleteBindingInterceptor example
+        //  Uncomment below to intercept device-binding key deletion requests (ActionType.DELETE_BINDING).
+        //  This allows you to inject the AM session cookie / any custom header before the SDK sends
+        //  the DELETE request to AM's devices/2fa/binding/{kid} endpoint via FRUserKeys().delete(userKey:)
+        // FRRequestInterceptorRegistry.shared.registerInterceptors(interceptors: [DeleteBindingInterceptor()])
         
         /*
         //  - MARK: URLSessionConfiguration && SSL Pinning example

@@ -2,7 +2,7 @@
 //  NotificationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -239,6 +239,8 @@ class NotificationTests: FRABaseTests {
         do {
             let notification = try PushNotification(messageId: messageId, payload: payload)
             XCTAssertTrue(notification.isExpired)
+            let timeExpired = notification.timeAdded + notification.ttl
+            XCTAssertEqual(timeExpired.timeIntervalSince1970, notification.timeExpired.timeIntervalSince1970)
             let calendar = Calendar.current
             let past = calendar.date(byAdding: .minute, value: -5, to: Date())
             notification.timeAdded = past!
@@ -253,6 +255,8 @@ class NotificationTests: FRABaseTests {
         do {
             let notification = try PushNotification(messageId: messageId, payload: payload)
             XCTAssertTrue(notification.isExpired)
+            let timeExpired = notification.timeAdded + notification.ttl
+            XCTAssertEqual(timeExpired.timeIntervalSince1970, notification.timeExpired.timeIntervalSince1970)
             let calendar = Calendar.current
             let future = calendar.date(byAdding: .minute, value: 1, to: Date())
             notification.timeAdded = future!

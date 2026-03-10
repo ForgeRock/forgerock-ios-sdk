@@ -58,6 +58,7 @@
 		EC2FF36328B8DB780095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EC2FF36828B8DB800095EDD1 /* FRGoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */; };
 		EC2FF36928B8DB800095EDD1 /* FRGoogleSignIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D58BC3D326031BE500254654 /* FRGoogleSignIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EC44D7992F4F15EC0006B154 /* DeleteBindingInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC44D7982F4F15EC0006B154 /* DeleteBindingInterceptor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,6 +305,7 @@
 		D5FE5E6023190A0000E04658 /* FRExampleSSO-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FRExampleSSO-Info.plist"; sourceTree = "<group>"; };
 		D5FE5E6123190A0000E04658 /* FRExample.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = FRExample.entitlements; sourceTree = "<group>"; };
 		D5FE5E6223190A0000E04658 /* FRExample-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FRExample-Info.plist"; sourceTree = "<group>"; };
+		EC44D7982F4F15EC0006B154 /* DeleteBindingInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteBindingInterceptor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -466,6 +468,7 @@
 		D5E080C623DA58310025EA17 /* Customization */ = {
 			isa = PBXGroup;
 			children = (
+				EC44D7982F4F15EC0006B154 /* DeleteBindingInterceptor.swift */,
 				D5E080CE23DA583D0025EA17 /* CustomNameCallbackCell.swift */,
 				D5E080D023DA5A070025EA17 /* CustomNameCallbackCell.xib */,
 				D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */,
@@ -811,6 +814,7 @@
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
+				EC44D7992F4F15EC0006B154 /* DeleteBindingInterceptor.swift in Sources */,
 				A52B848A2B339571001FBA2C /* Playground.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -894,7 +898,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.4;
+				MARKETING_VERSION = 4.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -917,7 +921,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.4;
+				MARKETING_VERSION = 4.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1060,7 +1064,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.4;
+				MARKETING_VERSION = 4.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1087,7 +1091,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.4;
+				MARKETING_VERSION = 4.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -1,3 +1,10 @@
+## [4.8.5]
+
+#### Fixed
+- Added `ttl` and `timeExpired` properties to `PushNotification` object for parity between Android and iOS SDKs [SDKS-4804]
+- Added interceptor support for `DELETE_BINDING` requests [SDKS-4799]
+- Added extra logging to `KeychainService` [SDKS-4205]
+
 ## [4.8.4]
 
 #### Fixed

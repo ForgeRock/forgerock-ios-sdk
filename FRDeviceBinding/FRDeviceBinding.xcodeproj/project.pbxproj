@@ -16,6 +16,7 @@
 		A589EC7A29E63C7F00399B64 /* DeviceAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC7329E63C7F00399B64 /* DeviceAuthenticatorTests.swift */; };
 		A589EC7B29E63C7F00399B64 /* FRUserKeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC7629E63C7F00399B64 /* FRUserKeysTests.swift */; };
 		A589EC7C29E63C7F00399B64 /* UserDeviceKeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC7129E63C7F00399B64 /* UserDeviceKeyServiceTests.swift */; };
+		DB8F4C1B2B3D56E700A12345 /* RemoteDeviceBindingRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F4C1A2B3D56E700A12345 /* RemoteDeviceBindingRepositoryTests.swift */; };
 		A5C38A2B29E5B1DD0016B565 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C38A2829E5B1DD0016B565 /* Binding.swift */; };
 		A5C38A2D29E5B1DD0016B565 /* DeviceSigningVerifierCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C38A2929E5B1DD0016B565 /* DeviceSigningVerifierCallback.swift */; };
 		A5C38A3229E5B3910016B565 /* DeviceBindingCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C38A3129E5B3910016B565 /* DeviceBindingCallback.swift */; };
@@ -30,6 +31,7 @@
 		A5C3E2CF29E662D300338904 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589ECD529E6467600399B64 /* Config.swift */; };
 		A5C3E2D029E662D300338904 /* Config-live-01.json in Resources */ = {isa = PBXBuildFile; fileRef = A589ECD329E6467600399B64 /* Config-live-01.json */; };
 		A5C3E2D129E662D300338904 /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = A589ECD429E6467600399B64 /* Config.json */; };
+		DB8F4C1E2B3D56E700A12345 /* successDeleteDeviceBinding.json in Resources */ = {isa = PBXBuildFile; fileRef = DB8F4C1D2B3D56E700A12345 /* successDeleteDeviceBinding.json */; };
 		A5C3E2D229E662E200338904 /* CustomCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = A589EC9629E6467600399B64 /* CustomCallback.swift */; };
 		A5C3E30029EF873E00338904 /* FRDeviceBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C3E2FF29EF873E00338904 /* FRDeviceBinding.swift */; };
 		A5D1C37D29E59FC30096039E /* FRDeviceBinding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D1C37429E59FC20096039E /* FRDeviceBinding.framework */; };
@@ -101,6 +103,8 @@
 		A589EC7429E63C7F00399B64 /* LocalDeviceBindingRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDeviceBindingRepositoryTests.swift; sourceTree = "<group>"; };
 		A589EC7529E63C7F00399B64 /* UserKeySelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeySelectorTests.swift; sourceTree = "<group>"; };
 		A589EC7629E63C7F00399B64 /* FRUserKeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRUserKeysTests.swift; sourceTree = "<group>"; };
+		DB8F4C1A2B3D56E700A12345 /* RemoteDeviceBindingRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDeviceBindingRepositoryTests.swift; sourceTree = "<group>"; };
+		DB8F4C1D2B3D56E700A12345 /* successDeleteDeviceBinding.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = successDeleteDeviceBinding.json; sourceTree = "<group>"; };
 		A589EC8A29E6432000399B64 /* FRTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRTestHost.xcodeproj; path = "/Users/vahan.harutyunyan/Documents/GitHub/forgerock-ios-sdk/FRTestHost/FRTestHost.xcodeproj"; sourceTree = "<absolute>"; };
 		A589EC9629E6467600399B64 /* CustomCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCallback.swift; sourceTree = "<group>"; };
 		A589EC9829E6467600399B64 /* NoSessionInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoSessionInterceptor.swift; sourceTree = "<group>"; };
@@ -309,8 +313,17 @@
 				A589ECA129E6467600399B64 /* AM */,
 				A589ECAF29E6467600399B64 /* OAuth2 */,
 				A589ECCC29E6467600399B64 /* AuthTree */,
+				DB8F4C1C2B3D56E700A12345 /* SelfService */,
 			);
 			path = MockResponseData;
+			sourceTree = "<group>";
+		};
+		DB8F4C1C2B3D56E700A12345 /* SelfService */ = {
+			isa = PBXGroup;
+			children = (
+				DB8F4C1D2B3D56E700A12345 /* successDeleteDeviceBinding.json */,
+			);
+			path = SelfService;
 			sourceTree = "<group>";
 		};
 		A589ECD129E6467600399B64 /* ModelData */ = {
@@ -429,6 +442,7 @@
 				A589EC7529E63C7F00399B64 /* UserKeySelectorTests.swift */,
 				A589EC6C29E63C0300399B64 /* DeviceBindingCallbackTests.swift */,
 				A589EC6B29E63C0300399B64 /* DeviceSigningVerifierCallbackTests.swift */,
+				DB8F4C1A2B3D56E700A12345 /* RemoteDeviceBindingRepositoryTests.swift */,
 			);
 			path = FRDeviceBindingTests;
 			sourceTree = "<group>";
@@ -607,6 +621,7 @@
 			files = (
 				A5C3E2D029E662D300338904 /* Config-live-01.json in Resources */,
 				A5C3E2D129E662D300338904 /* Config.json in Resources */,
+				DB8F4C1E2B3D56E700A12345 /* successDeleteDeviceBinding.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +670,7 @@
 				A5C3E2CF29E662D300338904 /* Config.swift in Sources */,
 				A5C3E2CA29E662C900338904 /* FRTestLogger.swift in Sources */,
 				A589EC7C29E63C7F00399B64 /* UserDeviceKeyServiceTests.swift in Sources */,
+				DB8F4C1B2B3D56E700A12345 /* RemoteDeviceBindingRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,7 +835,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.4;
+				MARKETING_VERSION = 4.8.5;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRDeviceBinding;
@@ -852,7 +868,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.8.4;
+				MARKETING_VERSION = 4.8.5;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.FRDeviceBinding;
