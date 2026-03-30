@@ -120,8 +120,8 @@ public class AppleSignInHandler: NSObject, IdPHandler {
 }
 
 
+@available(iOS 13.0, *)
 extension AppleSignInHandler: ASAuthorizationControllerDelegate {
-    @available(iOS 13.0, *)
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
@@ -154,7 +154,6 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
     }
     
     
-    @available(iOS 13.0, *)
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         FRLog.e("An error occurred during Sign-in With Apple: \(error.localizedDescription)")
         self.completionCallback?(nil, nil, error)
@@ -162,13 +161,12 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
 }
 
 
+@available(iOS 13.0, *)
 extension AppleSignInHandler: ASAuthorizationControllerPresentationContextProviding {
-    @available(iOS 13.0, *)
     public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return ASPresentationAnchor()
     }
     
-    @available(iOS 13.0, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return ASPresentationAnchor()
     }

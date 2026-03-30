@@ -529,9 +529,9 @@ extension Browser: SFSafariViewControllerDelegate {
 
 
 //  MARK: - ASWebAuthenticationPresentationContextProviding
+@available(iOS 13.0, *)
 extension Browser: ASWebAuthenticationPresentationContextProviding {
     /// Delegation method for ASWebAuthenticationPresentationContextProviding; only available for iOS 13.0 or above
-    @available(iOS 13.0, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if let presentingViewController = self.presentingViewController, let window = presentingViewController.view.window {
             return window
