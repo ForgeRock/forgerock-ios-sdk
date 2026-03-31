@@ -122,7 +122,7 @@ public class AppleSignInHandler: NSObject, IdPHandler {
 
 @available(iOS 13.0, *)
 extension AppleSignInHandler: ASAuthorizationControllerDelegate {
-    public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    @MainActor public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             FRLog.v("ASAuthorizationAppleIDCredential received: \(appleIDCredential)")
@@ -154,7 +154,7 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
     }
     
     
-    public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    @MainActor public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         FRLog.e("An error occurred during Sign-in With Apple: \(error.localizedDescription)")
         self.completionCallback?(nil, nil, error)
     }
@@ -163,11 +163,11 @@ extension AppleSignInHandler: ASAuthorizationControllerDelegate {
 
 @available(iOS 13.0, *)
 extension AppleSignInHandler: ASAuthorizationControllerPresentationContextProviding {
-    public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    @MainActor public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return ASPresentationAnchor()
     }
     
-    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+    @MainActor public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return ASPresentationAnchor()
     }
 }
