@@ -2,7 +2,7 @@
 //  ApplicationPinDeviceAuthenticatorTests.swift
 //  FRDeviceBindingTests
 //
-//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2022 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -32,7 +32,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -79,7 +79,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
@@ -165,7 +165,7 @@ class ApplicationPinDeviceAuthenticatorTests: FRBaseTestCase {
             
             //verify signature
             let jws = try JWS(compactSerialization: jwsString)
-            guard let verifier = Verifier(verifyingAlgorithm: .ES256, key: keyPair.publicKey) else {
+            guard let verifier = Verifier(signatureAlgorithm: .ES256, key: keyPair.publicKey) else {
                 XCTFail("Failed to create Verifier")
                 return
             }
