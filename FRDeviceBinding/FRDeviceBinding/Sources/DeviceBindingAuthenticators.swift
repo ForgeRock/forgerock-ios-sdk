@@ -2,7 +2,7 @@
 //  DeviceBindingAuthenticators.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2022 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -137,7 +137,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyPair.privateKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyPair.privateKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         
@@ -179,7 +179,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyStoreKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyStoreKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         
