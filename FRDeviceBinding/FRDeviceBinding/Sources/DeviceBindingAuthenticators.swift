@@ -356,7 +356,12 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
 #if !targetEnvironment(simulator)
         let context = LAContext()
         context.localizedReason = prompt.description
-        keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+        // Only attach LAContext for biometric pre-authentication when biometrics
+        // are enrolled. When only passcode is set, the system will prompt for
+        // passcode automatically when the key is used for signing.
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+            keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+        }
 #endif
         
         do {
@@ -375,13 +380,25 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authetication type.
+    /// Dynamically selects flags based on biometric availability:
+    /// - When biometrics are enrolled: `.biometryAny OR .devicePasscode`
+    /// - When only passcode is set: `.devicePasscode` only
+    /// This avoids Secure Enclave rejecting key creation when biometry flags
+    /// are present but no biometrics are enrolled.
     open override func accessControl() -> SecAccessControl? {
+        let laContext = LAContext()
+        let biometricsAvailable = laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryAny, .or, .devicePasscode, .privateKeyUsage], nil)
+        let flags: SecAccessControlCreateFlags = biometricsAvailable
+            ? [.biometryAny, .or, .devicePasscode, .privateKeyUsage]
+            : [.devicePasscode, .privateKeyUsage]
 #else
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryAny, .or, .devicePasscode], nil)
+        let flags: SecAccessControlCreateFlags = biometricsAvailable
+            ? [.biometryAny, .or, .devicePasscode]
+            : [.devicePasscode]
 #endif
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, flags, nil)
     }
     
     
