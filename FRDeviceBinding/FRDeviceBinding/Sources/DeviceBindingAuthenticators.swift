@@ -53,6 +53,9 @@ public protocol DeviceAuthenticator {
     /// Get the Device Binding Authentication Type
     func type() -> DeviceBindingAuthenticationType
     
+    /// Get the current biometric domain state for detecting enrollment changes
+    func biometricDomainState() -> Data?
+    
     /// initialize already created entity with useriD and Promp
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
@@ -100,6 +103,11 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     /// Get the Device Binding Authentication Type
     open func type() -> DeviceBindingAuthenticationType {
         return .none
+    }
+    
+    /// Get the current biometric domain state. Returns nil by default.
+    open func biometricDomainState() -> Data? {
+        return nil
     }
     
     /// Remove Keys
@@ -370,15 +378,39 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
     /// Access Control for the authetication type
     open override func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .or, .devicePasscode, .privateKeyUsage], nil)
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryAny, .or, .devicePasscode, .privateKeyUsage], nil)
 #else
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .or, .devicePasscode], nil)
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryAny, .or, .devicePasscode], nil)
 #endif
     }
     
     
     open override func type() -> DeviceBindingAuthenticationType {
         return .biometricAllowFallback
+    }
+    
+    
+    /// Returns the current biometric domain state from LAContext.
+    /// Used to detect biometric enrollment changes between bind and sign operations.
+    open override func biometricDomainState() -> Data? {
+        let context = LAContext()
+        context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        return context.evaluatedPolicyDomainState
+    }
+    
+    
+    /// Override sign to validate biometric enrollment has not changed since binding.
+    /// If biometrics were enrolled at bind time and the enrollment has since changed,
+    /// the keys are deleted and `.clientNotRegistered` is thrown to trigger re-binding.
+    open override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
+        if let storedState = userKey.biometricDomainState {
+            let currentState = biometricDomainState()
+            if currentState != storedState {
+                deleteKeys()
+                throw DeviceBindingStatus.clientNotRegistered
+            }
+        }
+        return try super.sign(userKey: userKey, challenge: challenge, expiration: expiration, customClaims: customClaims)
     }
 }
 

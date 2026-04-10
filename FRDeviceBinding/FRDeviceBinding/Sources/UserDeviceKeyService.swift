@@ -105,4 +105,6 @@ public struct UserKey: Equatable, Codable {
     public var kid: String
     public var authType: DeviceBindingAuthenticationType
     public var createdAt: Double
+    /// The biometric domain state captured at bind time, used to detect biometric enrollment changes
+    public var biometricDomainState: Data?
 }

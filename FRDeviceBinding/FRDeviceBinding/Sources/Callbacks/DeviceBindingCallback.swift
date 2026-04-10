@@ -193,7 +193,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         do {
             let keyPair = try authInterface.generateKeys()
-            userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970, biometricDomainState: authInterface.biometricDomainState())
             guard let userKey = userKey else {
                 throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create userKey")
             }
