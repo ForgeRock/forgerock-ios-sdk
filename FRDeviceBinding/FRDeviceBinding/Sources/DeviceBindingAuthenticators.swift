@@ -340,7 +340,26 @@ open class BiometricOnly: BiometricAuthenticator {
 }
 
 
-/// DeviceAuthenticator adoption for biometric and Device Credential authentication
+/// DeviceAuthenticator adoption for biometric and Device Credential authentication.
+///
+/// This authenticator supports the `BIOMETRIC_ALLOW_FALLBACK` policy, allowing authentication
+/// via either biometrics (Face ID / Touch ID) or device passcode.
+///
+/// ## Security Model
+///
+/// Unlike `BiometricOnly` which uses `.biometryCurrentSet` to have the Secure Enclave
+/// hardware-invalidate keys when biometric enrollment changes, this class uses a dynamic
+/// access control policy:
+/// - **Biometrics enrolled**: `.biometryAny OR .devicePasscode` — allows both authentication methods.
+/// - **No biometrics enrolled**: `.devicePasscode` only — avoids Secure Enclave key creation failure.
+///
+/// Because `.biometryAny` does not invalidate keys on biometric enrollment changes at the
+/// hardware level, this class compensates with a software-level check using
+/// `LAContext.evaluatedPolicyDomainState`. The biometric domain state is captured at bind time
+/// and stored in the `UserKey`. During signing, the stored state is compared against the current
+/// state — if they differ (e.g., a fingerprint was added or removed), the keys are deleted and
+/// re-binding is required.
+///
 open class BiometricAndDeviceCredential: BiometricAuthenticator {
     /// local authentication policy for authentication
     var policy: LAPolicy
