@@ -44,7 +44,7 @@ public protocol DeviceAuthenticator {
     /// Check if authentication is supported
     func isSupported() -> Bool
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     func accessControl() -> SecAccessControl?
     
     /// Set the Authentication Prompt
@@ -56,12 +56,12 @@ public protocol DeviceAuthenticator {
     /// Get the current biometric domain state for detecting enrollment changes
     func biometricDomainState() -> Data?
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
     func initialize(userId: String, prompt: Prompt)
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     func initialize(userId: String)
     
@@ -81,6 +81,14 @@ public protocol DeviceAuthenticator {
 }
 
 
+public extension DeviceAuthenticator {
+    /// Default implementation returns nil (no biometric state tracking).
+    func biometricDomainState() -> Data? {
+        return nil
+    }
+}
+
+
 open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     /// prompt  for authentication if applicable
     var prompt: Prompt?
@@ -95,7 +103,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         return false
     }
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open func accessControl() -> SecAccessControl? {
         return nil
     }
@@ -205,7 +213,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     }
     
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
     open func initialize(userId: String, prompt: Prompt) {
@@ -215,7 +223,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     }
     
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     open func initialize(userId: String) {
         
@@ -316,7 +324,7 @@ open class BiometricOnly: BiometricAuthenticator {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open override func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .privateKeyUsage], nil)
@@ -380,7 +388,7 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
     }
     
     
-    /// Access Control for the authetication type.
+    /// Access Control for the authentication type.
     /// Dynamically selects flags based on biometric availability:
     /// - When biometrics are enrolled: `.biometryAny OR .devicePasscode`
     /// - When only passcode is set: `.devicePasscode` only
@@ -411,7 +419,7 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
     /// Used to detect biometric enrollment changes between bind and sign operations.
     open override func biometricDomainState() -> Data? {
         let context = LAContext()
-        context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
         return context.evaluatedPolicyDomainState
     }
     
@@ -460,7 +468,7 @@ open class None: DefaultDeviceAuthenticator, CryptoAware {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open override func accessControl() -> SecAccessControl? {
         return nil
     }

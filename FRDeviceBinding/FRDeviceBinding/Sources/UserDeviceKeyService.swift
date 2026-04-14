@@ -2,7 +2,7 @@
 //  UserDeviceKeyService.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2022 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -99,11 +99,17 @@ public enum KeyFoundStatus {
 
 
 public struct UserKey: Equatable, Codable {
+    /// Unique identifier for the key, derived from the key alias (SHA256 hash of userId)
     public var id: String
+    /// The user identifier associated with this key
     public var userId: String
+    /// The display name of the user
     public var userName: String
+    /// The key identifier (UUID) used in JWS headers to identify the signing key
     public var kid: String
+    /// The authentication type used when the key was created
     public var authType: DeviceBindingAuthenticationType
+    /// The timestamp (seconds since epoch) when the key was created
     public var createdAt: Double
     /// The biometric domain state captured at bind time, used to detect biometric enrollment changes
     public var biometricDomainState: Data?
