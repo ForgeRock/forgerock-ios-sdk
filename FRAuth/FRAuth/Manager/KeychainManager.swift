@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -248,6 +248,66 @@ struct KeychainManager {
         }
         return nil
     }
+    
+    //  MARK: - Session Token Handling
+    
+    /// Handles a newly received SSO token from an authentication journey, managing token mismatch scenarios.
+    ///
+    /// When a new SSO token is received, the behavior depends on the current state:
+    /// - **No existing SSO token** (Centralized Login path): stores the new token only if no access token exists,
+    ///   to avoid overwriting tokens obtained via Centralized Login.
+    /// - **Existing SSO token matches**: stores the new token (no-op effectively).
+    /// - **Existing SSO token mismatches**: revokes the old SSO token on the server, revokes OAuth2 tokens,
+    ///   then stores the new SSO token and calls completion.
+    ///
+    /// - Parameters:
+    ///   - newToken: The newly received SSO `Token` from the journey.
+    ///   - tokenManager: Optional `TokenManager` for revoking OAuth2 tokens.
+    ///   - completion: Callback invoked with the new token once all cleanup is done.
+    func handleSessionToken(_ newToken: Token, tokenManager: TokenManager?, completion: @escaping NodeCompletion<Token>) {
+        let currentSessionToken = self.getSSOToken()
+        
+        // If there is no existing SSO token, the user authenticated via Centralized Login.
+        // Only store the new SSO token if no access token exists (avoid overwriting Centralized Login state).
+        guard let currentSessionToken = currentSessionToken else {
+            if (try? self.getAccessToken()) == nil {
+                self.setSSOToken(ssoToken: newToken)
+            }
+            completion(newToken, nil, nil)
+            return
+        }
+        
+        // Check for token mismatch: existing SSO token differs from the new one, and an access token exists.
+        if let _ = try? self.getAccessToken(), newToken.value != currentSessionToken.value {
+            FRLog.w("SDK identified existing Session Token (\(currentSessionToken.value)) and received Session Token (\(newToken.value))'s mismatch; revoking old OAuth2 token set.")
+            
+            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate)
+            SessionManager.currentManager?.revokeSSOToken()
+            
+            if let tokenManager = tokenManager {
+                // Revoke OAuth2 tokens asynchronously; store the new SSO token only after completion
+                tokenManager.revoke { error in
+                    if let error = error {
+                        FRLog.e("OAuth2 token revocation failed: \(error.localizedDescription)")
+                    }
+                    self.setSSOToken(ssoToken: newToken)
+                    completion(newToken, nil, nil)
+                }
+                return
+            } else {
+                FRLog.i("TokenManager is not found; removing OAuth2 token set from storage")
+                do {
+                    try self.setAccessToken(token: nil)
+                } catch {
+                    FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        self.setSSOToken(ssoToken: newToken)
+        completion(newToken, nil, nil)
+    }
+    
     
     //  MARK: - Instance helper methods
     

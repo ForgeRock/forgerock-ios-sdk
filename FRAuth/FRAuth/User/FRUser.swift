@@ -2,7 +2,7 @@
 //  FRUser.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -167,56 +167,30 @@ public class FRUser: NSObject, NSSecureCoding {
     
     /// Logs-out currently authenticated user session
     ///
-    /// - NOTE: logout method invokes 2 APIs to invalidate user's session: 1) invokes /sessions/?_action=logout to invalidate Session Token, 2) /token/revoke to invalidate access_token and/or refresh_token (if refresh_token was granted), and 3) if id_token exists, it invokes /connect/endSession to invalidate OIDC session
+    /// - NOTE: logout method invokes up to 3 APIs to invalidate the user's session: 1) `/sessions/?_action=logout` to invalidate Session Token (if it exists), 2) `/token/revoke` to invalidate access_token and/or refresh_token, and 3) `/connect/endSession` to invalidate the OIDC session (only if no SSO token was found and no `signoutRedirectUri` is configured)
     ///
     @objc
     public func logout() {
         
-        var ssoTokenInvalidated = false
-        let tempToken = FRUser.currentUser?.token
-        if let frSession = FRSession.currentSession {
-            FRLog.v("Invaliding SSO Token")
-            // Revoke Session Token
-            frSession.logout()
-            ssoTokenInvalidated = true
-        }
-        
-        if let frAuth = FRAuth.shared, let tokens = tempToken {
-            FRLog.v("Invalidating OAuth2 token(s)")
-            // Revoke OAuth2 tokens
-            frAuth.tokenManager?.revoke(completion: { (error) in
+        if let frAuth = FRAuth.shared {
+            FRLog.v("Revoking session and OAuth2 token(s)")
+            frAuth.tokenManager?.revokeAndEndSession { (error) in
                 if let error = error {
-                    FRLog.w("Error while invalidating OAuth2 token(s)")
+                    FRLog.w("Error while revoking session and OAuth2 token(s)")
                     if let nsError = error as NSError? {
                         FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
                     }
                 }
                 else {
-                    FRLog.v("Invalidating OAuth2 token(s) successful")
+                    FRLog.v("Session and OAuth2 token(s) revoked successfully")
                 }
-                if let oAuth2Client = frAuth.oAuth2Client, oAuth2Client.signoutRedirectUri != nil {
-                    FRLog.v("Skipping invalidating session using id_token since the session has already been invalidated in the browser")
-                } else if let idToken = tokens.idToken, ssoTokenInvalidated == false {
-                    FRLog.v("Invalidating session using id_token")
-                    // End Session if id_token exists
-                    frAuth.tokenManager?.endSession(idToken: idToken, completion: { (error) in
-                        
-                        if let error = error {
-                            FRLog.w("Error while invalidating OIDC Session")
-                            if let nsError = error as NSError? {
-                                FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
-                            }
-                        }
-                        else {
-                            FRLog.v("Invalidating OIDC Session successful")
-                        }
-                    })
-                }
-            })
+            }
         }
         
         // Clear user object
         FRUser._staticUser = nil
+        // Clear session object
+        FRSession._staticSession = nil
         // Clear Browser instance if there is anything running
         Browser.currentBrowser = nil
     }

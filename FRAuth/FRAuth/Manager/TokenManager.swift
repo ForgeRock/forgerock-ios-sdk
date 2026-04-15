@@ -2,7 +2,7 @@
 //  TokenManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -211,7 +211,18 @@ struct TokenManager {
     }
     
     
-    /// Ends OIDC Session with given id_token and revokes OAuth2 token(s)
+    /// Ends the user's session and revokes OAuth2 token(s).
+    ///
+    /// Session termination strategy:
+    /// - If an SSO token exists, revokes it via `SessionManager.revokeSSOToken()` (calls `/json/sessions?_action=logout`).
+    ///   This invalidates only the specific SSO session without affecting the broader OIDC session.
+    /// - If no SSO token exists (e.g. Centralized Login) and no `signoutRedirectUri` is configured,
+    ///   falls back to ending the OIDC session via `endSession(idToken:)` (calls `/connect/endSession`).
+    /// - If `signoutRedirectUri` is configured, the session is assumed to have been ended via the browser,
+    ///   so `endSession` is skipped.
+    ///
+    /// After session termination, OAuth2 tokens (access + refresh) are revoked and the completion is called.
+    ///
     /// - Parameter completion: Completion callback to notify the result
     func revokeAndEndSession(completion: @escaping CompletionCallback) {
         do {
@@ -220,29 +231,36 @@ struct TokenManager {
                 return
             }
             
-            var capturedError: Error?
-            
-            if let idToken = token.idToken {
+            // Step 1: End the session
+            if self.keychainManager.getSSOToken() != nil {
+                // SSO token exists — revoke it surgically (only invalidates this specific session)
+                FRLog.v("Step 1: SSO Token found; revoking via SessionManager.")
+                SessionManager.currentManager?.revokeSSOToken()
+            } else if self.oAuth2Client.signoutRedirectUri != nil {
+                // signoutRedirectUri is configured — session was already ended in the browser
+                FRLog.v("Step 1: Skipping endSession; session already invalidated via browser signout.")
+            } else if let idToken = token.idToken {
+                // No SSO token (Centralized Login) — fall back to OIDC endSession
+                FRLog.v("Step 1: No SSO Token found; ending OIDC session via id_token.")
                 self.endSession(idToken: idToken) { (error) in
                     if let error = error {
-                        FRLog.v("Step 1 (endSession) failed with an error: \(error.localizedDescription)")
-                        capturedError = error
+                        FRLog.v("endSession failed: \(error.localizedDescription)")
                     } else {
-                        FRLog.v("Step 1 (endSession) finished successfully.")
+                        FRLog.v("endSession finished successfully.")
                     }
                 }
             }
             
+            // Step 2: Revoke OAuth2 tokens and call completion
             self.revoke { (error) in
                 if let error = error {
                     FRLog.v("Step 2 (revoke) failed with an error: \(error.localizedDescription)")
-                    capturedError = error
-                } else {
+                }
+                else {
                     FRLog.v("Step 2 (revoke) finished successfully.")
                 }
+                completion(error)
             }
-            
-            completion(capturedError)
         }
         catch {
             completion(error)
