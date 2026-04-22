@@ -1,3 +1,11 @@
+## [4.9.0]
+
+#### Fixed
+- Upgraded `JOSESwift` library to version 3.0.0 [SDKS-4804]
+- Fixed XCode 26.4 build issues [SDKS-4892]
+- Fixed an issue where Device Binding did not fall back to passcode on iOS when biometrics were disabled [SDKS-4922]
+- Raised minimum supported iOS version from 12.0 to 13.0
+
 ## [4.8.5]
 
 #### Fixed
