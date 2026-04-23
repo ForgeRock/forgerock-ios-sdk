@@ -293,7 +293,7 @@ public class Node: NSObject {
                             var revokeError: Error?
                             
                             // 2. Call the async function.
-                            tokenManager.revokeAndEndSession { error in
+                            tokenManager.revoke { error in
                                 FRLog.i("OAuth2 token set revocation finished. Error: \(error?.localizedDescription ?? "none")")
                                 // Capture the result and signal completion.
                                 revokeError = error

@@ -191,6 +191,7 @@ struct TokenManager {
                 self.oAuth2Client.revoke(accessToken: token) { (error) in
                     completion(error)
                 }
+                completion(nil)
             }
             else {
                 completion(TokenError.nullToken)
