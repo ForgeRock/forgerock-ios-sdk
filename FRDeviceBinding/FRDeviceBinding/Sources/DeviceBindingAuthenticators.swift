@@ -2,7 +2,7 @@
 //  DeviceBindingAuthenticators.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2022 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -44,7 +44,7 @@ public protocol DeviceAuthenticator {
     /// Check if authentication is supported
     func isSupported() -> Bool
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     func accessControl() -> SecAccessControl?
     
     /// Set the Authentication Prompt
@@ -53,12 +53,15 @@ public protocol DeviceAuthenticator {
     /// Get the Device Binding Authentication Type
     func type() -> DeviceBindingAuthenticationType
     
-    /// initialize already created entity with useriD and Promp
+    /// Get the current biometric domain state for detecting enrollment changes
+    func biometricDomainState() -> Data?
+    
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
     func initialize(userId: String, prompt: Prompt)
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     func initialize(userId: String)
     
@@ -78,6 +81,14 @@ public protocol DeviceAuthenticator {
 }
 
 
+public extension DeviceAuthenticator {
+    /// Default implementation returns nil (no biometric state tracking).
+    func biometricDomainState() -> Data? {
+        return nil
+    }
+}
+
+
 open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     /// prompt  for authentication if applicable
     var prompt: Prompt?
@@ -92,7 +103,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         return false
     }
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open func accessControl() -> SecAccessControl? {
         return nil
     }
@@ -100,6 +111,11 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     /// Get the Device Binding Authentication Type
     open func type() -> DeviceBindingAuthenticationType {
         return .none
+    }
+    
+    /// Get the current biometric domain state. Returns nil by default.
+    open func biometricDomainState() -> Data? {
+        return nil
     }
     
     /// Remove Keys
@@ -137,7 +153,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyPair.privateKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyPair.privateKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         
@@ -179,7 +195,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
         let payload = Payload(message)
         
         //create signer
-        guard let signer = Signer(signingAlgorithm: algorithm, key: keyStoreKey) else {
+        guard let signer = Signer(signatureAlgorithm: algorithm, key: keyStoreKey) else {
             throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create a signer for jws")
         }
         
@@ -197,7 +213,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     }
     
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     /// - Parameter prompt: Prompt containing the description for authentication
     open func initialize(userId: String, prompt: Prompt) {
@@ -207,7 +223,7 @@ open class DefaultDeviceAuthenticator: DeviceAuthenticator {
     }
     
     
-    /// initialize already created entity with useriD and Promp
+    /// initialize already created entity with userID and Prompt
     /// - Parameter userId: userId of the authentication
     open func initialize(userId: String) {
         
@@ -308,7 +324,7 @@ open class BiometricOnly: BiometricAuthenticator {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open override func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .privateKeyUsage], nil)
@@ -324,7 +340,26 @@ open class BiometricOnly: BiometricAuthenticator {
 }
 
 
-/// DeviceAuthenticator adoption for biometric and Device Credential authentication
+/// DeviceAuthenticator adoption for biometric and Device Credential authentication.
+///
+/// This authenticator supports the `BIOMETRIC_ALLOW_FALLBACK` policy, allowing authentication
+/// via either biometrics (Face ID / Touch ID) or device passcode.
+///
+/// ## Security Model
+///
+/// Unlike `BiometricOnly` which uses `.biometryCurrentSet` to have the Secure Enclave
+/// hardware-invalidate keys when biometric enrollment changes, this class uses a dynamic
+/// access control policy:
+/// - **Biometrics enrolled**: `.biometryAny OR .devicePasscode` — allows both authentication methods.
+/// - **No biometrics enrolled**: `.devicePasscode` only — avoids Secure Enclave key creation failure.
+///
+/// Because `.biometryAny` does not invalidate keys on biometric enrollment changes at the
+/// hardware level, this class compensates with a software-level check using
+/// `LAContext.evaluatedPolicyDomainState`. The biometric domain state is captured at bind time
+/// and stored in the `UserKey`. During signing, the stored state is compared against the current
+/// state — if they differ (e.g., a fingerprint was added or removed), the keys are deleted and
+/// re-binding is required.
+///
 open class BiometricAndDeviceCredential: BiometricAuthenticator {
     /// local authentication policy for authentication
     var policy: LAPolicy
@@ -348,7 +383,12 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
 #if !targetEnvironment(simulator)
         let context = LAContext()
         context.localizedReason = prompt.description
-        keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+        // Only attach LAContext for biometric pre-authentication when biometrics
+        // are enrolled. When only passcode is set, the system will prompt for
+        // passcode automatically when the key is used for signing.
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+            keyBuilderQuery[String(kSecUseAuthenticationContext)] = context
+        }
 #endif
         
         do {
@@ -367,18 +407,54 @@ open class BiometricAndDeviceCredential: BiometricAuthenticator {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type.
+    /// Dynamically selects flags based on biometric availability:
+    /// - When biometrics are enrolled: `.biometryAny OR .devicePasscode`
+    /// - When only passcode is set: `.devicePasscode` only
+    /// This avoids Secure Enclave rejecting key creation when biometry flags
+    /// are present but no biometrics are enrolled.
     open override func accessControl() -> SecAccessControl? {
+        let laContext = LAContext()
+        let biometricsAvailable = laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
 #if !targetEnvironment(simulator)
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .or, .devicePasscode, .privateKeyUsage], nil)
+        let flags: SecAccessControlCreateFlags = biometricsAvailable
+            ? [.biometryAny, .or, .devicePasscode, .privateKeyUsage]
+            : [.devicePasscode, .privateKeyUsage]
 #else
-        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.biometryCurrentSet, .or, .devicePasscode], nil)
+        let flags: SecAccessControlCreateFlags = biometricsAvailable
+            ? [.biometryAny, .or, .devicePasscode]
+            : [.devicePasscode]
 #endif
+        return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, flags, nil)
     }
     
     
     open override func type() -> DeviceBindingAuthenticationType {
         return .biometricAllowFallback
+    }
+    
+    
+    /// Returns the current biometric domain state from LAContext.
+    /// Used to detect biometric enrollment changes between bind and sign operations.
+    open override func biometricDomainState() -> Data? {
+        let context = LAContext()
+        _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        return context.evaluatedPolicyDomainState
+    }
+    
+    
+    /// Override sign to validate biometric enrollment has not changed since binding.
+    /// If biometrics were enrolled at bind time and the enrollment has since changed,
+    /// the keys are deleted and `.clientNotRegistered` is thrown to trigger re-binding.
+    open override func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any] = [:]) throws -> String {
+        if let storedState = userKey.biometricDomainState {
+            let currentState = biometricDomainState()
+            if currentState != storedState {
+                deleteKeys()
+                throw DeviceBindingStatus.clientNotRegistered
+            }
+        }
+        return try super.sign(userKey: userKey, challenge: challenge, expiration: expiration, customClaims: customClaims)
     }
 }
 
@@ -411,7 +487,7 @@ open class None: DefaultDeviceAuthenticator, CryptoAware {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open override func accessControl() -> SecAccessControl? {
         return nil
     }
