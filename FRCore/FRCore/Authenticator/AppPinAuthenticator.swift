@@ -2,7 +2,7 @@
 //  AppPinAuthenticator.swift
 //  FRCore
 //
-//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2022 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -40,7 +40,7 @@ public class AppPinAuthenticator {
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open func accessControl() -> SecAccessControl? {
 #if !targetEnvironment(simulator)
         return SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.applicationPassword, .privateKeyUsage], nil)
