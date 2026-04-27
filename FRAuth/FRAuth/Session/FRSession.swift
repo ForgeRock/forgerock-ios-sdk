@@ -2,7 +2,7 @@
 //  FRSession.swift
 //  FRAuth
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -61,6 +61,13 @@ import Foundation
     //  MARK: - Authenticate
     
     /// Invokes /authenticate endpoint in AM to go through Authentication Tree flow with given PolicyAdvice information
+    ///
+    /// - Important: If an OAuth2 access token previously obtained via Centralized Login (browser/OIDC flow) is
+    ///   currently stored, calling this method and successfully completing the journey will revoke that existing
+    ///   OAuth2 token set. This protects the SDK from holding stale OAuth2 tokens that disagree with the new SSO
+    ///   session that AM has just established. To obtain a new OAuth2 token set after the journey completes,
+    ///   call `FRUser.currentUser?.getAccessToken(...)` which will exchange the new SSO token for fresh tokens.
+    ///
     /// - Parameter policyAdvice: PolicyAdvice object which contains the information for authorization
     /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object
     @objc
@@ -80,6 +87,13 @@ import Foundation
     
     
     /// Invokes /authenticate endpoint in AM to go through Authentication Tree flow with specified authIndexValue and authIndexType; authIndexType is an optional parameter defaulted to 'service' if not defined
+    ///
+    /// - Important: If an OAuth2 access token previously obtained via Centralized Login (browser/OIDC flow) is
+    ///   currently stored, calling this method and successfully completing the journey will revoke that existing
+    ///   OAuth2 token set. This protects the SDK from holding stale OAuth2 tokens that disagree with the new SSO
+    ///   session that AM has just established. To obtain a new OAuth2 token set after the journey completes,
+    ///   call `FRUser.currentUser?.getAccessToken(...)` which will exchange the new SSO token for fresh tokens.
+    ///
     /// - Parameter authIndexValue: authIndexValue; Authentication Tree name value in String
     /// - Parameter authIndexType: authIndexType; Authentication Tree type value in String
     /// - Parameter completion: NodeCompletion callback which returns the result of Session Token as Token object

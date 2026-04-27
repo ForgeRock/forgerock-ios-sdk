@@ -213,7 +213,7 @@ struct TokenManager {
     
     /// Ends the user's session and revokes OAuth2 token(s).
     ///
-    /// Session termination strategy:
+    /// Default session termination strategy (`forceEndSession == false`):
     /// - If an SSO token exists, revokes it via `SessionManager.revokeSSOToken()` (calls `/json/sessions?_action=logout`).
     ///   This invalidates only the specific SSO session without affecting the broader OIDC session.
     /// - If no SSO token exists (e.g. Centralized Login) and no `signoutRedirectUri` is configured,
@@ -221,10 +221,22 @@ struct TokenManager {
     /// - If `signoutRedirectUri` is configured, the session is assumed to have been ended via the browser,
     ///   so `endSession` is skipped.
     ///
+    /// Forced session termination strategy (`forceEndSession == true`):
+    /// - The SDK invokes BOTH session-termination endpoints when the relevant credentials are available:
+    ///   `SessionManager.revokeSSOToken()` (if an SSO token exists) AND `endSession(idToken:)`
+    ///   (if an `id_token` exists). The `signoutRedirectUri` check is intentionally skipped in this
+    ///   mode — when the caller has opted into a forced logout, both endpoints are invoked even if a
+    ///   browser-based signout was previously expected to handle OIDC session termination.
+    /// - Use this when the caller wants to make sure both the AM SSO session and the OIDC session are
+    ///   torn down in one logout call.
+    ///
     /// After session termination, OAuth2 tokens (access + refresh) are revoked and the completion is called.
     ///
-    /// - Parameter completion: Completion callback to notify the result
-    func revokeAndEndSession(completion: @escaping CompletionCallback) {
+    /// - Parameters:
+    ///   - forceEndSession: When `true`, both the SSO token revocation and OIDC `endSession` will be
+    ///     attempted in parallel where the necessary credentials exist. Defaults to `false`.
+    ///   - completion: Completion callback to notify the result
+    func revokeAndEndSession(forceEndSession: Bool = false, completion: @escaping CompletionCallback) {
         do {
             let token = try self.keychainManager.getAccessToken()
             let hasSSOToken = self.keychainManager.getSSOToken() != nil
@@ -236,7 +248,24 @@ struct TokenManager {
             }
             
             // Step 1: End the session
-            if hasSSOToken {
+            if forceEndSession {
+                // Forced: invoke both endpoints when credentials are available, regardless of
+                // signoutRedirectUri. The caller has explicitly asked for a full teardown.
+                if hasSSOToken {
+                    FRLog.v("Step 1 (force): SSO Token found; revoking via SessionManager.")
+                    SessionManager.currentManager?.revokeSSOToken()
+                }
+                if let idToken = token?.idToken {
+                    FRLog.v("Step 1 (force): id_token found; ending OIDC session via id_token.")
+                    self.endSession(idToken: idToken) { (error) in
+                        if let error = error {
+                            FRLog.v("endSession failed: \(error.localizedDescription)")
+                        } else {
+                            FRLog.v("endSession finished successfully.")
+                        }
+                    }
+                }
+            } else if hasSSOToken {
                 // SSO token exists — revoke it surgically (only invalidates this specific session)
                 FRLog.v("Step 1: SSO Token found; revoking via SessionManager.")
                 SessionManager.currentManager?.revokeSSOToken()

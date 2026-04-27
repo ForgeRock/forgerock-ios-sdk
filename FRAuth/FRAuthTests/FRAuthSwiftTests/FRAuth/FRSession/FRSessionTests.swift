@@ -591,10 +591,16 @@ class FRSessionTests: FRAuthBaseTest {
     }
     
     
-    func test_12_centralized_login_then_journey_does_not_overwrite_access_token() {
-        // Scenario: User authenticates via Centralized Login (no SSO token stored, but
-        // access token exists). Then a journey completes with a new SSO token.
-        // The SDK should NOT store the new SSO token (to avoid overwriting Centralized Login state).
+    func test_12_centralized_login_then_journey_revokes_stale_oauth2_tokens() {
+        // Scenario: User authenticated via Centralized Login (no SSO token stored, but
+        // access token exists). Then a journey via FRSession.authenticate completes with
+        // a new SSO token (potentially for a different user). The SDK MUST revoke the
+        // stale OAuth2 token set and store the new SSO token to keep local credentials
+        // consistent with the SSO session AM will associate with subsequent SDK requests.
+        //
+        // NOTE: This is a regression test for a bug where the SDK previously skipped
+        // both the SSO-token store and OAuth2 revocation in this scenario, leaving
+        // a stale access token paired with a different user's session cookies.
         
         self.startSDK()
         
@@ -603,7 +609,7 @@ class FRSessionTests: FRAuthBaseTest {
             return
         }
         
-        // Simulate Centralized Login state: access token exists, but NO SSO token
+        // Simulate Centralized Login state: access token exists, but NO SSO token.
         guard let tokenData = self.readDataFromJSON("AccessToken") else {
             XCTFail("Failed to read AccessToken.json")
             return
@@ -613,13 +619,13 @@ class FRSessionTests: FRAuthBaseTest {
             return
         }
         try? frAuth.keychainManager.setAccessToken(token: accessToken)
-        // Ensure no SSO token
         XCTAssertNil(frAuth.keychainManager.getSSOToken())
         XCTAssertNotNil(try? frAuth.keychainManager.getAccessToken())
         
-        // Set mock responses for a journey that returns an SSO token
+        // Mocks: journey returning an SSO token + revoke endpoint for stale OAuth2 tokens.
         self.loadMockResponses(["AuthTree_UsernamePasswordNode",
-                                "AuthTree_SSOToken_Success"])
+                                "AuthTree_SSOToken_Success",
+                                "OAuth2_Token_Revoke_Success"])
         
         var currentNode: Node?
         
@@ -643,6 +649,8 @@ class FRSessionTests: FRAuthBaseTest {
             else if callback is PasswordCallback, let cb = callback as? PasswordCallback { cb.setValue(config.password) }
         }
         
+        let requestCountBeforeJourneyCompletion = FRTestNetworkStubProtocol.requestHistory.count
+        
         ex = self.expectation(description: "Journey completion")
         node.next { (token: Token?, node, error) in
             XCTAssertNil(node)
@@ -652,10 +660,17 @@ class FRSessionTests: FRAuthBaseTest {
         }
         waitForExpectations(timeout: 60, handler: nil)
         
-        // The SSO token should NOT have been stored (Centralized Login path: access token exists)
-        XCTAssertNil(frAuth.keychainManager.getSSOToken())
-        // The access token should still be the original one (not revoked)
-        XCTAssertNotNil(try? frAuth.keychainManager.getAccessToken())
+        // The new SSO token SHOULD now be stored.
+        XCTAssertNotNil(frAuth.keychainManager.getSSOToken())
+        // The stale OAuth2 access token MUST have been revoked locally.
+        XCTAssertNil(try? frAuth.keychainManager.getAccessToken())
+        // The SDK MUST have invoked the OAuth2 revoke endpoint for the stale token.
+        let postRequests = Array(FRTestNetworkStubProtocol.requestHistory.dropFirst(requestCountBeforeJourneyCompletion))
+        let didCallRevoke = postRequests.contains { req in
+            (req.url?.absoluteString ?? "").contains("/token/revoke")
+        }
+        XCTAssertTrue(didCallRevoke,
+                      "Expected /token/revoke to be invoked to clear the stale Centralized Login OAuth2 token set. Requests after journey: \(postRequests.compactMap { $0.url?.absoluteString })")
     }
     
     
@@ -874,6 +889,59 @@ class FRSessionTests: FRAuthBaseTest {
         XCTAssertNil(FRUser.currentUser)
         XCTAssertNil(FRSession.currentSession)
         XCTAssertNil(frAuth.keychainManager.getSSOToken())
+    }
+    
+    
+    func test_17_user_logout_force_end_session_invokes_both_endpoints() {
+        // Scenario: User has BOTH an SSO token and an OAuth2 token set with an id_token.
+        // Calling FRUser.logout(forceEndSession: true) must invoke /sessions?_action=logout
+        // AND /connect/endSession AND /token/revoke, instead of the default behavior which
+        // skips /connect/endSession when an SSO token is present.
+        
+        self.performLogin()
+        
+        guard let frAuth = FRAuth.shared else {
+            XCTFail("FRAuth not initialized")
+            return
+        }
+        
+        // Pre-conditions: SSO token + access token (with id_token) both present.
+        XCTAssertNotNil(frAuth.keychainManager.getSSOToken())
+        guard let accessToken = try? frAuth.keychainManager.getAccessToken() else {
+            XCTFail("Expected access token after login")
+            return
+        }
+        XCTAssertNotNil(accessToken.idToken, "Test fixture must include an id_token to validate endSession invocation")
+        
+        // Mocks for all three logout endpoints.
+        self.loadMockResponses(["AM_Session_Logout_Success",
+                                "OAuth2_EndSession_Success",
+                                "OAuth2_Token_Revoke_Success"])
+        
+        let requestCountBeforeLogout = FRTestNetworkStubProtocol.requestHistory.count
+        
+        FRUser.currentUser?.logout(forceEndSession: true)
+        
+        // Wait for async logout requests to flush.
+        sleep(5)
+        
+        let postLogoutRequests = Array(FRTestNetworkStubProtocol.requestHistory.dropFirst(requestCountBeforeLogout))
+        let urls = postLogoutRequests.compactMap { $0.url?.absoluteString }
+        
+        let didCallSessionLogout = urls.contains { $0.contains("/sessions") && $0.contains("_action=logout") }
+        let didCallEndSession = urls.contains { $0.contains("/connect/endSession") }
+        let didCallRevoke = urls.contains { $0.contains("/token/revoke") }
+        
+        XCTAssertTrue(didCallSessionLogout,
+                      "Expected /sessions?_action=logout to be invoked. Requests after logout: \(urls)")
+        XCTAssertTrue(didCallEndSession,
+                      "Expected /connect/endSession to be invoked when forceEndSession is true. Requests after logout: \(urls)")
+        XCTAssertTrue(didCallRevoke,
+                      "Expected /token/revoke to be invoked. Requests after logout: \(urls)")
+        
+        // Local state must be cleared.
+        XCTAssertNil(FRUser.currentUser)
+        XCTAssertNil(FRSession.currentSession)
     }
 }
 

@@ -165,16 +165,42 @@ public class FRUser: NSObject, NSSecureCoding {
     
     //  MARK: - Logout
     
-    /// Logs-out currently authenticated user session
+    /// Logs-out currently authenticated user session.
     ///
     /// - NOTE: logout method invokes up to 3 APIs to invalidate the user's session: 1) `/sessions/?_action=logout` to invalidate Session Token (if it exists), 2) `/token/revoke` to invalidate access_token and/or refresh_token, and 3) `/connect/endSession` to invalidate the OIDC session (only if no SSO token was found and no `signoutRedirectUri` is configured)
     ///
+    /// Equivalent to calling `logout(forceEndSession: false)`.
     @objc
     public func logout() {
+        self.logout(forceEndSession: false)
+    }
+    
+    /// Logs-out currently authenticated user session, optionally forcing both session-termination
+    /// endpoints to be invoked.
+    ///
+    /// When `forceEndSession` is `false` (default behavior, equivalent to calling `logout()`):
+    /// - If an SSO token exists, only `/sessions?_action=logout` is invoked to revoke it.
+    /// - Otherwise, if an `id_token` exists and no `signoutRedirectUri` is configured,
+    ///   `/connect/endSession` is invoked.
+    /// - The OAuth2 token set is then revoked via `/token/revoke`.
+    ///
+    /// When `forceEndSession` is `true`:
+    /// - BOTH `/sessions?_action=logout` (if an SSO token exists) AND `/connect/endSession`
+    ///   (if an `id_token` exists and no `signoutRedirectUri` is configured) are invoked,
+    ///   guaranteeing that both the AM SSO session and the OIDC session are torn down.
+    /// - The OAuth2 token set is then revoked via `/token/revoke`.
+    ///
+    /// In all cases the local `FRUser`, `FRSession`, and any `Browser` state are cleared
+    /// synchronously after the network calls are dispatched.
+    ///
+    /// - Parameter forceEndSession: When `true`, both the SSO token revocation and the OIDC
+    ///   `endSession` will be attempted in parallel where the necessary credentials exist.
+    @objc(logoutWithForceEndSession:)
+    public func logout(forceEndSession: Bool) {
         
         if let frAuth = FRAuth.shared {
-            FRLog.v("Revoking session and OAuth2 token(s)")
-            frAuth.tokenManager?.revokeAndEndSession { (error) in
+            FRLog.v("Revoking session and OAuth2 token(s) (forceEndSession: \(forceEndSession))")
+            frAuth.tokenManager?.revokeAndEndSession(forceEndSession: forceEndSession) { (error) in
                 if let error = error {
                     FRLog.w("Error while revoking session and OAuth2 token(s)")
                     if let nsError = error as NSError? {
