@@ -495,4 +495,149 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
         XCTAssertTrue(valid)
     }
     
+    
+    // MARK: - biometricDomainState tests
+    
+    func test_16_biometricDomainState_defaultReturnsNil() {
+        // DefaultDeviceAuthenticator base implementation should return nil
+        let noneAuthenticator = None()
+        XCTAssertNil(noneAuthenticator.biometricDomainState())
+        
+        let biometricOnly = BiometricOnly()
+        XCTAssertNil(biometricOnly.biometricDomainState())
+        
+        let appPin = ApplicationPinDeviceAuthenticator()
+        XCTAssertNil(appPin.biometricDomainState())
+    }
+    
+    
+    func test_17_biometricDomainState_biometricAndDeviceCredential() {
+        // On simulator without biometrics, evaluatedPolicyDomainState returns nil
+        let authenticator = BiometricAndDeviceCredential()
+        let state = authenticator.biometricDomainState()
+        // On simulator biometrics are not enrolled, so domain state is nil
+        XCTAssertNil(state)
+    }
+    
+    
+    func test_18_biometricDomainState_storedInUserKey() {
+        // Verify biometricDomainState can be stored and retrieved from UserKey
+        let testData = "test-biometric-state".data(using: .utf8)
+        let userKey = UserKey(id: "id", userId: "user", userName: "name", kid: "kid", authType: .biometricAllowFallback, createdAt: Date().timeIntervalSince1970, biometricDomainState: testData)
+        XCTAssertEqual(userKey.biometricDomainState, testData)
+        
+        // Verify it encodes/decodes correctly
+        let encoded = try! JSONEncoder().encode(userKey)
+        let decoded = try! JSONDecoder().decode(UserKey.self, from: encoded)
+        XCTAssertEqual(decoded.biometricDomainState, testData)
+    }
+    
+    
+    func test_19_biometricDomainState_nilInUserKey_backwardCompatibility() {
+        // Verify UserKey without biometricDomainState decodes correctly (backward compatibility)
+        let userKey = UserKey(id: "id", userId: "user", userName: "name", kid: "kid", authType: .none, createdAt: Date().timeIntervalSince1970)
+        XCTAssertNil(userKey.biometricDomainState)
+        
+        // Simulate a UserKey encoded without the biometricDomainState field
+        let json = """
+        {"id":"id","userId":"user","userName":"name","kid":"kid","authType":"NONE","createdAt":1000000}
+        """
+        let decoded = try! JSONDecoder().decode(UserKey.self, from: json.data(using: .utf8)!)
+        XCTAssertNil(decoded.biometricDomainState)
+    }
+    
+    
+    func test_20_biometricDomainState_signRejectsMismatch() {
+        // BiometricAndDeviceCredential.sign(userKey:...) should throw .clientNotRegistered
+        // when stored biometricDomainState doesn't match current state
+        let userId = "Test User Id 20"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        
+        let authenticator = BiometricAndDeviceCredential()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        
+        // Create a UserKey with a fake stored biometric state that won't match current
+        let fakeState = "fake-biometric-state".data(using: .utf8)
+        let userKey = UserKey(id: "id", userId: userId, userName: "name", kid: UUID().uuidString, authType: .biometricAllowFallback, createdAt: Date().timeIntervalSince1970, biometricDomainState: fakeState)
+        
+        do {
+            _ = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration, customClaims: [:])
+            XCTFail("Sign should have thrown .clientNotRegistered due to biometric state mismatch")
+        } catch let error as DeviceBindingStatus {
+            XCTAssertEqual(error, .clientNotRegistered)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+        
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
+    }
+    
+    
+    func test_21_biometricDomainState_signSkipsCheckWhenNil() {
+        // When biometricDomainState is nil in UserKey, the domain state check should be skipped.
+        // We verify this by confirming the authenticator does NOT delete keys before failing.
+        // If the domain state check were triggered, deleteKeys() would be called first.
+        let userId = "Test User Id 21"
+        let challenge = "challenge"
+        let expiration = Date().addingTimeInterval(60.0)
+        
+        let authenticator = SpyBiometricAndDeviceCredential()
+        authenticator.initialize(userId: userId, prompt: Prompt(title: "", subtitle: "", description: ""))
+        
+        // UserKey without biometricDomainState (nil) - domain state check should be skipped
+        let userKey = UserKey(id: "id", userId: userId, userName: "name", kid: UUID().uuidString, authType: .biometricAllowFallback, createdAt: Date().timeIntervalSince1970, biometricDomainState: nil)
+        
+        do {
+            _ = try authenticator.sign(userKey: userKey, challenge: challenge, expiration: expiration, customClaims: [:])
+        } catch {
+            // Expected to fail (key doesn't exist), but deleteKeys should NOT have been called
+            // because the domain state check was skipped
+            XCTAssertFalse(authenticator.deleteKeysCalled, "deleteKeys should not be called when biometricDomainState is nil")
+        }
+        
+        let cryptoKey = CryptoKey(keyId: userId)
+        cryptoKey.deleteKeys()
+    }
+    
+    
+    func test_22_biometricDomainState_protocolExtensionDefault() {
+        // Verify that a type conforming directly to DeviceAuthenticator
+        // gets the default nil implementation from the protocol extension
+        let customAuthenticator = CustomProtocolOnlyAuthenticator()
+        XCTAssertNil(customAuthenticator.biometricDomainState())
+    }
+    
+}
+
+
+/// Test authenticator conforming directly to DeviceAuthenticator protocol (not subclassing DefaultDeviceAuthenticator)
+/// Used to verify the protocol extension provides a default biometricDomainState() implementation
+private class CustomProtocolOnlyAuthenticator: DeviceAuthenticator {
+    func generateKeys() throws -> KeyPair { fatalError() }
+    func sign(keyPair: KeyPair, kid: String, userId: String, challenge: String, expiration: Date) throws -> String { fatalError() }
+    func sign(userKey: UserKey, challenge: String, expiration: Date, customClaims: [String: Any]) throws -> String { fatalError() }
+    func isSupported() -> Bool { return false }
+    func accessControl() -> SecAccessControl? { return nil }
+    func setPrompt(_ prompt: Prompt) { }
+    func type() -> DeviceBindingAuthenticationType { return .none }
+    func initialize(userId: String, prompt: Prompt) { }
+    func initialize(userId: String) { }
+    func deleteKeys() { }
+    func issueTime() -> Date { return Date() }
+    func notBeforeTime() -> Date { return Date() }
+    func validateCustomClaims(_ customClaims: [String: Any]) -> Bool { return true }
+}
+
+
+/// Spy subclass of BiometricAndDeviceCredential to track whether deleteKeys() is called
+/// during the biometric domain state check in sign(userKey:...)
+private class SpyBiometricAndDeviceCredential: BiometricAndDeviceCredential {
+    var deleteKeysCalled = false
+    
+    override func deleteKeys() {
+        deleteKeysCalled = true
+        super.deleteKeys()
+    }
 }

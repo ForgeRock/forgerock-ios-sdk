@@ -2,7 +2,7 @@
 //  DeviceBindingCallback.swift
 //  FRDeviceBinding
 //
-//  Copyright (c) 2022 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2022 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -193,7 +193,7 @@ open class DeviceBindingCallback: MultipleValuesCallback, Binding {
         
         do {
             let keyPair = try authInterface.generateKeys()
-            userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970)
+            userKey = UserKey(id: keyPair.keyAlias, userId: userId, userName: userName, kid: UUID().uuidString, authType: deviceBindingAuthenticationType, createdAt: Date().timeIntervalSince1970, biometricDomainState: authInterface.biometricDomainState())
             guard let userKey = userKey else {
                 throw DeviceBindingStatus.unsupported(errorMessage: "Cannot create userKey")
             }

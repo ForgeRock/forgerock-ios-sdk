@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PingProtect'
-  s.version          = '4.8.5'
+  s.version          = '4.9.0'
   s.summary          = 'Ping Protect SDK for iOS'
   s.description      = <<-DESC
     PingProtect is an SDK that adds support for the PingOne Protect feature. PingProtect depends on PingOneSignals.
@@ -26,13 +26,13 @@ Pod::Spec.new do |s|
   s.module_name   = 'PingProtect'
   s.swift_versions = ['5.0', '5.1']
 
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '13.0'
 
   base_dir = "PingProtect/PingProtect"
   s.source_files = base_dir + '/**/*.swift', base_dir + '/**/*.c', base_dir + '/**/*.h'
   s.resource_bundles = {
     'PingProtect' => [base_dir + '/*.xcprivacy']
   }
-  s.ios.dependency 'FRAuth', '~> 4.8.5'
+  s.ios.dependency 'FRAuth', '~> 4.9.0'
   s.ios.dependency 'PingOneSignals', '~> 5.3.0'
 end

@@ -52,7 +52,7 @@ open class ApplicationPinDeviceAuthenticator: DefaultDeviceAuthenticator, Crypto
     }
     
     
-    /// Access Control for the authetication type
+    /// Access Control for the authentication type
     open override func accessControl() -> SecAccessControl? {
         return appPinAuthenticator?.accessControl()
     }
