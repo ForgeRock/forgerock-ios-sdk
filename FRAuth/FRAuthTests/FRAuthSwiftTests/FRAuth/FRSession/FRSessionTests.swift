@@ -789,6 +789,92 @@ class FRSessionTests: FRAuthBaseTest {
         XCTAssertNil(FRUser.currentUser)
         XCTAssertNil(FRSession.currentSession)
     }
+    
+    
+    func test_16_user_logout_with_sso_token_only_revokes_session() {
+        // Regression: After authenticating via FRSession.authenticate (SSO token only,
+        // no OAuth2 access token), calling FRUser.currentUser?.logout() must still
+        // revoke the SSO session and clear cookies.
+        //
+        // Previously, revokeAndEndSession() would short-circuit with TokenError.nullToken
+        // because no access token was found, never invoking /sessions?_action=logout,
+        // leaving the SSO token cookie active for subsequent AM requests.
+        
+        self.startSDK()
+        self.config.authServiceName = "UsernamePassword"
+        
+        guard let frAuth = FRAuth.shared else {
+            XCTFail("FRAuth not initialized")
+            return
+        }
+        
+        // Authenticate via FRSession only — produces an SSO token, no OAuth2 tokens.
+        self.loadMockResponses(["AuthTree_UsernamePasswordNode",
+                                "AuthTree_SSOToken_Success"])
+        
+        var currentNode: Node?
+        
+        var ex = self.expectation(description: "First Node submit")
+        FRSession.authenticate(authIndexValue: self.config.authServiceName!) { (token: Token?, node, error) in
+            XCTAssertNil(token)
+            XCTAssertNil(error)
+            XCTAssertNotNil(node)
+            currentNode = node
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        guard let node = currentNode else {
+            XCTFail("Failed to get Node from the first request")
+            return
+        }
+        
+        for callback in node.callbacks {
+            if callback is NameCallback, let cb = callback as? NameCallback { cb.setValue(config.username) }
+            else if callback is PasswordCallback, let cb = callback as? PasswordCallback { cb.setValue(config.password) }
+        }
+        
+        ex = self.expectation(description: "Journey completion")
+        node.next { (token: Token?, node, error) in
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+        
+        // Pre-conditions: SSO token present, NO OAuth2 access token.
+        XCTAssertNotNil(frAuth.keychainManager.getSSOToken())
+        XCTAssertNotNil(FRUser.currentUser)
+        XCTAssertNil(FRUser.currentUser?.token)
+        XCTAssertNotNil(FRSession.currentSession?.sessionToken)
+        
+        // Snapshot request count before logout so we can verify the logout call was issued.
+        let requestCountBeforeLogout = FRTestNetworkStubProtocol.requestHistory.count
+        
+        // Mock the SSO session logout response.
+        self.loadMockResponses(["AM_Session_Logout_Success"])
+        
+        FRUser.currentUser?.logout()
+        
+        // Wait for async logout request to flush.
+        sleep(5)
+        
+        // The SDK must have issued the AM session logout request even though no
+        // OAuth2 access token was present.
+        let postLogoutRequests = Array(FRTestNetworkStubProtocol.requestHistory.dropFirst(requestCountBeforeLogout))
+        let didCallSessionLogout = postLogoutRequests.contains { request in
+            guard let url = request.url?.absoluteString else { return false }
+            return url.contains("/sessions") && url.contains("_action=logout")
+        }
+        XCTAssertTrue(didCallSessionLogout,
+                      "Expected /sessions?_action=logout to be invoked when logging out with SSO token only. Requests after logout: \(postLogoutRequests.compactMap { $0.url?.absoluteString })")
+        
+        // Local state must be cleared.
+        XCTAssertNil(FRUser.currentUser)
+        XCTAssertNil(FRSession.currentSession)
+        XCTAssertNil(frAuth.keychainManager.getSSOToken())
+    }
 }
 
 

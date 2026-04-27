@@ -226,20 +226,24 @@ struct TokenManager {
     /// - Parameter completion: Completion callback to notify the result
     func revokeAndEndSession(completion: @escaping CompletionCallback) {
         do {
-            guard let token = try self.keychainManager.getAccessToken() else {
+            let token = try self.keychainManager.getAccessToken()
+            let hasSSOToken = self.keychainManager.getSSOToken() != nil
+            
+            // If there's neither an access token nor an SSO token, nothing to revoke
+            guard token != nil || hasSSOToken else {
                 completion(TokenError.nullToken)
                 return
             }
             
             // Step 1: End the session
-            if self.keychainManager.getSSOToken() != nil {
+            if hasSSOToken {
                 // SSO token exists — revoke it surgically (only invalidates this specific session)
                 FRLog.v("Step 1: SSO Token found; revoking via SessionManager.")
                 SessionManager.currentManager?.revokeSSOToken()
             } else if self.oAuth2Client.signoutRedirectUri != nil {
                 // signoutRedirectUri is configured — session was already ended in the browser
                 FRLog.v("Step 1: Skipping endSession; session already invalidated via browser signout.")
-            } else if let idToken = token.idToken {
+            } else if let idToken = token?.idToken {
                 // No SSO token (Centralized Login) — fall back to OIDC endSession
                 FRLog.v("Step 1: No SSO Token found; ending OIDC session via id_token.")
                 self.endSession(idToken: idToken) { (error) in
@@ -251,7 +255,12 @@ struct TokenManager {
                 }
             }
             
-            // Step 2: Revoke OAuth2 tokens and call completion
+            // Step 2: Revoke OAuth2 tokens (if any) and call completion
+            guard token != nil else {
+                FRLog.v("Step 2 (revoke) skipped; no OAuth2 tokens to revoke.")
+                completion(nil)
+                return
+            }
             self.revoke { (error) in
                 if let error = error {
                     FRLog.v("Step 2 (revoke) failed with an error: \(error.localizedDescription)")
