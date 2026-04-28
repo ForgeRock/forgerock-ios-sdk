@@ -943,6 +943,60 @@ class FRSessionTests: FRAuthBaseTest {
         XCTAssertNil(FRUser.currentUser)
         XCTAssertNil(FRSession.currentSession)
     }
+    
+    
+    func test_18_journey_with_empty_token_preserves_existing_credentials() {
+        // Scenario: A journey runs as passthrough or with the NoSession flag and returns an
+        // empty tokenId. The SDK must NOT wipe the existing stored SSO token or revoke
+        // existing OAuth2 tokens — there is nothing new to install and nothing to invalidate.
+        
+        // Start in a fully-authenticated state: SSO token + OAuth2 token set.
+        self.performLogin()
+        
+        guard let frAuth = FRAuth.shared else {
+            XCTFail("FRAuth not initialized")
+            return
+        }
+        
+        let originalSSO = frAuth.keychainManager.getSSOToken()
+        let originalAccessToken = try? frAuth.keychainManager.getAccessToken()
+        XCTAssertNotNil(originalSSO)
+        XCTAssertNotNil(originalAccessToken)
+        
+        let requestCountBeforeJourney = FRTestNetworkStubProtocol.requestHistory.count
+        
+        // Directly exercise handleSessionToken with an empty Token to simulate the
+        // passthrough / NoSession journey response producing an empty tokenId.
+        let emptyToken = Token("", successUrl: "", realm: "/")
+        let ex = self.expectation(description: "handleSessionToken with empty token")
+        frAuth.keychainManager.handleSessionToken(emptyToken,
+                                                  tokenManager: frAuth.tokenManager) { (token, node, error) in
+            XCTAssertNil(node)
+            XCTAssertNil(error)
+            XCTAssertNotNil(token)
+            XCTAssertEqual(token?.value, "")
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        // Stored credentials must be unchanged.
+        XCTAssertEqual(frAuth.keychainManager.getSSOToken()?.value, originalSSO?.value,
+                       "Existing SSO token should be preserved when journey returns an empty token")
+        let postAccessToken = try? frAuth.keychainManager.getAccessToken()
+        XCTAssertNotNil(postAccessToken,
+                        "Existing OAuth2 access token should be preserved when journey returns an empty token")
+        XCTAssertEqual(postAccessToken?.value, originalAccessToken?.value)
+        
+        // No revoke / endSession / sessions-logout request should have been issued.
+        let postRequests = Array(FRTestNetworkStubProtocol.requestHistory.dropFirst(requestCountBeforeJourney))
+        let urls = postRequests.compactMap { $0.url?.absoluteString }
+        XCTAssertFalse(urls.contains { $0.contains("/token/revoke") },
+                       "Did not expect /token/revoke to be invoked. Requests: \(urls)")
+        XCTAssertFalse(urls.contains { $0.contains("/connect/endSession") },
+                       "Did not expect /connect/endSession to be invoked. Requests: \(urls)")
+        XCTAssertFalse(urls.contains { $0.contains("/sessions") && $0.contains("_action=logout") },
+                       "Did not expect /sessions?_action=logout to be invoked. Requests: \(urls)")
+    }
 }
 
 

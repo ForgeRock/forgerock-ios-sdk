@@ -254,6 +254,10 @@ struct KeychainManager {
     /// Handles a newly received SSO token from an authentication journey, managing token mismatch scenarios.
     ///
     /// When a new SSO token is received via a journey, the behavior depends on the current state:
+    /// - **Empty `newToken.value`** (e.g. a passthrough or `NoSession`-flagged journey that returns no
+    ///   session token): treated as a no-op. Existing stored credentials (SSO token + OAuth2 tokens)
+    ///   are preserved; the empty token is forwarded to the completion so the journey result is still
+    ///   surfaced to the caller.
     /// - **No existing SSO token AND no access token** (fresh state): stores the new SSO token.
     /// - **No existing SSO token but an access token exists** (e.g. user previously authenticated via
     ///   Centralized Login / OIDC browser flow): treats this as a session change. Revokes the existing
@@ -275,6 +279,14 @@ struct KeychainManager {
     ///   - tokenManager: Optional `TokenManager` for revoking OAuth2 tokens.
     ///   - completion: Callback invoked with the new token once all cleanup is done.
     func handleSessionToken(_ newToken: Token, tokenManager: TokenManager?, completion: @escaping NodeCompletion<Token>) {
+        // Case 0: The journey returned an empty token (e.g. passthrough / NoSession journey).
+        // Preserve any existing stored credentials and surface the empty token to the caller.
+        guard !newToken.value.isEmpty else {
+            FRLog.i("Received an empty SSO Token from the journey (e.g. passthrough or NoSession); preserving existing stored credentials.")
+            completion(newToken, nil, nil)
+            return
+        }
+        
         let currentSessionToken = self.getSSOToken()
         let existingAccessToken = try? self.getAccessToken()
         
