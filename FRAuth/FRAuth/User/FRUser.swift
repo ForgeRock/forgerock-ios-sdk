@@ -186,8 +186,11 @@ public class FRUser: NSObject, NSSecureCoding {
     ///
     /// When `forceEndSession` is `true`:
     /// - BOTH `/sessions?_action=logout` (if an SSO token exists) AND `/connect/endSession`
-    ///   (if an `id_token` exists and no `signoutRedirectUri` is configured) are invoked,
-    ///   guaranteeing that both the AM SSO session and the OIDC session are torn down.
+    ///   (if an `id_token` exists) are invoked, guaranteeing that both the AM SSO session and
+    ///   the OIDC session are torn down. The `signoutRedirectUri` configuration is intentionally
+    ///   ignored in this mode — the caller has explicitly opted into a full teardown, so
+    ///   `/connect/endSession` is invoked even if a browser-based signout was previously
+    ///   expected to handle OIDC session termination.
     /// - The OAuth2 token set is then revoked via `/token/revoke`.
     ///
     /// In all cases the local `FRUser`, `FRSession`, and any `Browser` state are cleared
@@ -199,17 +202,27 @@ public class FRUser: NSObject, NSSecureCoding {
     public func logout(forceEndSession: Bool) {
         
         if let frAuth = FRAuth.shared {
-            FRLog.v("Revoking session and OAuth2 token(s) (forceEndSession: \(forceEndSession))")
-            frAuth.tokenManager?.revokeAndEndSession(forceEndSession: forceEndSession) { (error) in
-                if let error = error {
-                    FRLog.w("Error while revoking session and OAuth2 token(s)")
-                    if let nsError = error as NSError? {
-                        FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
+            if let tokenManager = frAuth.tokenManager {
+                FRLog.v("Revoking session and OAuth2 token(s) (forceEndSession: \(forceEndSession))")
+                tokenManager.revokeAndEndSession(forceEndSession: forceEndSession) { (error) in
+                    if let error = error {
+                        FRLog.w("Error while revoking session and OAuth2 token(s)")
+                        if let nsError = error as NSError? {
+                            FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
+                        }
+                    }
+                    else {
+                        FRLog.v("Session and OAuth2 token(s) revoked successfully")
                     }
                 }
-                else {
-                    FRLog.v("Session and OAuth2 token(s) revoked successfully")
-                }
+            }
+            else {
+                // OAuth2 is not configured; TokenManager is unavailable. Fall back to revoking the
+                // SSO token directly via SessionManager so the AM session and cookies are torn down
+                // and the SSO token is removed from keychain. Without this, only the in-memory
+                // FRUser/FRSession references would be cleared while persisted credentials remained.
+                FRLog.v("TokenManager unavailable (OAuth2 not configured); revoking SSO token via SessionManager.")
+                frAuth.sessionManager.revokeSSOToken()
             }
         }
         
