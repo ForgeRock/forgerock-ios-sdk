@@ -2,7 +2,7 @@
 //  FRUser.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -165,58 +165,71 @@ public class FRUser: NSObject, NSSecureCoding {
     
     //  MARK: - Logout
     
-    /// Logs-out currently authenticated user session
+    /// Logs-out currently authenticated user session.
     ///
-    /// - NOTE: logout method invokes 2 APIs to invalidate user's session: 1) invokes /sessions/?_action=logout to invalidate Session Token, 2) /token/revoke to invalidate access_token and/or refresh_token (if refresh_token was granted), and 3) if id_token exists, it invokes /connect/endSession to invalidate OIDC session
+    /// - NOTE: logout method invokes up to 3 APIs to invalidate the user's session: 1) `/sessions/?_action=logout` to invalidate Session Token (if it exists), 2) `/token/revoke` to invalidate access_token and/or refresh_token, and 3) `/connect/endSession` to invalidate the OIDC session (only if no SSO token was found and no `signoutRedirectUri` is configured)
     ///
+    /// Equivalent to calling `logout(forceEndSession: false)`.
     @objc
     public func logout() {
+        self.logout(forceEndSession: false)
+    }
+    
+    /// Logs-out currently authenticated user session, optionally forcing both session-termination
+    /// endpoints to be invoked.
+    ///
+    /// When `forceEndSession` is `false` (default behavior, equivalent to calling `logout()`):
+    /// - If an SSO token exists, only `/sessions?_action=logout` is invoked to revoke it.
+    /// - Otherwise, if an `id_token` exists and no `signoutRedirectUri` is configured,
+    ///   `/connect/endSession` is invoked.
+    /// - The OAuth2 token set is then revoked via `/token/revoke`.
+    ///
+    /// When `forceEndSession` is `true`:
+    /// - BOTH `/sessions?_action=logout` (if an SSO token exists) AND `/connect/endSession`
+    ///   (if an `id_token` exists) are invoked, guaranteeing that both the AM SSO session and
+    ///   the OIDC session are torn down. The `signoutRedirectUri` configuration is intentionally
+    ///   ignored in this mode — the caller has explicitly opted into a full teardown, so
+    ///   `/connect/endSession` is invoked even if a browser-based signout was previously
+    ///   expected to handle OIDC session termination.
+    /// - The OAuth2 token set is then revoked via `/token/revoke`.
+    ///
+    /// In all cases the local `FRUser`, `FRSession`, and any `Browser` state are cleared
+    /// synchronously after the network calls are dispatched.
+    ///
+    /// - Parameter forceEndSession: When `true`, both the SSO token revocation and the OIDC
+    ///   `endSession` will be attempted in parallel where the necessary credentials exist.
+    @objc(logoutWithForceEndSession:)
+    public func logout(forceEndSession: Bool) {
         
-        var ssoTokenInvalidated = false
-        let tempToken = FRUser.currentUser?.token
-        if let frSession = FRSession.currentSession {
-            FRLog.v("Invaliding SSO Token")
-            // Revoke Session Token
-            frSession.logout()
-            ssoTokenInvalidated = true
-        }
-        
-        if let frAuth = FRAuth.shared, let tokens = tempToken {
-            FRLog.v("Invalidating OAuth2 token(s)")
-            // Revoke OAuth2 tokens
-            frAuth.tokenManager?.revoke(completion: { (error) in
-                if let error = error {
-                    FRLog.w("Error while invalidating OAuth2 token(s)")
-                    if let nsError = error as NSError? {
-                        FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
+        if let frAuth = FRAuth.shared {
+            if let tokenManager = frAuth.tokenManager {
+                FRLog.v("Revoking session and OAuth2 token(s) (forceEndSession: \(forceEndSession))")
+                tokenManager.revokeAndEndSession(forceEndSession: forceEndSession) { (error) in
+                    if let error = error {
+                        FRLog.w("Error while revoking session and OAuth2 token(s)")
+                        if let nsError = error as NSError? {
+                            FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
+                        }
+                    }
+                    else {
+                        FRLog.v("Session and OAuth2 token(s) revoked successfully")
                     }
                 }
-                else {
-                    FRLog.v("Invalidating OAuth2 token(s) successful")
-                }
-                if let oAuth2Client = frAuth.oAuth2Client, oAuth2Client.signoutRedirectUri != nil {
-                    FRLog.v("Skipping invalidating session using id_token since the session has already been invalidated in the browser")
-                } else if let idToken = tokens.idToken, ssoTokenInvalidated == false {
-                    FRLog.v("Invalidating session using id_token")
-                    // End Session if id_token exists
-                    frAuth.tokenManager?.endSession(idToken: idToken, completion: { (error) in
-                        
-                        if let error = error {
-                            FRLog.w("Error while invalidating OIDC Session")
-                            if let nsError = error as NSError? {
-                                FRLog.w("[\(nsError.domain) - \(nsError.code): \(nsError.localizedDescription)\n\t\(nsError.userInfo)]")
-                            }
-                        }
-                        else {
-                            FRLog.v("Invalidating OIDC Session successful")
-                        }
-                    })
-                }
-            })
+            }
+            else {
+                // OAuth2 is not configured; TokenManager is unavailable. Fall back to revoking the
+                // SSO token directly via SessionManager so the AM session and cookies are torn down
+                // and the SSO token is removed from keychain. Without this, only the in-memory
+                // FRUser/FRSession references would be cleared while persisted credentials remained.
+                FRLog.v("TokenManager unavailable (OAuth2 not configured); revoking SSO token via SessionManager.")
+                frAuth.sessionManager.revokeSSOToken()
+            }
         }
         
         // Clear user object
         FRUser._staticUser = nil
+        // Clear session object
+        FRSession._staticSession = nil
         // Clear Browser instance if there is anything running
         Browser.currentBrowser = nil
     }

@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -248,6 +248,115 @@ struct KeychainManager {
         }
         return nil
     }
+    
+    //  MARK: - Session Token Handling
+    
+    /// Handles a newly received SSO token from an authentication journey, managing token mismatch scenarios.
+    ///
+    /// When a new SSO token is received via a journey, the behavior depends on the current state:
+    /// - **Empty `newToken.value`** (e.g. a passthrough or `NoSession`-flagged journey that returns no
+    ///   session token): treated as a no-op. Existing stored credentials (SSO token + OAuth2 tokens)
+    ///   are preserved; the empty token is forwarded to the completion so the journey result is still
+    ///   surfaced to the caller.
+    /// - **No existing SSO token AND no access token** (fresh state): stores the new SSO token.
+    /// - **No existing SSO token but an access token exists** (e.g. user previously authenticated via
+    ///   Centralized Login / OIDC browser flow): treats this as a session change. Revokes the existing
+    ///   OAuth2 token set on the server, stores the new SSO token, then calls completion. This prevents
+    ///   the SDK from holding stale OAuth2 tokens for a different user/session than the cookies the SDK
+    ///   will subsequently send to AM.
+    /// - **Existing SSO token matches the new one**: stores the new token (no-op effectively).
+    /// - **Existing SSO token mismatches the new one** (with access token present): revokes the old SSO
+    ///   token on the server, revokes OAuth2 tokens, stores the new SSO token, then calls completion.
+    ///
+    /// - Important: A consumer who deliberately uses `FRSession.authenticate` for a step-up of the
+    ///   *same* user after Centralized Login will lose their existing access token as a side-effect of
+    ///   this safety behavior. To obtain a new OAuth2 token set after the journey completes, call
+    ///   `FRUser.currentUser?.getAccessToken(...)`, which exchanges the newly stored SSO token for a
+    ///   fresh OAuth2 token set.
+    ///
+    /// - Parameters:
+    ///   - newToken: The newly received SSO `Token` from the journey.
+    ///   - tokenManager: Optional `TokenManager` for revoking OAuth2 tokens.
+    ///   - completion: Callback invoked with the new token once all cleanup is done.
+    func handleSessionToken(_ newToken: Token, tokenManager: TokenManager?, completion: @escaping NodeCompletion<Token>) {
+        // Case 0: The journey returned an empty token (e.g. passthrough / NoSession journey).
+        // Preserve any existing stored credentials and surface the empty token to the caller.
+        guard !newToken.value.isEmpty else {
+            FRLog.i("Received an empty SSO Token from the journey (e.g. passthrough or NoSession); preserving existing stored credentials.")
+            completion(newToken, nil, nil)
+            return
+        }
+        
+        let currentSessionToken = self.getSSOToken()
+        let existingAccessToken = try? self.getAccessToken()
+        
+        // Case 1: No existing SSO token.
+        if currentSessionToken == nil {
+            guard existingAccessToken != nil else {
+                // Fresh state — nothing to protect, just store the new SSO token.
+                self.setSSOToken(ssoToken: newToken)
+                completion(newToken, nil, nil)
+                return
+            }
+            
+            // Centralized Login state: an access token exists but no SSO token. The journey has
+            // produced a new SSO token (possibly for a different user). Revoke the stale OAuth2
+            // token set so the SDK does not return tokens that disagree with the SSO cookies AM
+            // will now associate with the SDK.
+            FRLog.w("SDK identified a new Session Token from a journey while an access token from a previous (non-journey) authentication exists; revoking old OAuth2 token set to avoid stale credentials.")
+            self.revokeOAuth2AndStore(newToken: newToken, tokenManager: tokenManager, completion: completion)
+            return
+        }
+        
+        // Case 2: Existing SSO token mismatches and an access token exists — revoke old SSO + OAuth2.
+        if let _ = existingAccessToken, newToken.value != currentSessionToken!.value {
+            FRLog.w("SDK identified existing Session Token (\(currentSessionToken!.value)) and received Session Token (\(newToken.value))'s mismatch; revoking old OAuth2 token set.")
+            
+            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate)
+            SessionManager.currentManager?.revokeSSOToken()
+            self.revokeOAuth2AndStore(newToken: newToken, tokenManager: tokenManager, completion: completion)
+            return
+        }
+        
+        // Case 3: Existing SSO token mismatches and no access token exists — revoke old SSO and fall through to Case 4.
+        if newToken.value != currentSessionToken!.value {
+            FRLog.w("SDK identified existing Session Token (\(currentSessionToken!.value)) and received Session Token (\(newToken.value))'s mismatch; ending old session")
+            
+            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate)
+            SessionManager.currentManager?.revokeSSOToken()
+        }
+        
+        // Case 4: Existing SSO token matches OR no access token to invalidate — just store the new SSO.
+        self.setSSOToken(ssoToken: newToken)
+        completion(newToken, nil, nil)
+    }
+    
+    
+    /// Revokes the currently stored OAuth2 token set (if a `TokenManager` is supplied) and then stores
+    /// the supplied new SSO token. Falls back to a synchronous local clear of the access token when no
+    /// `TokenManager` is available. The completion is invoked once the new SSO token has been stored.
+    private func revokeOAuth2AndStore(newToken: Token, tokenManager: TokenManager?, completion: @escaping NodeCompletion<Token>) {
+        if let tokenManager = tokenManager {
+            tokenManager.revoke { error in
+                if let error = error {
+                    FRLog.e("OAuth2 token revocation failed: \(error.localizedDescription)")
+                }
+                self.setSSOToken(ssoToken: newToken)
+                completion(newToken, nil, nil)
+            }
+            return
+        }
+        
+        FRLog.i("TokenManager is not found; removing OAuth2 token set from storage")
+        do {
+            try self.setAccessToken(token: nil)
+        } catch {
+            FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
+        }
+        self.setSSOToken(ssoToken: newToken)
+        completion(newToken, nil, nil)
+    }
+    
     
     //  MARK: - Instance helper methods
     

@@ -2,7 +2,7 @@
 //  TokenManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -211,38 +211,122 @@ struct TokenManager {
     }
     
     
-    /// Ends OIDC Session with given id_token and revokes OAuth2 token(s)
-    /// - Parameter completion: Completion callback to notify the result
-    func revokeAndEndSession(completion: @escaping CompletionCallback) {
+    /// Ends the user's session and revokes OAuth2 token(s).
+    ///
+    /// Default session termination strategy (`forceEndSession == false`):
+    /// - If an SSO token exists, revokes it via `SessionManager.revokeSSOToken()` (calls `/json/sessions?_action=logout`).
+    ///   This invalidates only the specific SSO session without affecting the broader OIDC session.
+    /// - If no SSO token exists (e.g. Centralized Login) and no `signoutRedirectUri` is configured,
+    ///   falls back to ending the OIDC session via `endSession(idToken:)` (calls `/connect/endSession`).
+    /// - If `signoutRedirectUri` is configured, the session is assumed to have been ended via the browser,
+    ///   so `endSession` is skipped.
+    ///
+    /// Forced session termination strategy (`forceEndSession == true`):
+    /// - The SDK invokes BOTH session-termination endpoints when the relevant credentials are available:
+    ///   `SessionManager.revokeSSOToken()` (if an SSO token exists) AND `endSession(idToken:)`
+    ///   (if an `id_token` exists). The `signoutRedirectUri` check is intentionally skipped in this
+    ///   mode — when the caller has opted into a forced logout, both endpoints are invoked even if a
+    ///   browser-based signout was previously expected to handle OIDC session termination.
+    /// - Use this when the caller wants to make sure both the AM SSO session and the OIDC session are
+    ///   torn down in one logout call.
+    ///
+    /// After session termination, OAuth2 tokens (access + refresh) are revoked and the completion is called.
+    ///
+    /// The completion is invoked only after every dispatched call that exposes a completion API
+    /// (`/connect/endSession` and `/token/revoke`) has finished. `SessionManager.revokeSSOToken()`
+    /// remains fire-and-forget because it does not expose a completion callback. If both the
+    /// `revoke` and `endSession` calls report errors, the `revoke` error takes precedence in the
+    /// completion (preserving historical behavior); `endSession` errors are surfaced when `revoke`
+    /// succeeds (or is skipped).
+    ///
+    /// - Parameters:
+    ///   - forceEndSession: When `true`, both the SSO token revocation and OIDC `endSession` will be
+    ///     attempted where the necessary credentials exist. Defaults to `false`.
+    ///   - completion: Completion callback to notify the result
+    func revokeAndEndSession(forceEndSession: Bool = false, completion: @escaping CompletionCallback) {
         do {
-            guard let token = try self.keychainManager.getAccessToken() else {
+            let token = try self.keychainManager.getAccessToken()
+            let hasSSOToken = self.keychainManager.getSSOToken() != nil
+            
+            // If there's neither an access token nor an SSO token, nothing to revoke
+            guard token != nil || hasSSOToken else {
                 completion(TokenError.nullToken)
                 return
             }
             
-            var capturedError: Error?
+            // Use a DispatchGroup so the completion is only called after both
+            // /connect/endSession and /token/revoke (whichever are dispatched) have finished.
+            // A serial queue serializes writes to the captured errors so the aggregation is
+            // thread-safe regardless of which queue the underlying URLSession callbacks fire on.
+            let group = DispatchGroup()
+            let aggregationQueue = DispatchQueue(label: "com.forgerock.ios.frauth.revokeAndEndSession.aggregation")
+            var endSessionError: Error?
+            var revokeError: Error?
             
-            if let idToken = token.idToken {
+            // Determine whether to dispatch /connect/endSession.
+            // - Forced mode: dispatch whenever an id_token is available (signoutRedirectUri ignored).
+            // - Default mode: only when there's no SSO token, no signoutRedirectUri, and an id_token exists.
+            let shouldEndSession: Bool
+            if forceEndSession {
+                shouldEndSession = (token?.idToken != nil)
+            } else if hasSSOToken {
+                shouldEndSession = false
+            } else if self.oAuth2Client.signoutRedirectUri != nil {
+                shouldEndSession = false
+            } else {
+                shouldEndSession = (token?.idToken != nil)
+            }
+            
+            // Step 1a: SSO token revocation (fire-and-forget by design — has no completion API).
+            if hasSSOToken {
+                FRLog.v("Step 1: SSO Token found; revoking via SessionManager.")
+                SessionManager.currentManager?.revokeSSOToken()
+            } else if !forceEndSession && self.oAuth2Client.signoutRedirectUri != nil {
+                FRLog.v("Step 1: Skipping endSession; session already invalidated via browser signout.")
+            }
+            
+            // Step 1b: /connect/endSession — wait for completion via the DispatchGroup.
+            if shouldEndSession, let idToken = token?.idToken {
+                FRLog.v("Step 1: ending OIDC session via id_token (forceEndSession: \(forceEndSession)).")
+                group.enter()
                 self.endSession(idToken: idToken) { (error) in
                     if let error = error {
-                        FRLog.v("Step 1 (endSession) failed with an error: \(error.localizedDescription)")
-                        capturedError = error
+                        FRLog.w("endSession failed: \(error.localizedDescription)")
+                        aggregationQueue.async {
+                            endSessionError = error
+                            group.leave()
+                        }
                     } else {
-                        FRLog.v("Step 1 (endSession) finished successfully.")
+                        FRLog.v("endSession finished successfully.")
+                        group.leave()
                     }
                 }
             }
             
-            self.revoke { (error) in
-                if let error = error {
-                    FRLog.v("Step 2 (revoke) failed with an error: \(error.localizedDescription)")
-                    capturedError = error
-                } else {
-                    FRLog.v("Step 2 (revoke) finished successfully.")
+            // Step 2: /token/revoke — also wait via the DispatchGroup.
+            if token != nil {
+                group.enter()
+                self.revoke { (error) in
+                    if let error = error {
+                        FRLog.w("Step 2 (revoke) failed with an error: \(error.localizedDescription)")
+                        aggregationQueue.async {
+                            revokeError = error
+                            group.leave()
+                        }
+                    } else {
+                        FRLog.v("Step 2 (revoke) finished successfully.")
+                        group.leave()
+                    }
                 }
+            } else {
+                FRLog.v("Step 2 (revoke) skipped; no OAuth2 tokens to revoke.")
             }
             
-            completion(capturedError)
+            // When all dispatched calls have finished, surface the result. Precedence:
+            // revoke error first (preserves historical contract), then endSession error.
+            group.notify(queue: aggregationQueue) {
+                completion(revokeError ?? endSessionError)
+            }
         }
         catch {
             completion(error)
