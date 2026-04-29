@@ -318,7 +318,15 @@ struct KeychainManager {
             return
         }
         
-        // Case 3: Existing SSO token matches OR no access token to invalidate — just store the new SSO.
+        // Case 3: Existing SSO token mismatches and no access token exists — revoke old SSO and fall through to Case 4.
+        if newToken.value != currentSessionToken!.value {
+            FRLog.w("SDK identified existing Session Token (\(currentSessionToken!.value)) and received Session Token (\(newToken.value))'s mismatch; ending old session")
+            
+            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate)
+            SessionManager.currentManager?.revokeSSOToken()
+        }
+        
+        // Case 4: Existing SSO token matches OR no access token to invalidate — just store the new SSO.
         self.setSSOToken(ssoToken: newToken)
         completion(newToken, nil, nil)
     }
