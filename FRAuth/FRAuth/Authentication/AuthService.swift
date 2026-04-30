@@ -215,7 +215,7 @@ public class AuthService: NSObject {
         // Invoke request
         FRRestClient.invoke(request: request, action: action) { (result) in
             switch result {
-            case .success(let response, _):
+            case .success(let response, let httpResponse):
                 
                 // If authId received
                 if let _ = response[OpenAM.authId] {
@@ -237,7 +237,10 @@ public class AuthService: NSObject {
                         completion(token, nil, nil)
                         return
                     }
-                    keychainManager.handleSessionToken(token, tokenManager: self.tokenManager, completion: completion)
+                    keychainManager.handleSessionToken(token, tokenManager: self.tokenManager) { result, node, error in
+                        FRRestClient.parseResponseForCookie(response: response, httpResponse: httpResponse as? HTTPURLResponse)
+                        completion(result, node, error)
+                    }
                 }
                 else {
                     completion(nil, nil, nil)
