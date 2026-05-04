@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 LIBRARIES=("FRCore" "FRAuth" "FRDeviceBinding" "PingProtect" "FRCaptchaEnterprise" "FRUI" "FRProximity" "FRGoogleSignIn" "FRFacebookSignIn" "FRAuthenticator")
 
 # Version being published for all libraries
-VERSION="4.9.1"
+VERSION="4.9.1-beta1"
 
 # Maximum waiting time in seconds (60 minutes = 3600 seconds)
 MAX_WAIT_TIME=3600
