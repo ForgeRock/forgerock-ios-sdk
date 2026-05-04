@@ -311,19 +311,21 @@ struct KeychainManager {
         // Case 2: Existing SSO token mismatches and an access token exists — revoke old SSO + OAuth2.
         if let _ = existingAccessToken, newToken.value != currentSessionToken!.value {
             FRLog.w("SDK identified existing Session Token (\(currentSessionToken!.value)) and received Session Token (\(newToken.value))'s mismatch; revoking old OAuth2 token set.")
-            
-            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate)
-            SessionManager.currentManager?.revokeSSOToken()
+
+            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate).
+            // clearCookies: false — the new session's cookies from /authenticate must not be wiped.
+            SessionManager.currentManager?.revokeSSOToken(clearCookies: false)
             self.revokeOAuth2AndStore(newToken: newToken, tokenManager: tokenManager, completion: completion)
             return
         }
-        
+
         // Case 3: Existing SSO token mismatches and no access token exists — revoke old SSO and fall through to Case 4.
         if newToken.value != currentSessionToken!.value {
             FRLog.w("SDK identified existing Session Token (\(currentSessionToken!.value)) and received Session Token (\(newToken.value))'s mismatch; ending old session")
-            
-            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate)
-            SessionManager.currentManager?.revokeSSOToken()
+
+            // Revoke the old SSO token on the server (fire-and-forget; local cleanup is immediate).
+            // clearCookies: false — the new session's cookies from /authenticate must not be wiped.
+            SessionManager.currentManager?.revokeSSOToken(clearCookies: false)
         }
         
         // Case 4: Existing SSO token matches OR no access token to invalidate — just store the new SSO.
