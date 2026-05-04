@@ -1,3 +1,8 @@
+## [4.9.1]
+
+#### Fixed
+- Improved step-up authentication handling to prevent unintended session termination and preserve valid tokens across embedded and centralized login flows [SDKS-3045]
+
 ## [4.9.0]
 
 #### Fixed
