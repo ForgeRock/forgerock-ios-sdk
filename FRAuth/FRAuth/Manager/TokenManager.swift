@@ -340,7 +340,13 @@ struct TokenManager {
         if let ssoToken = self.keychainManager.getSSOToken() {
             self.oAuth2Client.exchangeToken(token: ssoToken) { (token, error) in
                 do {
-                    if error is OAuth2Error || error is AuthApiError {
+                    if let error, self.isNetworkTransportError(error) {
+                        FRLog.w(
+                            "Network transport error during /authorize flow with SSO Token; preserving credentials for retry - \(error.localizedDescription)"
+                        )
+                        completion(nil, error)
+                    }
+                    else if error is OAuth2Error || error is AuthApiError {
                         FRLog.i("OAuth2Error or AuthApiError received while /authorize flow with SSO Token; no more valid credentials and user authentication is required.")
                         FRLog.w("Removing all credentials and state")
                         self.clearCredentials()
@@ -529,6 +535,14 @@ struct TokenManager {
     private func _handleRefreshToken(token: AccessToken, completion: @escaping TokenCompletionCallback) {
         self.refreshUsingRefreshToken(token: token) { (refreshedToken, refreshError) in
             guard let refreshedToken = refreshedToken else {
+                if let refreshError, self.isNetworkTransportError(refreshError) {
+                    FRLog.w(
+                        "refresh_token grant failed due to network transport error; preserving credentials for retry - \(refreshError.localizedDescription)"
+                    )
+                    completion(nil, refreshError)
+                    return
+                }
+
                 if let tokenError = refreshError as? TokenError, case .nullRefreshToken = tokenError {
                     FRLog.w("No refresh_token found; exchanging SSO Token for OAuth2 tokens")
                 } else if let oAuthError = refreshError as? OAuth2Error, case .invalidGrant = oAuthError {
@@ -540,4 +554,41 @@ struct TokenManager {
             completion(refreshedToken, refreshError)
         }
     }
+
+    /// Detect retryable network transport failures where credentials should be preserved.
+    ///
+    /// This classifier intentionally uses a strict whitelist of retryable `URLError.Code`
+    /// values rather than all `NSURLErrorDomain` errors:
+    /// `notConnectedToInternet`, `networkConnectionLost`, `timedOut`,
+    /// `cannotFindHost`, `cannotConnectToHost`, and `dnsLookupFailed`.
+    /// Also checks inside `AuthApiError.apiRequestFailure` for a wrapped transport error.
+    private func isNetworkTransportError(_ error: Error) -> Bool {
+        let resolved = underlyingTransportError(from: error)
+        guard let urlError = resolved as? URLError else { return false }
+        return Self.retryableTransportCodes.contains(urlError.code)
+    }
+    
+    /// Extracts the underlying transport error from an `AuthApiError.apiRequestFailure`,
+    /// or returns the error itself if it's not wrapped.
+    private func underlyingTransportError(from error: Error) -> Error {
+        guard let authApiError = error as? AuthApiError,
+              case let .apiRequestFailure(_, _, underlyingError) = authApiError,
+              let underlyingError else {
+            return error
+        }
+        return underlyingError
+    }
+    
+    /// Retry-safe URL loading failures that represent transient transport conditions.
+    ///
+    /// These codes indicate temporary connectivity/path issues where local credentials remain valid,
+    /// so token renewal should fail fast and allow callers to retry without destructive cleanup.
+    private static let retryableTransportCodes: Set<URLError.Code> = [
+        .notConnectedToInternet,
+        .networkConnectionLost,
+        .timedOut,
+        .cannotFindHost,
+        .cannotConnectToHost,
+        .dnsLookupFailed
+    ]
 }
