@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  FRExample
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -158,7 +158,8 @@ class ViewController: UIViewController, AlertShowing {
             "Revoke Access Token",
             "List WebAuthn Credentials",
             "List Device Binding Keys",
-            "List Client Devices"
+            "List Client Devices",
+            "User Logout (Force End Session)"
         ]
         self.commandField?.setTitle("Login with UI (FRUser)", for: .normal)
         
@@ -740,10 +741,18 @@ class ViewController: UIViewController, AlertShowing {
     }
     
     
-    func logout() {
+    func logout(forceEndSession: Bool = false) {
         guard let user = FRUser.currentUser else {
             // If no currently authenticated user is found, log error
             self.displayLog("FRUser.currentUser does not exist")
+            return
+        }
+        
+        if forceEndSession {
+            // Force the SDK to invoke BOTH /sessions?_action=logout AND /connect/endSession
+            // (in addition to /token/revoke) where the relevant credentials exist.
+            user.logout(forceEndSession: true)
+            self.displayLog("Logout completed (forceEndSession: true)")
             return
         }
         
@@ -1018,6 +1027,10 @@ class ViewController: UIViewController, AlertShowing {
         case 22:
             // List User Devices
             self.listClientDevices()
+            break
+        case 23:
+            // User Logout with forceEndSession
+            self.logout(forceEndSession: true)
             break
         default:
             break

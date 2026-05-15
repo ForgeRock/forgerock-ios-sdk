@@ -2,7 +2,7 @@
 //  SessionManager.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -53,7 +53,10 @@ class SessionManager: NSObject {
     //  MARK: - SSO TOken
     
     /// Revokes currently authenticated and stored SSO Token and removes it from Keychain Service
-    func revokeSSOToken() -> Void {
+    /// - Parameter clearCookies: When `true` (default), all cookies are cleared from the cookie store
+    ///   alongside the SSO token. Pass `false` during a session transition (e.g. step-up) where the
+    ///   new session's cookies must be preserved.
+    func revokeSSOToken(clearCookies: Bool = true) -> Void {
 
         if let ssoToken = self.keychainManager.getSSOToken() {
             FRLog.v("Invalidating SSO Token")
@@ -61,25 +64,36 @@ class SessionManager: NSObject {
             parameter[OpenAM.tokenId] = ssoToken.value
             var header: [String: String] = [:]
             header[self.serverConfig.cookieName] = ssoToken.value
-            
+
             //  AM 6.5.2 - 7.0.0
             //
             //  Endpoint: /json/realms/sessions
             //  API Version: resource=3.1
-            
+
             header[OpenAM.acceptAPIVersion] = OpenAM.apiResource31
             var urlParam: [String: String] = [:]
             urlParam[OpenAM.action] = OpenAM.logout
 
             // Deletes SSO token from Keychain Service
             self.keychainManager.setSSOToken(ssoToken: nil)
-            
-            // Deletes all Cookie from Cookie Store
-            FRLog.i("Deleting all cookies from Cookie Store as invalidating Session Token.")
-            self.keychainManager.cookieStore.deleteAll()
+
+            // Deletes all cookies from Cookie Store — skipped during session transitions so that
+            // cookies set by the new session's /authenticate response are not wiped.
+            if clearCookies {
+                FRLog.i("Deleting all cookies from Cookie Store as invalidating Session Token.")
+                self.keychainManager.cookieStore.deleteAll()
+            }
             
             let request = Request(url: self.serverConfig.sessionURL, method: .POST, headers: header, bodyParams: parameter, urlParams: urlParam, requestType: .json, responseType: .json, timeoutInterval: self.serverConfig.timeout)
-            FRRestClient.invoke(request: request, action: Action(type: .LOGOUT)) { (result) in
+
+            // When clearCookies is false (session transition / step-up), bypass FRRestClient so
+            // that AM's expired Set-Cookie header on the logout response does not trigger
+            // parseResponseForCookie and delete the new session's cookie from the store.
+            let invoker: (@escaping ResultCallback) -> Void = clearCookies
+                ? { completion in FRRestClient.invoke(request: request, action: Action(type: .LOGOUT), completion: completion) }
+                : { completion in RestClient.shared.invoke(request: request, action: Action(type: .LOGOUT), completion: completion) }
+
+            invoker { (result) in
                 switch result {
                 case .success( _, _ ):
                     FRLog.v("SSO Token was successfully revoked")

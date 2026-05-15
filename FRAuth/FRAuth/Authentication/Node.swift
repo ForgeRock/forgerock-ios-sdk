@@ -2,7 +2,7 @@
 //  Node.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -276,55 +276,11 @@ public class Node: NSObject {
                     let token = Token(tokenId, successUrl: successUrl, realm: realm)
                     
                     guard let keychainManager = self.keychainManager else {
-                        // This path now correctly handles the missing keychainManager.
-                        // It returns the new token but logs a warning that it couldn't be stored.
                         FRLog.w("KeychainManager not available; cannot store new SSO token.")
                         completion(token, nil, nil)
                         return
                     }
-                    let currentSessionToken = keychainManager.getSSOToken()
-                    if let _ = try? keychainManager.getAccessToken(), token.value != currentSessionToken?.value {
-                        FRLog.w("SDK identified existing Session Token (\(currentSessionToken?.value ?? "nil")) and received Session Token (\(token.value))'s mismatch; revoking old token set.")
-                        
-                        if let tokenManager = self.tokenManager {
-                            
-                            // 1. Create a semaphore and a variable to capture the error.
-                            let revokeSemaphore = DispatchSemaphore(value: 0)
-                            var revokeError: Error?
-                            
-                            // 2. Call the async function.
-                            tokenManager.revokeAndEndSession { error in
-                                FRLog.i("OAuth2 token set revocation finished. Error: \(error?.localizedDescription ?? "none")")
-                                // Capture the result and signal completion.
-                                revokeError = error
-                                revokeSemaphore.signal()
-                            }
-                            
-                            // 3. Wait here until the semaphore is signaled.
-                            revokeSemaphore.wait()
-                            
-                            // 4. After waiting, check if revocation failed.
-                            if let error = revokeError {
-                                FRLog.e("Unexpected error while revoking and ending session: \(error.localizedDescription)")
-                            }
-                        }
-                        else {
-                            // This else block corresponds to `if let tokenManager`.
-                            // The logic here is synchronous, so no semaphore is needed.
-                            FRLog.i("TokenManager is not found; OAuth2 token set was removed from the storage")
-                            do {
-                                try keychainManager.setAccessToken(token: nil)
-                            }
-                            catch {
-                                FRLog.e("Unexpected error while removing AccessToken: \(error.localizedDescription)")
-                            }
-                        }
-                    }
-                    
-                    // This code will now only run AFTER revokeAndEndSession is complete.
-                    keychainManager.setSSOToken(ssoToken: token)
-                    
-                    completion(token, nil, nil)
+                    keychainManager.handleSessionToken(token, tokenManager: self.tokenManager, completion: completion)
                 }
                 else {
                     completion(nil, nil, nil)
