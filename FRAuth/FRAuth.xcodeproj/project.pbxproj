@@ -175,6 +175,7 @@
 		D5791BDE25F87DE8004B487A /* PKCETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D164A231484D60095905A /* PKCETests.swift */; };
 		D5791BDF25F87DE8004B487A /* AccessTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D164B231484D60095905A /* AccessTokenTests.swift */; };
 		D5791BE025F87DE8004B487A /* FRUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D164D231484D60095905A /* FRUserTests.swift */; };
+		F9B231D82F5B2A4100A1C2D3 /* FRUserTokenRenewalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B231D72F5B2A4100A1C2D3 /* FRUserTokenRenewalTests.swift */; };
 		D5791BE125F87DE8004B487A /* FRUserBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */; };
 		D5791BE225F87DE8004B487A /* NetworkReachabilityMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D1640231484D60095905A /* NetworkReachabilityMonitorTests.swift */; };
 		D5791BE325F87DE8004B487A /* FRBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52D165A231484D60095905A /* FRBaseTest.swift */; };
@@ -448,6 +449,7 @@
 		D52D164A231484D60095905A /* PKCETests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKCETests.swift; sourceTree = "<group>"; };
 		D52D164B231484D60095905A /* AccessTokenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokenTests.swift; sourceTree = "<group>"; };
 		D52D164D231484D60095905A /* FRUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRUserTests.swift; sourceTree = "<group>"; };
+		F9B231D72F5B2A4100A1C2D3 /* FRUserTokenRenewalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRUserTokenRenewalTests.swift; sourceTree = "<group>"; };
 		D52D164F231484D60095905A /* FRDeviceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRDeviceTests.swift; sourceTree = "<group>"; };
 		D52D1650231484D60095905A /* FRDeviceIdentifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRDeviceIdentifierTests.swift; sourceTree = "<group>"; };
 		D52D1651231484D60095905A /* FRDeviceCollectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRDeviceCollectorTests.swift; sourceTree = "<group>"; };
@@ -916,6 +918,7 @@
 			isa = PBXGroup;
 			children = (
 				D52D164D231484D60095905A /* FRUserTests.swift */,
+				F9B231D72F5B2A4100A1C2D3 /* FRUserTokenRenewalTests.swift */,
 				D5CDB7222527CB1800D7BA49 /* FRUserBrowserTests.swift */,
 			);
 			path = User;
@@ -2142,6 +2145,7 @@
 				ECDF5F4C296851DD007BB721 /* FRWebAuthnTests.swift in Sources */,
 				D5791BDF25F87DE8004B487A /* AccessTokenTests.swift in Sources */,
 				D5791BE025F87DE8004B487A /* FRUserTests.swift in Sources */,
+				F9B231D82F5B2A4100A1C2D3 /* FRUserTokenRenewalTests.swift in Sources */,
 				D5791BE125F87DE8004B487A /* FRUserBrowserTests.swift in Sources */,
 				D5791BE225F87DE8004B487A /* NetworkReachabilityMonitorTests.swift in Sources */,
 				D58BC38F2602A47600254654 /* IdPCallbackTests.swift in Sources */,
