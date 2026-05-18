@@ -50,7 +50,7 @@ public final class FRAuth: NSObject {
     /// OAuth2Client instance for FRAuth; OAuth2Client values are retrieved from .plist configuration file
     var oAuth2Client: OAuth2Client?
     /// TokenManager instance for FRAuth to perform any token related operation
-    var tokenManager: TokenManager?
+    public var tokenManager: TokenManager?
     /// SessionManager instance for FRAuth to perform manage, and persist session
     var sessionManager: SessionManager
     /// KeychainManager instance for FRAuth to perform any keychain related operation to persist and/or retrieve credentials
