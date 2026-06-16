@@ -2,7 +2,7 @@
 //  FRDeviceIdentifierTests.swift
 //  FRAuthTests
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -257,19 +257,86 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
     }
     
     func testDeviceIdentifierFallbackToUUID() {
-        
+
         // Given SDK initialization
         self.startSDK()
-        
+
         // Use an invalid keychain service that will fail key generation
         let keychainService = KeychainService(service: "test-service-invalid-\(UUID().uuidString)", accessGroup: "invalid.access.group.\(UUID().uuidString)")
         let deviceIdentifier = FRDeviceIdentifier(keychainService: keychainService)
-        
+
         let generatedIdentifier = deviceIdentifier.getIdentifier()
-        
+
         // Should still generate an identifier using UUID fallback
         XCTAssertFalse(generatedIdentifier.isEmpty)
         XCTAssertEqual(generatedIdentifier.count, 40, "Should still be SHA1 hash format even with UUID")
+    }
+
+
+    // MARK: - withRetry helper
+
+    func testWithRetrySucceedsOnFirstAttempt() {
+        var attempts = 0
+        let result: String? = FRDeviceIdentifier.withRetry {
+            attempts += 1
+            return "value"
+        }
+        XCTAssertEqual(result, "value")
+        XCTAssertEqual(attempts, 1, "Successful first attempt should not be retried")
+    }
+
+    func testWithRetryRetriesOnceThenSucceeds() {
+        var attempts = 0
+        let result: String? = FRDeviceIdentifier.withRetry {
+            attempts += 1
+            // Fail on first attempt, succeed on the second
+            return attempts == 1 ? nil : "value"
+        }
+        XCTAssertEqual(result, "value")
+        XCTAssertEqual(attempts, 2, "A transient failure should trigger exactly one retry")
+    }
+
+    func testWithRetryStopsAfterOneRetry() {
+        var attempts = 0
+        let result: String? = FRDeviceIdentifier.withRetry { () -> String? in
+            attempts += 1
+            return nil
+        }
+        XCTAssertNil(result)
+        XCTAssertEqual(attempts, 2, "Deterministic failures should attempt at most twice (initial + one retry)")
+    }
+
+
+    // MARK: - UUID fallback persistence
+
+    func testDeviceIdentifierUUIDFallbackPersistsAndIsStable() {
+
+        // Given SDK initialization
+        self.startSDK()
+
+        guard let deviceIdentifierKeychain = self.config.keychainManager?.deviceIdentifierStore else {
+            XCTFail("Failed to retrieve DeviceIdentifier Keychain storage")
+            return
+        }
+
+        // Clean slate
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.hash-base64-string-identifier")
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.pubic-key.data")
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.private-key.data")
+
+        let deviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
+
+        // First call produces and persists an identifier
+        let firstIdentifier = deviceIdentifier.getIdentifier()
+        XCTAssertFalse(firstIdentifier.isEmpty)
+
+        // It must be persisted so the next call reads it back (branch 1) rather than regenerating
+        let stored = deviceIdentifierKeychain.getString("com.forgerock.ios.device-identifier.hash-base64-string-identifier")
+        XCTAssertEqual(firstIdentifier, stored, "Identifier should be persisted to the Device Identifier Store")
+
+        // Subsequent calls must return the same identifier
+        let secondIdentifier = deviceIdentifier.getIdentifier()
+        XCTAssertEqual(firstIdentifier, secondIdentifier, "Identifier must remain stable across calls")
     }
 
 }

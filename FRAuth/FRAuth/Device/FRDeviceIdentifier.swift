@@ -2,7 +2,7 @@
 //  FRDeviceIdentifier.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -52,37 +52,96 @@ public struct FRDeviceIdentifier {
     ///
     /// - Returns: Uniquely generated Identifier as per Keychain Sharing Access Group
     @discardableResult public func getIdentifier() -> String {
-        
-        if let identifier = self.keychainService.getString(FRDeviceIdentifier.identifierKeychainServiceKey) {
-            FRLog.v("Device Identifier is retrieved from Device Identifier Store")
-            // If the identifier was found from KeychainService
+
+        FRLog.v("getIdentifier called - resolving Device Identifier (service: '\(self.keychainService.options.service)', accessGroup: \(self.keychainService.options.accessGroup ?? "nil"))")
+
+        // Reads and key generation are retried once before falling through. A transient Keychain /
+        // Secure Enclave failure (e.g. Secure Enclave contention) must not cause the SDK to skip a
+        // perfectly good persisted identifier and regenerate a new one, which is what produces the
+        // "different identifier per call/journey" symptom downstream.
+        if let identifier = FRDeviceIdentifier.withRetry({ self.keychainService.getString(FRDeviceIdentifier.identifierKeychainServiceKey) }) {
+            // [Branch 1] If the identifier was found from KeychainService
+            FRLog.v("getIdentifier - [Branch 1] Device Identifier retrieved from Device Identifier Store: \(identifier)")
             return identifier
         }
-        else if let keyData = self.keychainService.getData(self.publicKeyDataKeychainServiceKey) {
-            // Keys exist but identifier is missing - regenerate identifier from existing key
-            FRLog.v("Public key found but identifier missing; regenerating identifier from existing key data")
+        else if let keyData = FRDeviceIdentifier.withRetry({ self.keychainService.getData(self.publicKeyDataKeychainServiceKey) }) {
+            // [Branch 2] Keys exist but identifier is missing - regenerate identifier from existing key
+            FRLog.v("getIdentifier - [Branch 2] persisted identifier missing but public key data found; regenerating identifier from existing key data")
             let identifier = self.hashAndBase64Data(keyData)
-            self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey)
+            self.persistIdentifier(identifier)
+            FRLog.v("getIdentifier - [Branch 2] regenerated identifier from existing key: \(identifier)")
             return identifier
         }
-        else if self.generateKeyPair(), let keyData = self.keychainService.getData(self.publicKeyDataKeychainServiceKey) {
-            FRLog.v("Device Identifier is created, and hash/base64; storing it into Device Identifier Store")
-            // If the identifier was not found from KeychainService, then generates Key Pair and hash Public Key
+        else if FRDeviceIdentifier.withRetry({ self.generateKeyPair() ? true : nil }) != nil,
+                let keyData = FRDeviceIdentifier.withRetry({ self.keychainService.getData(self.publicKeyDataKeychainServiceKey) }) {
+            // [Branch 3] If the identifier was not found from KeychainService, then generates Key Pair and hash Public Key
+            FRLog.v("getIdentifier - [Branch 3] generated new key pair; deriving and storing identifier")
             let identifier = self.hashAndBase64Data(keyData)
             // Persists the identifier
-            self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey)
+            self.persistIdentifier(identifier)
+            FRLog.v("getIdentifier - [Branch 3] new key-based identifier: \(identifier)")
             return identifier
         }
         else {
-            FRLog.w("Failed to generate or retrieve Device Identifier; generating Device Identifier based on UUID")
-            // If some reason Identifier was not found, and Key Pair generation and/or store process failed, then use randomly generated UUID
+            // [Branch 4] UUID fallback. Reaching here means BOTH reads missed AND key generation/storage
+            // failed. This is the path that, prior to read-back verification, produced a different
+            // identifier on every call. The keychain-layer logs above should reveal the failing OSStatus.
+            FRLog.w("getIdentifier - [Branch 4] failed to generate or retrieve Device Identifier; falling back to a UUID-based identifier")
             let uuid = UUID().uuidString
             let uuidData = uuid.data(using: .utf8)!
             // Hash UUID string, and persists it
             let identifier = self.hashAndBase64Data(uuidData)
-            self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey)
+            // Persist (with retry + read-back verification) so subsequent calls return the same value
+            // instead of generating a brand new UUID each time.
+            if self.persistIdentifier(identifier) {
+                FRLog.w("getIdentifier - [Branch 4] persisted UUID-based identifier: \(identifier)")
+            } else {
+                FRLog.e("getIdentifier - [Branch 4] FAILED to persist UUID-based Device Identifier into Keychain Service; subsequent calls may return a different identifier. This will cause downstream device-matching failures.")
+            }
             return identifier
         }
+    }
+
+
+    /// Persists the given identifier into the Keychain Service, retrying once on failure, and verifies
+    /// the write succeeded by reading the value back.
+    ///
+    /// - Parameter identifier: The identifier string to persist
+    /// - Returns: A boolean indicating whether the identifier was successfully persisted and verified
+    @discardableResult private func persistIdentifier(_ identifier: String) -> Bool {
+        let verified = FRDeviceIdentifier.withRetry { () -> Bool? in
+            // Attempt to store, then read back to confirm persistence
+            guard self.keychainService.set(identifier, key: FRDeviceIdentifier.identifierKeychainServiceKey) else {
+                FRLog.w("persistIdentifier - keychain set returned false for the Device Identifier; will retry")
+                return nil
+            }
+            guard self.keychainService.getString(FRDeviceIdentifier.identifierKeychainServiceKey) == identifier else {
+                FRLog.w("persistIdentifier - write could not be verified by read-back (stored value differs or is unreadable); will retry")
+                return nil
+            }
+            return true
+        }
+        if verified == true {
+            FRLog.v("persistIdentifier - Device Identifier stored and verified by read-back")
+        }
+        return verified ?? false
+    }
+
+
+    /// Executes the given operation, retrying it once if it returns nil.
+    ///
+    /// Intended for Keychain / Secure Enclave operations that can fail transiently. Deterministic
+    /// failures (e.g. an undecryptable value, a permanently inaccessible Access Group) will fail on
+    /// both attempts and simply return nil, so the retry adds resilience without masking real errors.
+    ///
+    /// - Parameter operation: The operation to execute; returning nil indicates failure
+    /// - Returns: The first non-nil result, or nil if both attempts fail
+    static func withRetry<T>(_ operation: () -> T?) -> T? {
+        if let result = operation() {
+            return result
+        }
+        FRLog.v("Keychain operation failed; retrying once")
+        return operation()
     }
     
     
