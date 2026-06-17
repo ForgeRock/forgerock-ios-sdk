@@ -224,12 +224,14 @@ public struct KeychainService {
                 query[SecKeys.account.rawValue] = key
 
                 if let securedKey = self.securedKey {
-                    if let encryptedData = securedKey.encrypt(data: val) {
-                        query[SecKeys.valueData.rawValue] = encryptedData
-                    } else {
-                        Log.w("set - SecuredKey is present but encryption failed for key '\(key)'; storing data unencrypted")
-                        query[SecKeys.valueData.rawValue] = val
+                    guard let encryptedData = securedKey.encrypt(data: val) else {
+                        // Refusing to store plaintext when a SecuredKey is configured — getData()
+                        // would attempt to decrypt on read and return nil, leaving the caller worse
+                        // off than a clean write failure.
+                        Log.e("set - SecuredKey is present but encryption failed for key '\(key)'; aborting write to avoid storing plaintext")
+                        return false
                     }
+                    query[SecKeys.valueData.rawValue] = encryptedData
                 }
                 else {
                     query[SecKeys.valueData.rawValue] = val
@@ -255,12 +257,11 @@ public struct KeychainService {
             query[SecKeys.account.rawValue] = key
 
             if let securedKey = self.securedKey {
-                if let encryptedData = securedKey.encrypt(data: val) {
-                    query[SecKeys.valueData.rawValue] = encryptedData
-                } else {
-                    Log.w("set - SecuredKey is present but encryption failed for key '\(key)'; storing data unencrypted")
-                    query[SecKeys.valueData.rawValue] = val
+                guard let encryptedData = securedKey.encrypt(data: val) else {
+                    Log.e("set - SecuredKey is present but encryption failed for key '\(key)'; aborting write to avoid storing plaintext")
+                    return false
                 }
+                query[SecKeys.valueData.rawValue] = encryptedData
             }
             else {
                 query[SecKeys.valueData.rawValue] = val
@@ -622,11 +623,19 @@ public struct KeychainService {
         for attr: [String: Any] in items {
             if let key = attr[SecKeys.account.rawValue] as? String, let data = attr[SecKeys.valueData.rawValue] as? Data {
 
-                var returnedData = data
-                if let securedKey = self.securedKey, let decryptedData = securedKey.decrypt(data: returnedData) {
+                let returnedData: Data
+                if let securedKey = self.securedKey {
+                    // Consistent with getData(): if decryption fails the item is unreadable with
+                    // the current SecuredKey and is omitted rather than returning an encrypted blob.
+                    guard let decryptedData = securedKey.decrypt(data: data) else {
+                        Log.w("simplifyItems - skipping key '\(key)': data found but could not be decrypted with the current SecuredKey")
+                        continue
+                    }
                     returnedData = decryptedData
+                } else {
+                    returnedData = data
                 }
-                
+
                 if let str = String(data: returnedData, encoding: .utf8) {
                     returnItems[key] = str
                 }

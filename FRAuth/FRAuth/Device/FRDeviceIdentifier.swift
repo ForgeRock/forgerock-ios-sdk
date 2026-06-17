@@ -86,6 +86,16 @@ public struct FRDeviceIdentifier {
             // [Branch 4] UUID fallback. Reaching here means BOTH reads missed AND key generation/storage
             // failed. This is the path that, prior to read-back verification, produced a different
             // identifier on every call. The keychain-layer logs above should reveal the failing OSStatus.
+            //
+            // Edge case: generateKeyPair() may have succeeded but the subsequent getData() retries
+            // still returned nil (a brief window where keys were written but not yet readable). Those
+            // orphaned system-keychain keys would make Branch 2 succeed on the very next call and
+            // return a key-derived identifier — different from the UUID returned here. Delete any
+            // orphaned keys before falling through so Branch 2 doesn't silently conflict with Branch 4.
+            FRLog.w("getIdentifier - [Branch 4] cleaning up any orphaned keys from a failed Branch 3 attempt before falling back to UUID")
+            self.deleteExistingKeys()
+            _ = self.keychainService.delete(self.publicKeyDataKeychainServiceKey)
+            _ = self.keychainService.delete(self.privateKeyDataKeychainServiceKey)
             FRLog.w("getIdentifier - [Branch 4] failed to generate or retrieve Device Identifier; falling back to a UUID-based identifier")
             let uuid = UUID().uuidString
             let uuidData = uuid.data(using: .utf8)!
@@ -128,11 +138,14 @@ public struct FRDeviceIdentifier {
     }
 
 
-    /// Executes the given operation, retrying it once if it returns nil.
+    /// Executes the given operation, retrying it once after a short delay if it returns nil.
     ///
-    /// Intended for Keychain / Secure Enclave operations that can fail transiently. Deterministic
-    /// failures (e.g. an undecryptable value, a permanently inaccessible Access Group) will fail on
-    /// both attempts and simply return nil, so the retry adds resilience without masking real errors.
+    /// Intended for Keychain / Secure Enclave operations that can fail transiently (e.g. Secure
+    /// Enclave contention while a biometric prompt or other crypto op is in flight). The 50ms
+    /// backoff gives the coprocessor time to free up before the second attempt. Deterministic
+    /// failures (e.g. an undecryptable value, a permanently inaccessible Access Group) will fail
+    /// on both attempts and simply return nil, so the retry adds resilience without masking real
+    /// errors.
     ///
     /// - Parameter operation: The operation to execute; returning nil indicates failure
     /// - Returns: The first non-nil result, or nil if both attempts fail
@@ -140,7 +153,8 @@ public struct FRDeviceIdentifier {
         if let result = operation() {
             return result
         }
-        FRLog.v("Keychain operation failed; retrying once")
+        FRLog.v("Keychain operation failed; waiting 50ms before retrying once")
+        Thread.sleep(forTimeInterval: 0.05)
         return operation()
     }
     
