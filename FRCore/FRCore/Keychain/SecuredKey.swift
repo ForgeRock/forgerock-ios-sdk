@@ -2,7 +2,7 @@
 //  SecuredKey.swift
 //  FRCore
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -56,30 +56,41 @@ public struct SecuredKey {
     /// Initializes SecuredKey object with designated service; SecuredKey may return nil if it failed to generate keypair
     /// - Parameter applicationTag: Unique identifier for SecuredKey in Keychain Service
     public init?(applicationTag: String, accessGroup: String? = nil, accessibility: KeychainAccessibility = .afterFirstUnlock) {
-        
+
+        Log.v("SecuredKey init - applicationTag: '\(applicationTag)', accessGroup: \(accessGroup ?? "nil"), accessibility: \(accessibility.description)")
+
         guard SecuredKey.isAvailable() else {
+            Log.w("SecuredKey init - SecuredKey is not available on this device; SDK will continue without storage encryption")
             return nil
         }
-        
+
         // If SecuredKey already exists, return from the storage
         if let privateKey = SecuredKey.readKey(applicationTag: applicationTag, accessGroup: accessGroup) {
+            Log.v("SecuredKey init - existing private key found and loaded for tag '\(applicationTag)'")
             self.privateKey = privateKey
         }
         else {
             // Otherwise, generate new keypair
+            // NOTE: If a key was expected to exist (e.g. previously stored data is present) but is no
+            // longer readable here, generating a new key means previously-encrypted data can no longer
+            // be decrypted. This is a key indicator to watch for when diagnosing identifier instability.
+            Log.w("SecuredKey init - no existing private key found for tag '\(applicationTag)'; generating a NEW keypair. Any data previously encrypted with an older key will no longer be decryptable.")
             do {
                 self.privateKey = try SecuredKey.generateKey(applicationTag: applicationTag, accessGroup: accessGroup, accessibility: accessibility)
+                Log.v("SecuredKey init - successfully generated new private key for tag '\(applicationTag)'")
             }
             catch {
+                Log.e("SecuredKey init - failed to generate new private key for tag '\(applicationTag)': \(error.localizedDescription)")
                 return nil
             }
         }
-        
+
         // Copy the public key from the private key
         if let publicKey = SecKeyCopyPublicKey(self.privateKey) {
             self.publicKey = publicKey
         }
         else {
+            Log.e("SecuredKey init - failed to copy public key from private key for tag '\(applicationTag)'")
             return nil
         }
     }
@@ -101,6 +112,11 @@ public struct SecuredKey {
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {
+            if status == errSecItemNotFound {
+                Log.v("SecuredKey readKey - no key found for tag '\(applicationTag)' (errSecItemNotFound)")
+            } else {
+                Log.w("SecuredKey readKey - lookup for tag '\(applicationTag)' returned status: \(status)")
+            }
             return nil
         }
         return (item as! SecKey)
@@ -176,24 +192,25 @@ public struct SecuredKey {
     /// Decrypts Data object using SecuredKey object
     /// - Parameter data: Decrypted Data object
     public func decrypt(data: Data, secAlgorithm: SecKeyAlgorithm = .eciesEncryptionCofactorVariableIVX963SHA256AESGCM) -> Data? {
-        
+
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, secAlgorithm) else {
             Log.e("\(secAlgorithm) is not supported on the device.")
             return nil
         }
-        
+
         var error: Unmanaged<CFError>?
         let decryptedData = SecKeyCreateDecryptedData(privateKey, secAlgorithm, data as CFData, &error) as Data?
         if let error = error {
-            Log.e("Failed to decrypt data -  attempting Legacy Algorithm: \(error)")
+            Log.e("Failed to decrypt data (\(data.count) bytes) with primary algorithm - attempting Legacy Algorithm: \(error)")
             var decryptError: Unmanaged<CFError>?
             let decryptedData = SecKeyCreateDecryptedData(privateKey, oldAlgorithm, data as CFData, &decryptError) as Data?
             if let decryptError = decryptError {
-                Log.e("Failed to decrypt data: \(decryptError)")
+                Log.e("Failed to decrypt data with legacy algorithm as well: \(decryptError). The current SecuredKey cannot decrypt this data (likely a different/regenerated key).")
             } else {
+                Log.v("Successfully decrypted data using legacy algorithm")
                 return decryptedData
             }
-            
+
         }
         return decryptedData
     }

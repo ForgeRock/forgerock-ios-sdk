@@ -2,7 +2,7 @@
 //  FRDeviceCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -49,7 +49,11 @@ public class FRDeviceCollector: NSObject {
         var result: [String: Any] = [:]
         result["version"] = FRDeviceCollector.FRDeviceCollectorVersion
         if let device = FRDevice.currentDevice {
-            result["identifier"] = device.identifier.getIdentifier()
+            let identifier = device.identifier.getIdentifier()
+            FRLog.v("FRDeviceCollector - collected device identifier for profile: \(identifier)")
+            result["identifier"] = identifier
+        } else {
+            FRLog.w("FRDeviceCollector - FRDevice.currentDevice is nil; device profile will not include an identifier")
         }
         for collector in self.collectors {
             dispatchGroup.enter()

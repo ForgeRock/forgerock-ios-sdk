@@ -202,35 +202,52 @@ public struct KeychainService {
     ///   - itemClass: KeychainItemClass enum value indicating what type of SecItemClass that this data to be stored
     /// - Returns: Bool value indicating whether operation was successful or not
     @discardableResult func set(_ val: Data, key: String, itemClass: KeychainItemClass) -> Bool {
-                
+
+        Log.v("set called - key: '\(key)', itemClass: \(itemClass.rawValue), service: '\(self.options.service)', accessGroup: \(self.options.accessGroup ?? "nil"), bytes: \(val.count), securedKey: \(self.securedKey != nil ? "present" : "nil")")
+
         // Check if item with the same key exists
         var checkQuery = self.options.buildQuery(itemClass)
         checkQuery[SecKeys.account.rawValue] = key
         let checkStatus = SecItemCopyMatching(checkQuery as CFDictionary, nil)
-        
+        Log.v("set - existence check for key '\(key)' returned status: \(checkStatus) (\(KeychainService.keychainErrorDescription(for: checkStatus)))")
+
         if checkStatus == errSecSuccess || checkStatus == errSecInteractionNotAllowed {
             // If item already exists, delete the item, and save new data
             var deleteQuery = self.options.buildQuery(itemClass)
             deleteQuery[SecKeys.account.rawValue] = key
             let deleteStatus = SecItemDelete(deleteQuery as CFDictionary)
-            
+            Log.v("set - existing item found for key '\(key)'; delete returned status: \(deleteStatus) (\(KeychainService.keychainErrorDescription(for: deleteStatus)))")
+
             if deleteStatus == errSecSuccess || deleteStatus == errSecItemNotFound {
                 // If deleting old item was successful, add the item
                 var query = self.options.buildQuery(itemClass)
                 query[SecKeys.account.rawValue] = key
-                
-                if let securedKey = self.securedKey, let encryptedData = securedKey.encrypt(data: val) {
+
+                if let securedKey = self.securedKey {
+                    guard let encryptedData = securedKey.encrypt(data: val) else {
+                        // Refusing to store plaintext when a SecuredKey is configured — getData()
+                        // would attempt to decrypt on read and return nil, leaving the caller worse
+                        // off than a clean write failure.
+                        Log.e("set - SecuredKey is present but encryption failed for key '\(key)'; aborting write to avoid storing plaintext")
+                        return false
+                    }
                     query[SecKeys.valueData.rawValue] = encryptedData
                 }
                 else {
                     query[SecKeys.valueData.rawValue] = val
                 }
-                
+
                 let status = SecItemAdd(query as CFDictionary, nil)
+                if status == noErr {
+                    Log.v("set - successfully stored key '\(key)' (after replacing existing item)")
+                } else {
+                    Log.e("set - SecItemAdd FAILED for key '\(key)' after delete. Status: \(status) (\(KeychainService.keychainErrorDescription(for: status)))")
+                }
                 return status == noErr
             }
             else {
                 // If deleting old item failed, return false
+                Log.e("set - failed to delete existing item for key '\(key)' before re-adding. Status: \(deleteStatus) (\(KeychainService.keychainErrorDescription(for: deleteStatus)))")
                 return false
             }
         }
@@ -238,18 +255,28 @@ public struct KeychainService {
             // If no item was found, simply create new data
             var query = self.options.buildQuery(itemClass)
             query[SecKeys.account.rawValue] = key
-            
-            if let securedKey = self.securedKey, let encryptedData = securedKey.encrypt(data: val) {
+
+            if let securedKey = self.securedKey {
+                guard let encryptedData = securedKey.encrypt(data: val) else {
+                    Log.e("set - SecuredKey is present but encryption failed for key '\(key)'; aborting write to avoid storing plaintext")
+                    return false
+                }
                 query[SecKeys.valueData.rawValue] = encryptedData
             }
             else {
                 query[SecKeys.valueData.rawValue] = val
             }
-            
+
             let status = SecItemAdd(query as CFDictionary, nil)
+            if status == noErr {
+                Log.v("set - successfully stored new key '\(key)'")
+            } else {
+                Log.e("set - SecItemAdd FAILED for new key '\(key)'. Status: \(status) (\(KeychainService.keychainErrorDescription(for: status)))")
+            }
             return status == noErr
         } else {
             // If any other error was returned, return false
+            Log.e("set - existence check returned unexpected status for key '\(key)'. Status: \(checkStatus) (\(KeychainService.keychainErrorDescription(for: checkStatus))); aborting write")
             return false
         }
     }
@@ -280,16 +307,35 @@ public struct KeychainService {
         
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
-        
+
         if status == noErr {
-            if let securedKey = self.securedKey, let returnedData = result as? Data, let decryptedData = securedKey.decrypt(data: returnedData) {
-                return decryptedData
+            guard let returnedData = result as? Data else {
+                Log.w("getData - SecItemCopyMatching succeeded for key '\(key)' but returned a non-Data result; treating as not found")
+                return nil
             }
-            else {
-                return result as? Data
+
+            if let securedKey = self.securedKey {
+                // When a SecuredKey is configured, the stored value is expected to be encrypted.
+                // If decryption fails, the data is unreadable with the current SecuredKey (e.g. the
+                // Secure Enclave key was regenerated). Returning the raw encrypted blob in that case
+                // would surface unusable bytes to callers (decoding to garbage / nil), so we treat it
+                // as not found and return nil instead.
+                if let decryptedData = securedKey.decrypt(data: returnedData) {
+                    Log.v("getData - retrieved and decrypted key '\(key)' (\(decryptedData.count) bytes)")
+                    return decryptedData
+                }
+                Log.w("getData - found \(returnedData.count) bytes for key '\(key)' but failed to decrypt with the current SecuredKey (service: '\(self.options.service)'); treating as not found")
+                return nil
             }
+
+            // No SecuredKey configured; data is stored unencrypted
+            Log.v("getData - retrieved key '\(key)' (\(returnedData.count) bytes, unencrypted)")
+            return returnedData
         }
-        
+
+        if status != errSecItemNotFound {
+            Log.w("getData - lookup for key '\(key)' returned status: \(status) (\(KeychainService.keychainErrorDescription(for: status)))")
+        }
         return nil
     }
     
@@ -577,11 +623,19 @@ public struct KeychainService {
         for attr: [String: Any] in items {
             if let key = attr[SecKeys.account.rawValue] as? String, let data = attr[SecKeys.valueData.rawValue] as? Data {
 
-                var returnedData = data
-                if let securedKey = self.securedKey, let decryptedData = securedKey.decrypt(data: returnedData) {
+                let returnedData: Data
+                if let securedKey = self.securedKey {
+                    // Consistent with getData(): if decryption fails the item is unreadable with
+                    // the current SecuredKey and is omitted rather than returning an encrypted blob.
+                    guard let decryptedData = securedKey.decrypt(data: data) else {
+                        Log.w("simplifyItems - skipping key '\(key)': data found but could not be decrypted with the current SecuredKey")
+                        continue
+                    }
                     returnedData = decryptedData
+                } else {
+                    returnedData = data
                 }
-                
+
                 if let str = String(data: returnedData, encoding: .utf8) {
                     returnItems[key] = str
                 }
