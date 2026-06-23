@@ -100,7 +100,7 @@ The project supports both CocoaPods and Swift Package Manager:
 - Test configuration files in `FRTestHost/FRTestHost/SharedTestFiles/TestConfig/`
 
 ### Platform Requirements
-- iOS 12.0+ deployment target
+- iOS 13.0+ deployment target
 - Swift 5.0+
 - Xcode 16.2+ for builds
 - Supports both Swift Package Manager and CocoaPods integration
@@ -116,6 +116,6 @@ The project supports both CocoaPods and Swift Package Manager:
 ### CI/CD
 The project uses GitHub Actions for CI with:
 - Automated builds and tests on PR/push
-- Device farm testing with BitBar
+- Device farm testing with BrowserStack
 - Slack notifications for build status
 - Security scanning with Mend CLI
