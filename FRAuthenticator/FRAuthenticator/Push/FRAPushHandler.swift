@@ -173,7 +173,20 @@ public class FRAPushHandler: NSObject {
                         notification.approved = false
                         notification.pending = true
                         FRALog.i("PushNotification authentication failed with following error: \(error.localizedDescription)")
-                        onError(error)
+                        if case NetworkError.apiRequestFailure(let data, let response, _) = error,
+                           let httpResponse = response as? HTTPURLResponse,
+                           httpResponse.statusCode == 400,
+                           notification.pushType == .challenge {
+                            var message = "Number challenge failed."
+                            if let data = data,
+                               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                               let amMessage = json["message"] as? String, !amMessage.isEmpty {
+                                message = amMessage
+                            }
+                            onError(PushNotificationError.pushNumberChallengeError(message))
+                        } else {
+                            onError(error)
+                        }
                         break
                     }
                 }

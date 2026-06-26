@@ -21,6 +21,7 @@ public enum PushNotificationError: FRError {
     case notificationInvalidStatus
     case storageError(String)
     case updateFailed(errors: [Error])
+    case pushNumberChallengeError(String)
 }
 
 
@@ -44,6 +45,8 @@ public extension PushNotificationError {
             return 1100002
         case .updateFailed:
             return 1100003
+        case .pushNumberChallengeError:
+            return 1100004
         }
     }
 }
@@ -72,6 +75,8 @@ extension PushNotificationError: CustomNSError {
         case .updateFailed(let errors):
             let errorMessages = errors.map { $0.localizedDescription }.joined(separator: ", ")
             return [NSLocalizedDescriptionKey: "Update failed with errors: \(errorMessages)"]
+        case .pushNumberChallengeError(let message):
+            return [NSLocalizedDescriptionKey: message]
         }
     }
 }
