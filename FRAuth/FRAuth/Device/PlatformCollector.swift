@@ -35,7 +35,7 @@ public class PlatformCollector: DeviceCollector {
         result["version"] = UIDevice.current.systemVersion
         result["device"] = UIDevice.current.model
         result["model"] = self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine))//parseDeviceIdentifier(identifier: self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine)))
-        result["locale"] = Locale.current.languageCode
+        result["locale"] = Locale.current.language.languageCode?.identifier
         result["timeZone"] = TimeZone.current.identifier
         result["brand"] = "Apple"
         result["deviceName"] = UIDevice.current.name
