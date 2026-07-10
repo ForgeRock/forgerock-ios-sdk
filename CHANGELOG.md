@@ -1,3 +1,12 @@
+## [4.10.0]
+
+#### Added
+- Raised minimum supported iOS version from 13.0 to 16.0 [SDKS-5189]
+
+#### Fixed
+- Fixed an issue where `FRAuthenticator` was not handling AM 400 responses correctly for Push Number Challenge [SDKS-5113]
+- Fixed inconsistent device identifier generation on iOS 26 affecting Device Profile Collector–based authentication flows [SDKS-4627]
+
 ## [4.9.1]
 
 #### Fixed
