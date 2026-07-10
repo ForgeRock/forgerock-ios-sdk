@@ -26,6 +26,7 @@
 		D51A0994247CCB200077DCF5 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51A0992247CCB200077DCF5 /* AccountTableViewCell.swift */; };
 		D51A0995247CCB200077DCF5 /* AccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D51A0993247CCB200077DCF5 /* AccountTableViewCell.xib */; };
 		D5244631247C3BB00037779B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5244630247C3BB00037779B /* AppDelegate.swift */; };
+		FA000001247C3BB00037779B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA000000247C3BB00037779B /* SceneDelegate.swift */; };
 		D5244638247C3BB00037779B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5244636247C3BB00037779B /* Main.storyboard */; };
 		D524463A247C3BB20037779B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5244639247C3BB20037779B /* Assets.xcassets */; };
 		D524463D247C3BB20037779B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D524463B247C3BB20037779B /* LaunchScreen.storyboard */; };
@@ -98,6 +99,7 @@
 		D51A0993247CCB200077DCF5 /* AccountTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountTableViewCell.xib; sourceTree = "<group>"; };
 		D524462D247C3BB00037779B /* FRAuthenticatorExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRAuthenticatorExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5244630247C3BB00037779B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA000000247C3BB00037779B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D5244637247C3BB00037779B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D5244639247C3BB20037779B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D524463C247C3BB20037779B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				D5CA1713247CDAAC000224E6 /* Extension */,
 				D51A0978247CBBF00077DCF5 /* View */,
 				D5244630247C3BB00037779B /* AppDelegate.swift */,
+				FA000000247C3BB00037779B /* SceneDelegate.swift */,
 				D5244636247C3BB00037779B /* Main.storyboard */,
 				D5244639247C3BB20037779B /* Assets.xcassets */,
 				D524463B247C3BB20037779B /* LaunchScreen.storyboard */,
@@ -353,6 +356,7 @@
 				D5D03DD9247DDEC5003C5350 /* FRAStringUtil.swift in Sources */,
 				D51A097F247CBFFA0077DCF5 /* BaseTableViewCell.swift in Sources */,
 				D5244631247C3BB00037779B /* AppDelegate.swift in Sources */,
+				FA000001247C3BB00037779B /* SceneDelegate.swift in Sources */,
 				D50C7CB0247CF9CA009A4DF5 /* AccountDetailTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

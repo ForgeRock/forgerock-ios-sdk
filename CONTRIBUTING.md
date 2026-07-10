@@ -16,7 +16,7 @@ in your local machine.
 1. GitHub account.
 2. Git installed.
 3. Latest version of [XCode](https://developer.apple.com/xcode/).
-4. iOS 12 and above
+4. iOS 16 and above
 5. Setup an Advanced Identity Cloud tenant or PingAM instance, as described in the **[Documentation](https://docs.pingidentity.com/sdks/latest/sdks/tutorials/ios/00_before-you-begin.html#server_configuration)**.
 
 ### Fork and Clone the Repository

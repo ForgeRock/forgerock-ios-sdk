@@ -20,6 +20,7 @@
 		A5950A2C27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */; };
 		A5950A2E27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5950A2D27EA2F7100EDEFE4 /* FRAuthConfigEmptyPKHash.plist */; };
 		D5A7A1E9248CD88C00E30CFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A7A1E8248CD88C00E30CFE /* AppDelegate.swift */; };
+		FC000001248CD88C00E30CFE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC000000248CD88C00E30CFE /* SceneDelegate.swift */; };
 		D5A7A1ED248CD88C00E30CFE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A7A1EC248CD88C00E30CFE /* ViewController.swift */; };
 		D5A7A1F0248CD88C00E30CFE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1EE248CD88C00E30CFE /* Main.storyboard */; };
 		D5A7A1F2248CD88E00E30CFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A1F1248CD88E00E30CFE /* Assets.xcassets */; };
@@ -74,6 +75,7 @@
 		D508714A248CE01600B584D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5A7A1E5248CD88C00E30CFE /* FRTestHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRTestHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A7A1E8248CD88C00E30CFE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FC000000248CD88C00E30CFE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D5A7A1EC248CD88C00E30CFE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D5A7A1EF248CD88C00E30CFE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D5A7A1F1248CD88E00E30CFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				A5950A2B27EA2C6D00EDEFE4 /* FRAuthConfigPKHash.plist */,
 				D5A7A1FC248CD93D00E30CFE /* FRTestHost.entitlements */,
 				D5A7A1E8248CD88C00E30CFE /* AppDelegate.swift */,
+				FC000000248CD88C00E30CFE /* SceneDelegate.swift */,
 				D5A7A1EC248CD88C00E30CFE /* ViewController.swift */,
 				D5A7A1EE248CD88C00E30CFE /* Main.storyboard */,
 				D5A7A1F1248CD88E00E30CFE /* Assets.xcassets */,
@@ -253,6 +256,7 @@
 			files = (
 				D5A7A1ED248CD88C00E30CFE /* ViewController.swift in Sources */,
 				D5A7A1E9248CD88C00E30CFE /* AppDelegate.swift in Sources */,
+				FC000001248CD88C00E30CFE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
