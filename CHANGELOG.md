@@ -1,4 +1,4 @@
-## [4.10.0]
+## [4.10.0-beta1]
 
 #### Added
 - Raised minimum supported iOS version from 13.0 to 16.0 [SDKS-5189]
