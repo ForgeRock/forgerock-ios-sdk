@@ -14,13 +14,13 @@ env:
   WORKSPACE: e2e/FRExample.xcworkspace
   SCHEME: FRTestHost
   CONFIGURATION: Debug
-  DESTINATION: platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.6
-  XCODE_VERSION: '16.4'
+  DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.2
+  XCODE_VERSION: '26.2'
   DERIVED_DATA_PATH: DerivedData
 
 jobs:
   build-and-test:
-    runs-on: macos-15
+    runs-on: macos-26-xlarge
     timeout-minutes: 40
 
     steps:

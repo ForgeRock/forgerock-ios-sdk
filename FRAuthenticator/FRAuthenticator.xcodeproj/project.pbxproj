@@ -97,6 +97,7 @@
 		D5C334492560EE8B00CC6C19 /* AuthTree_SSOToken_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3340D2560EE8B00CC6C19 /* AuthTree_SSOToken_Success.json */; };
 		D5C3344A2560EE8B00CC6C19 /* AuthTree_NoSession_Success.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3340E2560EE8B00CC6C19 /* AuthTree_NoSession_Success.json */; };
 		D5C3344B2560EE8B00CC6C19 /* AM_Push_Authentication_Fail.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C3340F2560EE8B00CC6C19 /* AM_Push_Authentication_Fail.json */; };
+		AA000002SDKS5113000000AA /* AM_Push_Number_Challenge_Rejected.json in Resources */ = {isa = PBXBuildFile; fileRef = AA000001SDKS5113000000AA /* AM_Push_Number_Challenge_Rejected.json */; };
 		D5C3344C2560EE8B00CC6C19 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C334102560EE8B00CC6C19 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */; };
 		D5C3344D2560EE8B00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C334112560EE8B00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */; };
 		D5C3344E2560EE8B00CC6C19 /* AM_Push_Registration_Successful.json in Resources */ = {isa = PBXBuildFile; fileRef = D5C334122560EE8B00CC6C19 /* AM_Push_Registration_Successful.json */; };
@@ -266,6 +267,7 @@
 		D5C3340D2560EE8B00CC6C19 /* AuthTree_SSOToken_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_SSOToken_Success.json; sourceTree = "<group>"; };
 		D5C3340E2560EE8B00CC6C19 /* AuthTree_NoSession_Success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_NoSession_Success.json; sourceTree = "<group>"; };
 		D5C3340F2560EE8B00CC6C19 /* AM_Push_Authentication_Fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Authentication_Fail.json; sourceTree = "<group>"; };
+		AA000001SDKS5113000000AA /* AM_Push_Number_Challenge_Rejected.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Number_Challenge_Rejected.json; sourceTree = "<group>"; };
 		D5C334102560EE8B00CC6C19 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Fail_Invalid_Signed_JWT.json; sourceTree = "<group>"; };
 		D5C334112560EE8B00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AuthTree_UsernamePasswordNodeWithCustomCallback.json; sourceTree = "<group>"; };
 		D5C334122560EE8B00CC6C19 /* AM_Push_Registration_Successful.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AM_Push_Registration_Successful.json; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 				D5C3340D2560EE8B00CC6C19 /* AuthTree_SSOToken_Success.json */,
 				D5C3340E2560EE8B00CC6C19 /* AuthTree_NoSession_Success.json */,
 				D5C3340F2560EE8B00CC6C19 /* AM_Push_Authentication_Fail.json */,
+				AA000001SDKS5113000000AA /* AM_Push_Number_Challenge_Rejected.json */,
 				D5C334102560EE8B00CC6C19 /* AM_Push_Registration_Fail_Invalid_Signed_JWT.json */,
 				D5C334112560EE8B00CC6C19 /* AuthTree_UsernamePasswordNodeWithCustomCallback.json */,
 				D5C334122560EE8B00CC6C19 /* AM_Push_Registration_Successful.json */,
@@ -1057,6 +1060,7 @@
 				D5C3345B2560EE8B00CC6C19 /* AuthTree_DeviceCollectorNodeMetadataOnly.json in Resources */,
 				D5C334522560EE8B00CC6C19 /* AuthTree_KBAVerificationNode.json in Resources */,
 				D5C3344B2560EE8B00CC6C19 /* AM_Push_Authentication_Fail.json in Resources */,
+				AA000002SDKS5113000000AA /* AM_Push_Number_Challenge_Rejected.json in Resources */,
 				D5C334532560EE8B00CC6C19 /* AuthTree_DeviceCollectorNodeLocationOnly.json in Resources */,
 				D5C3345D2560EE8B00CC6C19 /* AuthTree_SuspendedAuthSessionException.json in Resources */,
 				D5C3345C2560EE8B00CC6C19 /* AuthTree_PlatformUsernamePasswordNode.json in Resources */,
@@ -1269,7 +1273,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1329,7 +1333,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1354,13 +1358,13 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = FRAuthenticator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.9.1;
+				MARKETING_VERSION = 4.10.0;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuthenticator/SharedC/FRAuthenticator.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
@@ -1389,13 +1393,13 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = FRAuthenticator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.9.1;
+				MARKETING_VERSION = 4.10.0;
 				MODULEMAP_FILE = "${PROJECT_DIR}/FRAuthenticator/SharedC/FRAuthenticator.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_CFLAGS = "-DXCODE_FRAMEWORK=1";
@@ -1417,7 +1421,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FRAuthenticatorTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1439,7 +1443,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FRAuthenticatorTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

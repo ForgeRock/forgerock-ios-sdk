@@ -100,6 +100,9 @@ struct KeychainManager {
         // Create SecuredKey if available
         if let securedKey = SecuredKey(applicationTag: self.securedKeyTag, accessGroup: self.accessGroup, accessibility: self.primaryServiceStore.options.accessibility) {
             self.securedKey = securedKey
+            FRLog.i("KeychainManager - SecuredKey initialized; Keychain data will be encrypted")
+        } else {
+            FRLog.w("KeychainManager - SecuredKey is nil; Keychain data will be stored unencrypted. If a SecuredKey previously existed, encrypted data (including the device identifier's keys) may now be unreadable.")
         }
         
         if self.primaryServiceStore.getString(StorageKey.primaryService.rawValue) == nil {

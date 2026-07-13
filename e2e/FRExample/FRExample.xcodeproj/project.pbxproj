@@ -29,6 +29,8 @@
 		D530424526321BF00079EB3B /* FRCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D530424326321BF00079EB3B /* FRCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */; };
 		D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554632F22A6EF950096C7A4 /* AppDelegate.swift */; };
+		FB000000247C3BB00037779B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB000001247C3BB00037779B /* SceneDelegate.swift */; };
+		FB000002247C3BB00037779B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB000001247C3BB00037779B /* SceneDelegate.swift */; };
 		D554633522A6EF950096C7A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633322A6EF950096C7A4 /* Main.storyboard */; };
 		D554633722A6EF960096C7A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D554633622A6EF960096C7A4 /* Assets.xcassets */; };
 		D554633A22A6EF960096C7A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D554633822A6EF960096C7A4 /* LaunchScreen.storyboard */; };
@@ -284,6 +286,7 @@
 		D53326FD2480613D002FF207 /* ForceAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceAuthInterceptor.swift; sourceTree = "<group>"; };
 		D554632C22A6EF950096C7A4 /* FRExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D554632F22A6EF950096C7A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FB000001247C3BB00037779B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D554633122A6EF950096C7A4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D554633422A6EF950096C7A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D554633622A6EF960096C7A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -420,6 +423,7 @@
 				D5FE5E5E23190A0000E04658 /* Supporting Files */,
 				A52B84892B339571001FBA2C /* Playground.swift */,
 				D554632F22A6EF950096C7A4 /* AppDelegate.swift */,
+				FB000001247C3BB00037779B /* SceneDelegate.swift */,
 				D554633122A6EF950096C7A4 /* ViewController.swift */,
 				D554633322A6EF950096C7A4 /* Main.storyboard */,
 				D554633622A6EF960096C7A4 /* Assets.xcassets */,
@@ -799,6 +803,7 @@
 			files = (
 				D521A2062303644300EDD28E /* ViewController.swift in Sources */,
 				D521A2082303644300EDD28E /* AppDelegate.swift in Sources */,
+				FB000002247C3BB00037779B /* SceneDelegate.swift in Sources */,
 				A530D48B2CD3D024009EC60C /* ClientDevicesTableViewController.swift in Sources */,
 				A52B848B2B339571001FBA2C /* Playground.swift in Sources */,
 			);
@@ -814,6 +819,7 @@
 				D53326FE2480613D002FF207 /* ForceAuthInterceptor.swift in Sources */,
 				D5CFCF7622FB8DCA0027B7A0 /* ViewController.swift in Sources */,
 				D554633022A6EF950096C7A4 /* AppDelegate.swift in Sources */,
+				FB000000247C3BB00037779B /* SceneDelegate.swift in Sources */,
 				EC44D7992F4F15EC0006B154 /* DeleteBindingInterceptor.swift in Sources */,
 				A52B848A2B339571001FBA2C /* Playground.swift in Sources */,
 			);
@@ -893,12 +899,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExampleSSO-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.9.1;
+				MARKETING_VERSION = 4.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -916,12 +922,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9QSE66762D;
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExampleSSO-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.9.1;
+				MARKETING_VERSION = 4.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -981,7 +987,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1036,7 +1042,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1059,12 +1065,12 @@
 					"$(PROJECT_DIR)/FRExample",
 				);
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.9.1;
+				MARKETING_VERSION = 4.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1086,12 +1092,12 @@
 					"$(PROJECT_DIR)/FRExample",
 				);
 				INFOPLIST_FILE = "FRExample/Supporting Files/FRExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.9.1;
+				MARKETING_VERSION = 4.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.forgerock.ios.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

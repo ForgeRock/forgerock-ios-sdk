@@ -2,7 +2,7 @@
 //  PushNotificationAuthenticationTests.swift
 //  FRAuthenticatorTests
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -385,6 +385,99 @@ func test_08_push_authentication_accept_successful_type_challenge() {
         XCTAssertEqual(pushNotification.isApproved, true)
         XCTAssertEqual(pushNotification.isPending, false)
         XCTAssertEqual(pushNotification.isDenied, false)
+    }
+    catch {
+        XCTFail("Push authentication failed to prepare auth request")
+    }
+}
+
+
+func test_09_push_challenge_400_returns_pushNumberChallengeError() {
+
+    self.loadMockResponses(["AM_Push_Number_Challenge_Rejected"])
+
+    let qrCode = URL(string: "pushauth://push/forgerock:pushdemouser1?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=O9JHEGfOsaZqc5JT0DHM5hYFA8jofohw5vAP0EpG4JU&c=75OQ3FXmzV99TPf0ihevFfB0s43XsxQ747sY6BopgME&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:fe6311ab-013e-4599-9c0e-4c4e2525199b1588721418483&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+
+    do {
+        let parser = try PushQRCodeParser(url: qrCode)
+        let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+        mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+        FRAClient.storage.setMechanism(mechanism: mechanism)
+
+        let messageId = "AUTHENTICATE:8af40ee6-8fa0-4bdd-949c-1dd29d5e55931588721432364"
+        var notificationPayload: [String: String] = [:]
+        notificationPayload["c"] = "6ggPLysKJ6wSwBsQFtPclHQKebpOTMNwHP53kZxIGE4="
+        notificationPayload["t"] = "120"
+        notificationPayload["u"] = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+        notificationPayload["l"] = "YW1sYmNvb2tpZT0wMQ=="
+        notificationPayload["k"] = "challenge"
+        notificationPayload["n"] = "34,56,82"
+
+        let ex = self.expectation(description: "PushNotification Number Challenge Rejected")
+        let notification = try PushNotification(messageId: messageId, payload: notificationPayload)
+        notification.accept(challengeResponse: "99", onSuccess: {
+            XCTFail("Push authentication expected to fail with pushNumberChallengeError but succeeded")
+            ex.fulfill()
+        }) { (error) in
+            switch error {
+            case PushNotificationError.pushNumberChallengeError(let message):
+                XCTAssertTrue(message.contains("Number challenge predicate not met."), "Expected AM message but got: \(message)")
+            default:
+                XCTFail("Expected PushNotificationError.pushNumberChallengeError but got: \(error.localizedDescription)")
+            }
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        XCTAssertEqual(notification.isPending, true)
+        XCTAssertEqual(notification.isApproved, false)
+        XCTAssertEqual(notification.isDenied, false)
+    }
+    catch {
+        XCTFail("Push authentication failed to prepare auth request")
+    }
+}
+
+
+func test_10_push_default_400_returns_generic_error() {
+
+    self.loadMockResponses(["AM_Push_Authentication_Fail"])
+
+    let qrCode = URL(string: "pushauth://push/forgerock:pushdemouser1?a=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1hdXRoZW50aWNhdGU&b=519387&r=aHR0cDovL29wZW5hbS5leGFtcGxlLmNvbTo4MDgxL29wZW5hbS9qc29uL3B1c2gvc25zL21lc3NhZ2U_X2FjdGlvbj1yZWdpc3Rlcg&s=O9JHEGfOsaZqc5JT0DHM5hYFA8jofohw5vAP0EpG4JU&c=75OQ3FXmzV99TPf0ihevFfB0s43XsxQ747sY6BopgME&l=YW1sYmNvb2tpZT0wMQ&m=REGISTER:fe6311ab-013e-4599-9c0e-4c4e2525199b1588721418483&issuer=Rm9yZ2VSb2NrU2FuZGJveA")!
+
+    do {
+        let parser = try PushQRCodeParser(url: qrCode)
+        let mechanism = PushMechanism(issuer: parser.issuer, accountName: parser.label, secret: parser.secret, authEndpoint: parser.authenticationEndpoint, regEndpoint: parser.registrationEndpoint, messageId: parser.messageId, challenge: parser.challenge, loadBalancer: parser.loadBalancer, uid: parser.uid, resourceId: parser.resourceId)
+        mechanism.mechanismUUID = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+        FRAClient.storage.setMechanism(mechanism: mechanism)
+
+        let messageId = "AUTHENTICATE:8af40ee6-8fa0-4bdd-949c-1dd29d5e55931588721432364"
+        var notificationPayload: [String: String] = [:]
+        notificationPayload["c"] = "6ggPLysKJ6wSwBsQFtPclHQKebpOTMNwHP53kZxIGE4="
+        notificationPayload["t"] = "120"
+        notificationPayload["u"] = "32E28B44-153C-4BDE-9FDB-38069BC23D9C"
+        notificationPayload["l"] = "YW1sYmNvb2tpZT0wMQ=="
+
+        let ex = self.expectation(description: "PushNotification Default 400 Generic Error")
+        let notification = try PushNotification(messageId: messageId, payload: notificationPayload)
+        notification.accept(onSuccess: {
+            XCTFail("Push authentication expected to fail with generic error but succeeded")
+            ex.fulfill()
+        }) { (error) in
+            switch error {
+            case PushNotificationError.pushNumberChallengeError(_):
+                XCTFail("Default push type 400 must NOT be remapped to pushNumberChallengeError")
+            case NetworkError.apiRequestFailure(_, _, _):
+                break
+            default:
+                XCTFail("Expected generic NetworkError.apiRequestFailure for default push type 400 but got: \(error.localizedDescription)")
+            }
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        XCTAssertEqual(notification.isPending, true)
+        XCTAssertEqual(notification.isApproved, false)
     }
     catch {
         XCTFail("Push authentication failed to prepare auth request")
