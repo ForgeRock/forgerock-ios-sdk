@@ -22,7 +22,7 @@ Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/p
 * Ping Identity Platform
   * Ping Advanced Identity Cloud
   * PingAM 6.5.2+
-* iOS 12 and above
+* iOS 16 and above
 * Xcode
 * Swift 5.x
 * CocoaPods or Swift Package Manager (optional)

@@ -2,7 +2,7 @@
 //  KeychainServiceTests.swift
 //  FRCoreTests
 //
-//  Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -409,5 +409,38 @@ class KeychainServiceTests: FRBaseTestCase {
         // Cleanup: Delete customer key
         SecItemDelete(query as CFDictionary)
     }
-    
+
+
+    // MARK: - Test decrypt-failure returns nil instead of raw encrypted blob
+
+    func test_getData_withUndecryptableValue_returnsNil() {
+        guard SecuredKey.isAvailable() else {
+            // SecuredKey-backed encryption is required for this scenario
+            return
+        }
+
+        let service = "com.forgerock.ios.test.decryptFailure"
+        let key = "encrypted-test-key"
+        let tag1 = "com.forgerock.ios.test.securedKey.decryptA.\(UUID().uuidString)"
+        let tag2 = "com.forgerock.ios.test.securedKey.decryptB.\(UUID().uuidString)"
+
+        guard let securedKeyA = SecuredKey(applicationTag: tag1), let securedKeyB = SecuredKey(applicationTag: tag2) else {
+            XCTFail("Failed to generate SecuredKey instances")
+            return
+        }
+
+        // Given: data stored encrypted with SecuredKey A
+        let kcA = KeychainService(service: service, securedKey: securedKeyA)
+        self.kc = kcA
+        XCTAssertTrue(kcA.set("super-secret-value", key: key))
+        XCTAssertEqual(kcA.getString(key), "super-secret-value")
+
+        // When: the same stored item is read with a different SecuredKey B (cannot decrypt)
+        let kcB = KeychainService(service: service, securedKey: securedKeyB)
+
+        // Then: getData/getString must return nil rather than the raw (still-encrypted) bytes
+        XCTAssertNil(kcB.getData(key), "Undecryptable data must be treated as not found, not returned as raw encrypted bytes")
+        XCTAssertNil(kcB.getString(key), "Undecryptable data must not be decodable to a String")
+    }
+
 }

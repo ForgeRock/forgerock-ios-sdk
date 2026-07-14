@@ -2,7 +2,7 @@
 //  PlatformCollector.swift
 //  FRAuth
 //
-//  Copyright (c) 2019 - 2025 Ping Identity Corporation. All rights reserved.
+//  Copyright (c) 2019 - 2026 Ping Identity Corporation. All rights reserved.
 //
 //  This software may be modified and distributed under the terms
 //  of the MIT license. See the LICENSE file for details.
@@ -35,7 +35,7 @@ public class PlatformCollector: DeviceCollector {
         result["version"] = UIDevice.current.systemVersion
         result["device"] = UIDevice.current.model
         result["model"] = self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine))//parseDeviceIdentifier(identifier: self.convertSysInfo(mirror: Mirror(reflecting: systemInfo.machine)))
-        result["locale"] = Locale.current.languageCode
+        result["locale"] = Locale.current.language.languageCode?.identifier
         result["timeZone"] = TimeZone.current.identifier
         result["brand"] = "Apple"
         result["deviceName"] = UIDevice.current.name
