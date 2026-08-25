@@ -1,3 +1,7 @@
+## [Unreleased]
+#### Updated
+- Updated `RecaptchaEnterprise` dependency to 18.9.1 for Xcode 27 / iOS 27 compatibility [SDKS-5306]
+
 ## [4.10.0]
 
 #### Added

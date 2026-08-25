@@ -511,7 +511,8 @@ class DeviceAuthenticatorTests: FRBaseTestCase {
     }
     
     
-    func test_17_biometricDomainState_biometricAndDeviceCredential() {
+    func test_17_biometricDomainState_biometricAndDeviceCredential() throws {
+            try XCTSkipIf(!self.isSimulator, "Skipping on device")
         // On simulator without biometrics, evaluatedPolicyDomainState returns nil
         let authenticator = BiometricAndDeviceCredential()
         let state = authenticator.biometricDomainState()
