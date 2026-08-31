@@ -10,6 +10,7 @@
 
 
 import XCTest
+@testable import FRAuth
 
 class FRUserTokenRenewalTests: FRAuthBaseTest {
 
@@ -45,7 +46,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -84,7 +85,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get User Info")
@@ -124,13 +125,13 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
             // Persist original AccessToken
             // Manually update token lifetime to force token refresh
             at.expiresIn = 0
-            try tokenManager.persist(token: at)
+            try tokenManager.keychainManager.setAccessToken(token: at)
         }
         catch {
             XCTFail("Failed to store AccessToken object: \(error.localizedDescription)")
         }
         
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         let ex = self.expectation(description: "Get User Info")
         user.getAccessToken { (user, error) in
@@ -180,13 +181,13 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
             // Persist original AccessToken
             // Manually update token lifetime to force token refresh
             at.expiresIn = 0
-            try tokenManager.persist(token: at)
+            try tokenManager.keychainManager.setAccessToken(token: at)
         }
         catch {
             XCTFail("Failed to store AccessToken object: \(error.localizedDescription)")
         }
         
-        var user = FRUser(token: at, serverConfig: serverConfig)
+        var user = FRUser(token: at)
         
         do {
             user = try user.getAccessToken()
@@ -231,7 +232,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         }
         
         // Do not persist token, or user object to test no token from Keychain storage
-        var user = FRUser(token: at, serverConfig: serverConfig)
+        var user = FRUser(token: at)
         
         do {
             user = try user.getAccessToken()
@@ -275,7 +276,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         }
         
         // Do not persist token, or user object to test no token from Keychain storage
-        let user = FRUser(token: at, serverConfig: serverConfig)
+        let user = FRUser(token: at)
         
         let ex = self.expectation(description: "Get User Info")
         user.getAccessToken { (user, error) in
@@ -327,7 +328,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -370,7 +371,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -414,7 +415,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -457,7 +458,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         let oldRefreshToken = at1.refreshToken
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -503,7 +504,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with OAuth2Error.invalidGrant, and proceed with authorize flow with SSO token
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -517,46 +518,47 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_12_FRUser_GetAccessToken_RefreshTokenGrant_InvalidClientError() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
-        
+
+        // refresh_token grant fails with invalid_client; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         // Persist original AccessToken
         // Manually update token lifetime to force token refresh
         guard let at1 = user.token else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
-        
+
         let ex = self.expectation(description: "Get Access Token")
         user.getAccessToken { (user, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(user)
-            
-            if let oAuth2Error = error as? OAuth2Error {
-                switch oAuth2Error {
-                case .invalidClient:
+
+            if let authError = error as? AuthError {
+                switch authError {
+                case .userAuthenticationRequired:
                     break
                 default:
-                    XCTFail("Failed with unexpected error: \(oAuth2Error.localizedDescription)")
+                    XCTFail("Failed with unexpected error: \(authError.localizedDescription)")
                     break
                 }
             }
@@ -570,46 +572,47 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_13_FRUser_GetAccessToken_RefreshTokenGrant_InvalidScope() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
-        
+
+        // refresh_token grant fails with invalid_scope; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         // Persist original AccessToken
         // Manually update token lifetime to force token refresh
         guard let at1 = user.token else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
-        
+
         let ex = self.expectation(description: "Get Access Token")
         user.getAccessToken { (user, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(user)
-            
-            if let oAuth2Error = error as? OAuth2Error {
-                switch oAuth2Error {
-                case .invalidScope:
+
+            if let authError = error as? AuthError {
+                switch authError {
+                case .userAuthenticationRequired:
                     break
                 default:
-                    XCTFail("Failed with unexpected error: \(oAuth2Error.localizedDescription)")
+                    XCTFail("Failed with unexpected error: \(authError.localizedDescription)")
                     break
                 }
             }
@@ -649,7 +652,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -702,7 +705,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with OAuth2Error.invalidGrant, and proceed with authorize flow with SSO token
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -716,40 +719,41 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_16_FRUser_GetAccessToken_RefreshTokenGrant_InvalidClientError_Async() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
-        
+
+        // refresh_token grant fails with invalid_client; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         // Persist original AccessToken
         // Manually update token lifetime to force token refresh
         guard let at1 = user.token else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
-        
+
         do {
             let newUser = try user.getAccessToken()
             XCTAssertNil(newUser)
         }
-        catch OAuth2Error.invalidClient {
+        catch AuthError.userAuthenticationRequired {
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -758,40 +762,41 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_17_FRUser_GetAccessToken_RefreshTokenGrant_InvalidScope_Async() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
-        
+
+        // refresh_token grant fails with invalid_scope; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         // Persist original AccessToken
         // Manually update token lifetime to force token refresh
         guard let at1 = user.token else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
-        
+
         do {
             let newUser = try user.getAccessToken()
             XCTAssertNil(newUser)
         }
-        catch OAuth2Error.invalidScope {
+        catch AuthError.userAuthenticationRequired {
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -826,7 +831,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Expire access_token to enforce refresh_token grant which will fail with other than OAuth2Error.invalidGrant
         at1.expiresIn = 0
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         
@@ -879,39 +884,40 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_20_FRUser_Refresh_RefreshTokenGrant_InvalidClientError() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
-        
+
+        // refresh_token grant fails with invalid_client; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         //  Making sure AccessToken exists
         guard user.token != nil else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         let ex = self.expectation(description: "Get Access Token")
         user.refresh { (user, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(user)
-            
-            if let oAuth2Error = error as? OAuth2Error {
-                switch oAuth2Error {
-                case .invalidClient:
+
+            if let authError = error as? AuthError {
+                switch authError {
+                case .userAuthenticationRequired:
                     break
                 default:
-                    XCTFail("Failed with unexpected error: \(oAuth2Error.localizedDescription)")
+                    XCTFail("Failed with unexpected error: \(authError.localizedDescription)")
                     break
                 }
             }
@@ -925,39 +931,40 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_21_FRUser_Refresh_RefreshTokenGrant_InvalidScope() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
-        
+
+        // refresh_token grant fails with invalid_scope; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         //  Making sure AccessToken exists
         guard user.token != nil else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         let ex = self.expectation(description: "Get Access Token")
         user.refresh { (user, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(user)
-            
-            if let oAuth2Error = error as? OAuth2Error {
-                switch oAuth2Error {
-                case .invalidScope:
+
+            if let authError = error as? AuthError {
+                switch authError {
+                case .userAuthenticationRequired:
                     break
                 default:
-                    XCTFail("Failed with unexpected error: \(oAuth2Error.localizedDescription)")
+                    XCTFail("Failed with unexpected error: \(authError.localizedDescription)")
                     break
                 }
             }
@@ -1051,33 +1058,34 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_24_FRUser_Refresh_RefreshTokenGrant_InvalidClientError_Async() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient"])
-        
+
+        // refresh_token grant fails with invalid_client; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidClient", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         //  Making sure AccessToken exists
         guard user.token != nil else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         do {
             let newUser = try user.refreshSync()
             XCTAssertNil(newUser)
         }
-        catch OAuth2Error.invalidClient {
+        catch AuthError.userAuthenticationRequired {
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -1086,33 +1094,34 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_25_FRUser_Refresh_RefreshTokenGrant_InvalidScope_Async() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope"])
-        
+
+        // refresh_token grant fails with invalid_scope; SDK falls through to SSO exchange which also fails,
+        // ultimately returning AuthError.userAuthenticationRequired
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidScope", "OAuth2_AuthorizeRedirect_Failure"])
+
         // Validate FRUser.currentUser
         guard let user = FRUser.currentUser else {
             XCTFail("Failed to perform user login")
             return
         }
-        
+
         //  Making sure AccessToken exists
         guard user.token != nil else {
             XCTFail("Failed to fetch AccessToken")
             return
         }
-        
+
         do {
             let newUser = try user.refreshSync()
             XCTAssertNil(newUser)
         }
-        catch OAuth2Error.invalidScope {
+        catch AuthError.userAuthenticationRequired {
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
@@ -1185,7 +1194,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
         at1.sessionToken = "different_sso_token"
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         let ex = self.expectation(description: "Get Access Token")
@@ -1225,7 +1234,7 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
         at1.sessionToken = "different_sso_token"
         if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
         }
         
         do {
@@ -1239,39 +1248,30 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_29_FRUser_Refresh_SSOToken_Mismatch() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
-        
-        // Validate FRUser.currentUser
-        guard let user = FRUser.currentUser else {
-            XCTFail("Failed to perform user login")
-            return
-        }
-        
-        // Persist original AccessToken
-        // Manually update SSO Token
-        guard let at1 = user.token else {
-            XCTFail("Failed to fetch AccessToken")
-            return
-        }
-        
+
+        // SSO mismatch flow: revoke (1) + authorize redirect (2) + token exchange (3) + refresh_token grant on the new token (4)
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success", "OAuth2_Token_Refresh_Success"])
+
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
-        at1.sessionToken = "different_sso_token"
-        if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+        guard let tokenManager = self.config.tokenManager,
+              let at1 = try? tokenManager.keychainManager.getAccessToken() else {
+            XCTFail("Failed to fetch AccessToken from keychain")
+            return
         }
-        
-        let ex = self.expectation(description: "Get Access Token")
-        user.refresh { (user, error) in
+        at1.sessionToken = "different_sso_token"
+        _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+
+        // Call tokenManager.refresh directly to avoid FRUser.token getter side-effects
+        let ex = self.expectation(description: "Refresh Token")
+        tokenManager.refresh { (token, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(user)
+            XCTAssertNotNil(token)
             ex.fulfill()
         }
         waitForExpectations(timeout: 60, handler: nil)
@@ -1279,42 +1279,313 @@ class FRUserTokenRenewalTests: FRAuthBaseTest {
     
     
     func test_30_FRUser_Refresh_SSOToken_Mismatch_Sync() {
-        
+
         // Start SDK
         self.startSDK()
-        
+
         // Perform login first
         self.performLogin()
-        
-        // Load mock responses for refresh token
-        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success"])
-        
-        // Validate FRUser.currentUser
-        guard let user = FRUser.currentUser else {
-            XCTFail("Failed to perform user login")
-            return
-        }
-        
-        // Persist original AccessToken
-        // Manually update SSO Token
-        guard let at1 = user.token else {
-            XCTFail("Failed to fetch AccessToken")
-            return
-        }
-        
+
+        // SSO mismatch flow: revoke (1) + authorize redirect (2) + token exchange (3) + refresh_token grant on the new token (4)
+        self.loadMockResponses(["OAuth2_Token_Revoke_Success", "OAuth2_AuthorizeRedirect_Success", "OAuth2_Token_Success", "OAuth2_Token_Refresh_Success"])
+
         // Manually change SSO Token associated with AccessToken to invalidate OAuth2 token, and force to go through /authorize flow
-        at1.sessionToken = "different_sso_token"
-        if let tokenManager = self.config.tokenManager {
-            try? tokenManager.persist(token: at1)
+        guard let tokenManager = self.config.tokenManager,
+              let at1 = try? tokenManager.keychainManager.getAccessToken() else {
+            XCTFail("Failed to fetch AccessToken from keychain")
+            return
         }
-        
+        at1.sessionToken = "different_sso_token"
+        _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+
+        // Call tokenManager.refreshSync directly to avoid FRUser.token getter side-effects
         do {
-            let newUser = try user.refreshSync()
-            XCTAssertNotNil(newUser)
+            let newToken = try tokenManager.refreshSync()
+            XCTAssertNotNil(newToken)
         }
         catch {
             XCTFail("Failed with unexpected error: \(error.localizedDescription)")
         }
     }
-    
+
+    // MARK: - Transport-error preservation of credentials
+
+    func test_31_FRUser_GetAccessToken_RefreshTokenGrant_NoInternet_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Use a custom transport failure for refresh_token request.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.notConnectedToInternet)
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorNotConnectedToInternet)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
+
+    func test_32_FRUser_GetAccessToken_RefreshTokenGrant_NetworkConnectionLost_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Use a custom transport failure for refresh_token request.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.networkConnectionLost)
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorNetworkConnectionLost)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
+
+    func test_33_FRUser_GetAccessToken_RefreshTokenGrant_Timeout_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Use a custom transport failure for refresh_token request.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.timedOut)
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorTimedOut)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
+
+    func test_34_FRUser_GetAccessToken_RefreshTokenGrant_NonRetryableURLError_FallsThroughToSSO() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // A non-whitelisted URLError code (`.badServerResponse`) must NOT be treated as a retryable
+        // transport error, so the refresh flow should fall through to the SSO exchange path.
+        // The SSO exchange itself then succeeds via the two follow-up mocks, so overall
+        // getAccessToken returns a fresh token — proving the whitelist is not over-broad.
+        self.loadMockResponses(["OAuth2_Token_Refresh_Success",
+                                "OAuth2_AuthorizeRedirect_Success",
+                                "OAuth2_Token_Success"])
+        guard let mockResponse = FRTestNetworkStubProtocol.mockedResponses.first else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        mockResponse.response = nil
+        mockResponse.responsePayload = nil
+        mockResponse.redirectRequest = nil
+        mockResponse.error = URLError(.badServerResponse)
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (newUser, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(newUser)
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+
+    func test_35_FRUser_GetAccessToken_SSOExchange_NoInternet_PreservesCredentials() {
+
+        // Start SDK
+        self.startSDK()
+
+        // Perform login first
+        self.performLogin()
+
+        // Force refresh_token grant to fail with invalid_grant so we fall through to the SSO exchange path,
+        // then make the /authorize call fail with a transport error. Credentials must be preserved.
+        self.loadMockResponses(["OAuth2_Token_Failure_InvalidGrant",
+                                "OAuth2_AuthorizeRedirect_Success"])
+        guard let ssoMockResponse = FRTestNetworkStubProtocol.mockedResponses.last else {
+            XCTFail("Failed to load mock response")
+            return
+        }
+        ssoMockResponse.response = nil
+        ssoMockResponse.responsePayload = nil
+        ssoMockResponse.redirectRequest = nil
+        ssoMockResponse.error = URLError(.notConnectedToInternet)
+
+        // Validate FRUser.currentUser
+        guard let user = FRUser.currentUser else {
+            XCTFail("Failed to perform user login")
+            return
+        }
+
+        // Expire access_token to enforce refresh_token grant.
+        guard let at1 = user.token else {
+            XCTFail("Failed to fetch AccessToken")
+            return
+        }
+        at1.expiresIn = 0
+        if let tokenManager = self.config.tokenManager {
+            _ = try? tokenManager.keychainManager.setAccessToken(token: at1)
+        }
+
+        let ex = self.expectation(description: "Get Access Token")
+        user.getAccessToken { (user, error) in
+            XCTAssertNil(user)
+            XCTAssertNotNil(error)
+
+            let nsError = error as NSError?
+            XCTAssertEqual(nsError?.domain, NSURLErrorDomain)
+            XCTAssertEqual(nsError?.code, NSURLErrorNotConnectedToInternet)
+
+            ex.fulfill()
+        }
+        waitForExpectations(timeout: 60, handler: nil)
+
+        if let keychainManager = FRAuth.shared?.keychainManager {
+            XCTAssertNotNil(try? keychainManager.getAccessToken())
+            XCTAssertNotNil(keychainManager.getSSOToken())
+        }
+        else {
+            XCTFail("Failed to retrieve KeychainManager")
+        }
+    }
 }
