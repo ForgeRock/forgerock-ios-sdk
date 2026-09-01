@@ -34,5 +34,5 @@ Pod::Spec.new do |s|
     'FRCaptchaEnterprise' => [base_dir + '/*.xcprivacy']
   }
   s.ios.dependency 'FRAuth', '~> 4.10.0'
-  s.ios.dependency 'RecaptchaEnterprise', '~> 18.7.0'
+  s.ios.dependency 'RecaptchaEnterprise', '~> 18.9.1'
 end
