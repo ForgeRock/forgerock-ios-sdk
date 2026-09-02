@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "en-US"
+early_access: false
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - master
+      - develop
+  path_instructions:
+    - path: "**/*.swift"
+      instructions: |
+        Review Swift code for iOS best practices: prefer value types where appropriate,
+        check for retain cycles (weak/unowned references in closures and delegates),
+        ensure thread safety for shared mutable state, and verify proper error propagation
+        using Swift's typed throws / Result pattern. Flag any usage of deprecated APIs.
+    - path: "**/*.podspec"
+      instructions: |
+        Ensure the version string is consistent with CHANGELOG.md and other podspecs,
+        that the deployment target matches Package.swift (.iOS(.v16)), and that
+        dependency version constraints are not overly loose.
+    - path: "**/*Tests*/**/*.swift"
+      instructions: |
+        Verify tests use XCTest conventions, include meaningful assertions (not just
+        XCTAssertNotNil), and cover both success and failure paths. Check that
+        async tests use XCTestExpectation or async/await correctly.
+    - path: "**/*.podspec"
+      instructions: "Verify s.source_files, s.dependency, and s.ios.deployment_target are correct."
+    - path: "Package.swift"
+      instructions: |
+        Ensure all module targets are listed, dependency version pins are intentional
+        (.exact vs .upToNextMinor), and any new targets have corresponding test targets.
+    - path: ".github/workflows/*.yaml"
+      instructions: |
+        Check that secrets references match the documented secret names, that
+        job dependencies (needs:) are correct, and that no sensitive values are
+        hardcoded.
+chat:
+  auto_reply: true
