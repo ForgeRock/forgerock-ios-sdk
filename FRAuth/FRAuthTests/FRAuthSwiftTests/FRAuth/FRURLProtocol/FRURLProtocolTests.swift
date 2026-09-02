@@ -92,7 +92,7 @@ class FRURLProtocolTests: FRAuthBaseTest {
         let urlSession: URLSession = URLSession(configuration: config)
         
         //  Set TokenManagementPolicy, but with different URL for validation
-        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: "\(FRTestURL.baseURL)/anything")!], delegate: nil)
+        let tokenManagementPolicy = TokenManagementPolicy(validatingURL: [URL(string: FRTestURL.getURL)!], delegate: nil)
         FRURLProtocol.authorizationPolicy = nil
         FRURLProtocol.tokenManagementPolicy = tokenManagementPolicy
         
