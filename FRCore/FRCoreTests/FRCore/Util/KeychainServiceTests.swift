@@ -443,4 +443,502 @@ class KeychainServiceTests: FRBaseTestCase {
         XCTAssertNil(kcB.getString(key), "Undecryptable data must not be decodable to a String")
     }
 
+
+    // MARK: - SDKS-5451: Keychain accessibility semantics probe
+
+    func test_platform_accessibilityFiltersLookups_butNotDuplicateDetection() {
+        guard let accessGroup = self.config.keychainAccessGroup else {
+            XCTFail("Failed to retrieve Access Group Identifier from Config object")
+            return
+        }
+
+        guard let appleTeamId = KeychainService.getAppleTeamId() else {
+            XCTFail("Failed to retrieve Apple Team ID")
+            return
+        }
+
+        // Raw Security.framework probe (no SDK code): confirms in this environment that
+        // kSecAttrAccessible acts as a lookup filter (SecItemCopyMatching returns
+        // errSecItemNotFound) while SecItemAdd still detects duplicates on
+        // class+service+account(+accessGroup) only (errSecDuplicateItem). This test passes
+        // at HEAD and stays permanently as a tripwire for Apple changing the semantics
+        // SDKS-5451's fix relies on (AC7).
+        self.runSDKS5451AccessibilityProbe(service: "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)", accessGroup: nil)
+        self.runSDKS5451AccessibilityProbe(service: "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)", accessGroup: appleTeamId + "." + accessGroup)
+    }
+
+    private func runSDKS5451AccessibilityProbe(service: String, accessGroup: String?) {
+        let account = "SDKS-5451.probe.account"
+        let valueData = "SDKS-5451-probe-value".data(using: .utf8)!
+        let accessibilityA = kSecAttrAccessibleWhenUnlockedThisDeviceOnly as String
+        let accessibilityB = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String
+
+        // Accessibility-free delete query; also used as the identity base for the adds below
+        var deleteQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account
+        ]
+        if let accessGroup = accessGroup {
+            deleteQuery[kSecAttrAccessGroup as String] = accessGroup
+        }
+        // Cleanup with an accessibility-free query, regardless of how the probe ends
+        defer {
+            SecItemDelete(deleteQuery as CFDictionary)
+        }
+
+        // 1. Store the item under accessibility A
+        var addQueryA = deleteQuery
+        addQueryA[kSecValueData as String] = valueData
+        addQueryA[kSecAttrAccessible as String] = accessibilityA
+        XCTAssertEqual(SecItemAdd(addQueryA as CFDictionary, nil), errSecSuccess, "Seeding under accessibility A must succeed (accessGroup: \(accessGroup ?? "nil"))")
+
+        // 2. Lookup filtered by accessibility B must NOT see the item (accessibility is a filter)
+        var lookupQueryB = deleteQuery
+        lookupQueryB[kSecAttrAccessible as String] = accessibilityB
+        XCTAssertEqual(SecItemCopyMatching(lookupQueryB as CFDictionary, nil), errSecItemNotFound, "Lookup with a different accessibility must be filtered out (accessGroup: \(accessGroup ?? "nil"))")
+
+        // 3. Adding the same identity under accessibility B must be rejected as duplicate
+        // (duplicate detection ignores the accessibility attribute)
+        var addQueryB = addQueryA
+        addQueryB[kSecAttrAccessible as String] = accessibilityB
+        XCTAssertEqual(SecItemAdd(addQueryB as CFDictionary, nil), errSecDuplicateItem, "SecItemAdd must detect the duplicate regardless of the accessibility attribute (accessGroup: \(accessGroup ?? "nil"))")
+
+        // 4. Accessibility-free lookup must find the stored item
+        XCTAssertEqual(SecItemCopyMatching(deleteQuery as CFDictionary, nil), errSecSuccess, "Accessibility-free lookup must find the stored item (accessGroup: \(accessGroup ?? "nil"))")
+    }
+
+
+    // MARK: - SDKS-5451: stale-accessibility replace (AC2, fixed by the Phase 3 self-heal)
+
+    func test_set_overItemStoredUnderDifferentAccessibility_succeedsAndReplacesValue() {
+        // SDKS-5451 (Task 1.2, AC2): set() must replace an item stored under a different
+        // kSecAttrAccessible. Before the Phase 3 self-heal the existence check and the
+        // replace-path delete were accessibility-filtered (errSecItemNotFound / -25300) while
+        // SecItemAdd still detected the duplicate (errSecDuplicateItem / -25299), so set()
+        // returned false; addItem(_:key:itemClass:) now recovers once from the duplicate.
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.replace.key"
+
+        // Seeder stores the conflicting item under a non-default accessibility
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+
+        // The class tearDown's deleteAll() is accessibility-filtered and cannot remove the
+        // stale item; the seeder queries the accessibility the item was stored under.
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        // Seed the conflicting item
+        XCTAssertTrue(seeder.set("v1", key: key), "Seeding the item under a non-default accessibility must succeed")
+        XCTAssertEqual(seeder.getString(key), "v1", "The seeded item must be readable through the seeder")
+
+        // Default service (kSecAttrAccessibleAfterFirstUnlock) writes over the item
+        let kc = KeychainService(service: service)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = kc
+
+        XCTAssertTrue(kc.set("v2", key: key), "set must replace the item stored under a different accessibility (previously: existence check returned -25300, then SecItemAdd returned -25299)")
+        XCTAssertEqual(kc.getString(key), "v2", "The replaced value must be readable through the writing service")
+        XCTAssertNil(seeder.getString(key), "Exactly one item must remain after the replace; the stale-accessibility item must be gone")
+    }
+
+
+    // MARK: - SDKS-5451: accessibility-free lookup query shape (Task 2.3, keychain-free)
+
+    func test_buildLookupQuery_defaultOptions_keepAccessibilityFilterForAllClasses() {
+        // Regression guard for every other Keychain consumer: with the default options
+        // (matchesAnyAccessibility == false) lookups must stay accessibility-filtered for
+        // every item class, exactly as before SDKS-5451 (D5).
+        let options = KeychainOptions(service: "com.forgerock.ios.test.SDKS-5451.queryshape")
+        XCTAssertFalse(options.matchesAnyAccessibility, "matchesAnyAccessibility must default to false")
+
+        for itemClass in [KeychainItemClass.genericPassword, .internetPassword, .certificate, .key, .securedKey, .identity] {
+            let query = options.buildLookupQuery(itemClass)
+            XCTAssertEqual(query[kSecAttrAccessible as String] as? String, options.accessibility.rawValue, "Default options must keep the accessibility filter in the lookup query (class: \(itemClass))")
+        }
+    }
+
+    func test_buildLookupQuery_matchesAnyAccessibility_dropsFilterOnlyForGenericPassword() {
+        var options = KeychainOptions(service: "com.forgerock.ios.test.SDKS-5451.queryshape")
+        options.matchesAnyAccessibility = true
+
+        // Flagged: the accessibility filter is dropped for .genericPassword only
+        let genericQuery = options.buildLookupQuery(.genericPassword)
+        XCTAssertNil(genericQuery[kSecAttrAccessible as String], "Flagged options must drop the accessibility filter from the genericPassword lookup query")
+
+        // Non-generic classes keep the filter; their queries are not fully identity-bound,
+        // so dropping the filter would make lookups match unrelated items (D5)
+        for itemClass in [KeychainItemClass.internetPassword, .certificate, .key, .securedKey, .identity] {
+            let query = options.buildLookupQuery(itemClass)
+            XCTAssertEqual(query[kSecAttrAccessible as String] as? String, options.accessibility.rawValue, "Non-generic classes must keep the accessibility filter even when flagged (class: \(itemClass))")
+        }
+    }
+
+    func test_buildLookupQuery_matchesAnyAccessibility_keepsClassServiceAccessGroupAndSynchronizable() {
+        // Pins AC2's synchronizable-preservation clause: relaxing only the accessibility
+        // filter must not drop any other identity attribute of the lookup query.
+        let service = "com.forgerock.ios.test.SDKS-5451.queryshape"
+        let accessGroup = "SDKS-5451.test.accessgroup"
+
+        var options = KeychainOptions(service: service, accessGroup: accessGroup)
+        options.matchesAnyAccessibility = true
+        options.synchronizable = true
+
+        let query = options.buildLookupQuery(.genericPassword)
+
+        XCTAssertEqual(query[kSecClass as String] as? String, KeychainItemClass.genericPassword.rawValue, "The item class must survive the accessibility-free lookup query")
+        XCTAssertEqual(query[kSecAttrService as String] as? String, service, "The service attribute must survive the accessibility-free lookup query")
+        XCTAssertEqual(query[kSecAttrAccessGroup as String] as? String, options.accessGroup, "The (team-prefixed) access group must survive the accessibility-free lookup query")
+        XCTAssertEqual(query[kSecAttrSynchronizable as String] as? Bool, true, "kSecAttrSynchronizable must survive the accessibility-free lookup query")
+        XCTAssertNil(query[kSecAttrAccessible as String], "Only the accessibility filter must be dropped")
+    }
+
+    func test_buildQuery_addPath_alwaysIncludesAccessibilityFilter() {
+        // Add (SecItemAdd) queries always carry the accessibility so stored items keep a
+        // defined protection class (D1); the opt-in flag must never affect this query.
+        for matchesAnyAccessibility in [false, true] {
+            var options = KeychainOptions(service: "com.forgerock.ios.test.SDKS-5451.queryshape")
+            options.matchesAnyAccessibility = matchesAnyAccessibility
+
+            for itemClass in [KeychainItemClass.genericPassword, .internetPassword, .certificate, .key] {
+                let query = options.buildQuery(itemClass)
+                XCTAssertEqual(query[kSecAttrAccessible as String] as? String, options.accessibility.rawValue, "buildQuery (add path) must always include the accessibility filter (flag: \(matchesAnyAccessibility), class: \(itemClass))")
+            }
+        }
+    }
+
+
+    // MARK: - SDKS-5451: flagged service behaviour against a stale-accessibility item (Task 2.3)
+
+    func test_unflaggedService_doesNotSeeItemStoredUnderDifferentAccessibility() {
+        // Guards the default: consumers that did not opt in keep today's filtered lookups
+        // (KeychainManager migration probe, all other stores).
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.flagged-behaviour.key"
+
+        // Seeder stores the item under a non-default accessibility
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+
+        // The class tearDown's deleteAll() is accessibility-filtered and cannot remove the
+        // stale item; the seeder queries the accessibility the item was stored under.
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        XCTAssertTrue(seeder.set("v1", key: key), "Seeding the item under a non-default accessibility must succeed")
+        XCTAssertEqual(seeder.getString(key), "v1", "The seeded item must be readable through the seeder")
+
+        let unflagged = KeychainService(service: service)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = unflagged
+        XCTAssertNil(unflagged.getString(key), "An unflagged service must not see an item stored under a different accessibility")
+    }
+
+    func test_flaggedService_getStringGetDataDelete_operateOnItemStoredUnderDifferentAccessibility() {
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.flagged-behaviour.key"
+        let valueData = "SDKS-5451-data-value".data(using: .utf8)!
+
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        XCTAssertTrue(seeder.set(valueData, key: key), "Seeding the item under a non-default accessibility must succeed")
+        XCTAssertEqual(seeder.getString(key), "SDKS-5451-data-value", "The seeded item must be readable through the seeder")
+
+        var flaggedOptions = KeychainOptions(service: service)
+        flaggedOptions.matchesAnyAccessibility = true
+        let flagged = KeychainService(options: flaggedOptions)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = flagged
+
+        XCTAssertEqual(flagged.getString(key), "SDKS-5451-data-value", "A flagged service must read an item stored under a different accessibility (AC1/AC6)")
+        XCTAssertEqual(flagged.getData(key), valueData, "A flagged service must read the data of an item stored under a different accessibility (AC1/AC6)")
+
+        XCTAssertTrue(flagged.delete(key), "A flagged service must delete an item stored under a different accessibility (AC1/AC6)")
+        XCTAssertNil(seeder.getString(key), "The stale-accessibility item must be gone after the flagged delete")
+    }
+
+    func test_flaggedService_set_replacesStaleAccessibilityItem_andStoresUnderCurrentAccessibility() {
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.flagged-replace.key"
+
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        XCTAssertTrue(seeder.set("v1", key: key), "Seeding the item under a non-default accessibility must succeed")
+
+        var flaggedOptions = KeychainOptions(service: service)
+        flaggedOptions.matchesAnyAccessibility = true
+        let flagged = KeychainService(options: flaggedOptions)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = flagged
+
+        // Unflagged guard: before the replace the item is invisible to a default service
+        let unflagged = KeychainService(service: service)
+        XCTAssertNil(unflagged.getString(key), "An unflagged service must not see the item stored under a different accessibility")
+
+        XCTAssertTrue(flagged.set("v2", key: key), "A flagged set must replace the item stored under a different accessibility")
+        XCTAssertEqual(flagged.getString(key), "v2", "The replaced value must be readable through the writing service")
+
+        // After the replace the item is stored under the flagged service's current
+        // accessibility (writes still use accessibility): the filtered unflagged default
+        // service can now read it, while the seeder's stale-accessibility query cannot.
+        XCTAssertEqual(unflagged.getString(key), "v2", "The replaced item must be stored under the current accessibility (kSecAttrAccessibleAfterFirstUnlock)")
+        XCTAssertNil(seeder.getString(key), "Exactly one item must remain after the replace, stored under the current accessibility")
+    }
+
+    func test_deleteAll_onFlaggedService_stillLeavesStaleAccessibilityItem() {
+        // Documents D5/D8: deleteAll() deliberately stays accessibility-filtered even on a
+        // flagged service; for non-generic classes the accessibility filter is the only
+        // bound on what it deletes, so it must not become accessibility-free.
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.delete-all.key"
+
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        XCTAssertTrue(seeder.set("v1", key: key), "Seeding the item under a non-default accessibility must succeed")
+
+        var flaggedOptions = KeychainOptions(service: service)
+        flaggedOptions.matchesAnyAccessibility = true
+        let flagged = KeychainService(options: flaggedOptions)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = flagged
+
+        // An item under the current accessibility IS removed by deleteAll
+        let plain = KeychainService(service: service)
+        XCTAssertTrue(plain.set("current", key: "SDKS-5451.delete-all.current"))
+        XCTAssertTrue(flagged.deleteAll(), "deleteAll must remove the items stored under the current accessibility")
+        XCTAssertNil(plain.getString("SDKS-5451.delete-all.current"), "The current-accessibility item must be removed by deleteAll")
+
+        // ...while the stale-accessibility item survives (D5/D8)
+        XCTAssertEqual(seeder.getString(key), "v1", "deleteAll() must stay accessibility-filtered and leave the stale-accessibility item in place")
+    }
+
+
+    // MARK: - SDKS-5451: errSecDuplicateItem self-heal in set (Task 3.3, AC2)
+
+    func test_addItem_withConflictingItemStoredUnderDifferentAccessibility_recoversAndLeavesExactlyOneItem() {
+        // Task 3.3(b), AC2: both SecItemAdd call sites of set() (new-item and replace paths)
+        // go through addItem(_:key:itemClass:), so a direct helper call with a pre-seeded
+        // conflicting item is the deterministic structural guarantee that the two paths
+        // behave identically (a natural replace-path errSecDuplicateItem needs a TOCTOU race,
+        // so it is exercised probabilistically by the concurrency tests below).
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.additem.key"
+
+        // Seeder stores the conflicting item under a non-default accessibility
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+
+        // The class tearDown's deleteAll() is accessibility-filtered and cannot remove the
+        // stale item; the seeder queries the accessibility the item was stored under.
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        XCTAssertTrue(seeder.set("v1", key: key), "Seeding the item under a non-default accessibility must succeed")
+        XCTAssertEqual(seeder.getString(key), "v1", "The seeded item must be readable through the seeder")
+
+        let kc = KeychainService(service: service)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = kc
+        XCTAssertNil(kc.getString(key), "Fixture precondition: the conflicting item must be invisible to the writing service's accessibility-filtered lookup")
+
+        // Build the add query exactly as set() builds it (no SecuredKey on the simulator)
+        var query = kc.options.buildQuery(.genericPassword)
+        query[kSecAttrAccount as String] = key
+        query[kSecValueData as String] = "v2".data(using: .utf8)!
+
+        // Fixture precondition: a plain add collides with the stale-accessibility item,
+        // because duplicate detection ignores kSecAttrAccessible
+        XCTAssertEqual(SecItemAdd(query as CFDictionary, nil), errSecDuplicateItem, "Fixture precondition: SecItemAdd must return errSecDuplicateItem against the conflicting item")
+
+        // When: the add goes through the shared helper (as both set() paths do)
+        let status = kc.addItem(query, key: key, itemClass: .genericPassword)
+
+        // Then: the helper recovers exactly once and exactly one item remains
+        XCTAssertEqual(status, errSecSuccess, "addItem must recover from errSecDuplicateItem by removing the conflicting item and retrying once")
+        XCTAssertEqual(kc.getString(key), "v2", "The recovered item must hold the new value")
+        XCTAssertEqual(kc.allItems()?.count, 1, "Exactly one item must remain after the recovery")
+        XCTAssertNil(seeder.getString(key), "The conflicting stale-accessibility item must be gone")
+    }
+
+    func test_set_recoveryOnAccessGroupService_preservesBystanderItemInDefaultGroup() {
+        // Task 3.3(c), AC2: the recovery delete is buildQuery(_:includeAccessibility: false)
+        // + account, so kSecAttrAccessGroup is preserved and the delete can never cross the
+        // group boundary. A bystander item with the same service+account in the default group
+        // must survive a recovery that removes a stale-accessibility item in group G.
+        guard let accessGroup = self.config.keychainAccessGroup else {
+            XCTFail("Failed to retrieve Access Group Identifier from Config object")
+            return
+        }
+
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.accessgroup.key"
+
+        // Seeder stores the conflicting item in group G (Team-ID-prefixed by the options init)
+        // under a non-default accessibility
+        var seederOptions = KeychainOptions(service: service, accessGroup: accessGroup)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+        XCTAssertNotNil(seeder.options.accessGroup, "The group-G seeder must carry the (team-prefixed) access group")
+
+        // Bystander with the same service+account in the DEFAULT access group (accessGroup unset)
+        let bystanderService = KeychainService(service: service)
+        XCTAssertNil(bystanderService.options.accessGroup, "The bystander service must have no access group")
+
+        // The class tearDown's deleteAll() on the G service cannot match the no-group
+        // bystander, and the seeder's filtered delete cannot match a replaced item; both are
+        // deleted explicitly here.
+        self.addTeardownBlock {
+            _ = bystanderService.delete(key)
+        }
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+
+        XCTAssertTrue(seeder.set("v1", key: key), "Seeding the group-G item under a non-default accessibility must succeed")
+        XCTAssertTrue(bystanderService.set("bystander", key: key), "Seeding the default-group bystander must succeed")
+
+        let groupService = KeychainService(service: service, accessGroup: accessGroup)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = groupService
+
+        // Fixture preconditions: the group-G service sees neither the stale item (different
+        // accessibility) nor the bystander (different access group)
+        XCTAssertEqual(seeder.getString(key), "v1", "The stale-accessibility group-G item must be readable through the seeder")
+        XCTAssertNil(groupService.getString(key), "Fixture precondition: the group-G service's filtered lookup must see neither conflicting item")
+        XCTAssertEqual(bystanderService.getString(key), "bystander", "The default-group bystander must be readable through its own service")
+
+        // When: the group-G service writes over the stale item (the add returns
+        // errSecDuplicateItem and the self-heal removes the conflicting item)
+        XCTAssertTrue(groupService.set("v2", key: key), "set via the group-G service must recover from errSecDuplicateItem")
+
+        // Then: the recovery preserved the access group - the group-G item was replaced...
+        XCTAssertEqual(groupService.getString(key), "v2", "The replaced item must be readable through the group-G service")
+        XCTAssertNil(seeder.getString(key), "The stale group-G item must be gone after the recovery")
+
+        // ...and the bystander in the default group survived. The bystander's own group-free
+        // read is ambiguous (it matches items in every group the app can access, including the
+        // new group-G item), so survival is verified by an attribute-level inventory query that
+        // pins each surviving item to its access group.
+        var inventoryQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key,
+            kSecMatchLimit as String: kSecMatchLimitAll,
+            kSecReturnAttributes as String: true,
+            kSecReturnData as String: true
+        ]
+        var inventoryResult: AnyObject?
+        let inventoryStatus = SecItemCopyMatching(inventoryQuery as CFDictionary, &inventoryResult)
+        XCTAssertEqual(inventoryStatus, errSecSuccess, "The accessibility-free service+account inventory query must find the surviving items")
+        let inventory = inventoryResult as? [[String: Any]] ?? []
+        let groupGItems = inventory.filter { ($0[kSecAttrAccessGroup as String] as? String)?.hasSuffix(accessGroup) == true }
+        let defaultGroupItems = inventory.filter { ($0[kSecAttrAccessGroup as String] as? String)?.hasSuffix("com.forgerock.ios.FRTestHost") == true }
+        XCTAssertEqual(groupGItems.count, 1, "Exactly one item must remain in the config access group")
+        XCTAssertEqual(defaultGroupItems.count, 1, "The default-group bystander must survive the group-G recovery delete (kSecAttrAccessGroup preserved; recovery delete must not cross the group boundary)")
+        XCTAssertEqual(defaultGroupItems.first?[kSecValueData as String] as? Data, "bystander".data(using: .utf8), "The surviving default-group item must be the untouched bystander value")
+    }
+
+
+    // MARK: - SDKS-5451: concurrent writers on one key (Task 3.4, AC2/AC5)
+
+    func test_set_concurrentWritersOnSameNewKey_bothSucceed() {
+        // AC5: two concurrent set() calls on the same new key must both succeed. Both writers
+        // pass the existence check (TOCTOU), one SecItemAdd returns errSecDuplicateItem, and
+        // the self-heal deletes the winner's item and re-adds (last-writer-wins, the same
+        // semantics as the replace path). Probabilistic by nature; the deterministic tests
+        // above are the primary guarantee.
+        let rounds = 50
+        let service = "com.forgerock.ios.test.SDKS-5451.concurrent.\(UUID().uuidString)"
+        let kc = KeychainService(service: service)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = kc
+
+        for round in 0..<rounds {
+            // Fresh key per round: both writers take the new-item path
+            let key = "SDKS-5451.concurrent.new.\(round)"
+            let valueA = "round-\(round)-writer-A"
+            let valueB = "round-\(round)-writer-B"
+
+            var results: [Bool] = []
+            let lock = NSLock()
+
+            DispatchQueue.concurrentPerform(iterations: 2) { iteration in
+                let writer = KeychainService(service: service)
+                let success = writer.set(iteration == 0 ? valueA : valueB, key: key)
+                lock.lock()
+                results.append(success)
+                lock.unlock()
+            }
+
+            // Assertions only after DispatchQueue.concurrentPerform has returned
+            XCTAssertEqual(results.count, 2, "Both writers must report a result (round \(round))")
+            XCTAssertTrue(results.allSatisfy { $0 }, "Both concurrent writers must succeed (round \(round); results: \(results))")
+            let finalValue = kc.getString(key)
+            XCTAssertTrue(finalValue == valueA || finalValue == valueB, "The final value must be one of the two written values (round \(round); was \(finalValue ?? "nil"))")
+        }
+    }
+
+    func test_set_concurrentWritersOnExistingKey_bothSucceed() {
+        // AC5, replace-path race: both writers see the pre-seeded item, both delete it, and
+        // one SecItemAdd returns errSecDuplicateItem, which the self-heal recovers. A natural
+        // replace-path collision needs this TOCTOU race, so this coverage is probabilistic;
+        // the direct-helper test above is the deterministic replace-path guarantee.
+        let rounds = 50
+        let service = "com.forgerock.ios.test.SDKS-5451.concurrent.\(UUID().uuidString)"
+        let kc = KeychainService(service: service)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = kc
+
+        for round in 0..<rounds {
+            let key = "SDKS-5451.concurrent.existing.\(round)"
+            // Pre-seed the key so both writers take the replace path
+            XCTAssertTrue(kc.set("seed", key: key), "Seeding the existing key must succeed (round \(round))")
+
+            let valueA = "round-\(round)-writer-A"
+            let valueB = "round-\(round)-writer-B"
+
+            var results: [Bool] = []
+            let lock = NSLock()
+
+            DispatchQueue.concurrentPerform(iterations: 2) { iteration in
+                let writer = KeychainService(service: service)
+                let success = writer.set(iteration == 0 ? valueA : valueB, key: key)
+                lock.lock()
+                results.append(success)
+                lock.unlock()
+            }
+
+            // Assertions only after DispatchQueue.concurrentPerform has returned
+            XCTAssertEqual(results.count, 2, "Both writers must report a result (round \(round))")
+            XCTAssertTrue(results.allSatisfy { $0 }, "Both concurrent writers must succeed (round \(round); results: \(results))")
+            let finalValue = kc.getString(key)
+            XCTAssertTrue(finalValue == valueA || finalValue == valueB, "The final value must be one of the two written values (round \(round); was \(finalValue ?? "nil"))")
+        }
+    }
+
 }

@@ -2,6 +2,9 @@
 #### Updated
 - Updated `RecaptchaEnterprise` dependency to 18.9.1 for Xcode 27 / iOS 27 compatibility [SDKS-5306]
 
+#### Fixed
+- Fixed an issue where the device identifier could change between calls on iOS 26 because Keychain lookups were filtered by the stored accessibility attribute [SDKS-5451]
+
 ## [4.10.0]
 
 #### Added
