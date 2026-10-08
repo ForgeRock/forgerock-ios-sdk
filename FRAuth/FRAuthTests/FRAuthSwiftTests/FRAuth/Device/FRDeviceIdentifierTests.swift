@@ -9,6 +9,7 @@
 //
 
 import XCTest
+import Security
 @testable import FRCore
 @testable import FRAuth
 
@@ -368,6 +369,244 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
         let secondCall = deviceIdentifier.getIdentifier()
         XCTAssertEqual(firstCall, preStoredIdentifier, "Should read back the pre-stored identifier via Branch 1")
         XCTAssertEqual(firstCall, secondCall, "Identifier must remain stable across calls")
+    }
+
+
+    // MARK: - SDKS-5451: stale-accessibility repro tests (green since Phase 4)
+
+    /// Builds a KeychainService sharing the live device identifier store's options with only the
+    /// accessibility changed, so items can be seeded under a kSecAttrAccessible the live store's
+    /// filtered lookups cannot see.
+    private func staleAccessibilitySeeder(for keychainManager: KeychainManager) -> KeychainService {
+        var seederOptions = keychainManager.deviceIdentifierStore.options
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        // securedKey is nil on the simulator; passing it through keeps a device run on the
+        // same encrypted storage path as the live store
+        return KeychainService(options: seederOptions, securedKey: keychainManager.securedKey)
+    }
+
+    func testDeviceIdentifierStoredUnderDifferentAccessibilityIsReturned() {
+        // SDKS-5451 (Task 1.3a red at HEAD, flipped in Task 4.2, AC1/AC6): a persisted identifier
+        // must be returned by getIdentifier() regardless of the kSecAttrAccessible it was stored
+        // under. Before Phase 4 the accessibility-filtered read returned nil and a fresh
+        // identifier was minted instead; FRDeviceIdentifier now looks its items up with
+        // matchesAnyAccessibility enabled.
+        self.startSDK()
+
+        guard let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve KeychainManager from Config object")
+            return
+        }
+        let deviceIdentifierKeychain = keychainManager.deviceIdentifierStore
+
+        let identifierKey = FRDeviceIdentifier.identifierKeychainServiceKey
+
+        // Delete any current-accessibility items for the managed keys before seeding
+        _ = deviceIdentifierKeychain.delete(identifierKey)
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.pubic-key.data")
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.private-key.data")
+
+        // Seed ONLY the identifier item under the non-default accessibility
+        let seeder = self.staleAccessibilitySeeder(for: keychainManager)
+        let seededIdentifier = UUID().uuidString
+
+        // The base cleanUp() deletes through the filtered live store and cannot remove
+        // stale-accessibility items; the seeder queries the accessibility the item was stored under
+        self.addTeardownBlock {
+            _ = seeder.delete(identifierKey)
+            _ = deviceIdentifierKeychain.delete(identifierKey)
+        }
+
+        XCTAssertTrue(seeder.set(seededIdentifier, key: identifierKey), "Seeding the identifier under a non-default accessibility must succeed")
+        XCTAssertEqual(seeder.getString(identifierKey), seededIdentifier, "The seeded identifier must be readable through the seeder")
+
+        let deviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
+
+        XCTAssertEqual(deviceIdentifier.getIdentifier(), seededIdentifier, "getIdentifier must return the persisted identifier regardless of its stored accessibility (the accessibility-filtered Branch 1 read used to miss and a new identifier was minted)")
+    }
+
+    func testDeviceIdentifierCustomerStateIsStableAcrossCalls() {
+        // SDKS-5451 (Task 1.3b red at HEAD, flipped in Task 4.2): reproduces the TRIAGE-30702
+        // customer state — identifier, public-key-data, and private-key-data persisted under a
+        // kSecAttrAccessible the live store's lookups filter out. getIdentifier() must return the
+        // persisted identifier on every call (no Branch 3 regeneration), and the seeded key data
+        // must remain intact.
+        self.startSDK()
+
+        guard let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve KeychainManager from Config object")
+            return
+        }
+        let deviceIdentifierKeychain = keychainManager.deviceIdentifierStore
+
+        // Key constants; the 'pubic' typo in the public key data key is real in FRDeviceIdentifier
+        let identifierKey = FRDeviceIdentifier.identifierKeychainServiceKey
+        let publicKeyDataKey = "com.forgerock.ios.device-identifier.pubic-key.data"
+        let privateKeyDataKey = "com.forgerock.ios.device-identifier.private-key.data"
+
+        // Delete any current-accessibility items for the three keys before seeding
+        _ = deviceIdentifierKeychain.delete(identifierKey)
+        _ = deviceIdentifierKeychain.delete(publicKeyDataKey)
+        _ = deviceIdentifierKeychain.delete(privateKeyDataKey)
+
+        let seeder = self.staleAccessibilitySeeder(for: keychainManager)
+        let seededIdentifier = UUID().uuidString
+        let seededPublicKeyData = "SDKS-5451-seeded-public-key-data".data(using: .utf8)!
+        let seededPrivateKeyData = "SDKS-5451-seeded-private-key-data".data(using: .utf8)!
+
+        // The base cleanUp() cannot remove stale-accessibility items; clean via the seeder
+        self.addTeardownBlock {
+            _ = seeder.delete(identifierKey)
+            _ = seeder.delete(publicKeyDataKey)
+            _ = seeder.delete(privateKeyDataKey)
+            _ = deviceIdentifierKeychain.delete(identifierKey)
+            _ = deviceIdentifierKeychain.delete(publicKeyDataKey)
+            _ = deviceIdentifierKeychain.delete(privateKeyDataKey)
+        }
+
+        // Reproduce the customer state: all three items under the non-default accessibility
+        XCTAssertTrue(seeder.set(seededIdentifier, key: identifierKey), "Seeding the identifier under a non-default accessibility must succeed")
+        XCTAssertTrue(seeder.set(seededPublicKeyData, key: publicKeyDataKey), "Seeding the public key data under a non-default accessibility must succeed")
+        XCTAssertTrue(seeder.set(seededPrivateKeyData, key: privateKeyDataKey), "Seeding the private key data under a non-default accessibility must succeed")
+
+        let deviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
+
+        // Every call must return the persisted identifier; three equal results also prove
+        // Branch 3 did not regenerate the key pair
+        let firstIdentifier = deviceIdentifier.getIdentifier()
+        let secondIdentifier = deviceIdentifier.getIdentifier()
+        let thirdIdentifier = deviceIdentifier.getIdentifier()
+
+        XCTAssertEqual(firstIdentifier, seededIdentifier, "First getIdentifier call must return the persisted identifier regardless of its stored accessibility")
+        XCTAssertEqual(secondIdentifier, seededIdentifier, "Second getIdentifier call must return the persisted identifier (no regeneration)")
+        XCTAssertEqual(thirdIdentifier, seededIdentifier, "Third getIdentifier call must return the persisted identifier (no regeneration)")
+
+        // The seeded public key data must remain intact. Read it through the seeder's own
+        // KeychainService: the unflagged live store's filtered read returns nil by design
+        // (decisions.md D4) because the seeded item lives under a different accessibility.
+        XCTAssertEqual(seeder.getData(publicKeyDataKey), seededPublicKeyData, "The seeded public key data must remain intact (not deleted or regenerated)")
+    }
+
+    func testDeviceIdentifierIsStableAcrossTwoDeviceInstances() {
+        // SDKS-5451 (Task 4.2, AC1/AC6): mimics two sequential DeviceProfileCallback nodes, each
+        // constructing its own FRDeviceIdentifier over the same device identifier store. Both
+        // instances must return the SAME seeded value even though it was stored under a
+        // kSecAttrAccessible the live store's lookups filter out. Unlike
+        // testDeviceIdentifierPersistenceAcrossInstances (which seeds nothing and exercises the
+        // Branch 3 generation path), this test seeds a specific identifier first, so equality
+        // proves both instances read the persisted item instead of minting their own.
+        self.startSDK()
+
+        guard let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve KeychainManager from Config object")
+            return
+        }
+        let deviceIdentifierKeychain = keychainManager.deviceIdentifierStore
+
+        let identifierKey = FRDeviceIdentifier.identifierKeychainServiceKey
+
+        // Delete any current-accessibility items for the managed keys before seeding
+        _ = deviceIdentifierKeychain.delete(identifierKey)
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.pubic-key.data")
+        _ = deviceIdentifierKeychain.delete("com.forgerock.ios.device-identifier.private-key.data")
+
+        // Seed ONLY the identifier item under the non-default accessibility
+        let seeder = self.staleAccessibilitySeeder(for: keychainManager)
+        let seededIdentifier = UUID().uuidString
+
+        // The base cleanUp() cannot remove stale-accessibility items; clean via the seeder
+        self.addTeardownBlock {
+            _ = seeder.delete(identifierKey)
+            _ = deviceIdentifierKeychain.delete(identifierKey)
+        }
+
+        XCTAssertTrue(seeder.set(seededIdentifier, key: identifierKey), "Seeding the identifier under a non-default accessibility must succeed")
+        XCTAssertEqual(seeder.getString(identifierKey), seededIdentifier, "The seeded identifier must be readable through the seeder")
+
+        // Two FRDeviceIdentifier instances over the same store, as two sequential
+        // DeviceProfileCallback nodes would create (FRDevice.init constructs one per FRDevice)
+        let firstDeviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
+        let secondDeviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
+
+        XCTAssertEqual(firstDeviceIdentifier.getIdentifier(), seededIdentifier, "The first instance must return the seeded identifier regardless of its stored accessibility")
+        XCTAssertEqual(secondDeviceIdentifier.getIdentifier(), seededIdentifier, "The second instance must return the same seeded identifier (no per-instance regeneration)")
+    }
+
+    func testStaleAccessibilityIdentifierIsNotMintedOver() {
+        // SDKS-5451 (Task 4.2, AC1/AC6): with the identifier and key data persisted under a
+        // stale kSecAttrAccessible, getIdentifier() must resolve through Branch 1 WITHOUT
+        // writing: no new identifier item may appear under the current accessibility, and the
+        // seeded key data must not be regenerated.
+        self.startSDK()
+
+        guard let keychainManager = self.config.keychainManager else {
+            XCTFail("Failed to retrieve KeychainManager from Config object")
+            return
+        }
+        let deviceIdentifierKeychain = keychainManager.deviceIdentifierStore
+
+        // Key constants; the 'pubic' typo in the public key data key is real in FRDeviceIdentifier
+        let identifierKey = FRDeviceIdentifier.identifierKeychainServiceKey
+        let publicKeyDataKey = "com.forgerock.ios.device-identifier.pubic-key.data"
+        let privateKeyDataKey = "com.forgerock.ios.device-identifier.private-key.data"
+
+        // Delete any current-accessibility items for the three keys before seeding
+        _ = deviceIdentifierKeychain.delete(identifierKey)
+        _ = deviceIdentifierKeychain.delete(publicKeyDataKey)
+        _ = deviceIdentifierKeychain.delete(privateKeyDataKey)
+
+        let seeder = self.staleAccessibilitySeeder(for: keychainManager)
+        let seededIdentifier = UUID().uuidString
+        let seededPublicKeyData = "SDKS-5451-seeded-public-key-data".data(using: .utf8)!
+        let seededPrivateKeyData = "SDKS-5451-seeded-private-key-data".data(using: .utf8)!
+
+        // The base cleanUp() cannot remove stale-accessibility items; clean via the seeder
+        self.addTeardownBlock {
+            _ = seeder.delete(identifierKey)
+            _ = seeder.delete(publicKeyDataKey)
+            _ = seeder.delete(privateKeyDataKey)
+            _ = deviceIdentifierKeychain.delete(identifierKey)
+            _ = deviceIdentifierKeychain.delete(publicKeyDataKey)
+            _ = deviceIdentifierKeychain.delete(privateKeyDataKey)
+        }
+
+        // Seed identifier + key data under the non-default accessibility
+        XCTAssertTrue(seeder.set(seededIdentifier, key: identifierKey), "Seeding the identifier under a non-default accessibility must succeed")
+        XCTAssertTrue(seeder.set(seededPublicKeyData, key: publicKeyDataKey), "Seeding the public key data under a non-default accessibility must succeed")
+        XCTAssertTrue(seeder.set(seededPrivateKeyData, key: privateKeyDataKey), "Seeding the private key data under a non-default accessibility must succeed")
+
+        let deviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
+        XCTAssertEqual(deviceIdentifier.getIdentifier(), seededIdentifier, "getIdentifier must return the persisted identifier")
+
+        // The unflagged live store's filtered read sees only current-accessibility items: it
+        // returning nil proves no new identifier item was minted under the current accessibility
+        // (decisions.md D4 — the live store itself stays unflagged).
+        XCTAssertNil(deviceIdentifierKeychain.getString(identifierKey), "No identifier item may be minted under the current accessibility (the filtered read of the live store must stay empty)")
+
+        // The seeded items must be untouched: same bytes, same accessibility
+        XCTAssertEqual(seeder.getString(identifierKey), seededIdentifier, "The seeded identifier bytes must be unchanged after getIdentifier()")
+        XCTAssertEqual(seeder.getData(publicKeyDataKey), seededPublicKeyData, "The seeded public key data must not be regenerated")
+        XCTAssertEqual(seeder.getData(privateKeyDataKey), seededPrivateKeyData, "The seeded private key data must not be regenerated")
+
+        // Attribute-level check: an accessibility-free service+account inventory query must find
+        // exactly ONE identifier item, still stored under the seeded (non-default) accessibility —
+        // a second item under the current accessibility would mean the identifier was minted over.
+        var inventoryQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: deviceIdentifierKeychain.options.service,
+            kSecAttrAccount as String: identifierKey,
+            kSecMatchLimit as String: kSecMatchLimitAll,
+            kSecReturnAttributes as String: true
+        ]
+        if let accessGroup = deviceIdentifierKeychain.options.accessGroup {
+            inventoryQuery[kSecAttrAccessGroup as String] = accessGroup
+        }
+        var inventoryResult: AnyObject?
+        let inventoryStatus = SecItemCopyMatching(inventoryQuery as CFDictionary, &inventoryResult)
+        XCTAssertEqual(inventoryStatus, errSecSuccess, "The accessibility-free service+account inventory query must find the seeded identifier item")
+        let inventory = inventoryResult as? [[String: Any]] ?? []
+        XCTAssertEqual(inventory.count, 1, "Exactly one identifier item must exist — no second item was minted under the current accessibility")
+        XCTAssertEqual(inventory.first?[kSecAttrAccessible as String] as? String, KeychainAccessibility.whenUnlockedThisDeviceOnly.rawValue, "The surviving identifier item must still be the seeded one, stored under the stale accessibility")
     }
 
 }
