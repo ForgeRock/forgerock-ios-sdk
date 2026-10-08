@@ -863,6 +863,82 @@ class KeychainServiceTests: FRBaseTestCase {
         XCTAssertEqual(defaultGroupItems.first?[kSecValueData as String] as? Data, "bystander".data(using: .utf8), "The surviving default-group item must be the untouched bystander value")
     }
 
+    func test_set_recoveryOnNoGroupService_deletesAcrossGroups_byPreExistingDesign() {
+        // Mirror of test_set_recoveryOnAccessGroupService_preservesBystanderItemInDefaultGroup,
+        // pinning the opposite, PRE-EXISTING behaviour of a no-group (accessGroup == nil)
+        // KeychainService: with no kSecAttrAccessGroup in the query, SecItemDelete matches
+        // across every group the app belongs to (accessibility-filtered only) — the replace
+        // path of set() has always done this (SDKS-5451 plan Risk 6), and the recovery delete
+        // keeps exactly the same reach, only extending it to items under OTHER accessibilities.
+        //
+        // This test pins that documented reach so a future default-group-scoping change is a
+        // deliberate, visible decision rather than a silent behaviour shift. A no-group add
+        // lands in the default group (SecItemAdd duplicate detection IS access-group-scoped,
+        // so the item that triggers recovery is always in the default group); the group-G item
+        // below is the same class+service+account in another group the app can access — the
+        // only scenario in which the unscoped delete reaches beyond the default group.
+        let service = "com.forgerock.ios.test.SDKS-5451.\(UUID().uuidString)"
+        let key = "SDKS-5451.nogroup.reach.key"
+
+        // A same class+service+account item in the config access group under a different
+        // accessibility. The app belongs to both groups, so an unscoped delete can match it.
+        guard let accessGroup = self.config.keychainAccessGroup else {
+            XCTFail("Failed to retrieve Access Group Identifier from Config object")
+            return
+        }
+        var groupSeederOptions = KeychainOptions(service: service, accessGroup: accessGroup)
+        groupSeederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let groupSeeder = KeychainService(options: groupSeederOptions)
+        self.addTeardownBlock {
+            _ = groupSeeder.delete(key)
+        }
+
+        XCTAssertTrue(groupSeeder.set("group-g-item", key: key), "Seeding the group-G same-service item must succeed")
+        XCTAssertEqual(groupSeeder.getString(key), "group-g-item", "The group-G item must be readable through its own (group-scoped, matching-accessibility) service")
+
+        // The no-group conflicting item in the DEFAULT group under a different accessibility.
+        var seederOptions = KeychainOptions(service: service)
+        seederOptions.accessibility = .whenUnlockedThisDeviceOnly
+        let seeder = KeychainService(options: seederOptions)
+        self.addTeardownBlock {
+            _ = seeder.delete(key)
+        }
+        XCTAssertTrue(seeder.set("stale", key: key), "Seeding the default-group stale item must succeed")
+
+        let kc = KeychainService(service: service)
+        // Assign instance variable of KeychainService to delete all items upon tear down
+        self.kc = kc
+        XCTAssertNil(kc.getString(key), "Fixture precondition: the stale item must be invisible to the no-group service's accessibility-filtered lookup")
+
+        // When: the no-group service writes over the stale item; the add returns
+        // errSecDuplicateItem and the self-heal fires with an unscoped conflict query.
+        XCTAssertTrue(kc.set("v2", key: key), "set via the no-group service must recover from errSecDuplicateItem")
+
+        // Then: the intended target was replaced...
+        XCTAssertEqual(kc.getString(key), "v2", "The recovered item must hold the new value")
+
+        // ...and because options.accessGroup is nil, the recovery delete ALSO removed the
+        // same class+service+account item in group G. This is the pre-existing reach of
+        // every no-group SecItemDelete in this SDK (replace path included) — pinned here
+        // as documented behaviour, not flagged as a defect (plan Risk 6).
+        var inventoryQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key,
+            kSecMatchLimit as String: kSecMatchLimitAll,
+            kSecReturnAttributes as String: true,
+            kSecReturnData as String: true
+        ]
+        var inventoryResult: AnyObject?
+        let inventoryStatus = SecItemCopyMatching(inventoryQuery as CFDictionary, &inventoryResult)
+        XCTAssertEqual(inventoryStatus, errSecSuccess, "The accessibility-free service+account inventory query must succeed")
+        let inventory = inventoryResult as? [[String: Any]] ?? []
+        XCTAssertEqual(inventory.count, 1, "The no-group recovery delete must have removed BOTH same-service items (default-group stale item AND group-G item) — the pre-existing group-unscoped reach of a nil-accessGroup delete")
+        let groupGItems = inventory.filter { ($0[kSecAttrAccessGroup as String] as? String)?.hasSuffix(accessGroup) == true }
+        XCTAssertTrue(groupGItems.isEmpty, "The group-G same-service item must be gone: the recovery delete, like the replace-path delete before it, is not scoped to the default group when options.accessGroup is nil")
+        XCTAssertEqual(kc.getString(key), "v2", "Exactly the recovered default-group item remains")
+    }
+
 
     // MARK: - SDKS-5451: concurrent writers on one key (Task 3.4, AC2/AC5)
 

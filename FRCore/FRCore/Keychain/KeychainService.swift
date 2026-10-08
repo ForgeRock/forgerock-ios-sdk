@@ -291,13 +291,23 @@ public struct KeychainService {
     /// lookup: `SecItemAdd` detects duplicates on class+service+account(+accessGroup/synchronizable)
     /// only, while `SecItemCopyMatching`/`SecItemDelete` treat accessibility as a match filter. The
     /// conflicting item is then deleted with `buildQuery(_:includeAccessibility: false)` + account
-    /// (accessGroup/synchronizable preserved, so the delete can never cross identity boundaries), and
+    /// (accessGroup/synchronizable preserved, so when `options.accessGroup` is set the delete can
+    /// never cross the group boundary; with a `nil` access group the delete is group-unscoped —
+    /// see the access-group Note below), and
     /// the add is retried exactly once with the SAME already-built query, so `SecuredKey`-encrypted
     /// values are never re-encrypted mid-recovery.
     ///
     /// - Note: Recovery applies to `.genericPassword` only; for other classes `buildQuery` encodes no
     ///   service attribute, so an accessibility-free delete there would not be identity-bound and could
     ///   match unrelated items. Those classes keep the previous behaviour (returning the failure status).
+    /// - Note: When `options.accessGroup` is `nil`, the conflict query carries no `kSecAttrAccessGroup`,
+    ///   and `SecItemDelete` matches across every group the app belongs to — the same group-unscoped
+    ///   reach the pre-existing replace-path delete of `set(_:key:itemClass:)` has always had; the
+    ///   recovery only extends that reach to items under other accessibilities (pinned by
+    ///   `test_set_recoveryOnNoGroupService_deletesAcrossGroups_byPreExistingDesign`). A no-group add
+    ///   lands in the default group (`SecItemAdd` duplicate detection is access-group-scoped), so the
+    ///   item that triggers recovery is always in the default group; another group is reached only if
+    ///   something separately wrote the same class+service+account there.
     ///
     /// - Parameters:
     ///   - query: The fully-built add query, including `kSecValueData` (already encrypted when a `SecuredKey` is configured) and `kSecAttrAccount`
