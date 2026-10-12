@@ -308,6 +308,14 @@ public struct KeychainService {
     ///   lands in the default group (`SecItemAdd` duplicate detection is access-group-scoped), so the
     ///   item that triggers recovery is always in the default group; another group is reached only if
     ///   something separately wrote the same class+service+account there.
+    /// - Note: Recovery is not serialized across `KeychainService` instances: two concurrent writers
+    ///   can both enter recovery when both first adds return `errSecDuplicateItem` (the same
+    ///   conflicting item hid both), and the second writer's retry add can then collide with the
+    ///   first writer's replacement item, making that `set` report failure. The outcome stays
+    ///   bounded — the conflicting item is removed either way and exactly one readable item remains.
+    ///   No in-process lock is taken: it could not reach cross-process writers sharing an access
+    ///   group, and it would not change the persisted end state. Callers that must persist already
+    ///   re-verify and retry their writes (e.g. the device identifier store).
     ///
     /// - Parameters:
     ///   - query: The fully-built add query, including `kSecValueData` (already encrypted when a `SecuredKey` is configured) and `kSecAttrAccount`

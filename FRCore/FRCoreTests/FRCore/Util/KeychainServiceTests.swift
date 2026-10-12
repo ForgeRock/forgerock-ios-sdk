@@ -857,7 +857,10 @@ class KeychainServiceTests: FRBaseTestCase {
         XCTAssertEqual(inventoryStatus, errSecSuccess, "The accessibility-free service+account inventory query must find the surviving items")
         let inventory = inventoryResult as? [[String: Any]] ?? []
         let groupGItems = inventory.filter { ($0[kSecAttrAccessGroup as String] as? String)?.hasSuffix(accessGroup) == true }
-        let defaultGroupItems = inventory.filter { ($0[kSecAttrAccessGroup as String] as? String)?.hasSuffix("com.forgerock.ios.FRTestHost") == true }
+        // The bystander lives in the app's default group, whose name comes from the test host's
+        // keychain-access-groups entitlement rather than its bundle identifier, so it is identified
+        // negatively: an item outside the config access group.
+        let defaultGroupItems = inventory.filter { ($0[kSecAttrAccessGroup as String] as? String)?.hasSuffix(accessGroup) != true }
         XCTAssertEqual(groupGItems.count, 1, "Exactly one item must remain in the config access group")
         XCTAssertEqual(defaultGroupItems.count, 1, "The default-group bystander must survive the group-G recovery delete (kSecAttrAccessGroup preserved; recovery delete must not cross the group boundary)")
         XCTAssertEqual(defaultGroupItems.first?[kSecValueData as String] as? Data, "bystander".data(using: .utf8), "The surviving default-group item must be the untouched bystander value")
