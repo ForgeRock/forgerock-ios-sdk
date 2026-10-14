@@ -372,7 +372,7 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
     }
 
 
-    // MARK: - SDKS-5451: stale-accessibility repro tests (green since Phase 4)
+    // MARK: - SDKS-5451: identifier persisted under a different accessibility
 
     /// Builds a KeychainService sharing the live device identifier store's options with only the
     /// accessibility changed, so items can be seeded under a kSecAttrAccessible the live store's
@@ -386,11 +386,9 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
     }
 
     func testDeviceIdentifierStoredUnderDifferentAccessibilityIsReturned() {
-        // SDKS-5451 (Task 1.3a red at HEAD, flipped in Task 4.2, AC1/AC6): a persisted identifier
-        // must be returned by getIdentifier() regardless of the kSecAttrAccessible it was stored
-        // under. Before Phase 4 the accessibility-filtered read returned nil and a fresh
-        // identifier was minted instead; FRDeviceIdentifier now looks its items up with
-        // matchesAnyAccessibility enabled.
+        // A persisted identifier must be returned by getIdentifier() regardless of the
+        // kSecAttrAccessible it was stored under, because FRDeviceIdentifier looks its items up
+        // with matchesAnyAccessibility enabled.
         self.startSDK()
 
         guard let keychainManager = self.config.keychainManager else {
@@ -426,10 +424,9 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
     }
 
     func testDeviceIdentifierCustomerStateIsStableAcrossCalls() {
-        // SDKS-5451 (Task 1.3b red at HEAD, flipped in Task 4.2): reproduces the TRIAGE-30702
-        // customer state — identifier, public-key-data, and private-key-data persisted under a
+        // Identifier, public-key-data, and private-key-data are persisted under a
         // kSecAttrAccessible the live store's lookups filter out. getIdentifier() must return the
-        // persisted identifier on every call (no Branch 3 regeneration), and the seeded key data
+        // persisted identifier on every call (no key pair regeneration), and the seeded key data
         // must remain intact.
         self.startSDK()
 
@@ -472,7 +469,7 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
         let deviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
 
         // Every call must return the persisted identifier; three equal results also prove
-        // Branch 3 did not regenerate the key pair
+        // the key pair was not regenerated
         let firstIdentifier = deviceIdentifier.getIdentifier()
         let secondIdentifier = deviceIdentifier.getIdentifier()
         let thirdIdentifier = deviceIdentifier.getIdentifier()
@@ -482,19 +479,18 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
         XCTAssertEqual(thirdIdentifier, seededIdentifier, "Third getIdentifier call must return the persisted identifier (no regeneration)")
 
         // The seeded public key data must remain intact. Read it through the seeder's own
-        // KeychainService: the unflagged live store's filtered read returns nil by design
-        // (decisions.md D4) because the seeded item lives under a different accessibility.
+        // KeychainService: the live store's accessibility-filtered read returns nil because the
+        // seeded item lives under a different accessibility.
         XCTAssertEqual(seeder.getData(publicKeyDataKey), seededPublicKeyData, "The seeded public key data must remain intact (not deleted or regenerated)")
     }
 
     func testDeviceIdentifierIsStableAcrossTwoDeviceInstances() {
-        // SDKS-5451 (Task 4.2, AC1/AC6): mimics two sequential DeviceProfileCallback nodes, each
-        // constructing its own FRDeviceIdentifier over the same device identifier store. Both
-        // instances must return the SAME seeded value even though it was stored under a
-        // kSecAttrAccessible the live store's lookups filter out. Unlike
-        // testDeviceIdentifierPersistenceAcrossInstances (which seeds nothing and exercises the
-        // Branch 3 generation path), this test seeds a specific identifier first, so equality
-        // proves both instances read the persisted item instead of minting their own.
+        // Mimics two sequential DeviceProfileCallback nodes, each constructing its own
+        // FRDeviceIdentifier over the same device identifier store. Both instances must return the
+        // SAME seeded value even though it was stored under a kSecAttrAccessible the live store's
+        // lookups filter out. Unlike testDeviceIdentifierPersistenceAcrossInstances (which seeds
+        // nothing and exercises the generation path), this test seeds a specific identifier first,
+        // so equality proves both instances read the persisted item instead of minting their own.
         self.startSDK()
 
         guard let keychainManager = self.config.keychainManager else {
@@ -533,10 +529,10 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
     }
 
     func testStaleAccessibilityIdentifierIsNotMintedOver() {
-        // SDKS-5451 (Task 4.2, AC1/AC6): with the identifier and key data persisted under a
-        // stale kSecAttrAccessible, getIdentifier() must resolve through Branch 1 WITHOUT
-        // writing: no new identifier item may appear under the current accessibility, and the
-        // seeded key data must not be regenerated.
+        // With the identifier and key data persisted under a different kSecAttrAccessible,
+        // getIdentifier() must resolve from the persisted item WITHOUT writing: no new identifier
+        // item may appear under the current accessibility, and the seeded key data must not be
+        // regenerated.
         self.startSDK()
 
         guard let keychainManager = self.config.keychainManager else {
@@ -578,9 +574,8 @@ class FRDeviceIdentifierTests: FRAuthBaseTest {
         let deviceIdentifier = FRDeviceIdentifier(keychainService: deviceIdentifierKeychain)
         XCTAssertEqual(deviceIdentifier.getIdentifier(), seededIdentifier, "getIdentifier must return the persisted identifier")
 
-        // The unflagged live store's filtered read sees only current-accessibility items: it
-        // returning nil proves no new identifier item was minted under the current accessibility
-        // (decisions.md D4 — the live store itself stays unflagged).
+        // The live store's accessibility-filtered read sees only current-accessibility items: it
+        // returning nil proves no new identifier item was minted under the current accessibility.
         XCTAssertNil(deviceIdentifierKeychain.getString(identifierKey), "No identifier item may be minted under the current accessibility (the filtered read of the live store must stay empty)")
 
         // The seeded items must be untouched: same bytes, same accessibility

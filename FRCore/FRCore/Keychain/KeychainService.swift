@@ -196,6 +196,8 @@ public struct KeychainService {
     
     /// Sets Data value into Keychain Service with given key, and KeychainItemClass
     ///
+    /// An existing item for the key is replaced. For `.genericPassword`, an existing item stored under another accessibility is replaced as well and re-stored under `options.accessibility` (see `addItem(_:key:itemClass:)`).
+    ///
     /// - Parameters:
     ///   - val: Data value to store
     ///   - key: Key for the value
@@ -282,82 +284,94 @@ public struct KeychainService {
     }
 
 
-    /// Adds an item to the Keychain, self-healing once from `errSecDuplicateItem` for generic-password items (SDKS-5451)
+    /// Adds an item to the Keychain; on `errSecDuplicateItem` for generic-password items, updates the conflicting item in place (SDKS-5451)
     ///
     /// This helper performs the `SecItemAdd` for both the new-item and the replace paths of
-    /// `set(_:key:itemClass:)`, so the two paths share identical recovery behaviour. When the add
-    /// returns `errSecDuplicateItem` for a `.genericPassword` item, a conflicting item exists whose
-    /// stored `kSecAttrAccessible` (or other identity attribute) made it invisible to the caller's
-    /// lookup: `SecItemAdd` detects duplicates on class+service+account(+accessGroup/synchronizable)
-    /// only, while `SecItemCopyMatching`/`SecItemDelete` treat accessibility as a match filter. The
-    /// conflicting item is then deleted with `buildQuery(_:includeAccessibility: false)` + account
-    /// (accessGroup/synchronizable preserved, so when `options.accessGroup` is set the delete can
-    /// never cross the group boundary; with a `nil` access group the delete is group-unscoped —
-    /// see the access-group Note below), and
-    /// the add is retried exactly once with the SAME already-built query, so `SecuredKey`-encrypted
-    /// values are never re-encrypted mid-recovery.
+    /// `set(_:key:itemClass:)`. `SecItemAdd` detects duplicates on
+    /// class+service+account(+accessGroup/synchronizable) only, while `SecItemCopyMatching` and
+    /// `SecItemDelete` treat `kSecAttrAccessible` as a match filter, so an item stored under another
+    /// accessibility can be invisible to the caller's lookup yet still block the add. When that happens
+    /// the conflicting item is rewritten with a single `SecItemUpdate`, matched by
+    /// `buildQuery(_:includeAccessibility: false)` + account, that sets both `kSecValueData` (the value
+    /// already built into `query`, so `SecuredKey`-encrypted values are never re-encrypted) and
+    /// `kSecAttrAccessible`. The outcome depends on the update status:
+    /// - success: the add is reported as successful and exactly one item remains;
+    /// - `errSecItemNotFound` (the item vanished concurrently): the original add is attempted once more;
+    /// - any other status: the original `errSecDuplicateItem` is returned and the existing item is left untouched.
+    ///
+    /// Because the conflicting item is updated rather than deleted, a failed recovery never destroys
+    /// existing data, and concurrent writers cannot delete each other's replacement item.
     ///
     /// - Note: Recovery applies to `.genericPassword` only; for other classes `buildQuery` encodes no
-    ///   service attribute, so an accessibility-free delete there would not be identity-bound and could
-    ///   match unrelated items. Those classes keep the previous behaviour (returning the failure status).
+    ///   service attribute, so an accessibility-free update there would not be identity-bound and could
+    ///   match unrelated items. Those classes return the add status unchanged.
     /// - Note: When `options.accessGroup` is `nil`, the conflict query carries no `kSecAttrAccessGroup`,
-    ///   and `SecItemDelete` matches across every group the app belongs to — the same group-unscoped
-    ///   reach the pre-existing replace-path delete of `set(_:key:itemClass:)` has always had; the
-    ///   recovery only extends that reach to items under other accessibilities (pinned by
-    ///   `test_set_recoveryOnNoGroupService_deletesAcrossGroups_byPreExistingDesign`). A no-group add
-    ///   lands in the default group (`SecItemAdd` duplicate detection is access-group-scoped), so the
-    ///   item that triggers recovery is always in the default group; another group is reached only if
-    ///   something separately wrote the same class+service+account there.
-    /// - Note: Recovery is not serialized across `KeychainService` instances: two concurrent writers
-    ///   can both enter recovery when both first adds return `errSecDuplicateItem` (the same
-    ///   conflicting item hid both), and the second writer's retry add can then collide with the
-    ///   first writer's replacement item, making that `set` report failure. The outcome stays
-    ///   bounded — the conflicting item is removed either way and exactly one readable item remains.
-    ///   No in-process lock is taken: it could not reach cross-process writers sharing an access
-    ///   group, and it would not change the persisted end state. Callers that must persist already
-    ///   re-verify and retry their writes (e.g. the device identifier store).
+    ///   so `SecItemUpdate` matches across every group the app belongs to, the same group-unscoped reach
+    ///   as the replace-path delete in `set(_:key:itemClass:)`. A same class+service+account item in
+    ///   another accessible group is therefore overwritten (value and accessibility) rather than
+    ///   deleted. When `options.accessGroup` is set, the update never crosses the group boundary.
     ///
     /// - Parameters:
-    ///   - query: The fully-built add query, including `kSecValueData` (already encrypted when a `SecuredKey` is configured) and `kSecAttrAccount`
+    ///   - query: The fully-built add query, including `kSecValueData` (already encrypted when a `SecuredKey` is configured), `kSecAttrAccessible` and `kSecAttrAccount`
     ///   - key: Key (account attribute) the item is stored under, for logging
     ///   - itemClass: KeychainItemClass of the item being added
-    /// - Returns: The final `OSStatus`: `errSecSuccess` on success, the first add's status when no recovery applies, or the retried add's status when the recovery failed
-    func addItem(_ query: [String: Any], key: String, itemClass: KeychainItemClass) -> OSStatus {
+    ///   - add: The `SecItemAdd` call, replaceable so tests can script its results
+    ///   - update: The `SecItemUpdate` call used by the recovery, replaceable so tests can script its results
+    /// - Returns: `errSecSuccess` on success; otherwise the first add's status when no recovery applies or the update failed, or the retried add's status when the item vanished during recovery
+    func addItem(_ query: [String: Any], key: String, itemClass: KeychainItemClass, add: (CFDictionary) -> OSStatus = { SecItemAdd($0, nil) }, update: (CFDictionary, CFDictionary) -> OSStatus = { SecItemUpdate($0, $1) }) -> OSStatus {
 
-        let status = SecItemAdd(query as CFDictionary, nil)
+        let status = add(query as CFDictionary)
         guard status == errSecDuplicateItem, itemClass == .genericPassword else {
             return status
         }
+        guard let newValue = query[SecKeys.valueData.rawValue], let newAccessibility = query[SecKeys.accessible.rawValue] else {
+            Log.e("set - errSecDuplicateItem for key '\(key)' cannot be recovered: the add query carries no value or accessibility")
+            return status
+        }
 
-        // Recovery: remove the conflicting item by its identity (class+service+account
-        // +accessGroup/synchronizable, NO accessibility) and retry the add exactly once.
-        // First, read the stored item's accessibility constant only, to confirm the root
-        // cause in the field; no values or data are ever logged (D9).
         var conflictQuery = self.options.buildQuery(itemClass, includeAccessibility: false)
         conflictQuery[SecKeys.account.rawValue] = key
+
+        // Diagnostic only: read the stored accessibility attribute, never values or data.
         var attributeResult: AnyObject?
         var diagnosticQuery = conflictQuery
         diagnosticQuery[SecKeys.returnAttr.rawValue] = true
         let copyStatus = SecItemCopyMatching(diagnosticQuery as CFDictionary, &attributeResult)
         var storedAccessibilityDescription = "not found"
         if copyStatus == errSecSuccess, let attributes = attributeResult as? [String: Any], let storedAccessibility = attributes[SecKeys.accessible.rawValue] as? String {
-            storedAccessibilityDescription = storedAccessibility
+            storedAccessibilityDescription = KeychainService.accessibilityName(for: storedAccessibility)
         }
-        Log.w("set - SecItemAdd returned errSecDuplicateItem for key '\(key)' (service '\(self.options.service)', accessGroup \(self.options.accessGroup ?? "nil")); removing the conflicting item and retrying once. Stored accessibility: \(storedAccessibilityDescription) (copyMatching status: \(copyStatus) (\(KeychainService.keychainErrorDescription(for: copyStatus))))")
+        Log.w("set - SecItemAdd returned errSecDuplicateItem for key '\(key)' (service '\(self.options.service)', accessGroup \(self.options.accessGroup ?? "nil")); updating the conflicting item in place. Stored accessibility: \(storedAccessibilityDescription) (copyMatching status: \(copyStatus) (\(KeychainService.keychainErrorDescription(for: copyStatus))))")
 
-        let deleteStatus = SecItemDelete(conflictQuery as CFDictionary)
-        guard deleteStatus == errSecSuccess || deleteStatus == errSecItemNotFound else {
-            Log.e("set - recovery from errSecDuplicateItem failed for key '\(key)': SecItemDelete returned \(deleteStatus) (\(KeychainService.keychainErrorDescription(for: deleteStatus))); first add status was \(status) (\(KeychainService.keychainErrorDescription(for: status)))")
+        let attributesToUpdate: [String: Any] = [
+            SecKeys.valueData.rawValue: newValue,
+            SecKeys.accessible.rawValue: newAccessibility
+        ]
+        let updateStatus = update(conflictQuery as CFDictionary, attributesToUpdate as CFDictionary)
+
+        switch updateStatus {
+        case errSecSuccess:
+            Log.v("set - successfully stored key '\(key)' by updating the conflicting item after errSecDuplicateItem")
+            return noErr
+        case errSecItemNotFound:
+            let retryStatus = add(query as CFDictionary)
+            if retryStatus == noErr {
+                Log.v("set - successfully stored key '\(key)' after the conflicting item vanished during recovery")
+            } else {
+                Log.e("set - recovery from errSecDuplicateItem failed for key '\(key)': the conflicting item vanished and the retried SecItemAdd returned \(retryStatus) (\(KeychainService.keychainErrorDescription(for: retryStatus)))")
+            }
+            return retryStatus
+        default:
+            Log.e("set - recovery from errSecDuplicateItem failed for key '\(key)': SecItemUpdate returned \(updateStatus) (\(KeychainService.keychainErrorDescription(for: updateStatus))); first add status was \(status) (\(KeychainService.keychainErrorDescription(for: status))); the existing item was left untouched")
             return status
         }
+    }
 
-        let retryStatus = SecItemAdd(query as CFDictionary, nil)
-        if retryStatus == noErr {
-            Log.v("set - successfully stored key '\(key)' after recovering from errSecDuplicateItem")
-        } else {
-            Log.e("set - recovery from errSecDuplicateItem failed for key '\(key)': retried SecItemAdd returned \(retryStatus) (\(KeychainService.keychainErrorDescription(for: retryStatus))); first add status was \(status) (\(KeychainService.keychainErrorDescription(for: status)))")
-        }
-        return retryStatus
+
+    /// Returns the `KeychainAccessibility` description (e.g. `kSecAttrAccessibleAfterFirstUnlock`) for a stored `kSecAttrAccessible` value, or the raw code when it maps to none (e.g. deprecated `kSecAttrAccessibleAlways`)
+    static func accessibilityName(for storedAccessibility: String) -> String {
+        let known: [KeychainAccessibility] = [.afterFirstUnlock, .afterFirstUnlockThisDeviceOnly, .whenUnlocked, .whenUnlockedThisDeviceOnly, .whenPasscodeSetThisDeviceOnly, .alwaysThisDeviceOnly]
+        return known.first { $0.rawValue == storedAccessibility }?.description ?? storedAccessibility
     }
 
 

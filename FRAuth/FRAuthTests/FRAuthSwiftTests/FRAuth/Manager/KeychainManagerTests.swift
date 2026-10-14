@@ -586,22 +586,19 @@ class KeychainManagerTests: FRAuthBaseTest {
     }
 
 
-    // MARK: - SDKS-5451 migration-probe regression tests (AC3)
+    // MARK: - SDKS-5451 migration probe tests
 
-    // The KeychainManager device-identifier migration probe (KeychainManager.init, both the
-    // access-group branch at lines ~137-154 and the no-access-group branch at lines ~164-181)
-    // reads the device-identifier service with a kSecAttrAccessibleAlwaysThisDeviceOnly-filtered
-    // lookup and, only when an item is found, calls previousService.deleteAll() and re-stores just
-    // the identifier. That accessibility-as-filter behaviour is by design (decisions.md D4): the
-    // device-identifier service name (KeychainStoreType.deviceIdentifier) is a constant shared
-    // across all baseUrls, so a global accessibility-free buildQuery — the approach rejected in
-    // SDKS-5451 — would make the probe match the freshly stored item on every launch, fire
-    // deleteAll() (wiping the identifier AND the cached public/private key data) and re-set only
-    // the identifier. The tests below lock in the untouched behaviour in both access-group
-    // configurations: after a second KeychainManager construction, all three seeded values must
-    // survive byte-identical (test_12/test_13), and a genuine legacy .alwaysThisDeviceOnly item
-    // must still be migrated (test_14). Under the rejected mutation these two preservation tests
-    // fail on the missing key data, which is the mutation-check evidence for Task 5.3.
+    // The device-identifier migration probe in KeychainManager.init (both the access-group and
+    // the no-access-group branch) reads the device-identifier service with a
+    // kSecAttrAccessibleAlwaysThisDeviceOnly-filtered lookup and, only when an item is found,
+    // calls previousService.deleteAll() and re-stores just the identifier. The probe must stay
+    // accessibility-filtered: the device-identifier service name
+    // (KeychainStoreType.deviceIdentifier) is shared across all baseUrls, so an accessibility-free
+    // probe would match the freshly stored item on every launch, fire deleteAll() (wiping the
+    // identifier AND the cached public/private key data) and re-set only the identifier.
+    // The tests below assert that, in both access-group configurations, all three seeded values
+    // survive a second KeychainManager construction byte-identical (test_12/test_13), and that a
+    // genuine legacy .alwaysThisDeviceOnly item is still migrated (test_14).
 
     /// Key for the identifier in the device-identifier store (FRDeviceIdentifier.identifierKeychainServiceKey)
     private var deviceIdentifierKey: String { FRDeviceIdentifier.identifierKeychainServiceKey }
@@ -679,7 +676,7 @@ class KeychainManagerTests: FRAuthBaseTest {
             return
         }
 
-        XCTAssertEqual(secondManager.deviceIdentifierStore.getString(self.deviceIdentifierKey), seededIdentifier, "The identifier must survive a second KeychainManager construction (a global accessibility-free buildQuery would make the probe deleteAll() and re-set it)")
+        XCTAssertEqual(secondManager.deviceIdentifierStore.getString(self.deviceIdentifierKey), seededIdentifier, "The identifier must survive a second KeychainManager construction (an accessibility-free probe would deleteAll() and re-set it)")
         XCTAssertEqual(secondManager.deviceIdentifierStore.getData(self.publicKeyDataKey), seededPublicKeyData, "The public key data must survive the probe untouched; the probe must not deleteAll() the key-data cache")
         XCTAssertEqual(secondManager.deviceIdentifierStore.getData(self.privateKeyDataKey), seededPrivateKeyData, "The private key data must survive the probe untouched; the probe must not deleteAll() the key-data cache")
     }
