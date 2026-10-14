@@ -299,6 +299,10 @@ public struct KeychainService {
     /// - `errSecItemNotFound` (the item vanished concurrently): the original add is attempted once more;
     /// - any other status: the original `errSecDuplicateItem` is returned and the existing item is left untouched.
     ///
+    /// Because the update writes `kSecAttrAccessible` from the add query, a conflicting item stored under a
+    /// stronger protection class is weakened to `options.accessibility`; callers that must preserve a stronger
+    /// class should keep `options.accessibility` at that class.
+    ///
     /// Because the conflicting item is updated rather than deleted, a failed recovery never destroys
     /// existing data, and concurrent writers cannot delete each other's replacement item.
     ///
