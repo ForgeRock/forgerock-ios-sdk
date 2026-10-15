@@ -43,9 +43,19 @@ public struct FRDeviceIdentifier {
     
     /// Initializes FRDeviceIdentifier
     ///
+    /// The injected `KeychainService` is copied (it is a struct) and `matchesAnyAccessibility` is
+    /// enabled on that copy: a persisted identifier or key-data item must be readable — and
+    /// overwritable — regardless of the `kSecAttrAccessible` it was stored under, because
+    /// `SecItemCopyMatching`/`SecItemDelete` treat that attribute as a match filter while
+    /// `SecItemAdd` detects duplicates without it. The copy is local to this `FRDeviceIdentifier`,
+    /// so the manager-held store, the KeychainManager migration probe, and every other Keychain
+    /// consumer keep the accessibility-filtered behaviour.
+    ///
     /// - Parameter keychainService: Designated KeychainService to persist, and manage generated Key Pair, and Identifier
     init(keychainService: KeychainService) {
-        self.keychainService = keychainService
+        var flaggedService = keychainService
+        flaggedService.options.matchesAnyAccessibility = true
+        self.keychainService = flaggedService
     }
     
     /// Generates, or retrieves an identifier, returns

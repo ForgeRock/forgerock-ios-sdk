@@ -1,6 +1,13 @@
 ## [Unreleased]
+#### Added
+- Added `KeychainOptions.matchesAnyAccessibility`, an opt-in property that makes generic-password lookups and deletes ignore the stored `kSecAttrAccessible` attribute [SDKS-5451]
+
 #### Updated
 - Updated `RecaptchaEnterprise` dependency to 18.9.1 for Xcode 27 / iOS 27 compatibility [SDKS-5306]
+
+#### Fixed
+- Fixed an issue where the device identifier could change between calls on iOS 26 because Keychain lookups were filtered by the stored accessibility attribute [SDKS-5451]
+- Fixed `KeychainService.set` failing when a generic-password item already exists under a different accessibility; the existing item is now replaced and re-stored under the service's configured accessibility, for all Keychain stores and not only the device identifier. Note that a conflicting item stored under a stronger accessibility is replaced with the store's configured accessibility, which can be weaker [SDKS-5451]
 
 ## [4.10.0]
 
